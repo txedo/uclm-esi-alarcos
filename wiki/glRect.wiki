@@ -1,5 +1,5 @@
+#summary Cómo dibujar un rectángulo con primitivas de OpenGL
 #labels glRect,opengl,primitivas
-Cómo dibujar un rectángulo con primitivas de OpenGL
 
 = Introduction =
 
