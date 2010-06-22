@@ -1,5 +1,5 @@
+#summary Cómo dibujar un cubo con GLUT4Java
 #labels wire,cube,glut
-Cómo dibujar un cubo con GLUT4Java
 
 = Introduction =
 
