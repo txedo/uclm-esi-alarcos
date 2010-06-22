@@ -1,0 +1,17 @@
+#summary One-sentence summary of this page.
+#labels wire,cube,glut
+Cómo dibujar un cubo con GLUT4Java
+
+= Introduction =
+
+En esta página se mostrará un pequeño ejemplo sobre cómo dibujar un cubo con GLUT4Java y cómo modificarlo.
+
+= Details =
+{{{
+GLUT a = new GLUT();
+gl.glColor3f(0.0f, 0.0f, 0.0f);
+gl.glLoadIdentity();
+gl.glTranslatef(0.0f, 0.0f, -5.0f);
+gl.glScalef(1.0f, 1.0f, 5.0f);
+a.glutWireCube(1.0f);
+}}}
