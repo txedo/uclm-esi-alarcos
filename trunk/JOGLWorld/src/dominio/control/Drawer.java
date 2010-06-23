@@ -6,19 +6,19 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import com.sun.opengl.util.GLUT;
-
 import dominio.conocimiento.Color;
 import dominio.conocimiento.Tower;
 
-public class Drawer implements GLEventListener {
+public class Drawer implements GLEventListener, Constantes {
 	
 	private Color c1, c2;
 	private Tower t1, t2;
 	
-	private float xrot;
-	private float yrot;
-	private float sceneroty;
+	private float xrot, scenerotx;
+	private float yrot, sceneroty;
+	private float xpos, ypos, zpos; // Posición de la cámara
+	private float xsight, ysight, zsight; // Dónde apunta la cámara
+	private float xzoom_min, yzoom_min, zzoom_min;
 	
 	@Override
 	public void display(GLAutoDrawable glDrawable) {
@@ -56,8 +56,17 @@ public class Drawer implements GLEventListener {
 		t2 = new Tower(-1.0f, -1.0f, 1.0f, 2.0f, c2);
 		
 		xrot = 0.0f;
+		scenerotx = 360.0f - xrot;
 		yrot = 0.0f;
 		sceneroty = 360.0f - yrot;
+		// TODO Inicializar xpos, ypos y zpos en función de lo que haya hecho SetupWorld
+		xpos = 0.0f;
+		ypos = 4.0f;
+		zpos = 5.0f;
+		// Inicialmente la camara apunta al origen de coordenadas (0,0,0)
+		xsight = 0.0f;
+		ysight = 1.0f;
+		zsight = 0.0f;
 	}
 
 	@Override
@@ -83,46 +92,135 @@ public class Drawer implements GLEventListener {
 	public void drawScene(GLAutoDrawable glDrawable) {
 		final GL gl = glDrawable.getGL();
 		final GLU glu = new GLU();
+		scenerotx = 360.0f - xrot;
 		sceneroty = 360.0f - yrot;
 		
 		gl.glLoadIdentity();
-		gl.glTranslatef(0.0f, 0.0f, -5.0f);
-//		gl.glRotatef(0.0f, 0.0f, 0.0f, 0.0f);
-		gl.glRotatef(sceneroty, 0.0f, 1.0f, 0.0f);
-//		gl.glRotatef(0.0f, 0.0f, 0.0f, 0.0f);
+		// La cámara se sitúa en (xpos, ypos, zpos)
+		// apuntando al origen de coordenadas (0, 0, 0)
+		// El vector (0, 1, 0) indica la posición de la cámara
+		glu.gluLookAt(xpos, ypos, zpos, xsight, ysight, zsight, 0.0f, 1.0f, 0.0f);
+		//glu.gluLookAt(0.0f, 4.0f, zpos, 0, 0, 0, 0.0f, 1.0f, 0.0f);
+		//gl.glTranslatef(-xpos, -ypos, -zpos);
 
+		gl.glRotatef(scenerotx, 1.0f, 0.0f, 0.0f);
+		gl.glRotatef(sceneroty, 0.0f, 1.0f, 0.0f);
 		t1.draw(gl);
 		t2.draw(gl);
 		
-//		gl.glLoadIdentity();
-//		gl.glTranslatef(0.0f, 0.0f, -5.0f);
-//		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.3f);
-//		gl.glRectf(-2, -2, 2, 2);
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.3f);
+		gl.glBegin(GL.GL_QUADS);	
+			gl.glVertex3f(-2, 0, -2);
+			gl.glVertex3f(-2, 0, 2);
+			gl.glVertex3f(2, 0, 2);
+			gl.glVertex3f(2, 0, -2);
+		gl.glEnd();
 		
-		GLUT a = new GLUT();
-		gl.glColor3f(0.0f, 0.0f, 0.0f);
-		gl.glLoadIdentity();
-		glu.gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-		//gl.glTranslatef(0.0f, 0.0f, -5.0f);
-		gl.glScalef(1.0f, 1.0f, 5.0f);
-		a.glutWireCube(1.0f);
-//		gl.glFlush();
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.3f);
+		gl.glLineWidth(5.0f);
+		gl.glBegin(GL.GL_LINE);
+			gl.glVertex3f(0.0f, 0.0f, 0.0f);
+			gl.glVertex3f(13.0f, 0.0f, 0.0f);
+		gl.glEnd();
+		gl.glBegin(GL.GL_LINE);
+			gl.glVertex3f(0.0f, 0.0f, 0.0f);
+			gl.glVertex3f(0.0f, 13.0f, 0.0f);
+		gl.glEnd();
+		gl.glBegin(GL.GL_LINE);
+			gl.glVertex3f(0.0f, 0.0f, 0.0f);
+			gl.glVertex3f(0.0f, 0.0f, 13.0f);
+		gl.glEnd();
+		
+		gl.glFlush();
 	}
 
-	public float getXrot() {
-		return xrot;
+	public void moveLeft() {
+		yrot -= Y_ROTATION;
 	}
-
-	public void setXrot(float xrot) {
-		this.xrot = xrot;
+	
+	public void moveRight() {
+		yrot += Y_ROTATION;
 	}
 
 	public float getYrot() {
 		return yrot;
 	}
 
-	public void setYrot(float yrot) {
-		this.yrot = yrot;
+	public void moveUp() {
+		// TODO Controlar límite para que no pueda dar vueltas
+		float newXRot = xrot - X_ROTATION;
+		//if (newXRot <= 180) {
+			xrot -= X_ROTATION;
+		//}
+	}
+
+	public void moveDown() {
+		// TODO Controlar límite para que no pueda dar vueltas
+		float newXRot = xrot + X_ROTATION;
+		//if (newXRot >= 0) {
+			xrot += X_ROTATION;
+		//}
+	}
+
+	public float getXrot() {
+		return xrot;
+	}
+
+	// TODO para los zooms, mantener una máquina de estados que indica si cada una
+	// de las coordenadas anteriores son distintas de 0.
+	public void zoomIn() {
+		// TODO Auto-generated method stub
+		//if (xpos > xzoom_min) xpos -= ZOOM;
+		//if (ypos > yzoom_min) ypos -= ZOOM;
+		if (zpos > zzoom_min) {
+			zpos -= ZOOM;
+			//xsight -= ZOOM;
+			//zsight -= ZOOM;
+		}
+	}
+
+	public void zoomOut() {
+		// TODO Auto-generated method stub
+		//if (xpos < ZOOM_MAX) xpos += ZOOM;
+		//if (ypos < ZOOM_MAX) ypos += ZOOM;
+		if (zpos < ZOOM_MAX) {
+			zpos += ZOOM;
+			//ysight -= ZOOM;
+		}
+	}
+
+	public float getXpos() {
+		return xpos;
+	}
+
+	public float getYpos() {
+		return ypos;
+	}
+
+	public float getZpos() {
+		return zpos;
+	}
+
+	public void lookUp() {
+		// TODO Auto-generated method stub
+		zsight += 0.5f;
+	}
+
+	public void lookDown() {
+		// TODO Auto-generated method stub
+		zsight -= 0.5f;
+	}
+
+	public float getXsight() {
+		return xsight;
+	}
+
+	public float getYsight() {
+		return ysight;
+	}
+
+	public float getZsight() {
+		return zsight;
 	}
 
 }

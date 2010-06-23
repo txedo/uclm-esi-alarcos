@@ -21,6 +21,8 @@ public class Main extends Frame {
 	    canvas = new GLCanvas();
 
 	    canvas.addGLEventListener(new Drawer());
+	    canvas.setFocusable(true);
+	    canvas.requestFocus();
 	    frame.add(canvas);
 	    frame.setSize(800, 600);
 	    animator = new Animator(canvas);
