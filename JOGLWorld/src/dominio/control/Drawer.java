@@ -10,7 +10,6 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
 import dominio.conocimiento.Camara;
-import dominio.conocimiento.Cartesiano2D;
 import dominio.conocimiento.Color;
 import dominio.conocimiento.IConstantes;
 import dominio.conocimiento.Tower;
