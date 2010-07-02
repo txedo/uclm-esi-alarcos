@@ -60,13 +60,14 @@ public class Drawer implements GLEventListener, IConstantes {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL.GL_LESS);
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-		// Añadimos los listener de teclado y ratón
-		glDrawable.addKeyListener(new MyKeyListener(this));
-		glDrawable.addMouseListener(new MyMouseListener(this));
-		glDrawable.addMouseMotionListener(new MyMouseMotionListener(this));
 		
 		// Configuramos los parámetros del mundo
 		setupWorld();
+		
+		// Añadimos los listener de teclado y ratón
+		glDrawable.addKeyListener(new MyKeyListener(this.cam));
+		glDrawable.addMouseListener(new MyMouseListener(this));
+		glDrawable.addMouseMotionListener(new MyMouseMotionListener(this));
 	}
 
 	private void setupWorld() {
@@ -75,7 +76,6 @@ public class Drawer implements GLEventListener, IConstantes {
 		Color c;
 		Tower t;
 		for (int i = 0; i < 1000; i++) {
-			System.out.println(r.nextFloat());
 			c = new Color (r.nextFloat(), r.nextFloat(), r.nextFloat());
 			t = new Tower (r.nextFloat()*100,r.nextFloat()*100,r.nextFloat(),r.nextFloat()*10,c);
 			torres.add(t);
