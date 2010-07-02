@@ -5,10 +5,20 @@ import java.awt.event.MouseListener;
 
 public class MyMouseListener implements MouseListener {
 
+	private Drawer d;
+
+	public MyMouseListener(Drawer drawer) {
+		this.d = drawer;
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("click");
+		if (e.getClickCount() == 2){
+			System.out.println("doble click");		
+		} else {
+			System.out.println ("click");
+		}
 	}
 
 	@Override
