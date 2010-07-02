@@ -3,13 +3,13 @@ package dominio.control;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import dominio.conocimiento.Camera;
+import dominio.conocimiento.Camara;
 
 public class MyKeyListener implements KeyListener {
 	
-	Camera cam;
+	Camara cam;
 
-	public MyKeyListener(Camera c) {
+	public MyKeyListener(Camara c) {
 		this.cam = c;
 	}
 
@@ -38,38 +38,44 @@ public class MyKeyListener implements KeyListener {
 			System.out.println("-");
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			if (e.isControlDown()) {
-				cam.rotateLeft();
+				cam.rotacionIzquierda();
 				System.out.println("Ctrl + <-");
 			}
+			else if (e.isAltDown()) {
+				System.out.println("Alt + <-");
+			}
 			else {
-				cam.moveLeft();
+				cam.moverIzquierda();
 				System.out.println("<-\t");
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			if (e.isControlDown()) {
-				cam.rotateRight();
+				cam.rotacionDerecha();
 				System.out.println("Ctrl + ->");
 			}
+			else if (e.isAltDown()) {
+				System.out.println("Alt + ->");
+			}
 			else {
-				cam.moveRight();
+				cam.moverDerecha();
 				System.out.println("->");
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
 			if (e.isControlDown()) {
-				cam.rotateUp();
+				cam.rotacionArriba();
 				System.out.println("Ctrl + A\t");
 			}
 			else {
-				cam.moveForward();
+				cam.moverAdelante();
 				System.out.println("A");
 			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			if (e.isControlDown()) {
-				cam.rotateDown();
+				cam.rotacionAbajo();
 				System.out.println("Ctrl + V");
 			}
 			else {
-				cam.moveBackward();
+				cam.moverAtras();
 				System.out.println("V");
 			}
 		}
