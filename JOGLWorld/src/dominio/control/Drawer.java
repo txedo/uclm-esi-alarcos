@@ -1,32 +1,49 @@
 package dominio.control;
 
 
+import java.util.Random;
+import java.util.Vector;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
+import dominio.conocimiento.Camera;
+import dominio.conocimiento.Cartesiano2D;
 import dominio.conocimiento.Color;
+import dominio.conocimiento.IConstantes;
 import dominio.conocimiento.Tower;
+import dominio.conocimiento.Vector3f;
 
-public class Drawer implements GLEventListener, Constantes {
+public class Drawer implements GLEventListener, IConstantes {
 	
-	private Color c1, c2;
-	private Tower t1, t2;
+	private Color c;
+	private Vector<Tower> torres;
 	
 	private float xrot, scenerotx;
 	private float yrot, sceneroty;
-	private float xpos, ypos, zpos; // Posición de la cámara
-	private float xsight, ysight, zsight; // Dónde apunta la cámara
-	private float xzoom_min, yzoom_min, zzoom_min;
+	private Camera cam;
 	
 	@Override
 	public void display(GLAutoDrawable glDrawable) {
 		final GL gl = glDrawable.getGL();
+		final GLU glu = new GLU();
+		
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		
+		scenerotx = 360.0f - xrot;
+		sceneroty = 360.0f - yrot;
+		
 		gl.glLoadIdentity();
 		
-		drawScene(glDrawable);
+		cam.render(glu);
+
+		gl.glPushMatrix();
+			gl.glRotatef(scenerotx, 1.0f, 0.0f, 0.0f);
+			gl.glRotatef(sceneroty, 0.0f, 1.0f, 0.0f);
+			drawWorld(glDrawable);
+		gl.glPopMatrix();
 	}
 
 	@Override
@@ -43,30 +60,36 @@ public class Drawer implements GLEventListener, Constantes {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL.GL_LESS);
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-		// Añadir el listener de teclado
+		// Añadimos los listener de teclado y ratón
 		glDrawable.addKeyListener(new MyKeyListener(this));
-		// Añadir los listener de ratón
-		glDrawable.addMouseListener(new MyMouseListener());
-		glDrawable.addMouseMotionListener(new MyMouseMotionListener());
+		glDrawable.addMouseListener(new MyMouseListener(this));
+		glDrawable.addMouseMotionListener(new MyMouseMotionListener(this));
 		
-		//TODO SetupWorld();
-		c1 = new Color(1.0f, 0.0f, 0.0f);
-		t1 = new Tower(0.0f, 0.0f, 1.0f, 2.0f, c1);
-		c2 = new Color(0.0f, 1.0f, 0.0f);
-		t2 = new Tower(-1.0f, -1.0f, 1.0f, 2.0f, c2);
+		// Configuramos los parámetros del mundo
+		setupWorld();
+	}
+
+	private void setupWorld() {
+		torres = new Vector<Tower>();
+		Random r = new Random();
+		Color c;
+		Tower t;
+		for (int i = 0; i < 1000; i++) {
+			System.out.println(r.nextFloat());
+			c = new Color (r.nextFloat(), r.nextFloat(), r.nextFloat());
+			t = new Tower (r.nextFloat()*100,r.nextFloat()*100,r.nextFloat(),r.nextFloat()*10,c);
+			torres.add(t);
+		}
+//		c = new Color(1.0f, 0.0f, 0.0f);
+//		torres.add(new Tower(0.0f, 0.0f, 1.0f, 2.0f, c));
+//		c = new Color(0.0f, 1.0f, 0.0f);
+//		torres.add(new Tower(-1.0f, -1.0f, 1.0f, 2.0f, c));
 		
-		xrot = 0.0f;
+		xrot = yrot = 0.0f;
 		scenerotx = 360.0f - xrot;
-		yrot = 0.0f;
 		sceneroty = 360.0f - yrot;
-		// TODO Inicializar xpos, ypos y zpos en función de lo que haya hecho SetupWorld
-		xpos = 0.0f;
-		ypos = 4.0f;
-		zpos = 5.0f;
-		// Inicialmente la camara apunta al origen de coordenadas (0,0,0)
-		xsight = 0.0f;
-		ysight = 1.0f;
-		zsight = 0.0f;
+		
+		cam = new Camera();
 	}
 
 	@Override
@@ -89,24 +112,12 @@ public class Drawer implements GLEventListener, Constantes {
 		gl.glLoadIdentity();
 	}
 	
-	public void drawScene(GLAutoDrawable glDrawable) {
+	public void drawWorld(GLAutoDrawable glDrawable) {
 		final GL gl = glDrawable.getGL();
-		final GLU glu = new GLU();
-		scenerotx = 360.0f - xrot;
-		sceneroty = 360.0f - yrot;
-		
-		gl.glLoadIdentity();
-		// La cámara se sitúa en (xpos, ypos, zpos)
-		// apuntando al origen de coordenadas (0, 0, 0)
-		// El vector (0, 1, 0) indica la posición de la cámara
-		glu.gluLookAt(xpos, ypos, zpos, xsight, ysight, zsight, 0.0f, 1.0f, 0.0f);
-		//glu.gluLookAt(0.0f, 4.0f, zpos, 0, 0, 0, 0.0f, 1.0f, 0.0f);
-		//gl.glTranslatef(-xpos, -ypos, -zpos);
 
-		gl.glRotatef(scenerotx, 1.0f, 0.0f, 0.0f);
-		gl.glRotatef(sceneroty, 0.0f, 1.0f, 0.0f);
-		t1.draw(gl);
-		t2.draw(gl);
+		for (Tower t : torres) {
+			t.draw(gl);
+		}
 		
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.3f);
 		gl.glBegin(GL.GL_QUADS);	
@@ -115,112 +126,20 @@ public class Drawer implements GLEventListener, Constantes {
 			gl.glVertex3f(2, 0, 2);
 			gl.glVertex3f(2, 0, -2);
 		gl.glEnd();
-		
-		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.3f);
-		gl.glLineWidth(5.0f);
-		gl.glBegin(GL.GL_LINE);
-			gl.glVertex3f(0.0f, 0.0f, 0.0f);
-			gl.glVertex3f(13.0f, 0.0f, 0.0f);
-		gl.glEnd();
-		gl.glBegin(GL.GL_LINE);
-			gl.glVertex3f(0.0f, 0.0f, 0.0f);
-			gl.glVertex3f(0.0f, 13.0f, 0.0f);
-		gl.glEnd();
-		gl.glBegin(GL.GL_LINE);
-			gl.glVertex3f(0.0f, 0.0f, 0.0f);
-			gl.glVertex3f(0.0f, 0.0f, 13.0f);
-		gl.glEnd();
-		
+
 		gl.glFlush();
-	}
-
-	public void moveLeft() {
-		yrot -= Y_ROTATION;
-	}
-	
-	public void moveRight() {
-		yrot += Y_ROTATION;
-	}
-
-	public float getYrot() {
-		return yrot;
-	}
-
-	public void moveUp() {
-		// TODO Controlar límite para que no pueda dar vueltas
-		float newXRot = xrot - X_ROTATION;
-		//if (newXRot <= 180) {
-			xrot -= X_ROTATION;
-		//}
-	}
-
-	public void moveDown() {
-		// TODO Controlar límite para que no pueda dar vueltas
-		float newXRot = xrot + X_ROTATION;
-		//if (newXRot >= 0) {
-			xrot += X_ROTATION;
-		//}
 	}
 
 	public float getXrot() {
 		return xrot;
 	}
-
-	// TODO para los zooms, mantener una máquina de estados que indica si cada una
-	// de las coordenadas anteriores son distintas de 0.
-	public void zoomIn() {
-		// TODO Auto-generated method stub
-		//if (xpos > xzoom_min) xpos -= ZOOM;
-		//if (ypos > yzoom_min) ypos -= ZOOM;
-		if (zpos > zzoom_min) {
-			zpos -= ZOOM;
-			//xsight -= ZOOM;
-			//zsight -= ZOOM;
-		}
+	
+	public float getYrot() {
+		return yrot;
 	}
 
-	public void zoomOut() {
-		// TODO Auto-generated method stub
-		//if (xpos < ZOOM_MAX) xpos += ZOOM;
-		//if (ypos < ZOOM_MAX) ypos += ZOOM;
-		if (zpos < ZOOM_MAX) {
-			zpos += ZOOM;
-			//ysight -= ZOOM;
-		}
-	}
-
-	public float getXpos() {
-		return xpos;
-	}
-
-	public float getYpos() {
-		return ypos;
-	}
-
-	public float getZpos() {
-		return zpos;
-	}
-
-	public void lookUp() {
-		// TODO Auto-generated method stub
-		zsight += 0.5f;
-	}
-
-	public void lookDown() {
-		// TODO Auto-generated method stub
-		zsight -= 0.5f;
-	}
-
-	public float getXsight() {
-		return xsight;
-	}
-
-	public float getYsight() {
-		return ysight;
-	}
-
-	public float getZsight() {
-		return zsight;
+	public Camera getCam() {
+		return cam;
 	}
 
 }

@@ -13,33 +13,63 @@ public class MyKeyListener implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		/*
+		 * FLECHA_ARRIBA			desplazar hacia delante
+		 * FLECHA_ABAJO				desplazar hacia atrás
+		 * FECHA_IZQUIERDA			desplazar a la izquierda
+		 * FELCHA_DERECHA			desplazar a la derecha
+		 * CTRL + FLECHA_ARRIBA		rotar la cámara hacia arriba
+		 * CTRL + FLECHA_ABAJO		rotar la cámara hacia abajo
+		 * CTRL + FLECHA_IZQUIERDA	rotar la cámara hacia la izquierda
+		 * CTRL + FLECHA_DERECHA	rotar la cámara hacia la derecha
+		 * SUMA						aumentar zoom
+		 * RESTA					disminuir zoom
+		 */
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			// TODO exit();
 			System.out.println("ESC");
 		} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
-			d.zoomIn();
-			System.out.println("+\t(" + d.getXpos() + "," + d.getYpos() + "," + d.getZpos() + ")");
+			d.getCam().zoomIn();
+			System.out.println("+");
 		} else if (e.getKeyCode() == KeyEvent.VK_SUBTRACT) {
-			d.zoomOut();
-			System.out.println("-\t(" + d.getXpos() + "," + d.getYpos() + "," + d.getZpos() + ")");
+			d.getCam().zoomOut();
+			System.out.println("-");
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			d.moveLeft();
-			System.out.println("<-\t" + d.getYrot());
+			if (e.isControlDown()) {
+				d.getCam().rotateLeft();
+				System.out.println("Ctrl + <-");
+			}
+			else {
+				d.getCam().moveLeft();
+				System.out.println("<-\t");
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			d.moveRight();
-			System.out.println("->\t" + d.getYrot());
+			if (e.isControlDown()) {
+				d.getCam().rotateRight();
+				System.out.println("Ctrl + ->");
+			}
+			else {
+				d.getCam().moveRight();
+				System.out.println("->");
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
-			d.moveUp();
-			System.out.println("A\t" + d.getXrot());
+			if (e.isControlDown()) {
+				d.getCam().rotateUp();
+				System.out.println("Ctrl + A\t");
+			}
+			else {
+				d.getCam().moveForward();
+				System.out.println("A");
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			d.moveDown();
-			System.out.println("V\t" + d.getXrot());
-		} else if (e.getKeyCode() == KeyEvent.VK_PAGE_UP) {
-			d.lookUp();
-			System.out.println("lookUp\t(" + d.getXsight() + "," + d.getYsight() + "," + d.getZsight() + ")");
-		} else if (e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
-			d.lookDown();
-			System.out.println("lookDown\t(" + d.getXsight() + "," + d.getYsight() + "," + d.getZsight() + ")");
+			if (e.isControlDown()) {
+				d.getCam().rotateDown();
+				System.out.println("Ctrl + V");
+			}
+			else {
+				d.getCam().moveBackward();
+				System.out.println("V");
+			}
 		}
 	}
 
