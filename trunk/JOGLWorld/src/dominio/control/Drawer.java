@@ -9,7 +9,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import dominio.conocimiento.Camera;
+import dominio.conocimiento.Camara;
 import dominio.conocimiento.Cartesiano2D;
 import dominio.conocimiento.Color;
 import dominio.conocimiento.IConstantes;
@@ -23,7 +23,7 @@ public class Drawer implements GLEventListener, IConstantes {
 	
 	private float xrot, scenerotx;
 	private float yrot, sceneroty;
-	private Camera cam;
+	private Camara cam;
 	
 	@Override
 	public void display(GLAutoDrawable glDrawable) {
@@ -58,6 +58,10 @@ public class Drawer implements GLEventListener, IConstantes {
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // fondo blanco
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC0_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glDepthFunc(GL.GL_LESS);
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 		
@@ -89,7 +93,7 @@ public class Drawer implements GLEventListener, IConstantes {
 		scenerotx = 360.0f - xrot;
 		sceneroty = 360.0f - yrot;
 		
-		cam = new Camera();
+		cam = new Camara();
 	}
 
 	@Override
@@ -138,7 +142,7 @@ public class Drawer implements GLEventListener, IConstantes {
 		return yrot;
 	}
 
-	public Camera getCam() {
+	public Camara getCam() {
 		return cam;
 	}
 
