@@ -42,3 +42,15 @@ El documento se divide en dos secciones dos diferenciadas. En la primera se indi
   * En la ventana de preferencias, navegar a _Server > Installed Runtimes_. Añadir un nuevo servidor _Apache > Apache Tomcat 6.0_ indicando la ruta donde está instalado el servidor Apache (p.e. _E:\Archivos de programa\apache-tomcat-6.0.26_).
 
   * En la misma ventana de preferencias, navegar a _Web Services > Axis2 Preferences_ y en la pestaña _Axis2 Runtime_ indicar donde está instalado Axis2 (p.e. _E:\Archivos de programa\axis2-1.5.1_). Observe que aparece el mensaje _"Axis2 runtime loaded successfully!!!"_.
+
+= Configurando los usuarios de Apache Tomcat =
+
+  * Edite el fichero _E:\Archivos de programa\apache-tomcat-6.0.26\conf\tomcat-users.xml_ y añada las siguientes líneas:
+{{{
+<tomcat-users>
+  ...
+  <role rolename="manager"/>
+  <user username="usuario" password="mipassword" roles="manager"/>
+  ...
+</tomcat-users>
+}}}
