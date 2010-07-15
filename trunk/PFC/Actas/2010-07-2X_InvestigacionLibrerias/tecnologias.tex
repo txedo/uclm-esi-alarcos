@@ -1,0 +1,28 @@
+\section{Tecnologías}
+
+La capa de conocimiento del sistema estará desarrollado en Java, por lo que se propone JSP (Java Server Pages) como tecnología principal para el desarrollo de la aplicación Web. Se hará uso de otras tecnologías comunes entre la Web 2.0 como CSS, JavaScript y Ajax. No obstante, con un propósito investigador, se propone también el uso de HTML 5, Struts 2 e Hibernate.
+
+
+
+\subsection{HTML 5}
+
+HTML 5 (HyperText Markup Language, versión 5) \cite{wikipedia:html5} es la quinta revisión de HTML.  Esta nueva versión incorpora de forma nativa, es decir, sin depender de programas externos o \textit{plugins} del navegador, reproducción de audio y vídeo, edición de documentros, \textit{drag\&drop}, un elemento \textit{canvas} sobre el que se pueden pintar gráficos en 2 y 3 dimensiones, etc. Esta última característica hace que sea posible el uso de WebGL (ver sección \ref{sec:webgl}).
+
+
+
+\subsection{Struts 2}
+
+Struts 2 es la nueva versión del framework de desarrollo Web Java Apache Struts. Struts 2 está basado en el patrón MVC (Modelo-Vista-Controlador), una arquitectura que busca reducir el acoplamiento dividiendo las responsabilidades en 3 capas claramente diferenciadas:
+
+\begin{itemize}
+	\item El modelo, que hace referencia a los datos que maneja la aplicación y las reglas de negocio que operan sobre ellos.
+	\item La vista, encargada de generar la interfaz con la que la aplicación interacciona con el usuario.
+	\item El controlador, que comunica la vista y el modelo respondiendo a eventos generados por el usuario en la vista, invocando cambios en el modelo, y devolviendo a la vista la información del modelo necesaria para que pueda generar la respuesta adecuada para el usuario.
+\end{itemize}
+    
+No obstante, también es posible diseñar una aplicación Web mediante el patrón MVC utilizando JSP y servlets. En este caso, las páginas JSP tomarían el rol de la vista, los servlets el del controlador y los POJO (Plan Old Java Object) el del modelo. El modelo, a su vez, suele estar dividido en dos subcapas siguiendo el patrón DAO (Data Access Object).
+
+
+
+\subsection{Hibernate}
+
