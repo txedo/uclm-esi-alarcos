@@ -12,7 +12,7 @@ HTML 5 (HyperText Markup Language, versión 5) \cite{wikipedia:html5} es la quint
 
 \subsection{Struts 2}
 
-Struts 2 es la nueva versión del framework de desarrollo Web Java Apache Struts. Struts 2 está basado en el patrón MVC (Modelo-Vista-Controlador), una arquitectura que busca reducir el acoplamiento dividiendo las responsabilidades en 3 capas claramente diferenciadas:
+Struts 2 es la nueva versión del \textit{framework} de desarrollo Web Java Apache Struts. Struts 2 está basado en el patrón MVC (Modelo-Vista-Controlador), una arquitectura que busca reducir el acoplamiento dividiendo las responsabilidades en 3 capas claramente diferenciadas:
 
 \begin{itemize}
 	\item El modelo, que hace referencia a los datos que maneja la aplicación y las reglas de negocio que operan sobre ellos.
@@ -22,7 +22,12 @@ Struts 2 es la nueva versión del framework de desarrollo Web Java Apache Struts.
     
 No obstante, también es posible diseñar una aplicación Web mediante el patrón MVC utilizando JSP y servlets. En este caso, las páginas JSP tomarían el rol de la vista, los servlets el del controlador y los POJO (Plan Old Java Object) el del modelo. El modelo, a su vez, suele estar dividido en dos subcapas siguiendo el patrón DAO (Data Access Object).
 
+En la aplicación Web, Struts 2 se empleará en el desarrollo de determinados casos de uso extraídos de la especificación de requisitos de usuario, identificando dichos casos de uso como \textit{acciones} de Struts.
+
 
 
 \subsection{Hibernate}
 
+Hibernate es un \textit{framework} de persistencia que permite establecer un \textit{mapeo objeto-relacional} para la plataforma Java y sistemas basados en SQL, es decir, permite relacionar una clase Java con una tabla de una base de datos.
+
+Esta herramienta se utilizará para gestionar toda la persistencia del sistema Medusas: información extraída de distintos proyectos, gestión de usuarios, gestión de la aplicación Web, etc.
