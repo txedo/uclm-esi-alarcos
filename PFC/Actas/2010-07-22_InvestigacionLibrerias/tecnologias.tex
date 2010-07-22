@@ -1,6 +1,6 @@
 \section{Tecnologías}
 
-La capa de conocimiento del sistema estará desarrollado en Java, por lo que se propone JSP (Java Server Pages) como tecnología principal para el desarrollo de la aplicación web. Se hará uso de otras tecnologías comunes entre la Web 2.0 como CSS, JavaScript y Ajax. No obstante, con un propósito investigador, se propone también el uso de HTML 5, Struts 2 e Hibernate.
+La capa de conocimiento o reglas de negocio del sistema estarán desarrolladas en Java, por lo que se propone JSP (Java Server Pages) como tecnología principal para el desarrollo de la aplicación web. Se hará uso de otras tecnologías comunes entre la Web 2.0 como CSS, JavaScript y Ajax. No obstante, con un propósito investigador, se propone también el uso de HTML 5, Struts 2 e Hibernate.
 
 
 
@@ -24,10 +24,14 @@ No obstante, también es posible diseñar una aplicación web mediante el patrón MV
 
 En la aplicación web, Struts 2 se empleará en el desarrollo de determinados casos de uso extraídos de la especificación de requisitos de usuario, identificando dichos casos de uso como \textit{acciones} de Struts.
 
+En \cite{homepage:struts2-plugin-registry} se encuentra una lista con todos los plugins de los que dispone este framework: jQuery, Hibernate, jFree Chart, JUnit, YUI, GWT, etc.
+
 
 
 \subsection{Hibernate}
 
-Hibernate es un \textit{framework} de persistencia que permite establecer un \textit{mapeo objeto-relacional} para la plataforma Java y sistemas basados en SQL, es decir, permite relacionar una clase Java con una tabla de una base de datos.
+Hibernate es un \textit{framework} de persistencia, libre y bajo licencia LGPL, que permite establecer un \textit{mapeo objeto-relacional} para la plataforma Java y sistemas basados en SQL, es decir, permite relacionar una clase Java con una tabla de una base de datos para abstraer al programador del lenguaje SQL y haciendo que la aplicación sea portable entre cualquier sistema gestor de bases de datos compatible con SQL.
 
-Esta herramienta se utilizará para gestionar toda la persistencia del sistema Medusas: información extraída de distintos proyectos, gestión de usuarios, gestión de la aplicación web, etc.
+Este framework, además de utilizarse para gestionar la persistencia del núcleo de Medusas (ver Figura \ref{fig:medusas-arch}), se utilizará para gestionar la persistencia de la aplicación web: gestión de usuarios, estadísticas de uso, historiales, etc.
+
+\imagen{./images/medusas-arch.png}{0.7}{Arquitectura del proyecto Medusas}{fig:medusas-arch}
