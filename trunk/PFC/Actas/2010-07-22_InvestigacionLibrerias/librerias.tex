@@ -15,7 +15,7 @@ Una aplicación web tiene dos contextos bien diferenciados: el lado del cliente (
 \noindent \textbf{Licencia:} Apache Software License v2 \cite{license:apache-v2} \\
 \noindent \textbf{Página Web:} \cite{homepage:dwr}
 
-DWR, bajo el eslogan de ``Easy Ajax for Java'', es una solución muy utilizada en el mundo empresarial para generar código JavaScript que, ejecutándose en el cliente, permite que los navegadores web hagan peticiones a clases Java que se ejecutan en el servidor. Además, con \textit{Reverse Ajax}, es posible que el código Java que se está ejecutando en el servidor utilice un API para modificar el contenido y estilo de los clientes, estableciendo así comunicación en ambos sentidos: del cliente al servidor y del servidor al cliente.
+DWR, bajo el eslogan de ``Easy Ajax for Java'', es una solución muy utilizada en el mundo empresarial para generar código JavaScript que, ejecutándose en el cliente, permite que los navegadores web hagan peticiones a clases Java que se ejecutan en el servidor como si éstas se ejecutasen en local. Además, con \textit{Reverse Ajax}, es posible que el código Java que se está ejecutando en el servidor utilice un API para modificar el contenido y estilo de los clientes, estableciendo así comunicación en ambos sentidos: del cliente al servidor y del servidor al cliente.
 
 Por último, es posible integrar DWR con tecnologías como Dojo (client-side) y Struts e Hibernate (server-side).
 
@@ -23,39 +23,30 @@ Por último, es posible integrar DWR con tecnologías como Dojo (client-side) y St
 
 \subsubsection{Dojo} \label{sec:dojo}
 
-\noindent \textbf{Versión:} \\
-\noindent \textbf{Licencia:} \\
-\noindent \textbf{Página Web:} 
+\noindent \textbf{Versión:} 1.5.0 (20 de Julio de 2010)\\
+\noindent \textbf{Licencia:} BSD \\
+\noindent \textbf{Página Web:} \cite{homepage:dojo}
 
-Descripción
-
-Se compone de tres paquetes:
+\textbf{Dojo} es un \textbf{framework para JavaScript} que permite a los desarrolladores dotar de funcionalidades y efectos dinámicos (eventos, \textit{drag and drop}, redimensionar paneles, etc.) a las aplicaciones web que utilizan la tecnología Ajax. Se compone de tres grandes paquetes de propósitos muy genéricos:
 \begin{itemize}
-	\item Dojo
-	\item Dijit, que contiene todos los \textit{widgets} necesarios para implementar una buena interfaz gráfica de usuario: sliders, barras de progreso, barras de menú, pestañas, etc.
-	\item Dojox,
+	\item Dojo, que contiene el núcleo del framework para proporcionar las funcionalidades básicas.
+	\item Dijit, que contiene todos los \textit{widgets} básicos necesarios para implementar una buena interfaz gráfica de usuario: \textit{sliders}, barras de progreso, barras de menú, pestañas, etc.
+	\item Dojox, que consiste en un conjunto de extensiones avanzadas para Dojo entre las que podemos encontrar \textit{widgets} complejos (calendarios, etc.), librerías para generar y manipular gráficas y diagramas (dojox.charting), APIs para interactuar con servicios de Google, etc.
 \end{itemize}
-% http://www.dojotoolkit.org/
+
+Numerosas empresas como Google, IBM, OpenLaszlo y AOL contribuyen al soporte de este proyecto, aunque actualmente la documentación disponible es incompleta y limitada.
 
 
 
 \subsubsection{jQuery}
 
-\noindent \textbf{Versión:} \\
-\noindent \textbf{Licencia:} \\
-\noindent \textbf{Página Web:} 
+\noindent \textbf{Versión:} 1.4.2 \\
+\noindent \textbf{Licencia:} MIT o GPLv2 \\
+\noindent \textbf{Página Web:} \cite{homepage:jquery}
 
-Descripción
+\textbf{jQuery} es un \textbf{framework para JavaScript}, similar a Dojo, pero en vez de estar organizado en un núcleo y grandes paquetes de propósito general, su arquitectura se basa en pequeños \textit{plugins} muy específicos. Este framework está muy extendido entre la comunidad de desarrolladores de aplicaciones web y contiene grandes fuentes de documentación.
 
-
-
-\subsubsection{jQuery UI}
-
-\noindent \textbf{Versión:} \\
-\noindent \textbf{Licencia:} \\
-\noindent \textbf{Página Web:} 
-
-Descripción
+Cabe destacar \textbf{jQuery UI} \cite{homepage:jquery-ui}, que se ejecuta sobre jQuery y provee al programador de un mayor nivel de abstracción en cuanto a interacciones con la interfaz gráfica de usuario, animaciones, \textit{widgets} complejos, etc.
 
 
 
@@ -74,14 +65,11 @@ Se han analizado numerosas librerías de visualización \cite{website:chart-list} 
 
 Para satisfacer dichos requisitos se han tenido en cuenta librerías específicas para la generación de diagramas y librerías de propósito general para gráficos 2D y 3D.
 
-\subsubsection{Dojox Charting}
+\subsubsection{DojoX Charting}
 
-\noindent \textbf{Versión:} 1.4.3 \\
-\noindent \textbf{Licencia:} open source \\
-\noindent \textbf{Página Web:} \cite{homepage:dojo}
+\textbf{DojoX Charting} es una extensión para Dojo (ver sección \ref{sec:dojo}) que permite la generación de gráficas y diagramas (ver Figura \ref{fig:dojox-charting-stacked}) para su posterior integración en páginas web. Además, soporta zoom, \textit{tooltips} y permite resaltar e interaccionar con elementos del diagrama para ofrecer una mayor experiencia de usuario, capturando los eventos correspondientes y asignándoles manejadores.
 
-Descripción
-
+\imagen{./images/dojox-charting-stacked.png}{0.7}{}{fig:dojox-charting-stacked}
 
 
 \subsubsection{Google Visualization API}
@@ -90,11 +78,12 @@ Descripción
 \noindent \textbf{Licencia:} \cite{license:google-visualization-api} \\
 \noindent \textbf{Página Web:} \cite{homepage:google-visualization-api}
 
+Es una librería perteneciente a Google. Entre sus características destacan las siguientes:
 \begin{itemize}
 	\item Gran cantidad de documentación.
 	\item Buen soporte y actividad por parte del equipo de desarrollo.
 	\item Basado en JavaScript.
-	\item Permite crear nuevas visualizaciones.
+	\item Permite a los desarrolladores crear nuevos modelos de visualización y compartirlos con la comunidad.
 	\item Soporta interacción por parte del usuario gracias a una fuerte captura y manipulación de eventos.
 	\item Permite ordenar, filtrar y manipular los datos.
 	\item Los orígenes de datos pueden ser la propia página o páginas externas, por ejemplo Google Docs.
@@ -126,10 +115,10 @@ Descripción
 Características:
 \begin{itemize}
 	\item Desarrollada completamente en JavaScript.
-	\item Zoom y animación.
-	\item Mover los diagramas o sus elementos.
+	\item Soporta la captura y manipulación de eventos.
+	\item Soporta zoom y animaciones.
+	\item Permite que el usuario mueva los diagramas o sus elementos.
 	\item Soporte para dispositivos móviles.
-	\item Captura y manipulación de eventos.
 	\item Proporciona una gran variedad de modelos: líneas, barras verticales y horizontales, sectores, áreas, árboles. \textbf{No soporta diagramas de tipo radar}.
 	\item Gran potencial en cuanto a la manipulación de grafos.
 \end{itemize}
