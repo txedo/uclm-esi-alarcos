@@ -9,20 +9,18 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import dominio.conocimiento.Camara;
+import dominio.conocimiento.Camera;
 import dominio.conocimiento.Color;
 import dominio.conocimiento.IConstantes;
 import dominio.conocimiento.Tower;
-import dominio.conocimiento.Vector3f;
 
 public class Drawer implements GLEventListener, IConstantes {
 	
-	private Color c;
 	private Vector<Tower> torres;
 	
 	private float xrot, scenerotx;
 	private float yrot, sceneroty;
-	private Camara cam;
+	private Camera cam;
 	
 	@Override
 	public void display(GLAutoDrawable glDrawable) {
@@ -69,8 +67,9 @@ public class Drawer implements GLEventListener, IConstantes {
 		
 		// Añadimos los listener de teclado y ratón
 		glDrawable.addKeyListener(new MyKeyListener(this.cam));
-		glDrawable.addMouseListener(new MyMouseListener(this));
-		glDrawable.addMouseMotionListener(new MyMouseMotionListener(this));
+		glDrawable.addMouseListener(new MyMouseListener(this.cam));
+		glDrawable.addMouseWheelListener(new MyMouseWheelListener(this.cam));
+		glDrawable.addMouseMotionListener(new MyMouseMotionListener(this.cam));
 	}
 
 	private void setupWorld() {
@@ -92,7 +91,7 @@ public class Drawer implements GLEventListener, IConstantes {
 		scenerotx = 360.0f - xrot;
 		sceneroty = 360.0f - yrot;
 		
-		cam = new Camara();
+		cam = new Camera();
 	}
 
 	@Override
@@ -141,7 +140,7 @@ public class Drawer implements GLEventListener, IConstantes {
 		return yrot;
 	}
 
-	public Camara getCam() {
+	public Camera getCam() {
 		return cam;
 	}
 

@@ -3,13 +3,13 @@ package dominio.control;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import dominio.conocimiento.Camara;
+import dominio.conocimiento.Camera;
 
 public class MyKeyListener implements KeyListener {
 	
-	Camara cam;
+	private Camera cam;
 
-	public MyKeyListener(Camara c) {
+	public MyKeyListener(Camera c) {
 		this.cam = c;
 	}
 
@@ -27,57 +27,75 @@ public class MyKeyListener implements KeyListener {
 		 * SUMA						aumentar zoom
 		 * RESTA					disminuir zoom
 		 */
-		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			// TODO exit();
-			System.out.println("ESC");
-		} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
-			cam.zoomIn();
-			System.out.println("+");
-		} else if (e.getKeyCode() == KeyEvent.VK_SUBTRACT) {
-			cam.zoomOut();
-			System.out.println("-");
-		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			if (e.isControlDown()) {
-				cam.rotacionIzquierda();
-				System.out.println("Ctrl + <-");
-			}
-			else if (e.isAltDown()) {
-				System.out.println("Alt + <-");
-			}
-			else {
-				cam.moverIzquierda();
-				System.out.println("<-\t");
-			}
-		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			if (e.isControlDown()) {
-				cam.rotacionDerecha();
-				System.out.println("Ctrl + ->");
-			}
-			else if (e.isAltDown()) {
-				System.out.println("Alt + ->");
-			}
-			else {
-				cam.moverDerecha();
-				System.out.println("->");
-			}
-		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
-			if (e.isControlDown()) {
-				cam.rotacionArriba();
-				System.out.println("Ctrl + A\t");
-			}
-			else {
-				cam.moverAdelante();
-				System.out.println("A");
-			}
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			if (e.isControlDown()) {
-				cam.rotacionAbajo();
-				System.out.println("Ctrl + V");
-			}
-			else {
-				cam.moverAtras();
-				System.out.println("V");
-			}
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_ESCAPE:
+				// TODO exit();
+				System.out.println("ESC");
+				break;
+			case KeyEvent.VK_ADD:
+				cam.zoomIn();
+				System.out.println("+");
+				break;
+			case KeyEvent.VK_SUBTRACT:
+				cam.zoomOut();
+				System.out.println("-");
+				break;
+			case KeyEvent.VK_LEFT:
+				if (e.isControlDown()) {
+					cam.rotateLeft();
+					System.out.println("Ctrl + <-");
+				}
+				else if (e.isAltDown()) {
+					cam.rotateLeftAround();
+					System.out.println("Alt + <-");
+				}
+				else {
+					cam.strafeLeft();
+					System.out.println("<-\t");
+				}
+				break;
+			case KeyEvent.VK_RIGHT:
+				if (e.isControlDown()) {
+					cam.rotateRight();
+					System.out.println("Ctrl + ->");
+				}
+				else if (e.isAltDown()) {
+					cam.rotateRightAround();
+					System.out.println("Alt + ->");
+				}
+				else {
+					cam.strafeRight();
+					System.out.println("->");
+				}
+				break;
+			case KeyEvent.VK_UP:
+				if (e.isControlDown()) {
+					cam.lookUp();
+					System.out.println("Ctrl + A\t");
+				}
+				else if (e.isAltDown()) {
+					cam.rotateUpAround();
+					System.out.println("Alt + A");
+				}
+				else {
+					cam.moveForward();
+					System.out.println("A");
+				}
+				break;
+			case KeyEvent.VK_DOWN:
+				if (e.isControlDown()) {
+					cam.lookDown();
+					System.out.println("Ctrl + V");
+				}
+				else if (e.isAltDown()) {
+					cam.rotateDownAround();
+					System.out.println("Alt + V");
+				}
+				else {
+					cam.moveBackward();
+					System.out.println("V");
+				}
+				break;
 		}
 	}
 

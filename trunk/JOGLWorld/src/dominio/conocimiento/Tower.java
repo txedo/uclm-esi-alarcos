@@ -2,18 +2,15 @@ package dominio.conocimiento;
 
 import javax.media.opengl.GL;
 
-public class Tower {
+public class Tower extends Figure {
 	/*
 	 * El origen de coordenadas se toma en una esquina de la base (0, 0, 0)
 	 * La base se encuentra en el plano ZX, será cuadrada y tendrá de lado el valor de la variable width.
 	 * La altura se extiende a lo largo del eje Y y viene dada por la variable height
 	 */
-	private float origin_x;
-	private float origin_z;
 	private float width;
 	private float depth;
 	private float height;
-	private Color color;
 
 	public Tower(float origin_x, float origin_z, float width, float depth,
 			float height, Color color) {
@@ -44,22 +41,22 @@ public class Tower {
 			// Base		
 			gl.glVertex3f(origin_x, 0, origin_z);
 			gl.glVertex3f(origin_x + width, 0, origin_z);
-			gl.glVertex3f(origin_x + width, 0, origin_z + width);
-			gl.glVertex3f(origin_x, 0, origin_z + width);
+			gl.glVertex3f(origin_x + width, 0, origin_z + depth);
+			gl.glVertex3f(origin_x, 0, origin_z + depth);
 			// Frente
 			gl.glVertex3f(origin_x + width, 0, origin_z);
-			gl.glVertex3f(origin_x + width, 0, origin_z + width);
-			gl.glVertex3f(origin_x + width, height, origin_z + width);
+			gl.glVertex3f(origin_x + width, 0, origin_z + depth);
+			gl.glVertex3f(origin_x + width, height, origin_z + depth);
 			gl.glVertex3f(origin_x + width, height, origin_z);
 			// Lado derecho
-			gl.glVertex3f(origin_x + width, 0, origin_z + width);
-			gl.glVertex3f(origin_x, 0, origin_z + width);
-			gl.glVertex3f(origin_x, height, origin_z + width);
-			gl.glVertex3f(origin_x + width, height, origin_z + width);
+			gl.glVertex3f(origin_x + width, 0, origin_z + depth);
+			gl.glVertex3f(origin_x, 0, origin_z + depth);
+			gl.glVertex3f(origin_x, height, origin_z + depth);
+			gl.glVertex3f(origin_x + width, height, origin_z + depth);
 			// Espalda
 			gl.glVertex3f(origin_x, 0, origin_z);
-			gl.glVertex3f(origin_x, 0, origin_z + width);
-			gl.glVertex3f(origin_x, height, origin_z + width);
+			gl.glVertex3f(origin_x, 0, origin_z + depth);
+			gl.glVertex3f(origin_x, height, origin_z + depth);
 			gl.glVertex3f(origin_x, height, origin_z);
 			// Lado izquierdo
 			gl.glVertex3f(origin_x + width, 0, origin_z);
@@ -69,8 +66,8 @@ public class Tower {
 			// Planta (igual que la base pero con eje Z = height
 			gl.glVertex3f(origin_x, height, origin_z);
 			gl.glVertex3f(origin_x + width, height, origin_z);
-			gl.glVertex3f(origin_x + width, height, origin_z + width);
-			gl.glVertex3f(origin_x, height, origin_z + width);
+			gl.glVertex3f(origin_x + width, height, origin_z + depth);
+			gl.glVertex3f(origin_x, height, origin_z + depth);
 		gl.glEnd();
 	}
 
