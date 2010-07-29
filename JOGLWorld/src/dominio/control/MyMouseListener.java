@@ -2,13 +2,18 @@ package dominio.control;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+
+import dominio.conocimiento.Camera;
 
 public class MyMouseListener implements MouseListener {
 
-	private Drawer d;
+	private Camera cam;
 
-	public MyMouseListener(Drawer drawer) {
-		this.d = drawer;
+	public MyMouseListener(Camera c) {
+		this.cam = c;
 	}
 	
 	@Override
@@ -24,25 +29,25 @@ public class MyMouseListener implements MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		System.out.println("entered");
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		System.out.println("exited");
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		System.out.println("pressed");
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		System.out.println("released");
 	}
 
 }

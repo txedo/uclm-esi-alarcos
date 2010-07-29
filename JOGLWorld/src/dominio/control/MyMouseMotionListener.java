@@ -3,18 +3,20 @@ package dominio.control;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
+import dominio.conocimiento.Camera;
+
 public class MyMouseMotionListener implements MouseMotionListener {
+	
+	private Camera cam;
 
-	Drawer d;
-
-	public MyMouseMotionListener(Drawer drawer) {
-		this.d = drawer;
+	public MyMouseMotionListener(Camera c) {
+		this.cam = c;
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("dragged");
 	}
 
 	@Override
