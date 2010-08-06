@@ -9,7 +9,7 @@ public class MyKeyListener implements KeyListener {
 	
 	private Camera cam;
 
-	public MyKeyListener(Camera c) {
+	public MyKeyListener(Camera c) {//, Scene s) {
 		this.cam = c;
 	}
 
@@ -34,81 +34,56 @@ public class MyKeyListener implements KeyListener {
 				break;
 			case KeyEvent.VK_ADD:
 				cam.zoomIn();
-				System.out.println("+");
+				//System.out.println("+");
 				break;
 			case KeyEvent.VK_SUBTRACT:
 				cam.zoomOut();
-				System.out.println("-");
+				//System.out.println("-");
 				break;
-			case KeyEvent.VK_LEFT:
-				if (e.isControlDown()) {
-					cam.rotateLeft();
-					System.out.println("Ctrl + <-");
-				}
-				else if (e.isAltDown()) {
-					cam.rotateLeftAround();
-					System.out.println("Alt + <-");
-				}
-				else {
-					cam.strafeLeft();
-					System.out.println("<-\t");
-				}
+			case KeyEvent.VK_A:
+				cam.rotateLeft();
+				//System.out.println("Ctrl + <-");
 				break;
-			case KeyEvent.VK_RIGHT:
-				if (e.isControlDown()) {
-					cam.rotateRight();
-					System.out.println("Ctrl + ->");
-				}
-				else if (e.isAltDown()) {
-					cam.rotateRightAround();
-					System.out.println("Alt + ->");
-				}
-				else {
-					cam.strafeRight();
-					System.out.println("->");
-				}
+			case KeyEvent.VK_Q:
+				cam.strafeLeft();
+				//System.out.println("<-\t");
 				break;
-			case KeyEvent.VK_UP:
-				if (e.isControlDown()) {
-					cam.lookUp();
-					System.out.println("Ctrl + A\t");
-				}
-				else if (e.isAltDown()) {
-					cam.rotateUpAround();
-					System.out.println("Alt + A");
-				}
-				else {
-					cam.moveForward();
-					System.out.println("A");
-				}
+			case KeyEvent.VK_D:
+				cam.rotateRight();
+				//System.out.println("Ctrl + ->");
 				break;
-			case KeyEvent.VK_DOWN:
-				if (e.isControlDown()) {
-					cam.lookDown();
-					System.out.println("Ctrl + V");
-				}
-				else if (e.isAltDown()) {
-					cam.rotateDownAround();
-					System.out.println("Alt + V");
-				}
-				else {
-					cam.moveBackward();
-					System.out.println("V");
-				}
+			case KeyEvent.VK_E:
+				cam.strafeRight();
+				//System.out.println("->");
+				break;
+			case KeyEvent.VK_PAGE_UP:
+				cam.lookUp();
+				//System.out.println("Ctrl + A\t");
+				break;
+			case KeyEvent.VK_W:
+				cam.moveForward();
+				//System.out.println("A");
+				break;
+			case KeyEvent.VK_PAGE_DOWN:
+				cam.lookDown();
+				//System.out.println("Ctrl + V");
+				break;
+			case KeyEvent.VK_S:
+				cam.moveBackward();
+				//System.out.println("V");
+				break;
+			case KeyEvent.VK_X:
+				cam.lookBackward();
 				break;
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

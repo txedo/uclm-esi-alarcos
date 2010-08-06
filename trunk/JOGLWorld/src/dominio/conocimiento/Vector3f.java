@@ -31,6 +31,13 @@ public class Vector3f {
 		return res;
 	}
 	
+	public void normalize() {
+		Vector3f aux = this.getNormalizedVector();
+		this.x = aux.x;
+		this.y = aux.y;
+		this.z = aux.z;
+	}
+	
 	public Vector3f add (Vector3f v) {
 		Vector3f res = new Vector3f();
 		res.x = this.x + v.x;
@@ -92,5 +99,17 @@ public class Vector3f {
 		this.z = z;
 	}
 	
+	public String toString () {
+		String res = "("+this.x+","+this.y+","+this.z+")";
+		return res;
+	}
+	
+	public float[] toArray() {
+		float res[] = new float[3];
+		res[0] = this.x;
+		res[1] = this.y;
+		res[2] = this.z;
+		return res;
+	}
 	
 }
