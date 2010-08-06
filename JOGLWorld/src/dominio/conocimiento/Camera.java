@@ -12,20 +12,19 @@ public class Camera implements IConstantes {
 	private float xrot;
 	private float yrot;
 	
-	public Camera() {
+	public Camera(float xpos, float ypos, float zpos, float xviewdir, float yviewdir, float zviewdir) {
 		// TODO Inicializar xpos, ypos y zpos en función de lo que haya hecho SetupWorld
-		position = new Vector3f(0.0f, 4.0f, 5.0f);
+		position = new Vector3f(xpos, ypos, zpos);
 		// Inicialmente la camara apunta al origen de coordenadas (0,0,0)
-		viewDir = new Vector3f(0.0f, -1.0f, -1.0f);
-		frontVector = new Vector3f(0.0f, 0.0f, -1.0f);
+		viewDir = new Vector3f(xviewdir, yviewdir, zviewdir);
 		upVector = new Vector3f(0.0f, 1.0f, 0.0f);
-		rightVector = new Vector3f(1.0f, 0.0f, 0.0f);
-		
+		rightVector = viewDir.cross(upVector);
+		frontVector = rightVector.cross(upVector).mult(-1);
 		xrot = yrot = 0.0f;
 	}
 
 	public void render(GLU glu) {
-		Vector3f viewPoint = position.add(viewDir);
+		Vector3f viewPoint = this.getViewPoint();
 
 		glu.gluLookAt(position.getX(), position.getY(), position.getZ(),
 				viewPoint.getX(), viewPoint.getY(), viewPoint.getZ(),
@@ -33,7 +32,10 @@ public class Camera implements IConstantes {
 	}
 	
 	private void move(Vector3f direccion) {
-		position = position.add(direccion.mult(DESPL));
+		Vector3f aux = new Vector3f();
+		aux = position.add(direccion.mult(DESPL));
+		if (aux.getY() < 0) aux.setY(0);
+		position = aux;
 	}
 	
 	public void strafeLeft() {
@@ -109,30 +111,7 @@ public class Camera implements IConstantes {
 	}
 	
 	private void rotateAroundY(float angle) {
-		Vector3f viewPoint = position.add(viewDir);
-		/* Pasamos de coordenadas cartesianas a coordenadas polares
-		 * r = sqrt(x^2 + y^2)
-		 * teta = atan (y/x)
-		 */
-		double r = viewPoint.getLength();
-		double teta = Math.atan(position.getZ()/position.getX());
-		/* http://www.vitutor.net/2/1/22.html
-		 * Longitud de un arco de una circunferencia
-		 * L = (2*pi*r*alfa)/360
-		 */
-		//double alfa = (360*longitudArco)/(2*Math.PI*r);
-		/* Las dos rotaciones posibles son (r, teta+alfa) y (r, teta-alfa)
-		 */
-		double rotacion = teta+angle;
-		position.setX((float)(r*Math.cos(rotacion*Math.PI/180)));
-		position.setZ((float)(r*Math.sin(rotacion*Math.PI/180)));
 
-		viewDir = viewPoint.sub(position);
-
-		// Recalculamos rightVector con el producto vectorial de viewDir y upVector
-		rightVector = viewDir.cross(upVector);
-		// Recalculamos frontVector con el producto vectorial de upVector y el nuevo rightVector
-		frontVector = rightVector.cross(upVector).mult(-1);
 	}
 
 	public void rotateLeftAround() {
@@ -151,6 +130,26 @@ public class Camera implements IConstantes {
 	public void rotateDownAround() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Vector3f getPosition() {
+		return position;
+	}
+
+	public Vector3f getViewDir() {
+		return viewDir;
+	}
+	
+	public Vector3f getViewPoint() {
+		return position.add(viewDir);
+	}
+
+	public void lookBackward() {
+		// Invertimos el sentido de los vectores directores Right y Front
+		rightVector = rightVector.mult(-1);
+		frontVector = frontVector.mult(-1);
+		// Multiplicamos las componentes X y Z por -1 para cambiar el cuadrante
+		viewDir = new Vector3f(viewDir.getX()*-1, viewDir.getY(), viewDir.getZ()*-1);
 	}
 	
 }
