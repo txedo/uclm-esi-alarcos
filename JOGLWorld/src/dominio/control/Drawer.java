@@ -80,11 +80,11 @@ public class Drawer implements GLEventListener, IConstantes {
 		gl.glShadeModel(GL.GL_SMOOTH);									// Enable Smooth Shading
 		gl.glEnable(GL.GL_DEPTH_TEST);									// Enables Depth Testing
 		gl.glEnable(GL.GL_LINE_SMOOTH);
-		//gl.glEnable(GL.GL_BLEND);
-		//gl.glBlendFunc(GL.GL_SRC0_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC0_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glDepthFunc(GL.GL_LEQUAL);									// The Type Of Depth Testing To Do
-		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
+		//gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
 		
 		cam = new Camera(0.0f, 10.0f, 0.0f, 1.0f, -1.0f, 1.0f);
 		
