@@ -39,37 +39,36 @@ public class Tower extends Figure {
 		gl.glColor4fv(color.getColorFB());
 		//gl.glPolygonMode(GL.GL_FRONT, GL.GL_LINE);
 		gl.glBegin(GL.GL_QUADS);
-			// Base		
-			//gl.glEdgeFlag(false);
-			gl.glNormal3f(0.0f, 1.0f, 0.0f);
-			gl.glVertex3f(origin_x, 0, origin_z);
-			gl.glVertex3f(origin_x + width, 0, origin_z);
-			gl.glVertex3f(origin_x + width, 0, origin_z + depth);
-			gl.glVertex3f(origin_x, 0, origin_z + depth);
+			// Base	(en principio no es necesario dibujarla)
+//			gl.glNormal3f(0.0f, 1.0f, 0.0f);
+//			gl.glVertex3f(origin_x, 0, origin_z);
+//			gl.glVertex3f(origin_x + width, 0, origin_z);
+//			gl.glVertex3f(origin_x + width, 0, origin_z + depth);
+//			gl.glVertex3f(origin_x, 0, origin_z + depth);
 			// Frente
 			gl.glNormal3f(0.0f, 0.0f, 1.0f);
-			gl.glVertex3f(origin_x + width, 0, origin_z);
-			gl.glVertex3f(origin_x + width, 0, origin_z + depth);
+			gl.glVertex3f(origin_x, 0, origin_z + depth);
+			gl.glVertex3f(origin_x, height, origin_z + depth);
 			gl.glVertex3f(origin_x + width, height, origin_z + depth);
-			gl.glVertex3f(origin_x + width, height, origin_z);
+			gl.glVertex3f(origin_x + width, 0, origin_z + depth);
 			// Lado derecho
 			gl.glNormal3f(1.0f, 0.0f, 0.0f);
 			gl.glVertex3f(origin_x + width, 0, origin_z + depth);
-			gl.glVertex3f(origin_x, 0, origin_z + depth);
-			gl.glVertex3f(origin_x, height, origin_z + depth);
 			gl.glVertex3f(origin_x + width, height, origin_z + depth);
+			gl.glVertex3f(origin_x + width, height, origin_z);
+			gl.glVertex3f(origin_x + width, 0, origin_z);
 			// Espalda
 			gl.glNormal3f(0.0f, 0.0f, -1.0f);
 			gl.glVertex3f(origin_x, 0, origin_z);
-			gl.glVertex3f(origin_x, 0, origin_z + depth);
-			gl.glVertex3f(origin_x, height, origin_z + depth);
+			gl.glVertex3f(origin_x + width, 0, origin_z);
+			gl.glVertex3f(origin_x + width, height, origin_z);
 			gl.glVertex3f(origin_x, height, origin_z);
 			// Lado izquierdo
 			gl.glNormal3f(-1.0f, 0.0f, 0.0f);
-			gl.glVertex3f(origin_x + width, 0, origin_z);
 			gl.glVertex3f(origin_x, 0, origin_z);
 			gl.glVertex3f(origin_x, height, origin_z);
-			gl.glVertex3f(origin_x + width, height, origin_z);
+			gl.glVertex3f(origin_x, height, origin_z + depth);
+			gl.glVertex3f(origin_x, 0, origin_z + depth);
 			// Planta (igual que la base pero con eje Z = height
 			gl.glNormal3f(0.0f, 1.0f, 0.0f);
 			gl.glVertex3f(origin_x, height, origin_z);
