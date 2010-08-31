@@ -1,72 +1,69 @@
 package dominio.conocimiento;
 
-import java.nio.FloatBuffer;
+import javax.media.opengl.GL;
 
 public class Spotlight {
-	private float[] color;
-	private float[] position;
-	private Vector3f direction;
 	private final float DIRECTIONAL = 0.0f;
 	private final float POSITIONAL = 1.0f;
 	
-	public Spotlight (float r, float g, float b) {
+	private float[] color;
+	private final float[] position = {0.0f, 0.0f, 0.0f, POSITIONAL};
+	private float direction[]  = {1.0f, 0.0f, 1.0f};
+	
+	private final float light_ambient[] = {0.1f, 0.1f, 0.1f, 1.0f};
+	private final float light_full[] = {0.4f, 0.4f, 0.4f, 1.0f};
+	private float mat_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	private float mat_shininess = 100.0f;
+	
+	private GL gl;
+
+	public Spotlight (GL gl, float r, float g, float b) {
 		color = new float[4];
 		color[0] = r;
 		color[1] = g;
 		color[2] = b;
 		color[3] = 1.0f;
-		position = new float[4];
-		position[3] = POSITIONAL;
-		direction = new Vector3f();
-	}
-	
-	public float[] getPosition() {
-		return position;
+		this.gl = gl;
+		
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, mat_specular, 0);
+		gl.glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, mat_shininess);
+		gl.glColorMaterial(GL.GL_FRONT, GL.GL_EMISSION) ;
+		
+		// Position The Light
+		gl.glLightfv(GL.GL_LIGHT1, GL.GL_AMBIENT, light_ambient, 0);
+		// Setup The Light
+		gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, light_full, 0);
+		// Render The Spotlight
+		Vector3f pos = new Vector3f(position[0], position[1], position[2]);
+		Vector3f dir = new Vector3f(direction[0], direction[1], direction[2]);
+		this.render(pos, dir);
+
+		// Angle of the cone light emitted by the spot : value between 0 to 180
+		gl.glLightf(GL.GL_LIGHT1, GL.GL_SPOT_CUTOFF, 60.0f);
+		gl.glLightf(GL.GL_LIGHT1, GL.GL_SPOT_EXPONENT, 15.0f);
+	       
+        // Light attenuation (default values used here : no attenuation with the distance)
+        gl.glLightf(GL.GL_LIGHT1, GL.GL_CONSTANT_ATTENUATION, 1.0f);
+        gl.glLightf(GL.GL_LIGHT1, GL.GL_LINEAR_ATTENUATION, 0.0f);
+        gl.glLightf(GL.GL_LIGHT1, GL.GL_QUADRATIC_ATTENUATION, 0.0f);
+
+		gl.glLightModeli(GL.GL_LIGHT_MODEL_LOCAL_VIEWER, GL.GL_TRUE);
+		// Enable Lighting
+		gl.glEnable(GL.GL_LIGHTING);
+		gl.glEnable(GL.GL_LIGHT1);										
 	}
 
-	public void setPosition(float[] position) {
-		this.position = position;
+
+	public void render(Vector3f position, Vector3f viewDir) {
+		gl.glPushMatrix();
+			// Position The Light
+			gl.glTranslatef(position.getX(), position.getY(), position.getZ());
+			gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, this.position, 0);		// Position The Light
+			// Setup the spot direction
+			this.direction = viewDir.toArray();
+			gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPOT_DIRECTION, this.direction, 0);
+		gl.glPopMatrix();
 	}
 
-	public Vector3f getDirection3f() {
-		return direction;
-	}
-
-	public void setDirection3f(Vector3f direction) {
-		this.direction = direction;
-	}
-	
-	public float[] getDirection () {
-		return this.direction.toArray();
-	}
-	
-	public void setDirection (float [] dir) {
-		this.direction.setX(dir[0]);
-		this.direction.setY(dir[1]);
-		this.direction.setZ(dir[2]);
-	}
-
-	public float[] getColor() {
-		return color;
-	}
-
-	public void setColor(float[] color) {
-		this.color = color;
-	}
-
-	public Vector3f getPosition3f() {
-		Vector3f res = new Vector3f();
-		res.setX(position[0]);
-		res.setY(position[1]);
-		res.setZ(position[2]);
-		return res;
-	}
-
-	public void setPosition3f(Vector3f position) {
-		this.position[0] = position.getX();
-		this.position[1] = position.getY();
-		this.position[2] = position.getZ();
-		this.position[3] = 1.0f;
-	}
 
 }
