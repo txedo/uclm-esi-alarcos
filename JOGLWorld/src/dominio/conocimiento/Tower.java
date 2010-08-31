@@ -40,11 +40,6 @@ public class Tower extends Figure {
 		//gl.glPolygonMode(GL.GL_FRONT, GL.GL_LINE);
 		gl.glBegin(GL.GL_QUADS);
 			// Base	(en principio no es necesario dibujarla)
-//			gl.glNormal3f(0.0f, 1.0f, 0.0f);
-//			gl.glVertex3f(origin_x, 0, origin_z);
-//			gl.glVertex3f(origin_x + width, 0, origin_z);
-//			gl.glVertex3f(origin_x + width, 0, origin_z + depth);
-//			gl.glVertex3f(origin_x, 0, origin_z + depth);
 			// Frente
 			gl.glNormal3f(0.0f, 0.0f, 1.0f);
 			gl.glVertex3f(origin_x, 0, origin_z + depth);
