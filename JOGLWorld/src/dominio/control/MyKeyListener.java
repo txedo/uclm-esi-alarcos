@@ -75,6 +75,12 @@ public class MyKeyListener implements KeyListener {
 			case KeyEvent.VK_X:
 				cam.lookBackward();
 				break;
+			case KeyEvent.VK_SPACE:
+				cam.moveUp();
+				break;
+			case KeyEvent.VK_C:
+				cam.moveDown();
+				break;
 		}
 	}
 

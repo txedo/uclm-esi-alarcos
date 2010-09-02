@@ -11,9 +11,9 @@ public class Spotlight {
 	private float direction[]  = {1.0f, 0.0f, 1.0f};
 	
 	private final float light_ambient[] = {0.1f, 0.1f, 0.1f, 1.0f};
-	private final float light_full[] = {0.4f, 0.4f, 0.4f, 1.0f};
-	private float mat_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
-	private float mat_shininess = 100.0f;
+	private final float light_full[] = {0.5f, 0.5f, 0.5f, 1.0f};
+	private float mat_specular[] = {0.8f, 0.8f, 0.8f, 1.0f};
+	private float mat_shininess = 80.0f;
 	
 	private GL gl;
 
@@ -39,7 +39,7 @@ public class Spotlight {
 		this.render(pos, dir);
 
 		// Angle of the cone light emitted by the spot : value between 0 to 180
-		gl.glLightf(GL.GL_LIGHT1, GL.GL_SPOT_CUTOFF, 60.0f);
+		gl.glLightf(GL.GL_LIGHT1, GL.GL_SPOT_CUTOFF, 90.0f);
 		gl.glLightf(GL.GL_LIGHT1, GL.GL_SPOT_EXPONENT, 15.0f);
 	       
         // Light attenuation (default values used here : no attenuation with the distance)

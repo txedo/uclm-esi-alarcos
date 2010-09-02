@@ -1,6 +1,7 @@
 package dominio.control;
 
 
+import java.nio.IntBuffer;
 import java.util.Random;
 import java.util.Vector;
 
@@ -33,11 +34,11 @@ public class Drawer implements GLEventListener, IConstantes {
 		final GLU glu = new GLU();
 		
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-		
+        
 		gl.glLoadIdentity();
 		cam.render(glu);
 		spotlight.render(cam.getPosition(), cam.getViewDir());
-
+		
 		drawWorld(glDrawable);
 		gl.glFlush();
 	}
@@ -50,16 +51,19 @@ public class Drawer implements GLEventListener, IConstantes {
 	@Override
 	public void init(GLAutoDrawable glDrawable) {		
 		final GL gl = glDrawable.getGL();
-		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);						// White Background
-		gl.glClearDepth(1.0f);											// Depth Buffer Setup
-		gl.glShadeModel(GL.GL_SMOOTH);									// Enable Smooth Shading
-		gl.glEnable(GL.GL_DEPTH_TEST);									// Enables Depth Testing
-		gl.glEnable(GL.GL_LINE_SMOOTH);
+		
+		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
+		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);			// White Background
+		gl.glEnable(GL.GL_DEPTH_TEST);						// Enables Depth Testing
+		gl.glClearDepth(1.0f);								// Depth Buffer Setup
+		gl.glDepthFunc(GL.GL_LEQUAL);						// The Type Of Depth Testing To Do
 		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC0_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
-		gl.glDepthFunc(GL.GL_LEQUAL);									// The Type Of Depth Testing To Do
-		//gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glShadeModel(GL.GL_SMOOTH);						// Enable Smooth Shading
+		gl.glEnable(GL.GL_POLYGON_SMOOTH);
+		gl.glHint(GL.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);						
 		
 		cam = new Camera(0.0f, 10.0f, 0.0f, 1.0f, -1.0f, 1.0f);
 		spotlight = new Spotlight(gl, 1.0f, 1.0f, 1.0f);
@@ -109,23 +113,27 @@ public class Drawer implements GLEventListener, IConstantes {
 	
 	public void drawWorld(GLAutoDrawable glDrawable) {
 		final GL gl = glDrawable.getGL();
-
-		for (Figure f : torres) {
-			f.draw(gl);
-		}
 		
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 0.3f);
 		gl.glNormal3f(0.0f, 1.0f, 0.0f);
-		gl.glBegin(GL.GL_QUADS);	
+		gl.glBegin(GL.GL_POLYGON);	
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(100, 0, 0);
 			gl.glVertex3f(100, 0, 100);
 			gl.glVertex3f(0, 0, 100);
 		gl.glEnd();
+		
+		for (Figure f : torres) {
+			f.draw(gl);
+		}
+		
+
 	}
 
 	public Camera getCam() {
 		return cam;
 	}
+	
+
 
 }

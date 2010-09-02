@@ -151,5 +151,13 @@ public class Camera implements IConstantes {
 		// Multiplicamos las componentes X y Z por -1 para cambiar el cuadrante
 		viewDir = new Vector3f(viewDir.getX()*-1, viewDir.getY(), viewDir.getZ()*-1);
 	}
+
+	public void moveUp() {
+		move (upVector);
+	}
+	
+	public void moveDown() {
+		move (upVector.mult(-1));
+	}
 	
 }
