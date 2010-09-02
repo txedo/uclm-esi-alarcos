@@ -37,7 +37,7 @@ public class Tower extends Figure {
 	public void draw(GL gl) {
 		// Aplicamos el mismo color a todos los vértices
 		gl.glColor4fv(color.getColorFB());
-		//gl.glPolygonMode(GL.GL_FRONT, GL.GL_LINE);
+		gl.glPolygonMode(GL.GL_FRONT, GL.GL_FILL);
 		gl.glBegin(GL.GL_QUADS);
 			// Base	(en principio no es necesario dibujarla)
 			// Frente
