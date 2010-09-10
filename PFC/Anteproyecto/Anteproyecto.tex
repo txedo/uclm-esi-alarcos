@@ -1,0 +1,99 @@
+% clase article a una cara, con letra de 12pt, en papel A4
+% y con página separada para el título
+\documentclass[oneside,12pt,a4paper,titlepage]{article}
+
+% Carga de paquetes necesarios. "customarticle" es un paquete personalizado
+\usepackage[spanish]{babel} 
+\RequirePackage[T1]{fontenc}
+\RequirePackage[ansinew]{inputenx}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{pifont}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{colortbl}
+\usepackage{makeidx}
+\hypersetup{bookmarksopen,bookmarksopenlevel=3,linktocpage,colorlinks,urlcolor=blue,citecolor=blue,linkcolor=blue,filecolor=blue,pdfnewwindow,
+	pdftitle={Cuadro de Mando para la Visualización de la Calidad del Software, Integrado con un Entorno de Medición}, 
+	pdfsubject={Proyecto Fin de Carrera}
+	pdfauthor={Jose Domingo López López}}
+\usepackage[spanish,caption,counter,title,fancy]{customarticle}
+
+\makeindex
+
+% Macro para insertar una imagen
+%       Uso: \imagen{nombreFichero}{Factor escala}{Caption (leyenda)}{Label (identificador para referenciarla)}
+\def\imagen#1#2#3#4{
+ \begin{figure}[h]
+ \begin{center}
+   \includegraphics[keepaspectratio,scale=#2]{#1}
+ \caption {#3}
+ \label{#4}
+ \end{center}
+ \end{figure}
+}
+
+% Definición de una lista personalizada 
+\newenvironment{myitemize}%
+{\begin{list}{\textbullet}%
+{\settowidth{\labelwidth}{\textbullet}
+\addtolength{\topsep}{-1.5ex}
+\addtolength{\itemsep}{\dimexpr 0ex plus 0.25ex minus 0.25ex}
+\setlength{\partopsep}{0.5ex}
+}}%
+{\end{list}}
+
+\begin{document}
+
+% En las páginas de portada e índices, no hay encabezado ni pie de página
+\pagestyle{empty}
+\input{Portada.tex}
+% Derechos de autor
+\mbox{}
+\vfill{}
+\begin{small}
+	Cuadro de Mando para la Visualización de la Calidad del Software, Integrado con un Entorno de Medición
+	
+	\copyright~ 2010 Jose Domingo López López; Moisés Rodríguez Monje; María de los Ángeles Moraga de la Rubia
+	
+	En virtud del Artículo 7 del Real Decreto Legislativo 1/1996, de 12 de abril por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, modificado por la Ley 23/2006 de 7 de julio, este PFC se considera una obra en colaboración entre las diferentes partes. Por tanto la propiedad intelectual de este PFC de manera aislada, sin ser integrado con las herramientas y entornos de la empresa Alarcos Quality Center, será compartida con iguales porcentajes entre el alumno, el director y el tutor académico.
+	
+	Este documento fue compuesto con \LaTeX{}. Imágenes generadas con GIMP 2.
+\end{small}
+\clearpage
+% En los índices numeramos las páginas en números romanos
+\pagestyle{plain}
+\pagenumbering{Roman}
+% Índice de secciones
+\tableofcontents
+
+
+\parskip=10pt
+\pagenumbering{arabic}
+\pagestyle{fancy}
+% Aqui se incluyen los archivos .tex que forman el documento
+\input{Introduccion.tex}
+\clearpage
+\input{Objetivos.tex}
+\clearpage
+\input{Metodos.tex}
+\clearpage
+\input{Medios.tex}
+\clearpage
+
+\pagestyle{plain}
+% Añade los apéndices al índice
+\addcontentsline{toc}{section}{Anexos}
+% Apéndices
+\input{Anexos.tex}
+
+\clearpage\phantomsection
+% Añade la bibliografía al índice
+\addcontentsline{toc}{section}{\bibname}
+% Bibliografía
+\bibliographystyle{plain}
+\pagestyle{plain} 
+\bibliography{Bibliografia}
+
+\end{document}

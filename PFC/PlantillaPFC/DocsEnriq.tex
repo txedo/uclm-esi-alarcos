@@ -1,0 +1,376 @@
+\chapter{Documentos enriquecidos}
+\label{ch:DocsEriq}
+
+Explicación breve sobre cómo se pueden incluir en \LaTeX{} elemento tales como fórmulas matemáticas, figuras e imágenes, tablas y bibliografías.
+
+\section[Composición de ecuaciones]{Composición de ecuaciones matemáticas en \LaTeX{}}
+\label{sec:ecuaciones}\index{ecuaciones}
+Es muy sencillo incluir ecuaciones sencillas en el mismo texto en el que se escribe. Por ejemplo, $c^{2}=a^{2}+b^{2}$ que podría ser la ecuación representativa del teorema de Pitágoras.
+
+Las fórmulas también se pueden separar del texto para que aparezcan destacadas, así:
+	\[
+	c^{2}=a^{2}+b^{2}
+\]
+
+Pero si se desea las ecuaciones pueden ser numeradas de forma automática e incluso utilizar referencias cruzadas a ellas:
+\begin{equation} \label{eq:pitagoras}
+	c^{2}=a^{2}+b^{2}
+\end{equation}
+
+No hay que preocuparse demasiado por los tipos de fundición empleados en las fórmulas pues \LaTeX{} hace por nosotros <<casi>> todo el trabajo.\footnote{Los matemáticos son muy exquisitos y no se conforman con cualquier cosa, pero nosotros debemos ser mucho menos pretenciosos si queremos resultados rápidos.}
+
+Los ejemplos que aquí se muestran son muy sencillos pero \LaTeX{} proporciona entornos específicos más potentes. Para mostrar algo <<más sofisticado>> añado dos ejemplos más. La ec.~\ref{eq:integral} que es un poquito más compleja y la ec.~\ref{eq:cuadro} que está recuadrada.
+
+\begin{equation}\label{eq:integral}
+	I = \! \int_{-\infty}^\infty f(x)\,dx
+\end{equation}
+
+{\fboxsep 8pt \fboxrule 0.5pt
+\begin{equation}\label{eq:cuadro}
+\fbox{$\displaystyle 
+R = \frac{L}{2} \cdot \frac{{\left( {v_d  + v_i } \right)}}{{\left( {v_d  - v_i } \right)}}
+$}
+\end{equation}
+}
+
+
+
+
+
+\section[Figuras y gráficos]{Inclusión de figuras y gráficos en \LaTeX{}}
+\label{sec:figuras}\index{figuras}
+La inclusión de figuras y archivos de imagen en un documento elaborado con \LaTeX{} es muy sencilla y versátil (en la Fig.~\ref{fig:plazaCR} se muestra una fotografía en formato \texttt{.jpg} en color).\footnote{El título de la imagen también muestra cómo debe darse créditos al autor de la imagen si ésta no es de libre uso y tenemos permiso para usarla.} Hay que tener presente que el tipo de ficheros permitidos depende de si empleamos \texttt{latex} o \texttt{pdflatex},\footnote{En todo este curso asumimos que trabajaremos con \texttt{pdfltex} pues es más cómodo y siempre es posible utilizar la herramienta \texttt{epstopdf} para realizar la conversión de formatos.} ya que el primero sólo permite la inclusión de ficheros gráficos \texttt{.eps} mientras el segundo admite \texttt{.pdf}, \texttt{.png} y \texttt{.jpg}. Cuando la figura original presente un formato diferentes a los soportados será preciso emplear algún programa para realizar la conversión apropiada de formatos.
+
+\begin{figure}[htb] % Véase los tags de ubicación (h)ere, (t)op, (b)ottom
+	\centering % Fig. centrada en la página
+	\includegraphics[height=6cm]{plazaCr} % Alto de la figura en la pág.
+	\caption[Ejemplo de foto en formato jpg]{La Plaza Mayor (cortesía de J.~Salido)} % Título y el título para la lista de figuras
+	\label{fig:plazaCR} % Etiqueta para las refs. cruzadas
+\end{figure}
+
+La inclusión de figuras requiere al menos el empleo del paquete \textsf{\small graphicx}\index{paquete!graphicx} con el que ya se pueden obtener resultados muy aceptables, aunque existen otros paquetes más especializados que facilitan hacer cosas más exóticas, como el paquete \textsf{\small subfigure} para presentar figuras compuestas de varias subfiguras (ver Figs.~\ref{fig:clock} y \ref{fig:lion}).
+
+\LaTeX{} puede procesar las figuras como \emph{objetos deslizantes}\footnote{Estos elementos se denominan \textit{float} y por ello a veces en español utilizamos como traducción <<flotante>>.} (o sin ubicación prefijada). De este modo \LaTeX{} emplea algoritmos para encontrar la mejor ubicación de todos los objetos flotantes que contenga el texto. El usuario siempre tiene a su disposición opciones para sugerir la ubicación deseada dejando a \LaTeX{} la reubicación del texto y párrafos en la página. Con todo, en ocasiones el usuario debe hacer algunos ajustes para conseguir la ubicación deseada, aunque sigue siendo un procedimiento mucho más cómodo que en algunos de los procesadores de texto WYSIWYG populares. Siempre que existan muchas figuras en el texto el ajuste del resultado final va a ser más complejo y requerirá mayor intervención humana.
+
+Otra de las ventajas de \LaTeX{} es que las imágenes no están incrustadas en nuestro fichero fuente sino que son ficheros aparte incluidos durante la compilación. De este modo la modificación de la figuras no requiere la modificación del fichero fuente sino únicamente una nueva compilación.
+
+%Aquí se muestra cómo se emplean subfiguras. Se pueden añadir cuantas subfiguras se desee, de modo que si no caben a la par LaTeX las ubicará en varias filas. Esta colocación en varias filas se puede provocar añadiendo \\ (saltos de línea). Las subfiguras también se pueen emplear en las refs. cruzadas. El título de la figura también admite uno alternativo para la lista de figuras.
+\begin{figure}[htb]
+	\centering
+	\subfigure[Imagen jpg en color]{
+		\includegraphics[width=5.5cm]{clockCR}
+		\label{fig:clockCR}
+	}
+	\subfigure[Imagen jpg en niveles de gris]{
+		\includegraphics[width=5.5cm]{clockCRbw}
+		\label{fig:clockCRbw}
+	}
+	\caption[Comparación jpg color y niveles de gris]{El reloj de la Plaza Mayor (cortesía de J.~Salido)}
+	\label{fig:clock}
+\end{figure}
+
+A la hora de incluir figuras se debe decidir qué formato es el más apropiado entre los disponibles, siguiendo las siguientes reglas:
+\begin{itemize}
+	\item Siempre que sea posible es preferible el formato \texttt{.pfd} ya que es vectorial (escalable), aunque por supuesto si el fichero contiene alguna imagen de mapa de bits, esta no será escalable (véase Fig.~\ref{fig:4004arch}).
+	\item Las fotografías se incluirán en formato \texttt{.jpg} (véase Fig.~\ref{fig:plazaCR})
+	\item Las capturas de pantalla o gráficos de gran contraste se deben incluir en formato \texttt{.png} (véase Fig.~\ref{fig:inkscape}). 
+	\item Siempre que se tenga una imagen con un fondo blanco (u otro color plano) debería intentarse transformar en una imagen con fondo transparente empleándola en formato \texttt{.png} (véase ejemplo en la Fig.~\ref{fig:lion}).
+\end{itemize}
+
+\begin{figure}[htb]
+  \centering
+	\subfigure[Imagen como jpg]{
+		\includegraphics[width=6cm]{lionL.jpg}
+		\label{fig:lionLjpg}
+	}
+	\subfigure[Imagen como png con fondo transparente]{
+		\includegraphics[width=6cm]{lionL.png}
+		\label{fig:lionpng}
+	}
+	\caption[Comparación jpg y png con transparencia]{Abrumado con \LaTeX{} (cortesía de D.~Wright)}
+	\label{fig:lion}
+\end{figure}
+
+Las imágenes se pueden poner en color si se desea. Esto es muy conveniente para documentos electrónicos que se van a visualizar en la pantalla de un computador. Sin embargo, para documentos que van a ser impresos hay que tener presente algunos aspectos del color. 
+
+Los gráficos en color sólo deberían emplearse si es imprescindible para la comprensión del documento final. En el caso de proyectos fin de carrera y tesis podemos emplear color pues el número de ejemplares a imprimir es pequeño (no suele llegar a 10) y generalmente se imprimirán con impresora láser, aunque el coste será muy superior al de una impresión en niveles de gris. Cuando se trate de artículos científicos o libros para una editorial, el color debería ser descartado pues en el 99,99\% de los casos las editoriales imprimirán el documento en niveles de gris y el color será irrelevante. Si apriori sabemos que nuestro documento será impreso en niveles de gris deberíamos preparar las figuras para que sean legibles cuando se impriman de este modo, no para que tengan unos colores vistosos.
+
+En la Fig.~\ref{fig:clock} se muestra un ejemplo de empleo de subfiguras. En dicho ejemplo se muestra dos versiones de la misma imagen, la subfigura~\ref{fig:clockCR} es una versión en color (tal cual se tomó la fotografía original) y la sufigura~\ref{fig:clockCRbw} muestra la misma imagen transformada en niveles de gris.
+
+La Fig.~\ref{fig:lion} muestra un ejemplo de subfiguras en las que se muestra la misma figura en formato \texttt{.jpg} y en formato \texttt{.png} en la que el fondo blanco se ha convertido en transparente. Para apreciar la diferencia debe imprimirse el documento para observar como la figura con el fondo transparente en más nítida (curiosamente en el pantalla de mi ordenador el efecto es el contrario).
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=7cm]{inkscape} 
+	\caption[Ejemplo de captura en png]{Captura de pantalla de \textsf{\small Inkscape}}
+	\label{fig:inkscape}
+\end{figure}
+
+Las capturas de pantalla de programas deberían incluirse como ficheros en formato \texttt{.png}. En la Fig.~\ref{fig:inkscape} se muestra una captura del programa de libre distribución \textsf{\small InkScape} que puede emplearse para la elaboración de gráficos vectoriales. 
+
+Siempre que sea posible emplear formato \texttt{.pdf} es preferible ya que se trata de un formato vectorial que permite ser escalado sin pérdida de resolución. En la Fig.~\ref{fig:4004arch} se muestra el resultado de la inclusión de un gráfico en formato PDF. 
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=11cm]{4004archCairo} 
+	\caption[Ejemplo de gráfico vectorial PDF]{Figura vectorial de arquitectura Intel 4004 (Wikimedia Commons)}
+	\label{fig:4004arch}
+\end{figure}
+
+Una de las dificultades de trabajar con ficheros PDF es que se trata de un formato difícil de editar y así habitualmente es generado a partir de otros formatos. Por ejemplo, el gráfico de la Fig.~\ref{fig:4004arch}, cuyo formato original es \texttt{.svg}, ha sido realizado con el programa \textsf{\small InkScape} y convertido al formato PDF mediante la herramienta de exportación (a través de \textsf{\small Cairo}) incluida en el programa. En los programas que no incorporan dicha herramienta el fichero PDF se puede generar imprimiendo a un archivo con un driver de impresión PDF (si no se dispone del driver de Adobe se recomienda el uso de \textsf{\small PDFCreator}). 
+
+Cuando se trabaja con figuras hay que tener mucho cuidado con emplear imágenes de Internet sin tener la seguridad de los términos de uso de las mismas. Con mucha frecuencia de forma inadvertida se violan los derechos de uso incluso cometiendo un delito. Por este motivo recomiendo recurrir a librerías de dominio público que permiten el uso de las imágenes y \emph{clip arts} sin restricciones, como por ejemplo Open ClipArt,\footnote{\url{http://openclipart.org/}} la página de galerías en el sitio de Inkscape\footnote{\url{http://wiki.inkscape.org/wiki/index.php/Galleries}} y Wikimedia Commons.\footnote{\url{http://commons.wikimedia.org/}}
+
+En la Fig.~\ref{fig:escudo} se pueden comparar los resultados obtenidos cuando la figura se inserta en formato vectorial (escalable) y cuando se hace como mapa de bits (no escalable). En este ejemplo se muestran dos versiones para el emblema de la Ingeniería Informática.\footnote{Fuente: CRySoL. Para un discusión muy interesante sobre la historia de dicho emblema, su significado y su elaboración se puede consultar la URL: \url{http://crysol.org/es/node/1100}.}
+
+\begin{figure}[htb]
+	\centering
+	\subfigure[Gráfico vectorial PDF]{
+		\includegraphics[width=4cm]{escudoInfBW.pdf}
+		\label{fig:escudoPDF}
+	} 
+	\subfigure[Gráfico png]{
+		\includegraphics[width=4cm]{escudoInfBW.png}
+		\label{fig:escudoPNG}
+	}
+	\caption[Comparación PDF y png]{El emblema de Informática (cortesía de CRySoL)}
+	\label{fig:escudo}
+\end{figure}
+
+Además de los aspectos comentados aquí sobre la inclusión de imágenes y gráficos, \LaTeX{} dispone de una infinidad de recursos que pueden por sí mismo ser objeto de un curso. La figura~\ref{fig:carrito} se muestra la capacidad de realización de gráficos mediante instrucciones directas.\index{figure}
+
+% Gráfico realizado con instrucciones directas de TeX, en este caso además el gráfico se ha incluido en un entorno figure para que sea tratado como un objeto flotante.
+\begin{figure}
+\centering
+\newcounter{cms}
+\setlength{\unitlength}{1mm}
+\begin{picture}(50,39)
+	\put(15,20){\circle{6}} \put(30,20){\circle{6}}
+	\put(15,20){\circle*{2}}\put(30,20){\circle*{2}}
+	\put(10,24){\framebox(25,8){UCLM}}
+	\put(10,32){\vector(-2,1){10}}
+	\put(0,7){\makebox(0,0)[bl]{cm}}
+	\multiput(10,7)(10,0){5}{%
+	\addtocounter{cms}{1}%
+	\makebox(0,0)[b]{\thecms}}
+	\multiput(1,0)(1,0){49}{\line(0,1){2.5}}
+	\multiput(5,0)(10,0){5}{\line(0,1){3.5}}
+	\thicklines
+	\multiput(0,0)(10,0){6}{\line(0,1){5}}
+	\put(0,0){\line(1,0){50}}
+\end{picture}
+\caption[Ejemplo de gráfico \LaTeX{}]{Figura realizada directamente con instrucciones \TeX{}}\label{fig:carrito}
+\end{figure}
+
+
+
+
+\section[Tablas]{Trabajando con tablas en \LaTeX{}}
+\label{sec:tablas}\index{tablas}
+La inclusión de tablas en un documento elaborado con \LaTeX{} es muy versátil y flexible, pero en ningún es un proceso cómodo o amigable.\footnote{Incluso me atrevería a calificarlo de engorroso.} \LaTeX{} cuenta con el entorno \texttt{tabular} que permite definir todos los elementos de una tabla. Para tratar las tablas como un objeto deslizante al igual que las figuras y así evitar que las tablas coincidan con los cambios de página, el entorno \texttt{tabular} se incluye dentro del entorno \texttt{table} que trata la tabla como un objeto \emph{float}. A continuación se muestran ejemplos de tablas empleando estos entornos.
+
+\begin{table}[htb]%
+  \begin{center}
+  \caption[Ejemplo de entorno \texttt{table}]{Los grupos de alimentos} \label{tab:alimentos}
+  \begin{tabular}{| l | c || r | }
+    \hline			
+    \textbf{Cítricos} & \textbf{Legumbres} & \textbf{Hortalizas} \\ \hline \hline
+    Naranja  & Judía     & Tomate \\ \hline
+    Limón    & Garbanzo  & Pepino \\ \hline  
+  \end{tabular}
+  \end{center}
+\end{table}
+
+En el ejemplo de la tabla~\ref{tab:alimentos} se muestra una tabla con un conjunto importante de propiedades como: líneas de separación (horizontales y verticales), distintos tipos de justificación, etc. Como puede comprobarse en dicho ejemplo, \LaTeX{} es capaz de realizar las tablas con multitud de elementos con una gran flexibilidad. Sin embargo, echando un vistazo al texto fuente podemos intuir que la elaboración de tablas es tediosa y tanto más cuanto mayor sea el tamaño y la complejidad de la tabla.
+
+
+% Table generated by Excel2LaTeX from sheet 'Hoja1'
+\begin{table}[htbp]
+  \centering
+  \caption[Ejemplo de tabla generada con \textsf{\small excel2latex}]{Los grupos de alimentos}
+    \begin{tabular}{|l|c|r|}
+    \hline
+    {\bf Cítricos} & {\bf Legumbres} & {\bf Hortalizas} \\
+    \hline \hline
+    Naranja & Judía & Tomate \\
+    Limón & Garbanzo & Pepino \\
+    \hline
+    \end{tabular}
+  \label{tab:alimxls}
+\end{table}
+
+
+Para intentar paliar las dificultades de la elaboración de tablas existen algunas herramientas de ayuda, aunque ninguna de ellas dispone de toda la flexibilidad que se obtiene con \LaTeX{}. Al menos dichas herramientas están pensadas para generar código \LaTeX{} que una vez introducido en el documento fuente puede modificarse para añadir las características requeridas. \textsf{\small LaTable} es un programa gratuito de ayuda que permite la generación del código de las tablas. Otras herramientas son \emph{plugins} para programas de hoja de cálculo como \textsf{\small Microsoft Excel} y \textsf{\small Oppenoffice Calc} que permiten exportar una tabla al formato \LaTeX{}. Sin embargo, todas las herramientas comentadas requieren el ajuste del código \LaTeX{} obtenido para ajustar los resultados al acabado deseado. La tabla~\ref{tab:alimxls} se ha generado a partir de una hoja Excel y la herramienta \texttt{excel2latex} (plugin de macros para Excel). Por supuesto se ha tenido que retocar el código para obtener el resultado obtenido.
+
+Una opción que rara vez se encuentra comentada sobre la inclusión de tablas en \LaTeX{} es que éstas se pueden incluir como figuras en formato PDF generándolas desde el programa de hoja de cálculo de nuestra elección.\footnote{Esto sería imprimiendo hacia un fichero la hoja con el driver de impresión PDF y un posterior recorte del fichero resultando con \texttt{pdfcrop}\index{pdfcrop} para ajusta el \emph{Bounding Box}.} Personalmente esta es mi opción preferida pues pone a disposición del usuario toda la potencia de los programas de hoja de cálculo para formatear las tablas, incluyendo el escalado de la tabla y la utilización de tipos de letra instalados en el equipo.\footnote{Más difíciles de generar desde \LaTeX{}.} Aunque esta opción debe parecer poco académica en la Fig.~\ref{fig:alimentos} puede verse el resultado. En este caso se emplea el tipo de letra por defecto utilizado en el programa de hoja de cálculo. Por supuesto cuando las tablas se incluyen como figuras no aparecen en el índice de tablas sino en el de figuras.
+
+% Tabla tratada como imagen PDF a partir de Excel y recortada con pdfcrop. La tabla se puede escalar al tamaño deseado sin perder resolución
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=5cm]{alimentos}
+	\caption[Ejemplo de tabla insertada como imagen]{Los grupos de alimentos}
+	\label{fig:alimentos}
+\end{figure}
+
+
+
+
+
+
+\section[Listados de programas]{Trabajando con listados de programas}
+\label{sec:listados}
+En el caso de las titulaciones técnicas es muy habitual tener que explicar en el texto en preparación (p.ej.\ un proyecto fin de carrera o una tesis, etc.) alguna porción de código fuente (p.ej.\ algoritmo, función, etc.).\footnote{La inclusión de código en el texto debe estar justificada pues los listados exhaustivos deben dejarse para un CD que acompañe a la documentación, nunca deben incluirse <<tal cual>> en un documento.} Para facilitar la tarea de escribir código fuente \LaTeX{} proporciona el entorno \texttt{verbatim}\index{verbatim} para imprimir texto <<tal cual>> se escribe en el fichero de entrada. Sin embargo, este entorno es muy limitado y para ello se proporcionan paquetes que aumentan las posibilidades a la hora de tratar con el texto <<tal cual>> para que su aspecto final sea más \textsf{profesional} y flexible. Los dos paquetes que conviene mencionar aquí son: \texttt{listings} y \texttt{fancyvrb}.\index{paquete!listings}\index{paquete!fancyvrb}
+
+\begin{lstlisting}[float=th,caption={[Un ejemplo de código]Ejemplo de código fuente en lenguaje Java},label=lst:java]
+/* @author www.javadb.com */
+public class Main {    
+/* Este método convierte un String a
+   un vector de bytes */
+
+   public void convertStringToByteArray() {
+        
+     String stringToConvert = "This String is 15";      
+     byte[] theByteArray = stringToConvert.getBytes();        
+     System.out.println(theByteArray.length);        
+   }
+    
+   /* argumentos de línea de comandos */
+   public static void main(String[] args) {
+     new Main().convertStringToByteArray();
+   }
+}
+\end{lstlisting}
+El paquete \texttt{listings} está pensado para tratar especialmente con código fuente. En este caso se reconoce el lenguaje\footnote{Se reconoce un número muy amplio de lenguajes.} en que está escrito el código y ésto condiciona el modo de impresión del código (véase Listado~\ref{lst:java}). Este paquete tiene mucha flexibilidad y permite tratar con los listados de código como si fueran objetos deslizantes, de modo similar a como se tratan las figuras y las tablas. Por supuesto se admiten muchas de las opciones ya vistas para los objetos deslizantes en \LaTeX{} como referencias cruzadas índice de elementos, etc. El número de opciones es tan numeroso que su comentario excede el propósito del curso por lo que se recomienda la consulta de la documentación del paquete a aquellos que estén más interesados.
+
+El paquete \texttt{fancyvrb} añade un nuevo entorno \texttt{Verbatim} que añade gran flexibilidad al entorno \texttt{verbatim}. Todos los detalles y posibilidades de este entorno exceden el propósito de este curso básico por lo que para profundizar se recomienda la consulta de la documentación del paquete. En el siguiente ejemplo se muestran algunas de las posibilidades del paquete mencionado. Se debe tener en cuenta que con este entorno, a diferencia de \texttt{lstlisting}, los listados pueden ser divididos entre páginas y que si se desea evitar dicha división habrá que intentarlo mediante ensayo y error, o bien creando un objeto nuevo deslizante para estos nuevos elementos y así ser tratados como las imágenes o las tablas.
+
+%Inclusión del entorno propio configurado para Verbatim
+\begin{listado}
+/* @author www.javadb.com */
+public class Main {    
+/* Este método convierte un String a
+   un vector de bytes */
+
+   public void convertStringToByteArray() {
+        
+     String stringToConvert = "This String is 15";      
+     byte[] theByteArray = stringToConvert.getBytes();        
+     System.out.println(theByteArray.length);        
+   }
+    
+   /* argumentos de línea de comandos */
+   public static void main(String[] args) {#label[vrb:main]
+     new Main().convertStringToByteArray();
+   }
+}
+\end{listado}
+
+\noindent Este tipo de entorno permite incluso la inclusión de referencias cruzadas a las líneas de código (p.ej.\ en línea~\ref{vrb:main} aparece el constructor \texttt{main}).
+
+Por supuesto una alternativa a las comentadas más arriba es la inclusión de código como imagen. Este método no es el más elegante\footnote{Estoy seguro que los defensores de \LaTeX{} están de acuerdo en ésto.} pero a veces puede ser el modo más rápido de trabajar obteniendo unos resultados aceptables. Una de las condiciones para que dicho método sea apropiado es garantizar la legibilidad del código incluido en la imagen. Para ello el tamaño de la letra en la imagen no debe ser excesivamente pequeño. En las Figs.~\ref{fig:javaCodepng} y \ref{fig:javaCodepdf} se ha incluido el mismo código del listado \ref{lst:java} tratándolo como una figura. En la Fig.~\ref{fig:javaCodepng} la imagen (en formato \texttt{.png}) se ha generado mediante una captura de pantalla de la página web de la que se ha copiado el ejemplo.\footnote{\url{http://www.javadb.com/convert-string-to-byte-array}} Por el contrario en la Fig.~\ref{fig:javaCodepng} se incluye el código como un fichero pdf obtenido a través de la impresión de la citada página web. En este caso el formato pdf (escalable) ofrece una mejor legibilidad, aunque está reducida por el hecho de que las líneas de código tienen una longitud demasiado elevada que impide aumentar más el tamaño de la imagen sin incurrir en un \emph{`overfull hbox'}.
+
+\begin{figure}[htb]
+	\centering
+	\fbox{\includegraphics[width=11.5cm]{javaCode.png}} % Ponemos ext para evitar PDF
+	\caption[Ejemplo de codigo en png]{Ejemplo de código fuente como imagen (.png)}
+	\label{fig:javaCodepng}
+\end{figure}
+
+Para obtener el fichero pdf incluido en la Fig.~\ref{fig:javaCodepdf} el procedimiento de recorte es más complejo que el empleado para figuras que ocupan una única página.\footnote{Téngase en cuenta que al imprimir texto se obtiene un fichero pdf con un conjunto de páginas completas.} En este también se puede emplear la herramienta \texttt{pdfcrop} pero se precisa la información de las coordenadas de la caja que deseamos recortar (véase ayuda del comando \emph{pdfcrop}). 
+
+\begin{figure}[htb]
+	\centering
+	\setlength{\fboxrule}{3pt}  % Grosor de la línea del cuadro
+	\setlength{\fboxsep}{0.3cm} % Separación entre el cuador y la fig.
+	\fbox{\includegraphics[width=11.5cm]{javaCode-crop}}
+	\caption[Ejemplo de codigo en pdf]{Ejemplo de código fuente como imagen (.pdf)}
+	\label{fig:javaCodepdf}
+\end{figure}
+
+En las Fig.~\ref{fig:javaCodepng} y \ref{fig:javaCodepdf} se ha empleado un recuadro en torno a la figura y se ha configurado este para tener un grosor y espaciado determinado.
+
+\IncMargin{1em}
+\begin{algorithm}
+\SetKwInOut{Input}{Datos}\SetKwInOut{Output}{Resultado}
+\LinesNumbered
+\SetAlgoLined
+\Input{este texto}
+\Output{como escribir algoritmos con \LaTeX2e}
+inicialización\;
+\While{no es el fin del documento}{
+leer actual\;
+\eIf{comprendido}{
+ir a la siguiente sección\;
+la sección actual es esta\;
+}{
+ir al principio de la sección actual\;
+}
+}
+\caption{Cómo escribir algoritmos}\label{alg:como}
+\end{algorithm}\DecMargin{1em}
+
+Como ya se ha comentado en lo textos científicos relacionados con las TIC\footnote{Por supuesto en un PFC o tesis de una Escuela de Informática.} (Tecnologías de la Información y Comunicaciones) suelen aparecer porciones de código en los que se explica alguna función o característica relevante del trabajo que se expone. Muchas veces lo que se quiere ilustrar es un algoritmo o método en que se ha resuelto un problema abstrayéndose del lenguaje de programación concreto en que se realiza la implementación. El paquete \texttt{algorithm2e}\index{paquete!algorithm2e} proporciona un entorno \texttt{algorithm} para la impresión apropiada de algoritmos tratándolos como objetos flotantes y con muchas flexibilidad de personalización. En el algoritmo \ref{alg:como} se muestra cómo puede emplearse dicho paquete. En este curso no se explican las posibilidades del paquete más en profundidad ya que excede el propósito del curso. A todos los interesados se les remite a la documentación del mismo.
+
+
+\section{Inclusión de bibliografía}
+
+\subsection[Bibliografía incrustada]{Bibliografía con el entorno \texttt{thebibliography}}
+\label{sec:thebiblio}
+Todos los documentos técnicos (un PFC, tesis, artículo científico, memoria, etc.) deben incluir una sección de bibliografía en el que se hace un listado de todas las fuentes consultadas para realizar el trabajo. Es preciso otorgar el crédito a los trabajos realizados por otros y que se utilizan de algún modo u otro en el trabajo propio. Por esta razón en el texto se deben incluir las referencias\footnote{Similar a las referencias cruzadas pero en este caso la referencia es a una fuente bibliográfica que aparece listada en la sección de bibliografía.} a las fuentes empleadas intentando evitar incurrir en plagio \cite{usbplagio2010} aun cuando esta no sea nuestra intención. Todas las fuentes utilizadas deberían ser referenciadas en nuestro trabajo para Las fuentes pueden ser: un libro, un capítulo o sección de libro, un artículo de revista, un artículo de un congreso, un manual técnico, una tesis, un PFC, otros.
+
+Una de las dificultades que los autores encuentran al realizar la bibliografía y las referencias a ésta es mantener la coherencia. Suele suceder que al hacer manualmente la bibliografía la inclusión de nuevas fuentes puede alterar el sistema de numeración (si es numérico) y convertir en un <<dolor de cabeza>> la tarea de mantener un sistema coherente. Expliquemos ésto en más detalle. Al elaborar este documento puedo darme cuenta de que olvidé incluir una fuente bibliográfica que deseo añadir (p.ej.\ un libro). En ese momento cómo deseo que el listado de fuentes en la bibliografía aparezca por orden alfabético de autores, esta nueva fuente puede alterar la numeración previa de las referencias. Si todo el proceso lo estoy haciendo manualmente el proceso de mantener correctamente las referencias en el texto puede convertirse en un trabajo demasiado ingrato. Para solventar esta cuestión la gran mayoría de procesadores actuales incluyen algún sistema de referencias a las fuentes de la bibliografía,\footnote{Mi experiencia personal es que en general los alumnos apenas referencian las fuentes en los textos que escriben.} \LaTeX{} no es una excepción y para ello permite asignar una etiqueta a cada fuente que es la que luego se emplea para incluir las referencias. \LaTeX aporta dos métodos de elaboración de bibliografía. 
+
+\begin{itemize}
+	\item El primero de ellos utiliza el entorno \texttt{thebibliography}\index{thebibliography@\verb+\thebibliography+} y es el que se muestra a modo de ejemplo en este documento. Este método es apropiado cuando el documento tiene un número reducido de fuentes bibliográficas y no se exige un estilo muy estricto para el formateado final de la bibliografía. Todas las fuentes aparecen en el orden que se incluyen en el entorno \texttt{thebibliography} y con el formateado que allí se indique. Las referencias a la bibliografía se realizan mediante un número entre corchetes que es generado de forma automática.
+	
+	\item El segundo tiene lugar mediante el empleo de una herramienta adicional denominada BibTeX\index{bibtex@Bib\TeX{}} (comando \texttt{bibtex} en las distribuciones de \LaTeX). Este programa se encarga de procesar ficheros (\texttt{.bib}) de texto que sólo contienen registros de fuentes bibliográficas en los que constan todos los datos relativos a la fuente. El fichero \texttt{.bib} puede ser contemplado como un archivo de una base de datos de fuentes bibliográfica. En este caso BibTeX junto con \LaTeX gestionan el estilo en que se imprime la bibliografía e incluso el de las referencias. Con este procedimiento la tarea de elaboración de una bibliografía se convierte en la elaboración de una base de datos que incluya los registros deseados. Por supuesto los registros tendrán que respetar una estructura definida que BibTeX pueda comprender.
+\end{itemize}
+
+Para consultar más información sobre el modo de elaboración de bibliografías con \LaTeX{} puedes consultar los textos más populares de referencia (en inglés \cite{kopka04,lamport94,goos04} y en español \cite{cascales00,cascales03}). Aunque el documento \cite{oetiker06} se ha recomendado para este curso, se trata sólo de una guía rápida que no entra en detalles sobre la elaboración de bibliografías. Para una referencia rápida y bastante completa sobre las bibliografías se recomienda especialmente las fuentes electrónicas disponibles en Internet.
+
+
+\subsection{Bibliografía con Bib\TeX}
+\label{sec:bibtex}
+En la gran mayoría de documentos científicos sus autores citan las fuentes consultadas durante la realización del trabajo presentado. \LaTeX{} proporciona herramientas muy flexibles para elaborar la \emph{lista de fuentes bibliográficas} e incluir las referencias a ellas en el texto (ver \cite{cascales00,cascales03,goos04,kopka04,lamport94}). Dicha lista aporta los detalles esenciales de los documentos externos citados y por lo general se imprime al final del documento principal como una sección separada del resto. El título de la sección varía según el tipo de documento principal y \LaTeX{} los denomina \emph{Referencias} o \emph{Bibliografía}, aunque dicho título se pude modificar fácilmente empleando el comando \texttt{renewcommand}.\footnote{Véase cóm se ha cambiado en este documento el título de dicha sección.}
+
+El conjunto de referencias que serán citadas en el documento principal puede contemplarse como una \emph{base de datos bibliográfica} en la que cada registro (o entrada) contiene la información relevante del documento citado. Dicha base bibliográfica puede ser:
+\begin{enumerate}
+	\item \emph{Interna o autocontenida} en el propio documento \LaTeX{}. En este caso se emplea el entorno \texttt{thebibliography}.
+	
+	\item Externa al documento fuente. En este caso los registros de la base bibliográfica están contenidos en un fichero \texttt{.bib} de texto plano (sin formato, como \texttt{.tex}).
+\end{enumerate}
+
+Por supuesto, no siempre es necesario recurrir a un apartado de bibliografía para incluir las fuentes consultadas. Existen métodos alternativos pero no demasiado <<elegantes>>:
+\begin{enumerate}
+	\item Notas al pie.\footnote{Aquí figuraría la fuente.}
+	\item Lista en la que se enumeran las fuentes y referencias cruzadas a los ítem de dicha lista.\label{enum:fuente}
+\end{enumerate}
+
+\noindent En el texto principal se podría hacer referencia a la fuente de la lista enumerada (p.ej.\ a la fuente~\ref{enum:fuente}).\footnote{En este párrafo se referencia al segundo ítem de la lista enumerada.}
+
+Cada registro de la base bibliográfica proporciona información sobre el documento concreto al que se refiere:
+\begin{framed}
+\begin{itemize}
+	\item Autor(es).
+	\item Título.
+	\item Revista, libro, congreso u otra forma de publicación del documento.
+	\item Número, volumen, etc.
+	\item Editorial.
+	\item Fecha de publicación.
+\end{itemize}
+\end{framed}
+
+En mi opinión el procedimiento apropiado para la inclusión de la bibliografía depende del tamaño de ésta y de las desventajas que tienen los procedimientos que incluyen los registros bibliográficos en el documento fuente, a saber: 
+\begin{itemize}
+	\item la reutilización de la base bibliográfica se hace tediosa (básicamente se trata de un <<corta y pega>>), y
+	\item cuanto mayor es el número de elementos en la lista de bibliografía más difícil es mantener homogéneo el formato de dicha lista.
+\end{itemize}
+
+Por el contrario, el trabajo con bases bibliográficas externas (\texttt{.bib}) al documento fuente tiene grandes ventajas:
+\begin{itemize}
+	\item los registros se pueden reutilizar en diferentes documentos de trabajo,
+	\item las bases bibliográficas se pueden compartir entre un conjunto de colaboradores, y
+	\item las bases bibliográficas no tienen porqué ser de gran tamaño pues pueden combinarse varias de ellas en el documento de trabajo.
+\end{itemize}
+
+Para tratar con las bases bibliográficas externas \LaTeX{} emplea la herramienta Bib\TeX{}. Bib\TeX{} es un comando (\texttt{bibtex}) que se ejecuta tras haber ejecutado previamente el comando \texttt{pdflatex} sobre el fichero fuente. El resultado de dicha ejecución es la generación automática de un entorno \texttt{thebibliography} (\texttt{.bbl}) a partir del fichero fuente (\texttt{.tex}) y el fichero de bibliografía (\texttt{.bib}).\footnote{Es importante señalar que para obtener un fichero final con todas las referencias correctas será necesario procesar varias veces el fichero.}
