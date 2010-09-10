@@ -1,0 +1,18 @@
+\chapter{¿Qué es \LaTeX{}?}
+\label{ch:Introduccion}
+
+\LaTeX{} (escrito LaTeX en texto plano) es un sistema de composición de textos, orientado especialmente a la creación de libros, documentos científicos y técnicos que contengan fórmulas matemáticas.\footnote{\url{http://es.wikipedia.org/wiki/LaTeX}}
+
+\LaTeX{} está formado por un gran conjunto de macros de \TeX{},\footnote{\TeX{} es un lenguaje de programación creado por D.~Knuth para la composición tipográfica de documentos técnicos con un acabado de gran calidad.} escrito por Leslie Lamport\index{Lamport, L.} en 1984, con la intención de facilitar el uso del lenguaje de composición tipográfica, creado por Donald Knuth.\index{Knuth, D.} Es muy utilizado para la composición de artículos académicos, tesis y libros técnicos, dado que la calidad tipográfica de los documentos realizados con \LaTeX{} es comparable a la de una editorial científica de primera línea.
+
+En \TeX{} y \LaTeX{} las palabras reservadas o <<comandos>> del lenguaje están precedidos por la barra inclinada o \emph{backslash}\index{backslash@\verb+\textbackslash+} (\textbackslash). Otros caracteres especiales\footnote{Con sisgnificado especial para el processador \LaTeX{}.} son: \# \$ \% \textasciicircum \& \_ \{ \} \~{}. Para escribir estos caracteres se emplea: 
+\begin{verbatim} 
+	\# \$ \% \textasciicircum \& \_ \{ \} \~
+\end{verbatim}
+% Notar que todo lo que se escribe entre las intrucciones \begin{verbatim} y \end{verbatim} LaTeX lo escribe tal cual y con un tipo de letra de máquina de escribir. Lo mismo ocurre con el texto escrito con la instrucción \veb+texto+.
+
+Una o más líneas en blanco se tratan como un salto de párrafo, aunque se puede provocar un salto de línea mediante doble \emph{backslash} \verb+\\+. Aunque en este caso no se considera un párrafo nuevo.
+
+Como sucede con la mayoría de lenguajes de programación las palabras reservadas pertenecen al inglés (entre otras cosas porque es la lengua materna de sus creadores). También todos los mensajes de error y avisos del procesador \LaTeX{} dirigidos al usuario son textos en inglés que deben ser comprendidos para subsanar los posibles errores. Esto puede suponer una dificultad adicional para alguien que no tenga conocimientos de dicho idioma, pero no debería serlo ya que el inglés es la \emph{lingua franca} de la ciencia y la tecnología, áreas a las que está especialmente dirigido \TeX{}.
+
+La versión utilizada para generar este documento es \LaTeXe. \LaTeX{} es software libre bajo licencia LPPL.

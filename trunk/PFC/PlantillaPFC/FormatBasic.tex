@@ -1,0 +1,147 @@
+\chapter[Formateo básico]{Formateo básico de documentos}
+\label{ch:FormatBasic}
+
+\section[Caracteres especiales]{Caracteres especiales en \LaTeX{}}
+\label{sec:caracteres}
+En este apartado se incluye una explicación breve sobre cómo se escribe con \LaTeX{} y el tipo de caracteres que pueden generarse.
+
+En \TeX{} y \LaTeX{} las palabras reservadas o <<comandos>> del lenguaje están precedidos por la barra inclinada o \emph{backslash} (`\textbackslash'). % Nótese cómo se escribe la comilla simple y la española (siempre preferida frente a la comilla doble inglesa).
+Otros caracteres especiales\footnote{Con significado especial para el processador \LaTeX{}.} son: \# \$ \% \textasciicircum \& \_ \{ \} \~{}. Para escribir estos caracteres se emplea:
+\begin{verbatim}
+	\# \$ \% \textasciicircum \& \_ \{ \} \~
+\end{verbatim}
+
+% Por defecto la línea inicial de cada párrafo aparece con una sangría (el renglón comienza más adentro que los otros). Pero este comportamiento se puede modificar como se ve en el siguiente párrafo
+\noindent Las palabras se pueden separar por uno o        más espacios en blanco, pero ésto no afecta a la separación entre palabras. Una o más líneas en blanco se tratan como un salto de párrafo, aunque se puede provocar un salto de línea mediante doble \emph{backslash} \verb+\\+. Aunque en este caso no se considera un párrafo nuevo.
+
+
+% Apreciar como varias líneas en blanco no tienen un efecto especial
+
+Aunque el texto%
+ que se escri%
+ba puede tener un aspecto horroroso%
+, \LaTeX{} hace bien su trabajo.
+
+Este es un párrafo con el que pretendemos ver el efecto del salto de línea frente al salto de párrafo normal.
+
+Siguiente línea en un párrafo nuevo...\\
+Siguiente línea en el mismo párrafo (la línea no tiene sangrado al inicio)\ldots % Observar la diferencia entre los ptos. suspensivos generados mediante ptos. seguidos o la instrucción \ldots
+
+La generación de acentos no es problema si se emplea el paquete \textsf{\small inputenc} con la codificación del idioma (español), pues así se reconocen los caracteres acentuados y nuestra genuina `ñ'. Por supuesto \LaTeX{} podrá generar acentos de otros idiomas empleando algunas combinaciones especiales con el carácter `\textbackslash{}'.
+
+En los textos informáticos un carácter habitual es \verb+~+ empleado en las direcciones URL. Este carácter se puede generar de varias formas (\verb+~+, \~{}, $\sim$). Aunque empleando el paquete \textsf{\small url}\index{paquete!url} la escritura de direcciones electrónicas se simplifica, por ejemplo:\\
+\url{http://www.loquesea.es/~fulano}
+
+\LaTeX{} también puede generar un conjunto muy amplio de símbolos\index{símbolos} especiales como el \EUR{}, \ding{45}\index{ding@\texttt{\textbackslash ding}} y \Coffeecup.\footnote{Para colsultar la lista completa de símbolos consultar \emph{The Comprehensive LATEX Symbol List}. Scott Pakin, 2002.}
+
+
+
+
+
+
+
+\section{Listas en \LaTeX{}}
+Esta sección final explica cómo emplear en \LaTeX{} algunos entornos relacionados con las listas, justificación y citas.
+
+\subsection{Listas}
+\label{sec:listas}\index{listas}
+Las listas se emplean cuando se desea enumerar una serie características, objetos, etc. A continuación veremos algunos ejemplos de listas.
+
+\noindent Ejemplo de entorno {\tt itemize}:\index{itemize}
+
+\begin{itemize}
+\item uno
+\item dos
+\item tres
+\end{itemize}
+
+\noindent Ejemplo de entorno {\tt itemize} en el que se sustituye el símbolo por defecto:
+\begin{itemize}
+\item[*] uno
+\item dos
+\item tres
+\end{itemize}
+
+\noindent Ejemplo de entorno {\tt enumerate} para listas numeradas:\index{enumerate}
+\begin{enumerate}
+\item un
+\item dos
+\item tres
+\end{enumerate}
+
+\noindent Las listas incluso se pueden personalizar:
+\begin{dinglist}{43}
+\item uno
+\item dos
+\item tres
+\end{dinglist}
+
+
+\noindent y por supuesto anidar:
+\begin{enumerate}
+  \item El primer ítem
+  \begin{enumerate}
+    \item Primer ítem anidado
+    \item Segundo ítem anidado
+  \end{enumerate}
+  \item El segundo ítem
+  \item El tercero \ldots
+\end{enumerate}
+
+
+\noindent Ejemplo de entorno {\tt description} para listas:\index{description}
+
+\begin{description}
+\item[Estupideces] no mejoran por ponerlas en una lista por bonita que esta sea. Aunque la mona se vista de seda, mona se queda.
+\item[Lucideces] sin embargo, pueden parecer hermosas en
+una lista.
+\end{description}
+
+
+\noindent El ejemplo anterior formateado de otro modo:
+\begin{description}
+\item[Estupideces]\hfill \\ no mejoran por ponerlas en una lista por bonita que esta sea. Aunque la mona se vista de seda, mona se queda.
+\item[Lucideces]\hfill \\ sin embargo, pueden parecer hermosas en
+una lista.
+\end{description}
+
+
+\subsection{Justificación}
+\label{sec:justificacion}\index{justificación}
+\LaTeX{} emplea justificación completa de los párrafos por defecto. Pero este comportamiento puede interesarnos modificarlo. A continuación se muestran algunos ejemplos relacionados con la justificación de párrafos:
+
+\begin{flushleft}\index{flushleft|see{justificación}}
+Este texto está alineado a la izquierda. \\
+\LaTeX{} no trata de justificar las líneas, \\
+así que así quedan.
+\end{flushleft}
+
+\begin{flushright}\index{flushleft|see{justificación}}
+Texto alineado a la derecha. \\
+\LaTeX{} no trata de justificar las líneas.
+\end{flushright}
+
+\begin{center}\index{center|see{justificación}}
+En el centro\\
+de la Tierra
+\end{center}
+
+
+\subsection{Citas}
+\label{sec:citas}\index{citas}
+Una regla empírica tipográfica para la longitud de renglón es:
+\begin{quote}
+En promedio, ningún renglón debería tener más de 66 signos porque así lo establece la propia experiencia.
+\end{quote}
+Por ello las páginas de \LaTeX{} tienen márgenes tan anchos por omisión, y los periódicos usan múltiples columnas. 
+
+\section[Alegato final]{Última sección}
+\label{sec:alegato}
+Esta sección aparece en el índice de contenido pero con su título alternativo.
+
+\section*{Sección final sin numerar}
+\label{sec:sinnumerar}
+El título de esta sección no aparece en el índice de contenido y además su cabecera no está numerada.
+
+Aquí incluyo una referencia cruzada a la sección~\ref{sec:listas}\index{referencias cruzadas} (ver pág.~\pageref{sec:listas} y acceder al código fuente del ejemplo) en la que se habla de las listas.
+% Recordar que para obtener las refencias cruzadas bien hay que compilar varias veces seguidas el texto fuente.

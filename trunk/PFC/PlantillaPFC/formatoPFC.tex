@@ -1,0 +1,182 @@
+%====================================
+%====================================
+% PAQUETES BÁSICOS
+\usepackage[spanish,english]{babel} % Internacionalización de LaTeX
+\usepackage[ansinew]{inputenx}% Código de caracteres de teclado
+\usepackage[T1]{fontenc}      % Codificación de fundiciones
+\usepackage{times}            % Familia base de fundiciones
+\usepackage{microtype}        % Mejoras para pdflatex
+%====================================
+%====================================
+% PAQUETES PARA GENERAR SÍMBOLOS ESPECIALES
+\usepackage{textcomp}
+%\usepackage{eurosym} 
+% Incompatible con el paquete textcomp
+\usepackage{marvosym,pifont}
+\usepackage{url}      % Conveniente para escribir URL
+%====================================
+%====================================
+% PAQUETES PARA AJUSTE DE MÁRGENES, ESPACIOS
+\usepackage[top=2.5cm,bottom=2.5cm,inner=3.5cm,outer=2cm]{geometry}
+\usepackage{setspace}         % Interlineado
+\usepackage{fancyhdr}         % Cabeceras y pies personalizados
+%\usepackage[% Utiliza el tema requerido eliminando la marca %
+%Sonny%
+%%Lenny%
+%%Glenn%
+%%Conny%
+%%Rejne%
+%%Bjarne%
+%%Bjornstrup%
+%]{fncychap}  % Cabeceras de capítulos tematizados
+\usepackage{titlesec} % Personalización completa de títulos de secciones (incompatible con fncychap)
+\usepackage[margin=10pt,font=small,labelfont=bf,%
+format=hang]{caption} % Personalización de títulos de figuras y tablas
+%\usepackage[bottom]{footmisc}
+
+%====================================
+%====================================
+% PAQUETES PARA INCLUIR FIGURAS E IMÁGENES
+\usepackage[final]{graphicx}  % Inclusión de figuras
+\usepackage{subfigure}        % Inclusión de subfiguras
+
+%====================================
+%====================================
+% PAQUETES PARA LISTADOS DE CÓDIGO FUENTE 
+\usepackage{listings} % Inclusión de listados de código
+\usepackage{fancyvrb}
+\usepackage[ruled,vlined,portuguese]{algorithm2e}
+%\usepackage[lined,boxed,commentsnumbered]{algorithm2e}
+%\usepackage[lined,boxed,commentsnumbered,portuguese]{algorithm2e}
+% Paquete específico para la generación de algorithmos en LaTeX. Por su complejidad se requiere consultar la documentación del paquete para su correcto uso. La selección de idioma portugués soluciona algunos de los problemas de internacionalización al español (obviamente, no todos).
+%NOTA: Adviertase la 'e' final de la opción de idioma portugues.
+
+%====================================
+%====================================
+% PAQUETES PARA BIBLIOGRAFÍA, ÍNDICES Y GLOSARIOS
+\usepackage{babelbib} % Paquete para crear bibliografías multilingues.
+\selectlanguage{spanish} % Seleccionamos el idioma por defecto del documento
+
+\usepackage{makeidx} % Paquete para índice alfabético
+\makeindex
+
+%====================================
+%====================================
+% PAQUETES ESPECIALES 
+\usepackage{framed}     % Recuadro en torno a texto 
+%\usepackage{fancybox}  % Recuadro exóticos (incompatible con fancyvrb)
+
+%\usepackage{siunitx}    % Para imprimir núms. y unidades del SI en notación científica
+%
+%\usepackage{xcolor}     % Manejo del color
+%
+\usepackage{pdfpages}   % Inclusión de páginas PDF
+%
+%\usepackage{hyperref}   % Creación de documentos PDF con hiperenlaces
+
+
+
+%====================================
+%====================================
+%====================================
+%====================================
+% COMANDOS DEFINIDOS POR EL USUARIO
+%====================================
+\newcommand{\autor}{Jesús Salido Tercero} % Aquí tu nombre
+
+%====================================
+% Declaración de entorno para resumen (abstract) en clase book
+\newenvironment{abstract}%
+{\cleardoublepage\null \vfill\begin{center}%
+\bfseries \abstractname \end{center}}%
+{\vfill \null}
+
+%====================================
+%====================================
+% Control de espaciado entre párrafos e indentación
+
+%\setlength{\parskip}{1.3ex plus 0.2ex minus 0.2ex}
+%\setlength{\parindent}{8ex}
+%====================================
+%====================================
+% Control de las cabeceras y pies de página
+\fancyhf{}
+\fancyhead[LO]{\leftmark} 
+% En las páginas impares, parte izquierda del encabezado, aparecerá el nombre de capítulo
+\fancyhead[RE]{\rightmark} 
+% En las páginas pares, parte derecha del encabezado, aparecerá el nombre de sección
+\fancyhead[RO,LE]{\thepage} % Números de página en las esquinas de los encabezados
+
+\renewcommand{\chaptermark}[1]{\markboth{\textbf{\thechapter.#1}}{}} % Formato para el capítulo: N. Nombre
+\renewcommand{\sectionmark}[1]{\markright{\textbf{\thesection. #1}}} % Formato para la sección: N.M. Nombre
+\renewcommand{\headrulewidth}{0.6pt} 
+% Ancho de la línea horizontal bajo el encabezado
+%\renewcommand{\footrulewidth}{0.6pt} 
+% Ancho de la línea horizontal sobre el pie (que en este ejemplo está vacío)
+%\setlength{\headheight}{16pt} % Por defecto \headheight 12pt, pero se agranda al emplear fancyhdr
+\setlength{\headheight}{1.5\headheight} % Aumenta la altura del encabezado en una vez y media
+
+% Código para evitar que en clase book la última página de capítulo tenga cabecera y pie si dicha página está en blanco. 
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside
+\ifodd\c@page
+\else\hbox{}\thispagestyle{empty}\newpage
+\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother
+
+% Código de ejemplo (titlesec) para cambiar el aspecto de capítulos
+\newcommand{\bigrule}{\titlerule[0.5mm]}
+\titleformat{\chapter}[display] % cambiamos el formato de los capítulos
+{\bfseries\Huge\sffamily} % por defecto se usarán caracteres de tamaño \Huge en negrita
+{% contenido de la etiqueta
+\titlerule % línea horizontal
+\filleft % texto alineado a la derecha
+\Large\chaptertitlename\ % "Capítulo" o "Apéndice" en tamaño \Large en lugar de \Huge
+\Large\thechapter} % número de capítulo en tamaño \Large
+{0mm} % espacio mínimo entre etiqueta y cuerpo
+{\filleft} % texto del cuerpo alineado a la derecha
+[\vspace{0.5mm} \bigrule] % después del cuerpo, dejar espacio vertical y trazar línea horizontal gruesa
+
+% Código para evitar la división de notas al pie en págs. diferentes
+\interfootnotelinepenalty=10000
+%====================================
+%====================================
+% Declaraciones para paquete graphicx
+\graphicspath{{Figuras/Cap2/}} % Path de búsqueda de ficheros
+\DeclareGraphicsExtensions{.pdf,.png,.jpg} % Precedencia de extensiones
+
+%====================================
+%====================================
+% Declaraciones para paquete listings
+\lstset{ % Las opciones aquí incluidas deben servir de ejemplo, ya que para una lista exhaustiva se debe consultar la doucmentación del paquete.
+language=Java,           % Lenguaje de programación del código
+basicstyle=\footnotesize,       
+numbers=left,                   
+numberstyle=\footnotesize,      
+stepnumber=1,                   
+numbersep=6pt,                  
+showspaces=false,        % muestra los espacio en blanco
+showstringspaces=true,   % subraya los espacios en el interior de cadenas
+showtabs=true,           % muestra los tabuladores
+frame=single,	                  
+tabsize=2,	                    
+captionpos=b,            % ajusta la posición de títulos
+breaklines=true,         % ajusta la división automática de líneas
+breakatwhitespace=false,
+xleftmargin=1cm,xrightmargin=1cm
+}
+
+%====================================
+%====================================
+% Declaraciones para paquete fancyvbr
+
+% Ejemplo del configuración del entorno Verbatim para el tratamiento de listados de código fuente. Aquí en realidad se define un entorno personal con unas opciones particulares para el entorno Verbatim.
+
+\DefineVerbatimEnvironment % Las opciones aquí incluidas deben servir de ejemplo, ya que para una lista exhaustiva se debe consultar la doucmentación del paquete.
+{listado}{Verbatim}{numbers=left,numbersep=6pt,frame=single,%
+fontsize=\footnotesize,commandchars=\#\[\],%
+xleftmargin=1cm,xrightmargin=1cm}
+
+
+
+
