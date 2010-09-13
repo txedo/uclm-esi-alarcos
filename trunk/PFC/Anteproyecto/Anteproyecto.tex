@@ -16,7 +16,7 @@
 \usepackage{makeidx}
 \hypersetup{bookmarksopen,bookmarksopenlevel=3,linktocpage,colorlinks,urlcolor=blue,citecolor=blue,linkcolor=blue,filecolor=blue,pdfnewwindow,
 	pdftitle={Cuadro de Mando para la Visualización de la Calidad del Software, Integrado con un Entorno de Medición}, 
-	pdfsubject={Proyecto Fin de Carrera}
+	pdfsubject={Anteproyecto}
 	pdfauthor={Jose Domingo López López}}
 \usepackage[spanish,caption,counter,title,fancy]{customarticle}
 
@@ -50,16 +50,19 @@
 \pagestyle{empty}
 \input{Portada.tex}
 % Derechos de autor
+\parskip=10pt
 \mbox{}
 \vfill{}
 \begin{small}
-	Cuadro de Mando para la Visualización de la Calidad del Software, Integrado con un Entorno de Medición
-	
-	\copyright~ 2010 Jose Domingo López López; Moisés Rodríguez Monje; María de los Ángeles Moraga de la Rubia
-	
-	En virtud del Artículo 7 del Real Decreto Legislativo 1/1996, de 12 de abril por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, modificado por la Ley 23/2006 de 7 de julio, este PFC se considera una obra en colaboración entre las diferentes partes. Por tanto la propiedad intelectual de este PFC de manera aislada, sin ser integrado con las herramientas y entornos de la empresa Alarcos Quality Center, será compartida con iguales porcentajes entre el alumno, el director y el tutor académico.
-	
-	Este documento fue compuesto con \LaTeX{}. Imágenes generadas con GIMP 2.
+	\noindent Cuadro de Mando para la Visualización de la Calidad del Software, Integrado con un Entorno de Medición
+
+	\noindent\copyright~ 2010 Jose Domingo López López \\
+	\phantom{\copyright~ 2010} María de los Ángeles Moraga de la Rubia \\
+	\phantom{\copyright~ 2010} Moisés Rodriguez Monje
+
+	\noindent En virtud del Artículo 7 del Real Decreto Legislativo 1/1996, de 12 de abril por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, modificado por la Ley 23/2006 de 7 de julio, este PFC se considera una obra en colaboración entre las diferentes partes. Por tanto la propiedad intelectual de este PFC (Véase Anexo \ref{anexo:cpi}) de manera aislada, sin ser integrado con las herramientas y entornos de la empresa Alarcos Quality Center, será compartida con iguales porcentajes entre el alumno, el director y el tutor académico.
+
+	\noindent Este documento ha sido compuesto con \LaTeX{}. Imágenes generadas con GIMP 2.6.
 \end{small}
 \clearpage
 % En los índices numeramos las páginas en números romanos
@@ -67,7 +70,7 @@
 \pagenumbering{Roman}
 % Índice de secciones
 \tableofcontents
-
+\clearpage
 
 \parskip=10pt
 \pagenumbering{arabic}
@@ -82,18 +85,17 @@
 \input{Medios.tex}
 \clearpage
 
-\pagestyle{plain}
-% Añade los apéndices al índice
-\addcontentsline{toc}{section}{Anexos}
-% Apéndices
-\input{Anexos.tex}
-
 \clearpage\phantomsection
+\pagestyle{plain}
 % Añade la bibliografía al índice
 \addcontentsline{toc}{section}{\bibname}
 % Bibliografía
 \bibliographystyle{plain}
-\pagestyle{plain} 
 \bibliography{Bibliografia}
+\clearpage
+% Añade los apéndices al índice
+\addcontentsline{toc}{section}{Anexos}
+% Apéndices
+\input{Anexos.tex}
 
 \end{document}
