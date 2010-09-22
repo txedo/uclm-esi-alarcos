@@ -8,12 +8,25 @@ El PUD \cite{pud} es una evolución del Proceso Unificado de Rational, que define
 \begin{myitemize}
 	\item \textbf{Dirigido por casos de uso}. Para poder desarrollar un sistema es necesario saber qué necesitan sus usuarios. Un usuario, en semejanza al concepto de \textit{actor} en UML, puede ser un ser humano u otro sistema que interacciona con el sistema que se está desarrollando. Las necesidades de un usuario se denominan requisitos funcionales y se representan por medio de casos de uso. Por tanto, un caso de uso representa un requisito funcional del sistema que proporciona un resultado de valor a un usuario. Además, guían el proceso de desarrollo desde la especificación de requisitos hasta las pruebas y sirven a los desarrolladores para crear una serie de modelos que les permita llevarlos a cabo. Todos los casos de uso juntos constituyen el \textbf{modelo de casos de uso}.
 	\item \textbf{Centrado en la arquitectura}. Un sistema software puede contemplarse desde varios puntos de vista. Por tanto, la arquitectura software incluye los aspectos estáticos y dinámicos más significativos del sistema y debe estar profundamente relacionada con los casos de uso ya que debe permitir el desarrollo de los mismo. Tanto la arquitectura como los casos de uso deben desarrollarse en paralelo.
-	\item \textbf{Iterativo e incremental}. Partiendo del dicho latino \textit{divide et impera} (en castellano, \textit{divide y vencerás}), la filosofía del PUD se basa en la creación de \textbf{mini-proyectos} para repartir el trabajo. Cada mini-proyecto es una \textbf{iteración} que resulta en un \textbf{incremento}.
-	
-	Cada mini-proyecto sigue el esquema \textit{análisis, diseño, implementación y pruebas}. Cada iteración trata un grupo de casos de uso que juntos amplían la utilidad del producto desarrollado y trata los riesgos más importantes. Si la iteración cumple sus objetivos, se continúa con la próxima.
+	\item \textbf{Iterativo e incremental}. Partiendo del dicho latino \textit{divide et impera} (en castellano, \textit{divide y vencerás}), la filosofía del PUD se basa en la creación de \textbf{mini-proyectos} para repartir el trabajo. Cada mini-proyecto es una \textbf{iteración} que resulta en un \textbf{incremento}. Las iteraciones deben ser seleccionadas y ejecutarse de forma controlada y siguen el esquema \textit{requisitos, análisis, diseño, implementación y pruebas}, al cual denominaremos \textbf{flujo de trabajo}. Cada iteración trata un grupo de casos de uso que juntos amplían la utilidad del producto desarrollado y trata los riesgos más importantes. Si la iteración cumple sus objetivos, se continúa con la próxima.
+	\begin{myitemize}
+		\item \textit{Análisis}. Consiste en identificar y especificar los casos de uso relevantes.
+		\item \textit{Diseño}. Se debe crear un diseño utilizando la arquitectura seleccionada como guía para tratar de dotar al sistema de las funcionalidades representadas por los casos de uso identificados en la etapa de análisis.
+		\item \textit{Implementación}. En esta estapa se llevarán a cabo, a nivel de código, las decisiones tomadas en la etapa de diseño.
+		\item \textit{Pruebas}. Se verificará que los cambios realizados en el sistema satisfacen los casos de uso.
+	\end{myitemize}
 \end{myitemize}
 
+\imagen{./images/mapa-conceptual-pud.png}{0.4}{Mapa conceptual del PUD}{mapa-conceptual-pud}
 
 \subsubsection{Ciclo de Vida del PUD}
 
-Debido al enfoque iterativo e incremental que caracteriza al PUD, éste se divide en ciclos que a su vez se dividen en fases.
+Debido al enfoque iterativo e incremental que caracteriza al PUD, éste se divide en ciclos. Cada ciclo consta de cuatro fases que a su vez se dividen en iteraciones. Por último, cada iteración sigue el esquema \textit{requisitos, análisis, diseño, implementación y pruebas} (Fig. \ref{fig:mapa-conceptual-pud}).
+
+Las cuatro fases que constituyen un ciclo son las siguientes:
+\begin{myitemize}
+	\item \textbf{Inicio o Factibilidad}. Se obtiene un modelo de casos de uso simplificado, se identifican riesgos potenciales y se estima el proyecto de manera aproximada.
+	\item \textbf{Elaboración}. Se mejora el modelo de casos de usoy se diseña la arquitectura del sistema. A continuación, se desarrollan los casos de uso más críticos que se identificaron en la fase de inicio. Al finalizar esta fase se obtiene una \textit{línea base} de la arquitectura y se pueden planificar las actividades y estimar los recursos necesarios para terminar el proyecto.
+	\item \textbf{Construcción}. Se crea el producto con todos los casos de uso que la organización y el cliente han acordado para el desarrollo de la versión actual.
+	\item \textbf{Transición}. Implica el mantenimiento del sistema en el contexto de impartición de cursos de formación, ayuda y asistencia técnica y corrección de errores y \textit{bugs}.
+\end{myitemize}
