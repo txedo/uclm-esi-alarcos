@@ -2,8 +2,6 @@
 
 Debido al carácter relativamente investigador que posee este proyecto, en el que se producirán numerosas adiciones y modificaciones de requisitos de usuario a lo largo de su ciclo de vida, se ha optado por utilizar una metodología de trabajo genérica que permita adaptarse a este caso de estudio. Por ello, la metodología elegida es el \textbf{Proceso Unificado de Desarrollo} (en adelante PUD).
 
-\subsection{El Proceso Unificado de Desarrollo}
-
 El PUD \cite{pud} es una evolución del Proceso Unificado de Rational, que define un ``conjunto de actividades necesarias para transformar los requisitos de usuario en un sistema software''. Es un marco genérico que puede especializarse para una gran variedad de sistemas de software, para diferentes áreas de aplicación, diferentes tipos de organizaciones, diferentes niveles de aptitud y diferentes tamaños de proyectos. Sus principales características son:
 \begin{myitemize}
 	\item \textbf{Dirigido por casos de uso}. Para poder desarrollar un sistema es necesario saber qué necesitan sus usuarios. Un usuario, en semejanza al concepto de \textit{actor} en UML, puede ser un ser humano u otro sistema que interacciona con el sistema que se está desarrollando. Las necesidades de un usuario se denominan requisitos funcionales y se representan por medio de casos de uso. Por tanto, un caso de uso representa un requisito funcional del sistema que proporciona un resultado de valor a un usuario. Además, guían el proceso de desarrollo desde la especificación de requisitos hasta las pruebas y sirven a los desarrolladores para crear una serie de modelos que les permita llevarlos a cabo. Todos los casos de uso juntos constituyen el \textbf{modelo de casos de uso}.
@@ -19,14 +17,12 @@ El PUD \cite{pud} es una evolución del Proceso Unificado de Rational, que define
 
 \imagen{./images/mapa-conceptual-pud.png}{0.4}{Mapa conceptual del PUD}{fig:mapa-conceptual-pud}
 
-\subsubsection{Ciclo de Vida del PUD}
-
 Debido al enfoque iterativo e incremental que caracteriza al PUD, éste se divide en ciclos. Cada ciclo consta de cuatro fases que a su vez se dividen en iteraciones. Por último, cada iteración sigue el esquema \textit{requisitos, análisis, diseño, implementación y pruebas} (Fig. \ref{fig:mapa-conceptual-pud}).
 
 Las cuatro fases que constituyen un ciclo son las siguientes:
 \begin{myitemize}
 	\item \textbf{Inicio o Factibilidad}. Se obtiene un modelo de casos de uso simplificado, se identifican riesgos potenciales y se estima el proyecto de manera aproximada.
-	\item \textbf{Elaboración}. Se mejora el modelo de casos de usoy se diseña la arquitectura del sistema. A continuación, se desarrollan los casos de uso más críticos que se identificaron en la fase de inicio. Al finalizar esta fase se obtiene una \textit{línea base} de la arquitectura y se pueden planificar las actividades y estimar los recursos necesarios para terminar el proyecto.
-	\item \textbf{Construcción}. Se crea el producto con todos los casos de uso que la organización y el cliente han acordado para el desarrollo de la versión actual.
-	\item \textbf{Transición}. Implica el mantenimiento del sistema en el contexto de impartición de cursos de formación, ayuda y asistencia técnica y corrección de errores y \textit{bugs}.
+	\item \textbf{Elaboración}. Se mejora el modelo de casos de uso y se diseña la arquitectura del sistema. A continuación, se desarrollan los casos de uso más críticos que se identificaron en la fase de inicio y se obtiene una \textit{línea base} de la arquitectura para planificar las actividades y estimar los recursos necesarios para terminar el proyecto.
+	\item \textbf{Construcción}. Se crea el producto en base a las dos fases anteriores.
+	\item \textbf{Transición}. Implica la corrección de errores y \textit{bugs}, así como el mantenimiento del sistema.
 \end{myitemize}
