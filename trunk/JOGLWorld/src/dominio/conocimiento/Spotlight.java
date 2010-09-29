@@ -39,7 +39,7 @@ public class Spotlight {
 		this.render(pos, dir);
 
 		// Angle of the cone light emitted by the spot : value between 0 to 180
-		gl.glLightf(GL.GL_LIGHT1, GL.GL_SPOT_CUTOFF, 90.0f);
+		gl.glLightf(GL.GL_LIGHT1, GL.GL_SPOT_CUTOFF, 120.0f);
 		gl.glLightf(GL.GL_LIGHT1, GL.GL_SPOT_EXPONENT, 15.0f);
 	       
         // Light attenuation (default values used here : no attenuation with the distance)
