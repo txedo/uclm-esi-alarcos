@@ -6,5 +6,5 @@ public abstract class Figure {
 	protected float origin_z;
 	protected Color color;
 	
-	public abstract void draw (GL gl, boolean wired);	
+	public abstract void draw (boolean wired);	
 }
