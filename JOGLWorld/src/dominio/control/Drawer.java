@@ -1,7 +1,6 @@
 package dominio.control;
 
 
-import java.nio.IntBuffer;
 import java.util.Random;
 import java.util.Vector;
 
@@ -14,7 +13,6 @@ import dominio.conocimiento.Camera;
 import dominio.conocimiento.Color;
 import dominio.conocimiento.Figure;
 import dominio.conocimiento.IConstantes;
-import dominio.conocimiento.Scene;
 import dominio.conocimiento.Spotlight;
 import dominio.conocimiento.Tower;
 import dominio.conocimiento.Vector3f;
@@ -23,7 +21,6 @@ public class Drawer implements GLEventListener, IConstantes {
 	
 	private Vector<Figure> torres;
 	private Camera cam;
-	private Scene sce;
 	private Spotlight spotlight;
 	
 	Vector3f aux = new Vector3f();
@@ -39,7 +36,8 @@ public class Drawer implements GLEventListener, IConstantes {
 		cam.render(glu);
 		spotlight.render(cam.getPosition(), cam.getViewDir());
 		
-		drawWorld(glDrawable);
+		drawWorld(glDrawable, true);
+		
 		gl.glFlush();
 	}
 
@@ -57,12 +55,10 @@ public class Drawer implements GLEventListener, IConstantes {
 		gl.glEnable(GL.GL_DEPTH_TEST);						// Enables Depth Testing
 		gl.glClearDepth(1.0f);								// Depth Buffer Setup
 		gl.glDepthFunc(GL.GL_LEQUAL);						// The Type Of Depth Testing To Do
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glShadeModel(GL.GL_SMOOTH);						// Enable Smooth Shading
-		gl.glEnable(GL.GL_POLYGON_SMOOTH);
-		gl.glHint(GL.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
+		gl.glEnable(GL.GL_BLEND);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);						
 		
 		cam = new Camera(0.0f, 10.0f, 0.0f, 1.0f, -1.0f, 1.0f);
@@ -111,7 +107,7 @@ public class Drawer implements GLEventListener, IConstantes {
 		gl.glLoadIdentity();
 	}
 	
-	public void drawWorld(GLAutoDrawable glDrawable) {
+	public void drawWorld(GLAutoDrawable glDrawable, boolean wired) {
 		final GL gl = glDrawable.getGL();
 		
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 0.3f);
@@ -124,7 +120,7 @@ public class Drawer implements GLEventListener, IConstantes {
 		gl.glEnd();
 		
 		for (Figure f : torres) {
-			f.draw(gl);
+			f.draw(gl, wired);
 		}
 		
 

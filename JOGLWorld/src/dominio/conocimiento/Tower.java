@@ -11,6 +11,7 @@ public class Tower extends Figure {
 	private float width;
 	private float depth;
 	private float height;
+	private float edge_width = 1.0f;
 
 	public Tower(float origin_x, float origin_z, float width, float depth,
 			float height, Color color) {
@@ -34,43 +35,70 @@ public class Tower extends Figure {
 		this.color = color;
 	}
 	
-	public void draw(GL gl) {
+	public void draw(GL gl, boolean wired) {
 		// Aplicamos el mismo color a todos los vértices
 		gl.glColor4fv(color.getColorFB());
-		gl.glPolygonMode(GL.GL_FRONT, GL.GL_FILL);
-		gl.glBegin(GL.GL_QUADS);
-			// Base	(en principio no es necesario dibujarla)
-			// Frente
-			gl.glNormal3f(0.0f, 0.0f, 1.0f);
-			gl.glVertex3f(origin_x, 0, origin_z + depth);
-			gl.glVertex3f(origin_x, height, origin_z + depth);
-			gl.glVertex3f(origin_x + width, height, origin_z + depth);
-			gl.glVertex3f(origin_x + width, 0, origin_z + depth);
-			// Lado derecho
-			gl.glNormal3f(1.0f, 0.0f, 0.0f);
-			gl.glVertex3f(origin_x + width, 0, origin_z + depth);
-			gl.glVertex3f(origin_x + width, height, origin_z + depth);
-			gl.glVertex3f(origin_x + width, height, origin_z);
-			gl.glVertex3f(origin_x + width, 0, origin_z);
-			// Espalda
-			gl.glNormal3f(0.0f, 0.0f, -1.0f);
-			gl.glVertex3f(origin_x, 0, origin_z);
-			gl.glVertex3f(origin_x + width, 0, origin_z);
-			gl.glVertex3f(origin_x + width, height, origin_z);
-			gl.glVertex3f(origin_x, height, origin_z);
-			// Lado izquierdo
-			gl.glNormal3f(-1.0f, 0.0f, 0.0f);
-			gl.glVertex3f(origin_x, 0, origin_z);
-			gl.glVertex3f(origin_x, height, origin_z);
-			gl.glVertex3f(origin_x, height, origin_z + depth);
-			gl.glVertex3f(origin_x, 0, origin_z + depth);
-			// Planta (igual que la base pero con eje Z = height
-			gl.glNormal3f(0.0f, 1.0f, 0.0f);
-			gl.glVertex3f(origin_x, height, origin_z);
-			gl.glVertex3f(origin_x + width, height, origin_z);
-			gl.glVertex3f(origin_x + width, height, origin_z + depth);
-			gl.glVertex3f(origin_x, height, origin_z + depth);
-		gl.glEnd();
+		// Relleno
+		gl.glEnable(GL.GL_LIGHTING);
+		gl.glEnable(GL.GL_LIGHT1);
+		gl.glEnable(GL.GL_POLYGON_OFFSET_FILL);
+		gl.glPolygonOffset(0.0f, 0.0f);
+		this.drawTower(gl);
+		gl.glDisable(GL.GL_POLYGON_OFFSET_FILL);
+		// Bordes
+		if (wired)
+		{
+			gl.glDisable(GL.GL_LIGHTING);
+			gl.glDisable(GL.GL_LIGHT1);
+			gl.glLineWidth(edge_width);
+			gl.glEnable(GL.GL_POLYGON_OFFSET_LINE);
+			gl.glPolygonOffset(-1.0f, -1.0f);
+			gl.glColor3f(0.0f, 0.0f, 0.0f);
+			gl.glPolygonMode(GL.GL_FRONT, GL.GL_LINE);
+			this.drawTower(gl);
+			gl.glDisable(GL.GL_POLYGON_OFFSET_LINE);
+			gl.glPolygonMode(GL.GL_FRONT, GL.GL_FILL);
+			gl.glPolygonOffset(0.0f, 0.0f);
+		}
+	}
+	
+	private void drawTower (GL gl) {
+		gl.glPushMatrix();
+			gl.glTranslatef(this.origin_x, 0, this.origin_z);
+			gl.glBegin(GL.GL_QUADS);
+				// Base	(en principio no es necesario dibujarla)
+				// Frente
+				gl.glNormal3f(0.0f, 0.0f, 1.0f);
+				gl.glVertex3f(0, 0, depth);
+				gl.glVertex3f(width, 0, depth);
+				gl.glVertex3f(width, height, depth);
+				gl.glVertex3f(0, height, depth);
+				// Lado derecho
+				gl.glNormal3f(1.0f, 0.0f, 0.0f);
+				gl.glVertex3f(width, 0, depth);
+				gl.glVertex3f(width, 0, 0);
+				gl.glVertex3f(width, height, 0);
+				gl.glVertex3f(width, height, depth);
+				// Espalda
+				gl.glNormal3f(0.0f, 0.0f, -1.0f);
+				gl.glVertex3f(0, 0, 0);
+				gl.glVertex3f(0, height, 0);
+				gl.glVertex3f(width, height, 0);
+				gl.glVertex3f(width, 0, 0);
+				// Lado izquierdo
+				gl.glNormal3f(-1.0f, 0.0f, 0.0f);
+				gl.glVertex3f(0, 0, 0);
+				gl.glVertex3f(0, 0, depth);
+				gl.glVertex3f(0, height, depth);
+				gl.glVertex3f(0, height, 0);
+				// Planta (igual que la base pero con eje Z = height
+				gl.glNormal3f(0.0f, 1.0f, 0.0f);
+				gl.glVertex3f(0, height, 0);
+				gl.glVertex3f(0, height, depth);
+				gl.glVertex3f(width, height, depth);
+				gl.glVertex3f(width, height, 0);
+			gl.glEnd();
+		gl.glPopMatrix();
 	}
 
 }
