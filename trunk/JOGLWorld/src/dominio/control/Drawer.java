@@ -23,13 +23,13 @@ public class Drawer implements GLEventListener, IConstantes {
 	private Camera cam;
 	private Spotlight spotlight;
 	
+	private GL gl;
+	private GLU glu;
+	
 	Vector3f aux = new Vector3f();
 	
 	@Override
 	public void display(GLAutoDrawable glDrawable) {
-		final GL gl = glDrawable.getGL();
-		final GLU glu = new GLU();
-		
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         
 		gl.glLoadIdentity();
@@ -48,7 +48,8 @@ public class Drawer implements GLEventListener, IConstantes {
 
 	@Override
 	public void init(GLAutoDrawable glDrawable) {		
-		final GL gl = glDrawable.getGL();
+		this.gl = glDrawable.getGL();
+		this.glu = new GLU();
 		
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);			// White Background
@@ -56,13 +57,16 @@ public class Drawer implements GLEventListener, IConstantes {
 		gl.glClearDepth(1.0f);								// Depth Buffer Setup
 		gl.glDepthFunc(GL.GL_LEQUAL);						// The Type Of Depth Testing To Do
 		gl.glShadeModel(GL.GL_SMOOTH);						// Enable Smooth Shading
+		// Configuración para obtener un antialiasing en las líneas
 		gl.glEnable(GL.GL_BLEND);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);						
+		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 		
+		// Creamos una cámara y un foco de luz
 		cam = new Camera(0.0f, 10.0f, 0.0f, 1.0f, -1.0f, 1.0f);
 		spotlight = new Spotlight(gl, 1.0f, 1.0f, 1.0f);
+		// Habilitamos el color natural de los materiales
 		gl.glEnable(GL.GL_COLOR_MATERIAL);
 
 		// Configuramos los parámetros del mundo
@@ -82,7 +86,7 @@ public class Drawer implements GLEventListener, IConstantes {
 		Tower t;
 		for (int i = 0; i < 1000; i++) {
 			c = new Color (r.nextFloat(), r.nextFloat(), r.nextFloat());
-			t = new Tower (r.nextFloat()*100,r.nextFloat()*100,r.nextFloat(),r.nextFloat()*10,c);
+			t = new Tower (gl, r.nextFloat()*100,r.nextFloat()*100,r.nextFloat(),r.nextFloat()*10,c);
 			torres.add(t);
 		}
 	}
@@ -91,9 +95,6 @@ public class Drawer implements GLEventListener, IConstantes {
 	public void reshape(GLAutoDrawable glDrawable, int x, int y, int width,
 			int height) {
 		// Qué acción realizar cuando se redimensiona la ventana
-		final GL gl = glDrawable.getGL();
-		final GLU glu = new GLU();
-
 		gl.setSwapInterval(1);
 
 		// lower left corner (0,0); upper right corner (width,height)
@@ -108,8 +109,6 @@ public class Drawer implements GLEventListener, IConstantes {
 	}
 	
 	public void drawWorld(GLAutoDrawable glDrawable, boolean wired) {
-		final GL gl = glDrawable.getGL();
-		
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 0.3f);
 		gl.glNormal3f(0.0f, 1.0f, 0.0f);
 		gl.glBegin(GL.GL_POLYGON);	
@@ -120,7 +119,7 @@ public class Drawer implements GLEventListener, IConstantes {
 		gl.glEnd();
 		
 		for (Figure f : torres) {
-			f.draw(gl, wired);
+			f.draw(wired);
 		}
 		
 
