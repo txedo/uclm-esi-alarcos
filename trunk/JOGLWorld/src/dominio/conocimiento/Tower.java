@@ -12,47 +12,32 @@ public class Tower extends Figure {
 	private float depth;
 	private float height;
 	private float edge_width = 1.0f;
-	private GL gl;
 
 	public Tower(GL gl, float origin_x, float origin_z, float width, float depth,
 			float height, Color color) {
 		this.gl = gl;
-		// Base rectangular
 		this.origin_x = origin_x;
 		this.origin_z = origin_z;
+		this.color = color;
+		// Base rectangular
 		this.width = width;
 		this.depth = depth;
 		this.height = height;
-		this.color = color;
-	}
-
-	public Tower(GL gl, float origin_x, float origin_z, float width, float height,
-			Color color) {
-		// Base cuadrada
-		this.gl = gl;
-		this.origin_x = origin_x;
-		this.origin_z = origin_z;
-		this.width = width;
-		this.depth = width;
-		this.height = height;
-		this.color = color;
 	}
 	
-	public void draw(boolean wired) {
+	public void draw() {
 		// Aplicamos el mismo color a todos los vértices de la torre
 		gl.glColor4fv(color.getColorFB());
 		// Configuramos la parte sólida de la torre (el relleno)
-		gl.glEnable(GL.GL_LIGHTING);
-		gl.glEnable(GL.GL_LIGHT1);					// Habilitamos la iluminacion
+		super.enableLight();
 		gl.glEnable(GL.GL_POLYGON_OFFSET_FILL);		// Habilitamos el modo relleno
 		gl.glPolygonOffset(0.0f, 0.0f);				// Configuramos el offset del polígono sin desfase
 		this.drawTower();							// Dibujamos la torre
 		gl.glDisable(GL.GL_POLYGON_OFFSET_FILL);	// Deshabilitamos el modo relleno
 		// Configuramos los bordes del polígono (en caso de que la llamada lo solicite)
-		if (wired)
+		if (this.edge_width > 0.0f)
 		{
-			gl.glDisable(GL.GL_LIGHTING);
-			gl.glDisable(GL.GL_LIGHT1);				// Deshabilitamos la iluminación
+			super.disableLight();
 			gl.glLineWidth(edge_width);				// Configuramos el grosor del borde
 			gl.glEnable(GL.GL_POLYGON_OFFSET_LINE);	// Habilitamos el modo línea
 			gl.glPolygonOffset(-1.0f, -1.0f);		// Desfasamos un poco para no dejar huecos en blanco sin rellenar entre la línea y el polígono
