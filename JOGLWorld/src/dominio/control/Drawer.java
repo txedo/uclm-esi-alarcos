@@ -1,6 +1,5 @@
 package dominio.control;
 
-
 import java.util.Random;
 import java.util.Vector;
 
@@ -13,15 +12,20 @@ import dominio.conocimiento.Camera;
 import dominio.conocimiento.Color;
 import dominio.conocimiento.Figure;
 import dominio.conocimiento.IConstantes;
+import dominio.conocimiento.IViewLevels;
+import dominio.conocimiento.Node;
 import dominio.conocimiento.Spotlight;
 import dominio.conocimiento.Tower;
 import dominio.conocimiento.Vector3f;
 
-public class Drawer implements GLEventListener, IConstantes {
+public class Drawer implements GLEventListener, IConstantes, IViewLevels {
 	
-	private Vector<Figure> torres;
+	private Vector<Figure> towers;
+	private Vector<Figure> nodes;
 	private Camera cam;
 	private Spotlight spotlight;
+	
+	private int viewLevel = NODE_LEVEL;
 	
 	private GL gl;
 	private GLU glu;
@@ -33,11 +37,20 @@ public class Drawer implements GLEventListener, IConstantes {
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         
 		gl.glLoadIdentity();
-		cam.render(glu);
-		spotlight.render(cam.getPosition(), cam.getViewDir());
 		
-		drawWorld(glDrawable, true);
-		
+		switch (viewLevel) {
+			case NODE_LEVEL:
+				cam.render(glu);
+				spotlight.render(cam.getPosition(), cam.getViewDir());
+				drawNodes();
+				break;
+			case TOWER_LEVEL:
+				cam.render(glu);
+				spotlight.render(cam.getPosition(), cam.getViewDir());
+				drawTowers();
+				break;
+		}
+
 		gl.glFlush();
 	}
 
@@ -50,6 +63,8 @@ public class Drawer implements GLEventListener, IConstantes {
 	public void init(GLAutoDrawable glDrawable) {		
 		this.gl = glDrawable.getGL();
 		this.glu = new GLU();
+		
+		this.viewLevel = NODE_LEVEL;
 		
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);			// White Background
@@ -65,30 +80,20 @@ public class Drawer implements GLEventListener, IConstantes {
 		
 		// Creamos una cámara y un foco de luz
 		cam = new Camera(0.0f, 10.0f, 0.0f, 1.0f, -1.0f, 1.0f);
+		cam.render(glu);
 		spotlight = new Spotlight(gl, 1.0f, 1.0f, 1.0f);
+		spotlight.render(cam.getPosition(), cam.getViewDir());
 		// Habilitamos el color natural de los materiales
 		gl.glEnable(GL.GL_COLOR_MATERIAL);
 
 		// Configuramos los parámetros del mundo
-		setupWorld();
+		setupNodes();
 		
 		// Añadimos los listener de teclado y ratón
 		glDrawable.addKeyListener(new MyKeyListener(this.cam));
 		glDrawable.addMouseListener(new MyMouseListener(this.cam));
 		glDrawable.addMouseWheelListener(new MyMouseWheelListener(this.cam));
 		glDrawable.addMouseMotionListener(new MyMouseMotionListener(this.cam));
-	}
-
-	private void setupWorld() {
-		torres = new Vector<Figure>();
-		Random r = new Random();
-		Color c;
-		Tower t;
-		for (int i = 0; i < 1000; i++) {
-			c = new Color (r.nextFloat(), r.nextFloat(), r.nextFloat());
-			t = new Tower (gl, r.nextFloat()*100,r.nextFloat()*100,r.nextFloat(),r.nextFloat()*10,c);
-			torres.add(t);
-		}
 	}
 
 	@Override
@@ -108,7 +113,43 @@ public class Drawer implements GLEventListener, IConstantes {
 		gl.glLoadIdentity();
 	}
 	
-	public void drawWorld(GLAutoDrawable glDrawable, boolean wired) {
+	private void setupNodes() {
+		nodes = new Vector<Figure>();
+		Random r = new Random();
+		Color c;
+		c = new Color (r.nextFloat(), r.nextFloat(), r.nextFloat());
+		Node n = new Node(gl, 0.0f, 0.0f, 1.0f, c);
+	}
+	
+	private void drawNodes () {
+		this.drawFloor();
+		
+		for (Figure f : nodes) {
+			f.draw();
+		}
+	}
+	
+	private void setupTowers() {
+		towers = new Vector<Figure>();
+		Random r = new Random();
+		Color c;
+		Tower t;
+		for (int i = 0; i < 1000; i++) {
+			c = new Color (r.nextFloat(), r.nextFloat(), r.nextFloat());
+			t = new Tower (gl, r.nextFloat()*100,r.nextFloat()*100,r.nextFloat(),r.nextFloat(),r.nextFloat()*10,c);
+			towers.add(t);
+		}
+	}
+	
+	public void drawTowers() {
+		this.drawFloor();
+		
+		for (Figure f : towers) {
+			f.draw();
+		}
+	}
+	
+	private void drawFloor () {
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 0.3f);
 		gl.glNormal3f(0.0f, 1.0f, 0.0f);
 		gl.glBegin(GL.GL_POLYGON);	
@@ -117,18 +158,6 @@ public class Drawer implements GLEventListener, IConstantes {
 			gl.glVertex3f(100, 0, 100);
 			gl.glVertex3f(0, 0, 100);
 		gl.glEnd();
-		
-		for (Figure f : torres) {
-			f.draw(wired);
-		}
-		
-
 	}
-
-	public Camera getCam() {
-		return cam;
-	}
-	
-
 
 }
