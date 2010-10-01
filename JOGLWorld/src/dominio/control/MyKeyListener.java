@@ -3,14 +3,20 @@ package dominio.control;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.media.opengl.GL;
+
 import dominio.conocimiento.Camera;
+import dominio.conocimiento.IViewLevels;
+import dominio.conocimiento.Vector3f;
 
 public class MyKeyListener implements KeyListener {
 	
 	private Camera cam;
+	private Drawer d;
 
-	public MyKeyListener(Camera c) {//, Scene s) {
+	public MyKeyListener(Camera c, Drawer d) {//, Scene s) {
 		this.cam = c;
+		this.d = d;
 	}
 
 	@Override
@@ -80,6 +86,14 @@ public class MyKeyListener implements KeyListener {
 				break;
 			case KeyEvent.VK_C:
 				cam.moveDown();
+				break;
+			case KeyEvent.VK_P:
+				System.out.println("P");
+				d.setViewLevel(IViewLevels.TOWER_LEVEL);
+				break;
+			case KeyEvent.VK_O:
+				System.out.println("O");
+				d.setViewLevel(IViewLevels.NODE_LEVEL);
 				break;
 		}
 	}

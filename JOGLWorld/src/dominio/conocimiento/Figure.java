@@ -19,4 +19,20 @@ public abstract class Figure {
 		gl.glDisable(GL.GL_LIGHTING);
 		gl.glDisable(GL.GL_LIGHT1);			// Deshabilitamos la iluminación
 	}
+
+	public float getOrigin_x() {
+		return origin_x;
+	}
+
+	public void setOrigin_x(float origin_x) {
+		this.origin_x = origin_x;
+	}
+
+	public float getOrigin_z() {
+		return origin_z;
+	}
+
+	public void setOrigin_z(float origin_z) {
+		this.origin_z = origin_z;
+	}
 }

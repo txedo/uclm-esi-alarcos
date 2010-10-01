@@ -159,5 +159,15 @@ public class Camera implements IConstantes {
 	public void moveDown() {
 		move (upVector.mult(-1));
 	}
+
+	public void setPosition(Vector3f position) {
+		this.position = position;
+	}
+
+	public void setViewDir(Vector3f viewDir) {
+		this.viewDir = viewDir;
+		rightVector = viewDir.cross(upVector);
+		frontVector = rightVector.cross(upVector).mult(-1);
+	}
 	
 }
