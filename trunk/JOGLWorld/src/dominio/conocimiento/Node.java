@@ -18,13 +18,21 @@ public class Node extends Figure {
 	@Override
 	public void draw() {
 		gl.glColor4fv(color.getColorFB());
-		gl.glNormal3f(0.0f, 1.0f, 0.0f);
+		//gl.glNormal3f(0.0f, 1.0f, 0.0f);
 		gl.glBegin(GL.GL_POLYGON);	
-			gl.glVertex3f(this.origin_x, 0, this.origin_z);
-			gl.glVertex3f(this.origin_x, 0, this.origin_z + width);
-			gl.glVertex3f(this.origin_x + width, 0, this.origin_z + width);
-			gl.glVertex3f(this.origin_x + width, 0, this.origin_z);
+			gl.glVertex2f(this.origin_x, this.origin_z);
+			gl.glVertex2f(this.origin_x, this.origin_z + width);
+			gl.glVertex2f(this.origin_x + width, this.origin_z + width);
+			gl.glVertex2f(this.origin_x + width, this.origin_z);
 		gl.glEnd();
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
 	}
 	
 }
