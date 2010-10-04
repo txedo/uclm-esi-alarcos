@@ -87,14 +87,6 @@ public class MyKeyListener implements KeyListener {
 			case KeyEvent.VK_C:
 				cam.moveDown();
 				break;
-			case KeyEvent.VK_P:
-				System.out.println("P");
-				d.setViewLevel(IViewLevels.TOWER_LEVEL);
-				break;
-			case KeyEvent.VK_O:
-				System.out.println("O");
-				d.setViewLevel(IViewLevels.NODE_LEVEL);
-				break;
 		}
 	}
 
