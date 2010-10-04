@@ -18,6 +18,9 @@ public class Main extends Frame {
 	protected static GLCanvas canvas;
 	protected static Animator animator;
 	
+	private static final int WIDTH = 800;
+	private static final int HEIGHT = 600;
+	
 	public static void main(String[] args) {
 		// Creating an object to manipulate OpenGL parameters.
 		GLCapabilities capabilities = new GLCapabilities();
@@ -29,11 +32,11 @@ public class Main extends Frame {
 		Frame frame = new Frame("");
 	    canvas = new GLCanvas();
 
+	    frame.add(canvas);
+	    frame.setSize(WIDTH, HEIGHT);
 	    canvas.addGLEventListener(new Drawer());
 	    canvas.setFocusable(true);
 	    canvas.requestFocus();
-	    frame.add(canvas);
-	    frame.setSize(800, 600);
 	    // Creating an animator that will redraw the scene 40 times per second
 	    animator = new FPSAnimator(40);
 	    // Registering the canvas to the animator

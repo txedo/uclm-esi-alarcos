@@ -18,8 +18,7 @@ public class Node extends Figure {
 	@Override
 	public void draw() {
 		gl.glColor4fv(color.getColorFB());
-		//gl.glNormal3f(0.0f, 1.0f, 0.0f);
-		gl.glBegin(GL.GL_POLYGON);	
+		gl.glBegin(GL.GL_QUADS);	
 			gl.glVertex2f(this.origin_x, this.origin_z);
 			gl.glVertex2f(this.origin_x, this.origin_z + width);
 			gl.glVertex2f(this.origin_x + width, this.origin_z + width);

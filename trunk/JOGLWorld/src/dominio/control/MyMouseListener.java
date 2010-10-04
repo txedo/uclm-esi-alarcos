@@ -11,18 +11,24 @@ import dominio.conocimiento.Camera;
 public class MyMouseListener implements MouseListener {
 
 	private Camera cam;
+	private Drawer drawer;
 
-	public MyMouseListener(Camera c) {
+	public MyMouseListener(Camera c, Drawer d) {
 		this.cam = c;
+		this.drawer = d;
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getClickCount() == 2){
-			System.out.println("doble click");		
+			System.out.println("doble click");
+			this.drawer.setNodeLevel();
 		} else {
 			System.out.println ("click");
+			this.drawer.getPickPoint().setX((float)e.getPoint().getX());
+			this.drawer.getPickPoint().setZ((float)e.getPoint().getY());
+			this.drawer.setSelectionMode(true);
 		}
 	}
 
