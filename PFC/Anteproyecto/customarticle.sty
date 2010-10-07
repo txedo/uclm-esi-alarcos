@@ -50,7 +50,7 @@
 
 % Opción caption
 \ifOrdenes@caption
-	\RequirePackage[hang,large,bf]{caption}
+	\RequirePackage[hang,small,bf]{caption}
 \fi
 
 % Opción counter
@@ -88,11 +88,11 @@
 \ifOrdenes@fancy
 	\RequirePackage{fancyhdr}
 	\chead{}
-	\fancyhead[R,L]{}
-	\fancyhead[L,R]{}
+	\fancyhead[R,R]{\nouppercase{\leftmark}}
+	\fancyhead[L,L]{}
 	\cfoot{}
 	\fancyfoot[R,R]{\thepage}
-	\fancyfoot[L,L]{\nouppercase{\leftmark}}	
+	\fancyfoot[L,L]{}	
 \else
 	\let\ps@fancy\ps@plain
 \fi

@@ -3,10 +3,10 @@
 \documentclass[oneside,12pt,a4paper,titlepage]{article}
 
 % Carga de paquetes necesarios. "customarticle" es un paquete personalizado
-\usepackage[spanish]{babel} 
-\RequirePackage[T1]{fontenc}
-\RequirePackage[ansinew]{inputenx}
-\usepackage{array}
+\usepackage[english,spanish]{babel} % Internacionalización de LaTeX
+\usepackage[ansinew]{inputenx}% Código de caracteres de teclado
+\usepackage[T1]{fontenc}      % Codificación de fundiciones
+\usepackage{times}            % Familia base de fundiciones
 \usepackage{graphicx}
 \usepackage{pifont}
 \usepackage[usenames,dvipsnames]{color}
@@ -19,6 +19,8 @@
 	pdfsubject={Anteproyecto}
 	pdfauthor={Jose Domingo López López}}
 \usepackage[spanish,caption,counter,title,fancy]{customarticle}
+% PAQUETES PARA AJUSTE DE MÁRGENES, ESPACIOS
+\usepackage{setspace}         % Interlineado
 
 \makeindex
 
@@ -59,7 +61,7 @@
 	\noindent Cuadro de Mando para la Visualización de la Calidad del Software, Integrado con un Entorno de Medición
 
 	\noindent\copyright~ 2010 Jose Domingo López López \\
-	\phantom{\copyright~ 2010} María de los Ángeles Moraga de la Rubia \\
+	\phantom{\copyright~ 2010} M\textordfeminine{} Ángeles Moraga de la Rubia \\
 	\phantom{\copyright~ 2010} Moisés Rodriguez Monje
 
 	\noindent En virtud del Artículo 7 del Real Decreto Legislativo 1/1996, de 12 de abril por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, modificado por la Ley 23/2006 de 7 de julio, este PFC se considera una obra en colaboración entre las diferentes partes. Por tanto la propiedad intelectual de este PFC (Véase Anexo \ref{anexo:cpi}) de manera aislada, sin ser integrado con las herramientas y entornos de la empresa Alarcos Quality Center, será compartida con iguales porcentajes entre el alumno, el director y el tutor académico.
@@ -75,6 +77,7 @@
 \clearpage
 
 \parskip=10pt
+%\onehalfspacing   % Espaciado 1,5 líneas (facilitado por setspace)
 \pagenumbering{arabic}
 \pagestyle{fancy}
 % Aqui se incluyen los archivos .tex que forman el documento
@@ -93,6 +96,7 @@
 \addcontentsline{toc}{section}{\bibname}
 % Bibliografía
 \bibliographystyle{plain}
+%\bibliographystyle{babplai3} % Estilo de bibliografía
 \bibliography{Bibliografia}
 \clearpage
 % Añade los apéndices al índice
