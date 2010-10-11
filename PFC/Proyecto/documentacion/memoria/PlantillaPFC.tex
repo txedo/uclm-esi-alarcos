@@ -50,20 +50,22 @@
 \renewcommand{\footrulewidth}{0pt}}
 
 
-% Primer capítulo
-\include{Introduccion} % Introducción
-% Segundo capítulo
-% ...
+% Capítulos que conforman el libro
+\include{Introduccion}
+\include{MotivacionYObjetivos}
+\include{EstadoDelArte}
+\include{MetodoDeTrabajo}
+\include{Resultados}
+\include{ConclusionesYPropuestas}
+
 
 %====================================
 %====================================
 % --- Bloque con los apéndices o anexos del PFC ---
 \appendix
 % Tras este punto los capítulos se numeran con letras.
+\include{ManualDeUsuario}
 
-%\include{NombreFichero} % Apéndice A
-
-%...............
 
 %====================================
 %====================================
@@ -72,11 +74,10 @@
 
 
 \renewcommand{\bibname}{Bibliografía} %Cambio de nombre de sección
-\nocite{*} % Comando por si queremos incluir todas las entradas de la bibliografía aunque no estén citadas en el texto pral.
+%\nocite{*} % Comando por si queremos incluir todas las entradas de la bibliografía aunque no estén citadas en el texto pral.
 \addcontentsline{toc}{chapter}{\bibname} % Añade la bibliografía al Índice de contenidos.
 \bibliography{PFCBib} % Bibliografía
 \bibliographystyle{babplai3} % Estilo de bibliografía
-
 \cleardoublepage
 %\renewcommand{\indexname}{Índice alfabético} %Cambio de nombre de sección
 \addcontentsline{toc}{chapter}{\indexname} % Añade al Índice de contenidos.
