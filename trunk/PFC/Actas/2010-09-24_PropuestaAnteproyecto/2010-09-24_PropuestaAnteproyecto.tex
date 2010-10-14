@@ -1,0 +1,77 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+\setlength{\headheight}{0 pt}
+\setlength{\headsep}{0 pt}
+\setlength{\textheight}{\dimexpr \paperheight-3cm-\headheight-\headsep-\footskip-1.5cm}
+\setlength{\topmargin}{\dimexpr 3cm-1in}
+\setlength{\textwidth}{\dimexpr \paperwidth-2.75cm*2}
+\setlength{\oddsidemargin}{\dimexpr 2.75cm-1in}
+
+% Macro para insertar una imagen
+%       Uso: \imagen{nombreFichero}{Factor escala}{Caption (leyenda)}{Label (identificador para referenciarla)}
+%-------------------------------
+\def\imagen#1#2#3#4{
+ \begin{figure}[h]
+ \begin{center}
+   \scalebox{#2}{\includegraphics{#1}}
+ \caption {#3}
+ \label{#4}
+ \end{center}
+ \end{figure}
+}
+
+\begin{document}
+\title{{\scshape \large 3\textordfeminine{} Reunión de PFC \\
+\huge Primera Versión del Anteproyecto}}
+\author{López J.D.; Rodriguez M.}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+	Los temas planeados para su tratamiento en esta convocatoria consisten en revisar una primera versión del anteproyecto, proponer un esqueleto para la memoria del PFC y justificar las librerías y tecnologías seleccionadas.
+\end{abstract}
+
+\tableofcontents
+%\clearpage
+
+%\input{introduccion.tex}
+%\input{tecnologias.tex}
+%\input{librerias.tex}
+
+%\newpage
+%\bibliographystyle{plain}
+%\pagestyle{plain}
+%\bibliography{bibliografia}
+
+\section{Revisión del Anteproyecto}
+
+En esta reunión se revisará la primera versión del anteproyecto, que previamente ha sido enviada por correo electrónico al director del PFC.
+
+La estructura que se ha seguido para la elaboración del anteproyecto ha sido según la especificación propuesta en la normativa aprobada por la Junta de Centro el 8 de Noviembre de 2007, vigente hasta el día de hoy. En dicha normativa se indica que el anteproyecto debe ocupar un máximo de 10 páginas. suponiendo que esa limitación se refiere al contenido del anteproyecto, excluyendo portada, índice, etc., el documento elaborado consta de 17 páginas, de las cuales:
+\begin{itemize}
+	\item Una página corresponde a la portada del anteproyecto, que sigue el formato propuesto para la portada de la documentación final.
+	\item Una página corresponde a la contraportada, en la que se indica el nombre del alumno, del tutor académico y del director del PFC.
+	\item Una página corresponde al índice de contenidos.
+	\item Diez páginas corresponden a los contenidos del anteproyecto, subdivididos a su vez en los puntos que se especifican en la misma normativa: objetivos, método y fases de trabajo y medios que se pretenden utilizar. Adicionalmente, se ha añadido una pequeña sección de introducción.
+	\item Una página corresponde a la bibliografía y referencias consultadas en la elaboración del mismo.
+	\item Tres páginas corresponden al contrato de propiedad intelectual, que deberá ser firmado por el alumno, el tutor académico y el director del PFC.
+\end{itemize}
+
+
+\section{Esqueleto de la memoria del PFC}
+
+Actualmente se está trabajando en el diseño de la plantilla \LaTeX{}, por lo que no se tiene fijado aún un modelo de documentación.
+
+
+\section{Justificación de librerías y tecnologías seleccionadas}
+
+Este punto se trata en 
+la sección \textit{Medios que se pretenden utilizar} del anteproyecto.
+
+\end{document}

@@ -58,6 +58,14 @@
 \include{Resultados}
 \include{ConclusionesYPropuestas}
 
+%====================================
+%====================================
+\renewcommand{\bibname}{Bibliografía} %Cambio de nombre de sección
+%\nocite{*} % Comando por si queremos incluir todas las entradas de la bibliografía aunque no estén citadas en el texto pral.
+\addcontentsline{toc}{chapter}{\bibname} % Añade la bibliografía al Índice de contenidos.
+\bibliography{PFCBib} % Bibliografía
+\bibliographystyle{babplai3} % Estilo de bibliografía
+\cleardoublepage
 
 %====================================
 %====================================
@@ -72,13 +80,6 @@
 % --- Bloque final del PFC ---
 \backmatter
 
-
-\renewcommand{\bibname}{Bibliografía} %Cambio de nombre de sección
-%\nocite{*} % Comando por si queremos incluir todas las entradas de la bibliografía aunque no estén citadas en el texto pral.
-\addcontentsline{toc}{chapter}{\bibname} % Añade la bibliografía al Índice de contenidos.
-\bibliography{PFCBib} % Bibliografía
-\bibliographystyle{babplai3} % Estilo de bibliografía
-\cleardoublepage
 %\renewcommand{\indexname}{Índice alfabético} %Cambio de nombre de sección
 \addcontentsline{toc}{chapter}{\indexname} % Añade al Índice de contenidos.
 \printindex  % Facilitado por makeidx (opcional, si no se usa no se imprime)
