@@ -14,13 +14,12 @@
 \usepackage{hyperref}
 \usepackage{colortbl}
 \usepackage{makeidx}
-\hypersetup{bookmarksopen,bookmarksopenlevel=3,linktocpage,colorlinks,urlcolor=blue,citecolor=blue,linkcolor=blue,filecolor=blue,pdfnewwindow,
-	pdftitle={Cuadro de Mando para la Visualización de la Calidad del Software, Integrado con un Entorno de Medición}, 
-	pdfsubject={Anteproyecto}
-	pdfauthor={Jose Domingo López López}}
+\hypersetup{bookmarksopen,bookmarksopenlevel=3,linktocpage,colorlinks,urlcolor=blue,citecolor=blue,linkcolor=black,filecolor=blue,pdfnewwindow, 	pdftitle={CUVICA: Cuadro de Mando para la Visualización de la Calidad del Software, Integrado con un Entorno de Medición}, pdfsubject={Anteproyecto} pdfauthor={Jose Domingo López López}}
 \usepackage[spanish,caption,counter,title,fancy]{customarticle}
-% PAQUETES PARA AJUSTE DE MÁRGENES, ESPACIOS
-\usepackage{setspace}         % Interlineado
+% PAQUETES PARA BIBLIOGRAFÍA, ÍNDICES Y GLOSARIOS
+\usepackage{babelbib} % Paquete para crear bibliografías multilingues.
+\selectbiblanguage{spanish}
+\selectlanguage{spanish}
 
 \makeindex
 
@@ -103,13 +102,13 @@
 \input{Medios.tex}
 \clearpage
 
-\clearpage\phantomsection
+\clearpage
+%\phantomsection
 \pagestyle{plain}
-% Añade la bibliografía al índice
-\addcontentsline{toc}{section}{\bibname}
 % Bibliografía
-\bibliographystyle{plain}
-%\bibliographystyle{babplai3} % Estilo de bibliografía
+\renewcommand{\bibname}{Bibliografía} %Cambio de nombre de sección
+\addcontentsline{toc}{section}{\bibname} % Añade la bibliografía al índice
+\bibliographystyle{babplai3} % Estilo de bibliografía
 \bibliography{Bibliografia}
 \clearpage
 % Añade los apéndices al índice
