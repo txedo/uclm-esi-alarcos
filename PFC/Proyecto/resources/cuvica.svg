@@ -15,7 +15,7 @@
    version="1.1"
    inkscape:version="0.47 r22583"
    sodipodi:docname="cuvica.svg"
-   inkscape:export-filename="D:\Mis documentos de BecarioTSI_2\cuvica.png"
+   inkscape:export-filename="D:\uclm-esi-alarcos\PFC\Proyecto\resources\cuvica.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -126,9 +126,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="522.40282"
-     inkscape:cy="999.86247"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="308.96208"
+     inkscape:cy="881.30412"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -165,6 +165,14 @@
        orientation="0,1"
        position="241.375,812.1875"
        id="guide3641" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="823.75,875.625"
+       id="guide2839" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="217.5625,798.21875"
+       id="guide2845" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -253,5 +261,16 @@
          x="323.74878"
          y="238.58545"
          style="font-size:144.98161316px;fill:#656565;fill-opacity:1">CUVICA</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#ff9537;fill-opacity:1;stroke:none;font-family:Bauhaus 93;-inkscape-font-specification:Bauhaus 93"
+       x="490.81171"
+       y="278.1145"
+       id="text2841"><tspan
+         sodipodi:role="line"
+         id="tspan2843"
+         x="490.81171"
+         y="278.1145"
+         style="font-size:36px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;writing-mode:lr-tb;font-family:Eras Bold ITC;-inkscape-font-specification:Eras Bold ITC;fill:#ff9537;fill-opacity:1">thinking in quality</tspan></text>
   </g>
 </svg>
