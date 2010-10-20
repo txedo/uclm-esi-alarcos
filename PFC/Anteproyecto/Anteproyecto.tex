@@ -3,7 +3,7 @@
 \documentclass[oneside,12pt,a4paper,titlepage]{article}
 
 % Carga de paquetes necesarios. "customarticle" es un paquete personalizado
-\usepackage[english,spanish]{babel} % Internacionalización de LaTeX
+\usepackage[spanish,english]{babel} % Internacionalización de LaTeX
 \usepackage[ansinew]{inputenx}% Código de caracteres de teclado
 \usepackage[T1]{fontenc}      % Codificación de fundiciones
 \usepackage{times}            % Familia base de fundiciones
@@ -16,10 +16,13 @@
 \usepackage{makeidx}
 \hypersetup{bookmarksopen,bookmarksopenlevel=3,linktocpage,colorlinks,urlcolor=blue,citecolor=blue,linkcolor=black,filecolor=blue,pdfnewwindow, 	pdftitle={CUVICA: Cuadro de Mando para la Visualización de la Calidad del Software, Integrado con un Entorno de Medición}, pdfsubject={Anteproyecto} pdfauthor={Jose Domingo López López}}
 \usepackage[spanish,caption,counter,title,fancy]{customarticle}
-% PAQUETES PARA BIBLIOGRAFÍA, ÍNDICES Y GLOSARIOS
-\usepackage{babelbib} % Paquete para crear bibliografías multilingues.
-\selectbiblanguage{spanish}
-\selectlanguage{spanish}
+\usepackage[fixlanguage]{babelbib}
+\usepackage{url}
+%% Define a new 'leo' style for the package that will use a smaller font.
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\footnotesize\ttfamily}}}
+\makeatother
 
 \makeindex
 
@@ -42,7 +45,7 @@
 \setlength\fboxrule{0.5pt}
  \begin{figure}[h]
  \begin{center}
-  \fbox{ \includegraphics[keepaspectratio,scale=#2]{#1}}
+  \fbox{\includegraphics[keepaspectratio,scale=#2]{#1}}
  \caption{#3}
  \label{#4}
  \end{center}
@@ -61,7 +64,7 @@
 {\end{list}}
 
 \begin{document}
-
+\selectlanguage{spanish}
 % En las páginas de portada e índices, no hay encabezado ni pie de página
 \pagestyle{empty}
 \input{Portada.tex}
@@ -70,11 +73,12 @@
 \mbox{}
 \vfill{}
 \begin{small}
+	\noindent CUVICA\\
 	\noindent Cuadro de Mando para la Visualización de la Calidad del Software, Integrado con un Entorno de Medición
 
 	\noindent\copyright~ 2010 Jose Domingo López López \\
-	\phantom{\copyright~ 2010} M\textordfeminine{} Ángeles Moraga de la Rubia \\
-	\phantom{\copyright~ 2010} Moisés Rodriguez Monje
+	\phantom{\copyright~ 2010} Moisés Rodriguez Monje (Director) \\
+	\phantom{\copyright~ 2010} M\textordfeminine{} Ángeles Moraga de la Rubia (Tutor académico)
 
 	\noindent En virtud del Artículo 7 del Real Decreto Legislativo 1/1996, de 12 de abril por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, modificado por la Ley 23/2006 de 7 de julio, este PFC se considera una obra en colaboración entre las diferentes partes. Por tanto la propiedad intelectual de este PFC (Véase Anexo \ref{anexo:cpi}) de manera aislada, sin ser integrado con las herramientas y entornos de la empresa Alarcos Quality Center, será compartida con iguales porcentajes entre el alumno, el director y el tutor académico.
 
@@ -96,19 +100,22 @@
 \input{Introduccion.tex}
 \clearpage
 \input{Objetivos.tex}
-\clearpage
+%\clearpage
 \input{Metodos.tex}
 \clearpage
 \input{Medios.tex}
 \clearpage
 
-\clearpage
-%\phantomsection
+\phantomsection
+%% Now actually use the newly defined style.
+\urlstyle{leo}
 \pagestyle{plain}
 % Bibliografía
-\renewcommand{\bibname}{Bibliografía} %Cambio de nombre de sección
-\addcontentsline{toc}{section}{\bibname} % Añade la bibliografía al índice
-\bibliographystyle{babplai3} % Estilo de bibliografía
+\selectbiblanguage{spanish}
+\renewcommand{\bibname}{Bibliografía}
+\renewcommand{\refname}{\bibname}
+\addcontentsline{toc}{section}{\refname} % Añade la bibliografía al índice
+\bibliographystyle{bababbrv} % Estilo de bibliografía
 \bibliography{Bibliografia}
 \clearpage
 % Añade los apéndices al índice
