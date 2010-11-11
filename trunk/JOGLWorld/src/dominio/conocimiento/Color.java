@@ -9,7 +9,6 @@ public class Color {
 	float alpha;
 	
 	public Color(float red, float green, float blue) {
-		super();
 		this.r = red;
 		this.g = green;
 		this.b = blue;

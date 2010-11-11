@@ -2,6 +2,9 @@ package dominio.conocimiento;
 
 import javax.media.opengl.glu.GLU;
 
+import dominio.control.GLSingleton;
+import exceptions.GLSingletonNotInitializedException;
+
 public class Camera implements IConstantes {
 	private Vector3f position;	// posición de la camara
 	private Vector3f viewDir;	// dirección a la que apunta el objetivo de la cámara
@@ -23,10 +26,10 @@ public class Camera implements IConstantes {
 		xrot = yrot = 0.0f;
 	}
 
-	public void render(GLU glu) {
+	public void render() throws GLSingletonNotInitializedException {
 		Vector3f viewPoint = this.getViewPoint();
 
-		glu.gluLookAt(position.getX(), position.getY(), position.getZ(),
+		GLSingleton.getGLU().gluLookAt(position.getX(), position.getY(), position.getZ(),
 				viewPoint.getX(), viewPoint.getY(), viewPoint.getZ(),
 				upVector.getX(), upVector.getY(), upVector.getZ());
 	}

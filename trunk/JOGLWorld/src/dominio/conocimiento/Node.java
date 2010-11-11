@@ -2,12 +2,14 @@ package dominio.conocimiento;
 
 import javax.media.opengl.GL;
 
-public class Node extends Figure {
+import dominio.control.GLSingleton;
+import exceptions.GLSingletonNotInitializedException;
+
+public class Node extends GLObject {
 	// private ... texture?
 	private float width;
 	
-	public Node (GL gl, float origin_x, float origin_z, float width, Color color) {
-		this.gl = gl;
+	public Node (float origin_x, float origin_z, float width, Color color) {
 		this.origin_x = origin_x;
 		this.origin_z = origin_z;
 		this.color = color;
@@ -16,14 +18,17 @@ public class Node extends Figure {
 	}
 	
 	@Override
-	public void draw() {
-		gl.glColor4fv(color.getColorFB());
-		gl.glBegin(GL.GL_QUADS);	
-			gl.glVertex2f(this.origin_x, this.origin_z);
-			gl.glVertex2f(this.origin_x, this.origin_z + width);
-			gl.glVertex2f(this.origin_x + width, this.origin_z + width);
-			gl.glVertex2f(this.origin_x + width, this.origin_z);
-		gl.glEnd();
+	public void draw() throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glColor4fv(color.getColorFB());
+		GLSingleton.getGL().glPushMatrix();
+			GLSingleton.getGL().glTranslatef(this.origin_x, this.origin_z, 0.0f);
+			GLSingleton.getGL().glBegin(GL.GL_QUADS);	
+				GLSingleton.getGL().glVertex2f(0.0f, 0.0f);
+				GLSingleton.getGL().glVertex2f(0.0f, width);
+				GLSingleton.getGL().glVertex2f(width, width);
+				GLSingleton.getGL().glVertex2f(width, 0.0f);
+			GLSingleton.getGL().glEnd();
+		GLSingleton.getGL().glPopMatrix();
 	}
 
 	public float getWidth() {
