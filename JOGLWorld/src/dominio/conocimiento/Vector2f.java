@@ -2,11 +2,11 @@ package dominio.conocimiento;
 
 public class Vector2f {
 	private float x;
-	private float z;
+	private float y;
 	
 	public Vector2f (float x, float z) {
 		this.x = x;
-		this.z = z;
+		this.y = z;
 	}
 
 	public float getX() {
@@ -17,12 +17,12 @@ public class Vector2f {
 		this.x = x;
 	}
 
-	public float getZ() {
-		return z;
+	public float getY() {
+		return y;
 	}
 
-	public void setZ(float z) {
-		this.z = z;
+	public void setY(float z) {
+		this.y = z;
 	}
 	
 }

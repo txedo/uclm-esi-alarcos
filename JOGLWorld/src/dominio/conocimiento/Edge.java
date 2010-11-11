@@ -2,17 +2,17 @@ package dominio.conocimiento;
 
 import javax.media.opengl.GL;
 
-public class Edge extends Figure implements IEdge {
+import dominio.control.GLSingleton;
+import exceptions.GLSingletonNotInitializedException;
+
+public class Edge extends GLObject implements IEdge {
 	private Vector2f from;
 	private Vector2f to;
 	private int type;
 	private float width;
 	private Color color;
 	
-	private GL gl;
-	
-	public Edge (GL gl) {
-		this.gl = gl;
+	public Edge () {
 		this.type = SOLID;
 		this.width = 1.0f;
 		this.color = new Color(0.0f, 0.0f, 0.0f);
@@ -25,7 +25,7 @@ public class Edge extends Figure implements IEdge {
 		if (this.from == null) this.from = new Vector2f(x, z);
 		else {
 			this.from.setX(x);
-			this.from.setZ(z);
+			this.from.setY(z);
 		}
 		// Conectamos el nodo destino (destination)
 		x = d.origin_x + d.getWidth()/2;
@@ -33,34 +33,34 @@ public class Edge extends Figure implements IEdge {
 		if (this.to == null) this.to = new Vector2f(x, z);
 		else {
 			this.to.setX(x);
-			this.to.setZ(z);	
+			this.to.setY(z);	
 		}
 	}
 
 	@Override
-	public void draw() {
-		gl.glColor4fv(color.getColorFB());
-	if (this.type != SOLID) gl.glEnable(GL.GL_LINE_STIPPLE);
+	public void draw() throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glColor4fv(color.getColorFB());
+		if (this.type != SOLID) GLSingleton.getGL().glEnable(GL.GL_LINE_STIPPLE);
 		switch (this.type) {
 			case SOLID:
-				gl.glLineStipple(1, (short)0xFFFF);
+				GLSingleton.getGL().glLineStipple(1, (short)0xFFFF);
 				break;
 			case DOTTED:
-				gl.glLineStipple(1, (short)0x0101);
+				GLSingleton.getGL().glLineStipple(1, (short)0x0101);
 				break;
 			case DASHED:
-				gl.glLineStipple(1, (short)0x00FF);
+				GLSingleton.getGL().glLineStipple(1, (short)0x00FF);
 				break;
 			case DOT_AND_DASH:
-				gl.glLineStipple(1, (short)0x1C47);
+				GLSingleton.getGL().glLineStipple(1, (short)0x1C47);
 				break;
 		}
-		gl.glLineWidth(this.width);
-		gl.glBegin(GL.GL_LINES);	
-			gl.glVertex2f(this.from.getX(), this.from.getZ());
-			gl.glVertex2f(this.to.getX(), this.to.getZ());
-		gl.glEnd();
-		gl.glDisable(GL.GL_LINE_STIPPLE);
+		GLSingleton.getGL().glLineWidth(this.width);
+		GLSingleton.getGL().glBegin(GL.GL_LINES);	
+			GLSingleton.getGL().glVertex2f(this.from.getX(), this.from.getY());
+			GLSingleton.getGL().glVertex2f(this.to.getX(), this.to.getY());
+		GLSingleton.getGL().glEnd();
+		GLSingleton.getGL().glDisable(GL.GL_LINE_STIPPLE);
 	}
 
 	public Vector2f getFrom() {
@@ -101,13 +101,5 @@ public class Edge extends Figure implements IEdge {
 
 	public void setColor(Color color) {
 		this.color = color;
-	}
-
-	public GL getGl() {
-		return gl;
-	}
-
-	public void setGl(GL gl) {
-		this.gl = gl;
 	}
 }

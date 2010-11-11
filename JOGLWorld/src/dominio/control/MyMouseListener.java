@@ -27,7 +27,7 @@ public class MyMouseListener implements MouseListener {
 		} else {
 			System.out.println ("click");
 			this.drawer.getPickPoint().setX((float)e.getPoint().getX());
-			this.drawer.getPickPoint().setZ((float)e.getPoint().getY());
+			this.drawer.getPickPoint().setY((float)e.getPoint().getY());
 			this.drawer.setSelectionMode(true);
 		}
 	}
