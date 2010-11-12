@@ -1,11 +1,11 @@
-package model.knowledge;
+package model;
 
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 
 import javax.media.opengl.GL;
 
-import model.control.GLSingleton;
+import model.knowledge.Vector2f;
 
 import com.sun.opengl.util.BufferUtil;
 

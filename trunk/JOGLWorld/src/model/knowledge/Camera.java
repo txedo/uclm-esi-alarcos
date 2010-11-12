@@ -1,8 +1,6 @@
 package model.knowledge;
 
-import javax.media.opengl.glu.GLU;
-
-import model.control.GLSingleton;
+import model.GLSingleton;
 
 import exceptions.GLSingletonNotInitializedException;
 

@@ -2,7 +2,7 @@ package model.knowledge;
 
 import javax.media.opengl.GL;
 
-import model.control.GLSingleton;
+import model.GLSingleton;
 
 
 import exceptions.GLSingletonNotInitializedException;

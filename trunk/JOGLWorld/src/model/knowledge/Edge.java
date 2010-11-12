@@ -2,40 +2,37 @@ package model.knowledge;
 
 import javax.media.opengl.GL;
 
-import model.control.GLSingleton;
+import model.GLSingleton;
 
 import exceptions.GLSingletonNotInitializedException;
 
 public class Edge extends GLObject implements IEdge {
-	private Vector2f from;
-	private Vector2f to;
+	private Vector2f source;
+	private Vector2f destination;
 	private int type;
 	private float width;
 	private Color color;
 	
-	public Edge () {
-		this.type = SOLID;
-		this.width = 1.0f;
-		this.color = new Color(0.0f, 0.0f, 0.0f);
-	}
-	
-	public void connectNodes (Node s, Node d) {
+	public Edge (Node s, Node d) {
 		// Conectamos el nodo origen (source)
 		float x = s.origin_x + s.getWidth()/2;
 		float z = s.origin_z + s.getWidth()/2;
-		if (this.from == null) this.from = new Vector2f(x, z);
+		if (this.source == null) this.source = new Vector2f(x, z);
 		else {
-			this.from.setX(x);
-			this.from.setY(z);
+			this.source.setX(x);
+			this.source.setY(z);
 		}
 		// Conectamos el nodo destino (destination)
 		x = d.origin_x + d.getWidth()/2;
 		z = d.origin_z + d.getWidth()/2;
-		if (this.to == null) this.to = new Vector2f(x, z);
+		if (this.destination == null) this.destination = new Vector2f(x, z);
 		else {
-			this.to.setX(x);
-			this.to.setY(z);	
+			this.destination.setX(x);
+			this.destination.setY(z);	
 		}
+		this.type = SOLID;
+		this.width = 1.0f;
+		this.color = new Color(0.0f, 0.0f, 0.0f);
 	}
 
 	@Override
@@ -58,26 +55,26 @@ public class Edge extends GLObject implements IEdge {
 		}
 		GLSingleton.getGL().glLineWidth(this.width);
 		GLSingleton.getGL().glBegin(GL.GL_LINES);	
-			GLSingleton.getGL().glVertex2f(this.from.getX(), this.from.getY());
-			GLSingleton.getGL().glVertex2f(this.to.getX(), this.to.getY());
+			GLSingleton.getGL().glVertex2f(this.source.getX(), this.source.getY());
+			GLSingleton.getGL().glVertex2f(this.destination.getX(), this.destination.getY());
 		GLSingleton.getGL().glEnd();
 		GLSingleton.getGL().glDisable(GL.GL_LINE_STIPPLE);
 	}
 
-	public Vector2f getFrom() {
-		return from;
+	public Vector2f getSource() {
+		return source;
 	}
 
-	public void setFrom(Vector2f from) {
-		this.from = from;
+	public void setSource(Vector2f s) {
+		this.source = s;
 	}
 
-	public Vector2f getTo() {
-		return to;
+	public Vector2f getDestination() {
+		return destination;
 	}
 
-	public void setTo(Vector2f to) {
-		this.to = to;
+	public void setDestination(Vector2f d) {
+		this.destination = d;
 	}
 
 	public int getType() {

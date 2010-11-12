@@ -1,9 +1,9 @@
 package model.knowledge.caption;
 
-import model.control.GLSingleton;
+import model.GLSingleton;
+import model.GLUtils;
 import model.knowledge.Color;
 import model.knowledge.GLObject;
-import model.knowledge.GLUtils;
 import model.knowledge.Text;
 import exceptions.GLSingletonNotInitializedException;
 
