@@ -74,8 +74,9 @@ public class Drawer implements GLEventListener, IConstantes, IViewLevels {
 			
 			GLSingleton.getGL().glFlush();
 		} catch (GLSingletonNotInitializedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			GLSingleton.init(glDrawable);
+			this.init(glDrawable);
+			// TODO log e.printStackTrace()
 		}
 	}
 
@@ -122,8 +123,9 @@ public class Drawer implements GLEventListener, IConstantes, IViewLevels {
 			glDrawable.addMouseWheelListener(new MyMouseWheelListener(this.cam));
 			glDrawable.addMouseMotionListener(new MyMouseMotionListener(this.cam));
 		} catch (GLSingletonNotInitializedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			GLSingleton.init(glDrawable);
+			this.init(glDrawable);
+			// TODO log e.printStackTrace()
 		}
 	}
 
@@ -146,8 +148,9 @@ public class Drawer implements GLEventListener, IConstantes, IViewLevels {
 			GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
 			GLSingleton.getGL().glLoadIdentity();
 		} catch (GLSingletonNotInitializedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			GLSingleton.init(glDrawable);
+			this.init(glDrawable);
+			// TODO log e.printStackTrace()
 		}
 	}
 	
