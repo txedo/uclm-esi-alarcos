@@ -1,7 +1,7 @@
 package model.knowledge;
 
 
-import model.control.GLSingleton;
+import model.GLSingleton;
 
 import com.sun.opengl.util.GLUT;
 

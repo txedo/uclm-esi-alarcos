@@ -8,6 +8,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
+import model.GLSingleton;
 import model.knowledge.Camera;
 import model.knowledge.Color;
 import model.knowledge.Edge;
@@ -282,21 +283,16 @@ public class Drawer implements GLEventListener, IConstantes, IViewLevels {
 	private void setupEdges () {
 		Edge e;
 		edges = new Vector<GLObject>();
-		Color c = new Color (0.0f, 0.0f, 0.0f);
-		e = new Edge();
-		e.connectNodes((Node)nodes.get(0), (Node)nodes.get(1));
+		e = new Edge((Node)nodes.get(0), (Node)nodes.get(1));
 		e.setType(IEdge.DOTTED);
 		edges.add(e);
-		e = new Edge();
-		e.connectNodes((Node)nodes.get(0), (Node)nodes.get(2));
+		e = new Edge((Node)nodes.get(0), (Node)nodes.get(2));
 		e.setType(IEdge.DASHED);
 		edges.add(e);
-		e = new Edge();
-		e.connectNodes((Node)nodes.get(1), (Node)nodes.get(2));
+		e = new Edge((Node)nodes.get(1), (Node)nodes.get(2));
 		e.setType(IEdge.DOT_AND_DASH);
 		edges.add(e);
-		e = new Edge();
-		e.connectNodes((Node)nodes.get(2), (Node)nodes.get(3));
+		e = new Edge((Node)nodes.get(2), (Node)nodes.get(3));
 		e.setType(IEdge.SOLID);
 		edges.add(e);
 	}

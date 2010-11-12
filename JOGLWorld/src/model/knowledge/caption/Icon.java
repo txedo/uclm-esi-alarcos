@@ -2,10 +2,10 @@ package model.knowledge.caption;
 
 import javax.media.opengl.GL;
 
-import model.control.GLSingleton;
+import model.GLSingleton;
+import model.GLUtils;
 import model.knowledge.Color;
 import model.knowledge.GLObject;
-import model.knowledge.GLUtils;
 import model.knowledge.Vector2f;
 
 import exceptions.GLSingletonNotInitializedException;
