@@ -1,11 +1,12 @@
-package model.knowledge;
+package model.gl.knowledge;
 
 
-import model.GLSingleton;
+import model.gl.GLSingleton;
+import model.knowledge.Color;
 
 import com.sun.opengl.util.GLUT;
 
-import exceptions.GLSingletonNotInitializedException;
+import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Text {
 	private String text;

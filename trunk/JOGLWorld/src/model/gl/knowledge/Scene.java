@@ -1,4 +1,4 @@
-package model.knowledge;
+package model.gl.knowledge;
 
 public class Scene implements IConstantes {
 	private float xrot;

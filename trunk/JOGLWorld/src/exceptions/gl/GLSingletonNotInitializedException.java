@@ -1,4 +1,4 @@
-package exceptions;
+package exceptions.gl;
 
 public class GLSingletonNotInitializedException extends Exception {
 

@@ -1,14 +1,14 @@
-package model.knowledge.caption;
+package model.gl.knowledge.caption;
 
 import javax.media.opengl.GL;
 
-import model.GLSingleton;
-import model.GLUtils;
+import model.gl.GLSingleton;
+import model.gl.GLUtils;
+import model.gl.knowledge.GLObject;
 import model.knowledge.Color;
-import model.knowledge.GLObject;
 import model.knowledge.Vector2f;
 
-import exceptions.GLSingletonNotInitializedException;
+import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Icon extends GLObject {
 	private int width;

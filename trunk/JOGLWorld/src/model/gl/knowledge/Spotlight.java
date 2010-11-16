@@ -1,10 +1,11 @@
-package model.knowledge;
+package model.gl.knowledge;
 
 import javax.media.opengl.GL;
 
-import model.GLSingleton;
+import model.gl.GLSingleton;
+import model.knowledge.Vector3f;
 
-import exceptions.GLSingletonNotInitializedException;
+import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Spotlight {
 	private final float DIRECTIONAL = 0.0f;

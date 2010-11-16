@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 
-import model.control.Drawer;
+import model.gl.control.GLDrawer;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
@@ -35,7 +35,7 @@ public class Main extends Frame {
 
 	    frame.add(canvas);
 	    frame.setSize(WIDTH, HEIGHT);
-	    canvas.addGLEventListener(new Drawer());
+	    canvas.addGLEventListener(new GLDrawer());
 	    canvas.setFocusable(true);
 	    canvas.requestFocus();
 	    // Creating an animator that will redraw the scene 40 times per second

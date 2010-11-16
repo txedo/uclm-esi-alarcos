@@ -1,4 +1,4 @@
-package model.control;
+package model.gl.control;
 
 import java.nio.IntBuffer;
 import java.util.Random;
@@ -8,26 +8,30 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import model.GLSingleton;
-import model.knowledge.Camera;
+import model.gl.GLSingleton;
+import model.gl.knowledge.Camera;
+import model.gl.knowledge.Edge;
+import model.gl.knowledge.GLObject;
+import model.gl.knowledge.IConstantes;
+import model.gl.knowledge.IEdge;
+import model.gl.knowledge.IViewLevels;
+import model.gl.knowledge.Node;
+import model.gl.knowledge.Spotlight;
+import model.gl.knowledge.Tower;
+import model.gl.knowledge.caption.Caption;
 import model.knowledge.Color;
-import model.knowledge.Edge;
-import model.knowledge.GLObject;
-import model.knowledge.IConstantes;
-import model.knowledge.IEdge;
-import model.knowledge.IViewLevels;
-import model.knowledge.Node;
-import model.knowledge.Spotlight;
-import model.knowledge.Tower;
 import model.knowledge.Vector2f;
 import model.knowledge.Vector3f;
-import model.knowledge.caption.Caption;
+import model.listeners.MyKeyListener;
+import model.listeners.MyMouseListener;
+import model.listeners.MyMouseMotionListener;
+import model.listeners.MyMouseWheelListener;
 
 import com.sun.opengl.util.BufferUtil;
 
-import exceptions.GLSingletonNotInitializedException;
+import exceptions.gl.GLSingletonNotInitializedException;
 
-public class Drawer implements GLEventListener, IConstantes, IViewLevels {
+public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
 	private Vector<GLObject> towers;
 	private Vector<GLObject> nodes;
 	private Vector<GLObject> edges;

@@ -1,10 +1,11 @@
-package model.knowledge;
+package model.gl.knowledge;
 
 import javax.media.opengl.GL;
 
-import model.GLSingleton;
+import model.gl.GLSingleton;
+import model.knowledge.Color;
 
-import exceptions.GLSingletonNotInitializedException;
+import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Tower extends GLObject {
 	/*
@@ -17,10 +18,10 @@ public class Tower extends GLObject {
 	private float height;
 	private float edge_width;
 
-	public Tower(float origin_x, float origin_z, float width, float depth,
+	public Tower(float pos_x, float pos_y, float width, float depth,
 			float height, Color color) {
-		this.origin_x = origin_x;
-		this.origin_z = origin_z;
+		this.positionX = pos_x;
+		this.positionY = pos_y;
 		this.color = color;
 		// Base rectangular
 		this.width = width;
@@ -61,7 +62,7 @@ public class Tower extends GLObject {
 		 * Con gl.glFrontFace(GL.GL_CW) podríamos especificarlo al contrario
 		 */
 		GLSingleton.getGL().glPushMatrix();
-			GLSingleton.getGL().glTranslatef(this.origin_x, 0, this.origin_z);
+			GLSingleton.getGL().glTranslatef(this.positionX, 0, this.positionY);
 			GLSingleton.getGL().glBegin(GL.GL_QUADS);
 				// Base	(en principio no es necesario dibujarla)
 				// Frente
