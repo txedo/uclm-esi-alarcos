@@ -1,4 +1,4 @@
-package model;
+package model.gl;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -6,7 +6,7 @@ import javax.media.opengl.glu.GLU;
 
 import com.sun.opengl.util.GLUT;
 
-import exceptions.GLSingletonNotInitializedException;
+import exceptions.gl.GLSingletonNotInitializedException;
 
 /**
  * http://radio-weblogs.com/0122027/stories/2003/10/20/

@@ -1,4 +1,4 @@
-package model.knowledge;
+package model.gl.knowledge;
 
 public interface IEdge {
 	final int SOLID = 1;

@@ -1,4 +1,4 @@
-package model.knowledge;
+package model.gl.knowledge;
 
 public interface IConstantes {
 	// Constantes que definen la granularidad de rotación de la cámara en el eje X e Y

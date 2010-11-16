@@ -1,4 +1,4 @@
-package model;
+package model.gl;
 
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
@@ -9,7 +9,7 @@ import model.knowledge.Vector2f;
 
 import com.sun.opengl.util.BufferUtil;
 
-import exceptions.GLSingletonNotInitializedException;
+import exceptions.gl.GLSingletonNotInitializedException;
 
 public class GLUtils {
 

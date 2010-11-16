@@ -1,4 +1,4 @@
-package model.knowledge;
+package model.gl.knowledge;
 
 public interface IViewLevels {
 	final int NODE_LEVEL = 0;

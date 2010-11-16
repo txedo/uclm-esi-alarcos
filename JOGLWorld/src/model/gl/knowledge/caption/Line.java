@@ -1,11 +1,11 @@
-package model.knowledge.caption;
+package model.gl.knowledge.caption;
 
-import model.GLSingleton;
-import model.GLUtils;
+import model.gl.GLSingleton;
+import model.gl.GLUtils;
+import model.gl.knowledge.GLObject;
+import model.gl.knowledge.Text;
 import model.knowledge.Color;
-import model.knowledge.GLObject;
-import model.knowledge.Text;
-import exceptions.GLSingletonNotInitializedException;
+import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Line extends GLObject {
 	private final int pxGAP = 10; // px

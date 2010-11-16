@@ -1,15 +1,16 @@
-package model.knowledge;
+package model.gl.knowledge;
 
 import javax.media.opengl.GL;
 
-import model.GLSingleton;
+import model.gl.GLSingleton;
+import model.knowledge.Color;
 
 
-import exceptions.GLSingletonNotInitializedException;
+import exceptions.gl.GLSingletonNotInitializedException;
 
 public abstract class GLObject {
-	protected float origin_x;
-	protected float origin_z;
+	protected float positionX;
+	protected float positionY;
 	protected Color color;
 	
 	public abstract void draw () throws GLSingletonNotInitializedException;
@@ -24,19 +25,19 @@ public abstract class GLObject {
 		GLSingleton.getGL().glDisable(GL.GL_LIGHT1);			// Deshabilitamos la iluminación
 	}
 
-	public float getOrigin_x() {
-		return origin_x;
+	public float getPositionX() {
+		return positionX;
 	}
 
-	public void setOrigin_x(float origin_x) {
-		this.origin_x = origin_x;
+	public void setPositionX(float origin_x) {
+		this.positionX = origin_x;
 	}
 
-	public float getOrigin_z() {
-		return origin_z;
+	public float getPositionZ() {
+		return positionY;
 	}
 
-	public void setOrigin_z(float origin_z) {
-		this.origin_z = origin_z;
+	public void setPositionZ(float origin_z) {
+		this.positionY = origin_z;
 	}
 }

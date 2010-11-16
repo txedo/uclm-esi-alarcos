@@ -1,35 +1,21 @@
-package model.knowledge;
+package model.gl.knowledge;
 
 import javax.media.opengl.GL;
 
-import model.GLSingleton;
+import model.gl.GLSingleton;
+import model.knowledge.Color;
 
-import exceptions.GLSingletonNotInitializedException;
+import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Edge extends GLObject implements IEdge {
-	private Vector2f source;
-	private Vector2f destination;
+	private Node source;
+	private Node destination;
 	private int type;
 	private float width;
-	private Color color;
 	
 	public Edge (Node s, Node d) {
-		// Conectamos el nodo origen (source)
-		float x = s.origin_x + s.getWidth()/2;
-		float z = s.origin_z + s.getWidth()/2;
-		if (this.source == null) this.source = new Vector2f(x, z);
-		else {
-			this.source.setX(x);
-			this.source.setY(z);
-		}
-		// Conectamos el nodo destino (destination)
-		x = d.origin_x + d.getWidth()/2;
-		z = d.origin_z + d.getWidth()/2;
-		if (this.destination == null) this.destination = new Vector2f(x, z);
-		else {
-			this.destination.setX(x);
-			this.destination.setY(z);	
-		}
+		this.source = s;
+		this.destination = d;
 		this.type = SOLID;
 		this.width = 1.0f;
 		this.color = new Color(0.0f, 0.0f, 0.0f);
@@ -55,26 +41,10 @@ public class Edge extends GLObject implements IEdge {
 		}
 		GLSingleton.getGL().glLineWidth(this.width);
 		GLSingleton.getGL().glBegin(GL.GL_LINES);	
-			GLSingleton.getGL().glVertex2f(this.source.getX(), this.source.getY());
-			GLSingleton.getGL().glVertex2f(this.destination.getX(), this.destination.getY());
+			GLSingleton.getGL().glVertex2f(this.source.getCenterOfArea().getX(), this.source.getCenterOfArea().getY());
+			GLSingleton.getGL().glVertex2f(this.destination.getCenterOfArea().getX(), this.destination.getCenterOfArea().getY());
 		GLSingleton.getGL().glEnd();
 		GLSingleton.getGL().glDisable(GL.GL_LINE_STIPPLE);
-	}
-
-	public Vector2f getSource() {
-		return source;
-	}
-
-	public void setSource(Vector2f s) {
-		this.source = s;
-	}
-
-	public Vector2f getDestination() {
-		return destination;
-	}
-
-	public void setDestination(Vector2f d) {
-		this.destination = d;
 	}
 
 	public int getType() {
@@ -99,5 +69,21 @@ public class Edge extends GLObject implements IEdge {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	public Node getSource() {
+		return source;
+	}
+
+	public void setSource(Node source) {
+		this.source = source;
+	}
+
+	public Node getDestination() {
+		return destination;
+	}
+
+	public void setDestination(Node destination) {
+		this.destination = destination;
 	}
 }

@@ -1,18 +1,20 @@
-package model.knowledge;
+package model.gl.knowledge;
 
 import javax.media.opengl.GL;
 
-import model.GLSingleton;
+import model.gl.GLSingleton;
+import model.knowledge.Color;
+import model.knowledge.Vector2f;
 
-import exceptions.GLSingletonNotInitializedException;
+import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Node extends GLObject {
 	// private ... texture?
 	private float width;
 	
-	public Node (float origin_x, float origin_z, float width, Color color) {
-		this.origin_x = origin_x;
-		this.origin_z = origin_z;
+	public Node (float pos_x, float pos_y, float width, Color color) {
+		this.positionX = pos_x;
+		this.positionY = pos_y;
 		this.color = color;
 		// Base rectangular
 		this.width = width;
@@ -22,7 +24,7 @@ public class Node extends GLObject {
 	public void draw() throws GLSingletonNotInitializedException {
 		GLSingleton.getGL().glColor4fv(color.getColorFB());
 		GLSingleton.getGL().glPushMatrix();
-			GLSingleton.getGL().glTranslatef(this.origin_x, this.origin_z, 0.0f);
+			GLSingleton.getGL().glTranslatef(this.positionX, this.positionY, 0.0f);
 			GLSingleton.getGL().glBegin(GL.GL_QUADS);	
 				GLSingleton.getGL().glVertex2f(0.0f, 0.0f);
 				GLSingleton.getGL().glVertex2f(0.0f, width);
@@ -38,6 +40,12 @@ public class Node extends GLObject {
 
 	public void setWidth(float width) {
 		this.width = width;
+	}
+	
+	public Vector2f getCenterOfArea () {
+		float x = this.positionX + this.width/2;
+		float y = this.positionY + this.width/2;
+		return new Vector2f (x, y);
 	}
 	
 }
