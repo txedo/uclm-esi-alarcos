@@ -25,7 +25,7 @@ public class Text {
 		GLSingleton.getGLUT().glutBitmapString(this.font, this.text);
 	}
 	
-	public int getLength () throws GLSingletonNotInitializedException {
+	public int getLengthPX () throws GLSingletonNotInitializedException {
 		return GLSingleton.getGLUT().glutBitmapLength(this.font, this.text);
 	}
 	

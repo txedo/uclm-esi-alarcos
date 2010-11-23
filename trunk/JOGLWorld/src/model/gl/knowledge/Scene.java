@@ -1,6 +1,6 @@
 package model.gl.knowledge;
 
-public class Scene implements IConstantes {
+public class Scene implements IConstants {
 	private float xrot;
 	private float yrot;
 	

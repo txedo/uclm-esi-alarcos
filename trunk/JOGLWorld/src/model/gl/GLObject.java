@@ -1,8 +1,7 @@
-package model.gl.knowledge;
+package model.gl;
 
 import javax.media.opengl.GL;
 
-import model.gl.GLSingleton;
 import model.knowledge.Color;
 
 

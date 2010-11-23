@@ -5,7 +5,7 @@ import model.knowledge.Vector3f;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
-public class Camera implements IConstantes {
+public class Camera implements IConstants {
 	private Vector3f position;	// posición de la camara
 	private Vector3f viewDir;	// dirección a la que apunta el objetivo de la cámara
 	// Los siguientes indican direcciones relativas a la cámara

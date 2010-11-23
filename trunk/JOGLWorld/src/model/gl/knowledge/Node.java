@@ -2,6 +2,7 @@ package model.gl.knowledge;
 
 import javax.media.opengl.GL;
 
+import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.knowledge.Color;
 import model.knowledge.Vector2f;
