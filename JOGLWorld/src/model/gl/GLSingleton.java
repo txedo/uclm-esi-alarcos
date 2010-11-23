@@ -17,9 +17,12 @@ import exceptions.gl.GLSingletonNotInitializedException;
  * Use Singleton.instance() to access this instance.
  */
 public class GLSingleton {
+	static private GLAutoDrawable drawable;
 	static private GL gl;
 	static private GLU glu;
 	static private GLUT glut;
+	
+	static public double scale = 1.0;
 
 	/**
 	 * The constructor could be made private to prevent others from
@@ -27,6 +30,7 @@ public class GLSingleton {
 	 * create instances of Singleton subclasses.
 	 */
 	protected GLSingleton() {
+		drawable = null;
 		gl = null;
 		glu = null;
 		glut = null;
@@ -48,6 +52,7 @@ public class GLSingleton {
 	}
 	
 	static public void init (GLAutoDrawable glDrawable) {
+		drawable = glDrawable;
 		gl = glDrawable.getGL();
 		glu = new GLU();
 		glut = new GLUT();
@@ -55,7 +60,7 @@ public class GLSingleton {
 
 	static public GL getGL() throws GLSingletonNotInitializedException {
 		if (gl == null) throw new GLSingletonNotInitializedException();
-		else return gl;
+		else return drawable.getGL();
 	}
 
 	static public GLU getGLU() throws GLSingletonNotInitializedException {

@@ -8,11 +8,12 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
+import model.gl.GLObject;
 import model.gl.GLSingleton;
+import model.gl.GLUtils;
 import model.gl.knowledge.Camera;
 import model.gl.knowledge.Edge;
-import model.gl.knowledge.GLObject;
-import model.gl.knowledge.IConstantes;
+import model.gl.knowledge.IConstants;
 import model.gl.knowledge.IEdge;
 import model.gl.knowledge.IViewLevels;
 import model.gl.knowledge.Node;
@@ -31,13 +32,20 @@ import com.sun.opengl.util.BufferUtil;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
-public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
+public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 	private Vector<GLObject> towers;
 	private Vector<GLObject> nodes;
 	private Vector<GLObject> edges;
 	private Vector<Caption> captions;
-	private Camera cam;
+	private Camera camera;
 	private Spotlight spotlight;
+	public Camera getCamera() {
+		return camera;
+	}
+
+
+	public Vector2f position = new Vector2f (0.375f, 0.375f);
+	
 	private Vector2f pickPoint = new Vector2f(0, 0);
 	
 	private int viewLevel = NODE_LEVEL;
@@ -47,7 +55,8 @@ public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
 	Vector3f aux = new Vector3f();
 	private int screenWidth;
 	private int screenHeight;
-	private float dim = 10.0f;
+	
+	public float dim = IConstants.INIT_DIM;
 	
 	@Override
 	public void display(GLAutoDrawable glDrawable) {
@@ -56,31 +65,37 @@ public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
 			GLSingleton.getGL().glLoadIdentity();
 			
 			switch (viewLevel) {
+				case MAP_LEVEL:
+					
+					break;
 				case NODE_LEVEL:
+					//GLSingleton.getGL().glTranslatef(position.getX(), position.getY(), 0.0f);
 					if (selectionMode) {
-						GLSingleton.getGL().glTranslatef(0.375f, 0.375f, 0.0f);
+//						GLSingleton.getGL().glScaled(GLSingleton.scale, GLSingleton.scale, 0.0f);
+						this.puta((int)pickPoint.getX(), (int)pickPoint.getY());
 						selectNode();
 					}
-					this.beginOrtho();
-						GLSingleton.getGL().glTranslatef(0.375f, 0.375f, 0.0f);
+					//this.beginOrtho();
+//						GLSingleton.getGL().glScaled(GLSingleton.scale, GLSingleton.scale, 0.0f);
 						drawNodes();
 						drawEdges();
+//						GLUtils.billboardCheatSphericalBegin();
 						drawCaptions();
-					this.endOrtho();
-					glDrawable.swapBuffers();
+//						GLUtils.billboardEnd();
+					//this.endOrtho();
+					
 					break;
 				case TOWER_LEVEL:
-					cam.render();
-					spotlight.render(cam.getPosition(), cam.getViewDir());
+					camera.render();
+					spotlight.render(camera.getPosition(), camera.getViewDir());
 					drawTowers();
 					break;
 			}
-			
+			glDrawable.swapBuffers();
 			GLSingleton.getGL().glFlush();
 		} catch (GLSingletonNotInitializedException e) {
 			GLSingleton.init(glDrawable);
 			this.init(glDrawable);
-			// TODO log e.printStackTrace()
 		}
 	}
 
@@ -110,7 +125,7 @@ public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
 			GLSingleton.getGL().glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 			
 			// Creamos una cámara y un foco de luz
-			cam = new Camera(-5.0f, 10.0f, -5.0f, 1.0f, -1.0f, 1.0f);
+			camera = new Camera(-5.0f, 10.0f, -5.0f, 1.0f, -1.0f, 1.0f);
 			spotlight = new Spotlight(1.0f, 1.0f, 1.0f);
 	
 			// Habilitamos el color natural de los materiales
@@ -122,14 +137,13 @@ public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
 			setupCaptions();
 			
 			// Añadimos los listener de teclado y ratón
-			glDrawable.addKeyListener(new MyKeyListener(this.cam, this));
-			glDrawable.addMouseListener(new MyMouseListener(this.cam, this));
-			glDrawable.addMouseWheelListener(new MyMouseWheelListener(this.cam));
-			glDrawable.addMouseMotionListener(new MyMouseMotionListener(this.cam));
+			glDrawable.addKeyListener(new MyKeyListener(this));
+			glDrawable.addMouseListener(new MyMouseListener(this));
+			glDrawable.addMouseWheelListener(new MyMouseWheelListener(this.camera));
+			glDrawable.addMouseMotionListener(new MyMouseMotionListener(this.camera));
 		} catch (GLSingletonNotInitializedException e) {
 			GLSingleton.init(glDrawable);
 			this.init(glDrawable);
-			// TODO log e.printStackTrace()
 		}
 	}
 
@@ -142,13 +156,18 @@ public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
 	
 			this.screenWidth = width;
 			this.screenHeight = height;
-			System.out.println((float)width + " " + (float)height);
 			// lower left corner (0,0); upper right corner (width,height)
 			GLSingleton.getGL().glViewport(0, 0, this.screenWidth, this.screenHeight);
 			GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
 			GLSingleton.getGL().glLoadIdentity();
-			float h = (float) this.screenWidth / (float) this.screenHeight;
-			GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 1000.0f);
+			if (viewLevel == MAP_LEVEL || viewLevel == NODE_LEVEL) {
+				float h = (float) this.screenHeight/ (float) this.screenWidth ;
+				GLSingleton.getGL().glOrtho(0.0f, this.dim, 0.0f, this.dim*h, -1.0, 1.0);
+			}
+			else if (viewLevel == TOWER_LEVEL) {
+				float h = (float) this.screenWidth / (float) this.screenHeight;
+				GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 1000.0f);
+			}
 			GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
 			GLSingleton.getGL().glLoadIdentity();
 		} catch (GLSingletonNotInitializedException e) {
@@ -172,12 +191,13 @@ public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
 	     * in the orthographic mode.
 	     * Projection matrix stack defines how the scene is projected to the screen.
 	     */
+		GLSingleton.getGL().glDisable(GL.GL_DEPTH_TEST);		  // Disables Depth Testing
 		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);   //select the Projection matrix
 		GLSingleton.getGL().glPushMatrix();                   //save the current projection matrix
 		GLSingleton.getGL().glLoadIdentity();                 //reset the current projection matrix to creates a new Orthographic projection
 	    //Creates a new orthographic viewing volume
 	    float h = (float) this.screenHeight/ (float) this.screenWidth ;
-	    GLSingleton.getGLU().gluOrtho2D(0.0, this.dim, 0.0, this.dim*h);
+	    GLSingleton.getGL().glOrtho(0.0f, this.dim, 0.0f, this.dim*h, -1.0, 1.0);	// left, right, bottom, top, near, far
 	   
 	    /*
 	     * Select, save and reset the modelview matrix.
@@ -204,6 +224,7 @@ public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
 		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
 	    //Load the previous Modelview matrix
 		GLSingleton.getGL().glPopMatrix();
+		GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);						// Enables Depth Testing
 	}
 	
 	private void setupNodes() {
@@ -252,8 +273,8 @@ public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
 		GLSingleton.getGL().glLoadIdentity();
 			//Important: gl (0,0) is bottom left but window coordinates (0,0) are top left so we have to change this!
 			GLSingleton.getGLU().gluPickMatrix(pickPoint.getX(),viewport[3]-pickPoint.getY(), 1.0, 1.0, viewport, 0);
-			float h = (float) this.screenHeight/ (float) this.screenWidth ;
-			GLSingleton.getGL().glOrtho(0.0, this.dim, 0.0, this.dim*h, -0.5, 2.5);
+			float h = (float) this.screenHeight/ (float) this.screenWidth;
+			GLSingleton.getGL().glOrtho(0.0, this.dim, 0.0, this.dim*h, -1, 1);
 		// 6. Draw the objects with their names
 			GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
 			this.drawNodes();
@@ -312,9 +333,9 @@ public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
 	
 	private void setupCaptions (){
 		captions = new Vector<Caption>();
-		Caption c = new Caption(4.0f, 4.0f);
+		Caption c = new Caption(3.2f, 2.8f);
 		c.addLine(new Color (1.0f, 0.0f, 1.0f), "Hello World!");
-		c.addLine(new Color (0.0f, 1.0f, 1.0f), "Goodbye World!");
+//		c.addLine(new Color (0.0f, 1.0f, 1.0f), "Goodbye World!");
 		captions.add(c);
 	}
 	
@@ -381,6 +402,14 @@ public class GLDrawer implements GLEventListener, IConstantes, IViewLevels {
 
 	public void setSelectionMode(boolean b) {
 		this.selectionMode  = b;
+	}
+
+	public void puta(int x, int y) throws GLSingletonNotInitializedException {
+		System.out.println("screen coords: " + x + " " + y);
+		Vector3f v = GLUtils.getScreen2World((int)x, (int)y, false);
+		System.out.println("world coords: " + v.getX() + " " + v.getY());
+		v = GLUtils.getScreen2World((int)x, (int)y, true);
+		System.out.println("relative world coords: " + v.getX() + " " + v.getY());
 	}
 
 }

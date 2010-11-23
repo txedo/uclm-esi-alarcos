@@ -2,11 +2,12 @@ package model.gl.knowledge.caption;
 
 import javax.media.opengl.GL;
 
+import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
-import model.gl.knowledge.GLObject;
 import model.knowledge.Color;
 import model.knowledge.Vector2f;
+import model.knowledge.Vector3f;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -24,14 +25,17 @@ public class Icon extends GLObject {
 	public void draw () throws GLSingletonNotInitializedException {
 		// The icon will be drawn in pixels (screen coords) looking at width and height, never in opengl coords
 		// so the icon area will be constant independently of the screen resolution or window size
-		Vector2f v = GLUtils.GetOGLPos2D(this.width, this.height);
-		GLSingleton.getGL().glColor3fv (color.getColorFB());
-		GLSingleton.getGL().glBegin(GL.GL_QUADS);
-			GLSingleton.getGL().glVertex2f(0.0f, 0.0f);
-			GLSingleton.getGL().glVertex2f(0.0f, v.getY());
-			GLSingleton.getGL().glVertex2f(v.getX(), v.getY());
-			GLSingleton.getGL().glVertex2f(v.getX(), 0.0f);
-		GLSingleton.getGL().glEnd();
+		GLSingleton.getGL().glPushMatrix();
+			Vector3f v = GLUtils.getScreen2World(this.width, this.height, true);
+			GLSingleton.getGL().glColor3fv (color.getColorFB());
+			GLSingleton.getGL().glBegin(GL.GL_QUADS);
+				GLSingleton.getGL().glVertex2f(0.0f, 0.0f);
+				GLSingleton.getGL().glVertex2f(0.0f, v.getY());
+				GLSingleton.getGL().glVertex2f(v.getX(), v.getY());
+				GLSingleton.getGL().glVertex2f(v.getX(), 0.0f);
+			GLSingleton.getGL().glEnd();
+		GLSingleton.getGL().glPopMatrix();
+		//System.out.println(v.getX() + " " + v.getY());
 	}
 
 	public Color getColor() {
