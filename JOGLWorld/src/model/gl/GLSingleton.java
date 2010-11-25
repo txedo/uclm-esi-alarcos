@@ -58,6 +58,10 @@ public class GLSingleton {
 		glut = new GLUT();
 	}
 
+	public static GLAutoDrawable getDrawable() {
+		return drawable;
+	}
+
 	static public GL getGL() throws GLSingletonNotInitializedException {
 		if (gl == null) throw new GLSingletonNotInitializedException();
 		else return drawable.getGL();

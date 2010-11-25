@@ -32,10 +32,10 @@ public class Caption extends GLObject {
 		int num_lines = lines.size();
 		int max_length = 0;
 		for (Line l : lines) {
-			int aux = l.getText().getLengthPX();
+			int aux = l.getLengthPX();
 			if (aux > max_length) max_length = aux; 
 		}
-		
+
 		float width = 0.0f;
 		if (num_lines > 0) {
 			width = this.pxGAP * 2 + max_length;
@@ -48,14 +48,16 @@ public class Caption extends GLObject {
 			f.draw();
 		GLSingleton.getGL().glPopMatrix();
 		
-		Vector3f oglGAP = GLUtils.getScreen2World(this.pxGAP, this.pxGAP, true);
 		GLSingleton.getGL().glPushMatrix();
-			float offset = 0.0f;
+			GLSingleton.getGL().glLoadIdentity();
+			Vector3f oglGAP = GLUtils.getScreen2World(this.pxGAP, this.pxGAP, true);
+			float vgap = GLUtils.getScreen2World(0, 20, true).getY();
+		GLSingleton.getGL().glPopMatrix();
+		GLSingleton.getGL().glPushMatrix();
 			GLSingleton.getGL().glTranslatef(this.positionX + oglGAP.getX(), this.positionY - oglGAP.getY() * 2, 0.0f);
-			for (Line l : lines) {
-				GLSingleton.getGL().glTranslatef(0.0f, 0.0f - offset, 0.0f);
-				l.draw();
-				offset += GLUtils.getScreen2World(0, 20, true).getY();
+			for (int i = 0 ; i < lines.size(); i++) {
+				GLSingleton.getGL().glTranslatef(0.0f, -vgap*i, 0.0f);
+				lines.get(i).draw();
 			}
 		GLSingleton.getGL().glPopMatrix();
 	}
