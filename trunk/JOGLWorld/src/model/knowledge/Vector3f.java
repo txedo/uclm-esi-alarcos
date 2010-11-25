@@ -111,5 +111,10 @@ public class Vector3f {
 		res[2] = this.z;
 		return res;
 	}
+
+	@Override
+	public Vector3f clone() {
+		return new Vector3f (this.x, this.y, this.z);
+	}
 	
 }

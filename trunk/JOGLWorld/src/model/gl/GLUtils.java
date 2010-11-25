@@ -63,6 +63,53 @@ public class GLUtils {
 		return new Vector3f((float)scoord[0], (float)scoord[1], (float)scoord[2]);
 	}
 	
+	/**
+	 * Switch to orthographic projection
+	 * The current projection and modelview matrix are saved (push).
+	 * You can loads projection and modelview matrices with endOrtho
+	 * @throws GLSingletonNotInitializedException 
+	 * @see #endOrtho()
+	 */
+	static public void beginOrtho(int screenHeight, int screenWidth, float glDim) throws GLSingletonNotInitializedException
+	{
+	    /*
+	     * We save the current projection matrix and we define a viewing volume
+	     * in the orthographic mode.
+	     * Projection matrix stack defines how the scene is projected to the screen.
+	     */
+		GLSingleton.getGL().glDisable(GL.GL_DEPTH_TEST);		  // Disables Depth Testing
+		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);   //select the Projection matrix
+		GLSingleton.getGL().glPushMatrix();                   //save the current projection matrix
+		GLSingleton.getGL().glLoadIdentity();                 //reset the current projection matrix to creates a new Orthographic projection
+	    //Creates a new orthographic viewing volume
+	    float h = (float) screenHeight/ (float) screenWidth ;
+	    GLSingleton.getGL().glOrtho(0.0f, glDim, 0.0f, glDim*h, -1.0, 1.0);	// left, right, bottom, top, near, far
+	   
+	    /*
+	     * Select, save and reset the modelview matrix.
+	     * Modelview matrix stack store transformation like translation, rotation ...
+	     */
+	    GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+	    GLSingleton.getGL().glLoadIdentity();
+	}
+
+	/**
+	 * Load projection and modelview matrices previously saved by the method beginOrtho
+	 * @throws GLSingletonNotInitializedException 
+	 * @see #beginOrtho()
+	 */
+	static public void endOrtho() throws GLSingletonNotInitializedException
+	{
+		// Enables Depth Testing
+		GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);
+	    //Select the Projection matrix stack
+		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
+	    //Load the previous Projection matrix (Generaly, it is a Perspective projection)
+		GLSingleton.getGL().glPopMatrix();
+	    //Select the Modelview matrix stack
+		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+	}
+	
 	static public void billboardCheatSphericalBegin() throws GLSingletonNotInitializedException {
 		double mvmatrix[] = new double[16];
 
@@ -90,6 +137,26 @@ public class GLUtils {
 		// restore the previously 
 		// stored modelview matrix
 		GLSingleton.getGL().glPopMatrix();
+	}
+	
+	static public void setOrthoProjection (int screenHeight, int screenWidth, float glDim) throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glDisable(GL.GL_DEPTH_TEST);		  // Disables Depth Testing
+		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
+		GLSingleton.getGL().glLoadIdentity();
+		float h = (float) screenHeight/ (float) screenWidth;
+		GLSingleton.getGLU().gluOrtho2D(0.0, glDim, 0.0, glDim*h);
+		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+		GLSingleton.getGL().glLoadIdentity();
+	}
+	
+	static public void setPerspectiveProjection (int screenHeight, int screenWidth) throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);			// Enables Depth Testing
+		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
+		GLSingleton.getGL().glLoadIdentity();		
+		float h = (float) screenWidth / (float) screenHeight;
+		GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 1000.0f);
+		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+		GLSingleton.getGL().glLoadIdentity();
 	}
 
 

@@ -5,6 +5,7 @@ import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.knowledge.Text;
 import model.knowledge.Color;
+import model.knowledge.Vector3f;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Line extends GLObject {
@@ -19,8 +20,12 @@ public class Line extends GLObject {
 	
 	public void draw () throws GLSingletonNotInitializedException {
 		GLSingleton.getGL().glPushMatrix();
+			GLSingleton.getGL().glLoadIdentity();
+			Vector3f v = GLUtils.getScreen2World(this.icon.getWidth() + this.pxGAP, 0, true);
+		GLSingleton.getGL().glPopMatrix();
+		GLSingleton.getGL().glPushMatrix();
 			this.icon.draw();
-			GLSingleton.getGL().glTranslatef(GLUtils.getScreen2World(this.icon.getWidth() + this.pxGAP, 0, true).getX(), 0.0f, 0.0f);
+			GLSingleton.getGL().glTranslatef(v.getX(), 0.0f, 0.0f);
 			this.text.draw();
 		GLSingleton.getGL().glPopMatrix();
 	}

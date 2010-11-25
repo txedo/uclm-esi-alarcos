@@ -26,15 +26,17 @@ public class Icon extends GLObject {
 		// The icon will be drawn in pixels (screen coords) looking at width and height, never in opengl coords
 		// so the icon area will be constant independently of the screen resolution or window size
 		GLSingleton.getGL().glPushMatrix();
+			GLSingleton.getGL().glLoadIdentity();
 			Vector3f v = GLUtils.getScreen2World(this.width, this.height, true);
-			GLSingleton.getGL().glColor3fv (color.getColorFB());
-			GLSingleton.getGL().glBegin(GL.GL_QUADS);
-				GLSingleton.getGL().glVertex2f(0.0f, 0.0f);
-				GLSingleton.getGL().glVertex2f(0.0f, v.getY());
-				GLSingleton.getGL().glVertex2f(v.getX(), v.getY());
-				GLSingleton.getGL().glVertex2f(v.getX(), 0.0f);
-			GLSingleton.getGL().glEnd();
 		GLSingleton.getGL().glPopMatrix();
+		GLSingleton.getGL().glColor3fv (color.getColorFB());
+		GLSingleton.getGL().glBegin(GL.GL_QUADS);
+			GLSingleton.getGL().glVertex2f(0.0f, 0.0f);
+			GLSingleton.getGL().glVertex2f(0.0f, v.getY());
+			GLSingleton.getGL().glVertex2f(v.getX(), v.getY());
+			GLSingleton.getGL().glVertex2f(v.getX(), 0.0f);
+		GLSingleton.getGL().glEnd();
+		
 		//System.out.println(v.getX() + " " + v.getY());
 	}
 

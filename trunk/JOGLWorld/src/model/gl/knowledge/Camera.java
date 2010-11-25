@@ -14,16 +14,27 @@ public class Camera implements IConstants {
 	private Vector3f rightVector;
 	private float xrot;
 	private float yrot;
+	private Vector3f initialPosition;
+	private Vector3f initialViewDir;
 	
 	public Camera(float xpos, float ypos, float zpos, float xviewdir, float yviewdir, float zviewdir) {
-		// TODO Inicializar xpos, ypos y zpos en función de lo que haya hecho SetupWorld
-		position = new Vector3f(xpos, ypos, zpos);
+		initialPosition = new Vector3f(xpos, ypos, zpos);
 		// Inicialmente la camara apunta al origen de coordenadas (0,0,0)
-		viewDir = new Vector3f(xviewdir, yviewdir, zviewdir);
+		initialViewDir = new Vector3f(xviewdir, yviewdir, zviewdir);
+		this.reset();
+	}
+	
+	private void calibrate () {
 		upVector = new Vector3f(0.0f, 1.0f, 0.0f);
 		rightVector = viewDir.cross(upVector);
 		frontVector = rightVector.cross(upVector).mult(-1);
 		xrot = yrot = 0.0f;
+	}
+	
+	public void reset () {
+		position = initialPosition.clone();
+		viewDir = initialViewDir.clone();
+		this.calibrate();
 	}
 
 	public void render() throws GLSingletonNotInitializedException {
@@ -33,7 +44,7 @@ public class Camera implements IConstants {
 				viewPoint.getX(), viewPoint.getY(), viewPoint.getZ(),
 				upVector.getX(), upVector.getY(), upVector.getZ());
 	}
-	
+		
 	private void move(Vector3f direccion) {
 		Vector3f aux = new Vector3f();
 		aux = position.add(direccion.mult(DESPL));
