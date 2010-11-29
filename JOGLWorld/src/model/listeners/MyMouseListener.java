@@ -20,9 +20,14 @@ public class MyMouseListener implements MouseListener {
 		if (e.getClickCount() == 2){	// Double click
 			this.drawer.setViewLevel(IViewLevels.NODE_LEVEL);
 		} else {						// Click
-			this.drawer.getPickPoint().setX((float)e.getPoint().getX());
-			this.drawer.getPickPoint().setY((float)e.getPoint().getY());
-			this.drawer.setSelectionMode(true);
+			if (e.getButton() == e.BUTTON1) {
+				this.drawer.getPickPoint().setX((float)e.getPoint().getX());
+				this.drawer.getPickPoint().setY((float)e.getPoint().getY());
+				this.drawer.setSelectionMode(true);
+			} else if (e.getButton() == e.BUTTON3) {
+				this.drawer.setViewLevel(IViewLevels.MAP_LEVEL);
+			}
+
 		}
 	}
 
