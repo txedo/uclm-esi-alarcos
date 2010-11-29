@@ -86,6 +86,8 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 						selectionMode = false;
 					}
 					float h = (float)this.screenHeight/(float)this.screenWidth;
+					GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping
+					GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
 					GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureLoader.getTextures()[0]);
 					GLSingleton.getGL().glBegin(GL.GL_QUADS);            // Draw Our First Texture Mapped Quad
 						GLSingleton.getGL().glTexCoord2d(0.0f, 0.0f);        // First Texture Coord
@@ -96,10 +98,11 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 						GLSingleton.getGL().glVertex2f(this.dim, this.dim*h);   // Third Vertex
 						GLSingleton.getGL().glTexCoord2d(0.0f, 1.0f);        // Fourth Texture Coord
 						GLSingleton.getGL().glVertex2f(0.0f, this.dim*h);       // Fourth Vertex
-					GLSingleton.getGL().glEnd();                         // Done Drawing The First Quad
+					GLSingleton.getGL().glEnd();   // Done Drawing The First Quad
+					GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping	
 					// Bind the texture to null to avoid color issues
-					GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
-
+//					GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
+					
 //					GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
 //					GLSingleton.getGL().glBegin(GL.GL_QUADS);            // Draw Our First Texture Mapped Quad
 //						GLSingleton.getGL().glVertex2f(0.0f, 0.0f);          	// First Vertex
@@ -107,7 +110,6 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 //						GLSingleton.getGL().glVertex2f(1.0f, 1.0f);   // Third Vertex
 //						GLSingleton.getGL().glVertex2f(1.0f, 0.0f);       // Fourth Vertex
 //					GLSingleton.getGL().glEnd();                         // Done Drawing The First Quad
-					
 					break;
 				case NODE_LEVEL:
 					if (selectionMode) selectNode();
@@ -150,24 +152,23 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 		GLSingleton.getInstance();
 		GLSingleton.init(glDrawable);
 		
-		try {
-			this.viewLevel = MAP_LEVEL;
-			this.textureLoader = new TextureLoader (new String[]{"presentation/resources/maps/world-map.png"});
-			textureLoader.loadTexures();
-			
+		try {	
 			GLSingleton.getGL().glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
 			GLSingleton.getGL().glClearColor(1.0f, 1.0f, 1.0f, 1.0f);			// White Background
 			GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);						// Enables Depth Testing
 			GLSingleton.getGL().glClearDepth(1.0f);								// Depth Buffer Setup
 			GLSingleton.getGL().glDepthFunc(GL.GL_LESS);						// The Type Of Depth Testing To Do
 			GLSingleton.getGL().glShadeModel(GL.GL_SMOOTH);						// Enable Smooth Shading
-			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping
+			// Textures are enabled and its environment configured just before mapping them
 			// Configuración para obtener un antialiasing en las líneas
 			GLSingleton.getGL().glEnable(GL.GL_BLEND);
 			GLSingleton.getGL().glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			GLSingleton.getGL().glEnable(GL.GL_LINE_SMOOTH);
 			GLSingleton.getGL().glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 			
+			this.viewLevel = MAP_LEVEL;
+			this.textureLoader = new TextureLoader (new String[]{"presentation/resources/maps/world-map.png"});
+			textureLoader.loadTexures();
 			// Creamos una cámara y un foco de luz
 			camera = new Camera(-5.0f, 10.0f, -5.0f, 1.0f, -1.0f, 1.0f);
 			spotlight = new Spotlight(1.0f, 1.0f, 1.0f);

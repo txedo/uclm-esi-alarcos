@@ -61,18 +61,8 @@ public class TextureLoader {
 
             makeRGBTexture(texture, GL.GL_TEXTURE_2D, false);
             
-            GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
             GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-
-            GLSingleton.getGL().glTexImage2D(GL.GL_TEXTURE_2D,
-                    0,
-                    3,
-                    texture.getWidth(),
-                    texture.getHeight(),
-                    0,
-                    GL.GL_RGB,
-                    GL.GL_UNSIGNED_BYTE,
-                    texture.getPixels());
+            GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
         }
 	}
 }
