@@ -15,6 +15,7 @@ public class MyMouseListener implements MouseListener {
 		this.drawer = d;
 	}
 	
+	@SuppressWarnings("static-access")
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2){	// Double click
