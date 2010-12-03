@@ -21,16 +21,18 @@ public class XMLAgent {
 		return resources.getString(tag);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <E> void marshal(String filename, Class<E> c, Object ob) throws JAXBException {
 		JAXBContext jc = JAXBContext.newInstance(c);
 
         Marshaller marshaller = jc.createMarshaller();
         marshaller.setProperty(javax.xml.bind.Marshaller.JAXB_ENCODING, "UTF-8"); //NOI18N
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        //marshaller.marshal((E)ob, new File (filename));
-        marshaller.marshal((E)ob, System.out);
+        marshaller.marshal((E)ob, new File (filename));
+        //marshaller.marshal((E)ob, System.out);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <E> E unmarshal (String filename, Class<E> c) throws JAXBException, IOException {
 		JAXBContext jc = JAXBContext.newInstance(c);
 		Unmarshaller unmarshaller = jc.createUnmarshaller();

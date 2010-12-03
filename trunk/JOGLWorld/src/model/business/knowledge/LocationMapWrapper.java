@@ -8,22 +8,24 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MarkMapWrapper {
-	@XmlElement ( name="mark" )
-	private List<Mark> innerList;
+public class LocationMapWrapper {
+	@XmlElement ( name="location" )
+	private List<Location> innerList;
 
-	public MarkMapWrapper() {
-		this.innerList = new ArrayList<Mark>();
+	public LocationMapWrapper() {
+		this.innerList = new ArrayList<Location>();
 	}
 	
-	public void addMark (Mark m) {
+	public void addLocation (Location m) {
 		this.innerList.add(m);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List getInnerList() {
 		return innerList;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setInnerList(List innerList) {
 		this.innerList = innerList;
 	}

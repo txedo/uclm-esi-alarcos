@@ -9,6 +9,7 @@ import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Spotlight {
 	private final int lightSource = GL.GL_LIGHT1;
+	@SuppressWarnings("unused")
 	private final float DIRECTIONAL = 0.0f;
 	private final float POSITIONAL = 1.0f;
 	

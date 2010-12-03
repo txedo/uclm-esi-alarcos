@@ -6,11 +6,8 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyAttribute;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlList;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
@@ -25,8 +22,8 @@ public class Factory {
 	private String email;
 	private int employees;
 	@XmlElement private Address address;
-	@XmlElement @XmlJavaTypeAdapter(MarkMapAdapter.class)
-	private Map<Integer, Vector2f> marks = new HashMap<Integer,Vector2f>();
+	@XmlElement @XmlJavaTypeAdapter(LocationMapAdapter.class)
+	private Map<Integer, Vector2f> locations = new HashMap<Integer,Vector2f>();
 	
 	public int getId() {
 		return this.id;
@@ -36,8 +33,8 @@ public class Factory {
 		this.id = id;
 	}
 	
-	public void addMark (int id, Vector2f coordinates) {
-		marks.put(id, coordinates);
+	public void addLocation (int id, Vector2f coordinates) {
+		locations.put(id, coordinates);
 	}
 	
 	public Address getAddress() {
@@ -88,6 +85,7 @@ public class Factory {
 		this.employees = employees;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(" factory\n");
@@ -96,10 +94,10 @@ public class Factory {
 		sb.append("       " + director + " (" + email + ")\n");
 		sb.append("       " + employees + "\n");
 		sb.append("       " + address + "\n");
-		sb.append("       marks\n");
-		for (Iterator i = marks.keySet().iterator(); i.hasNext(); ){
+		sb.append("       locations\n");
+		for (Iterator i = locations.keySet().iterator(); i.hasNext(); ){
 			int mapId = (Integer)i.next();
-			Vector2f coords = marks.get(mapId);
+			Vector2f coords = locations.get(mapId);
 			sb.append("        map " + mapId + " (" + coords.getX() + "," + coords.getY() + ")\n");
 		}
 		return sb.toString();
