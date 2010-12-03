@@ -9,10 +9,10 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import model.TextureLoader;
 import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
+import model.gl.TextureLoader;
 import model.gl.knowledge.Camera;
 import model.gl.knowledge.Edge;
 import model.gl.knowledge.IConstants;
@@ -167,7 +167,7 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 			GLSingleton.getGL().glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 			
 			this.viewLevel = MAP_LEVEL;
-			this.textureLoader = new TextureLoader (new String[]{"presentation/resources/maps/world-map.png"});
+			this.textureLoader = new TextureLoader (new String[]{"resources/maps/world-map.png"});
 			textureLoader.loadTexures();
 			// Creamos una cámara y un foco de luz
 			camera = new Camera(-5.0f, 10.0f, -5.0f, 1.0f, -1.0f, 1.0f);
