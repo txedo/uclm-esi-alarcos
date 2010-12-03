@@ -44,10 +44,9 @@ public class XMLParser {
 	 */
 
 	public static Object[][] parse (String filename, String rootname, String registername, String... fields) throws XMLRootNameException, ParserConfigurationException, SAXException, IOException {
-		File file = new File(filename);
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
-		Document doc = db.parse(file);
+		Document doc = db.parse(ResourceRetriever.getResourceAsStream(filename));
 		doc.getDocumentElement().normalize();
 		if (!doc.getDocumentElement().getNodeName().equals(rootname)) throw new XMLRootNameException();
 		NodeList nodeLst = doc.getElementsByTagName(registername);

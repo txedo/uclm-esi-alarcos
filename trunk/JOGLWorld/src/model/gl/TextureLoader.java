@@ -1,11 +1,10 @@
-package model;
+package model.gl;
 
 import java.io.IOException;
 
 import javax.media.opengl.GL;
 
 import persistency.TextureReader;
-import model.gl.GLSingleton;
 import model.gl.knowledge.Texture;
 import exceptions.gl.GLSingletonNotInitializedException;
 

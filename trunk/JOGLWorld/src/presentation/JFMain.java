@@ -3,19 +3,30 @@ import com.cloudgarden.layout.AnchorConstraint;
 import com.cloudgarden.layout.AnchorLayout;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
+import javax.xml.bind.JAXBException;
 
+import model.business.control.CompanyController;
+
+import org.apache.commons.configuration.ConfigurationException;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
@@ -38,6 +49,15 @@ import org.jdesktop.application.SingleFrameApplication;
  */
 public class JFMain extends SingleFrameApplication {
     private JMenuBar menuBar;
+    private JTextField txtCompanyInformation;
+    private JPanel companyPanel;
+    private JButton btnAddFactory;
+    private JPanel factoryPanel;
+    private JLabel lblCompanyInformation;
+    private JTextField txtCompanyName;
+    private JLabel lblCompanyName;
+    private JLabel lblCompanies;
+    private JComboBox cbCompanies;
     private JScrollPane jScrollPane1;
     private JPanel statusPanel;
     private JPanel widgetPanel;
@@ -78,6 +98,9 @@ public class JFMain extends SingleFrameApplication {
 
     @Override
     protected void startup() {
+    	{
+	    	getMainFrame().setSize(675, 416);
+    	}
         {
             topPanel = new JPanel();
             BorderLayout panelLayout = new BorderLayout();
@@ -104,9 +127,68 @@ public class JFMain extends SingleFrameApplication {
                 {
                 	widgetPanel = new JPanel();
                 	AnchorLayout widgetPanelLayout = new AnchorLayout();
-                	contentPanel.add(widgetPanel, new AnchorConstraint(1, 235, 1001, 1, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+                	contentPanel.add(widgetPanel, new AnchorConstraint(1, 235, 1001, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
                 	widgetPanel.setLayout(widgetPanelLayout);
-                	widgetPanel.setPreferredSize(new java.awt.Dimension(147, 273));
+                	widgetPanel.setPreferredSize(new java.awt.Dimension(190, 320));
+                	{
+                		factoryPanel = new JPanel();
+                		widgetPanel.add(factoryPanel, new AnchorConstraint(132, 950, 585, 12, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_ABS));
+                		factoryPanel.setPreferredSize(new java.awt.Dimension(168, 105));
+                		factoryPanel.setBorder(BorderFactory.createTitledBorder("Add new factory"));
+                		{
+                			lblCompanies = new JLabel();
+                			factoryPanel.add(lblCompanies);
+                			lblCompanies.setName("lblCompanies");
+                			lblCompanies.setPreferredSize(new java.awt.Dimension(84, 14));
+                		}
+                		{
+                			ComboBoxModel cbCompaniesModel = 
+                				new DefaultComboBoxModel(
+                						new String[] { "Item One", "Item Two" });
+                			cbCompanies = new JComboBox();
+                			factoryPanel.add(cbCompanies);
+                			cbCompanies.setModel(cbCompaniesModel);
+                			cbCompanies.setPreferredSize(new java.awt.Dimension(55, 20));
+                		}
+                	}
+                	{
+                		companyPanel = new JPanel();
+                		widgetPanel.add(companyPanel, new AnchorConstraint(12, 950, 239, 12, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_ABS));
+                		companyPanel.setPreferredSize(new java.awt.Dimension(168, 109));
+                		companyPanel.setBorder(BorderFactory.createTitledBorder("Add new company"));
+                		{
+                			lblCompanyName = new JLabel();
+                			companyPanel.add(lblCompanyName);
+                			lblCompanyName.setName("lblCompanyName");
+                		}
+                		{
+                			txtCompanyName = new JTextField();
+                			companyPanel.add(txtCompanyName);
+                			txtCompanyName.setPreferredSize(new java.awt.Dimension(65, 20));
+                		}
+                		{
+                			lblCompanyInformation = new JLabel();
+                			companyPanel.add(lblCompanyInformation);
+                			lblCompanyInformation.setName("lblCompanyInformation");
+                		}
+                		{
+                			txtCompanyInformation = new JTextField();
+                			companyPanel.add(txtCompanyInformation);
+                			txtCompanyInformation.setName("txtCompanyInformation");
+                			txtCompanyInformation.setPreferredSize(new java.awt.Dimension(81, 20));
+                		}
+                		{
+                			btnAddFactory = new JButton();
+                			companyPanel.add(btnAddFactory);
+                			btnAddFactory.setPreferredSize(new java.awt.Dimension(59, 21));
+                			btnAddFactory.setName("btnAddFactory");
+                			btnAddFactory.addActionListener(new ActionListener() {
+                				public void actionPerformed(ActionEvent evt) {
+                					btnAddFactoryActionPerformed(evt);
+                				}
+                			});
+                		}
+                	}
                 }
             }
             {
@@ -203,6 +285,23 @@ public class JFMain extends SingleFrameApplication {
 
     public static void main(String[] args) {
         launch(JFMain.class, args);
+    }
+    
+    private void btnAddFactoryActionPerformed(ActionEvent evt) {
+    	System.out.println("btnAddFactory.actionPerformed, event="+evt);
+    	try {
+			CompanyController.addCompany(txtCompanyName.getText(), txtCompanyInformation.getText());
+
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 }

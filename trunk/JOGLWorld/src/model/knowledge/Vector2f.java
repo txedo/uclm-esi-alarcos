@@ -1,9 +1,16 @@
 package model.knowledge;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Vector2f {
 	private float x;
 	private float y;
 	
+	public Vector2f() {
+	}
+
 	public Vector2f (float x, float z) {
 		this.x = x;
 		this.y = z;

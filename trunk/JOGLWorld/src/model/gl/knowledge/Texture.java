@@ -2,11 +2,7 @@ package model.gl.knowledge;
 
 import java.nio.ByteBuffer;
 
-import exceptions.gl.GLSingletonNotInitializedException;
-
-import model.gl.GLObject;
-
-public class Texture extends GLObject {
+public class Texture {
 	
     private ByteBuffer pixels;
     private int width;
@@ -29,12 +25,5 @@ public class Texture extends GLObject {
     public int getWidth() {
         return width;
     }
-
-	@Override
-	public void draw() throws GLSingletonNotInitializedException {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 }
