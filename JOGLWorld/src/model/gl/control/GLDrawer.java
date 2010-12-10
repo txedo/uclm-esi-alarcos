@@ -101,6 +101,7 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 						debugPrintCoords((int)pickPoint.getX(), (int)pickPoint.getY());
 						selectionMode = false;
 					}
+					// This state machine prevents GL trying to load a texture while it is loading from disk to memory
 					if (hasTextureMapChanged) {
 						isTextureMapReady = false;
 						textureMapLoader.loadTexures();
