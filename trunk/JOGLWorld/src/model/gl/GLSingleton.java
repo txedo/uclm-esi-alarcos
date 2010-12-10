@@ -17,6 +17,7 @@ import exceptions.gl.GLSingletonNotInitializedException;
  * Use Singleton.instance() to access this instance.
  */
 public class GLSingleton {
+	static private boolean initiated;
 	static private GLAutoDrawable drawable;
 	static private GL gl;
 	static private GLU glu;
@@ -30,6 +31,7 @@ public class GLSingleton {
 	 * create instances of Singleton subclasses.
 	 */
 	protected GLSingleton() {
+		initiated = false;
 		drawable = null;
 		gl = null;
 		glu = null;
@@ -56,6 +58,11 @@ public class GLSingleton {
 		gl = glDrawable.getGL();
 		glu = new GLU();
 		glut = new GLUT();
+		initiated = true;
+	}
+	
+	public static boolean isInitiated () {
+		return initiated;
 	}
 
 	public static GLAutoDrawable getDrawable() {

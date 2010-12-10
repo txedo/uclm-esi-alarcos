@@ -33,10 +33,16 @@ public class XMLAgent {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <E> E unmarshal (String filename, Class<E> c) throws JAXBException, IOException {
+	public static <E> E unmarshal (String filename, Class<E> c) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
+		Object result = null;
 		JAXBContext jc = JAXBContext.newInstance(c);
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
-		return (E) unmarshaller.unmarshal(ResourceRetriever.getResourceAsStream(filename));
+		try {
+			result = (E)unmarshaller.unmarshal(ResourceRetriever.getResourceAsStream(filename));
+		} catch (JAXBException e) {
+			marshal(filename, c, c.newInstance());
+		}
+		return (E)unmarshaller.unmarshal(ResourceRetriever.getResourceAsStream(filename));
 	}
 	
 }

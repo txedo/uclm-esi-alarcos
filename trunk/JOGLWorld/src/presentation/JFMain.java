@@ -2,9 +2,14 @@ package presentation;
 import com.cloudgarden.layout.AnchorConstraint;
 import com.cloudgarden.layout.AnchorLayout;
 
+import exceptions.CompanyAlreadyExistsException;
+import exceptions.gl.GLSingletonNotInitializedException;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -24,12 +29,22 @@ import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
 import javax.xml.bind.JAXBException;
 
+import model.IObserverUI;
+import model.NotifyUIController;
 import model.business.control.CompanyController;
+import model.business.control.MapController;
+import model.business.knowledge.BusinessFactory;
+import model.business.knowledge.Company;
+import model.business.knowledge.Map;
+import model.gl.GLSingleton;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
+
+import presentation.utils.Messages;
+
 
 
 /**
@@ -47,12 +62,15 @@ import org.jdesktop.application.SingleFrameApplication;
 /**
  * 
  */
-public class JFMain extends SingleFrameApplication {
+public class JFMain extends SingleFrameApplication implements IObserverUI {
     private JMenuBar menuBar;
     private JTextField txtCompanyInformation;
     private JPanel companyPanel;
     private JButton btnAddFactory;
     private JPanel factoryPanel;
+    private JButton btnSetCoordinates;
+    private JComboBox cbMaps;
+    private JLabel lblMap;
     private JLabel lblCompanyInformation;
     private JTextField txtCompanyName;
     private JLabel lblCompanyName;
@@ -142,13 +160,32 @@ public class JFMain extends SingleFrameApplication {
                 			lblCompanies.setPreferredSize(new java.awt.Dimension(84, 14));
                 		}
                 		{
-                			ComboBoxModel cbCompaniesModel = 
-                				new DefaultComboBoxModel(
-                						new String[] { "Item One", "Item Two" });
+                			ComboBoxModel cbCompaniesModel = new DefaultComboBoxModel();
                 			cbCompanies = new JComboBox();
                 			factoryPanel.add(cbCompanies);
                 			cbCompanies.setModel(cbCompaniesModel);
                 			cbCompanies.setPreferredSize(new java.awt.Dimension(55, 20));
+                		}
+                		{
+                			lblMap = new JLabel();
+                			factoryPanel.add(lblMap);
+                			lblMap.setName("lblMap");
+                		}
+                		{
+                			ComboBoxModel cbMapsModel = new DefaultComboBoxModel();
+                			cbMaps = new JComboBox();
+                			factoryPanel.add(cbMaps);
+                			cbMaps.setModel(cbMapsModel);
+                			cbMaps.addActionListener(new ActionListener() {
+                				public void actionPerformed(ActionEvent evt) {
+                					cbMapsActionPerformed(evt);
+                				}
+                			});
+                		}
+                		{
+                			btnSetCoordinates = new JButton();
+                			factoryPanel.add(btnSetCoordinates);
+                			btnSetCoordinates.setName("btnSetCoordinates");
                 		}
                 	}
                 	{
@@ -279,8 +316,11 @@ public class JFMain extends SingleFrameApplication {
         }
         getMainFrame().setJMenuBar(menuBar);
         show(topPanel);
+        NotifyUIController.attach(this);
         GLInit.init();
         GLInit.setContext(getMainFrame(), canvasPanel, new AnchorConstraint(5, 998, 998, 4, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+        this.updateCompanyList();
+        this.updateMapList();
     }
 
     public static void main(String[] args) {
@@ -290,18 +330,93 @@ public class JFMain extends SingleFrameApplication {
     private void btnAddFactoryActionPerformed(ActionEvent evt) {
     	System.out.println("btnAddFactory.actionPerformed, event="+evt);
     	try {
-			CompanyController.addCompany(txtCompanyName.getText(), txtCompanyInformation.getText());
-
+			CompanyController.addCompany(BusinessFactory.createCompany(txtCompanyName.getText(), txtCompanyInformation.getText()));
+			Messages.showInfoDialog(getMainFrame(), "Information", "Company successfully added.");
 		} catch (ConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (Exception e) {
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CompanyAlreadyExistsException e) {
+			Messages.showErrorDialog(getMainFrame(), "Error", "This company already exists.");
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void updateCompanyList() {
+		try {
+			ArrayList<Company> companies = (ArrayList)CompanyController.getAllCompanies();
+			for (Company c : companies) {
+				cbCompanies.addItem(c);
+			}
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void updateMapList() {
+		try {
+			cbMaps.addItem("");
+			ArrayList<Map> maps = (ArrayList)MapController.getAllMaps();
+			for (Map m : maps) {
+				cbMaps.addItem(m);
+			}
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void cbMapsActionPerformed(ActionEvent evt) {
+		try {
+			if (!cbMaps.getSelectedItem().equals(""))
+				if (GLSingleton.isInitiated())
+					MapController.setActiveMap((Map)cbMaps.getSelectedItem());
+		} catch (GLSingletonNotInitializedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

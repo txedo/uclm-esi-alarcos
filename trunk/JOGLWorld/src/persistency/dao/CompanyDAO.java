@@ -1,6 +1,8 @@
-package persistency.business;
+package persistency.dao;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.xml.bind.JAXBException;
 
@@ -8,9 +10,12 @@ import org.apache.commons.configuration.ConfigurationException;
 
 import persistency.XMLAgent;
 
+import exceptions.CompanyNotFoundException;
+
+
 import model.business.knowledge.Address;
 import model.business.knowledge.Company;
-import model.business.knowledge.CompanyList;
+import model.business.knowledge.CompanyWrapper;
 import model.business.knowledge.Factory;
 import model.knowledge.Vector2f;
 
@@ -21,11 +26,9 @@ public class CompanyDAO {
 		this.xmlfile = XMLAgent.getXMLFilename("companies");
 	}
 	
-	public boolean save (Company c) throws JAXBException, IOException {
-		boolean result = true;
-//		CompanyList companyList = this.getAll();
-//		c.setId(companyList.getLastId());
-		CompanyList companyList = new CompanyList();
+	public void save (Company c) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
+		CompanyWrapper companyList = this.getAll();
+		c.setId(companyList.getLastId());
 		
 		Factory f = new Factory();
 		f.setId(c.getLastFactoryId());
@@ -58,17 +61,27 @@ public class CompanyDAO {
 		c.addFactory(f);
 		
 		companyList.addCompany(c);
-		XMLAgent.marshal(this.xmlfile, CompanyList.class, (CompanyList)companyList);
-		return result;
+		XMLAgent.marshal(this.xmlfile, CompanyWrapper.class, (CompanyWrapper)companyList);
 	}
 	
-	public Company get (String companyName) throws Exception {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Company get (String companyName) throws JAXBException, IOException, CompanyNotFoundException, InstantiationException, IllegalAccessException {
+		boolean found = false;
 		Company result = null;
-//		XMLAgent.unmarshal(this.xmlfile, Company.class);
+		ArrayList<Company> companies = (ArrayList)XMLAgent.unmarshal(this.xmlfile, CompanyWrapper.class).getInnerList();
+		Iterator it = companies.iterator();
+		while (!found && it.hasNext()) {
+			Company aux = (Company)it.next();
+			if (aux.getName().equals(companyName)) {
+				result = aux;
+				found = true;
+			}
+		}
+		if (result == null) throw new CompanyNotFoundException ();
 		return result;
 	}
 	
-	public CompanyList getAll () throws JAXBException, IOException {
-		return (CompanyList)XMLAgent.unmarshal(this.xmlfile, CompanyList.class);
+	public CompanyWrapper getAll () throws JAXBException, IOException, InstantiationException, IllegalAccessException {
+		return (CompanyWrapper)XMLAgent.unmarshal(this.xmlfile, CompanyWrapper.class);
 	}
 }

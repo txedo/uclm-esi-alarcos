@@ -9,6 +9,9 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
+import model.IObserverGL;
+import model.NotifyGLController;
+import model.business.control.MapController;
 import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
@@ -34,8 +37,8 @@ import com.sun.opengl.util.BufferUtil;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
-public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
-	private TextureLoader textureLoader;
+public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IViewLevels {
+	private TextureLoader textureMapLoader;
 	
 	private Vector<GLObject> towers;
 	private Vector<GLObject> nodes;
@@ -61,7 +64,20 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 	private int screenHeight;
 	
 	public final float dim = IConstants.INIT_DIM;
+
+	private boolean hasTextureMapChanged;
+	private boolean isTextureMapReady;
 	
+	/**
+	 * 
+	 */
+	public GLDrawer() {
+		NotifyGLController.attach(this);
+		this.viewLevel = MAP_LEVEL;
+		this.hasTextureMapChanged = false;
+		this.isTextureMapReady = false;
+	}
+
 	@Override
 	 /** Called by the drawable to initiate OpenGL rendering by the client.
      * After all GLEventListeners have been notified of a display event, the
@@ -85,31 +101,39 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 						debugPrintCoords((int)pickPoint.getX(), (int)pickPoint.getY());
 						selectionMode = false;
 					}
-					float h = (float)this.screenHeight/(float)this.screenWidth;
-					GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping
-					GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
-					GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureLoader.getTextures()[0]);
-					GLSingleton.getGL().glBegin(GL.GL_QUADS);            // Draw Our First Texture Mapped Quad
-						GLSingleton.getGL().glTexCoord2d(0.0f, 0.0f);        // First Texture Coord
-						GLSingleton.getGL().glVertex2f(0.0f, 0.0f);          	// First Vertex
-						GLSingleton.getGL().glTexCoord2d(1.0f, 0.0f);        // Second Texture Coord
-						GLSingleton.getGL().glVertex2f(this.dim, 0.0f);         // Second Vertex
-						GLSingleton.getGL().glTexCoord2d(1.0f, 1.0f);        // Third Texture Coord
-						GLSingleton.getGL().glVertex2f(this.dim, this.dim*h);   // Third Vertex
-						GLSingleton.getGL().glTexCoord2d(0.0f, 1.0f);        // Fourth Texture Coord
-						GLSingleton.getGL().glVertex2f(0.0f, this.dim*h);       // Fourth Vertex
-					GLSingleton.getGL().glEnd();   // Done Drawing The First Quad
-					GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping	
-					// Bind the texture to null to avoid color issues
-//					GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
+					if (hasTextureMapChanged) {
+						isTextureMapReady = false;
+						textureMapLoader.loadTexures();
+						hasTextureMapChanged = false;
+						isTextureMapReady = true;
+					}
+					if (isTextureMapReady) {
+						float h = (float)this.screenHeight/(float)this.screenWidth;
+						GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping
+						GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+						GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureMapLoader.getTextures()[0]);
+						GLSingleton.getGL().glBegin(GL.GL_QUADS);            // Draw Our First Texture Mapped Quad
+							GLSingleton.getGL().glTexCoord2d(0.0f, 0.0f);        // First Texture Coord
+							GLSingleton.getGL().glVertex2f(0.0f, 0.0f);          	// First Vertex
+							GLSingleton.getGL().glTexCoord2d(1.0f, 0.0f);        // Second Texture Coord
+							GLSingleton.getGL().glVertex2f(this.dim, 0.0f);         // Second Vertex
+							GLSingleton.getGL().glTexCoord2d(1.0f, 1.0f);        // Third Texture Coord
+							GLSingleton.getGL().glVertex2f(this.dim, this.dim*h);   // Third Vertex
+							GLSingleton.getGL().glTexCoord2d(0.0f, 1.0f);        // Fourth Texture Coord
+							GLSingleton.getGL().glVertex2f(0.0f, this.dim*h);       // Fourth Vertex
+						GLSingleton.getGL().glEnd();   // Done Drawing The First Quad
+						GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping	
+						// Bind the texture to null to avoid color issues
+//						GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
 					
-//					GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
-//					GLSingleton.getGL().glBegin(GL.GL_QUADS);            // Draw Our First Texture Mapped Quad
-//						GLSingleton.getGL().glVertex2f(0.0f, 0.0f);          	// First Vertex
-//						GLSingleton.getGL().glVertex2f(0.0f, 1.0f);         // Second Vertex
-//						GLSingleton.getGL().glVertex2f(1.0f, 1.0f);   // Third Vertex
-//						GLSingleton.getGL().glVertex2f(1.0f, 0.0f);       // Fourth Vertex
-//					GLSingleton.getGL().glEnd();                         // Done Drawing The First Quad
+//						GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
+//						GLSingleton.getGL().glBegin(GL.GL_QUADS);            // Draw Our First Texture Mapped Quad
+//							GLSingleton.getGL().glVertex2f(0.0f, 0.0f);          	// First Vertex
+//							GLSingleton.getGL().glVertex2f(0.0f, 1.0f);         // Second Vertex
+//							GLSingleton.getGL().glVertex2f(1.0f, 1.0f);   // Third Vertex
+//							GLSingleton.getGL().glVertex2f(1.0f, 0.0f);       // Fourth Vertex
+//						GLSingleton.getGL().glEnd();                         // Done Drawing The First Quad
+					}
 					break;
 				case NODE_LEVEL:
 					if (selectionMode) selectNode();
@@ -128,6 +152,9 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 		} catch (GLSingletonNotInitializedException e) {
 			GLSingleton.init(glDrawable);
 			this.init(glDrawable);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -148,11 +175,11 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
      * initialization such as setup of lights and display lists.
      * @param gLDrawable The GLAutoDrawable object.
      */
-	public void init(GLAutoDrawable glDrawable) {	
+	public void init(GLAutoDrawable glDrawable) {
 		GLSingleton.getInstance();
 		GLSingleton.init(glDrawable);
 		
-		try {	
+		try {
 			GLSingleton.getGL().glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
 			GLSingleton.getGL().glClearColor(1.0f, 1.0f, 1.0f, 1.0f);			// White Background
 			GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);						// Enables Depth Testing
@@ -166,9 +193,8 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 			GLSingleton.getGL().glEnable(GL.GL_LINE_SMOOTH);
 			GLSingleton.getGL().glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 			
-			this.viewLevel = MAP_LEVEL;
-			this.textureLoader = new TextureLoader (new String[]{"resources/maps/world-map.png"});
-			textureLoader.loadTexures();
+//			this.textureLoader = new TextureLoader (new String[]{"resources/maps/world-map.png"});
+//			textureLoader.loadTexures();
 			// Creamos una cámara y un foco de luz
 			camera = new Camera(-5.0f, 10.0f, -5.0f, 1.0f, -1.0f, 1.0f);
 			spotlight = new Spotlight(1.0f, 1.0f, 1.0f);
@@ -189,9 +215,6 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 		} catch (GLSingletonNotInitializedException e) {
 			GLSingleton.init(glDrawable);
 			this.init(glDrawable);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
@@ -408,6 +431,12 @@ public class GLDrawer implements GLEventListener, IConstants, IViewLevels {
 		System.out.println("world coords: " + v.getX() + " " + v.getY());
 		v = GLUtils.getScreen2World((int)x, (int)y, true);
 		System.out.println("relative world coords: " + v.getX() + " " + v.getY());
+	}
+
+	@Override
+	public void updateMapChanged() throws GLSingletonNotInitializedException, IOException {
+		this.textureMapLoader = new TextureLoader (new String[]{MapController.getActiveMap().getFilename()});
+		this.hasTextureMapChanged = true;
 	}
 
 }
