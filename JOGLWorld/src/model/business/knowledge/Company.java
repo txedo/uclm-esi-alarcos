@@ -59,10 +59,11 @@ public class Company {
 	
 	public String toString (){
 		StringBuffer sb = new StringBuffer();
-        sb.append( " company\n");
-        sb.append( "       " + name + "\n");
-        sb.append( "       " + information + "\n");
-        sb.append( "       " + factories + "\n");
+		sb.append(this.name);
+//        sb.append( " company\n");
+//        sb.append( "       " + name + "\n");
+//        sb.append( "       " + information + "\n");
+//        sb.append( "       " + factories + "\n");
 		return sb.toString();
 	}
 }

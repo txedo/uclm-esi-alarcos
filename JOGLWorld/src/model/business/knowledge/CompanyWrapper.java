@@ -10,28 +10,32 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement ( name="companies" )
 @XmlAccessorType(XmlAccessType.FIELD)
-public class CompanyList {
-	@XmlElement ( name="company" ) private List<Company> companyList = new ArrayList<Company>();
+public class CompanyWrapper {
+	@XmlElement ( name="company" , required=false ) private List<Company> innerList = new ArrayList<Company>();
 	
 	public void addCompany (Company company) {
-		companyList.add(company);
+		innerList.add(company);
 	}
 	
-	public List<Company> getCompanyList () {
-		return companyList;
+	public void addAllCompanies (List<Company> c) {
+		innerList.addAll(c);
+	}
+	
+	public List<Company> getInnerList () {
+		return innerList;
 	}
 	
 	public int getLastId () {
 		int lastId = 0;
-		if (companyList.size() != 0)
-			lastId = ((Company)companyList.get(companyList.size()-1)).getId();
+		if (innerList.size() != 0)
+			lastId = ((Company)innerList.get(innerList.size()-1)).getId();
 		return ++lastId;
 	}
 	
 	public String toString () {
 		StringBuffer sb = new StringBuffer();
         sb.append( " companyList\n");
-        for (Company c : companyList) {
+        for (Company c : innerList) {
         	sb.append( "       " + c + "\n");
         }
 		return sb.toString();

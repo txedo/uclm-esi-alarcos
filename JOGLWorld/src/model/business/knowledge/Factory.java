@@ -25,6 +25,19 @@ public class Factory {
 	@XmlElement @XmlJavaTypeAdapter(LocationMapAdapter.class)
 	private Map<Integer, Vector2f> locations = new HashMap<Integer,Vector2f>();
 	
+	public Factory() {
+	}
+	
+	public Factory(String name, String information, String director,
+			String email, int employees, Address address) {
+		this.name = name;
+		this.information = information;
+		this.director = director;
+		this.email = email;
+		this.employees = employees;
+		this.address = address;
+	}
+
 	public int getId() {
 		return this.id;
 	}

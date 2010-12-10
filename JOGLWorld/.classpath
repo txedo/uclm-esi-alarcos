@@ -10,6 +10,5 @@
 	<classpathentry kind="lib" path="lib/commons-lang-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/simple-xml-2.3.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
