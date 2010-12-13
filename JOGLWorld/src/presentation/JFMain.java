@@ -6,6 +6,7 @@ import exceptions.CompanyAlreadyExistsException;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -35,6 +36,7 @@ import model.business.control.CompanyController;
 import model.business.control.MapController;
 import model.business.knowledge.BusinessFactory;
 import model.business.knowledge.Company;
+import model.business.knowledge.Factory;
 import model.business.knowledge.Map;
 import model.gl.GLSingleton;
 
@@ -64,18 +66,26 @@ import presentation.utils.Messages;
  */
 public class JFMain extends SingleFrameApplication implements IObserverUI {
     private JMenuBar menuBar;
-    private JTextField txtCompanyInformation;
-    private JPanel companyPanel;
-    private JButton btnAddFactory;
-    private JPanel factoryPanel;
+    private JTextField txtAddCompanyCompanyInformation;
+    private JPanel addCompanyPanel;
+    private JButton btnAddCompany;
+    private JPanel configureFactoryPanel;
     private JButton btnSetCoordinates;
-    private JComboBox cbMaps;
-    private JLabel lblMap;
-    private JLabel lblCompanyInformation;
-    private JTextField txtCompanyName;
-    private JLabel lblCompanyName;
-    private JLabel lblCompanies;
-    private JComboBox cbCompanies;
+    private JButton btnAddFactory;
+    private JTextField txtAddFactoryFactoryName;
+    private JComboBox cbAddFactoryCompanies;
+    private JLabel lblAddFactoryCompany;
+    private JLabel lblAddFactoryFactory;
+    private JPanel addFactoryPanel;
+    private JComboBox cbConfigureFactoryFactories;
+    private JLabel lblConfigureFactoryFactory;
+    private JComboBox cbConfigureFactoryMaps;
+    private JLabel lblConfigureFactoryMap;
+    private JLabel lblAddCompanyCompanyInformation;
+    private JTextField txtAddCompanyCompanyName;
+    private JLabel lblAddCompanyCompanyName;
+    private JLabel lblConfigureFactoryCompany;
+    private JComboBox cbConfigureFactoryCompanies;
     private JScrollPane jScrollPane1;
     private JPanel statusPanel;
     private JPanel widgetPanel;
@@ -117,13 +127,13 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
     @Override
     protected void startup() {
     	{
-	    	getMainFrame().setSize(675, 416);
+	    	getMainFrame().setSize(791, 465);
     	}
         {
             topPanel = new JPanel();
             BorderLayout panelLayout = new BorderLayout();
             topPanel.setLayout(panelLayout);
-            topPanel.setPreferredSize(new java.awt.Dimension(500, 300));
+            topPanel.setPreferredSize(new java.awt.Dimension(659, 404));
             {
                 contentPanel = new JPanel();
                 AnchorLayout contentPanelLayout = new AnchorLayout();
@@ -149,79 +159,149 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
                 	widgetPanel.setLayout(widgetPanelLayout);
                 	widgetPanel.setPreferredSize(new java.awt.Dimension(190, 320));
                 	{
-                		factoryPanel = new JPanel();
-                		widgetPanel.add(factoryPanel, new AnchorConstraint(132, 950, 585, 12, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_ABS));
-                		factoryPanel.setPreferredSize(new java.awt.Dimension(168, 105));
-                		factoryPanel.setBorder(BorderFactory.createTitledBorder("Add new factory"));
+                		addFactoryPanel = new JPanel();
+                		widgetPanel.add(addFactoryPanel, new AnchorConstraint(108, 950, 567, 12, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_ABS));
+                		addFactoryPanel.setLayout(null);
+                		addFactoryPanel.setPreferredSize(new java.awt.Dimension(168, 97));
+                		addFactoryPanel.setBorder(BorderFactory.createTitledBorder("Add new factory"));
                 		{
-                			lblCompanies = new JLabel();
-                			factoryPanel.add(lblCompanies);
-                			lblCompanies.setName("lblCompanies");
-                			lblCompanies.setPreferredSize(new java.awt.Dimension(84, 14));
+                			lblAddFactoryFactory = new JLabel();
+                			addFactoryPanel.add(lblAddFactoryFactory);
+                			lblAddFactoryFactory.setBounds(6, 44, 59, 19);
+                			lblAddFactoryFactory.setName("lblAddFactoryFactory");
+                		}
+                		{
+                			lblAddFactoryCompany = new JLabel();
+                			addFactoryPanel.add(lblAddFactoryCompany);
+                			lblAddFactoryCompany.setBounds(6, 23, 62, 15);
+                			lblAddFactoryCompany.setName("lblAddFactoryCompany");
+                		}
+                		{
+                			ComboBoxModel cbAddFactoryCompaniesModel = new DefaultComboBoxModel();
+                			cbAddFactoryCompanies = new JComboBox();
+                			addFactoryPanel.add(cbAddFactoryCompanies);
+                			cbAddFactoryCompanies.setModel(cbAddFactoryCompaniesModel);
+                			cbAddFactoryCompanies.setBounds(78, 20, 84, 20);
+                		}
+                		{
+                			txtAddFactoryFactoryName = new JTextField();
+                			addFactoryPanel.add(txtAddFactoryFactoryName);
+                			txtAddFactoryFactoryName.setBounds(78, 42, 82, 26);
+                			txtAddFactoryFactoryName.setSize(82, 20);
+                		}
+                		{
+                			btnAddFactory = new JButton();
+                			addFactoryPanel.add(btnAddFactory);
+                			btnAddFactory.setBounds(35, 68, 103, 23);
+                			btnAddFactory.setName("btnAddFactory");
+                		}
+                	}
+                	{
+                		configureFactoryPanel = new JPanel();
+                		widgetPanel.add(configureFactoryPanel, new AnchorConstraint(216, 965, 585, 10, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_ABS));
+                		configureFactoryPanel.setPreferredSize(new java.awt.Dimension(173, 132));
+                		configureFactoryPanel.setBorder(BorderFactory.createTitledBorder("Configure factory"));
+                		configureFactoryPanel.setLayout(null);
+                		{
+                			lblConfigureFactoryCompany = new JLabel();
+                			configureFactoryPanel.add(lblConfigureFactoryCompany);
+                			lblConfigureFactoryCompany.setName("lblConfigureFactoryCompany");
+                			lblConfigureFactoryCompany.setBounds(6, 28, 61, 14);
                 		}
                 		{
                 			ComboBoxModel cbCompaniesModel = new DefaultComboBoxModel();
-                			cbCompanies = new JComboBox();
-                			factoryPanel.add(cbCompanies);
-                			cbCompanies.setModel(cbCompaniesModel);
-                			cbCompanies.setPreferredSize(new java.awt.Dimension(55, 20));
+                			cbConfigureFactoryCompanies = new JComboBox();
+                			configureFactoryPanel.add(cbConfigureFactoryCompanies);
+                			cbConfigureFactoryCompanies.setModel(cbCompaniesModel);
+                			cbConfigureFactoryCompanies.setBounds(77, 25, 82, 20);
+                			cbConfigureFactoryCompanies.addActionListener(new ActionListener() {
+                				public void actionPerformed(ActionEvent evt) {
+                					cbConfigureFactoryCompaniesActionPerformed(evt);
+                				}
+                			});
                 		}
                 		{
-                			lblMap = new JLabel();
-                			factoryPanel.add(lblMap);
-                			lblMap.setName("lblMap");
+                			lblConfigureFactoryMap = new JLabel();
+                			configureFactoryPanel.add(lblConfigureFactoryMap);
+                			lblConfigureFactoryMap.setName("lblConfigureFactoryMap");
+                			lblConfigureFactoryMap.setBounds(6, 77, 62, 12);
                 		}
                 		{
                 			ComboBoxModel cbMapsModel = new DefaultComboBoxModel();
-                			cbMaps = new JComboBox();
-                			factoryPanel.add(cbMaps);
-                			cbMaps.setModel(cbMapsModel);
-                			cbMaps.addActionListener(new ActionListener() {
+                			cbConfigureFactoryMaps = new JComboBox();
+                			configureFactoryPanel.add(cbConfigureFactoryMaps);
+                			cbConfigureFactoryMaps.setModel(cbMapsModel);
+                			cbConfigureFactoryMaps.setBounds(78, 75, 80, 20);
+                			cbConfigureFactoryMaps.addActionListener(new ActionListener() {
                 				public void actionPerformed(ActionEvent evt) {
-                					cbMapsActionPerformed(evt);
+                					cbConfigureFactoryMapsActionPerformed(evt);
                 				}
                 			});
                 		}
                 		{
                 			btnSetCoordinates = new JButton();
-                			factoryPanel.add(btnSetCoordinates);
+                			configureFactoryPanel.add(btnSetCoordinates);
                 			btnSetCoordinates.setName("btnSetCoordinates");
+                			btnSetCoordinates.setBounds(31, 104, 107, 21);
+                			btnSetCoordinates.addActionListener(new ActionListener() {
+                				public void actionPerformed(ActionEvent evt) {
+                					btnSetCoordinatesActionPerformed(evt);
+                				}
+                			});
+                		}
+                		{
+                			lblConfigureFactoryFactory = new JLabel();
+                			configureFactoryPanel.add(lblConfigureFactoryFactory);
+                			lblConfigureFactoryFactory.setBounds(6, 52, 41, 14);
+                			lblConfigureFactoryFactory.setName("lblConfigureFactoryFactory");
+                		}
+                		{
+                			ComboBoxModel cbConfigureFactoryFactoriesModel = new DefaultComboBoxModel();
+                			cbConfigureFactoryFactories = new JComboBox();
+                			configureFactoryPanel.add(cbConfigureFactoryFactories);
+                			cbConfigureFactoryFactories.setModel(cbConfigureFactoryFactoriesModel);
+                			cbConfigureFactoryFactories.setBounds(77, 49, 83, 20);
                 		}
                 	}
                 	{
-                		companyPanel = new JPanel();
-                		widgetPanel.add(companyPanel, new AnchorConstraint(12, 950, 239, 12, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_ABS));
-                		companyPanel.setPreferredSize(new java.awt.Dimension(168, 109));
-                		companyPanel.setBorder(BorderFactory.createTitledBorder("Add new company"));
+                		addCompanyPanel = new JPanel();
+                		widgetPanel.add(addCompanyPanel, new AnchorConstraint(12, 950, 239, 12, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_ABS));
+                		addCompanyPanel.setPreferredSize(new java.awt.Dimension(168, 90));
+                		addCompanyPanel.setBorder(BorderFactory.createTitledBorder("Add new company"));
+                		addCompanyPanel.setLayout(null);
                 		{
-                			lblCompanyName = new JLabel();
-                			companyPanel.add(lblCompanyName);
-                			lblCompanyName.setName("lblCompanyName");
+                			lblAddCompanyCompanyName = new JLabel();
+                			addCompanyPanel.add(lblAddCompanyCompanyName);
+                			lblAddCompanyCompanyName.setName("lblAddCompanyCompanyName");
+                			lblAddCompanyCompanyName.setBounds(6, 20, 64, 14);
                 		}
                 		{
-                			txtCompanyName = new JTextField();
-                			companyPanel.add(txtCompanyName);
-                			txtCompanyName.setPreferredSize(new java.awt.Dimension(65, 20));
+                			txtAddCompanyCompanyName = new JTextField();
+                			addCompanyPanel.add(txtAddCompanyCompanyName);
+                			txtAddCompanyCompanyName.setBounds(74, 17, 88, 22);
+                			txtAddCompanyCompanyName.setSize(88, 20);
+                			txtAddCompanyCompanyName.setName("txtAddCompanyCompanyName");
                 		}
                 		{
-                			lblCompanyInformation = new JLabel();
-                			companyPanel.add(lblCompanyInformation);
-                			lblCompanyInformation.setName("lblCompanyInformation");
+                			lblAddCompanyCompanyInformation = new JLabel();
+                			addCompanyPanel.add(lblAddCompanyCompanyInformation);
+                			lblAddCompanyCompanyInformation.setName("lblAddCompanyCompanyInformation");
+                			lblAddCompanyCompanyInformation.setBounds(6, 40, 64, 14);
                 		}
                 		{
-                			txtCompanyInformation = new JTextField();
-                			companyPanel.add(txtCompanyInformation);
-                			txtCompanyInformation.setName("txtCompanyInformation");
-                			txtCompanyInformation.setPreferredSize(new java.awt.Dimension(81, 20));
+                			txtAddCompanyCompanyInformation = new JTextField();
+                			addCompanyPanel.add(txtAddCompanyCompanyInformation);
+                			txtAddCompanyCompanyInformation.setName("txtAddCompanyCompanyInformation");
+                			txtAddCompanyCompanyInformation.setBounds(74, 37, 88, 20);
                 		}
                 		{
-                			btnAddFactory = new JButton();
-                			companyPanel.add(btnAddFactory);
-                			btnAddFactory.setPreferredSize(new java.awt.Dimension(59, 21));
-                			btnAddFactory.setName("btnAddFactory");
-                			btnAddFactory.addActionListener(new ActionListener() {
+                			btnAddCompany = new JButton();
+                			addCompanyPanel.add(btnAddCompany);
+                			btnAddCompany.setName("btnAddCompany");
+                			btnAddCompany.setBounds(22, 63, 123, 21);
+                			btnAddCompany.addActionListener(new ActionListener() {
                 				public void actionPerformed(ActionEvent evt) {
-                					btnAddFactoryActionPerformed(evt);
+                					btnAddCompanyActionPerformed(evt);
                 				}
                 			});
                 		}
@@ -327,10 +407,10 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
         launch(JFMain.class, args);
     }
     
-    private void btnAddFactoryActionPerformed(ActionEvent evt) {
-    	System.out.println("btnAddFactory.actionPerformed, event="+evt);
+    private void btnAddCompanyActionPerformed(ActionEvent evt) {
+    	System.out.println("btnAddCompany.actionPerformed, event="+evt);
     	try {
-			CompanyController.addCompany(BusinessFactory.createCompany(txtCompanyName.getText(), txtCompanyInformation.getText()));
+			CompanyController.addCompany(BusinessFactory.createCompany(txtAddCompanyCompanyName.getText(), txtAddCompanyCompanyInformation.getText()));
 			Messages.showInfoDialog(getMainFrame(), "Information", "Company successfully added.");
 		} catch (ConfigurationException e) {
 			// TODO Auto-generated catch block
@@ -358,7 +438,8 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
 		try {
 			ArrayList<Company> companies = (ArrayList)CompanyController.getAllCompanies();
 			for (Company c : companies) {
-				cbCompanies.addItem(c);
+				cbAddFactoryCompanies.addItem(c);
+				cbConfigureFactoryCompanies.addItem(c);
 			}
 		} catch (ConfigurationException e) {
 			// TODO Auto-generated catch block
@@ -377,14 +458,20 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void updateFactoryList() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void updateMapList() {
 		try {
-			cbMaps.addItem("");
+			cbConfigureFactoryMaps.addItem("");
 			ArrayList<Map> maps = (ArrayList)MapController.getAllMaps();
 			for (Map m : maps) {
-				cbMaps.addItem(m);
+				cbConfigureFactoryMaps.addItem(m);
 			}
 		} catch (ConfigurationException e) {
 			// TODO Auto-generated catch block
@@ -405,17 +492,41 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
 		
 	}
 	
-	private void cbMapsActionPerformed(ActionEvent evt) {
+	private void cbConfigureFactoryMapsActionPerformed(ActionEvent evt) {
 		try {
-			if (!cbMaps.getSelectedItem().equals(""))
+			if (!cbConfigureFactoryMaps.getSelectedItem().equals(""))
 				if (GLSingleton.isInitiated())
-					MapController.setActiveMap((Map)cbMaps.getSelectedItem());
+					MapController.setActiveMap((Map)cbConfigureFactoryMaps.getSelectedItem());
 		} catch (GLSingletonNotInitializedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	private void btnSetCoordinatesActionPerformed(ActionEvent evt) {
+		System.out.println("btnSetCoordinates.actionPerformed, event="+evt);
+		if (!cbConfigureFactoryCompanies.getSelectedItem().toString().equals("")
+				&& !cbConfigureFactoryFactories.getSelectedItem().toString().equals("")
+				&& !cbConfigureFactoryMaps.getSelectedItem().toString().equals("")) {
+			canvasPanel.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+			// TODO implement set coordinates function
+			canvasPanel.setCursor(Cursor.getDefaultCursor());
+		} else {
+			Messages.showWarningDialog(getMainFrame(), "Warning", "You have to select a factory and a map to set its coordinates.");
+		}
+	}
+	
+	private void cbConfigureFactoryCompaniesActionPerformed(ActionEvent evt) {
+		// Clean already added factories
+		ComboBoxModel cbConfigureFactoryFactoriesModel = new DefaultComboBoxModel();
+		cbConfigureFactoryFactories.setModel(cbConfigureFactoryFactoriesModel);
+		// Add the selected company factories
+		Company selectedCompany = (Company)cbConfigureFactoryCompanies.getSelectedItem();
+		for (Factory fact : selectedCompany.getFactories()) {
+			cbConfigureFactoryFactories.addItem(fact);
 		}
 	}
 

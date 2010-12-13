@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<companies>
+    <company id="1">
+        <name>asdf</name>
+        <information>asdf</information>
+        <factory id="1">
+            <name>factoria 1</name>
+            <information>111111111</information>
+            <director>txedo 1</director>
+            <email>txedo@txedo.es 1</email>
+            <employees>1</employees>
+            <address>
+                <street>lirio</street>
+                <city>ciudad real</city>
+                <state>ciudad real</state>
+                <country>españa</country>
+                <zip>13000</zip>
+            </address>
+            <locations>
+                <location ycoord="3.5" xcoord="5.3" mapId="0"/>
+                <location ycoord="1.4" xcoord="4.1" mapId="1"/>
+            </locations>
+        </factory>
+        <factory id="2">
+            <name>factoria 2</name>
+            <information>2222222222</information>
+            <director>txedo 2</director>
+            <email>txedo@txedo.es 2</email>
+            <employees>2</employees>
+            <address>
+                <street>lirio</street>
+                <city>ciudad real</city>
+                <state>ciudad real</state>
+                <country>españa</country>
+                <zip>13000</zip>
+            </address>
+            <locations>
+                <location ycoord="9.1" xcoord="1.9" mapId="2"/>
+                <location ycoord="7.9" xcoord="9.7" mapId="3"/>
+            </locations>
+        </factory>
+    </company>
+    <company id="2">
+        <name>company prueba 2</name>
+        <information>esto es una compañia de prueba</information>
+        <factory id="1">
+            <name>factoria 3</name>
+            <information>111111111</information>
+            <director>txedo 1</director>
+            <email>txedo@txedo.es 1</email>
+            <employees>1</employees>
+            <address>
+                <street>lirio</street>
+                <city>ciudad real</city>
+                <state>ciudad real</state>
+                <country>españa</country>
+                <zip>13000</zip>
+            </address>
+            <locations>
+                <location ycoord="3.5" xcoord="5.3" mapId="0"/>
+                <location ycoord="1.4" xcoord="4.1" mapId="1"/>
+            </locations>
+        </factory>
+        <factory id="2">
+            <name>factoria 4</name>
+            <information>2222222222</information>
+            <director>txedo 2</director>
+            <email>txedo@txedo.es 2</email>
+            <employees>2</employees>
+            <address>
+                <street>lirio</street>
+                <city>ciudad real</city>
+                <state>ciudad real</state>
+                <country>españa</country>
+                <zip>13000</zip>
+            </address>
+            <locations>
+                <location ycoord="9.1" xcoord="1.9" mapId="2"/>
+                <location ycoord="7.9" xcoord="9.7" mapId="3"/>
+            </locations>
+        </factory>
+    </company>
+</companies>

@@ -10,7 +10,8 @@ import exceptions.gl.GLSingletonNotInitializedException;
 
 public class TextureLoader {
 	private String tileNames[];
-	private int textures[];
+	private int textureNames[];
+	private Texture textures[];
 	
 	public String[] getTileNames() {
 		return tileNames;
@@ -20,17 +21,18 @@ public class TextureLoader {
 		this.tileNames = tileNames;
 	}
 
-	public int[] getTextures() {
-		return textures;
+	public int[] getTextureNames() {
+		return textureNames;
 	}
 
-	public void setTextures(int[] textures) {
-		this.textures = textures;
+	public void setTextureNames(int[] textures) {
+		this.textureNames = textures;
 	}
 
 	public TextureLoader (String [] names) {
 		this.tileNames = names;
-		textures = new int[names.length];
+		textureNames = new int[names.length];
+		textures = new Texture[names.length];
 	}
 	
     private int[] genTextures(int amount) throws GLSingletonNotInitializedException {
@@ -50,18 +52,26 @@ public class TextureLoader {
     }
 	
 	public void loadTexures () throws GLSingletonNotInitializedException, IOException {	
-		textures = this.genTextures(textures.length);
+		textureNames = this.genTextures(textureNames.length);
 		
-		for (int i = 0; i < textures.length; i++) {
-            Texture texture;
-            texture = TextureReader.readTexture(tileNames[i]);
+		for (int i = 0; i < textureNames.length; i++) {
+            textures[i] = TextureReader.readTexture(tileNames[i]);
             //Create Nearest Filtered Texture
-            GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textures[i]);
+            GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureNames[i]);
 
-            makeRGBTexture(texture, GL.GL_TEXTURE_2D, false);
+            makeRGBTexture(textures[i], GL.GL_TEXTURE_2D, false);
             
             GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
             GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
         }
 	}
+
+	public Texture[] getTextures() {
+		return textures;
+	}
+
+	public void setTextures(Texture[] textures) {
+		this.textures = textures;
+	}
+	
 }
