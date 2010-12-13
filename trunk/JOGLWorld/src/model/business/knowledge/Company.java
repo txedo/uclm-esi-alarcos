@@ -37,6 +37,10 @@ public class Company {
 		return ++lastId;
 	}
 	
+	public List<Factory> getFactories() {
+		return factories;
+	}
+
 	public void addFactory (Factory factory) {
 		factories.add(factory);
 	}

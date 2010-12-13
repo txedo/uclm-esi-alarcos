@@ -1,0 +1,37 @@
+Factoria: abstraer la creación de objetos de business
+
+Factoria Abstracta: abstraer la creación de objetos GL
+
+Singleton: acceso al contexto GL
+
+Observador: notificar cambios y actualizaciones
+
+MVC
+
+DAO
+
+Chain of Resposibility: este patrón podría ser interesante para manejar el selectionMode
+
+-------------
+
+Cuando pasas datos del hilo de ejecución GL al resto del sistema hay que hacerlo con un hilo para evitar interbloqueos.
+¿Resolvemos este caso con un proxy? quizá podríamos hacerlo el camino contrario con otro proxy
+
+App Core <-> Proxy <-> GL Core
+
+----------------
+
+> I've written an application that makes many OpenGL calls for rendering a
+> scene. (The calls are glColor3f and glVertex3f, mostly.)
+
+Don't you know that there some others way to display polygons ?
+You choosed the more slow one.
+
+> How that explains the JOGL slowness?
+> And if it can be made faster?
+
+Use display lists, vertex buffer and vertex objects
+
+--------------------
+
+Pintar las factorias con glPoint y variar su tamaño con glPointSize

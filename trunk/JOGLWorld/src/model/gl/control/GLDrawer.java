@@ -112,7 +112,7 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 						float h = (float)this.screenHeight/(float)this.screenWidth;
 						GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping
 						GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
-						GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureMapLoader.getTextures()[0]);
+						GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureMapLoader.getTextureNames()[0]);
 						GLSingleton.getGL().glBegin(GL.GL_QUADS);            // Draw Our First Texture Mapped Quad
 							GLSingleton.getGL().glTexCoord2d(0.0f, 0.0f);        // First Texture Coord
 							GLSingleton.getGL().glVertex2f(0.0f, 0.0f);          	// First Vertex
@@ -125,7 +125,7 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 						GLSingleton.getGL().glEnd();   // Done Drawing The First Quad
 						GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping	
 						// Bind the texture to null to avoid color issues
-//						GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
+						//GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
 					
 //						GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
 //						GLSingleton.getGL().glBegin(GL.GL_QUADS);            // Draw Our First Texture Mapped Quad
@@ -273,10 +273,8 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 	private void drawNodes () throws GLSingletonNotInitializedException {
 		int cont = 1;
 		for (GLObject f : nodes) {
-			if (selectionMode) {
-				GLSingleton.getGL().glLoadName(cont);
-				cont++;
-			}
+			if (selectionMode)
+				GLSingleton.getGL().glLoadName(cont++);
 			f.draw();
 		}
 	}

@@ -101,18 +101,19 @@ public class Factory {
 	@SuppressWarnings("rawtypes")
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(" factory\n");
-		sb.append("       " + name + "\n");
-		sb.append("       " + information + "\n");
-		sb.append("       " + director + " (" + email + ")\n");
-		sb.append("       " + employees + "\n");
-		sb.append("       " + address + "\n");
-		sb.append("       locations\n");
-		for (Iterator i = locations.keySet().iterator(); i.hasNext(); ){
-			int mapId = (Integer)i.next();
-			Vector2f coords = locations.get(mapId);
-			sb.append("        map " + mapId + " (" + coords.getX() + "," + coords.getY() + ")\n");
-		}
+		sb.append(name);
+//		sb.append(" factory\n");
+//		sb.append("       " + name + "\n");
+//		sb.append("       " + information + "\n");
+//		sb.append("       " + director + " (" + email + ")\n");
+//		sb.append("       " + employees + "\n");
+//		sb.append("       " + address + "\n");
+//		sb.append("       locations\n");
+//		for (Iterator i = locations.keySet().iterator(); i.hasNext(); ){
+//			int mapId = (Integer)i.next();
+//			Vector2f coords = locations.get(mapId);
+//			sb.append("        map " + mapId + " (" + coords.getX() + "," + coords.getY() + ")\n");
+//		}
 		return sb.toString();
 	}
 }
