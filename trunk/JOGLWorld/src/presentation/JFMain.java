@@ -3,6 +3,7 @@ import com.cloudgarden.layout.AnchorConstraint;
 import com.cloudgarden.layout.AnchorLayout;
 
 import exceptions.CompanyAlreadyExistsException;
+import exceptions.EmptyFieldException;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 import java.awt.BorderLayout;
@@ -429,6 +430,8 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (EmptyFieldException e) {
+			Messages.showErrorDialog(getMainFrame(), "Error", "The company name field must be filled in.");
 		}
     }
 
@@ -468,11 +471,11 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void updateMapList() {
 		try {
-			cbConfigureFactoryMaps.addItem("");
 			ArrayList<Map> maps = (ArrayList)MapController.getAllMaps();
 			for (Map m : maps) {
 				cbConfigureFactoryMaps.addItem(m);
 			}
+			cbConfigureFactoryMaps.setSelectedIndex(-1);
 		} catch (ConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -494,9 +497,8 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
 	
 	private void cbConfigureFactoryMapsActionPerformed(ActionEvent evt) {
 		try {
-			if (!cbConfigureFactoryMaps.getSelectedItem().equals(""))
-				if (GLSingleton.isInitiated())
-					MapController.setActiveMap((Map)cbConfigureFactoryMaps.getSelectedItem());
+			if (GLSingleton.isInitiated())
+				MapController.setActiveMap((Map)cbConfigureFactoryMaps.getSelectedItem());
 		} catch (GLSingletonNotInitializedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
