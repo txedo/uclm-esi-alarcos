@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -473,9 +472,14 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 					txtAddFactoryFactoryName.getText() + " state",
 					txtAddFactoryFactoryName.getText() + " country",
 					txtAddFactoryFactoryName.getText() + " zip");
-			FactoryController.addFactory(((Company)cbAddFactoryCompanies.getSelectedItem()).getId(), BusinessFactory.createFactory(name, information, director, email, employees, address));
-			Messages.showInfoDialog(getMainFrame(), "Information", "Factory successfully added.");
-			txtAddFactoryFactoryName.setText("");
+			if (cbAddFactoryCompanies.getSelectedIndex() != -1){
+				FactoryController.addFactory(((Company)cbAddFactoryCompanies.getSelectedItem()).getId(), BusinessFactory.createFactory(name, information, director, email, employees, address));
+				Messages.showInfoDialog(getMainFrame(), "Information", "Factory successfully added.");
+				txtAddFactoryFactoryName.setText("");
+			}
+			else {
+				Messages.showErrorDialog(getMainFrame(), "Error", "You have to choose the company in which the factory will be added.");
+			}
 		} catch (ConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -494,6 +498,8 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (EmptyFieldException e) {
+			Messages.showErrorDialog(getMainFrame(), "Error", "The factory name field must be filled in.");
 		}
 	}
 

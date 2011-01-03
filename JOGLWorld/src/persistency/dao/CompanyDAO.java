@@ -14,11 +14,8 @@ import persistency.XMLAgent;
 import exceptions.CompanyNotFoundException;
 
 
-import model.business.knowledge.Address;
 import model.business.knowledge.Company;
 import model.business.knowledge.CompanyWrapper;
-import model.business.knowledge.Factory;
-import model.knowledge.Vector2f;
 
 public class CompanyDAO {
 	private String xmlfile;
