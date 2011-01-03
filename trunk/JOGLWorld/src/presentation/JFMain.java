@@ -3,6 +3,7 @@ import com.cloudgarden.layout.AnchorConstraint;
 import com.cloudgarden.layout.AnchorLayout;
 
 import exceptions.CompanyAlreadyExistsException;
+import exceptions.CompanyNotFoundException;
 import exceptions.EmptyFieldException;
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -12,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -34,14 +36,19 @@ import javax.xml.bind.JAXBException;
 import model.IObserverUI;
 import model.NotifyUIController;
 import model.business.control.CompanyController;
+import model.business.control.FactoryController;
 import model.business.control.MapController;
+import model.business.knowledge.Address;
 import model.business.knowledge.BusinessFactory;
 import model.business.knowledge.Company;
 import model.business.knowledge.Factory;
 import model.business.knowledge.Map;
 import model.gl.GLSingleton;
+import model.knowledge.Vector2f;
+import model.listeners.MyAppMouseListener;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.lang.math.RandomUtils;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
@@ -65,13 +72,14 @@ import presentation.utils.Messages;
 /**
  * 
  */
-public class JFMain extends SingleFrameApplication implements IObserverUI {
+public class JFMain extends SingleFrameApplication implements IAppCore, IObserverUI {
     private JMenuBar menuBar;
     private JTextField txtAddCompanyCompanyInformation;
     private JPanel addCompanyPanel;
     private JButton btnAddCompany;
     private JPanel configureFactoryPanel;
     private JButton btnSetCoordinates;
+    private JLabel lblStatusBar;
     private JButton btnAddFactory;
     private JTextField txtAddFactoryFactoryName;
     private JComboBox cbAddFactoryCompanies;
@@ -108,6 +116,7 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
     private JToolBar toolBar;
     private JPanel toolBarPanel;
     private JPanel contentPanel;
+	private boolean settingCoordinates;
 
     @Action
     public void open() {
@@ -128,7 +137,7 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
     @Override
     protected void startup() {
     	{
-	    	getMainFrame().setSize(791, 465);
+	    	getMainFrame().setSize(791, 486);
     	}
         {
             topPanel = new JPanel();
@@ -195,6 +204,11 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
                 			addFactoryPanel.add(btnAddFactory);
                 			btnAddFactory.setBounds(35, 68, 103, 23);
                 			btnAddFactory.setName("btnAddFactory");
+                			btnAddFactory.addActionListener(new ActionListener() {
+                				public void actionPerformed(ActionEvent evt) {
+                					btnAddFactoryActionPerformed(evt);
+                				}
+                			});
                 		}
                 	}
                 	{
@@ -346,7 +360,15 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
             }
             {
             	statusPanel = new JPanel();
+            	BorderLayout statusPanelLayout = new BorderLayout();
+            	statusPanel.setLayout(statusPanelLayout);
             	topPanel.add(statusPanel, BorderLayout.SOUTH);
+            	statusPanel.setPreferredSize(new java.awt.Dimension(775, 17));
+            	{
+            		lblStatusBar = new JLabel();
+            		statusPanel.add(lblStatusBar, BorderLayout.CENTER);
+            		lblStatusBar.setPreferredSize(new java.awt.Dimension(775, 23));
+            	}
             }
         }
         menuBar = new JMenuBar();
@@ -400,6 +422,8 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
         NotifyUIController.attach(this);
         GLInit.init();
         GLInit.setContext(getMainFrame(), canvasPanel, new AnchorConstraint(5, 998, 998, 4, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+        settingCoordinates = false;
+        GLInit.getGLCanvas().addMouseListener(new MyAppMouseListener(this, GLInit.getGLCanvas()));
         this.updateCompanyList();
         this.updateMapList();
     }
@@ -413,6 +437,8 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
     	try {
 			CompanyController.addCompany(BusinessFactory.createCompany(txtAddCompanyCompanyName.getText(), txtAddCompanyCompanyInformation.getText()));
 			Messages.showInfoDialog(getMainFrame(), "Information", "Company successfully added.");
+			txtAddCompanyCompanyName.setText("");
+			txtAddCompanyCompanyInformation.setText("");
 		} catch (ConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -434,6 +460,42 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
 			Messages.showErrorDialog(getMainFrame(), "Error", "The company name field must be filled in.");
 		}
     }
+    
+	private void btnAddFactoryActionPerformed(ActionEvent evt) {
+		try {
+			String name = txtAddFactoryFactoryName.getText();
+			String information = txtAddFactoryFactoryName.getText() + " information";
+			String director = txtAddFactoryFactoryName.getText() + " director";
+			String email = txtAddFactoryFactoryName.getText() + "@email.com";
+			int employees = RandomUtils.nextInt();
+			Address address = BusinessFactory.createAddress(txtAddFactoryFactoryName.getText() + " street",
+					txtAddFactoryFactoryName.getText() + " city",
+					txtAddFactoryFactoryName.getText() + " state",
+					txtAddFactoryFactoryName.getText() + " country",
+					txtAddFactoryFactoryName.getText() + " zip");
+			FactoryController.addFactory(((Company)cbAddFactoryCompanies.getSelectedItem()).getId(), BusinessFactory.createFactory(name, information, director, email, employees, address));
+			Messages.showInfoDialog(getMainFrame(), "Information", "Factory successfully added.");
+			txtAddFactoryFactoryName.setText("");
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CompanyNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -463,9 +525,39 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
 	}
 	
 	@Override
-	public void updateFactoryList() {
-		// TODO Auto-generated method stub
-		
+	public void updateFactoryList(int companyId) {
+		try {
+			if (((Company)cbConfigureFactoryCompanies.getSelectedItem()).getId() == companyId) {
+				// Clean already added factories
+				ComboBoxModel cbConfigureFactoryFactoriesModel = new DefaultComboBoxModel();
+				cbConfigureFactoryFactories.setModel(cbConfigureFactoryFactoriesModel);
+				// Add the updated company factories				
+				int selectedFactory = cbConfigureFactoryFactories.getSelectedIndex();
+				Company c = CompanyController.getCompany(companyId);
+				for (Factory f : c.getFactories()) {
+					cbConfigureFactoryFactories.addItem(f);
+				}
+				cbConfigureFactoryFactories.setSelectedIndex(selectedFactory);
+			}
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CompanyNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -492,30 +584,54 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
-	private void cbConfigureFactoryMapsActionPerformed(ActionEvent evt) {
-		try {
-			if (GLSingleton.isInitiated())
-				MapController.setActiveMap((Map)cbConfigureFactoryMaps.getSelectedItem());
-		} catch (GLSingletonNotInitializedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	@Override
+	public void updateClickedWorldCoords(Vector2f coordinates) {
+		if (isSettingCoordinates()) {
+			try {
+				FactoryController.addFactoryLocation(((Company)cbConfigureFactoryCompanies.getSelectedItem()).getId(), ((Factory)cbConfigureFactoryFactories.getSelectedItem()).getId(), ((Map)cbConfigureFactoryMaps.getSelectedItem()).getId(), coordinates);
+			} catch (ConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CompanyNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			settingCoordinates = false;
+			lblStatusBar.setText("");
+			GLInit.getGLCanvas().setCursor(Cursor.getDefaultCursor());
 		}
+	}
+	
+	public boolean isSettingCoordinates () {
+		return this.settingCoordinates;
+	}
+	
+	public void settingCoordinates (boolean b) {
+		this.settingCoordinates = b;
 	}
 	
 	private void btnSetCoordinatesActionPerformed(ActionEvent evt) {
 		System.out.println("btnSetCoordinates.actionPerformed, event="+evt);
-		if (!cbConfigureFactoryCompanies.getSelectedItem().toString().equals("")
-				&& !cbConfigureFactoryFactories.getSelectedItem().toString().equals("")
-				&& !cbConfigureFactoryMaps.getSelectedItem().toString().equals("")) {
-			canvasPanel.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
-			// TODO implement set coordinates function
-			canvasPanel.setCursor(Cursor.getDefaultCursor());
+		if (cbConfigureFactoryCompanies.getSelectedItem() != null
+				&& cbConfigureFactoryFactories.getSelectedItem() != null
+				&& cbConfigureFactoryMaps.getSelectedItem() != null) {
+			this.settingCoordinates = true;
+			lblStatusBar.setText("Click the location of the factory on the map...");
+
 		} else {
 			Messages.showWarningDialog(getMainFrame(), "Warning", "You have to select a factory and a map to set its coordinates.");
 		}
@@ -529,6 +645,19 @@ public class JFMain extends SingleFrameApplication implements IObserverUI {
 		Company selectedCompany = (Company)cbConfigureFactoryCompanies.getSelectedItem();
 		for (Factory fact : selectedCompany.getFactories()) {
 			cbConfigureFactoryFactories.addItem(fact);
+		}
+	}
+	
+	private void cbConfigureFactoryMapsActionPerformed(ActionEvent evt) {
+		try {
+			if (GLSingleton.isInitiated())
+				MapController.setActiveMap((Map)cbConfigureFactoryMaps.getSelectedItem());
+		} catch (GLSingletonNotInitializedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
