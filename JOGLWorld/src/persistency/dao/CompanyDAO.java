@@ -3,6 +3,7 @@ package persistency.dao;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
@@ -28,40 +29,32 @@ public class CompanyDAO {
 	
 	public void save (Company c) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
 		CompanyWrapper companyList = this.getAll();
-		c.setId(companyList.getLastId());
-		
-		Factory f = new Factory();
-		f.setId(c.getLastFactoryId());
-		f.setName("factoria 1");
-		f.setInformation("111111111");
-		f.setDirector("txedo 1");
-		f.setEmail("txedo@txedo.es 1");
-		f.setEmployees(1);
-		f.addLocation(0, new Vector2f(5.3f,3.5f));
-		f.addLocation(1, new Vector2f(4.1f,1.4f));
-		Address a = new Address();
-		a.setCity("ciudad real");
-		a.setCountry("españa");
-		a.setState("ciudad real");
-		a.setStreet("lirio");
-		a.setZip("13000");
-		f.setAddress(a);
-		c.addFactory(f);
-		
-		f = new Factory();
-		f.setId(c.getLastFactoryId());
-		f.setName("factoria 2");
-		f.setInformation("2222222222");
-		f.setDirector("txedo 2");
-		f.setEmail("txedo@txedo.es 2");
-		f.setEmployees(2);
-		f.setAddress(a);
-		f.addLocation(2, new Vector2f(1.9f,9.1f));
-		f.addLocation(3, new Vector2f(9.7f,7.9f));
-		c.addFactory(f);
-		
+		c.setId(companyList.getLastId());		
 		companyList.addCompany(c);
 		XMLAgent.marshal(this.xmlfile, CompanyWrapper.class, (CompanyWrapper)companyList);
+	}
+	
+	public void saveAll (List<Company> companies) throws JAXBException {
+		CompanyWrapper companyList = new CompanyWrapper();
+		companyList.addAllCompanies(companies);
+		XMLAgent.marshal(this.xmlfile, CompanyWrapper.class, (CompanyWrapper)companyList);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Company get (int id) throws JAXBException, IOException, CompanyNotFoundException, InstantiationException, IllegalAccessException {
+		boolean found = false;
+		Company result = null;
+		ArrayList<Company> companies = (ArrayList)XMLAgent.unmarshal(this.xmlfile, CompanyWrapper.class).getInnerList();
+		Iterator it = companies.iterator();
+		while (!found && it.hasNext()) {
+			Company aux = (Company)it.next();
+			if (aux.getId() == id) {
+				result = aux;
+				found = true;
+			}
+		}
+		if (result == null) throw new CompanyNotFoundException ();
+		return result;
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })

@@ -11,6 +11,7 @@ import javax.media.opengl.GLEventListener;
 
 import model.IObserverGL;
 import model.NotifyGLController;
+import model.NotifyUIController;
 import model.business.control.MapController;
 import model.gl.GLObject;
 import model.gl.GLSingleton;
@@ -99,6 +100,8 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 				case MAP_LEVEL:
 					if (selectionMode) {
 						debugPrintCoords((int)pickPoint.getX(), (int)pickPoint.getY());
+						Vector3f v = GLUtils.getScreen2World((int)pickPoint.getX(), (int)pickPoint.getY(), false);
+						NotifyUIController.notifyClickedWorldCoords(new Vector2f(v.getX(), v.getY()));
 						selectionMode = false;
 					}
 					// This state machine prevents GL trying to load a texture while it is loading from disk to memory
