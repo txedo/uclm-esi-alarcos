@@ -1,13 +1,13 @@
 package model.business.control;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.configuration.ConfigurationException;
 
 import exceptions.CompanyNotFoundException;
+import exceptions.EmptyFieldException;
 
 import model.NotifyUIController;
 import model.business.knowledge.Company;
@@ -16,7 +16,8 @@ import model.knowledge.Vector2f;
 
 public class FactoryController {
 	
-	static public void addFactory (int companyId, Factory f) throws ConfigurationException, CompanyNotFoundException, JAXBException, IOException, InstantiationException, IllegalAccessException {
+	static public void addFactory (int companyId, Factory f) throws ConfigurationException, CompanyNotFoundException, JAXBException, IOException, InstantiationException, IllegalAccessException, EmptyFieldException {
+		if (f.getName().equals("")) throw new EmptyFieldException();
 		Company c = CompanyController.getCompany(companyId);
 		f.setId(c.getLastFactoryId());
 		c.addFactory(f);

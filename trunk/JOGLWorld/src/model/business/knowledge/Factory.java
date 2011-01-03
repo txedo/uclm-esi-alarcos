@@ -1,7 +1,6 @@
 package model.business.knowledge;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -98,7 +97,6 @@ public class Factory {
 		this.employees = employees;
 	}
 	
-	@SuppressWarnings("rawtypes")
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(name);
