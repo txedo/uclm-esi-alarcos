@@ -41,7 +41,7 @@ public class CompanyController {
 		}
 		CompanyDAO cdao = new CompanyDAO();
 		cdao.saveAll(companies);
-		// TODO notificar que se ha actualizado una compañia
+		NotifyUIController.notifyCompanyListUpdate();
 	}
 	
 	static public Company getCompany (int id) throws ConfigurationException, CompanyNotFoundException, JAXBException, IOException, InstantiationException, IllegalAccessException {

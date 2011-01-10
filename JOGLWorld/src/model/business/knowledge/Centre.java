@@ -1,6 +1,7 @@
 package model.business.knowledge;
 
 public class Centre {
+	private boolean isMainCentre;
 	private int idCompany;
 	private int idFactory;
 	
@@ -9,6 +10,7 @@ public class Centre {
 	 * @param idFactory
 	 */
 	public Centre(int idCompany, int idFactory) {
+		this.isMainCentre = false;
 		this.idCompany = idCompany;
 		this.idFactory = idFactory;
 	}
@@ -24,6 +26,14 @@ public class Centre {
 	}
 	public void setIdFactory(int idFactory) {
 		this.idFactory = idFactory;
+	}
+
+	public boolean isMainCentre() {
+		return isMainCentre;
+	}
+
+	public void setMainCentre(boolean isMainCentre) {
+		this.isMainCentre = isMainCentre;
 	}
 	
 	

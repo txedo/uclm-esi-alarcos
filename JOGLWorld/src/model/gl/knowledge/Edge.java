@@ -9,12 +9,12 @@ import model.knowledge.Color;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Edge extends GLObject implements IEdge {
-	private Node source;
-	private Node destination;
+	private MetricIndicator source;
+	private MetricIndicator destination;
 	private int type;
 	private float width;
 	
-	public Edge (Node s, Node d) {
+	public Edge (MetricIndicator s, MetricIndicator d) {
 		this.source = s;
 		this.destination = d;
 		this.type = SOLID;
@@ -42,8 +42,8 @@ public class Edge extends GLObject implements IEdge {
 		}
 		GLSingleton.getGL().glLineWidth(this.width);
 		GLSingleton.getGL().glBegin(GL.GL_LINES);	
-			GLSingleton.getGL().glVertex2f(this.source.getCenterOfArea().getX(), this.source.getCenterOfArea().getY());
-			GLSingleton.getGL().glVertex2f(this.destination.getCenterOfArea().getX(), this.destination.getCenterOfArea().getY());
+			GLSingleton.getGL().glVertex2f(this.source.getGravityPoint().getX(), this.source.getGravityPoint().getY());
+			GLSingleton.getGL().glVertex2f(this.destination.getGravityPoint().getX(), this.destination.getGravityPoint().getY());
 		GLSingleton.getGL().glEnd();
 		GLSingleton.getGL().glDisable(GL.GL_LINE_STIPPLE);
 	}
@@ -72,19 +72,19 @@ public class Edge extends GLObject implements IEdge {
 		this.color = color;
 	}
 
-	public Node getSource() {
+	public MetricIndicator getSource() {
 		return source;
 	}
 
-	public void setSource(Node source) {
+	public void setSource(MetricIndicator source) {
 		this.source = source;
 	}
 
-	public Node getDestination() {
+	public MetricIndicator getDestination() {
 		return destination;
 	}
 
-	public void setDestination(Node destination) {
+	public void setDestination(MetricIndicator destination) {
 		this.destination = destination;
 	}
 }
