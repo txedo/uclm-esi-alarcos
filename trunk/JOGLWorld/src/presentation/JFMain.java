@@ -507,6 +507,9 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 	@Override
 	public void updateCompanyList() {
 		try {
+			// Clean already added companies
+			cbAddFactoryCompanies.setModel(new DefaultComboBoxModel());
+			cbConfigureFactoryCompanies.setModel(new DefaultComboBoxModel());
 			ArrayList<Company> companies = (ArrayList)CompanyController.getAllCompanies();
 			for (Company c : companies) {
 				cbAddFactoryCompanies.addItem(c);
@@ -535,15 +538,12 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		try {
 			if (((Company)cbConfigureFactoryCompanies.getSelectedItem()).getId() == companyId) {
 				// Clean already added factories
-				ComboBoxModel cbConfigureFactoryFactoriesModel = new DefaultComboBoxModel();
-				cbConfigureFactoryFactories.setModel(cbConfigureFactoryFactoriesModel);
+				cbConfigureFactoryFactories.setModel(new DefaultComboBoxModel());
 				// Add the updated company factories				
-				int selectedFactory = cbConfigureFactoryFactories.getSelectedIndex();
 				Company c = CompanyController.getCompany(companyId);
 				for (Factory f : c.getFactories()) {
 					cbConfigureFactoryFactories.addItem(f);
 				}
-				cbConfigureFactoryFactories.setSelectedIndex(selectedFactory);
 			}
 		} catch (ConfigurationException e) {
 			// TODO Auto-generated catch block
@@ -637,7 +637,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 				&& cbConfigureFactoryMaps.getSelectedItem() != null) {
 			this.settingCoordinates = true;
 			lblStatusBar.setText("Click the location of the factory on the map...");
-
 		} else {
 			Messages.showWarningDialog(getMainFrame(), "Warning", "You have to select a factory and a map to set its coordinates.");
 		}

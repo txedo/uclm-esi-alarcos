@@ -6,6 +6,8 @@ import sun.util.calendar.LocalGregorianCalendar.Date;
 
 
 public class Project {
+	private int id;
+	
 	private ProjectStatus status;
 	private String lifeCycle; // TODO enum??
 	private String lifeCycleStage; // TODO enum??
@@ -24,9 +26,14 @@ public class Project {
 	private String marketClient;
 	private String finalClient;
 	
-	private Centre workingCentre;
 	private List<Centre> involvedCentres;
-	
 
+	public List<Centre> getInvolvedCentres() {
+		return involvedCentres;
+	}
+
+	public void setInvolvedCentres(List<Centre> involvedCentres) {
+		this.involvedCentres = involvedCentres;
+	}
 	
 }

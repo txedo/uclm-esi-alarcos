@@ -1,7 +1,6 @@
 package model.gl.control;
 
 import java.io.IOException;
-import java.nio.IntBuffer;
 import java.util.Random;
 import java.util.Vector;
 
@@ -13,16 +12,14 @@ import model.IObserverGL;
 import model.NotifyGLController;
 import model.NotifyUIController;
 import model.business.control.MapController;
+import model.gl.GLLogger;
 import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.TextureLoader;
 import model.gl.knowledge.Camera;
-import model.gl.knowledge.Edge;
 import model.gl.knowledge.IConstants;
-import model.gl.knowledge.IEdge;
 import model.gl.knowledge.IViewLevels;
-import model.gl.knowledge.Node;
 import model.gl.knowledge.Spotlight;
 import model.gl.knowledge.Tower;
 import model.gl.knowledge.caption.Caption;
@@ -34,7 +31,6 @@ import model.listeners.MyMouseListener;
 import model.listeners.MyMouseMotionListener;
 import model.listeners.MyMouseWheelListener;
 
-import com.sun.opengl.util.BufferUtil;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -42,14 +38,10 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 	private TextureLoader textureMapLoader;
 	
 	private Vector<GLObject> towers;
-	private Vector<GLObject> nodes;
-	private Vector<GLObject> edges;
+	private GLViewController mic;
 	private Vector<Caption> captions;
 	private Camera camera;
 	private Spotlight spotlight;
-	public Camera getCamera() {
-		return camera;
-	}
 
 	public Vector2f position = new Vector2f (0.375f, 0.375f);
 	
@@ -58,7 +50,6 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 	private int oldViewLevel;
 	private int viewLevel = NODE_LEVEL;
 	private boolean selectionMode = false;
-	private final int BUFFSIZE = 512;
 	
 	Vector3f aux = new Vector3f();
 	private int screenWidth;
@@ -77,6 +68,8 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 		this.viewLevel = MAP_LEVEL;
 		this.hasTextureMapChanged = false;
 		this.isTextureMapReady = false;
+		
+		this.mic = new GLMetricIndicatorViewController(this, false); // 2D view
 	}
 
 	@Override
@@ -97,13 +90,7 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 				oldViewLevel = viewLevel;
 			}
 			switch (viewLevel) {
-				case MAP_LEVEL:
-					if (selectionMode) {
-						debugPrintCoords((int)pickPoint.getX(), (int)pickPoint.getY());
-						Vector3f v = GLUtils.getScreen2World((int)pickPoint.getX(), (int)pickPoint.getY(), false);
-						NotifyUIController.notifyClickedWorldCoords(new Vector2f(v.getX(), v.getY()));
-						selectionMode = false;
-					}
+				case MAP_LEVEL:				
 					// This state machine prevents GL trying to load a texture while it is loading from disk to memory
 					if (hasTextureMapChanged) {
 						isTextureMapReady = false;
@@ -126,23 +113,24 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 							GLSingleton.getGL().glTexCoord2d(0.0f, 1.0f);        // Fourth Texture Coord
 							GLSingleton.getGL().glVertex2f(0.0f, this.dim*h);       // Fourth Vertex
 						GLSingleton.getGL().glEnd();   // Done Drawing The First Quad
-						GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping	
+						GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping
+						
 						// Bind the texture to null to avoid color issues
 						//GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
-					
-//						GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
-//						GLSingleton.getGL().glBegin(GL.GL_QUADS);            // Draw Our First Texture Mapped Quad
-//							GLSingleton.getGL().glVertex2f(0.0f, 0.0f);          	// First Vertex
-//							GLSingleton.getGL().glVertex2f(0.0f, 1.0f);         // Second Vertex
-//							GLSingleton.getGL().glVertex2f(1.0f, 1.0f);   // Third Vertex
-//							GLSingleton.getGL().glVertex2f(1.0f, 0.0f);       // Fourth Vertex
-//						GLSingleton.getGL().glEnd();                         // Done Drawing The First Quad
+						
+						if (selectionMode) {
+							debugPrintCoords((int)pickPoint.getX(), (int)pickPoint.getY());
+							Vector3f v = GLUtils.getScreen2World((int)pickPoint.getX(), (int)pickPoint.getY(), false);
+							NotifyUIController.notifyClickedWorldCoords(new Vector2f(v.getX(), v.getY()));
+							selectionMode = false;
+						}
+						
+						// TODO Place the map locations
 					}
 					break;
 				case NODE_LEVEL:
-					if (selectionMode) selectNode();
-					drawNodes();
-					drawEdges();
+					if (mic.isSelectionMode()) mic.selectItem();
+					mic.drawItems();
 					drawCaptions();
 					break;
 				case TOWER_LEVEL:
@@ -196,9 +184,9 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 			GLSingleton.getGL().glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			GLSingleton.getGL().glEnable(GL.GL_LINE_SMOOTH);
 			GLSingleton.getGL().glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
+			GLSingleton.getGL().glEnable(GL.GL_POINT_SMOOTH);
+			GLSingleton.getGL().glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
 			
-//			this.textureLoader = new TextureLoader (new String[]{"resources/maps/world-map.png"});
-//			textureLoader.loadTexures();
 			// Creamos una cámara y un foco de luz
 			camera = new Camera(-5.0f, 10.0f, -5.0f, 1.0f, -1.0f, 1.0f);
 			spotlight = new Spotlight(1.0f, 1.0f, 1.0f);
@@ -207,8 +195,7 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 			GLSingleton.getGL().glEnable(GL.GL_COLOR_MATERIAL);
 			
 			// Configuramos los parámetros del mundo
-			setupNodes();
-			setupEdges();
+			mic.setupItems();
 			setupCaptions();
 			
 			// Añadimos los listener de teclado y ratón
@@ -216,6 +203,9 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 			glDrawable.addMouseListener(new MyMouseListener(this));
 			glDrawable.addMouseWheelListener(new MyMouseWheelListener(this.camera));
 			glDrawable.addMouseMotionListener(new MyMouseMotionListener(this.camera));
+			
+			GLLogger log = new GLLogger();
+			System.err.print(log.toString());
 		} catch (GLSingletonNotInitializedException e) {
 			GLSingleton.init(glDrawable);
 			this.init(glDrawable);
@@ -258,108 +248,6 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 		else if (viewLevel == TOWER_LEVEL)
 			GLUtils.setPerspectiveProjection(this.screenHeight, this.screenWidth);
 	}
-
-	private void setupNodes() {
-		Node n;
-		nodes = new Vector<GLObject>();
-		Color c = new Color (0.0f, 0.0f, 0.0f);
-		n = new Node(0.0f, 0.0f, 1.0f, c);
-		nodes.add(n);
-		n = new Node(2.0f, 0.0f, 1.0f, c);
-		nodes.add(n);
-		n = new Node(0.0f, 2.0f, 1.0f, c);
-		nodes.add(n);
-		n = new Node(2.0f, 2.0f, 1.0f, c);
-		nodes.add(n);
-	}
-	
-	private void drawNodes () throws GLSingletonNotInitializedException {
-		int cont = 1;
-		for (GLObject f : nodes) {
-			if (selectionMode)
-				GLSingleton.getGL().glLoadName(cont++);
-			f.draw();
-		}
-	}
-	
-	public void selectNode () throws GLSingletonNotInitializedException {
-		int[] selectBuff = new int[BUFFSIZE];
-		IntBuffer selectBuffer = BufferUtil.newIntBuffer(BUFFSIZE);
-		int hits = 0;
-		int[] viewport = new int[4];
-		// Save somewhere the info about the current viewport
-		GLSingleton.getGL().glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		// Initialize a selection buffer, which will contain data about selected objects
-		GLSingleton.getGL().glSelectBuffer(BUFFSIZE, selectBuffer);
-		// Switch to GL_SELECT mode
-		GLSingleton.getGL().glRenderMode(GL.GL_SELECT);
-		// Initialize the name stack
-		GLSingleton.getGL().glInitNames();
-		// Now fill the stack with one element (or glLoadName will generate an error)
-		GLSingleton.getGL().glPushName(-1);
-		// Restrict the drawing area around the mouse position (5x5 pixel region)
-		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
-		GLSingleton.getGL().glPushMatrix();
-		GLSingleton.getGL().glLoadIdentity();
-			//Important: gl (0,0) is bottom left but window coordinates (0,0) are top left so we have to change this!
-			GLSingleton.getGLU().gluPickMatrix(pickPoint.getX(),viewport[3]-pickPoint.getY(), 1.0, 1.0, viewport, 0);
-			float h = (float) this.screenHeight/ (float) this.screenWidth;
-			GLSingleton.getGL().glOrtho(0.0, this.dim, 0.0, this.dim*h, -1, 1);
-		// 6. Draw the objects with their names
-			GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
-			this.drawNodes();
-			GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
-			GLSingleton.getGL().glPopMatrix();
-			GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
-			GLSingleton.getGL().glFlush();
-		// 7. Get the number of hits
-		hits = GLSingleton.getGL().glRenderMode(GL.GL_RENDER);
-		// 8. Handle the hits, and get the picked object 
-		selectBuffer.get(selectBuff);
-		this.handleHits(hits, selectBuff);
-		selectionMode = false;
-	}
-	
-	private void handleHits (int hits, int[] data) {
-		int offset = 0;
-		if (hits > 0) {
-			System.out.println("Number of hits = " + hits);
-			// TODO quedarse con la que está más cerca del viewpoint en el eje Z
-			for (int i = 0; i < hits; i++) {
-				System.out.println("number " + data[offset++]);
-				System.out.println("minZ " + data[offset++]);
-				System.out.println("maxZ " + data[offset++]);
-				System.out.println("stackName " + data[offset]);
-				int pickedNode = data[offset];
-				setupTowers(pickedNode);
-				this.setViewLevel(TOWER_LEVEL);
-				offset++;
-			}
-		}
-	}
-	
-	private void setupEdges () {
-		Edge e;
-		edges = new Vector<GLObject>();
-		e = new Edge((Node)nodes.get(0), (Node)nodes.get(1));
-		e.setType(IEdge.DOTTED);
-		edges.add(e);
-		e = new Edge((Node)nodes.get(0), (Node)nodes.get(2));
-		e.setType(IEdge.DASHED);
-		edges.add(e);
-		e = new Edge((Node)nodes.get(1), (Node)nodes.get(2));
-		e.setType(IEdge.DOT_AND_DASH);
-		edges.add(e);
-		e = new Edge((Node)nodes.get(2), (Node)nodes.get(3));
-		e.setType(IEdge.SOLID);
-		edges.add(e);
-	}
-	
-	private void drawEdges () throws GLSingletonNotInitializedException {
-		for (GLObject f : edges) {
-			f.draw();
-		}
-	}
 	
 	private void setupCaptions (){
 		captions = new Vector<Caption>();
@@ -375,7 +263,7 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 		}
 	}
 	
-	private void setupTowers(int id) {
+	public void setupTowers(int id) {
 		towers = new Vector<GLObject>();
 		Random r = new Random();
 		Color c;
@@ -424,7 +312,8 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 	}
 
 	public void setSelectionMode(boolean b) {
-		this.selectionMode  = b;
+		// TODO comprobar en qué vista estamos actualmente y pasar el valor TRUE al contrlador correspondiente
+		mic.setSelectionMode(true);
 	}
 
 	public void debugPrintCoords (int x, int y) throws GLSingletonNotInitializedException {
@@ -439,6 +328,22 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 	public void updateMapChanged() throws GLSingletonNotInitializedException, IOException {
 		this.textureMapLoader = new TextureLoader (new String[]{MapController.getActiveMap().getFilename()});
 		this.hasTextureMapChanged = true;
+	}
+	
+	public Camera getCamera() {
+		return camera;
+	}
+
+	public int getScreenWidth() {
+		return screenWidth;
+	}
+
+	public int getScreenHeight() {
+		return screenHeight;
+	}
+
+	public float getDim() {
+		return dim;
 	}
 
 }

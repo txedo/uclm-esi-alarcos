@@ -49,6 +49,15 @@ public class Factory {
 		locations.put(id, coordinates);
 	}
 	
+	public Location getLocation(int mapId){
+		Vector2f v = locations.get(mapId);
+		return new Location(mapId, v.getX(), v.getY());
+	}
+	
+	public Map<Integer, Vector2f> getLocations() {
+		return locations;
+	}
+
 	public Address getAddress() {
 		return address;
 	}
