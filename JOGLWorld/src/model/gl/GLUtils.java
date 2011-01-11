@@ -159,5 +159,12 @@ public class GLUtils {
 		GLSingleton.getGL().glLoadIdentity();
 	}
 
+	static public void debugPrintCoords (int x, int y) throws GLSingletonNotInitializedException {
+		System.err.println("screen coords: " + x + " " + y);
+		Vector3f v = GLUtils.getScreen2World((int)x, (int)y, false);
+		System.err.println("world coords: " + v.getX() + " " + v.getY());
+		v = GLUtils.getScreen2World((int)x, (int)y, true);
+		System.err.println("relative world coords: " + v.getX() + " " + v.getY());
+	}
 
 }

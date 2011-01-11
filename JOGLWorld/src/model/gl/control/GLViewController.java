@@ -1,5 +1,6 @@
 package model.gl.control;
 
+import java.io.IOException;
 import java.nio.IntBuffer;
 
 import javax.media.opengl.GL;
@@ -23,9 +24,11 @@ public abstract class GLViewController {
 		this.selectionMode = false;
 	}
 	
-	protected abstract void setupItems();
+	public abstract void manageView() throws GLSingletonNotInitializedException, IOException ;
 	
-	protected abstract void drawItems () throws GLSingletonNotInitializedException;
+	public abstract void setupItems();
+	
+	public abstract void drawItems () throws GLSingletonNotInitializedException;
 	
 	public void selectItem () throws GLSingletonNotInitializedException {
 		int[] selectBuff = new int[BUFFSIZE];
@@ -81,11 +84,11 @@ public abstract class GLViewController {
      */
 	protected abstract void handleHits (int hits, int[] data);
 
-	protected boolean isSelectionMode() {
+	public boolean isSelectionMode() {
 		return selectionMode;
 	}
 
-	protected void setSelectionMode(boolean selectionMode) {
+	public void setSelectionMode(boolean selectionMode) {
 		this.selectionMode = selectionMode;
 	}
 }

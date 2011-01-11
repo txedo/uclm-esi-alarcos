@@ -8,18 +8,12 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import model.IObserverGL;
-import model.NotifyGLController;
-import model.NotifyUIController;
-import model.business.control.MapController;
 import model.gl.GLLogger;
 import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
-import model.gl.TextureLoader;
 import model.gl.knowledge.Camera;
 import model.gl.knowledge.IConstants;
-import model.gl.knowledge.IViewLevels;
 import model.gl.knowledge.Spotlight;
 import model.gl.knowledge.Tower;
 import model.gl.knowledge.caption.Caption;
@@ -34,10 +28,9 @@ import model.listeners.MyMouseWheelListener;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
-public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IViewLevels {
-	private TextureLoader textureMapLoader;
-	
+public class GLDrawer implements GLEventListener, IConstants {
 	private Vector<GLObject> towers;
+	private GLViewController mlc;
 	private GLViewController mic;
 	private Vector<Caption> captions;
 	private Camera camera;
@@ -47,9 +40,8 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 	
 	private Vector2f pickPoint = new Vector2f(0, 0);
 	
-	private int oldViewLevel;
-	private int viewLevel = NODE_LEVEL;
-	private boolean selectionMode = false;
+	private EViewLevels oldViewLevel;
+	private EViewLevels viewLevel;
 	
 	Vector3f aux = new Vector3f();
 	private int screenWidth;
@@ -57,19 +49,16 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 	
 	public final float dim = IConstants.INIT_DIM;
 
-	private boolean hasTextureMapChanged;
-	private boolean isTextureMapReady;
 	
 	/**
 	 * 
 	 */
 	public GLDrawer() {
-		NotifyGLController.attach(this);
-		this.viewLevel = MAP_LEVEL;
-		this.hasTextureMapChanged = false;
-		this.isTextureMapReady = false;
+		this.viewLevel = EViewLevels.MapLevel;
+		this.oldViewLevel = viewLevel;
 		
-		this.mic = new GLMetricIndicatorViewController(this, false); // 2D view
+		this.mlc = new GLMapLocationViewController(this, false);		// 2D View
+		this.mic = new GLMetricIndicatorViewController(this, false);	// 2D view
 	}
 
 	@Override
@@ -85,59 +74,20 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 			// This state machine prevents calls to updateProjection every time display() is called
 			// It it used to change to 2D or 3D projection within the main thread (not keyboard or mouse inputs) since JOGL has multithreading issues
 			// http://staff.www.ltu.se/~mjt/ComputerGraphics/jogl-doc/jogl_usersguide/index.html
-			if (oldViewLevel != viewLevel) {
+			if (!oldViewLevel.equals(viewLevel)) {
 				this.updateProjection();
 				oldViewLevel = viewLevel;
 			}
-			switch (viewLevel) {
-				case MAP_LEVEL:				
-					// This state machine prevents GL trying to load a texture while it is loading from disk to memory
-					if (hasTextureMapChanged) {
-						isTextureMapReady = false;
-						textureMapLoader.loadTexures();
-						hasTextureMapChanged = false;
-						isTextureMapReady = true;
-					}
-					if (isTextureMapReady) {
-						float h = (float)this.screenHeight/(float)this.screenWidth;
-						GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping
-						GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
-						GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureMapLoader.getTextureNames()[0]);
-						GLSingleton.getGL().glBegin(GL.GL_QUADS);            // Draw Our First Texture Mapped Quad
-							GLSingleton.getGL().glTexCoord2d(0.0f, 0.0f);        // First Texture Coord
-							GLSingleton.getGL().glVertex2f(0.0f, 0.0f);          	// First Vertex
-							GLSingleton.getGL().glTexCoord2d(1.0f, 0.0f);        // Second Texture Coord
-							GLSingleton.getGL().glVertex2f(this.dim, 0.0f);         // Second Vertex
-							GLSingleton.getGL().glTexCoord2d(1.0f, 1.0f);        // Third Texture Coord
-							GLSingleton.getGL().glVertex2f(this.dim, this.dim*h);   // Third Vertex
-							GLSingleton.getGL().glTexCoord2d(0.0f, 1.0f);        // Fourth Texture Coord
-							GLSingleton.getGL().glVertex2f(0.0f, this.dim*h);       // Fourth Vertex
-						GLSingleton.getGL().glEnd();   // Done Drawing The First Quad
-						GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping
-						
-						// Bind the texture to null to avoid color issues
-						//GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
-						
-						if (selectionMode) {
-							debugPrintCoords((int)pickPoint.getX(), (int)pickPoint.getY());
-							Vector3f v = GLUtils.getScreen2World((int)pickPoint.getX(), (int)pickPoint.getY(), false);
-							NotifyUIController.notifyClickedWorldCoords(new Vector2f(v.getX(), v.getY()));
-							selectionMode = false;
-						}
-						
-						// TODO Place the map locations
-					}
-					break;
-				case NODE_LEVEL:
-					if (mic.isSelectionMode()) mic.selectItem();
-					mic.drawItems();
-					drawCaptions();
-					break;
-				case TOWER_LEVEL:
-					camera.render();
-					spotlight.render(camera.getPosition(), camera.getViewDir());
-					drawTowers();
-					break;
+			if (viewLevel.equals(EViewLevels.MapLevel)) {
+				mlc.manageView();
+			}
+			else if (viewLevel.equals(EViewLevels.MetricIndicatorLevel)) {
+				mic.manageView();
+				drawCaptions();
+			} else if (viewLevel.equals(EViewLevels.TowerLevel)) {
+				camera.render();
+				spotlight.render(camera.getPosition(), camera.getViewDir());
+				drawTowers();
 			}
 			glDrawable.swapBuffers();
 			GLSingleton.getGL().glFlush();
@@ -243,9 +193,9 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 	}
 	
 	private void updateProjection() throws GLSingletonNotInitializedException {
-		if (viewLevel == MAP_LEVEL || viewLevel == NODE_LEVEL)
+		if (viewLevel.equals(EViewLevels.MapLevel) || viewLevel.equals(EViewLevels.MetricIndicatorLevel))
 			GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth, this.dim);
-		else if (viewLevel == TOWER_LEVEL)
+		else if (viewLevel.equals(EViewLevels.TowerLevel))
 			GLUtils.setPerspectiveProjection(this.screenHeight, this.screenWidth);
 	}
 	
@@ -294,11 +244,11 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 		GLSingleton.getGL().glEnd();
 	}
 
-	public int getViewLevel() {
+	public EViewLevels getViewLevel() {
 		return viewLevel;
 	}
 
-	public void setViewLevel(int viewLevel) {
+	public void setViewLevel(EViewLevels viewLevel) {
 		this.oldViewLevel = this.viewLevel;
 		this.viewLevel = viewLevel;
 	}
@@ -312,22 +262,12 @@ public class GLDrawer implements GLEventListener, IObserverGL, IConstants, IView
 	}
 
 	public void setSelectionMode(boolean b) {
-		// TODO comprobar en qué vista estamos actualmente y pasar el valor TRUE al contrlador correspondiente
-		mic.setSelectionMode(true);
-	}
-
-	public void debugPrintCoords (int x, int y) throws GLSingletonNotInitializedException {
-		System.out.println("screen coords: " + x + " " + y);
-		Vector3f v = GLUtils.getScreen2World((int)x, (int)y, false);
-		System.out.println("world coords: " + v.getX() + " " + v.getY());
-		v = GLUtils.getScreen2World((int)x, (int)y, true);
-		System.out.println("relative world coords: " + v.getX() + " " + v.getY());
-	}
-
-	@Override
-	public void updateMapChanged() throws GLSingletonNotInitializedException, IOException {
-		this.textureMapLoader = new TextureLoader (new String[]{MapController.getActiveMap().getFilename()});
-		this.hasTextureMapChanged = true;
+		if (viewLevel.equals(EViewLevels.MapLevel))
+			mlc.setSelectionMode(true);
+		else if (viewLevel.equals(EViewLevels.MetricIndicatorLevel))
+			mic.setSelectionMode(true);
+//		else if (viewLevel.equals(EViewLevels.TowerLevel))
+//			tc.setSelectionMode(true);
 	}
 	
 	public Camera getCamera() {
