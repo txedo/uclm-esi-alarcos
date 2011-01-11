@@ -1,2 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<companies/>
+<companies>
+    <company id="1">
+        <name>Indra</name>
+        <information>info about indra</information>
+        <factory id="1">
+            <name>Ciudad Real</name>
+            <information>Ciudad Real information</information>
+            <director>Ciudad Real director</director>
+            <email>Ciudad Real@email.com</email>
+            <employees>704600986</employees>
+            <address>
+                <street>Ciudad Real street</street>
+                <city>Ciudad Real city</city>
+                <state>Ciudad Real state</state>
+                <country>Ciudad Real country</country>
+                <zip>Ciudad Real zip</zip>
+            </address>
+            <locations>
+                <location ycoord="2.142857" xcoord="0.9774436" mapId="1"/>
+            </locations>
+        </factory>
+        <factory id="2">
+            <name>Madrid</name>
+            <information>Madrid information</information>
+            <director>Madrid director</director>
+            <email>Madrid@email.com</email>
+            <employees>1530750101</employees>
+            <address>
+                <street>Madrid street</street>
+                <city>Madrid city</city>
+                <state>Madrid state</state>
+                <country>Madrid country</country>
+                <zip>Madrid zip</zip>
+            </address>
+            <locations>
+                <location ycoord="4.0977445" xcoord="4.530075" mapId="1"/>
+            </locations>
+        </factory>
+    </company>
+    <company id="2">
+        <name>IECISA</name>
+        <information>info about iecisa</information>
+        <factory id="1">
+            <name>Miguelturra</name>
+            <information>Miguelturra information</information>
+            <director>Miguelturra director</director>
+            <email>Miguelturra@email.com</email>
+            <employees>2132244806</employees>
+            <address>
+                <street>Miguelturra street</street>
+                <city>Miguelturra city</city>
+                <state>Miguelturra state</state>
+                <country>Miguelturra country</country>
+                <zip>Miguelturra zip</zip>
+            </address>
+            <locations/>
+        </factory>
+        <factory id="2">
+            <name>Mirasierra</name>
+            <information>Mirasierra information</information>
+            <director>Mirasierra director</director>
+            <email>Mirasierra@email.com</email>
+            <employees>1892916103</employees>
+            <address>
+                <street>Mirasierra street</street>
+                <city>Mirasierra city</city>
+                <state>Mirasierra state</state>
+                <country>Mirasierra country</country>
+                <zip>Mirasierra zip</zip>
+            </address>
+            <locations/>
+        </factory>
+    </company>
+</companies>

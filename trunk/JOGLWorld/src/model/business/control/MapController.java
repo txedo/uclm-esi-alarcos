@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import model.NotifyGLController;
 import model.NotifyUIController;
 import model.business.knowledge.Map;
+import model.gl.control.GLMapLocationViewController;
 
 import org.apache.commons.configuration.ConfigurationException;
 
@@ -26,7 +26,7 @@ public class MapController {
 
 	public static void setActiveMap(Map activeMap) throws GLSingletonNotInitializedException, IOException {
 		MapController.activeMap = activeMap;
-		NotifyGLController.notifyMapChanged();
+		GLMapLocationViewController.updateMapChanged();
 	}
 
 	static public void addMap (Map m) throws MapAlreadyExistsException, ConfigurationException, JAXBException, IOException, InstantiationException, IllegalAccessException {

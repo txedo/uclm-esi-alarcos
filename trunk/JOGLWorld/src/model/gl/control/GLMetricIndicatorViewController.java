@@ -7,7 +7,6 @@ import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.knowledge.Edge;
 import model.gl.knowledge.IEdge;
-import model.gl.knowledge.IViewLevels;
 import model.gl.knowledge.MetricIndicator;
 import model.knowledge.Color;
 
@@ -21,6 +20,12 @@ public class GLMetricIndicatorViewController extends GLViewController {
 		super(d, is3d);
 		this.nodes = new ArrayList<GLObject>();
 		this.edges = new ArrayList<GLObject>();
+	}
+	
+	@Override
+	public void manageView() throws GLSingletonNotInitializedException {
+		if (this.isSelectionMode()) this.selectItem();
+		this.drawItems();
 	}
 
 	@Override
@@ -92,7 +97,7 @@ public class GLMetricIndicatorViewController extends GLViewController {
 				System.out.println("stackName " + data[offset]);
 				int pickedNode = data[offset];
 				this.drawer.setupTowers(pickedNode);
-				this.drawer.setViewLevel(IViewLevels.TOWER_LEVEL);
+				this.drawer.setViewLevel(EViewLevels.TowerLevel);
 				offset++;
 			}
 		}
