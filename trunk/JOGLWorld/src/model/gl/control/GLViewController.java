@@ -26,8 +26,6 @@ public abstract class GLViewController {
 	
 	public abstract void manageView() throws GLSingletonNotInitializedException, IOException ;
 	
-	public abstract void setupItems();
-	
 	public abstract void drawItems () throws GLSingletonNotInitializedException;
 	
 	public void selectItem () throws GLSingletonNotInitializedException {
@@ -78,8 +76,8 @@ public abstract class GLViewController {
 	 * @param hits The number of items clicked or hitted.
 	 * @param data A 4-multiple array containing blocks of data. Each block of data has four units of information.
 	 * The first one indicates the number of the element which goes from 1 to <i>hits</i>. If the value is 0, then no items has been clicked.
-	 * The second one indicates the minimum depth in axis Z.
-	 * The third one indicates the maxinum depth in axis Z.
+	 * The second one indicates the minimum depth in axis Z. The third one indicates the maxinum depth in axis Z.
+	 * The depthless object should be usually picked up.
 	 * The fourth and last one indicates the name of the object, previously setted with the glLoadName(int) primitive.
      */
 	protected abstract void handleHits (int hits, int[] data);

@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBException;
 import model.NotifyUIController;
 import model.business.knowledge.Map;
 import model.gl.control.GLMapLocationViewController;
+import model.knowledge.Vector2f;
 
 import org.apache.commons.configuration.ConfigurationException;
 
@@ -27,6 +28,10 @@ public class MapController {
 	public static void setActiveMap(Map activeMap) throws GLSingletonNotInitializedException, IOException {
 		MapController.activeMap = activeMap;
 		GLMapLocationViewController.updateMapChanged();
+	}
+	
+	public static void setMapLocations (List<Vector2f> locations) {
+		GLMapLocationViewController.addMapLocations(locations);
 	}
 
 	static public void addMap (Map m) throws MapAlreadyExistsException, ConfigurationException, JAXBException, IOException, InstantiationException, IllegalAccessException {

@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
@@ -655,12 +656,35 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 	
 	private void cbConfigureFactoryMapsActionPerformed(ActionEvent evt) {
 		try {
-			if (GLSingleton.isInitiated())
+			if (GLSingleton.isInitiated()) {
 				MapController.setActiveMap((Map)cbConfigureFactoryMaps.getSelectedItem());
+				List<Factory> factories = FactoryController.getFactories(((Company)cbConfigureFactoryCompanies.getSelectedItem()).getId());
+				List<Vector2f> locations = new ArrayList<Vector2f>();
+				for (Factory fact : factories) {
+					int selectedMapId = ((Map)cbConfigureFactoryMaps.getSelectedItem()).getId();
+					locations.add(fact.getLocations().get((Integer)selectedMapId));
+				}
+				MapController.setMapLocations(locations);
+			}
 		} catch (GLSingletonNotInitializedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CompanyNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -15,7 +15,6 @@ public class GLTowerViewController extends GLViewController {
 		
 	}
 
-	@Override
 	public void setupItems() {
 		// TODO Auto-generated method stub
 		
