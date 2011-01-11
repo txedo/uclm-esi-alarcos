@@ -36,7 +36,7 @@ public class MapLocation extends Node {
 		GLSingleton.getGL().glPointSize(this.size);
 		
 		GLSingleton.getGL().glBegin(GL.GL_POINTS);
-			GLSingleton.getGL().glVertex2f(4.5f, 4.5f);
+			GLSingleton.getGL().glVertex2f(this.positionX, this.positionY);
 		GLSingleton.getGL().glEnd();
 	}
 

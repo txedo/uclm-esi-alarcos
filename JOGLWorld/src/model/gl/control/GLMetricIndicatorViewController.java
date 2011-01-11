@@ -28,7 +28,6 @@ public class GLMetricIndicatorViewController extends GLViewController {
 		this.drawItems();
 	}
 
-	@Override
 	public void setupItems() {
 		this.setupNodes();
 		this.setupEdges();

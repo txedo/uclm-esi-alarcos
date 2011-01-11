@@ -1,11 +1,14 @@
 package model.gl.control;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 
 import model.NotifyUIController;
 import model.business.control.MapController;
+import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.TextureLoader;
@@ -18,11 +21,16 @@ public class GLMapLocationViewController extends GLViewController {
 	private static TextureLoader textureMapLoader;
 	private static boolean hasTextureMapChanged;
 	private boolean isTextureMapReady;
+	
+	private static List<Vector2f> locations;
+	private List<GLObject> mapLocations;
 
 	public GLMapLocationViewController(GLDrawer d, boolean is3d) {
 		super(d, is3d);
 		GLMapLocationViewController.hasTextureMapChanged = false;
 		this.isTextureMapReady = false;
+		locations = new ArrayList<Vector2f>(); 
+		mapLocations = new ArrayList<GLObject>();
 	}
 	
 	@Override
@@ -30,6 +38,7 @@ public class GLMapLocationViewController extends GLViewController {
 		// This state machine prevents GL trying to load a texture while it is loading from disk to memory
 		if (hasTextureMapChanged) {
 			isTextureMapReady = false;
+			setupItems();
 			textureMapLoader.loadTexures();
 			hasTextureMapChanged = false;
 			isTextureMapReady = true;
@@ -71,22 +80,38 @@ public class GLMapLocationViewController extends GLViewController {
 		GLMapLocationViewController.hasTextureMapChanged = true;
 	}
 
-	@Override
 	public void setupItems() {
-		// TODO Auto-generated method stub
-		
+		mapLocations = new ArrayList<GLObject>();
+		if (locations.size() > 0) {
+			GLAbstractFactory glFactory = new JOGLFactory();
+			for (Vector2f loc : locations) {
+				if (loc != null) {
+					GLObject foo = glFactory.createMapLocation(loc.getX(), loc.getY());
+					mapLocations.add(foo);
+				}
+			}
+			//System.out.println("param: " + locations.size() + "\tstatic: " + GLMapLocationViewController.locations.size());
+			// TODO revisar el acceso a campos estaticos
+		}
 	}
 
 	@Override
 	public void drawItems() throws GLSingletonNotInitializedException {
-		// TODO Auto-generated method stub
-		
+		for (GLObject glo : mapLocations) {
+			glo.draw();
+		}
 	}
 
 	@Override
 	protected void handleHits(int hits, int[] data) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public static void addMapLocations (List<Vector2f> locs) {
+		locations = new ArrayList<Vector2f>();
+		if (locs.size() > 0)
+			locations.addAll(locs);
 	}
 
 }

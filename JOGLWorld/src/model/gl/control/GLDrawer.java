@@ -145,7 +145,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLSingleton.getGL().glEnable(GL.GL_COLOR_MATERIAL);
 			
 			// Configuramos los parámetros del mundo
-			mic.setupItems();
 			setupCaptions();
 			
 			// Añadimos los listener de teclado y ratón

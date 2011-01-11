@@ -1,6 +1,8 @@
 package model.business.control;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
@@ -16,7 +18,7 @@ import model.knowledge.Vector2f;
 
 public class FactoryController {
 	
-	static public void addFactory (int companyId, Factory f) throws ConfigurationException, CompanyNotFoundException, JAXBException, IOException, InstantiationException, IllegalAccessException, EmptyFieldException {
+	public static void addFactory (int companyId, Factory f) throws ConfigurationException, CompanyNotFoundException, JAXBException, IOException, InstantiationException, IllegalAccessException, EmptyFieldException {
 		if (f.getName().equals("")) throw new EmptyFieldException();
 		Company c = CompanyController.getCompany(companyId);
 		f.setId(c.getLastFactoryId());
@@ -36,5 +38,12 @@ public class FactoryController {
 		}
 		CompanyController.updateCompany(c);
 		// TODO notificar
+	}
+	
+	public static List<Factory> getFactories (int companyId) throws ConfigurationException, CompanyNotFoundException, JAXBException, IOException, InstantiationException, IllegalAccessException {
+		List<Factory> factories = new ArrayList<Factory>();
+		Company c = CompanyController.getCompany(companyId);
+		factories.addAll(c.getFactories());
+		return factories;
 	}
 }
