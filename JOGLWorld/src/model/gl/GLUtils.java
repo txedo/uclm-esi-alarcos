@@ -143,9 +143,8 @@ public class GLUtils {
 		GLSingleton.getGL().glDisable(GL.GL_DEPTH_TEST);		  // Disables Depth Testing
 		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
 		GLSingleton.getGL().glLoadIdentity();
-		//float h = (float) screenHeight/ (float) screenWidth;
-		//GLSingleton.getGLU().gluOrtho2D(0.0, glDim, 0.0, glDim*h);
-		GLSingleton.getGLU().gluOrtho2D(0.0, glDim, 0.0, glDim);
+		float h = (float) screenHeight/ (float) screenWidth;
+		GLSingleton.getGLU().gluOrtho2D(0.0, glDim, 0.0, glDim*h);
 		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
 		GLSingleton.getGL().glLoadIdentity();
 	}
