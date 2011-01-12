@@ -80,8 +80,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 			}
 			if (viewLevel.equals(EViewLevels.MapLevel)) {
 				mlc.manageView();
-			}
-			else if (viewLevel.equals(EViewLevels.MetricIndicatorLevel)) {
+			} else if (viewLevel.equals(EViewLevels.MetricIndicatorLevel)) {
 				mic.manageView();
 				drawCaptions();
 			} else if (viewLevel.equals(EViewLevels.TowerLevel)) {
@@ -145,6 +144,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLSingleton.getGL().glEnable(GL.GL_COLOR_MATERIAL);
 			
 			// Configuramos los parámetros del mundo
+			((GLMetricIndicatorViewController)mic).setupItems();
 			setupCaptions();
 			
 			// Añadimos los listener de teclado y ratón
