@@ -97,15 +97,30 @@ public class GLMapLocationViewController extends GLViewController {
 
 	@Override
 	public void drawItems() throws GLSingletonNotInitializedException {
+		int cont = 0;
 		for (GLObject glo : mapLocations) {
+			if (this.selectionMode) GLSingleton.getGL().glLoadName(cont++);
 			glo.draw();
 		}
 	}
 
 	@Override
 	protected void handleHits(int hits, int[] data) {
-		// TODO Auto-generated method stub
-		
+		int offset = 0;
+		if (hits > 0) {
+			System.out.println("Number of hits = " + hits);
+			// TODO quedarse con la que está más cerca del viewpoint en el eje Z
+			for (int i = 0; i < hits; i++) {
+				System.out.println("number " + data[offset++]);
+				System.out.println("minZ " + data[offset++]);
+				System.out.println("maxZ " + data[offset++]);
+				System.out.println("stackName " + data[offset]);
+				int pickedNode = data[offset];
+				this.drawer.setupTowers(pickedNode);
+				this.drawer.setViewLevel(EViewLevels.TowerLevel);
+				offset++;
+			}
+		}
 	}
 	
 	public static void addMapLocations (List<Vector2f> locs) {

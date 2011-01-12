@@ -47,7 +47,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 	private int screenWidth;
 	private int screenHeight;
 	
-	public final float dim = IConstants.INIT_DIM;
+	public final float DIM = IConstants.INIT_DIM;
 
 	
 	/**
@@ -193,7 +193,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 	
 	private void updateProjection() throws GLSingletonNotInitializedException {
 		if (viewLevel.equals(EViewLevels.MapLevel) || viewLevel.equals(EViewLevels.MetricIndicatorLevel))
-			GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth, this.dim);
+			GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth, this.DIM);
 		else if (viewLevel.equals(EViewLevels.TowerLevel))
 			GLUtils.setPerspectiveProjection(this.screenHeight, this.screenWidth);
 	}
@@ -282,7 +282,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 	}
 
 	public float getDim() {
-		return dim;
+		return DIM;
 	}
 
 }

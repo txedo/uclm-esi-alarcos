@@ -623,6 +623,11 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		}
 	}
 	
+	@Override
+	public void selectFactory(int offset) {
+		// TODO patron observador. se llama al seleccionar una localizacion de uan factoria
+	}
+	
 	public boolean isSettingCoordinates () {
 		return this.settingCoordinates;
 	}
@@ -689,5 +694,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			e.printStackTrace();
 		}
 	}
+
 
 }
