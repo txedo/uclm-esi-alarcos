@@ -35,4 +35,10 @@ public class NotifyUIController {
 			iob.updateClickedWorldCoords(coordinates);
 		}
 	}
+	
+	public static void notifySelectedFactory (int offset) {
+		for (IObserverUI iob : observers) {
+			iob.selectFactory(offset);
+		}
+	}
 }
