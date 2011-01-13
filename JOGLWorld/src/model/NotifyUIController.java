@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+import model.business.knowledge.Centre;
 import model.knowledge.Vector2f;
 
 
@@ -36,9 +37,9 @@ public class NotifyUIController {
 		}
 	}
 	
-	public static void notifySelectedFactory (int offset) {
+	public static void notifySelectedCentre (Centre c) {
 		for (IObserverUI iob : observers) {
-			iob.selectFactory(offset);
+			iob.selectCentre(c);
 		}
 	}
 }

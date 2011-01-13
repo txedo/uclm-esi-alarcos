@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <maps>
+    <map parentId="0" id="0">
+        <label>Mapa España</label>
+        <filename>resources/maps/mapa_espana.gif</filename>
+        <hashcode>-1</hashcode>
+    </map>
     <map parentId="0" id="1">
         <label>World Map</label>
         <filename>resources/maps/world-map.png</filename>
         <hashcode>-1</hashcode>
     </map>
-    <map parentId="0" id="2">
-        <label>Spain</label>
-        <filename>resources/maps/spain-map.png</filename>
+    <map parentId="0" id="4">
+        <label>Peru</label>
+        <filename>resources/maps/MAPA-POLITICO-PERU.jpg</filename>
         <hashcode>-1</hashcode>
     </map>
 </maps>
