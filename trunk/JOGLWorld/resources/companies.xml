@@ -17,7 +17,7 @@
                 <zip>Ciudad Real zip</zip>
             </address>
             <locations>
-                <location ycoord="4.1321044" xcoord="3.7634408" mapId="0"/>
+                <location ycoord="3.6153846" xcoord="3.5384614" mapId="0"/>
                 <location ycoord="3.2888887" xcoord="4.5888886" mapId="1"/>
                 <location ycoord="3.3762517" xcoord="5.3934193" mapId="2"/>
                 <location ycoord="7.7338886" xcoord="6.444906" mapId="4"/>
@@ -37,6 +37,7 @@
                 <zip>Madrid zip</zip>
             </address>
             <locations>
+                <location ycoord="4.673077" xcoord="4.0" mapId="0"/>
                 <location ycoord="3.7653632" xcoord="4.670391" mapId="1"/>
             </locations>
         </factory>

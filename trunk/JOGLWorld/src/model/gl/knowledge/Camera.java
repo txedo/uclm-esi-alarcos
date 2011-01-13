@@ -6,6 +6,7 @@ import model.knowledge.Vector3f;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Camera implements IConstants {
+	private boolean mousing;
 	private Vector3f position;	// posición de la camara
 	private Vector3f viewDir;	// dirección a la que apunta el objetivo de la cámara
 	// Los siguientes indican direcciones relativas a la cámara
@@ -18,6 +19,7 @@ public class Camera implements IConstants {
 	private Vector3f initialViewDir;
 	
 	public Camera(float xpos, float ypos, float zpos, float xviewdir, float yviewdir, float zviewdir) {
+		this.mousing = false;
 		initialPosition = new Vector3f(xpos, ypos, zpos);
 		// Inicialmente la camara apunta al origen de coordenadas (0,0,0)
 		initialViewDir = new Vector3f(xviewdir, yviewdir, zviewdir);
@@ -182,6 +184,14 @@ public class Camera implements IConstants {
 		this.viewDir = viewDir;
 		rightVector = viewDir.cross(upVector);
 		frontVector = rightVector.cross(upVector).mult(-1);
+	}
+
+	public void setMousing(boolean b) {
+		this.mousing = b;
+	}
+
+	public boolean isMousing() {
+		return mousing;
 	}
 	
 }

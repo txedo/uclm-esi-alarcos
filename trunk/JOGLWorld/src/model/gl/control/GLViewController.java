@@ -17,11 +17,13 @@ public abstract class GLViewController {
 	protected GLDrawer drawer;
 	protected boolean isThreeDimensional;
 	protected boolean selectionMode;
-	
+	protected double pickingRegion;
+
 	public GLViewController (GLDrawer d, boolean is3D) {
 		this.drawer = d;
 		this.isThreeDimensional = is3D;
 		this.selectionMode = false;
+		this.pickingRegion = 0.1;
 	}
 	
 	public abstract void manageView() throws GLSingletonNotInitializedException, IOException ;
@@ -48,7 +50,7 @@ public abstract class GLViewController {
 		GLSingleton.getGL().glPushMatrix();
 		GLSingleton.getGL().glLoadIdentity();
 			//Important: gl (0,0) is bottom left but window coordinates (0,0) are top left so we have to change this!
-			GLSingleton.getGLU().gluPickMatrix(this.drawer.getPickPoint().getX(),viewport[3]-this.drawer.getPickPoint().getY(), 1.0, 1.0, viewport, 0);
+			GLSingleton.getGLU().gluPickMatrix(this.drawer.getPickPoint().getX(),viewport[3]-this.drawer.getPickPoint().getY(), this.pickingRegion, this.pickingRegion, viewport, 0);
 			if (isThreeDimensional) {
 				float h = (float) this.drawer.getScreenWidth() / this.drawer.getScreenHeight();
 				GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 1000.0f);
@@ -59,10 +61,12 @@ public abstract class GLViewController {
 			}
 		// 6. Draw the objects with their names
 			GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+			GLSingleton.getGL().glPushMatrix(); ////////////////////////////////////////////////
 			this.drawItems();
 			GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
 			GLSingleton.getGL().glPopMatrix();
 			GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+			GLSingleton.getGL().glPopMatrix(); ////////////////////////////////////////////////
 			GLSingleton.getGL().glFlush();
 		// 7. Get the number of hits
 		hits = GLSingleton.getGL().glRenderMode(GL.GL_RENDER);
@@ -88,6 +92,10 @@ public abstract class GLViewController {
 
 	public void setSelectionMode(boolean selectionMode) {
 		this.selectionMode = selectionMode;
+	}
+	
+	public void setPickingRegion(double pickingRegion) {
+		this.pickingRegion = pickingRegion;
 	}
 }
 

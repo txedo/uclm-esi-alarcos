@@ -48,12 +48,14 @@ public class MyMouseListener implements MouseListener {
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		System.out.println("pressed");
+		this.drawer.getCamera().setMousing(true);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		System.out.println("released");
+		this.drawer.getCamera().setMousing(false);
 	}
 
 }

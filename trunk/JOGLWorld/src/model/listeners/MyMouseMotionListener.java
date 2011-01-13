@@ -4,20 +4,43 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 import model.gl.knowledge.Camera;
+import model.knowledge.Vector2f;
 
 
 public class MyMouseMotionListener implements MouseMotionListener {
 	
 	private Camera cam;
+	private Vector2f currentMousePosition;
+	private Vector2f lastMousePosition;
 
 	public MyMouseMotionListener(Camera c) {
 		this.cam = c;
+		this.currentMousePosition = new Vector2f();
+		this.lastMousePosition = new Vector2f();
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
 		System.out.println("dragged");
+		this.currentMousePosition.setX((float)e.getPoint().getX());
+		this.currentMousePosition.setY((float)e.getPoint().getY());
+		if (this.cam.isMousing()) {
+			float nXDiff = this.currentMousePosition.getX() - this.lastMousePosition.getX();
+			float nYDiff = this.currentMousePosition.getY() - this.lastMousePosition.getY();
+			if (nYDiff < 0) {
+				this.cam.lookUp();
+			} else if (nYDiff > 0) {
+				this.cam.lookDown();
+			}
+			if (nXDiff < 0) {
+				this.cam.rotateLeft();
+			} else if (nXDiff > 0) {
+				this.cam.rotateRight();
+			}
+		}
+		this.lastMousePosition.setX(this.currentMousePosition.getX());
+		this.lastMousePosition.setY(this.currentMousePosition.getY());
 	}
 
 	@Override
