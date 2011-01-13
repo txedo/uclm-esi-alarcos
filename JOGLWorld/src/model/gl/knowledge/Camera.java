@@ -121,32 +121,6 @@ public class Camera implements IConstants {
 	public void lookDown() {
 		rotateX(-X_ROTATION);
 	}
-	
-	private void rotateAroundX() {
-
-	}
-	
-	private void rotateAroundY(float angle) {
-
-	}
-
-	public void rotateLeftAround() {
-		rotateAroundY(-Y_ROTATION);
-	}
-
-	public void rotateRightAround() {
-		rotateAroundY(Y_ROTATION);
-	}
-
-	public void rotateUpAround() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void rotateDownAround() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public Vector3f getPosition() {
 		return position;

@@ -35,8 +35,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 	private Vector<Caption> captions;
 	private Camera camera;
 	private Spotlight spotlight;
-
-	public Vector2f position = new Vector2f (0.375f, 0.375f);
 	
 	private Vector2f pickPoint = new Vector2f(0, 0);
 	
@@ -148,7 +146,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 			setupCaptions();
 			
 			// Añadimos los listener de teclado y ratón
-			glDrawable.addKeyListener(new MyKeyListener(this));
+			glDrawable.addKeyListener(new MyKeyListener(this.camera));
 			glDrawable.addMouseListener(new MyMouseListener(this));
 			glDrawable.addMouseWheelListener(new MyMouseWheelListener(this.camera));
 			glDrawable.addMouseMotionListener(new MyMouseMotionListener(this.camera));
