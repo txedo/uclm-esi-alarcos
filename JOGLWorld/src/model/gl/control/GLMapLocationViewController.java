@@ -13,6 +13,7 @@ import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.TextureLoader;
+import model.gl.knowledge.MapLocation;
 import model.knowledge.Vector2f;
 import model.knowledge.Vector3f;
 import exceptions.gl.GLSingletonNotInitializedException;
@@ -75,7 +76,7 @@ public class GLMapLocationViewController extends GLViewController {
 				Vector3f v = GLUtils.getScreen2World((int)drawer.getPickPoint().getX(), (int)drawer.getPickPoint().getY(), false);
 				NotifyUIController.notifyClickedWorldCoords(new Vector2f(v.getX(), v.getY()));
 				this.selectItem();
-				//selectionMode = false;
+				selectionMode = false;
 			}
 			
 			// Place the map locations
@@ -89,15 +90,18 @@ public class GLMapLocationViewController extends GLViewController {
 	}
 
 	public void setupItems() {
+		GLObject temp = null;
 		mapLocations = new ArrayList<GLObject>();
 		if (locations.size() > 0) {
 			GLAbstractFactory glFactory = new JOGLFactory();
 			for (Vector2f loc : locations) {
 				if (loc != null) {
-					GLObject foo = glFactory.createMapLocation(loc.getX(), loc.getY());
-					mapLocations.add(foo);
+					temp = glFactory.createMapLocation(loc.getX(), loc.getY());
+					mapLocations.add(temp);
 				}
 			}
+			// Change the picking region to manage selection work properly
+			if (temp != null) super.setPickingRegion(((MapLocation)temp).getSize());
 			//System.out.println("param: " + locations.size() + "\tstatic: " + GLMapLocationViewController.locations.size());
 			// TODO revisar el acceso a campos estaticos
 		}
@@ -107,7 +111,8 @@ public class GLMapLocationViewController extends GLViewController {
 	public void drawItems() throws GLSingletonNotInitializedException {
 		int cont = 0;
 		for (GLObject glo : mapLocations) {
-			if (this.selectionMode) GLSingleton.getGL().glLoadName(cont++);
+			if (selectionMode)
+				GLSingleton.getGL().glLoadName(cont++);
 			glo.draw();
 		}
 	}

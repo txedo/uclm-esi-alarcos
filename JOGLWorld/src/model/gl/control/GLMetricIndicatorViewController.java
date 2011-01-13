@@ -88,7 +88,7 @@ public class GLMetricIndicatorViewController extends GLViewController {
 		int offset = 0;
 		System.out.println("Number of hits = " + hits);
 		if (hits > 0) {
-			// TODO quedarse con la que está más cerca del viewpoint en el eje Z
+			// TODO if hits > 1 then Quedarse con la que está más cerca del viewpoint en el eje Z
 			for (int i = 0; i < hits; i++) {
 				System.out.println("number " + data[offset++]);
 				System.out.println("minZ " + data[offset++]);

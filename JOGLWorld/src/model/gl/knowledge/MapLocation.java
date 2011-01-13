@@ -11,7 +11,7 @@ public class MapLocation extends Node {
 	
 	public MapLocation () {
 		this.color = new Color(0.0f, 0.0f, 0.0f);
-		this.size = 10.0f;
+		this.size = 20.0f;
 	}
 	
 	public MapLocation (float pos_x, float pos_y, float size, Color color) {
@@ -35,9 +35,13 @@ public class MapLocation extends Node {
 		GLSingleton.getGL().glColor3fv(this.color.getColorFB());
 		GLSingleton.getGL().glPointSize(this.size);
 		
-		GLSingleton.getGL().glBegin(GL.GL_POINTS);
-			GLSingleton.getGL().glVertex2f(this.positionX, this.positionY);
-		GLSingleton.getGL().glEnd();
+//		GLSingleton.getGL().glPushMatrix();
+//			GLSingleton.getGL().glTranslatef(this.positionX, this.positionY, 0.0f);
+			GLSingleton.getGL().glBegin(GL.GL_POINTS);
+//				GLSingleton.getGL().glVertex2f(0.0f, 0.0f);
+				GLSingleton.getGL().glVertex2f(this.positionX, this.positionY);
+			GLSingleton.getGL().glEnd();
+//		GLSingleton.getGL().glPopMatrix();
 	}
 
 }

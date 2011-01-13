@@ -29,6 +29,11 @@ public class JOGLFactory extends GLAbstractFactory {
 	}
 	
 	@Override
+	public GLObject createMetricIndicator(float pos_x, float pos_y) {
+		return new MetricIndicator (pos_x, pos_y);
+	}
+	
+	@Override
 	public GLObject createMetricIndicator(float pos_x, float pos_y, float width, Color color) {
 		return new MetricIndicator (pos_x, pos_y, width, color);
 	}
