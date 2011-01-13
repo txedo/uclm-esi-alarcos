@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import model.NotifyUIController;
+import model.business.knowledge.Centre;
 import model.business.knowledge.Map;
 import model.gl.control.GLMapLocationViewController;
 import model.knowledge.Vector2f;
@@ -30,8 +31,8 @@ public class MapController {
 		GLMapLocationViewController.updateMapChanged();
 	}
 	
-	public static void setMapLocations (List<Vector2f> locations) {
-		GLMapLocationViewController.addMapLocations(locations);
+	public static void setMapLocations (List<Centre> centres, List<Vector2f> locations) {
+		GLMapLocationViewController.addMapLocations(centres, locations);
 	}
 
 	static public void addMap (Map m) throws MapAlreadyExistsException, ConfigurationException, JAXBException, IOException, InstantiationException, IllegalAccessException {

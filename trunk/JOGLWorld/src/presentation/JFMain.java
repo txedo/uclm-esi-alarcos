@@ -40,6 +40,7 @@ import model.business.control.FactoryController;
 import model.business.control.MapController;
 import model.business.knowledge.Address;
 import model.business.knowledge.BusinessFactory;
+import model.business.knowledge.Centre;
 import model.business.knowledge.Company;
 import model.business.knowledge.Factory;
 import model.business.knowledge.Map;
@@ -151,8 +152,8 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 topPanel.add(contentPanel, BorderLayout.CENTER);
                 {
                 	jScrollPane1 = new JScrollPane();
-                	contentPanel.add(jScrollPane1, new AnchorConstraint(1, 1001, 1001, 307, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
-                	jScrollPane1.setPreferredSize(new java.awt.Dimension(347, 273));
+                	contentPanel.add(jScrollPane1, new AnchorConstraint(0, 0, 0, 290, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS));
+                	jScrollPane1.setPreferredSize(new java.awt.Dimension(485, 383));
                 	{
                 		canvasPanel = new JPanel();
                 		jScrollPane1.setViewportView(canvasPanel);
@@ -624,8 +625,31 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 	}
 	
 	@Override
-	public void selectFactory(int offset) {
+	public void selectCentre(Centre c) {
 		// TODO patron observador. se llama al seleccionar una localizacion de uan factoria
+		try {
+			Company company = CompanyController.getCompany(c.getIdCompany());
+			Factory factory = FactoryController.getFactory(company, c.getIdFactory());
+			System.err.print(company.toString() + factory.toString());
+		} catch (ConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CompanyNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public boolean isSettingCoordinates () {
@@ -664,12 +688,14 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			if (GLSingleton.isInitiated()) {
 				MapController.setActiveMap((Map)cbConfigureFactoryMaps.getSelectedItem());
 				List<Factory> factories = FactoryController.getFactories(((Company)cbConfigureFactoryCompanies.getSelectedItem()).getId());
+				List<Centre> centres =  new ArrayList<Centre>();
 				List<Vector2f> locations = new ArrayList<Vector2f>();
 				for (Factory fact : factories) {
+					centres.add(new Centre(((Company)cbConfigureFactoryCompanies.getSelectedItem()).getId(), fact.getId()));
 					int selectedMapId = ((Map)cbConfigureFactoryMaps.getSelectedItem()).getId();
 					locations.add(fact.getLocations().get((Integer)selectedMapId));
 				}
-				MapController.setMapLocations(locations);
+				MapController.setMapLocations(centres, locations);
 			}
 		} catch (GLSingletonNotInitializedException e) {
 			// TODO Auto-generated catch block

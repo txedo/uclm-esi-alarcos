@@ -46,4 +46,16 @@ public class FactoryController {
 		factories.addAll(c.getFactories());
 		return factories;
 	}
+	
+	public static Factory getFactory (Company company, int factoryId) {
+		boolean found = false;
+		Factory res = null;
+		
+		for (int i = 0; i < company.getFactories().size() && !found; i++) {
+			Factory temp = company.getFactories().get(i);
+			if (temp.getId() == factoryId) res = temp;
+		}
+		
+		return res;
+	}
 }
