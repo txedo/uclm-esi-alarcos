@@ -80,6 +80,8 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
     private JButton btnAddCompany;
     private JPanel configureFactoryPanel;
     private JButton btnSetCoordinates;
+    private JMenuItem jMenuItem8;
+    private JMenu toolsMenu;
     private JLabel lblStatusBar;
     private JButton btnAddFactory;
     private JTextField txtAddFactoryFactoryName;
@@ -418,6 +420,21 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 jMenuItem7.setAction(getAppActionMap().get("delete"));
             }
         }
+        {
+        	toolsMenu = new JMenu();
+        	menuBar.add(toolsMenu);
+        	toolsMenu.setName("toolsMenu");
+        	{
+        		jMenuItem8 = new JMenuItem();
+        		toolsMenu.add(jMenuItem8);
+        		jMenuItem8.setName("jMenuItem8");
+        		jMenuItem8.addActionListener(new ActionListener() {
+        			public void actionPerformed(ActionEvent evt) {
+        				jMenuItem8ActionPerformed(evt);
+        			}
+        		});
+        	}
+        }
         getMainFrame().setJMenuBar(menuBar);
         show(topPanel);
         NotifyUIController.attach(this);
@@ -720,6 +737,11 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			e.printStackTrace();
 		}
 	}
-
+	
+	private void jMenuItem8ActionPerformed(ActionEvent evt) {
+		JFConfiguration jfc = new JFConfiguration();
+		jfc.setLocationRelativeTo(getMainFrame());
+		jfc.setVisible(true);
+	}
 
 }
