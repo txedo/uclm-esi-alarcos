@@ -7,7 +7,7 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.commons.configuration.ConfigurationException;
 
-import persistence.dao.CompanyDAO;
+import persistence.dao.business.CompanyDAO;
 
 import exceptions.CompanyAlreadyExistsException;
 import exceptions.CompanyNotFoundException;

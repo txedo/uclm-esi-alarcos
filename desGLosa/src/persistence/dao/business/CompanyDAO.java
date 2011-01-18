@@ -1,4 +1,4 @@
-package persistence.dao;
+package persistence.dao.business;
 
 import java.io.IOException;
 import java.util.ArrayList;

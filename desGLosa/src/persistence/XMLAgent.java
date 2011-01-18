@@ -21,6 +21,10 @@ public class XMLAgent {
 		return resources.getString(tag);
 	}
 	
+	public static XMLConfiguration getXMLConfiguration (String filename) throws ConfigurationException {
+		return new XMLConfiguration(filename);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static <E> void marshal(String filename, Class<E> c, Object ob) throws JAXBException {
 		JAXBContext jc = JAXBContext.newInstance(c);
@@ -34,6 +38,7 @@ public class XMLAgent {
 	
 	@SuppressWarnings("unchecked")
 	public static <E> E unmarshal (String filename, Class<E> c) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
+		@SuppressWarnings("unused")
 		Object result = null;
 		JAXBContext jc = JAXBContext.newInstance(c);
 		Unmarshaller unmarshaller = jc.createUnmarshaller();

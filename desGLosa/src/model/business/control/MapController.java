@@ -13,7 +13,7 @@ import model.knowledge.Vector2f;
 
 import org.apache.commons.configuration.ConfigurationException;
 
-import persistence.dao.MapDAO;
+import persistence.dao.business.MapDAO;
 import exceptions.MapAlreadyExistsException;
 import exceptions.MapNotFoundException;
 import exceptions.gl.GLSingletonNotInitializedException;
