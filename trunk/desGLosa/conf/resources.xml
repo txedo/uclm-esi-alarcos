@@ -2,4 +2,5 @@
 <resources>
 	<companies>resources/companies.xml</companies>
 	<maps>resources/maps.xml</maps>
+	<operations>conf/operations.xml</operations>
 </resources>

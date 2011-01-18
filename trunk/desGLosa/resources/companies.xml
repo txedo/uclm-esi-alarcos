@@ -76,4 +76,25 @@
             <locations/>
         </factory>
     </company>
+    <company id="3">
+        <name>uclm</name>
+        <information>asdr</information>
+        <factory id="1">
+            <name>ciudad real</name>
+            <information>ciudad real information</information>
+            <director>ciudad real director</director>
+            <email>ciudad real@email.com</email>
+            <employees>111295294</employees>
+            <address>
+                <street>ciudad real street</street>
+                <city>ciudad real city</city>
+                <state>ciudad real state</state>
+                <country>ciudad real country</country>
+                <zip>ciudad real zip</zip>
+            </address>
+            <locations>
+                <location ycoord="3.7031898" xcoord="3.4951456" mapId="0"/>
+            </locations>
+        </factory>
+    </company>
 </companies>

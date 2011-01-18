@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<entities>
+	<entity name="Company">
+		<description>Configure companies</description>
+		<icon>src/presentation/resources/icons/Company_256.png</icon>
+		<container type="JPanel">presentation.JPConfigureCompany</container>
+	</entity>
+		<entity name="Factory">
+		<description>Configure factories</description>
+		<icon>src/presentation/resources/icons/Factory_256.png</icon>
+		<container type="JPanel">presentation.JPConfigureFactory</container>
+	</entity>
+	<entity name="Map">
+		<description>Configure maps and factory locations</description>
+		<icon>src/presentation/resources/icons/Map_256.png</icon>
+		<container type="JPanel">presentation.JPConfigureMap</container>
+	</entity>
+</entities>
