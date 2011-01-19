@@ -22,10 +22,6 @@ public class JPConfigureCompany extends javax.swing.JPanel {
 	 */
 	private static final long serialVersionUID = -5515867769356310203L;
 
-	/**
-	* Auto-generated main method to display this 
-	* JPanel inside a new JFrame.
-	*/
 	
 	public JPConfigureCompany() {
 		super();

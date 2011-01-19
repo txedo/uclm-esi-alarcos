@@ -5,7 +5,7 @@
 		<icon>src/presentation/resources/icons/Company_256.png</icon>
 		<container type="JPanel">presentation.JPConfigureCompany</container>
 	</entity>
-		<entity name="Factory">
+<entity name="Factory">
 		<description>Configure factories</description>
 		<icon>src/presentation/resources/icons/Factory_256.png</icon>
 		<container type="JPanel">presentation.JPConfigureFactory</container>
