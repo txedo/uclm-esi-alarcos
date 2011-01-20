@@ -1,4 +1,4 @@
-#summary This howto explains how to installa and configure m2eclipse as a eclipse plug-in.
+#summary This howto explains how to install and configure m2eclipse as a eclipse plug-in.
 #labels Phase-Implementation,eclipse,m2eclipse,maven,integration
 
 = Introduction =
