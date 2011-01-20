@@ -522,8 +522,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
 	public void updateCompanyList() {
 		try {
 			// Clean already added companies
@@ -552,7 +550,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		}
 	}
 	
-	@Override
 	public void updateFactoryList(int companyId) {
 		try {
 			if (((Company)cbConfigureFactoryCompanies.getSelectedItem()).getId() == companyId) {
@@ -585,7 +582,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void updateMapList() {
 		try {
 			ArrayList<Map> maps = (ArrayList)MapController.getAllMaps();
@@ -611,7 +607,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		}
 	}
 	
-	@Override
 	public void updateClickedWorldCoords(Vector2f coordinates) {
 		if (isSettingCoordinates()) {
 			try {
@@ -641,7 +636,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		}
 	}
 	
-	@Override
 	public void selectCentre(Centre c) {
 		// TODO patron observador. se llama al seleccionar una localizacion de uan factoria
 		try {

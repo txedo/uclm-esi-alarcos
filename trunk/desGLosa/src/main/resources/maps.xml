@@ -2,17 +2,17 @@
 <maps>
     <map parentId="0" id="0">
         <label>Mapa España</label>
-        <filename>resources/maps/mapa_espana.gif</filename>
+        <filename>maps/mapa_espana.gif</filename>
         <hashcode>-1</hashcode>
     </map>
     <map parentId="0" id="1">
         <label>World Map</label>
-        <filename>resources/maps/world-map.png</filename>
+        <filename>maps/world-map.png</filename>
         <hashcode>-1</hashcode>
     </map>
     <map parentId="0" id="4">
         <label>Peru</label>
-        <filename>resources/maps/MAPA-POLITICO-PERU.jpg</filename>
+        <filename>maps/MAPA-POLITICO-PERU.jpg</filename>
         <hashcode>-1</hashcode>
     </map>
 </maps>

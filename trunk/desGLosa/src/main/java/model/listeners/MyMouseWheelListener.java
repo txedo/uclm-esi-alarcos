@@ -14,7 +14,6 @@ public class MyMouseWheelListener implements MouseWheelListener {
 		this.cam = c;
 	}
 	
-	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
         int notches = e.getWheelRotation();
         if (notches < 0) {
