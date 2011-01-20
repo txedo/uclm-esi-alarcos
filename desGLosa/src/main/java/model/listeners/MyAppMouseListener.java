@@ -16,32 +16,27 @@ public class MyAppMouseListener implements MouseListener {
 		this.container = container;
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (core.isSettingCoordinates()) {
 			container.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		}
 	}
 
-	@Override
 	public void mouseExited(MouseEvent e) {
 		if (core.isSettingCoordinates()) {
 			container.setCursor(Cursor.getDefaultCursor());

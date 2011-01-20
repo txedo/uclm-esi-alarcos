@@ -15,8 +15,6 @@ public class MyMouseListener implements MouseListener {
 		this.drawer = d;
 	}
 	
-	@SuppressWarnings("static-access")
-	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2){	// Double click
 			this.drawer.setViewLevel(EViewLevels.MetricIndicatorLevel);
@@ -31,20 +29,16 @@ public class MyMouseListener implements MouseListener {
 		}
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
-	@Override
 	public void mouseExited(MouseEvent e) {
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 		this.drawer.getCamera().setMousing(true);
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 		this.drawer.getCamera().setMousing(false);
 	}

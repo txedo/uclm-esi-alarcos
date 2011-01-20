@@ -59,7 +59,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.mic = new GLMetricIndicatorViewController(this, false);	// 2D view
 	}
 
-	@Override
 	 /** Called by the drawable to initiate OpenGL rendering by the client.
      * After all GLEventListeners have been notified of a display event, the
      * drawable will swap its buffers if necessary.
@@ -101,7 +100,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 		}
 	}
 
-	@Override
 	 /** Called when the display mode has been changed.  <B>
      * !! CURRENTLY UNIMPLEMENTED IN JOGL !!</B>
      * @param gLDrawable The GLAutoDrawable object.
@@ -112,7 +110,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 			boolean deviceChanged) {
 	}
 
-	@Override
 	  /** Called by the drawable immediately after the OpenGL context is
      * initialized for the first time. Can be used to perform one-time OpenGL
      * initialization such as setup of lights and display lists.
@@ -163,7 +160,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 		}
 	}
 
-	@Override
 	 /** Called by the drawable during the first repaint after the component has
      * been resized. The client can update the viewport and view volume of the
      * window appropriately, for example by a call to

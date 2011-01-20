@@ -20,7 +20,6 @@ public class MyMouseMotionListener implements MouseMotionListener {
 		this.lastMousePosition = new Vector2f();
 	}
 
-	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO comprobar el viewLevel, para ello hay que pasar el drawer, no solo la camara
 		this.currentMousePosition.setX((float) e.getPoint().getX());
@@ -56,7 +55,6 @@ public class MyMouseMotionListener implements MouseMotionListener {
 		this.lastMousePosition.setY(this.currentMousePosition.getY());
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent e) {
 	}
 

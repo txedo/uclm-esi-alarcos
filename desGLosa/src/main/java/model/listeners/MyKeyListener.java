@@ -13,7 +13,6 @@ public class MyKeyListener implements KeyListener {
 		this.cam = c;
 	}
 
-	@Override
 	public void keyPressed(KeyEvent e) {
 		/*
 		 * FLECHA_ARRIBA			desplazar hacia delante
@@ -84,11 +83,9 @@ public class MyKeyListener implements KeyListener {
 		}
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e) {
 	}
 
-	@Override
 	public void keyTyped(KeyEvent e) {
 	}
 
