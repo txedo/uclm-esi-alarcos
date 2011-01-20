@@ -152,9 +152,9 @@ COMMIT;
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`maps` (`idmaps`, `parentId`, `label`, `filename`, `hashcode`) VALUES (1, 2, 'Mapa España', 'resources/maps/mapa_espana.gif', '-1');
-INSERT INTO `desglosadb`.`maps` (`idmaps`, `parentId`, `label`, `filename`, `hashcode`) VALUES (2, 2, 'World Map', 'resources/maps/world-map.png', '-1');
-INSERT INTO `desglosadb`.`maps` (`idmaps`, `parentId`, `label`, `filename`, `hashcode`) VALUES (3, 2, 'Peru', 'resources/maps/MAPA-POLITICO-PERU.jpg', '-1');
+INSERT INTO `desglosadb`.`maps` (`idmaps`, `parentId`, `label`, `filename`, `hashcode`) VALUES (1, 2, 'Mapa España', 'maps/mapa_espana.gif', '-1');
+INSERT INTO `desglosadb`.`maps` (`idmaps`, `parentId`, `label`, `filename`, `hashcode`) VALUES (2, 2, 'World Map', 'maps/world-map.png', '-1');
+INSERT INTO `desglosadb`.`maps` (`idmaps`, `parentId`, `label`, `filename`, `hashcode`) VALUES (3, 2, 'Peru', 'maps/MAPA-POLITICO-PERU.jpg', '-1');
 
 COMMIT;
 
