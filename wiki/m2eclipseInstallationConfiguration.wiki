@@ -1,0 +1,37 @@
+#summary This howto explains how to installa and configure m2eclipse as a eclipse plug-in.
+#labels Phase-Implementation,eclipse,m2eclipse,maven,integration
+
+= Introduction =
+
+m2eclipse provides comprehensive Maven integration for Eclipse. You can use m2eclipse to manage both simple and multi-module Maven projects, execute Maven builds via the Eclipse interface, and interact with Maven repositories. m2eclipse makes development easier by integrating data from a project’s Object Model with Eclipse IDE features. With m2eclipse, you can use Maven within Eclipse in a natural and intuitive interface.
+
+http://m2eclipse.sonatype.org/
+
+
+= Steps =
+
+The course is divided in three main steps. Note that some paths has strings like _x.x.x`_`xx_ which should be replaced for a valid version number.
+
+== Configure installed JRE in Eclipse ==
+
+  # Open Eclipse.
+  # Go to _Window -> Preferences -> Java -> Installed JREs_
+  # Now, we are going to add a new JRE definition. Click _Add... -> Standard VM_
+  # Search for the JRE home. This path should actually point to the JDK directory. For instance, _C:\Program Files\Java\jdkx.x.x_xx_
+  # Check the added JRE definition.
+
+== Configure and edit eclipse.ini ==
+  # Close Eclipse.
+  # Go to the eclipse installation directory and open the file _eclipse.ini_.
+  # Add *two lines* above the _-vmargs_ line:
+{{{
+-vm
+C:/Program Files/Java/jdkx.x.x_xx/bin/javaw
+}}}
+
+== Installing m2eclipse plug-in ==
+
+  # Open Eclipse.
+  # Go to _Help -> Install New Software..._ and add a new repository.
+  # The repository location must be _http://m2eclipse.sonatype.org/sites/m2e/_
+  # Install _Maven Integration for Eclipse".
