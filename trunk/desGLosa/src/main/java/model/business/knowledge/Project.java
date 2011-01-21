@@ -26,13 +26,13 @@ public class Project {
 	private String marketClient;
 	private String finalClient;
 	
-	private List<Centre> involvedCentres;
+	private List<Factory> involvedCentres;
 
-	public List<Centre> getInvolvedCentres() {
+	public List<Factory> getInvolvedCentres() {
 		return involvedCentres;
 	}
 
-	public void setInvolvedCentres(List<Centre> involvedCentres) {
+	public void setInvolvedCentres(List<Factory> involvedCentres) {
 		this.involvedCentres = involvedCentres;
 	}
 	

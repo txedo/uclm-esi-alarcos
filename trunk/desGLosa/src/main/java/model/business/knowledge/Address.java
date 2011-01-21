@@ -1,11 +1,8 @@
 package model.business.knowledge;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 
-
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Address {
+	private int id;
 	private String street;
 	private String city;
 	private String state;
@@ -22,6 +19,14 @@ public class Address {
 		this.state = state;
 		this.country = country;
 		this.zip = zip;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getStreet() {

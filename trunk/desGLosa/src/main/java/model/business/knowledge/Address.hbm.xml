@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="model.business.knowledge">
+	<class name="Address" table="addresses">
+		<id name="id" column="id" type="int">
+			<generator class="native" />
+		</id>
+		<property name="street" column="street" type="string" not-null="false" />
+		<property name="city" column="city" type="string" not-null="false" />
+		<property name="state" column="state" type="string" not-null="false" />
+		<property name="country" column="country" type="string" not-null="false" />
+		<property name="zip" column="zip" type="string" not-null="false" />
+	</class>
+</hibernate-mapping>

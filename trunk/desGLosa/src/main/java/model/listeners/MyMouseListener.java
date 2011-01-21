@@ -1,5 +1,6 @@
 package model.listeners;
 
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -19,11 +20,11 @@ public class MyMouseListener implements MouseListener {
 		if (e.getClickCount() == 2){	// Double click
 			this.drawer.setViewLevel(EViewLevels.MetricIndicatorLevel);
 		} else {						// Click
-			if (e.getButton() == e.BUTTON1) {
+			if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
 				this.drawer.getPickPoint().setX((float)e.getPoint().getX());
 				this.drawer.getPickPoint().setY((float)e.getPoint().getY());
 				this.drawer.setSelectionMode(true);
-			} else if (e.getButton() == e.BUTTON3) {
+			} else if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
 				this.drawer.setViewLevel(EViewLevels.MapLevel);
 			}
 		}
