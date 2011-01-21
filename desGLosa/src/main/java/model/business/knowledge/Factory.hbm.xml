@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="model.business.knowledge">
+	<class name="Factory" table="factories">
+		<id name="id" column="id" type="int">
+			<generator class="native" />
+		</id>
+		<many-to-one name="company" column="companies_id" class="Company" lazy="false" />
+		<property name="name" column="name" type="string" not-null="false" />
+		<property name="information" column="information" type="string" not-null="false" />
+		<property name="director" column="director" type="string" not-null="false" />
+		<property name="email" column="email" type="string" not-null="false" />
+		<property name="employees" column="employees" type="int" not-null="false" />
+		<many-to-one name="address" column="addresses_id" unique="true" not-null="true" class="Address" lazy="false" />
+		<set name="locations" table="locations" lazy="false" cascade="all">
+			<key column="factories_id" unique="true" not-null="true" />
+			<one-to-many class="Location" />
+		</set>
+	</class>
+</hibernate-mapping>

@@ -8,7 +8,7 @@ import javax.media.opengl.GL;
 
 import model.NotifyUIController;
 import model.business.control.MapController;
-import model.business.knowledge.Centre;
+import model.business.knowledge.Factory;
 import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
@@ -24,7 +24,7 @@ public class GLMapLocationViewController extends GLViewController {
 	private static boolean hasTextureMapChanged;
 	private boolean isTextureMapReady;
 	
-	private static List<Centre> centres;
+	private static List<Factory> centres;
 	private static List<Vector2f> locations;
 	private List<GLObject> mapLocations;
 
@@ -136,8 +136,8 @@ public class GLMapLocationViewController extends GLViewController {
 		}
 	}
 	
-	public static void addMapLocations (List<Centre> cents, List<Vector2f> locs) {
-		centres = new ArrayList<Centre>();
+	public static void addMapLocations (List<Factory> cents, List<Vector2f> locs) {
+		centres = new ArrayList<Factory>();
 		centres.addAll(cents);
 		locations = new ArrayList<Vector2f>();
 		locations.addAll(locs);

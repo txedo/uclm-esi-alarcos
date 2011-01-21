@@ -1,31 +1,21 @@
 package model.business.knowledge;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-
-import model.knowledge.Vector2f;
-
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Factory {
-	@XmlAttribute private int id;
+	private int id;
+	private Company company;
 	private String name;
 	private String information;
 	private String director;
 	private String email;
 	private int employees;
-	@XmlElement private Address address;
-	@XmlElement @XmlJavaTypeAdapter(LocationMapAdapter.class)
-	private Map<Integer, Vector2f> locations = new HashMap<Integer,Vector2f>();
+	private Address address;
+	private Set<Location> locations = new HashSet<Location>();
 	
-	public Factory() {
-	}
+	public Factory() {}
 	
 	public Factory(String name, String information, String director,
 			String email, int employees, Address address) {
@@ -45,16 +35,37 @@ public class Factory {
 		this.id = id;
 	}
 	
-	public void addLocation (int id, Vector2f coordinates) {
-		locations.put(id, coordinates);
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public void addLocation (Location loc) {
+		locations.add(loc);
 	}
 	
+	public void setLocations(Set<Location> locations) {
+		this.locations = locations;
+	}
+
 	public Location getLocation(int mapId){
-		Vector2f v = locations.get(mapId);
-		return new Location(mapId, v.getX(), v.getY());
+		boolean found = false;
+		Location res = null;
+		Iterator it = this.locations.iterator();
+		while (!found && it.hasNext()) {
+			Location aux = (Location)it.next();
+			if (aux.getMap().getId() == mapId) {
+				res = aux;
+				found = true;
+			}
+		}
+		return res;
 	}
 	
-	public Map<Integer, Vector2f> getLocations() {
+	public Set<Location> getLocations() {
 		return locations;
 	}
 
@@ -108,19 +119,18 @@ public class Factory {
 	
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(name);
-//		sb.append(" factory\n");
-//		sb.append("       " + name + "\n");
-//		sb.append("       " + information + "\n");
-//		sb.append("       " + director + " (" + email + ")\n");
-//		sb.append("       " + employees + "\n");
-//		sb.append("       " + address + "\n");
-//		sb.append("       locations\n");
-//		for (Iterator i = locations.keySet().iterator(); i.hasNext(); ){
-//			int mapId = (Integer)i.next();
-//			Vector2f coords = locations.get(mapId);
-//			sb.append("        map " + mapId + " (" + coords.getX() + "," + coords.getY() + ")\n");
-//		}
+		sb.append(this.company.toString());
+		sb.append(" factory\n");
+		sb.append("       " + name + "\n");
+		sb.append("       " + information + "\n");
+		sb.append("       " + director + " (" + email + ")\n");
+		sb.append("       " + employees + "\n");
+		sb.append("       " + address + "\n");
+		sb.append("       locations\n");
+		for (Iterator i = locations.iterator(); i.hasNext(); ) {
+			Location loc = (Location)i.next();
+			sb.append(loc.getXcoord() + ", " + loc.getYcoord() + "\n");
+		}
 		return sb.toString();
 	}
 }
