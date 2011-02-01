@@ -2,11 +2,10 @@ package model;
 
 import java.util.ArrayList;
 
-import model.business.knowledge.Centre;
 import model.knowledge.Vector2f;
 
 
-public class NotifyUIController {
+public class NotifyUIManager {
 	private static ArrayList<IObserverUI> observers = new ArrayList<IObserverUI>();
 
 	public static void attach (IObserverUI ob) {
@@ -37,9 +36,9 @@ public class NotifyUIController {
 		}
 	}
 	
-	public static void notifySelectedCentre (Centre c) {
+	public static void notifySelectedFactory (int factoryId) {
 		for (IObserverUI iob : observers) {
-			iob.selectCentre(c);
+			iob.selectFactory(factoryId);
 		}
 	}
 }

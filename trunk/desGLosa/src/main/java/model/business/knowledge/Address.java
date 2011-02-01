@@ -10,10 +10,12 @@ public class Address {
 	private String zip;
 	
 	public Address() {
+		this.id = -1;
 	}
 	
 	public Address(String street, String city, String state, String country,
 			String zip) {
+		this.id = -1;
 		this.street = street;
 		this.city = city;
 		this.state = state;
@@ -68,13 +70,19 @@ public class Address {
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
-	
+
+	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-        sb.append( " address\n");
-        sb.append( "       " + street + "\n");
-        sb.append( "       " + zip + " " + city + " (" + state + ")\n");
-        sb.append( "       " + country + "\n");
-		return sb.toString();
+		return "Address [id=" + id + ", street=" + street + ", city=" + city
+				+ ", state=" + state + ", country=" + country + ", zip=" + zip
+				+ "]";
 	}
+
+	@Override
+	public Object clone() {
+		Address result = new Address(this.street, this.city, this.state, this.country, this.zip);
+		result.setId(this.getId());
+		return result;
+	}
+	
 }

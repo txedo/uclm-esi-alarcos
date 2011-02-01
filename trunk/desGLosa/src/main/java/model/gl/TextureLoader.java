@@ -55,7 +55,7 @@ public class TextureLoader {
 		textureNames = this.genTextures(textureNames.length);
 		
 		for (int i = 0; i < textureNames.length; i++) {
-            textures[i] = TextureReader.readTexture(tileNames[i]);
+            textures[i] = TextureReader.readTexture(tileNames[i], false);
             //Create Nearest Filtered Texture
             GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureNames[i]);
 

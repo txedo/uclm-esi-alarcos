@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 
-import model.NotifyUIController;
-import model.business.control.MapController;
-import model.business.knowledge.Factory;
+import model.NotifyUIManager;
+import model.business.control.MapManager;
+import model.business.knowledge.Location;
 import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
@@ -19,20 +19,19 @@ import model.knowledge.Vector3f;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 
-public class GLMapLocationViewController extends GLViewController {
+public class GLMapLocationViewManager extends GLViewManager {
 	private static TextureLoader textureMapLoader;
 	private static boolean hasTextureMapChanged;
 	private boolean isTextureMapReady;
 	
-	private static List<Factory> centres;
-	private static List<Vector2f> locations;
-	private List<GLObject> mapLocations;
+	private static List<Location> locations;
+	private static List<GLObject> mapLocations;
 
-	public GLMapLocationViewController(GLDrawer d, boolean is3d) {
+	public GLMapLocationViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
-		GLMapLocationViewController.hasTextureMapChanged = false;
+		GLMapLocationViewManager.hasTextureMapChanged = false;
 		this.isTextureMapReady = false;
-		locations = new ArrayList<Vector2f>(); 
+		locations = new ArrayList<Location>(); 
 		mapLocations = new ArrayList<GLObject>();
 	}
 	
@@ -74,7 +73,7 @@ public class GLMapLocationViewController extends GLViewController {
 			if (this.selectionMode) {
 				GLUtils.debugPrintCoords((int)this.drawer.getPickPoint().getX(), (int)drawer.getPickPoint().getY());
 				Vector3f v = GLUtils.getScreen2World((int)drawer.getPickPoint().getX(), (int)drawer.getPickPoint().getY(), false);
-				NotifyUIController.notifyClickedWorldCoords(new Vector2f(v.getX(), v.getY()));
+				NotifyUIManager.notifyClickedWorldCoords(new Vector2f(v.getX(), v.getY()));
 				this.selectItem();
 				selectionMode = false;
 			}
@@ -85,34 +84,30 @@ public class GLMapLocationViewController extends GLViewController {
 	}
 	
 	public static void updateMapChanged() throws GLSingletonNotInitializedException, IOException {
-		GLMapLocationViewController.textureMapLoader = new TextureLoader (new String[]{MapController.getActiveMap().getFilename()});
-		GLMapLocationViewController.hasTextureMapChanged = true;
+		GLMapLocationViewManager.textureMapLoader = new TextureLoader (new String[]{MapManager.getActiveMap().getImage().getFilename()});
+		GLMapLocationViewManager.hasTextureMapChanged = true;
 	}
 
-	public void setupItems() {
-		GLObject temp = null;
+	public static void setupItems() {
 		mapLocations = new ArrayList<GLObject>();
-		if (locations.size() > 0) {
-			GLAbstractFactory glFactory = new JOGLFactory();
-			for (Vector2f loc : locations) {
-				if (loc != null) {
-					temp = glFactory.createMapLocation(loc.getX(), loc.getY());
-					mapLocations.add(temp);
-				}
+		GLAbstractFactory glFactory = new JOGLFactory();
+		for (Location loc : locations) {
+			if (loc != null) {
+				GLObject temp = glFactory.createMapLocation(loc.getFactory().getId(), loc.getXcoord(), loc.getYcoord());
+				mapLocations.add(temp);	
 			}
-			// Change the picking region to manage selection work properly
-			if (temp != null) super.setPickingRegion(((MapLocation)temp).getSize());
-			//System.out.println("param: " + locations.size() + "\tstatic: " + GLMapLocationViewController.locations.size());
-			// TODO revisar el acceso a campos estaticos
 		}
+		// Change the picking region to manage selection work properly
+		if (mapLocations.size() != 0) setPickingRegion(((MapLocation)mapLocations.get(0)).getSize());
+		//System.out.println("param: " + locations.size() + "\tstatic: " + GLMapLocationViewController.locations.size());
+		// TODO revisar el acceso a campos estaticos
 	}
 
 	@Override
 	public void drawItems() throws GLSingletonNotInitializedException {
-		int cont = 0;
 		for (GLObject glo : mapLocations) {
 			if (selectionMode)
-				GLSingleton.getGL().glLoadName(cont++);
+				GLSingleton.getGL().glLoadName(((MapLocation)glo).getId());
 			glo.draw();
 		}
 	}
@@ -128,19 +123,18 @@ public class GLMapLocationViewController extends GLViewController {
 				System.out.println("minZ " + data[offset++]);
 				System.out.println("maxZ " + data[offset++]);
 				System.out.println("stackName " + data[offset]);
-				int pickedLocation = data[offset];
+				int pickedFactoryId = data[offset];
 				// centres and locations are correlative lists.
-				NotifyUIController.notifySelectedCentre(centres.get(pickedLocation));
+				NotifyUIManager.notifySelectedFactory(pickedFactoryId);
 				offset++;
 			}
 		}
 	}
 	
-	public static void addMapLocations (List<Factory> cents, List<Vector2f> locs) {
-		centres = new ArrayList<Factory>();
-		centres.addAll(cents);
-		locations = new ArrayList<Vector2f>();
+	public static void addMapLocations (List<Location> locs) {
+		locations = new ArrayList<Location>();
 		locations.addAll(locs);
+		GLMapLocationViewManager.setupItems();
 	}
 
 }

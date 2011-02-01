@@ -32,11 +32,12 @@
         <property name="hbm2ddl.auto">update</property>
 
         <mapping resource="model/business/knowledge/Company.hbm.xml"/>
+        <mapping resource="model/business/knowledge/Factory.hbm.xml"/>
+        <mapping resource="model/business/knowledge/Director.hbm.xml"/>
         <mapping resource="model/business/knowledge/Address.hbm.xml"/>
         <mapping resource="model/business/knowledge/Map.hbm.xml"/>
         <mapping resource="model/business/knowledge/Location.hbm.xml"/>
-        <mapping resource="model/business/knowledge/Factory.hbm.xml"/>
-
+		<mapping resource="model/business/knowledge/Image.hbm.xml"/>
     </session-factory>
 
 </hibernate-configuration>

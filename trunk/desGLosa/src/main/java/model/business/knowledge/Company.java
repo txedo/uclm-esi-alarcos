@@ -36,13 +36,18 @@ public class Company {
 	public void setInformation(String information) {
 		this.information = information;
 	}
-	
-	public String toString (){
-		StringBuffer sb = new StringBuffer();
-		sb.append(this.name);
-        sb.append( " company\n");
-        sb.append( "       " + name + "\n");
-        sb.append( "       " + information + "\n");
-		return sb.toString();
+
+	@Override
+	public String toString() {
+		return this.name;
 	}
+
+	@Override
+	public Object clone() {
+		Company result = new Company(this.name, this.information);
+		result.setId(this.id);
+		return result;
+	}
+	
+	
 }

@@ -21,7 +21,7 @@ import javax.swing.WindowConstants;
 import org.apache.commons.configuration.ConfigurationException;
 import org.jdesktop.application.Application;
 
-import model.app.control.OperationController;
+import model.app.control.OperationManager;
 import model.app.knowledge.Operation;
 
 
@@ -54,7 +54,7 @@ public class JFConfiguration extends JFrame {
 	private void initOperationList() {
 		int addedButtons = 0;
 		try {
-			List<Operation> lop = OperationController.getAll();
+			List<Operation> lop = OperationManager.getAll();
 			for (Operation op : lop) {
 				JButton button = createOperationButton(op);
 				menuPanel.add(button);

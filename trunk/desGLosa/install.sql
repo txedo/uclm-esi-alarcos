@@ -2,23 +2,29 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
+DROP SCHEMA IF EXISTS `desglosadb` ;
 CREATE SCHEMA IF NOT EXISTS `desglosadb` DEFAULT CHARACTER SET latin1 ;
 USE `desglosadb` ;
 
 -- -----------------------------------------------------
 -- Table `desglosadb`.`companies`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`companies` ;
+
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`companies` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   `information` TINYTEXT NULL ,
-  PRIMARY KEY (`id`) )
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `desglosadb`.`addresses`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`addresses` ;
+
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`addresses` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `street` TINYTEXT NOT NULL ,
@@ -31,20 +37,59 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `desglosadb`.`images`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`images` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`images` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `filename` VARCHAR(45) NULL ,
+  `content_type` VARCHAR(45) NULL ,
+  `data` LONGBLOB NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`directors`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`directors` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`directors` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NOT NULL ,
+  `first_surname` VARCHAR(45) NOT NULL ,
+  `second_surname` VARCHAR(45) NULL ,
+  `images_id` INT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_directors_images1` (`images_id` ASC) ,
+  CONSTRAINT `fk_directors_images1`
+    FOREIGN KEY (`images_id` )
+    REFERENCES `desglosadb`.`images` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `desglosadb`.`factories`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`factories` ;
+
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`factories` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   `information` TINYTEXT NULL ,
-  `director` VARCHAR(65) NULL ,
   `contact_email` VARCHAR(65) NULL ,
   `employees` INT NULL ,
   `companies_id` INT NOT NULL ,
   `addresses_id` INT NOT NULL ,
+  `directors_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_factories_companies` (`companies_id` ASC) ,
   INDEX `fk_factories_addresses` (`addresses_id` ASC) ,
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) ,
+  INDEX `fk_factories_directors` (`directors_id` ASC) ,
   CONSTRAINT `fk_factories_companies`
     FOREIGN KEY (`companies_id` )
     REFERENCES `desglosadb`.`companies` (`id` )
@@ -54,35 +99,52 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`factories` (
     FOREIGN KEY (`addresses_id` )
     REFERENCES `desglosadb`.`addresses` (`id` )
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_factories_directors1`
+    FOREIGN KEY (`directors_id` )
+    REFERENCES `desglosadb`.`directors` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `desglosadb`.`maps`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`maps` ;
+
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`maps` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `parentId` INT NULL ,
   `label` VARCHAR(45) NULL ,
-  `filename` TEXT NULL ,
   `checksum` VARCHAR(45) NULL ,
-  PRIMARY KEY (`id`) )
+  `images_id` INT NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `label_UNIQUE` (`label` ASC) ,
+  INDEX `fk_maps_images1` (`images_id` ASC) ,
+  CONSTRAINT `fk_maps_images1`
+    FOREIGN KEY (`images_id` )
+    REFERENCES `desglosadb`.`images` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `desglosadb`.`locations`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`locations` ;
+
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`locations` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
   `maps_id` INT NOT NULL ,
   `factories_id` INT NOT NULL ,
   `xcoord` FLOAT NOT NULL ,
   `ycoord` FLOAT NOT NULL ,
   INDEX `fk_locations_maps` (`maps_id` ASC) ,
   INDEX `fk_locations_factories` (`factories_id` ASC) ,
-  UNIQUE INDEX `maps_factory_id_UNIQUE` (`maps_id` ASC, `factories_id` ASC) ,
-  PRIMARY KEY (`maps_id`, `factories_id`) ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `fk_maps_factories_id_UNIQUE` (`maps_id` ASC, `factories_id` ASC) ,
   CONSTRAINT `fk_locations_maps`
     FOREIGN KEY (`maps_id` )
     REFERENCES `desglosadb`.`maps` (`id` )
@@ -96,13 +158,13 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`locations` (
 ENGINE = InnoDB;
 
 
-CREATE USER `desglosaadmin` IDENTIFIED BY 'nimdaasolgsed';
-
 grant ALL on TABLE `desglosadb`.`companies` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`factories` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`addresses` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`locations` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`maps` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`directors` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`images` to desglosaadmin;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -131,14 +193,38 @@ INSERT INTO `desglosadb`.`addresses` (`id`, `street`, `city`, `state`, `country`
 COMMIT;
 
 -- -----------------------------------------------------
+-- Data for table `desglosadb`.`images`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`images` (`id`, `filename`, `content_type`, `data`) VALUES (1, 'anonymous', 'image/jpg', NULL);
+INSERT INTO `desglosadb`.`images` (`id`, `filename`, `content_type`, `data`) VALUES (2, 'world map', 'image/png', NULL);
+INSERT INTO `desglosadb`.`images` (`id`, `filename`, `content_type`, `data`) VALUES (3, 'spain', 'image/png', NULL);
+INSERT INTO `desglosadb`.`images` (`id`, `filename`, `content_type`, `data`) VALUES (4, 'peru', 'image/jpg', NULL);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`directors`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `first_surname`, `second_surname`, `images_id`) VALUES (1, 'director', 'de indra', 'ciudad real', 1);
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `first_surname`, `second_surname`, `images_id`) VALUES (2, 'director', 'de indra', 'madrid', 1);
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `first_surname`, `second_surname`, `images_id`) VALUES (3, 'director', 'de iecisa', 'miguelturra', 1);
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `first_surname`, `second_surname`, `images_id`) VALUES (4, 'director', 'de iecisa', 'mirasierra', 1);
+
+COMMIT;
+
+-- -----------------------------------------------------
 -- Data for table `desglosadb`.`factories`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `director`, `contact_email`, `employees`, `companies_id`, `addresses_id`) VALUES (1, 'Indra Ciudad Real', 'information about Indra Ciudad Real', 'director', 'email', 25, 1, 1);
-INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `director`, `contact_email`, `employees`, `companies_id`, `addresses_id`) VALUES (2, 'Indra Madrid', 'information about Indra Madrid', 'director', 'email', 35, 1, 2);
-INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `director`, `contact_email`, `employees`, `companies_id`, `addresses_id`) VALUES (3, 'IECISA Miguelturra', 'information about IECISA Miguelturra', 'director', 'email', 50, 2, 3);
-INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `director`, `contact_email`, `employees`, `companies_id`, `addresses_id`) VALUES (4, 'IECISA Mirasierra', 'information about IECISA Mirasierra', 'director', 'email', 60, 2, 4);
+INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `companies_id`, `addresses_id`, `directors_id`) VALUES (1, 'Indra Ciudad Real', 'information about Indra Ciudad Real', 'email', 25, 1, 1, 1);
+INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `companies_id`, `addresses_id`, `directors_id`) VALUES (2, 'Indra Madrid', 'information about Indra Madrid', 'email', 35, 1, 2, 2);
+INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `companies_id`, `addresses_id`, `directors_id`) VALUES (3, 'IECISA Miguelturra', 'information about IECISA Miguelturra', 'email', 50, 2, 3, 3);
+INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `companies_id`, `addresses_id`, `directors_id`) VALUES (4, 'IECISA Mirasierra', 'information about IECISA Mirasierra', 'email', 60, 2, 4, 4);
 
 COMMIT;
 
@@ -147,9 +233,9 @@ COMMIT;
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`maps` (`id`, `parentId`, `label`, `filename`, `checksum`) VALUES (1, -1, 'World Map', 'maps/world-map.png', '-1');
-INSERT INTO `desglosadb`.`maps` (`id`, `parentId`, `label`, `filename`, `checksum`) VALUES (2, 1, 'Mapa España', 'maps/mapa_espana.gif', '-1');
-INSERT INTO `desglosadb`.`maps` (`id`, `parentId`, `label`, `filename`, `checksum`) VALUES (3, 1, 'Peru', 'maps/MAPA-POLITICO-PERU.jpg', '-1');
+INSERT INTO `desglosadb`.`maps` (`id`, `parentId`, `label`, `checksum`, `images_id`) VALUES (1, -1, 'World Map', '-1', 2);
+INSERT INTO `desglosadb`.`maps` (`id`, `parentId`, `label`, `checksum`, `images_id`) VALUES (2, 1, 'Mapa España', '-1', 3);
+INSERT INTO `desglosadb`.`maps` (`id`, `parentId`, `label`, `checksum`, `images_id`) VALUES (3, 1, 'Peru', '-1', 4);
 
 COMMIT;
 
@@ -158,8 +244,9 @@ COMMIT;
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`locations` (`maps_id`, `factories_id`, `xcoord`, `ycoord`) VALUES (1, 1, 3.5384614, 3.6153846);
-INSERT INTO `desglosadb`.`locations` (`maps_id`, `factories_id`, `xcoord`, `ycoord`) VALUES (2, 1, 4.5888886, 3.2888887);
-INSERT INTO `desglosadb`.`locations` (`maps_id`, `factories_id`, `xcoord`, `ycoord`) VALUES (3, 1, 5.3934193, 3.3762517);
+INSERT INTO `desglosadb`.`locations` (`id`, `maps_id`, `factories_id`, `xcoord`, `ycoord`) VALUES (1, 2, 1, 3.5191083, 3.630573);
+INSERT INTO `desglosadb`.`locations` (`id`, `maps_id`, `factories_id`, `xcoord`, `ycoord`) VALUES (2, 2, 2, 3.9968152, 4.6019106);
+INSERT INTO `desglosadb`.`locations` (`id`, `maps_id`, `factories_id`, `xcoord`, `ycoord`) VALUES (3, 1, 1, 4.5409017, 3.2303839);
+INSERT INTO `desglosadb`.`locations` (`id`, `maps_id`, `factories_id`, `xcoord`, `ycoord`) VALUES (4, 1, 2, 4.5575957, 3.338898);
 
 COMMIT;

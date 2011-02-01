@@ -5,6 +5,11 @@ import com.cloudgarden.layout.AnchorLayout;
 import exceptions.CompanyAlreadyExistsException;
 import exceptions.CompanyNotFoundException;
 import exceptions.EmptyFieldException;
+import exceptions.FactoryAlreadyExistsException;
+import exceptions.FactoryNotFoundException;
+import exceptions.LocationAlreadyExistsException;
+import exceptions.LocationNotFoundException;
+import exceptions.MapNotFoundException;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 import java.awt.BorderLayout;
@@ -12,6 +17,7 @@ import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,24 +37,21 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
-import javax.xml.bind.JAXBException;
 
 import model.IObserverUI;
-import model.NotifyUIController;
-import model.business.control.CompanyController;
-import model.business.control.FactoryController;
-import model.business.control.MapController;
+import model.NotifyUIManager;
+import model.business.control.BusinessManager;
 import model.business.knowledge.Address;
 import model.business.knowledge.BusinessFactory;
-import model.business.knowledge.Centre;
 import model.business.knowledge.Company;
+import model.business.knowledge.Director;
 import model.business.knowledge.Factory;
+import model.business.knowledge.Location;
 import model.business.knowledge.Map;
 import model.gl.GLSingleton;
 import model.knowledge.Vector2f;
 import model.listeners.MyAppMouseListener;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.lang.math.RandomUtils;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
@@ -437,7 +440,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
         }
         getMainFrame().setJMenuBar(menuBar);
         show(topPanel);
-        NotifyUIController.attach(this);
+        NotifyUIManager.attach(this);
         GLInit.init();
         GLInit.setContext(getMainFrame(), canvasPanel, new AnchorConstraint(5, 998, 998, 4, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
         settingCoordinates = false;
@@ -445,37 +448,22 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
         this.updateCompanyList();
         this.updateMapList();
     }
-
-    public static void main(String[] args) {
-        launch(JFMain.class, args);
-    }
     
     private void btnAddCompanyActionPerformed(ActionEvent evt) {
     	System.out.println("btnAddCompany.actionPerformed, event="+evt);
     	try {
-			CompanyController.addCompany(BusinessFactory.createCompany(txtAddCompanyCompanyName.getText(), txtAddCompanyCompanyInformation.getText()));
+    		Company c = BusinessFactory.createCompany(txtAddCompanyCompanyName.getText(), txtAddCompanyCompanyInformation.getText());
+			BusinessManager.addCompany(c);
 			Messages.showInfoDialog(getMainFrame(), "Information", "Company successfully added.");
 			txtAddCompanyCompanyName.setText("");
 			txtAddCompanyCompanyInformation.setText("");
-		} catch (ConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (CompanyAlreadyExistsException e) {
 			Messages.showErrorDialog(getMainFrame(), "Error", "This company already exists.");
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (EmptyFieldException e) {
 			Messages.showErrorDialog(getMainFrame(), "Error", "The company name field must be filled in.");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
     }
     
@@ -483,7 +471,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		try {
 			String name = txtAddFactoryFactoryName.getText();
 			String information = txtAddFactoryFactoryName.getText() + " information";
-			String director = txtAddFactoryFactoryName.getText() + " director";
+			Director director = BusinessFactory.createDirector("test", "test", "test", "src/main/resources/anonymous.jpg");
 			String email = txtAddFactoryFactoryName.getText() + "@email.com";
 			int employees = RandomUtils.nextInt();
 			Address address = BusinessFactory.createAddress(txtAddFactoryFactoryName.getText() + " street",
@@ -492,33 +480,26 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 					txtAddFactoryFactoryName.getText() + " country",
 					txtAddFactoryFactoryName.getText() + " zip");
 			if (cbAddFactoryCompanies.getSelectedIndex() != -1){
-				FactoryController.addFactory(((Company)cbAddFactoryCompanies.getSelectedItem()).getId(), BusinessFactory.createFactory(name, information, director, email, employees, address));
+				Factory f = BusinessFactory.createFactory(name, information, director, email, employees, address);
+				f.setCompany((Company)cbAddFactoryCompanies.getSelectedItem());
+				BusinessManager.addFactory(f);
 				Messages.showInfoDialog(getMainFrame(), "Information", "Factory successfully added.");
 				txtAddFactoryFactoryName.setText("");
 			}
 			else {
 				Messages.showErrorDialog(getMainFrame(), "Error", "You have to choose the company in which the factory will be added.");
 			}
-		} catch (ConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CompanyNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (EmptyFieldException e) {
+			Messages.showErrorDialog(getMainFrame(), "Error", "The factory name field must be filled in.");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InstantiationException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (FactoryAlreadyExistsException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (EmptyFieldException e) {
-			Messages.showErrorDialog(getMainFrame(), "Error", "The factory name field must be filled in.");
 		}
 	}
 
@@ -527,24 +508,12 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			// Clean already added companies
 			cbAddFactoryCompanies.setModel(new DefaultComboBoxModel());
 			cbConfigureFactoryCompanies.setModel(new DefaultComboBoxModel());
-			ArrayList<Company> companies = (ArrayList)CompanyController.getAllCompanies();
+			ArrayList<Company> companies = (ArrayList<Company>)BusinessManager.getAllCompanies();
 			for (Company c : companies) {
 				cbAddFactoryCompanies.addItem(c);
 				cbConfigureFactoryCompanies.addItem(c);
 			}
-		} catch (ConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -556,27 +525,15 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 				// Clean already added factories
 				cbConfigureFactoryFactories.setModel(new DefaultComboBoxModel());
 				// Add the updated company factories				
-				Company c = CompanyController.getCompany(companyId);
-				for (Factory f : c.getFactories()) {
+				Company c = BusinessManager.getCompany(companyId);
+				for (Factory f : BusinessManager.getFactories(c)) {
 					cbConfigureFactoryFactories.addItem(f);
 				}
 			}
-		} catch (ConfigurationException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (CompanyNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -584,24 +541,12 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 
 	public void updateMapList() {
 		try {
-			ArrayList<Map> maps = (ArrayList)MapController.getAllMaps();
+			ArrayList<Map> maps = (ArrayList<Map>)BusinessManager.getAllMaps();
 			for (Map m : maps) {
 				cbConfigureFactoryMaps.addItem(m);
 			}
 			cbConfigureFactoryMaps.setSelectedIndex(-1);
-		} catch (ConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -610,23 +555,26 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 	public void updateClickedWorldCoords(Vector2f coordinates) {
 		if (isSettingCoordinates()) {
 			try {
-				FactoryController.addFactoryLocation(((Company)cbConfigureFactoryCompanies.getSelectedItem()).getId(), ((Factory)cbConfigureFactoryFactories.getSelectedItem()).getId(), ((Map)cbConfigureFactoryMaps.getSelectedItem()).getId(), coordinates);
-			} catch (ConfigurationException e) {
+				if (BusinessManager.addLocation(((Factory)cbConfigureFactoryFactories.getSelectedItem()), ((Map)cbConfigureFactoryMaps.getSelectedItem()), coordinates)) {
+					List<Factory> factories = BusinessManager.getFactories(((Company)cbConfigureFactoryCompanies.getSelectedItem()));
+					List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
+					BusinessManager.setMapLocations (locations);
+				}
+			} catch (LocationAlreadyExistsException e) {
+				Messages.showErrorDialog(getMainFrame(), "Error", "This location is already configured.");
+			} catch (EmptyFieldException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (CompanyNotFoundException e) {
+			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (JAXBException e) {
+			} catch (FactoryNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (IOException e) {
+			} catch (MapNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
+			} catch (LocationNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -636,28 +584,15 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		}
 	}
 	
-	public void selectCentre(Centre c) {
-		// TODO patron observador. se llama al seleccionar una localizacion de uan factoria
+	public void selectFactory(int factoryId) {
+		// TODO patron observador. Se llama al seleccionar una localizacion de una factoria
 		try {
-			Company company = CompanyController.getCompany(c.getIdCompany());
-			Factory factory = FactoryController.getFactory(company, c.getIdFactory());
-			System.err.print(company.toString() + factory.toString());
-		} catch (ConfigurationException e) {
+			Factory factory = BusinessManager.getFactory(factoryId);
+			System.err.print(factory.toString());
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (CompanyNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (FactoryNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -689,24 +624,23 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		cbConfigureFactoryFactories.setModel(cbConfigureFactoryFactoriesModel);
 		// Add the selected company factories
 		Company selectedCompany = (Company)cbConfigureFactoryCompanies.getSelectedItem();
-		for (Factory fact : selectedCompany.getFactories()) {
-			cbConfigureFactoryFactories.addItem(fact);
+		try {
+			for (Factory fact : BusinessManager.getFactories(selectedCompany)) {
+				cbConfigureFactoryFactories.addItem(fact);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
 	private void cbConfigureFactoryMapsActionPerformed(ActionEvent evt) {
 		try {
 			if (GLSingleton.isInitiated()) {
-				MapController.setActiveMap((Map)cbConfigureFactoryMaps.getSelectedItem());
-				List<Factory> factories = FactoryController.getFactories(((Company)cbConfigureFactoryCompanies.getSelectedItem()).getId());
-				List<Centre> centres =  new ArrayList<Centre>();
-				List<Vector2f> locations = new ArrayList<Vector2f>();
-				for (Factory fact : factories) {
-					centres.add(new Centre(((Company)cbConfigureFactoryCompanies.getSelectedItem()).getId(), fact.getId()));
-					int selectedMapId = ((Map)cbConfigureFactoryMaps.getSelectedItem()).getId();
-					locations.add(fact.getLocations().get((Integer)selectedMapId));
-				}
-				MapController.setMapLocations(centres, locations);
+				BusinessManager.setActiveMap((Map)cbConfigureFactoryMaps.getSelectedItem());
+				List<Factory> factories = BusinessManager.getFactories(((Company)cbConfigureFactoryCompanies.getSelectedItem()));
+				List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
+				BusinessManager.setMapLocations (locations);
 			}
 		} catch (GLSingletonNotInitializedException e) {
 			// TODO Auto-generated catch block
@@ -714,19 +648,19 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ConfigurationException e) {
+		} catch (EmptyFieldException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (CompanyNotFoundException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (JAXBException e) {
+		} catch (FactoryNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InstantiationException e) {
+		} catch (MapNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (LocationNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

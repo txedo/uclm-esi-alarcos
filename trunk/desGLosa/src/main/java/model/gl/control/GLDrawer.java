@@ -30,8 +30,8 @@ import exceptions.gl.GLSingletonNotInitializedException;
 
 public class GLDrawer implements GLEventListener, IConstants {
 	private Vector<GLObject> towers;
-	private GLViewController mlc;
-	private GLViewController mic;
+	private GLViewManager mlc;
+	private GLViewManager mic;
 	private Vector<Caption> captions;
 	private Camera camera;
 	private Spotlight spotlight;
@@ -55,8 +55,8 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.viewLevel = EViewLevels.MapLevel;
 		this.oldViewLevel = viewLevel;
 		
-		this.mlc = new GLMapLocationViewController(this, false);		// 2D View
-		this.mic = new GLMetricIndicatorViewController(this, false);	// 2D view
+		this.mlc = new GLMapLocationViewManager(this, false);		// 2D View
+		this.mic = new GLMetricIndicatorViewManager(this, false);	// 2D view
 	}
 
 	 /** Called by the drawable to initiate OpenGL rendering by the client.
@@ -143,7 +143,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLSingleton.getGL().glEnable(GL.GL_COLOR_MATERIAL);
 			
 			// Configuramos los parámetros del mundo
-			((GLMetricIndicatorViewController)mic).setupItems();
+			((GLMetricIndicatorViewManager)mic).setupItems();
 			setupCaptions();
 			
 			// Añadimos los listener de teclado y ratón

@@ -1,9 +1,18 @@
 package persistence;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.SQLException;
+
+import org.apache.commons.io.IOUtils;
+
+import exceptions.ImageNotFoundException;
+
+import persistence.dao.business.ImageDAO;
 
 /**
  * Utility class that allows transparent reading of files from
@@ -27,10 +36,37 @@ public class ResourceRetriever {
         InputStream stream = ClassLoader.getSystemResourceAsStream(filename);
         // If not found in jar, then load from disk
         if (stream == null) {
-            return new FileInputStream(filename);
-        } else {
-            return stream;
+            try {
+				stream = new FileInputStream(filename);
+			} catch (FileNotFoundException e) {
+				// If not found in disk, the load from database
+				byte[] imageInByte;
+				try {
+					imageInByte = ImageDAO.get(filename).getData();
+					stream = toInputStream(imageInByte);
+				} catch (SQLException e1) {
+					throw new IOException();
+				} catch (ImageNotFoundException e1) {
+					throw new IOException();
+				}
+			}
         }
+        return stream;
+    }
+    
+    public static byte[] getResourceAsByteArray(final String filename) throws IOException {
+    	InputStream stream = getResourceAsStream(filename);
+    	return IOUtils.toByteArray(stream);
+    }
+    
+    public static InputStream toInputStream (byte[] data) {
+    	return new ByteArrayInputStream(data);
+    }
+    
+    public static boolean isResourceAvailable (String filename) throws IOException {
+    	boolean available = false;
+		if (getResourceAsStream(filename) != null) available = true;
+    	return available;
     }
 }
 

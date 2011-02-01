@@ -5,10 +5,12 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="model.business.knowledge">
-	<class name="Location" table="locations">
-		<composite-id>
-			<key-many-to-one name="map" column="maps_id" class="Map" lazy="false" />
-		</composite-id>
+	<class name="Location" table="locations" lazy="false">
+		<id name="id" column="id" type="int">
+			<generator class="native" />
+		</id>
+		<many-to-one name="factory" column="factories_id" class="Factory" cascade="all" lazy="false" />
+		<many-to-one name="map" column="maps_id" class="Map" cascade="all" lazy="false" />
 		<property name="xcoord" column="xcoord" type="float" not-null="false" />
 		<property name="ycoord" column="ycoord" type="float" not-null="false" />
 	</class>

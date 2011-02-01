@@ -1,52 +1,84 @@
 package persistence.dao.business;
 
-import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.xml.bind.JAXBException;
-
-import model.business.knowledge.Map;
-import model.business.knowledge.MapWrapper;
-
-import org.apache.commons.configuration.ConfigurationException;
+import java.util.List;
 
 import exceptions.MapNotFoundException;
 
-import persistence.XMLAgent;
+import persistence.database.ConnectionManager;
+import persistence.database.HibernateQuery;
+
+import model.business.knowledge.Map;
+
 
 public class MapDAO {
-	private String xmlfile;
-	
-	public MapDAO () throws ConfigurationException {
-		this.xmlfile = XMLAgent.getXMLFilename("maps");
-	}
-	
-	public void save (Map m) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
-		MapWrapper mapList = this.getAll();
-		m.setId(mapList.getLastId());
-		mapList.addMap(m);
-		XMLAgent.marshal(this.xmlfile, MapWrapper.class, (MapWrapper)mapList);
-	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Map get (String mapName) throws JAXBException, IOException, InstantiationException, IllegalAccessException, MapNotFoundException {
-		boolean found = false;
-		Map result = null;
-		ArrayList<Map> maps = (ArrayList)XMLAgent.unmarshal(this.xmlfile, MapWrapper.class).getInnerList();
-		Iterator it = maps.iterator();
-		while (!found && it.hasNext()) {
-			Map aux = (Map)it.next();
-			if (aux.getLabel().equals(mapName)) {
-				result = aux;
-				found = true;
-			}
+	private static final String TABLE = "Map";
+	private static final String ID_COLUMN = "id";
+	private static final String NAME_COLUMN = "label";
+
+	public static void insert(Map map) throws SQLException {
+		try {
+			ConnectionManager.beginTransaction();
+			ConnectionManager.insert(map.clone());
+		} finally {
+			ConnectionManager.endTransaction();
 		}
-		if (result == null) throw new MapNotFoundException ();
+	}
+	
+	public static Map get(int id) throws SQLException, MapNotFoundException {
+		HibernateQuery hquery;
+		List<?> resultset;
+		Map result = null;
+		
+		hquery = new HibernateQuery("FROM " + TABLE + " WHERE " + ID_COLUMN + " = ?", id);
+		resultset = ConnectionManager.query(hquery);
+		
+		if (resultset.size() != 0) {
+			// Clone the read Factory
+			result = (Map)((Map)resultset.get(0)).clone();
+			ConnectionManager.freeResultset(resultset);
+		} else throw new MapNotFoundException();
+		
+		return result;
+	}
+
+	public static Map get(String name) throws SQLException, MapNotFoundException {
+		HibernateQuery hquery;
+		List<?> resultset;
+		Map result = null;
+		
+		hquery = new HibernateQuery("FROM " + TABLE + " WHERE " + NAME_COLUMN+ " = ?", name);
+		resultset = ConnectionManager.query(hquery);
+		
+		if (resultset.size() != 0) {
+			// Clone the read Factory
+			result = (Map)((Map)resultset.get(0)).clone();
+			ConnectionManager.freeResultset(resultset);
+		} else throw new MapNotFoundException();
+		
+		return result;
+	}
+
+	public static List<Map> getAll() throws SQLException {
+		HibernateQuery hquery;
+		List<?> resultset;
+		List<Map> result = new ArrayList<Map>();
+		
+		hquery = new HibernateQuery("FROM " + TABLE);
+		resultset = ConnectionManager.query(hquery);
+		
+		// Clone read factories
+		for (Object obj : resultset) {
+			result.add((Map) ((Map)obj).clone());
+		}
+		ConnectionManager.freeResultset(resultset);
+	
 		return result;
 	}
 	
-	public MapWrapper getAll () throws JAXBException, IOException, InstantiationException, IllegalAccessException {
-		return (MapWrapper)XMLAgent.unmarshal(this.xmlfile, MapWrapper.class);
+	public static void delete (Map m) {
+		System.err.println("MapDAO.delete(Map m) is not implemented yet.");
 	}
+	
 }

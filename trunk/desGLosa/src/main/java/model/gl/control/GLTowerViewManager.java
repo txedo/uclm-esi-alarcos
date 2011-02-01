@@ -2,9 +2,9 @@ package model.gl.control;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
-public class GLTowerViewController extends GLViewController {
+public class GLTowerViewManager extends GLViewManager {
 
-	public GLTowerViewController(GLDrawer d, boolean is3d) {
+	public GLTowerViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
 		// TODO Auto-generated constructor stub
 	}
