@@ -5,20 +5,16 @@
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="model.business.knowledge">
-	<class name="Factory" table="factories">
+	<class name="Factory" table="factories" lazy="false">
 		<id name="id" column="id" type="int">
 			<generator class="native" />
 		</id>
-		<many-to-one name="company" column="companies_id" class="Company" lazy="false" />
+		<many-to-one name="company" column="companies_id" not-null="true" class="Company" cascade="all" lazy="false" />
 		<property name="name" column="name" type="string" not-null="false" />
 		<property name="information" column="information" type="string" not-null="false" />
-		<property name="director" column="director" type="string" not-null="false" />
+		<many-to-one name="director" column="directors_id" unique="true" not-null="true" class="Director" cascade="all" lazy="false" />
 		<property name="email" column="email" type="string" not-null="false" />
 		<property name="employees" column="employees" type="int" not-null="false" />
-		<many-to-one name="address" column="addresses_id" unique="true" not-null="true" class="Address" lazy="false" />
-		<set name="locations" table="locations" lazy="false" cascade="all">
-			<key column="factories_id" unique="true" not-null="true" />
-			<one-to-many class="Location" />
-		</set>
+		<many-to-one name="address" column="addresses_id" unique="true" not-null="true" class="Address" cascade="all" lazy="false" />
 	</class>
 </hibernate-mapping>

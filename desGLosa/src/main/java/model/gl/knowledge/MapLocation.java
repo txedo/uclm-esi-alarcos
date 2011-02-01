@@ -7,14 +7,17 @@ import model.gl.GLSingleton;
 import model.knowledge.Color;
 
 public class MapLocation extends Node {
+	private int id;
 	private float size;
 	
-	public MapLocation () {
+	public MapLocation (int id) {
+		this.id = id;
 		this.color = new Color(0.0f, 0.0f, 0.0f);
 		this.size = 20.0f;
 	}
 	
-	public MapLocation (float pos_x, float pos_y, float size, Color color) {
+	public MapLocation (int id, float pos_x, float pos_y, float size, Color color) {
+		this.id = id;
 		this.positionX = pos_x;
 		this.positionY = pos_y;
 		this.color = color;
@@ -22,6 +25,14 @@ public class MapLocation extends Node {
 		this.size = size;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public float getSize() {
 		return size;
 	}

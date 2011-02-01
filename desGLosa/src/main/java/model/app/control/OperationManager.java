@@ -8,7 +8,7 @@ import model.app.knowledge.Operation;
 
 import persistence.dao.app.OperationDAO;
 
-public class OperationController {
+public class OperationManager {
 	public static List<Operation> getAll () throws ConfigurationException {
 		OperationDAO odao = new OperationDAO();
 		return odao.getAll();

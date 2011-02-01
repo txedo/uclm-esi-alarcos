@@ -12,11 +12,11 @@ import model.knowledge.Color;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
-public class GLMetricIndicatorViewController extends GLViewController {
+public class GLMetricIndicatorViewManager extends GLViewManager {
 	private List<GLObject> nodes;
 	private List<GLObject> edges;
 
-	public GLMetricIndicatorViewController(GLDrawer d, boolean is3d) {
+	public GLMetricIndicatorViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
 		this.nodes = new ArrayList<GLObject>();
 		this.edges = new ArrayList<GLObject>();

@@ -1,77 +1,90 @@
 package persistence.dao.business;
 
-import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.xml.bind.JAXBException;
-
-import org.apache.commons.configuration.ConfigurationException;
-
-import persistence.XMLAgent;
 
 import exceptions.CompanyNotFoundException;
 
+import persistence.database.ConnectionManager;
+import persistence.database.HibernateQuery;
 
 import model.business.knowledge.Company;
-import model.business.knowledge.CompanyWrapper;
+
 
 public class CompanyDAO {
-	private String xmlfile;
+	private static final String TABLE = "Company";
+	private static final String ID_COLUMN = "id";
+	private static final String NAME_COLUMN = "name";
 	
-	public CompanyDAO () throws ConfigurationException {
-		this.xmlfile = XMLAgent.getXMLFilename("companies");
-	}
-	
-	public void save (Company c) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
-		CompanyWrapper companyList = this.getAll();
-		c.setId(companyList.getLastId());		
-		companyList.addCompany(c);
-		XMLAgent.marshal(this.xmlfile, CompanyWrapper.class, (CompanyWrapper)companyList);
-	}
-	
-	public void saveAll (List<Company> companies) throws JAXBException {
-		CompanyWrapper companyList = new CompanyWrapper();
-		companyList.addAllCompanies(companies);
-		XMLAgent.marshal(this.xmlfile, CompanyWrapper.class, (CompanyWrapper)companyList);
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Company get (int id) throws JAXBException, IOException, CompanyNotFoundException, InstantiationException, IllegalAccessException {
-		boolean found = false;
-		Company result = null;
-		ArrayList<Company> companies = (ArrayList)XMLAgent.unmarshal(this.xmlfile, CompanyWrapper.class).getInnerList();
-		Iterator it = companies.iterator();
-		while (!found && it.hasNext()) {
-			Company aux = (Company)it.next();
-			if (aux.getId() == id) {
-				result = aux;
-				found = true;
-			}
+	public static void insert (Company company) throws SQLException {
+		try {
+			ConnectionManager.beginTransaction();
+			ConnectionManager.insert(company.clone());
+		} finally {
+			ConnectionManager.endTransaction();
 		}
-		if (result == null) throw new CompanyNotFoundException ();
+	}
+	
+	public static void insertAll (List<Company> companies) throws SQLException  {
+		for (Company c : companies) {
+			CompanyDAO.insert (c);
+		}
+	}
+	
+	public static Company get (int id) throws SQLException, CompanyNotFoundException {
+		HibernateQuery hquery;
+		List<?> resultset;
+		Company result = null;
+		
+		hquery = new HibernateQuery("FROM " + TABLE + " WHERE " + ID_COLUMN + " = ?", id);
+		resultset = ConnectionManager.query(hquery);
+		
+		if (resultset.size() != 0) {
+			// Clone the read Company
+			result = (Company)((Company)resultset.get(0)).clone();
+			ConnectionManager.freeResultset(resultset);
+		} else throw new CompanyNotFoundException();
+		
 		return result;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Company get (String companyName) throws JAXBException, IOException, CompanyNotFoundException, InstantiationException, IllegalAccessException {
-		boolean found = false;
+	public static Company get (String name) throws SQLException, CompanyNotFoundException {
+		HibernateQuery hquery;
+		List<?> resultset;
 		Company result = null;
-		ArrayList<Company> companies = (ArrayList)XMLAgent.unmarshal(this.xmlfile, CompanyWrapper.class).getInnerList();
-		Iterator it = companies.iterator();
-		while (!found && it.hasNext()) {
-			Company aux = (Company)it.next();
-			if (aux.getName().equals(companyName)) {
-				result = aux;
-				found = true;
-			}
-		}
-		if (result == null) throw new CompanyNotFoundException ();
+		
+		hquery = new HibernateQuery("FROM " + TABLE + " WHERE " + NAME_COLUMN + " = ?", name);
+		resultset = ConnectionManager.query(hquery);
+		
+		if (resultset.size() != 0) {
+			// Clone the read Company
+			result = (Company)((Company)resultset.get(0)).clone();
+			ConnectionManager.freeResultset(resultset);
+		} else throw new CompanyNotFoundException();
+		
 		return result;
 	}
 	
-	public CompanyWrapper getAll () throws JAXBException, IOException, InstantiationException, IllegalAccessException {
-		return (CompanyWrapper)XMLAgent.unmarshal(this.xmlfile, CompanyWrapper.class);
+	public static List<Company> getAll() throws SQLException {
+		HibernateQuery hquery;
+		List<?> resultset;
+		List<Company> result = new ArrayList<Company>();
+		
+		hquery = new HibernateQuery("FROM " + TABLE);
+		resultset = ConnectionManager.query(hquery);
+		
+		// Clone read companies
+		for (Object obj : resultset) {
+			result.add((Company) ((Company)obj).clone());
+		}
+		ConnectionManager.freeResultset(resultset);
+	
+		return result;
 	}
+	
+	public static void delete (Company c) {
+		System.err.println("CompanyDAO.delete(Company c) is not implemented yet.");
+	}
+	
 }

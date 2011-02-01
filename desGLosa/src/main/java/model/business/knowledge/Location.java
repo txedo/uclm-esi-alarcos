@@ -1,13 +1,13 @@
 package model.business.knowledge;
 
-import java.io.Serializable;
 
-
-public class Location implements Serializable{
+public class Location {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4801491534751742727L;
+	private int id;
+	private Factory factory;
 	private Map map;
 	private float xcoord;
 	private float ycoord;
@@ -16,11 +16,28 @@ public class Location implements Serializable{
 		super();
 	}
 
-	public Location(Map map, float xcoord, float ycoord) {
+	public Location(Factory fact, Map map, float xcoord, float ycoord) {
 		super();
+		this.factory = fact;
 		this.map = map;
 		this.xcoord = xcoord;
 		this.ycoord = ycoord;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Factory getFactory() {
+		return factory;
+	}
+
+	public void setFactory(Factory factory) {
+		this.factory = factory;
 	}
 
 	public Map getMap() {
@@ -48,34 +65,17 @@ public class Location implements Serializable{
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((map == null) ? 0 : map.hashCode());
-		result = prime * result + Float.floatToIntBits(xcoord);
-		result = prime * result + Float.floatToIntBits(ycoord);
-		return result;
+	public String toString() {
+		return "Location [factory=" + factory + ", map=" + map + ", xcoord="
+				+ xcoord + ", ycoord=" + ycoord + "]";
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Location other = (Location) obj;
-		if (map == null) {
-			if (other.map != null)
-				return false;
-		} else if (!map.equals(other.map))
-			return false;
-		if (Float.floatToIntBits(xcoord) != Float.floatToIntBits(other.xcoord))
-			return false;
-		if (Float.floatToIntBits(ycoord) != Float.floatToIntBits(other.ycoord))
-			return false;
-		return true;
+	public Object clone() {
+		Location result = new Location((Factory)this.getFactory().clone(), (Map)this.getMap().clone(), this.xcoord, this.ycoord);
+		result.setId(this.getId());
+		return result;
 	}
+	
 	
 }

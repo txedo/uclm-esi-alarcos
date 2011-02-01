@@ -1,23 +1,19 @@
 package model.business.knowledge;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 public class Factory {
 	private int id;
 	private Company company;
 	private String name;
 	private String information;
-	private String director;
+	private Director director;
 	private String email;
 	private int employees;
 	private Address address;
-	private Set<Location> locations = new HashSet<Location>();
 	
 	public Factory() {}
 	
-	public Factory(String name, String information, String director,
+	public Factory(String name, String information, Director director,
 			String email, int employees, Address address) {
 		this.name = name;
 		this.information = information;
@@ -41,32 +37,6 @@ public class Factory {
 
 	public void setCompany(Company company) {
 		this.company = company;
-	}
-
-	public void addLocation (Location loc) {
-		locations.add(loc);
-	}
-	
-	public void setLocations(Set<Location> locations) {
-		this.locations = locations;
-	}
-
-	public Location getLocation(int mapId){
-		boolean found = false;
-		Location res = null;
-		Iterator it = this.locations.iterator();
-		while (!found && it.hasNext()) {
-			Location aux = (Location)it.next();
-			if (aux.getMap().getId() == mapId) {
-				res = aux;
-				found = true;
-			}
-		}
-		return res;
-	}
-	
-	public Set<Location> getLocations() {
-		return locations;
 	}
 
 	public Address getAddress() {
@@ -93,11 +63,11 @@ public class Factory {
 		this.information = information;
 	}
 	
-	public String getDirector() {
+	public Director getDirector() {
 		return director;
 	}
 	
-	public void setDirector(String director) {
+	public void setDirector(Director director) {
 		this.director = director;
 	}
 	
@@ -116,21 +86,19 @@ public class Factory {
 	public void setEmployees(int employees) {
 		this.employees = employees;
 	}
-	
+
+	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append(this.company.toString());
-		sb.append(" factory\n");
-		sb.append("       " + name + "\n");
-		sb.append("       " + information + "\n");
-		sb.append("       " + director + " (" + email + ")\n");
-		sb.append("       " + employees + "\n");
-		sb.append("       " + address + "\n");
-		sb.append("       locations\n");
-		for (Iterator i = locations.iterator(); i.hasNext(); ) {
-			Location loc = (Location)i.next();
-			sb.append(loc.getXcoord() + ", " + loc.getYcoord() + "\n");
-		}
-		return sb.toString();
+		return this.name;
 	}
+
+	@Override
+	public Object clone() {
+		Factory result = new Factory(this.name, this.information, (Director)this.director.clone(), this.email, this.employees, (Address)this.getAddress().clone());
+		result.setId(this.getId());
+		result.setCompany((Company)this.getCompany().clone());
+		return result;
+	}
+	
+	
 }

@@ -11,19 +11,19 @@ import exceptions.gl.GLSingletonNotInitializedException;
 
 import model.gl.GLSingleton;
 
-public abstract class GLViewController {
+public abstract class GLViewManager {
 	protected final int BUFFSIZE = 512;
 	
 	protected GLDrawer drawer;
 	protected boolean isThreeDimensional;
 	protected boolean selectionMode;
-	protected double pickingRegion;
+	protected static double pickingRegion;
 
-	public GLViewController (GLDrawer d, boolean is3D) {
+	public GLViewManager (GLDrawer d, boolean is3D) {
 		this.drawer = d;
 		this.isThreeDimensional = is3D;
 		this.selectionMode = false;
-		this.pickingRegion = 0.1;
+		pickingRegion = 0.1;
 	}
 	
 	public abstract void manageView() throws GLSingletonNotInitializedException, IOException ;
@@ -50,7 +50,7 @@ public abstract class GLViewController {
 		GLSingleton.getGL().glPushMatrix();
 		GLSingleton.getGL().glLoadIdentity();
 			//Important: gl (0,0) is bottom left but window coordinates (0,0) are top left so we have to change this!
-			GLSingleton.getGLU().gluPickMatrix(this.drawer.getPickPoint().getX(),viewport[3]-this.drawer.getPickPoint().getY(), this.pickingRegion, this.pickingRegion, viewport, 0);
+			GLSingleton.getGLU().gluPickMatrix(this.drawer.getPickPoint().getX(),viewport[3]-this.drawer.getPickPoint().getY(), pickingRegion, pickingRegion, viewport, 0);
 			if (isThreeDimensional) {
 				float h = (float) this.drawer.getScreenWidth() / this.drawer.getScreenHeight();
 				GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 1000.0f);
@@ -94,8 +94,8 @@ public abstract class GLViewController {
 		this.selectionMode = selectionMode;
 	}
 	
-	public void setPickingRegion(double pickingRegion) {
-		this.pickingRegion = pickingRegion;
+	public static void setPickingRegion(double pickRegion) {
+		pickingRegion = pickRegion;
 	}
 }
 

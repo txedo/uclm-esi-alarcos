@@ -16,16 +16,16 @@ public class JOGLFactory extends GLAbstractFactory {
 	}
 	
 	@Override
-	public GLObject createMapLocation(float pos_x, float pos_y) {
-		GLObject mapLocation = new MapLocation();
+	public GLObject createMapLocation(int id, float pos_x, float pos_y) {
+		GLObject mapLocation = new MapLocation(id);
 		mapLocation.setPositionX(pos_x);
 		mapLocation.setPositionZ(pos_y);
 		return mapLocation;
 	}
 	
 	@Override
-	public GLObject createMapLocation(float pos_x, float pos_y, float size, Color color) {
-		return new MapLocation (pos_x, pos_y, size, color);
+	public GLObject createMapLocation(int id, float pos_x, float pos_y, float size, Color color) {
+		return new MapLocation (id, pos_x, pos_y, size, color);
 	}
 	
 	@Override

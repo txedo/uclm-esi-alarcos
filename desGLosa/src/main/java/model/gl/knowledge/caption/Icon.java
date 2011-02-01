@@ -6,7 +6,6 @@ import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.knowledge.Color;
-import model.knowledge.Vector2f;
 import model.knowledge.Vector3f;
 
 import exceptions.gl.GLSingletonNotInitializedException;
