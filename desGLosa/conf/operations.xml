@@ -15,4 +15,9 @@
 		<icon>src/main/java/presentation/resources/icons/Map_256.png</icon>
 		<container type="JPanel">presentation.JPConfigureMap</container>
 	</entity>
+	<entity name="Project">
+		<description>Configure project properties</description>
+		<icon>src/main/java/presentation/resources/icons/Project_256.png</icon>
+		<container type="JPanel">presentation.JPConfigureProject</container>
+	</entity>
 </entities>

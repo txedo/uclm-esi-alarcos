@@ -12,6 +12,6 @@
 		<property name="name" column="name" type="string" not-null="false" />
 		<property name="firstSurname" column="first_surname" type="string" not-null="false" />
 		<property name="secondSurname" column="second_surname" type="string" not-null="false" />
-		<many-to-one name="picture" column="images_id" unique="true" not-null="false" class="Image" cascade="all" lazy="false" />
+		<many-to-one name="picture" column="image_id" unique="true" not-null="true" class="Image" cascade="all" lazy="false" />
 	</class>
 </hibernate-mapping>

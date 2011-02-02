@@ -12,6 +12,6 @@
 		<property name="parentId" column="parentId" type="int" not-null="false" />
 		<property name="label" column="label" type="string" not-null="false" />
 		<property name="checksum" column="checksum" type="string" not-null="false" />
-		<many-to-one name="image" column="images_id" unique="true" not-null="false" class="Image" cascade="all" lazy="false" />
+		<many-to-one name="image" column="image_id" unique="true" not-null="true" class="Image" cascade="all" lazy="false" />
 	</class>
 </hibernate-mapping>
