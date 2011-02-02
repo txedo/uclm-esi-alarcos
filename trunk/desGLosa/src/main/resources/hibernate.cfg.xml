@@ -38,6 +38,7 @@
         <mapping resource="model/business/knowledge/Map.hbm.xml"/>
         <mapping resource="model/business/knowledge/Location.hbm.xml"/>
 		<mapping resource="model/business/knowledge/Image.hbm.xml"/>
+		<mapping resource="model/business/knowledge/Project.hbm.xml"/>
     </session-factory>
 
 </hibernate-configuration>

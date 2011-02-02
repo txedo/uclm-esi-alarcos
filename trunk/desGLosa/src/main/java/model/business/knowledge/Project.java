@@ -1,6 +1,6 @@
 package model.business.knowledge;
 
-import java.util.List;
+import java.util.Set;
 
 import sun.util.calendar.LocalGregorianCalendar.Date;
 
@@ -26,14 +26,48 @@ public class Project {
 	private String marketClient;
 	private String finalClient;
 	
-	private List<Factory> involvedCentres;
-
-	public List<Factory> getInvolvedCentres() {
-		return involvedCentres;
+	private Factory workingFactory;
+	private Set<Factory> involvedFactories;
+	
+	public int getId() {
+		return id;
 	}
-
-	public void setInvolvedCentres(List<Factory> involvedCentres) {
-		this.involvedCentres = involvedCentres;
+	
+	public void setId(int id) {
+		this.id = id;
 	}
+	
+	public String getCode() {
+		return code;
+	}
+	
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
+	public String getPlanName() {
+		return planName;
+	}
+	
+	public void setPlanName(String planName) {
+		this.planName = planName;
+	}
+	
+	public Factory getWorkingFactory() {
+		return workingFactory;
+	}
+	
+	public void setWorkingFactory(Factory workingFactory) {
+		this.workingFactory = workingFactory;
+	}
+	
+	public Set<Factory> getInvolvedFactories() {
+		return involvedFactories;
+	}
+	
+	public void setInvolvedFactories(Set<Factory> involvedFactories) {
+		this.involvedFactories = involvedFactories;
+	}
+	
 	
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="model.business.knowledge">
+	<class name="Project" table="projects" lazy="false">
+		<id name="id" column="id" type="int">
+			<generator class="native" />
+		</id>
+		<property name="code" column="code" type="string" not-null="false" />
+		<property name="planName" column="planName" type="string" not-null="false" />
+		<many-to-one name="workingFactory" column="workingFactory_id" not-null="true" class="Factory" cascade="all" lazy="false" />
+		<set name="involvedFactories" table="projects_has_factories" lazy="false" cascade="all">
+        	<key column="project_id"/>
+        	<many-to-many column="factory_id" class="Factory"/>
+    	</set>
+	</class>
+</hibernate-mapping>

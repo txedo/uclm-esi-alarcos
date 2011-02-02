@@ -123,7 +123,7 @@ public class JFConfiguration extends JFrame {
 
 	private void initGUI() {
 		try {
-			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 			this.setName("parent");
 			{
 				rootPanel = new JPanel();
@@ -149,7 +149,7 @@ public class JFConfiguration extends JFrame {
 			}
 			initOperationList();
 			pack();
-			this.setSize(701, 385);
+			this.setSize(768, 472);
 			Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(getContentPane());
 		} catch (Exception e) {
 		    //add your error handling code here
