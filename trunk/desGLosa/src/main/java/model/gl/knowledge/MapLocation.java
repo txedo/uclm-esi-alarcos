@@ -8,16 +8,19 @@ import model.knowledge.Color;
 
 public class MapLocation extends Node {
 	private int id;
+	private boolean hightlighted;
 	private float size;
 	
 	public MapLocation (int id) {
 		this.id = id;
+		this.hightlighted = false;
 		this.color = new Color(0.0f, 0.0f, 0.0f);
 		this.size = 20.0f;
 	}
 	
 	public MapLocation (int id, float pos_x, float pos_y, float size, Color color) {
 		this.id = id;
+		this.hightlighted = false;
 		this.positionX = pos_x;
 		this.positionY = pos_y;
 		this.color = color;
@@ -31,6 +34,14 @@ public class MapLocation extends Node {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public boolean isHightlighted() {
+		return hightlighted;
+	}
+
+	public void setHightlighted(boolean hightlighted) {
+		this.hightlighted = hightlighted;
 	}
 
 	public float getSize() {

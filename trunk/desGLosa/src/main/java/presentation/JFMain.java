@@ -2,10 +2,8 @@ package presentation;
 import com.cloudgarden.layout.AnchorConstraint;
 import com.cloudgarden.layout.AnchorLayout;
 
-import exceptions.CompanyAlreadyExistsException;
 import exceptions.CompanyNotFoundException;
-import exceptions.EmptyFieldException;
-import exceptions.FactoryAlreadyExistsException;
+import exceptions.MandatoryFieldException;
 import exceptions.FactoryNotFoundException;
 import exceptions.LocationAlreadyExistsException;
 import exceptions.LocationNotFoundException;
@@ -34,17 +32,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
 
 import model.IObserverUI;
 import model.NotifyUIManager;
 import model.business.control.BusinessManager;
-import model.business.knowledge.Address;
-import model.business.knowledge.BusinessFactory;
 import model.business.knowledge.Company;
-import model.business.knowledge.Director;
 import model.business.knowledge.Factory;
 import model.business.knowledge.Location;
 import model.business.knowledge.Map;
@@ -52,7 +46,6 @@ import model.gl.GLSingleton;
 import model.knowledge.Vector2f;
 import model.listeners.MyAppMouseListener;
 
-import org.apache.commons.lang.math.RandomUtils;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
@@ -78,27 +71,15 @@ import presentation.utils.Messages;
  */
 public class JFMain extends SingleFrameApplication implements IAppCore, IObserverUI {
     private JMenuBar menuBar;
-    private JTextField txtAddCompanyCompanyInformation;
-    private JPanel addCompanyPanel;
-    private JButton btnAddCompany;
     private JPanel configureFactoryPanel;
     private JButton btnSetCoordinates;
     private JMenuItem jMenuItem8;
     private JMenu toolsMenu;
     private JLabel lblStatusBar;
-    private JButton btnAddFactory;
-    private JTextField txtAddFactoryFactoryName;
-    private JComboBox cbAddFactoryCompanies;
-    private JLabel lblAddFactoryCompany;
-    private JLabel lblAddFactoryFactory;
-    private JPanel addFactoryPanel;
     private JComboBox cbConfigureFactoryFactories;
     private JLabel lblConfigureFactoryFactory;
     private JComboBox cbConfigureFactoryMaps;
     private JLabel lblConfigureFactoryMap;
-    private JLabel lblAddCompanyCompanyInformation;
-    private JTextField txtAddCompanyCompanyName;
-    private JLabel lblAddCompanyCompanyName;
     private JLabel lblConfigureFactoryCompany;
     private JComboBox cbConfigureFactoryCompanies;
     private JScrollPane jScrollPane1;
@@ -175,49 +156,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 	widgetPanel.setLayout(widgetPanelLayout);
                 	widgetPanel.setPreferredSize(new java.awt.Dimension(190, 320));
                 	{
-                		addFactoryPanel = new JPanel();
-                		widgetPanel.add(addFactoryPanel, new AnchorConstraint(108, 950, 567, 12, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_ABS));
-                		addFactoryPanel.setLayout(null);
-                		addFactoryPanel.setPreferredSize(new java.awt.Dimension(168, 97));
-                		addFactoryPanel.setBorder(BorderFactory.createTitledBorder("Add new factory"));
-                		{
-                			lblAddFactoryFactory = new JLabel();
-                			addFactoryPanel.add(lblAddFactoryFactory);
-                			lblAddFactoryFactory.setBounds(6, 44, 59, 19);
-                			lblAddFactoryFactory.setName("lblAddFactoryFactory");
-                		}
-                		{
-                			lblAddFactoryCompany = new JLabel();
-                			addFactoryPanel.add(lblAddFactoryCompany);
-                			lblAddFactoryCompany.setBounds(6, 23, 62, 15);
-                			lblAddFactoryCompany.setName("lblAddFactoryCompany");
-                		}
-                		{
-                			ComboBoxModel cbAddFactoryCompaniesModel = new DefaultComboBoxModel();
-                			cbAddFactoryCompanies = new JComboBox();
-                			addFactoryPanel.add(cbAddFactoryCompanies);
-                			cbAddFactoryCompanies.setModel(cbAddFactoryCompaniesModel);
-                			cbAddFactoryCompanies.setBounds(78, 20, 84, 20);
-                		}
-                		{
-                			txtAddFactoryFactoryName = new JTextField();
-                			addFactoryPanel.add(txtAddFactoryFactoryName);
-                			txtAddFactoryFactoryName.setBounds(78, 42, 82, 26);
-                			txtAddFactoryFactoryName.setSize(82, 20);
-                		}
-                		{
-                			btnAddFactory = new JButton();
-                			addFactoryPanel.add(btnAddFactory);
-                			btnAddFactory.setBounds(35, 68, 103, 23);
-                			btnAddFactory.setName("btnAddFactory");
-                			btnAddFactory.addActionListener(new ActionListener() {
-                				public void actionPerformed(ActionEvent evt) {
-                					btnAddFactoryActionPerformed(evt);
-                				}
-                			});
-                		}
-                	}
-                	{
                 		configureFactoryPanel = new JPanel();
                 		widgetPanel.add(configureFactoryPanel, new AnchorConstraint(216, 965, 585, 10, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_ABS));
                 		configureFactoryPanel.setPreferredSize(new java.awt.Dimension(173, 132));
@@ -282,49 +220,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 			configureFactoryPanel.add(cbConfigureFactoryFactories);
                 			cbConfigureFactoryFactories.setModel(cbConfigureFactoryFactoriesModel);
                 			cbConfigureFactoryFactories.setBounds(77, 49, 83, 20);
-                		}
-                	}
-                	{
-                		addCompanyPanel = new JPanel();
-                		widgetPanel.add(addCompanyPanel, new AnchorConstraint(12, 950, 239, 12, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_ABS));
-                		addCompanyPanel.setPreferredSize(new java.awt.Dimension(168, 90));
-                		addCompanyPanel.setBorder(BorderFactory.createTitledBorder("Add new company"));
-                		addCompanyPanel.setLayout(null);
-                		{
-                			lblAddCompanyCompanyName = new JLabel();
-                			addCompanyPanel.add(lblAddCompanyCompanyName);
-                			lblAddCompanyCompanyName.setName("lblAddCompanyCompanyName");
-                			lblAddCompanyCompanyName.setBounds(6, 20, 64, 14);
-                		}
-                		{
-                			txtAddCompanyCompanyName = new JTextField();
-                			addCompanyPanel.add(txtAddCompanyCompanyName);
-                			txtAddCompanyCompanyName.setBounds(74, 17, 88, 22);
-                			txtAddCompanyCompanyName.setSize(88, 20);
-                			txtAddCompanyCompanyName.setName("txtAddCompanyCompanyName");
-                		}
-                		{
-                			lblAddCompanyCompanyInformation = new JLabel();
-                			addCompanyPanel.add(lblAddCompanyCompanyInformation);
-                			lblAddCompanyCompanyInformation.setName("lblAddCompanyCompanyInformation");
-                			lblAddCompanyCompanyInformation.setBounds(6, 40, 64, 14);
-                		}
-                		{
-                			txtAddCompanyCompanyInformation = new JTextField();
-                			addCompanyPanel.add(txtAddCompanyCompanyInformation);
-                			txtAddCompanyCompanyInformation.setName("txtAddCompanyCompanyInformation");
-                			txtAddCompanyCompanyInformation.setBounds(74, 37, 88, 20);
-                		}
-                		{
-                			btnAddCompany = new JButton();
-                			addCompanyPanel.add(btnAddCompany);
-                			btnAddCompany.setName("btnAddCompany");
-                			btnAddCompany.setBounds(22, 63, 123, 21);
-                			btnAddCompany.addActionListener(new ActionListener() {
-                				public void actionPerformed(ActionEvent evt) {
-                					btnAddCompanyActionPerformed(evt);
-                				}
-                			});
                 		}
                 	}
                 }
@@ -448,76 +343,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
         this.updateCompanyList();
         this.updateMapList();
     }
-    
-    private void btnAddCompanyActionPerformed(ActionEvent evt) {
-    	System.out.println("btnAddCompany.actionPerformed, event="+evt);
-    	try {
-    		Company c = BusinessFactory.createCompany(txtAddCompanyCompanyName.getText(), txtAddCompanyCompanyInformation.getText());
-			BusinessManager.addCompany(c);
-			Messages.showInfoDialog(getMainFrame(), "Information", "Company successfully added.");
-			txtAddCompanyCompanyName.setText("");
-			txtAddCompanyCompanyInformation.setText("");
-		} catch (CompanyAlreadyExistsException e) {
-			Messages.showErrorDialog(getMainFrame(), "Error", "This company already exists.");
-		} catch (EmptyFieldException e) {
-			Messages.showErrorDialog(getMainFrame(), "Error", "The company name field must be filled in.");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
-	private void btnAddFactoryActionPerformed(ActionEvent evt) {
-		try {
-			String name = txtAddFactoryFactoryName.getText();
-			String information = txtAddFactoryFactoryName.getText() + " information";
-			Director director = BusinessFactory.createDirector("test", "test", "test", "src/main/resources/anonymous.jpg");
-			String email = txtAddFactoryFactoryName.getText() + "@email.com";
-			int employees = RandomUtils.nextInt();
-			Address address = BusinessFactory.createAddress(txtAddFactoryFactoryName.getText() + " street",
-					txtAddFactoryFactoryName.getText() + " city",
-					txtAddFactoryFactoryName.getText() + " state",
-					txtAddFactoryFactoryName.getText() + " country",
-					txtAddFactoryFactoryName.getText() + " zip");
-			if (cbAddFactoryCompanies.getSelectedIndex() != -1){
-				Factory f = BusinessFactory.createFactory(name, information, director, email, employees, address);
-				f.setCompany((Company)cbAddFactoryCompanies.getSelectedItem());
-				BusinessManager.addFactory(f);
-				Messages.showInfoDialog(getMainFrame(), "Information", "Factory successfully added.");
-				txtAddFactoryFactoryName.setText("");
-			}
-			else {
-				Messages.showErrorDialog(getMainFrame(), "Error", "You have to choose the company in which the factory will be added.");
-			}
-		} catch (EmptyFieldException e) {
-			Messages.showErrorDialog(getMainFrame(), "Error", "The factory name field must be filled in.");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FactoryAlreadyExistsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void updateCompanyList() {
-		try {
-			// Clean already added companies
-			cbAddFactoryCompanies.setModel(new DefaultComboBoxModel());
-			cbConfigureFactoryCompanies.setModel(new DefaultComboBoxModel());
-			ArrayList<Company> companies = (ArrayList<Company>)BusinessManager.getAllCompanies();
-			for (Company c : companies) {
-				cbAddFactoryCompanies.addItem(c);
-				cbConfigureFactoryCompanies.addItem(c);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 	public void updateFactoryList(int companyId) {
 		try {
@@ -562,7 +387,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 				}
 			} catch (LocationAlreadyExistsException e) {
 				Messages.showErrorDialog(getMainFrame(), "Error", "This location is already configured.");
-			} catch (EmptyFieldException e) {
+			} catch (MandatoryFieldException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (SQLException e) {
@@ -584,15 +409,15 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		}
 	}
 	
-	public void selectFactory(int factoryId) {
+	public void selectFactory(int locationId) {
 		// TODO patron observador. Se llama al seleccionar una localizacion de una factoria
 		try {
-			Factory factory = BusinessManager.getFactory(factoryId);
+			Factory factory = BusinessManager.getLocation(locationId).getFactory();
 			System.err.print(factory.toString());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (FactoryNotFoundException e) {
+		} catch (LocationNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -648,7 +473,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (EmptyFieldException e) {
+		} catch (MandatoryFieldException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -670,6 +495,11 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		JFConfiguration jfc = new JFConfiguration();
 		jfc.setLocationRelativeTo(getMainFrame());
 		jfc.setVisible(true);
+	}
+
+	public void updateCompanyList() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

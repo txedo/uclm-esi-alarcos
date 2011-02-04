@@ -36,9 +36,9 @@ public class NotifyUIManager {
 		}
 	}
 	
-	public static void notifySelectedFactory (int factoryId) {
+	public static void notifySelectedLocation (int locationId) {
 		for (IObserverUI iob : observers) {
-			iob.selectFactory(factoryId);
+			iob.selectFactory(locationId);
 		}
 	}
 }

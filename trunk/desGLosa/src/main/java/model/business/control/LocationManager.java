@@ -7,7 +7,7 @@ import java.util.List;
 
 import persistence.dao.business.LocationDAO;
 
-import exceptions.EmptyFieldException;
+import exceptions.MandatoryFieldException;
 import exceptions.FactoryNotFoundException;
 import exceptions.LocationAlreadyExistsException;
 import exceptions.LocationNotFoundException;
@@ -19,7 +19,7 @@ import model.knowledge.Vector2f;
 
 public class LocationManager {
 
-	public static boolean addLocation(Factory factory, Map map,	Vector2f coordinates) throws LocationAlreadyExistsException, EmptyFieldException, SQLException {
+	public static boolean addLocation(Factory factory, Map map,	Vector2f coordinates) throws LocationAlreadyExistsException, MandatoryFieldException, SQLException {
 		boolean success = false;
 		// Check if the location already exists for this factory and map (1:1 relationship)
 		try {
@@ -43,14 +43,14 @@ public class LocationManager {
 		return success;
 	}
 
-	public static Location getLocation(Factory factory, Map map) throws EmptyFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
+	public static Location getLocation(Factory factory, Map map) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
 		//factory = BusinessManager.getFactory(factory.getName());
 		//map = BusinessManager.getMap(map.getLabel());
 		Location result = LocationDAO.get(factory, map);
 		return result;
 	}
 
-	public static List<Location> getLocations(List<Factory> factories, Map map) throws EmptyFieldException, SQLException, FactoryNotFoundException, MapNotFoundException {
+	public static List<Location> getLocations(List<Factory> factories, Map map) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException {
 		List<Location> result = new ArrayList<Location>();
 		for (Factory f : factories) {
 			try {
@@ -58,6 +58,11 @@ public class LocationManager {
 				result.add(loc);
 			} catch (LocationNotFoundException e) {}
 		}
+		return result;
+	}
+
+	public static Location getLocation(int id) throws SQLException, LocationNotFoundException {
+		Location result = LocationDAO.get(id);
 		return result;
 	}
 	

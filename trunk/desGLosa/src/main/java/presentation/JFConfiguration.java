@@ -2,7 +2,6 @@ package presentation;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Image;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -11,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +18,8 @@ import javax.swing.WindowConstants;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.jdesktop.application.Application;
+
+import presentation.utils.ImageUtils;
 
 import model.app.control.OperationManager;
 import model.app.knowledge.Operation;
@@ -76,12 +76,8 @@ public class JFConfiguration extends JFrame {
 		// Add label and tooltip
 		jbutton.setText(op.getName());
 		jbutton.setToolTipText(op.getDescription());
-		// Scale the icon to 64x64
-		ImageIcon originalImage = new ImageIcon(op.getIcon());
-		Image img = originalImage.getImage();
-		Image scaledImg = img.getScaledInstance(64, 64, Image.SCALE_DEFAULT);
 		// Add the scaled icon to the button
-		jbutton.setIcon(new ImageIcon(scaledImg));
+		jbutton.setIcon(ImageUtils.readIcon(op.getIcon()));
 		// Place icon at the center and text at the bottom
 		jbutton.setHorizontalTextPosition(JButton.CENTER);
 		jbutton.setVerticalTextPosition(JButton.BOTTOM);
@@ -92,7 +88,6 @@ public class JFConfiguration extends JFrame {
 		// Add an action listener
 		jbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				System.out.println("jButton1.actionPerformed, event="+evt);
 				try {
 					// Remove existing components to clean the operationPanel
 					operationPanel.removeAll();
@@ -149,7 +144,7 @@ public class JFConfiguration extends JFrame {
 			}
 			initOperationList();
 			pack();
-			this.setSize(768, 472);
+			this.setSize(601, 611);
 			Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(getContentPane());
 		} catch (Exception e) {
 		    //add your error handling code here

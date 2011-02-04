@@ -93,7 +93,7 @@ public class GLMapLocationViewManager extends GLViewManager {
 		GLAbstractFactory glFactory = new JOGLFactory();
 		for (Location loc : locations) {
 			if (loc != null) {
-				GLObject temp = glFactory.createMapLocation(loc.getFactory().getId(), loc.getXcoord(), loc.getYcoord());
+				GLObject temp = glFactory.createMapLocation(loc.getId(), loc.getXcoord(), loc.getYcoord());
 				mapLocations.add(temp);	
 			}
 		}
@@ -123,9 +123,9 @@ public class GLMapLocationViewManager extends GLViewManager {
 				System.out.println("minZ " + data[offset++]);
 				System.out.println("maxZ " + data[offset++]);
 				System.out.println("stackName " + data[offset]);
-				int pickedFactoryId = data[offset];
+				int pickedLocationId = data[offset];
 				// centres and locations are correlative lists.
-				NotifyUIManager.notifySelectedFactory(pickedFactoryId);
+				NotifyUIManager.notifySelectedLocation(pickedLocationId);
 				offset++;
 			}
 		}

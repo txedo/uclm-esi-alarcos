@@ -12,6 +12,7 @@ import model.business.knowledge.Map;
 
 public class LocationDAO {
 	private static final String TABLE = "Location";
+	private static final String ID_COLUMN = "id";
 	private static final String FACTORY_ID_COLUMN = "factory.id";
 	private static final String MAP_ID_COLUMN = "map.id";
 
@@ -30,6 +31,23 @@ public class LocationDAO {
 		Location result = null;
 		
 		hquery = new HibernateQuery("FROM " + TABLE + " WHERE " + FACTORY_ID_COLUMN + " = ? AND " + MAP_ID_COLUMN + " = ?", factory.getId(), map.getId());
+		resultset = ConnectionManager.query(hquery);
+		
+		if (resultset.size() != 0) {
+			// Clone the read Company
+			result = (Location)((Location)resultset.get(0)).clone();
+			ConnectionManager.freeResultset(resultset);
+		} else throw new LocationNotFoundException();
+		
+		return result;
+	}
+
+	public static Location get(int id) throws SQLException, LocationNotFoundException {
+		HibernateQuery hquery;
+		List<?> resultset;
+		Location result = null;
+		
+		hquery = new HibernateQuery("FROM " + TABLE + " WHERE " + ID_COLUMN + " = ?", id);
 		resultset = ConnectionManager.query(hquery);
 		
 		if (resultset.size() != 0) {
