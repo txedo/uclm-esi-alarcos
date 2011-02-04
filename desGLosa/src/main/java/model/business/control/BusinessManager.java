@@ -7,7 +7,7 @@ import java.util.List;
 
 import exceptions.CompanyAlreadyExistsException;
 import exceptions.CompanyNotFoundException;
-import exceptions.EmptyFieldException;
+import exceptions.MandatoryFieldException;
 import exceptions.FactoryAlreadyExistsException;
 import exceptions.FactoryNotFoundException;
 import exceptions.ImageNotFoundException;
@@ -24,11 +24,11 @@ import model.knowledge.Vector2f;
 
 public class BusinessManager {
 	
-	public static boolean addCompany(Company c) throws EmptyFieldException, SQLException, CompanyAlreadyExistsException {
+	public static boolean addCompany(Company c) throws MandatoryFieldException, SQLException, CompanyAlreadyExistsException {
 		return CompanyManager.addCompany(c);
 	}
 
-	public static Company getCompany(String name) throws EmptyFieldException, SQLException, CompanyNotFoundException {
+	public static Company getCompany(String name) throws MandatoryFieldException, SQLException, CompanyNotFoundException {
 		return (Company)CompanyManager.getCompany(name).clone();
 	}
 	
@@ -40,7 +40,7 @@ public class BusinessManager {
 		return CompanyManager.getAllCompanies();
 	}
 
-	public static boolean addFactory(Factory f) throws EmptyFieldException, SQLException, FactoryAlreadyExistsException {
+	public static boolean addFactory(Factory f) throws MandatoryFieldException, SQLException, FactoryAlreadyExistsException {
 		return FactoryManager.addFactory(f);
 	}
 
@@ -60,11 +60,11 @@ public class BusinessManager {
 		return FactoryManager.getFactory(id);
 	}
 
-	public static boolean addLocation(Factory factory, Map map, Vector2f coordinates) throws LocationAlreadyExistsException, EmptyFieldException, SQLException {
+	public static boolean addLocation(Factory factory, Map map, Vector2f coordinates) throws LocationAlreadyExistsException, MandatoryFieldException, SQLException {
 		return LocationManager.addLocation (factory, map, coordinates);
 	}
 
-	public static Factory getFactory(String name) throws EmptyFieldException, SQLException, FactoryNotFoundException {
+	public static Factory getFactory(String name) throws MandatoryFieldException, SQLException, FactoryNotFoundException {
 		return FactoryManager.getFactory(name);
 	}
 
@@ -88,12 +88,24 @@ public class BusinessManager {
 		return MapManager.getActiveMap();
 	}
 
-	public static List<Location> getLocations(List<Factory> factories, Map map) throws EmptyFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
+	public static List<Location> getLocations(List<Factory> factories, Map map) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
 		return LocationManager.getLocations (factories, map);
 	}
 
 	public static void setMapLocations(List<Location> locations) {
 		MapManager.setMapLocations(locations);
+	}
+
+	public static Location getLocation(int id) throws SQLException, LocationNotFoundException {
+		return LocationManager.getLocation(id);
+	}
+
+	public static Location getLocation(Factory factory,	Map map) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
+		return LocationManager.getLocation(factory, map);
+	}
+
+	public static List<Factory> getAllFactories() throws SQLException {
+		return FactoryManager.getAllFactories();
 	}
 
 }

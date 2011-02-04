@@ -7,16 +7,16 @@ import persistence.dao.business.CompanyDAO;
 
 import exceptions.CompanyAlreadyExistsException;
 import exceptions.CompanyNotFoundException;
-import exceptions.EmptyFieldException;
+import exceptions.MandatoryFieldException;
 import model.NotifyUIManager;
 import model.business.knowledge.Company;
 
 public class CompanyManager {
 	
-	public static boolean addCompany (Company c) throws EmptyFieldException, SQLException, CompanyAlreadyExistsException {
+	public static boolean addCompany (Company c) throws MandatoryFieldException, SQLException, CompanyAlreadyExistsException {
 		boolean success = false;
 		// Check that required fields are filled in
-		if (c.getName().equals("")) throw new EmptyFieldException();
+		if (c.getName().equals("")) throw new MandatoryFieldException();
 		try {
 			// If no exception is thrown, check if the company exists already
 			CompanyManager.getCompany(c.getName());
@@ -36,8 +36,8 @@ public class CompanyManager {
 		return result;
 	}
 	
-	public static Company getCompany (String name) throws EmptyFieldException, SQLException, CompanyNotFoundException {
-		if (name.equals("")) throw new EmptyFieldException();
+	public static Company getCompany (String name) throws MandatoryFieldException, SQLException, CompanyNotFoundException {
+		if (name.equals("")) throw new MandatoryFieldException();
 		Company result = CompanyDAO.get(name);
 		return result;
 	}
