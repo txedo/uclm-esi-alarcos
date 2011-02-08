@@ -1,7 +1,5 @@
 package persistence.database;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -11,24 +9,26 @@ import java.util.List;
  * base de datos para poder ser utilizadas por el gestor de conexiones de
  * bases de datos.
  */
-public interface IDBConnection extends Remote {
+public interface IDBConnection {
 	
 	public String getIdentifier();
 	
-	public List<?> select(HibernateQuery hquery) throws RemoteException, SQLException;
+	public List<?> select(HibernateQuery hquery) throws SQLException;
 
-	public void beginTransaction() throws RemoteException, SQLException;
+	public void beginTransaction() throws SQLException;
 	
-	public Object insert(Object obj) throws RemoteException, SQLException;
-
-	public void update(Object obj) throws RemoteException, SQLException;
-
-	public void delete(Object obj) throws RemoteException, SQLException;
-
-	public void freeResultset(Object obj) throws RemoteException, SQLException;
+	public Object insert(Object obj) throws SQLException;
 	
-	public void commit() throws RemoteException, SQLException;
+	public Object merge(Object obj) throws SQLException;
+
+	public void update(Object obj) throws SQLException;
+
+	public void delete(Object obj) throws SQLException;
+
+	public void freeResultset(Object obj) throws SQLException;
 	
-	public void rollback() throws RemoteException, SQLException;
+	public void commit() throws SQLException;
+	
+	public void rollback() throws SQLException;
 		
 }

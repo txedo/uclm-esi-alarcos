@@ -1,6 +1,10 @@
 package model.business.knowledge;
 
+import java.util.Arrays;
+
+
 public class Image {
+
 	private int id;
 	private String filename;
 	private String contentType;
@@ -67,5 +71,42 @@ public class Image {
 				+ "]";
 	}
 	
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((contentType == null) ? 0 : contentType.hashCode());
+		result = prime * result + Arrays.hashCode(data);
+		result = prime * result
+				+ ((filename == null) ? 0 : filename.hashCode());
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Image other = (Image) obj;
+		if (contentType == null) {
+			if (other.contentType != null)
+				return false;
+		} else if (!contentType.equals(other.contentType))
+			return false;
+		if (!Arrays.equals(data, other.data))
+			return false;
+		if (filename == null) {
+			if (other.filename != null)
+				return false;
+		} else if (!filename.equals(other.filename))
+			return false;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 }

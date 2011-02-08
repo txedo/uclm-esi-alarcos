@@ -14,12 +14,14 @@ import exceptions.ImageNotFoundException;
 import exceptions.LocationAlreadyExistsException;
 import exceptions.LocationNotFoundException;
 import exceptions.MapNotFoundException;
+import exceptions.WorkingFactoryIsNotInvolvedFactoryException;
 import exceptions.gl.GLSingletonNotInitializedException;
 import model.business.knowledge.Company;
 import model.business.knowledge.Factory;
 import model.business.knowledge.Image;
 import model.business.knowledge.Location;
 import model.business.knowledge.Map;
+import model.business.knowledge.Project;
 import model.knowledge.Vector2f;
 
 public class BusinessManager {
@@ -106,6 +108,10 @@ public class BusinessManager {
 
 	public static List<Factory> getAllFactories() throws SQLException {
 		return FactoryManager.getAllFactories();
+	}
+
+	public static boolean addProject(Project project) throws MandatoryFieldException, WorkingFactoryIsNotInvolvedFactoryException, SQLException, FactoryNotFoundException {
+		return ProjectManager.addProject(project);
 	}
 
 }

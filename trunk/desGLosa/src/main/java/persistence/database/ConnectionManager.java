@@ -104,6 +104,30 @@ public class ConnectionManager {
 		return copy;
 	}
 	
+	public static Object merge(Object obj) throws SQLException {
+		Object copy;
+		
+		// Insertamos el objeto en todas las conexiones, y nos quedamos
+		// con la copia devuelta por la primera conexión
+		if(connection.size() == 0) {
+			throw new SQLException("La lista de conexiones está vacía.");
+		}
+		copy = null;
+		for(IDBConnection conn : connection) {
+			try {
+				if(copy == null) {
+					copy = conn.merge(obj);
+				} else {
+					conn.merge(obj);
+				}
+			} catch(Exception ex) {
+				throw new SQLException("Error en el acceso al " + conn.getIdentifier() + ".", ex);
+			}
+		}
+		
+		return copy;
+	}
+	
 	public static void update(Object obj) throws SQLException {
 		// Actualizamos el objeto en todas las conexiones
 		if(connection.size() == 0) {

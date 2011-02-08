@@ -9,10 +9,10 @@ import javax.swing.JComboBox;
 import model.business.control.BusinessManager;
 import model.business.knowledge.Map;
 
-public class MapsComboBox extends JComboBox {
+public class MapsJComboBox extends JComboBox {
 	private static final long serialVersionUID = -2463781867409116148L;
 
-	public MapsComboBox () throws SQLException {
+	public MapsJComboBox () throws SQLException {
 		ComboBoxModel cbMapsModel = new DefaultComboBoxModel();
 		setModel(cbMapsModel);
 		for (Map m : BusinessManager.getAllMaps()) {

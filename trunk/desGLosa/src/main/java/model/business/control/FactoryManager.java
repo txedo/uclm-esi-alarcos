@@ -28,13 +28,6 @@ public class FactoryManager {
 			FactoryManager.getFactory(f.getName());
 			throw new FactoryAlreadyExistsException();
 		} catch (FactoryNotFoundException e) {
-			// If the factory does not exists yet, set if its company exists
-			Company c;
-			try {
-				c = BusinessManager.getCompany(f.getCompany().getName());
-				f.setCompany(c);
-			} catch (CompanyNotFoundException e1) {
-			}
 			// Insert the factory
 			FactoryDAO.insert(f);
 			// Notify changes to the observer

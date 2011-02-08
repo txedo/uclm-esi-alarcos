@@ -343,6 +343,11 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
         this.updateCompanyList();
         this.updateMapList();
     }
+    
+	public void updateCompanyList() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	public void updateFactoryList(int companyId) {
 		try {
@@ -495,11 +500,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		JFConfiguration jfc = new JFConfiguration();
 		jfc.setLocationRelativeTo(getMainFrame());
 		jfc.setVisible(true);
-	}
-
-	public void updateCompanyList() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
