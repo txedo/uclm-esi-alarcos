@@ -26,6 +26,7 @@ import presentation.utils.FactoryJList;
 import presentation.utils.Messages;
 
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -54,6 +55,8 @@ public class JPConfigureProject extends javax.swing.JPanel {
 	private JLabel lblProjectCode;
 	private JLabel lblProjectPlanName;
 	private FactoryJList jListAvailableFactories;
+	private JScrollPane jScrollPane2;
+	private JScrollPane jScrollPane1;
 	private JButton btnCancel;
 	private JButton btnOk;
 	private JTextField txtProjectPlanName;
@@ -106,13 +109,24 @@ public class JPConfigureProject extends javax.swing.JPanel {
 				});
 			}
 			{
-				jListInvolvedFactories = new FactoryJList();
-				this.add(jListInvolvedFactories, new CellConstraints("2, 8, 1, 5, default, default"));
-				jListInvolvedFactories.setName("jListInvolvedFactories");
+				jScrollPane1 = new JScrollPane();
+				this.add(jScrollPane1, new CellConstraints("2, 7, 1, 6, default, default"));
+				jScrollPane1.setBounds(0, 0, 114, 97);
+				{
+					jListInvolvedFactories = new FactoryJList();
+					jScrollPane1.setViewportView(jListInvolvedFactories);
+					jListInvolvedFactories.setName("jListInvolvedFactories");
+				}
 			}
 			{
-				jListAvailableFactories = new FactoryJList();
-				this.add(jListAvailableFactories, new CellConstraints("6, 8, 1, 5, default, default"));
+				jScrollPane2 = new JScrollPane();
+				this.add(jScrollPane2, new CellConstraints("6, 7, 1, 6, default, default"));
+				jScrollPane2.setBounds(40, 5, 10, 10);
+				{
+					jListAvailableFactories = new FactoryJList();
+					jScrollPane2.setViewportView(jListAvailableFactories);
+					jListAvailableFactories.setPreferredSize(new java.awt.Dimension(118, 98));
+				}
 			}
 			{
 				lblWorkingFactory = new JLabel();

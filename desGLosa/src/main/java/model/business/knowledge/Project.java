@@ -70,6 +70,11 @@ public class Project {
 	}
 
 	@Override
+	public String toString() {
+		return "[" + code + "] " + planName;
+	}
+
+	@Override
 	public Object clone() {
 		Project result = new Project();
 		result.setId(this.getId());

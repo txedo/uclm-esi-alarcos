@@ -7,6 +7,7 @@ import model.gl.GLSingleton;
 import model.knowledge.Color;
 
 public class MapLocation extends Node {
+	private final Color highlightColor = new Color(1.0f, 0.0f, 0.0f);
 	private int id;
 	private boolean hightlighted;
 	private float size;
@@ -54,7 +55,10 @@ public class MapLocation extends Node {
 
 	@Override
 	public void draw() throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glColor3fv(this.color.getColorFB());
+		if (this.hightlighted) 
+			this.handleHighlighting();
+		else
+			GLSingleton.getGL().glColor3fv(this.color.getColorFB());
 		GLSingleton.getGL().glPointSize(this.size);
 		
 //		GLSingleton.getGL().glPushMatrix();
@@ -64,6 +68,10 @@ public class MapLocation extends Node {
 				GLSingleton.getGL().glVertex2f(this.positionX, this.positionY);
 			GLSingleton.getGL().glEnd();
 //		GLSingleton.getGL().glPopMatrix();
+	}
+
+	private void handleHighlighting() throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glColor3fv(this.highlightColor.getColorFB());
 	}
 
 }
