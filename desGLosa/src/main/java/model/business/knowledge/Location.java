@@ -2,6 +2,7 @@ package model.business.knowledge;
 
 
 public class Location {
+
 	/**
 	 * 
 	 */
@@ -77,5 +78,43 @@ public class Location {
 		return result;
 	}
 	
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((factory == null) ? 0 : factory.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((map == null) ? 0 : map.hashCode());
+		result = prime * result + Float.floatToIntBits(xcoord);
+		result = prime * result + Float.floatToIntBits(ycoord);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Location other = (Location) obj;
+		if (factory == null) {
+			if (other.factory != null)
+				return false;
+		} else if (!factory.equals(other.factory))
+			return false;
+		if (id != other.id)
+			return false;
+		if (map == null) {
+			if (other.map != null)
+				return false;
+		} else if (!map.equals(other.map))
+			return false;
+		if (Float.floatToIntBits(xcoord) != Float.floatToIntBits(other.xcoord))
+			return false;
+		if (Float.floatToIntBits(ycoord) != Float.floatToIntBits(other.ycoord))
+			return false;
+		return true;
+	}
 }

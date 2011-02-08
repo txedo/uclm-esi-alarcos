@@ -1,7 +1,11 @@
 package model.business.knowledge;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import exceptions.WorkingFactoryIsNotInvolvedFactoryException;
 
 import persistence.ResourceRetriever;
 
@@ -51,6 +55,16 @@ public class BusinessFactory {
 	
 	public static Address createAddress (String street, String city, String state, String country, String zip) {
 		return new Address(street, city, state, country, zip);
+	}
+
+	public static Project createProject(String projectCode, String projectPlanName,	Factory workingFactory, List<Factory> involvedFactories) throws WorkingFactoryIsNotInvolvedFactoryException {
+		if (!involvedFactories.contains((Factory)workingFactory)) throw new WorkingFactoryIsNotInvolvedFactoryException();
+		Project result = new Project();
+		result.setCode(projectCode);
+		result.setPlanName(projectPlanName);
+		result.setWorkingFactory(workingFactory);
+		result.setInvolvedFactories(new HashSet<Factory>(involvedFactories));
+		return result;
 	}
 	
 }

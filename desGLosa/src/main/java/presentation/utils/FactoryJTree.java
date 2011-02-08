@@ -13,10 +13,10 @@ import model.business.control.BusinessManager;
 import model.business.knowledge.Company;
 import model.business.knowledge.Factory;
 
-public class FactoryTree extends JTree {
+public class FactoryJTree extends JTree {
 	private static final long serialVersionUID = 7235693035277673840L;
 
-	public FactoryTree () throws SQLException {
+	public FactoryJTree () throws SQLException {
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Companies and factories");
 		createNodes(rootNode);
 		DefaultTreeModel treeModel = new DefaultTreeModel(rootNode);

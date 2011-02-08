@@ -184,18 +184,18 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `desglosadb`.`projects_has_factories` ;
 
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`projects_has_factories` (
-  `projects_id` INT NOT NULL ,
-  `factories_id` INT NOT NULL ,
-  PRIMARY KEY (`projects_id`, `factories_id`) ,
-  INDEX `fk_projects_has_factories_factories` (`factories_id` ASC) ,
-  INDEX `fk_projects_has_factories_projects` (`projects_id` ASC) ,
+  `project_id` INT NOT NULL ,
+  `factory_id` INT NOT NULL ,
+  PRIMARY KEY (`project_id`, `factory_id`) ,
+  INDEX `fk_projects_has_factories_factories` (`factory_id` ASC) ,
+  INDEX `fk_projects_has_factories_projects` (`project_id` ASC) ,
   CONSTRAINT `fk_projects_has_factories_projects`
-    FOREIGN KEY (`projects_id` )
+    FOREIGN KEY (`project_id` )
     REFERENCES `desglosadb`.`projects` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_projects_has_factories_factories`
-    FOREIGN KEY (`factories_id` )
+    FOREIGN KEY (`factory_id` )
     REFERENCES `desglosadb`.`factories` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -209,6 +209,8 @@ grant ALL on TABLE `desglosadb`.`locations` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`maps` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`directors` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`images` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`projects` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`projects_has_factories` to desglosaadmin;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

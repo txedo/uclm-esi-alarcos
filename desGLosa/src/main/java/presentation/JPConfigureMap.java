@@ -32,8 +32,8 @@ import model.business.knowledge.Map;
 
 import org.jdesktop.application.Application;
 
-import presentation.utils.FactoryTree;
-import presentation.utils.MapsComboBox;
+import presentation.utils.FactoryJTree;
+import presentation.utils.MapsJComboBox;
 
 
 
@@ -97,7 +97,7 @@ public class JPConfigureMap extends javax.swing.JPanel {
 				lblMap.setName("lblMap");
 			}
 			{
-				cbMaps = new MapsComboBox();
+				cbMaps = new MapsJComboBox();
 				this.add(cbMaps, new CellConstraints("6, 2, 1, 1, default, default"));
 				cbMaps.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
@@ -109,7 +109,7 @@ public class JPConfigureMap extends javax.swing.JPanel {
 				jScrollPane1 = new JScrollPane();
 				this.add(jScrollPane1, new CellConstraints("2, 2, 1, 10, default, default"));
 				{
-					jTree1 = new FactoryTree();
+					jTree1 = new FactoryJTree();
 					jScrollPane1.setViewportView(jTree1);
 					jTree1.addTreeSelectionListener(new TreeSelectionListener() {
 						public void valueChanged(TreeSelectionEvent evt) {
