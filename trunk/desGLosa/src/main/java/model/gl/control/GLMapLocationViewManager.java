@@ -137,4 +137,22 @@ public class GLMapLocationViewManager extends GLViewManager {
 		GLMapLocationViewManager.setupItems();
 	}
 
+	public static void highlightMapLocations(List<Location> locs) {
+		// Set all locaiton highlighting to false
+		for (GLObject mapLoc : mapLocations) {
+			((MapLocation)mapLoc).setHightlighted(false);
+		}
+		// Highlight selected locations
+		boolean found = false;
+		for (Location loc : locs) {
+			for (int i = 0; i < mapLocations.size() && !found; i++) {
+				if (loc.getId() == ((MapLocation)mapLocations.get(i)).getId()) {
+					((MapLocation)mapLocations.get(i)).setHightlighted(true);
+					found = true;
+				}
+			}
+			found = false;
+		}
+	}
+
 }

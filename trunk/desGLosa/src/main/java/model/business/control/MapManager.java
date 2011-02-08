@@ -57,5 +57,9 @@ public class MapManager {
 	static public List<Map> getAllMaps () throws SQLException {
 		return MapDAO.getAll();
 	}
+
+	public static void highlightMapLocations(List<Location> locations) {
+		GLMapLocationViewManager.highlightMapLocations(locations);
+	}
 	
 }

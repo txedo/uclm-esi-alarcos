@@ -1,6 +1,8 @@
 package presentation;
 import com.cloudgarden.layout.AnchorConstraint;
 import com.cloudgarden.layout.AnchorLayout;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 
 import exceptions.CompanyNotFoundException;
 import exceptions.MandatoryFieldException;
@@ -34,14 +36,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.TitledBorder;
 
 import model.IObserverUI;
 import model.NotifyUIManager;
 import model.business.control.BusinessManager;
 import model.business.knowledge.Company;
 import model.business.knowledge.Factory;
-import model.business.knowledge.Location;
 import model.business.knowledge.Map;
+import model.business.knowledge.Project;
 import model.gl.GLSingleton;
 import model.knowledge.Vector2f;
 import model.listeners.MyAppMouseListener;
@@ -50,7 +53,10 @@ import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 
+import presentation.utils.FactoryJComboBox;
+import presentation.utils.MapsJComboBox;
 import presentation.utils.Messages;
+import presentation.utils.ProjectJComboBox;
 
 
 
@@ -73,6 +79,14 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
     private JMenuBar menuBar;
     private JPanel configureFactoryPanel;
     private JButton btnSetCoordinates;
+    private MapsJComboBox cbMaps;
+    private JLabel lblAvailableMaps;
+    private JPanel activeMapPanel;
+    private FactoryJComboBox cbInvolvedFactories;
+    private ProjectJComboBox cbProjects;
+    private JLabel lblFactories;
+    private JLabel lblProject;
+    private JPanel projectPanel;
     private JMenuItem jMenuItem8;
     private JMenu toolsMenu;
     private JLabel lblStatusBar;
@@ -122,6 +136,28 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
     }
 
     @Override
+	protected void ready() {
+        getMainFrame().setJMenuBar(menuBar);
+        show(topPanel);
+        NotifyUIManager.attach(this);
+        GLInit.init();
+        GLInit.setContext(getMainFrame(), canvasPanel, new AnchorConstraint(5, 998, 998, 4, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+        settingCoordinates = false;
+        GLInit.getGLCanvas().addMouseListener(new MyAppMouseListener(this, GLInit.getGLCanvas()));
+        try {
+        	cbMaps.load();
+        	cbMaps.setSelectedIndex(-1);
+			cbProjects.load();
+			cbProjects.setSelectedIndex(-1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        this.updateCompanyList();
+        this.updateMapList();
+	}
+
+	@Override
     protected void startup() {
     	{
 	    	getMainFrame().setSize(791, 486);
@@ -151,13 +187,15 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 }
                 {
                 	widgetPanel = new JPanel();
-                	AnchorLayout widgetPanelLayout = new AnchorLayout();
+                	FormLayout widgetPanelLayout = new FormLayout(
+                			"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)", 
+                			"46dlu, 5dlu, 79dlu, 5dlu, max(p;5dlu)");
                 	contentPanel.add(widgetPanel, new AnchorConstraint(1, 235, 1001, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
                 	widgetPanel.setLayout(widgetPanelLayout);
                 	widgetPanel.setPreferredSize(new java.awt.Dimension(190, 320));
                 	{
                 		configureFactoryPanel = new JPanel();
-                		widgetPanel.add(configureFactoryPanel, new AnchorConstraint(216, 965, 585, 10, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_ABS));
+                		widgetPanel.add(configureFactoryPanel, new CellConstraints("2, 5, 1, 1, default, default"));
                 		configureFactoryPanel.setPreferredSize(new java.awt.Dimension(173, 132));
                 		configureFactoryPanel.setBorder(BorderFactory.createTitledBorder("Configure factory"));
                 		configureFactoryPanel.setLayout(null);
@@ -220,6 +258,61 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 			configureFactoryPanel.add(cbConfigureFactoryFactories);
                 			cbConfigureFactoryFactories.setModel(cbConfigureFactoryFactoriesModel);
                 			cbConfigureFactoryFactories.setBounds(77, 49, 83, 20);
+                		}
+                	}
+                	{
+                		projectPanel = new JPanel();
+                		FormLayout projectPanelLayout = new FormLayout(
+                				"max(p;5dlu), 75dlu", 
+                				"13dlu, 13dlu, max(p;15dlu), max(p;15dlu)");
+                		projectPanel.setLayout(projectPanelLayout);
+                		widgetPanel.add(projectPanel, new CellConstraints("2, 3, 1, 2, default, default"));
+                		projectPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createTitledBorder(""), "Project view", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION));
+                		{
+                			lblProject = new JLabel();
+                			projectPanel.add(lblProject, new CellConstraints("2, 1, 1, 1, default, default"));
+                			lblProject.setName("lblProject");
+                		}
+                		{
+                			lblFactories = new JLabel();
+                			projectPanel.add(lblFactories, new CellConstraints("2, 3, 1, 1, default, default"));
+                			lblFactories.setName("lblFactories");
+                		}
+                		{
+                			cbProjects = new ProjectJComboBox();
+                			projectPanel.add(cbProjects, new CellConstraints("2, 2, 1, 1, default, default"));
+                			cbProjects.addActionListener(new ActionListener() {
+                				public void actionPerformed(ActionEvent evt) {
+                					cbProjectsActionPerformed(evt);
+                				}
+                			});
+                		}
+                		{
+                			cbInvolvedFactories = new FactoryJComboBox();
+                			projectPanel.add(cbInvolvedFactories, new CellConstraints("2, 4, 1, 1, default, default"));
+                		}
+                	}
+                	{
+                		activeMapPanel = new JPanel();
+                		FormLayout activeMapPanelLayout = new FormLayout(
+                				"max(p;5dlu), 66dlu", 
+                				"13dlu, 13dlu");
+                		activeMapPanel.setLayout(activeMapPanelLayout);
+                		widgetPanel.add(activeMapPanel, new CellConstraints("2, 1, 1, 2, default, default"));
+                		activeMapPanel.setBorder(BorderFactory.createTitledBorder("Choose a map:"));
+                		{
+                			lblAvailableMaps = new JLabel();
+                			activeMapPanel.add(lblAvailableMaps, new CellConstraints("2, 1, 1, 1, default, default"));
+                			lblAvailableMaps.setName("lblAvailableMaps");
+                		}
+                		{
+                			cbMaps = new MapsJComboBox();
+                			activeMapPanel.add(cbMaps, new CellConstraints("2, 2, 1, 1, default, default"));
+                			cbMaps.addActionListener(new ActionListener() {
+                				public void actionPerformed(ActionEvent evt) {
+                					cbMapsActionPerformed(evt);
+                				}
+                			});
                 		}
                 	}
                 }
@@ -333,20 +426,20 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
         		});
         	}
         }
-        getMainFrame().setJMenuBar(menuBar);
-        show(topPanel);
-        NotifyUIManager.attach(this);
-        GLInit.init();
-        GLInit.setContext(getMainFrame(), canvasPanel, new AnchorConstraint(5, 998, 998, 4, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
-        settingCoordinates = false;
-        GLInit.getGLCanvas().addMouseListener(new MyAppMouseListener(this, GLInit.getGLCanvas()));
-        this.updateCompanyList();
-        this.updateMapList();
     }
     
 	public void updateCompanyList() {
-		// TODO Auto-generated method stub
-		
+		try {
+			// Clean already added factories
+			cbConfigureFactoryCompanies.setModel(new DefaultComboBoxModel());
+			// Add the updated company factories	
+			for (Company c : BusinessManager.getAllCompanies()) {
+				cbConfigureFactoryCompanies.addItem(c);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void updateFactoryList(int companyId) {
@@ -387,8 +480,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			try {
 				if (BusinessManager.addLocation(((Factory)cbConfigureFactoryFactories.getSelectedItem()), ((Map)cbConfigureFactoryMaps.getSelectedItem()), coordinates)) {
 					List<Factory> factories = BusinessManager.getFactories(((Company)cbConfigureFactoryCompanies.getSelectedItem()));
-					List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
-					BusinessManager.setMapLocations (locations);
+					BusinessManager.setMapLocations (factories);
 				}
 			} catch (LocationAlreadyExistsException e) {
 				Messages.showErrorDialog(getMainFrame(), "Error", "This location is already configured.");
@@ -469,8 +561,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			if (GLSingleton.isInitiated()) {
 				BusinessManager.setActiveMap((Map)cbConfigureFactoryMaps.getSelectedItem());
 				List<Factory> factories = BusinessManager.getFactories(((Company)cbConfigureFactoryCompanies.getSelectedItem()));
-				List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
-				BusinessManager.setMapLocations (locations);
+				BusinessManager.setMapLocations (factories);
 			}
 		} catch (GLSingletonNotInitializedException e) {
 			// TODO Auto-generated catch block
@@ -500,6 +591,63 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		JFConfiguration jfc = new JFConfiguration();
 		jfc.setLocationRelativeTo(getMainFrame());
 		jfc.setVisible(true);
+	}
+	
+	private void cbProjectsActionPerformed(ActionEvent evt) {
+
+		try {
+			if (GLSingleton.isInitiated()) {
+				List<Factory> factories = new ArrayList<Factory>(((Project)cbProjects.getSelectedItem()).getInvolvedFactories());
+				cbInvolvedFactories.loadFactories(factories);
+				BusinessManager.highlightMapLocations(factories);
+			}
+		} catch (MandatoryFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FactoryNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MapNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LocationNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void cbMapsActionPerformed(ActionEvent evt) {
+		try {
+			if (GLSingleton.isInitiated()) {
+				BusinessManager.setActiveMap((Map)cbMaps.getSelectedItem());
+				List<Factory> factories = BusinessManager.getAllFactories();
+				BusinessManager.setMapLocations(factories);	
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MandatoryFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FactoryNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MapNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LocationNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (GLSingletonNotInitializedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

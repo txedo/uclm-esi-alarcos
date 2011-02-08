@@ -1,6 +1,7 @@
 package model.business.control;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import persistence.dao.business.ProjectDAO;
 import exceptions.FactoryNotFoundException;
@@ -22,6 +23,10 @@ public class ProjectManager {
 		ProjectDAO.insert(project);
 		success = true;
 		return success;
+	}
+
+	public static List<Project> getAllProjects() throws SQLException {
+		return ProjectDAO.getAll();
 	}
 	
 }

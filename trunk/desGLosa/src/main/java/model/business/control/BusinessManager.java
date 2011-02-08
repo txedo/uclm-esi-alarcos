@@ -94,10 +94,6 @@ public class BusinessManager {
 		return LocationManager.getLocations (factories, map);
 	}
 
-	public static void setMapLocations(List<Location> locations) {
-		MapManager.setMapLocations(locations);
-	}
-
 	public static Location getLocation(int id) throws SQLException, LocationNotFoundException {
 		return LocationManager.getLocation(id);
 	}
@@ -112,6 +108,20 @@ public class BusinessManager {
 
 	public static boolean addProject(Project project) throws MandatoryFieldException, WorkingFactoryIsNotInvolvedFactoryException, SQLException, FactoryNotFoundException {
 		return ProjectManager.addProject(project);
+	}
+
+	public static List<Project> getAllProjects() throws SQLException {
+		return ProjectManager.getAllProjects();
+	}
+
+	public static void setMapLocations(List<Factory> factories) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
+		List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
+		MapManager.setMapLocations(locations);
+	}
+
+	public static void highlightMapLocations(List<Factory> factories) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
+		List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
+		MapManager.highlightMapLocations(locations);
 	}
 
 }
