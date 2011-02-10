@@ -140,7 +140,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
         getMainFrame().setJMenuBar(menuBar);
         show(topPanel);
         NotifyUIManager.attach(this);
-        GLInit.init();
+		GLInit.init();
         GLInit.setContext(getMainFrame(), canvasPanel, new AnchorConstraint(5, 998, 998, 4, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
         settingCoordinates = false;
         GLInit.getGLCanvas().addMouseListener(new MyAppMouseListener(this, GLInit.getGLCanvas()));

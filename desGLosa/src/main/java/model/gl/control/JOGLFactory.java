@@ -1,7 +1,7 @@
 package model.gl.control;
 
-import model.gl.GLObject;
 import model.gl.knowledge.Edge;
+import model.gl.knowledge.GLObject;
 import model.gl.knowledge.MapLocation;
 import model.gl.knowledge.MetricIndicator;
 import model.gl.knowledge.Tower;

@@ -3,9 +3,9 @@ package model.gl.knowledge.caption;
 import javax.media.opengl.GL;
 
 import exceptions.gl.GLSingletonNotInitializedException;
-import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
+import model.gl.knowledge.GLObject;
 import model.knowledge.Vector3f;
 
 public class Frame extends GLObject {

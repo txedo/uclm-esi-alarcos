@@ -25,7 +25,7 @@ public abstract class GLViewManager {
 		this.selectionMode = false;
 		pickingRegion = 0.1;
 	}
-	
+		
 	public abstract void manageView() throws GLSingletonNotInitializedException, IOException ;
 	
 	public abstract void drawItems () throws GLSingletonNotInitializedException;
@@ -84,7 +84,24 @@ public abstract class GLViewManager {
 	 * The depthless object should be usually picked up.
 	 * The fourth and last one indicates the name of the object, previously setted with the glLoadName(int) primitive.
      */
-	protected abstract void handleHits (int hits, int[] data);
+	protected void handleHits (int hits, int[] data) {
+		int offset = 0;
+		System.out.println("Number of hits = " + hits);
+		if (hits > 0) {
+			// TODO quedarse con la que está más cerca del viewpoint en el eje Z
+			for (int i = 0; i < hits; i++) {
+				System.out.println("number " + data[offset++]);
+				System.out.println("minZ " + data[offset++]);
+				System.out.println("maxZ " + data[offset++]);
+				System.out.println("stackName " + data[offset]);
+				int selectedObject = data[offset];
+				selectedObjectHandler(selectedObject);
+				offset++;
+			}
+		}
+	}
+
+	protected abstract void selectedObjectHandler(int selectedObject);
 
 	public boolean isSelectionMode() {
 		return selectionMode;

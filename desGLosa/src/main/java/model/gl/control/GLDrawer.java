@@ -9,10 +9,10 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
 import model.gl.GLLogger;
-import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.knowledge.Camera;
+import model.gl.knowledge.GLObject;
 import model.gl.knowledge.IConstants;
 import model.gl.knowledge.Spotlight;
 import model.gl.knowledge.Tower;
@@ -30,8 +30,10 @@ import exceptions.gl.GLSingletonNotInitializedException;
 
 public class GLDrawer implements GLEventListener, IConstants {
 	private Vector<GLObject> towers;
-	private GLViewManager mlc;
-	private GLViewManager mic;
+	private GLViewManager mapLocationView;
+	private GLViewManager metricIndicatorView;
+	private GLViewManager projectView;
+	private GLViewManager factoryView;
 	private Vector<Caption> captions;
 	private Camera camera;
 	private Spotlight spotlight;
@@ -49,14 +51,18 @@ public class GLDrawer implements GLEventListener, IConstants {
 
 	
 	/**
+	 * @throws GLSingletonNotInitializedException 
+	 * @throws IOException 
 	 * 
 	 */
 	public GLDrawer() {
 		this.viewLevel = EViewLevels.MapLevel;
 		this.oldViewLevel = viewLevel;
 		
-		this.mlc = new GLMapLocationViewManager(this, false);		// 2D View
-		this.mic = new GLMetricIndicatorViewManager(this, false);	// 2D view
+		this.mapLocationView = new GLMapLocationViewManager(this, false);			// 2D View
+		this.metricIndicatorView = new GLMetricIndicatorViewManager(this, false);	// 2D View
+		this.projectView = new GLProjectViewManager(this, true);					// 3D View
+		this.factoryView = new GLFactoryViewManager(this, true);					// 3D View
 	}
 
 	 /** Called by the drawable to initiate OpenGL rendering by the client.
@@ -77,10 +83,18 @@ public class GLDrawer implements GLEventListener, IConstants {
 			}
 			switch (this.viewLevel) {
 				case MapLevel:
-					mlc.manageView();
+					this.mapLocationView.manageView();
+					break;
+				case ProjectLevel:
+					camera.render();
+					spotlight.render(camera.getPosition(), camera.getViewDir());
+					this.projectView.manageView();
+					break;
+				case FactoryLevel:
+					this.factoryView.manageView();
 					break;
 				case MetricIndicatorLevel:
-					mic.manageView();
+					this.metricIndicatorView.manageView();
 					drawCaptions();
 					break;
 				case TowerLevel:
@@ -143,8 +157,9 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLSingleton.getGL().glEnable(GL.GL_COLOR_MATERIAL);
 			
 			// Configuramos los parámetros del mundo
-			((GLMetricIndicatorViewManager)mic).setupItems();
+			((GLMetricIndicatorViewManager)metricIndicatorView).setupItems();
 			setupCaptions();
+			GLProjectViewManager.setupItems();			
 			
 			// Añadimos los listener de teclado y ratón
 			glDrawable.addKeyListener(new MyKeyListener(this.camera));
@@ -192,7 +207,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 	private void updateProjection() throws GLSingletonNotInitializedException {
 		if (viewLevel.equals(EViewLevels.MapLevel) || viewLevel.equals(EViewLevels.MetricIndicatorLevel))
 			GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth, this.DIM);
-		else if (viewLevel.equals(EViewLevels.TowerLevel))
+		else if (viewLevel.equals(EViewLevels.TowerLevel) || viewLevel.equals(EViewLevels.ProjectLevel) || viewLevel.equals(EViewLevels.FactoryLevel))
 			GLUtils.setPerspectiveProjection(this.screenHeight, this.screenWidth);
 	}
 	
@@ -248,7 +263,8 @@ public class GLDrawer implements GLEventListener, IConstants {
 	public void setViewLevel(EViewLevels viewLevel) {
 		this.oldViewLevel = this.viewLevel;
 		this.viewLevel = viewLevel;
-		if (this.viewLevel.equals(EViewLevels.TowerLevel)) this.camera.reset();
+		if (viewLevel.equals(EViewLevels.TowerLevel) || viewLevel.equals(EViewLevels.ProjectLevel) || viewLevel.equals(EViewLevels.FactoryLevel))
+			this.camera.reset();
 	}
 
 	public Vector2f getPickPoint() {
@@ -261,9 +277,9 @@ public class GLDrawer implements GLEventListener, IConstants {
 
 	public void setSelectionMode(boolean b) {
 		if (viewLevel.equals(EViewLevels.MapLevel))
-			mlc.setSelectionMode(true);
+			mapLocationView.setSelectionMode(true);
 		else if (viewLevel.equals(EViewLevels.MetricIndicatorLevel))
-			mic.setSelectionMode(true);
+			metricIndicatorView.setSelectionMode(true);
 //		else if (viewLevel.equals(EViewLevels.TowerLevel))
 //			tc.setSelectionMode(true);
 	}

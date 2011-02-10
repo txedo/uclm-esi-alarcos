@@ -1,22 +1,28 @@
 package model.gl.control;
 
+import java.io.IOException;
+import java.util.List;
+
+import model.gl.knowledge.GLObject;
+
 import exceptions.gl.GLSingletonNotInitializedException;
 
-public class GLTowerViewManager extends GLViewManager {
+public class GLFactoryViewManager extends GLViewManager {
+	private List<GLObject> glFactories;
 
-	public GLTowerViewManager(GLDrawer d, boolean is3d) {
+	public GLFactoryViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void manageView() {
+	public void manageView() throws GLSingletonNotInitializedException,
+			IOException {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void setupItems() {
-		// TODO Auto-generated method stub
+	
+	public static void setupItems() {
 		
 	}
 

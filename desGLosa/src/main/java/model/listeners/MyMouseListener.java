@@ -18,7 +18,8 @@ public class MyMouseListener implements MouseListener {
 	
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2){	// Double click
-			this.drawer.setViewLevel(EViewLevels.MetricIndicatorLevel);
+//			this.drawer.setViewLevel(EViewLevels.MetricIndicatorLevel);
+			this.drawer.setViewLevel(EViewLevels.ProjectLevel);
 		} else {						// Click
 			if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
 				this.drawer.getPickPoint().setX((float)e.getPoint().getX());
