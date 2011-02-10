@@ -25,7 +25,17 @@ public abstract class GLViewManager {
 		this.selectionMode = false;
 		pickingRegion = 0.1;
 	}
-		
+	
+	 /** Called by the GLDrawer.setViewLevel() function to configure OpenGL properties.
+     */
+	public abstract void configureView() throws GLSingletonNotInitializedException;
+	
+	 /** Called by the GLDrawer.setViewLevel() function to deconfigure previously configured OpenGL properties.
+     */
+	public abstract void deconfigureView() throws GLSingletonNotInitializedException;
+	
+	 /** Called by the GLDrawer.display() function to manage view functions such as drawing and selection.
+     */
 	public abstract void manageView() throws GLSingletonNotInitializedException, IOException ;
 	
 	public abstract void drawItems () throws GLSingletonNotInitializedException;
@@ -99,6 +109,17 @@ public abstract class GLViewManager {
 				offset++;
 			}
 		}
+	}
+	
+	protected void drawFloor () throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glColor4f(0.3f, 0.3f, 0.3f, 0.3f);
+		GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
+		GLSingleton.getGL().glBegin(GL.GL_POLYGON);	
+			GLSingleton.getGL().glVertex3f(0, 0, 0);
+			GLSingleton.getGL().glVertex3f(10, 0, 0);
+			GLSingleton.getGL().glVertex3f(10, 0, 10);
+			GLSingleton.getGL().glVertex3f(0, 0, 10);
+		GLSingleton.getGL().glEnd();
 	}
 
 	protected abstract void selectedObjectHandler(int selectedObject);

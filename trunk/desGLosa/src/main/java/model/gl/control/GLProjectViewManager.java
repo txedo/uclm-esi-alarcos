@@ -29,6 +29,16 @@ public class GLProjectViewManager extends GLViewManager {
 		antennaBalls = new ArrayList<GLObject>();
 		textureLoader = new TextureLoader(new String[] {TEXTURE_PATH+APPLY, TEXTURE_PATH+CANCEL});
 	}
+	
+	@Override
+	public void configureView() throws GLSingletonNotInitializedException {
+
+	}
+
+	@Override
+	public void deconfigureView() throws GLSingletonNotInitializedException {
+
+	}
 
 	@Override
 	public void manageView() throws GLSingletonNotInitializedException,
@@ -51,6 +61,7 @@ public class GLProjectViewManager extends GLViewManager {
 			}
 		}
 		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
+//		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
 		this.drawItems();
 
 	}

@@ -14,6 +14,18 @@ public class GLFactoryViewManager extends GLViewManager {
 		super(d, is3d);
 		// TODO Auto-generated constructor stub
 	}
+	
+	@Override
+	public void configureView() throws GLSingletonNotInitializedException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deconfigureView() throws GLSingletonNotInitializedException {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void manageView() throws GLSingletonNotInitializedException,

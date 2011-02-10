@@ -36,6 +36,18 @@ public class GLMapLocationViewManager extends GLViewManager {
 	}
 	
 	@Override
+	public void configureView() throws GLSingletonNotInitializedException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deconfigureView() throws GLSingletonNotInitializedException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void manageView() throws GLSingletonNotInitializedException, IOException {
 		// This state machine prevents GL trying to load a texture while it is loading from disk to memory
 		if (hasTextureMapChanged) {

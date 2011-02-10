@@ -23,6 +23,18 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 	}
 	
 	@Override
+	public void configureView() throws GLSingletonNotInitializedException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deconfigureView() throws GLSingletonNotInitializedException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void manageView() throws GLSingletonNotInitializedException {
 		if (this.isSelectionMode()) this.selectItem();
 		this.drawItems();
@@ -85,7 +97,7 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
-		this.drawer.setupTowers(selectedObject);
+		((GLTowerViewManager)super.drawer.getViewManager(EViewLevels.TowerLevel)).setupItems(selectedObject);
 		this.drawer.setViewLevel(EViewLevels.TowerLevel);
 	}
 

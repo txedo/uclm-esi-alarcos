@@ -18,14 +18,16 @@ public class MyMouseListener implements MouseListener {
 	
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2){	// Double click
-//			this.drawer.setViewLevel(EViewLevels.MetricIndicatorLevel);
-			this.drawer.setViewLevel(EViewLevels.ProjectLevel);
+			this.drawer.setViewLevel(EViewLevels.MetricIndicatorLevel);
+//			this.drawer.setViewLevel(EViewLevels.ProjectLevel);
 		} else {						// Click
 			if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
 				this.drawer.getPickPoint().setX((float)e.getPoint().getX());
 				this.drawer.getPickPoint().setY((float)e.getPoint().getY());
 				this.drawer.setSelectionMode(true);
 			} else if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
+				this.drawer.setViewLevel(EViewLevels.ProjectLevel);
+			} else if ((e.getModifiers() & InputEvent.BUTTON2_MASK) != 0) {
 				this.drawer.setViewLevel(EViewLevels.MapLevel);
 			}
 		}

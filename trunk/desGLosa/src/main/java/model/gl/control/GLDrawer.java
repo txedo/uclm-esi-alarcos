@@ -1,7 +1,6 @@
 package model.gl.control;
 
 import java.io.IOException;
-import java.util.Random;
 import java.util.Vector;
 
 import javax.media.opengl.GL;
@@ -12,10 +11,8 @@ import model.gl.GLLogger;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.knowledge.Camera;
-import model.gl.knowledge.GLObject;
 import model.gl.knowledge.IConstants;
 import model.gl.knowledge.Spotlight;
-import model.gl.knowledge.Tower;
 import model.gl.knowledge.caption.Caption;
 import model.knowledge.Color;
 import model.knowledge.Vector2f;
@@ -29,41 +26,36 @@ import model.listeners.MyMouseWheelListener;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 public class GLDrawer implements GLEventListener, IConstants {
-	private Vector<GLObject> towers;
+	/*
+	 * A GLViewManager must be declared for each view manager available.
+	 * When adding a new view manager, it has to be added and configured to the following sections:
+	 * * A switch case in the display() function.
+	 * * Instance initialization at the init() function.
+	 * * updateProjection() function.
+	 * * setSelectionMode() function, in case that the view implements a selection mechanism.
+	 * * getGLViewManager() function.
+	 */
+	
 	private GLViewManager mapLocationView;
 	private GLViewManager metricIndicatorView;
+	private GLViewManager towerView;
 	private GLViewManager projectView;
 	private GLViewManager factoryView;
-	private Vector<Caption> captions;
+	
+	private EViewLevels oldViewLevel;
+	private EViewLevels viewLevel;
+	
 	private Camera camera;
 	private Spotlight spotlight;
 	
 	private Vector2f pickPoint = new Vector2f(0, 0);
 	
-	private EViewLevels oldViewLevel;
-	private EViewLevels viewLevel;
-	
 	Vector3f aux = new Vector3f();
 	private int screenWidth;
 	private int screenHeight;
-	
 	public final float DIM = IConstants.INIT_DIM;
-
 	
-	/**
-	 * @throws GLSingletonNotInitializedException 
-	 * @throws IOException 
-	 * 
-	 */
-	public GLDrawer() {
-		this.viewLevel = EViewLevels.MapLevel;
-		this.oldViewLevel = viewLevel;
-		
-		this.mapLocationView = new GLMapLocationViewManager(this, false);			// 2D View
-		this.metricIndicatorView = new GLMetricIndicatorViewManager(this, false);	// 2D View
-		this.projectView = new GLProjectViewManager(this, true);					// 3D View
-		this.factoryView = new GLFactoryViewManager(this, true);					// 3D View
-	}
+	private Vector<Caption> captions;
 
 	 /** Called by the drawable to initiate OpenGL rendering by the client.
      * After all GLEventListeners have been notified of a display event, the
@@ -75,10 +67,12 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLSingleton.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 			GLSingleton.getGL().glLoadIdentity();
 			// This state machine prevents calls to updateProjection every time display() is called
-			// It it used to change to 2D or 3D projection within the main thread (not keyboard or mouse inputs) since JOGL has multithreading issues
+			// Due to JOGL multi-threading issues, this is used to change to 2D or 3D projection within the main thread (not keyboard or mouse inputs)
 			// http://staff.www.ltu.se/~mjt/ComputerGraphics/jogl-doc/jogl_usersguide/index.html
 			if (!oldViewLevel.equals(viewLevel)) {
 				this.updateProjection();
+				if (!oldViewLevel.equals(EViewLevels.UnSetLevel)) getViewManager(oldViewLevel).deconfigureView();
+				getViewManager(viewLevel).configureView();
 				oldViewLevel = viewLevel;
 			}
 			switch (this.viewLevel) {
@@ -100,7 +94,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 				case TowerLevel:
 					camera.render();
 					spotlight.render(camera.getPosition(), camera.getViewDir());
-					drawTowers();
+					this.towerView.manageView();
 					break;
 			}
 			glDrawable.swapBuffers();
@@ -132,6 +126,15 @@ public class GLDrawer implements GLEventListener, IConstants {
 	public void init(GLAutoDrawable glDrawable) {
 		GLSingleton.getInstance();
 		GLSingleton.init(glDrawable);
+		
+		this.oldViewLevel = EViewLevels.UnSetLevel;
+		this.viewLevel = EViewLevels.MapLevel;
+		
+		this.mapLocationView = new GLMapLocationViewManager(this, false);			// 2D View
+		this.metricIndicatorView = new GLMetricIndicatorViewManager(this, false);	// 2D View
+		this.towerView = new GLTowerViewManager(this, true);						// 3D View
+		this.projectView = new GLProjectViewManager(this, true);					// 3D View
+		this.factoryView = new GLFactoryViewManager(this, true);					// 3D View
 		
 		try {
 			GLSingleton.getGL().glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
@@ -224,37 +227,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 			c.draw();
 		}
 	}
-	
-	public void setupTowers(int id) {
-		towers = new Vector<GLObject>();
-		Random r = new Random();
-		Color c;
-		Tower t;
-		for (int i = 0; i < id; i++) {
-			c = new Color (r.nextFloat(), r.nextFloat(), r.nextFloat());
-			t = new Tower (r.nextFloat()*9,r.nextFloat()*9,r.nextFloat(),r.nextFloat(),r.nextFloat()*10,c);
-			towers.add(t);
-		}
-	}
-	
-	public void drawTowers() throws GLSingletonNotInitializedException {
-		this.drawFloor();
-		
-		for (GLObject f : towers) {
-			f.draw();
-		}
-	}
-	
-	private void drawFloor () throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glColor4f(0.3f, 0.3f, 0.3f, 0.3f);
-		GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
-		GLSingleton.getGL().glBegin(GL.GL_POLYGON);	
-			GLSingleton.getGL().glVertex3f(0, 0, 0);
-			GLSingleton.getGL().glVertex3f(10, 0, 0);
-			GLSingleton.getGL().glVertex3f(10, 0, 10);
-			GLSingleton.getGL().glVertex3f(0, 0, 10);
-		GLSingleton.getGL().glEnd();
-	}
 
 	public EViewLevels getViewLevel() {
 		return viewLevel;
@@ -263,8 +235,10 @@ public class GLDrawer implements GLEventListener, IConstants {
 	public void setViewLevel(EViewLevels viewLevel) {
 		this.oldViewLevel = this.viewLevel;
 		this.viewLevel = viewLevel;
-		if (viewLevel.equals(EViewLevels.TowerLevel) || viewLevel.equals(EViewLevels.ProjectLevel) || viewLevel.equals(EViewLevels.FactoryLevel))
+		// We reset the camera position in case that the view level is 3D
+		if (this.getViewManager(viewLevel).isThreeDimensional) {
 			this.camera.reset();
+		}
 	}
 
 	public Vector2f getPickPoint() {
@@ -298,6 +272,28 @@ public class GLDrawer implements GLEventListener, IConstants {
 
 	public float getDim() {
 		return DIM;
+	}
+	
+	public GLViewManager getViewManager (EViewLevels viewLevel) {
+		GLViewManager result = null;
+			switch (viewLevel) {
+			case MapLevel:
+				result = this.mapLocationView;
+				break;
+			case ProjectLevel:
+				result = this.projectView;
+				break;
+			case FactoryLevel:
+				result = this.factoryView;
+				break;
+			case MetricIndicatorLevel:
+				result = this.metricIndicatorView;
+				break;
+			case TowerLevel:
+				result = this.towerView;
+				break;
+			}
+		return result;
 	}
 
 }
