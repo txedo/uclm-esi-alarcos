@@ -30,12 +30,12 @@ public class AntennaBall extends GLObject {
 		this.parentBallRadius = 1.0f;
 		this.progression = true;
 		this.childBallRadius = 0.5f;
-		this.leftChildBallColor = new Color (0.0f, 1.0f, 0.0f);
-		this.rightChildBallColor = new Color (1.0f, 0.0f, 0.0f);
+		this.leftChildBallColor = new Color (0.0f, 1.0f, 0.0f, 0.5f);
+		this.rightChildBallColor = new Color (1.0f, 0.0f, 0.0f, 0.5f);
 	}
 
 	@Override
-	public void draw() throws GLSingletonNotInitializedException {	
+	public void draw() throws GLSingletonNotInitializedException {		
 		GLSingleton.getGL().glLineWidth(ANTENNA_WIDTH);
 		// Draw the opaque element first (child balls and antennas)
 		GLSingleton.getGL().glPushMatrix();
@@ -53,7 +53,6 @@ public class AntennaBall extends GLObject {
 				GLSingleton.getGL().glTranslatef(parentBallRadius*2, (float)Math.sin(ANTENNA_ANGLE), 0.0f);
 				GLSingleton.getGL().glColor4fv(this.leftChildBallColor.getColorFB());
 				GLSingleton.getGLU().gluSphere(this.quadric, this.childBallRadius, this.subdivisions, this.subdivisions);
-				GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 			GLSingleton.getGL().glPopMatrix();
 			
 			// Draw right antenna and its child ball
@@ -67,7 +66,6 @@ public class AntennaBall extends GLObject {
 				GLSingleton.getGL().glTranslatef(-parentBallRadius*2, (float)Math.sin(ANTENNA_ANGLE), 0.0f);
 				GLSingleton.getGL().glColor4fv(this.rightChildBallColor.getColorFB());
 				GLSingleton.getGLU().gluSphere(this.quadric, this.childBallRadius, this.subdivisions, this.subdivisions);
-				GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 			GLSingleton.getGL().glPopMatrix();
 		
 			// Draw the parent ball
@@ -82,13 +80,14 @@ public class AntennaBall extends GLObject {
             // Bind the APPLY(0) or CANCEL(1) texture
 			int texture = this.textures[0];
 			if (!this.progression) texture = this.textures[1];
-			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);
+			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);			
 			// Disable depth mask (that is why we drawed opaque element first)
 			GLSingleton.getGL().glDepthMask(false);
 			// Enable Blending for gaining transparencies and image quality
 			GLSingleton.getGL().glEnable(GL.GL_BLEND);
 			GLSingleton.getGL().glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			// Now we draw the sphere
+			GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 			GLSingleton.getGLU().gluSphere(this.quadric, this.parentBallRadius, this.subdivisions, this.subdivisions);
 			// Disable everything we enabled before
 			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_S);
