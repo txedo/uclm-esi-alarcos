@@ -2,9 +2,9 @@ package model.gl.knowledge.caption;
 
 import java.util.Vector;
 
-import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
+import model.gl.knowledge.GLObject;
 import model.knowledge.Color;
 import model.knowledge.Vector3f;
 

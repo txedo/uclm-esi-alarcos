@@ -55,7 +55,7 @@ public class JPConfigureMap extends javax.swing.JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -8965274680612432098L;
-	private JComboBox cbMaps;
+	private MapsJComboBox cbMaps;
 	private JLabel lblMap;
 	private JScrollPane jScrollPane1;
 	private JButton btnRemove;
@@ -78,6 +78,12 @@ public class JPConfigureMap extends javax.swing.JPanel {
 	public JPConfigureMap() {
 		super();
 		initGUI();
+		try {
+			cbMaps.load();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		jTableLocation.setFocusable(false);
 		jTableLocation.setShowGrid(true);
 		jTableLocation.setEnabled(false);

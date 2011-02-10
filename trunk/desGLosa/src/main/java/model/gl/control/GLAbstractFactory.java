@@ -1,6 +1,6 @@
 package model.gl.control;
 
-import model.gl.GLObject;
+import model.gl.knowledge.GLObject;
 import model.gl.knowledge.MetricIndicator;
 import model.knowledge.Color;
 

@@ -14,12 +14,13 @@ import model.gl.control.GLDrawer;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 
+
 public class GLInit {
-	private static GLCanvas canvas;
+	private static GLCanvas glCanvas;
 	private static Animator animator;
 	
 	public static Canvas getGLCanvas () {
-		return canvas;
+		return glCanvas;
 	}
 	
 	public static void init() {
@@ -30,20 +31,20 @@ public class GLInit {
 		capabilities.setHardwareAccelerated(true);
 		capabilities.setDoubleBuffered(true);
 		
-		canvas = new GLCanvas();
-	    canvas.addGLEventListener(new GLDrawer());
-	    canvas.setFocusable(true);
-	    canvas.requestFocus();
+		glCanvas = new GLCanvas();
+	    glCanvas.addGLEventListener(new GLDrawer());
+	    glCanvas.setFocusable(true);
+	    glCanvas.requestFocus();
 	    
 	    // Creating an animator that will redraw the scene 40 times per second
 	    animator = new FPSAnimator(40);
 	    // Registering the canvas to the animator
-	    animator.add(canvas);
+	    animator.add(glCanvas);
 	}
 	
 	public static void setContext (Frame mainFrame, Container container, Object containerConstraint) {
-		container.add(canvas, containerConstraint);
-		canvas.setSize(container.getSize());
+		container.add(glCanvas, containerConstraint);
+		glCanvas.setSize(container.getSize());
 	    mainFrame.addWindowListener(new WindowAdapter() {
 	        public void windowClosing(WindowEvent e) {
 	          new Thread(new Runnable() {

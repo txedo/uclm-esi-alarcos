@@ -12,6 +12,7 @@ public class TextureLoader {
 	private String tileNames[];
 	private int textureNames[];
 	private Texture textures[];
+	private boolean texturesLoaded;
 	
 	public String[] getTileNames() {
 		return tileNames;
@@ -33,6 +34,7 @@ public class TextureLoader {
 		this.tileNames = names;
 		textureNames = new int[names.length];
 		textures = new Texture[names.length];
+		this.texturesLoaded = false;
 	}
 	
     private int[] genTextures(int amount) throws GLSingletonNotInitializedException {
@@ -63,7 +65,11 @@ public class TextureLoader {
             
             GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
             GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+//            GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+//            GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
         }
+		
+		this.texturesLoaded = true;
 	}
 
 	public Texture[] getTextures() {
@@ -72,6 +78,14 @@ public class TextureLoader {
 
 	public void setTextures(Texture[] textures) {
 		this.textures = textures;
+	}
+
+	public boolean isTexturesLoaded() {
+		return texturesLoaded;
+	}
+
+	public void setTexturesLoaded(boolean texturesLoaded) {
+		this.texturesLoaded = texturesLoaded;
 	}
 	
 }

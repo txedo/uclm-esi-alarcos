@@ -12,7 +12,7 @@ public class Color {
 		this.r = red;
 		this.g = green;
 		this.b = blue;
-		this.alpha = 1.0f;
+		this.alpha = 0.0f;
 	}
 	
 	public Color(float red, float green, float blue, float alpha) {

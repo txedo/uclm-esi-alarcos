@@ -1,8 +1,8 @@
 package model.gl.knowledge.caption;
 
-import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
+import model.gl.knowledge.GLObject;
 import model.gl.knowledge.Text;
 import model.knowledge.Color;
 import model.knowledge.Vector3f;

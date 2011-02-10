@@ -9,10 +9,10 @@ import javax.media.opengl.GL;
 import model.NotifyUIManager;
 import model.business.control.MapManager;
 import model.business.knowledge.Location;
-import model.gl.GLObject;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.TextureLoader;
+import model.gl.knowledge.GLObject;
 import model.gl.knowledge.MapLocation;
 import model.knowledge.Vector2f;
 import model.knowledge.Vector3f;
@@ -111,24 +111,10 @@ public class GLMapLocationViewManager extends GLViewManager {
 			glo.draw();
 		}
 	}
-
+	
 	@Override
-	protected void handleHits(int hits, int[] data) {
-		int offset = 0;
-		System.out.println("Number of hits = " + hits);
-		if (hits > 0) {
-			// TODO quedarse con la que está más cerca del viewpoint en el eje Z
-			for (int i = 0; i < hits; i++) {
-				System.out.println("number " + data[offset++]);
-				System.out.println("minZ " + data[offset++]);
-				System.out.println("maxZ " + data[offset++]);
-				System.out.println("stackName " + data[offset]);
-				int pickedLocationId = data[offset];
-				// centres and locations are correlative lists.
-				NotifyUIManager.notifySelectedLocation(pickedLocationId);
-				offset++;
-			}
-		}
+	protected void selectedObjectHandler(int selectedObject) {
+		NotifyUIManager.notifySelectedLocation(selectedObject);
 	}
 	
 	public static void addMapLocations (List<Location> locs) {
