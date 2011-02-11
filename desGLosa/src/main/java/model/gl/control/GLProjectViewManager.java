@@ -32,20 +32,9 @@ public class GLProjectViewManager extends GLViewManager {
 	
 	@Override
 	public void configureView() throws GLSingletonNotInitializedException {
-
-	}
-
-	@Override
-	public void deconfigureView() throws GLSingletonNotInitializedException {
-
-	}
-
-	@Override
-	public void manageView() throws GLSingletonNotInitializedException,
-			IOException {
-		if (!textureLoader.isTexturesLoaded()) {
-			textureLoader.loadTexures();
-			
+		try {
+			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true);
+		
 			// Create A New Quadratic
 			this.quadric = GLSingleton.getGLU().gluNewQuadric();
 			// Generate Smooth Normals For The Quad
@@ -55,19 +44,36 @@ public class GLProjectViewManager extends GLViewManager {
 			GLSingleton.getGLU().gluQuadricDrawStyle( quadric, GLU.GLU_FILL);
 			GLSingleton.getGLU().gluQuadricOrientation( quadric, GLU.GLU_OUTSIDE);
 			
+			GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
+			
 			for (GLObject ball : antennaBalls) {
 				((AntennaBall)ball).setQuadric(quadric);
 				((AntennaBall)ball).setTextures(textureLoader.getTextureNames());
 			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
-//		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+	}
+
+	@Override
+	public void deconfigureView() throws GLSingletonNotInitializedException {
+		GLSingleton.getGLU().gluDeleteQuadric(quadric);
+	}
+
+	@Override
+	public void manageView() throws GLSingletonNotInitializedException,
+			IOException {
+		super.drawFloor();
 		this.drawItems();
 
 	}
 	
 	public static void setupItems() {
 		AntennaBall ab = new AntennaBall(1.0f, 1.0f);
+		antennaBalls.add(ab);
+		ab = new AntennaBall(4.0f, 4.0f);
+		ab.setProgression(false);
 		antennaBalls.add(ab);
 	}
 

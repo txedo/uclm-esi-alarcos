@@ -1,6 +1,7 @@
 package model.gl.control;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.gl.knowledge.GLObject;
@@ -8,11 +9,11 @@ import model.gl.knowledge.GLObject;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 public class GLFactoryViewManager extends GLViewManager {
-	private List<GLObject> glFactories;
+	private static List<GLObject> glFactories;
 
 	public GLFactoryViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
-		// TODO Auto-generated constructor stub
+		glFactories = new ArrayList<GLObject>();
 	}
 	
 	@Override
@@ -35,13 +36,14 @@ public class GLFactoryViewManager extends GLViewManager {
 	}
 	
 	public static void setupItems() {
-		
+		glFactories = new ArrayList<GLObject>();
 	}
 
 	@Override
 	public void drawItems() throws GLSingletonNotInitializedException {
-		// TODO Auto-generated method stub
-		
+		for (GLObject glo : glFactories) {
+			glo.draw();
+		}
 	}
 
 	@Override
