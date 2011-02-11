@@ -15,13 +15,13 @@ public abstract class GLViewManager {
 	protected final int BUFFSIZE = 512;
 	
 	protected GLDrawer drawer;
-	protected boolean isThreeDimensional;
+	protected boolean threeDimensional;
 	protected boolean selectionMode;
 	protected static double pickingRegion;
 
 	public GLViewManager (GLDrawer d, boolean is3D) {
 		this.drawer = d;
-		this.isThreeDimensional = is3D;
+		this.threeDimensional = is3D;
 		this.selectionMode = false;
 		pickingRegion = 0.1;
 	}
@@ -61,7 +61,7 @@ public abstract class GLViewManager {
 		GLSingleton.getGL().glLoadIdentity();
 			//Important: gl (0,0) is bottom left but window coordinates (0,0) are top left so we have to change this!
 			GLSingleton.getGLU().gluPickMatrix(this.drawer.getPickPoint().getX(),viewport[3]-this.drawer.getPickPoint().getY(), pickingRegion, pickingRegion, viewport, 0);
-			if (isThreeDimensional) {
+			if (threeDimensional) {
 				float h = (float) this.drawer.getScreenWidth() / this.drawer.getScreenHeight();
 				GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 1000.0f);
 			}
@@ -135,5 +135,10 @@ public abstract class GLViewManager {
 	public static void setPickingRegion(double pickRegion) {
 		pickingRegion = pickRegion;
 	}
+
+	public boolean isThreeDimensional() {
+		return threeDimensional;
+	}
+	
 }
 

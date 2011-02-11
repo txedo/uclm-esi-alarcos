@@ -75,13 +75,16 @@ public class GLDrawer implements GLEventListener, IConstants {
 				getViewManager(viewLevel).configureView();
 				oldViewLevel = viewLevel;
 			}
+			if (getViewManager(this.viewLevel).isThreeDimensional()) {
+				camera.render();
+				spotlight.render(camera.getPosition(), camera.getViewDir());
+			}
+			// TODO quitar este switch y llamar directmamente a getViewManager(this.viewLevel).manageView()
 			switch (this.viewLevel) {
 				case MapLevel:
 					this.mapLocationView.manageView();
 					break;
 				case ProjectLevel:
-					camera.render();
-					spotlight.render(camera.getPosition(), camera.getViewDir());
 					this.projectView.manageView();
 					break;
 				case FactoryLevel:
@@ -92,8 +95,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 					drawCaptions();
 					break;
 				case TowerLevel:
-					camera.render();
-					spotlight.render(camera.getPosition(), camera.getViewDir());
 					this.towerView.manageView();
 					break;
 			}
@@ -165,7 +166,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLProjectViewManager.setupItems();			
 			
 			// Añadimos los listener de teclado y ratón
-			glDrawable.addKeyListener(new MyKeyListener(this.camera));
+			glDrawable.addKeyListener(new MyKeyListener(this));
 			glDrawable.addMouseListener(new MyMouseListener(this));
 			glDrawable.addMouseWheelListener(new MyMouseWheelListener(this.camera));
 			glDrawable.addMouseMotionListener(new MyMouseMotionListener(this));
@@ -236,7 +237,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.oldViewLevel = this.viewLevel;
 		this.viewLevel = viewLevel;
 		// We reset the camera position in case that the view level is 3D
-		if (this.getViewManager(viewLevel).isThreeDimensional) {
+		if (this.getViewManager(viewLevel).isThreeDimensional()) {
 			this.spotlight.reset();
 			this.camera.reset();
 		}
