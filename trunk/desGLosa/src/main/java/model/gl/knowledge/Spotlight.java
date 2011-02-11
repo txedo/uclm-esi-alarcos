@@ -16,6 +16,7 @@ public class Spotlight {
 	private float[] color;
 	private final float[] position = {0.0f, 0.0f, 0.0f, POSITIONAL};
 	private float direction[]  = {1.0f, 0.0f, 1.0f};
+	private final float initialDirection[] = direction.clone();
 	
 	private final float light_ambient[] = {0.1f, 0.1f, 0.1f, 1.0f};
 	private final float light_full[] = {0.5f, 0.5f, 0.5f, 1.0f};
@@ -81,5 +82,9 @@ public class Spotlight {
 		// Enable Lighting
 		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
 		GLSingleton.getGL().glDisable(this.lightSource);	
+	}
+
+	public void reset() {
+		this.direction = this.initialDirection.clone();
 	}
 }

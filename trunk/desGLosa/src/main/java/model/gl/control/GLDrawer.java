@@ -237,6 +237,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.viewLevel = viewLevel;
 		// We reset the camera position in case that the view level is 3D
 		if (this.getViewManager(viewLevel).isThreeDimensional) {
+			this.spotlight.reset();
 			this.camera.reset();
 		}
 	}

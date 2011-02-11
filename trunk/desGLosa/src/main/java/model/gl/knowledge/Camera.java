@@ -15,8 +15,8 @@ public class Camera {
 	private Vector3f rightVector;
 	private float xrot;
 	private float yrot;
-	private Vector3f initialPosition;
-	private Vector3f initialViewDir;
+	private final Vector3f initialPosition;
+	private final Vector3f initialViewDir;
 	
 	public Camera(float xpos, float ypos, float zpos, float xviewdir, float yviewdir, float zviewdir) {
 		this.mousing = false;

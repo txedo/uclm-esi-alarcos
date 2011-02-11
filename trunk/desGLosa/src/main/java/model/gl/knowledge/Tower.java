@@ -33,27 +33,26 @@ public class Tower extends GLObject {
 	public void draw() throws GLSingletonNotInitializedException {
 		// Aplicamos el mismo color a todos los vértices de la torre
 		GLSingleton.getGL().glColor4fv(color.getColorFB());
-		// Configuramos la parte sólida de la torre (el relleno)
-		super.enableLight();
-		GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_FILL);		// Habilitamos el modo relleno
-		GLSingleton.getGL().glPolygonOffset(0.0f, 0.0f);				// Configuramos el offset del polígono sin desfase
-		this.drawTower();							// Dibujamos la torre
-		GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_FILL);	// Deshabilitamos el modo relleno
-		// Configuramos los bordes del polígono (en caso de que la llamada lo solicite)
+		// Dibujamos la torre con relleno
+		this.drawTower();							
+		// Pintamos las aristas de la torre
+		// Si se especifica el grosor de la arista, la pintaremos de negro
+		// Si no se especifica el grosor de la arista, la pintaremos del mismo color de la torre para tener antialiasing
 		if (this.edge_width > 0.0f)
-		{
-			// TODO para pintar torres sin aristas, pintaremos las aristas del mismo color que las torres y así obtendremos antialiasing por las líneas
-			super.disableLight();
-			GLSingleton.getGL().glLineWidth(edge_width);				// Configuramos el grosor del borde
-			GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_LINE);	// Habilitamos el modo línea
-			GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f);		// Desfasamos un poco para no dejar huecos en blanco sin rellenar entre la línea y el polígono
 			GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);			// Configuramos el color NEGRO para todas las líneas
-			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT, GL.GL_LINE);	// Renderizamos únicamente la parte frontal de la cara por razones de rendimiento
-			this.drawTower();						// Dibujamos la torre (sólo los bordes)
-			GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_LINE);	// Restauramos todo
-			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT, GL.GL_FILL);
-			GLSingleton.getGL().glPolygonOffset(0.0f, 0.0f);
-		}
+		// Configuración y pintado de aristas
+		GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_FILL);	// Deshabilitamos el modo relleno
+		super.disableLight();
+		GLSingleton.getGL().glLineWidth(edge_width > 0.0f? edge_width : 1.0f);	// Configuramos el grosor de la arista
+		GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_LINE);	// Habilitamos el modo línea
+		GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f);		// Desfasamos un poco para no dejar huecos en blanco sin rellenar entre la línea y el polígono
+		GLSingleton.getGL().glPolygonMode(GL.GL_FRONT, GL.GL_LINE);	// Renderizamos únicamente la parte frontal de la cara por razones de rendimiento
+		this.drawTower();						// Dibujamos la torre (sólo los bordes)
+		GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_LINE);	// Restauramos todo
+		GLSingleton.getGL().glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		GLSingleton.getGL().glPolygonOffset(0.0f, 0.0f);// Configuramos el offset del polígono sin desfase
+		GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_FILL);		// Habilitamos el modo relleno
+		super.enableLight();
 	}
 	
 	private void drawTower () throws GLSingletonNotInitializedException {

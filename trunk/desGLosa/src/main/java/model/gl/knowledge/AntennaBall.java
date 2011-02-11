@@ -34,13 +34,21 @@ public class AntennaBall extends GLObject {
 		this.rightChildBallColor = new Color (1.0f, 0.0f, 0.0f, 0.5f);
 	}
 
+	public boolean isProgression() {
+		return progression;
+	}
+
+	public void setProgression(boolean progression) {
+		this.progression = progression;
+	}
+
 	@Override
 	public void draw() throws GLSingletonNotInitializedException {		
 		GLSingleton.getGL().glLineWidth(ANTENNA_WIDTH);
 		// Draw the opaque element first (child balls and antennas)
 		GLSingleton.getGL().glPushMatrix();
 			// Move to the parent ball center
-			GLSingleton.getGL().glTranslatef(this.positionX, this.positionY, 0.0f);
+			GLSingleton.getGL().glTranslatef(this.positionX, this.parentBallRadius, this.positionY);
 			
 			// Draw left antenna
 			GLSingleton.getGL().glPushMatrix();
@@ -81,21 +89,14 @@ public class AntennaBall extends GLObject {
 			int texture = this.textures[0];
 			if (!this.progression) texture = this.textures[1];
 			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);			
-			// Disable depth mask (that is why we drawed opaque element first)
-			GLSingleton.getGL().glDepthMask(false);
-			// Enable Blending for gaining transparencies and image quality
-			GLSingleton.getGL().glEnable(GL.GL_BLEND);
-			GLSingleton.getGL().glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 			// Now we draw the sphere
 			GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 			GLSingleton.getGLU().gluSphere(this.quadric, this.parentBallRadius, this.subdivisions, this.subdivisions);
 			// Disable everything we enabled before
 			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_S);
 			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_T);
-			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping
-			GLSingleton.getGL().glDisable(GL.GL_BLEND);							// Disable Blending
-			// Enable depth mask again
-			GLSingleton.getGL().glDepthMask(true);
+			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+			GLSingleton.getGL().glDisable(GL.GL_CULL_FACE);
 		GLSingleton.getGL().glPopMatrix();
 	}
 

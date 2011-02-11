@@ -45,23 +45,23 @@ public class TextureLoader {
     
     private void makeRGBTexture(Texture img, int target, boolean mipmapped) throws GLSingletonNotInitializedException {
         if (mipmapped) {
-        	GLSingleton.getGLU().gluBuild2DMipmaps(target, GL.GL_RGB8, img.getWidth(), 
-                    img.getHeight(), GL.GL_RGB, GL.GL_UNSIGNED_BYTE, img.getPixels());
+        	GLSingleton.getGLU().gluBuild2DMipmaps(target, GL.GL_RGBA, img.getWidth(), 
+                    img.getHeight(), GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, img.getPixels());
         } else {
         	GLSingleton.getGL().glTexImage2D(target, 0, GL.GL_RGB, img.getWidth(), 
                     img.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE, img.getPixels());
         }
     }
 	
-	public void loadTexures () throws GLSingletonNotInitializedException, IOException {	
+	public void loadTexures (boolean isAlpha) throws GLSingletonNotInitializedException, IOException {	
 		textureNames = this.genTextures(textureNames.length);
 		
 		for (int i = 0; i < textureNames.length; i++) {
-            textures[i] = TextureReader.readTexture(tileNames[i], false);
+            textures[i] = TextureReader.readTexture(tileNames[i], isAlpha);
             //Create Nearest Filtered Texture
             GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureNames[i]);
 
-            makeRGBTexture(textures[i], GL.GL_TEXTURE_2D, false);
+            makeRGBTexture(textures[i], GL.GL_TEXTURE_2D, isAlpha);
             
             GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
             GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
