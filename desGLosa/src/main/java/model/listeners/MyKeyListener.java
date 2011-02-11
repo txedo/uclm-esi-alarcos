@@ -3,14 +3,15 @@ package model.listeners;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import model.gl.knowledge.Camera;
+import model.gl.control.EViewLevels;
+import model.gl.control.GLDrawer;
 
 public class MyKeyListener implements KeyListener {
 	
-	private Camera cam;
+	private GLDrawer drawer;
 
-	public MyKeyListener(Camera c) {
-		this.cam = c;
+	public MyKeyListener(GLDrawer d) {
+		this.drawer = d;
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -27,58 +28,70 @@ public class MyKeyListener implements KeyListener {
 		 * RESTA					disminuir zoom
 		 */
 		switch (e.getKeyCode()) {
+			case KeyEvent.VK_1:
+				this.drawer.setViewLevel(EViewLevels.MapLevel);
+				break;
+			case KeyEvent.VK_2:
+				this.drawer.setViewLevel(EViewLevels.MetricIndicatorLevel);
+				break;
+			case KeyEvent.VK_3:
+				this.drawer.setViewLevel(EViewLevels.ProjectLevel);
+				break;
+			case KeyEvent.VK_4:
+				this.drawer.setViewLevel(EViewLevels.FactoryLevel);
+				break;
 			case KeyEvent.VK_ESCAPE:
 				// TODO exit();
 				System.out.println("ESC");
 				break;
 			case KeyEvent.VK_ADD:
-				this.cam.zoomIn();
+				this.drawer.getCamera().zoomIn();
 				//System.out.println("+");
 				break;
 			case KeyEvent.VK_SUBTRACT:
-				this.cam.zoomOut();
+				this.drawer.getCamera().zoomOut();
 				//System.out.println("-");
 				break;
 			case KeyEvent.VK_A:
-				this.cam.rotateLeft();
+				this.drawer.getCamera().rotateLeft();
 				//System.out.println("Ctrl + <-");
 				break;
 			case KeyEvent.VK_Q:
-				this.cam.strafeLeft();
+				this.drawer.getCamera().strafeLeft();
 				//System.out.println("<-\t");
 				break;
 			case KeyEvent.VK_D:
-				this.cam.rotateRight();
+				this.drawer.getCamera().rotateRight();
 				//System.out.println("Ctrl + ->");
 				break;
 			case KeyEvent.VK_E:
-				this.cam.strafeRight();
+				this.drawer.getCamera().strafeRight();
 				//System.out.println("->");
 				break;
 			case KeyEvent.VK_PAGE_UP:
-				this.cam.lookUp();
+				this.drawer.getCamera().lookUp();
 				//System.out.println("Ctrl + A\t");
 				break;
 			case KeyEvent.VK_W:
-				this.cam.moveForward();
+				this.drawer.getCamera().moveForward();
 				//System.out.println("A");
 				break;
 			case KeyEvent.VK_PAGE_DOWN:
-				this.cam.lookDown();
+				this.drawer.getCamera().lookDown();
 				//System.out.println("Ctrl + V");
 				break;
 			case KeyEvent.VK_S:
-				this.cam.moveBackward();
+				this.drawer.getCamera().moveBackward();
 				//System.out.println("V");
 				break;
 			case KeyEvent.VK_X:
-				this.cam.lookBackward();
+				this.drawer.getCamera().lookBackward();
 				break;
 			case KeyEvent.VK_SPACE:
-				this.cam.moveUp();
+				this.drawer.getCamera().moveUp();
 				break;
 			case KeyEvent.VK_C:
-				this.cam.moveDown();
+				this.drawer.getCamera().moveDown();
 				break;
 		}
 	}

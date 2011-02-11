@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
 
 import exceptions.gl.GLSingletonNotInitializedException;
@@ -31,12 +32,14 @@ public class GLFactoryViewManager extends GLViewManager {
 	@Override
 	public void manageView() throws GLSingletonNotInitializedException,
 			IOException {
-		// TODO Auto-generated method stub
-		
+		super.drawFloor();
+		this.drawItems();
 	}
 	
 	public static void setupItems() {
 		glFactories = new ArrayList<GLObject>();
+		GLFactory glf = new GLFactory(5.0f, 5.0f);
+		glFactories.add(glf);
 	}
 
 	@Override
