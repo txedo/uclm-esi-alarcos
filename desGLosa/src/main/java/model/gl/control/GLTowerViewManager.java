@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import model.gl.GLDrawer;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.Tower;
 import model.knowledge.Color;

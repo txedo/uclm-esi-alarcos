@@ -9,6 +9,7 @@ import com.sun.opengl.util.BufferUtil;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
+import model.gl.GLDrawer;
 import model.gl.GLSingleton;
 
 public abstract class GLViewManager {
@@ -97,17 +98,18 @@ public abstract class GLViewManager {
 	protected void handleHits (int hits, int[] data) {
 		int offset = 0;
 		System.out.println("Number of hits = " + hits);
-		if (hits > 0) {
-			// TODO quedarse con la que está más cerca del viewpoint en el eje Z
-			for (int i = 0; i < hits; i++) {
-				System.out.println("number " + data[offset++]);
-				System.out.println("minZ " + data[offset++]);
-				System.out.println("maxZ " + data[offset++]);
-				System.out.println("stackName " + data[offset]);
-				int selectedObject = data[offset];
-				selectedObjectHandler(selectedObject);
-				offset++;
+		if (hits > 0) {											// If There Were More Than 0 Hits
+			int choose = data[3];								// Make Our Selection The First Object
+			int depth = data[1];								// Store How Far Away It Is
+			for (int loop = 1; loop < hits; loop++) {			// Loop Through All The Detected Hits
+				// If This Object Is Closer To Us Than The One We Have Selected
+				if (data[loop*4+1] < depth) {
+					choose = data[loop*4+3];					// Select The Closer Object
+					depth = data[loop*4+1];						// Store How Far Away It Is
+				}
 			}
+			selectedObjectHandler(choose);
+			offset++;
 		}
 	}
 	

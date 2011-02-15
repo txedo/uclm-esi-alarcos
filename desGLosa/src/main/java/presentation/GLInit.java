@@ -9,7 +9,7 @@ import java.awt.event.WindowEvent;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 
-import model.gl.control.GLDrawer;
+import model.gl.GLDrawer;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;

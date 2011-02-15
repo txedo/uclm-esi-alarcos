@@ -1,8 +1,10 @@
 package model.gl.control;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.gl.GLDrawer;
 import model.gl.GLSingleton;
 import model.gl.knowledge.Edge;
 import model.gl.knowledge.GLObject;
@@ -35,7 +37,7 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 	}
 	
 	@Override
-	public void manageView() throws GLSingletonNotInitializedException {
+	public void manageView() throws GLSingletonNotInitializedException, IOException {
 		if (this.isSelectionMode()) this.selectItem();
 		this.drawItems();
 	}
