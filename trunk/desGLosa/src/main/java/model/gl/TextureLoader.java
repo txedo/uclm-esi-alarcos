@@ -48,7 +48,7 @@ public class TextureLoader {
         	GLSingleton.getGLU().gluBuild2DMipmaps(target, GL.GL_RGBA, img.getWidth(), 
                     img.getHeight(), GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, img.getPixels());
         } else {
-        	GLSingleton.getGL().glTexImage2D(target, 0, GL.GL_RGB, img.getWidth(), 
+        	GLSingleton.getGL().glTexImage2D(target, 0, GL.GL_RGB8, img.getWidth(), 
                     img.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE, img.getPixels());
         }
     }

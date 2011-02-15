@@ -4,8 +4,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import model.gl.GLDrawer;
 import model.gl.control.EViewLevels;
-import model.gl.control.GLDrawer;
 
 
 public class MyMouseListener implements MouseListener {

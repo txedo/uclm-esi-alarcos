@@ -40,4 +40,9 @@ public abstract class GLObject {
 	public void setPositionZ(float origin_z) {
 		this.positionY = origin_z;
 	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
 }

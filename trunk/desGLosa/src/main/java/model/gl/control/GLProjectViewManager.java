@@ -8,10 +8,13 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
+import model.gl.GLDrawer;
 import model.gl.GLSingleton;
+import model.gl.GLUtils;
 import model.gl.TextureLoader;
 import model.gl.knowledge.AntennaBall;
 import model.gl.knowledge.GLObject;
+import model.knowledge.Color;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -64,22 +67,29 @@ public class GLProjectViewManager extends GLViewManager {
 	@Override
 	public void manageView() throws GLSingletonNotInitializedException,
 			IOException {
+		if (this.isSelectionMode()) this.selectItem();
 		super.drawFloor();
 		this.drawItems();
-
 	}
 	
 	public static void setupItems() {
 		AntennaBall ab = new AntennaBall(1.0f, 1.0f);
+		ab.setLabel("projecto 1");
+		ab.setParentBallRadius(2.0f);
 		antennaBalls.add(ab);
-		ab = new AntennaBall(4.0f, 4.0f);
+		ab = new AntennaBall(5.0f, 5.0f);
 		ab.setProgression(false);
+		ab.setColor(new Color(0.5f, 0.5f, 0.5f, 0.5f));
+		ab.setLabel("projecto 2");
 		antennaBalls.add(ab);
 	}
 
 	@Override
 	public void drawItems() throws GLSingletonNotInitializedException {
+		int cont = 1;
 		for (GLObject ball : antennaBalls) {
+			if (selectionMode)
+				GLSingleton.getGL().glLoadName(cont++);
 			ball.draw();
 		}
 	}
@@ -87,7 +97,7 @@ public class GLProjectViewManager extends GLViewManager {
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
 		// TODO Auto-generated method stub
-
+		System.err.println("Selected project: " + selectedObject);
 	}
 
 }

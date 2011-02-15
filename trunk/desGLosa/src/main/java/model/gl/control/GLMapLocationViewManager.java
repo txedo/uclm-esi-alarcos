@@ -9,6 +9,7 @@ import javax.media.opengl.GL;
 import model.NotifyUIManager;
 import model.business.control.MapManager;
 import model.business.knowledge.Location;
+import model.gl.GLDrawer;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.TextureLoader;

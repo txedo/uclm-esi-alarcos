@@ -1,9 +1,12 @@
 package model.gl.knowledge;
 
+import java.io.IOException;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLUquadric;
 
 import model.gl.GLSingleton;
+import model.gl.control.GLFontBuilder;
 import model.knowledge.Color;
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -16,8 +19,12 @@ public class AntennaBall extends GLObject {
 	private float childBallRadius;
 	private Color leftChildBallColor;
 	private Color rightChildBallColor;
+	private int leftChildBallValue;
+	private int rightChildBallValue;
 	private final float ANTENNA_WIDTH = 3.0f;
 	private final float ANTENNA_ANGLE = 45.0f;
+
+	private String label;
 	
 	private GLUquadric quadric;
 	
@@ -32,6 +39,9 @@ public class AntennaBall extends GLObject {
 		this.childBallRadius = 0.5f;
 		this.leftChildBallColor = new Color (0.0f, 1.0f, 0.0f, 0.5f);
 		this.rightChildBallColor = new Color (1.0f, 0.0f, 0.0f, 0.5f);
+		
+		this.leftChildBallValue = 0;
+		this.rightChildBallValue = 0;
 	}
 
 	public boolean isProgression() {
@@ -43,7 +53,7 @@ public class AntennaBall extends GLObject {
 	}
 
 	@Override
-	public void draw() throws GLSingletonNotInitializedException {		
+	public void draw() throws GLSingletonNotInitializedException {
 		GLSingleton.getGL().glLineWidth(ANTENNA_WIDTH);
 		// Draw the opaque element first (child balls and antennas)
 		GLSingleton.getGL().glPushMatrix();
@@ -55,10 +65,10 @@ public class AntennaBall extends GLObject {
 				GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
 				GLSingleton.getGL().glBegin(GL.GL_LINES);
 					GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-					GLSingleton.getGL().glVertex3f(parentBallRadius*2, (float)Math.sin(ANTENNA_ANGLE), 0.0f);
+					GLSingleton.getGL().glVertex3f(-parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
 				GLSingleton.getGL().glEnd();
-				// Draw left child ball
-				GLSingleton.getGL().glTranslatef(parentBallRadius*2, (float)Math.sin(ANTENNA_ANGLE), 0.0f);
+				// Draw right child ball
+				GLSingleton.getGL().glTranslatef(-parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
 				GLSingleton.getGL().glColor4fv(this.leftChildBallColor.getColorFB());
 				GLSingleton.getGLU().gluSphere(this.quadric, this.childBallRadius, this.subdivisions, this.subdivisions);
 			GLSingleton.getGL().glPopMatrix();
@@ -68,20 +78,51 @@ public class AntennaBall extends GLObject {
 				GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
 				GLSingleton.getGL().glBegin(GL.GL_LINES);
 					GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-					GLSingleton.getGL().glVertex3f(-parentBallRadius*2, (float)Math.sin(ANTENNA_ANGLE), 0.0f);
+					GLSingleton.getGL().glVertex3f(parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
 				GLSingleton.getGL().glEnd();
-				// Draw right child ball
-				GLSingleton.getGL().glTranslatef(-parentBallRadius*2, (float)Math.sin(ANTENNA_ANGLE), 0.0f);
+				// Draw left child ball
+				GLSingleton.getGL().glTranslatef(parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
+				/**************/
+				// Enable texture mapping
+				GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
+				GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_S);
+				GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_T);
+				// Draw the parent ball
+				// Set Up Sphere Mapping
+				GLSingleton.getGL().glTexGeni(GL.GL_S, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
+				GLSingleton.getGL().glTexGeni(GL.GL_T, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
+				try {
+					GLFontBuilder.getInstance().glPrint(0, 0, "5555", 1, true);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				/*******************/
 				GLSingleton.getGL().glColor4fv(this.rightChildBallColor.getColorFB());
 				GLSingleton.getGLU().gluSphere(this.quadric, this.childBallRadius, this.subdivisions, this.subdivisions);
+				/********************/
+				// Disable everything we enabled before
+				GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_S);
+				GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_T);
+				GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+				/*******************/
 			GLSingleton.getGL().glPopMatrix();
-		
-			// Draw the parent ball
-			GLSingleton.getGL().glEnable(GL.GL_CULL_FACE);
+			
+			// Write the label
+			try {
+				GLSingleton.getGL().glPushMatrix();
+					GLSingleton.getGL().glTranslatef(0.0f, -parentBallRadius, parentBallRadius);
+					GLFontBuilder.getInstance().glPrint(0, 0, this.label, 1, true);
+				GLSingleton.getGL().glPopMatrix();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			// Enable texture mapping
-			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);     				// Enable 2D Texture Mapping
+			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
 			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_S);
 			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_T);
+			// Draw the parent ball
 			// Set Up Sphere Mapping
 			GLSingleton.getGL().glTexGeni(GL.GL_S, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
 			GLSingleton.getGL().glTexGeni(GL.GL_T, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
@@ -92,11 +133,11 @@ public class AntennaBall extends GLObject {
 			// Now we draw the sphere
 			GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 			GLSingleton.getGLU().gluSphere(this.quadric, this.parentBallRadius, this.subdivisions, this.subdivisions);
+			
 			// Disable everything we enabled before
 			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_S);
 			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_T);
 			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
-			GLSingleton.getGL().glDisable(GL.GL_CULL_FACE);
 		GLSingleton.getGL().glPopMatrix();
 	}
 
@@ -108,4 +149,32 @@ public class AntennaBall extends GLObject {
 		this.quadric = quadric;
 	}
 
+	public void setParentBallRadius(float parentBallRadius) {
+		this.parentBallRadius = parentBallRadius;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public int getLeftChildBallValue() {
+		return leftChildBallValue;
+	}
+
+	public void setLeftChildBallValue(int leftChildBallValue) {
+		this.leftChildBallValue = leftChildBallValue;
+	}
+
+	public int getRightChildBallValue() {
+		return rightChildBallValue;
+	}
+
+	public void setRightChildBallValue(int rightChildBallValue) {
+		this.rightChildBallValue = rightChildBallValue;
+	}
+	
 }

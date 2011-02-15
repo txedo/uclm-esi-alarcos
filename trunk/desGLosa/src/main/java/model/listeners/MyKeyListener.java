@@ -3,8 +3,8 @@ package model.listeners;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import model.gl.GLDrawer;
 import model.gl.control.EViewLevels;
-import model.gl.control.GLDrawer;
 
 public class MyKeyListener implements KeyListener {
 	
@@ -39,6 +39,10 @@ public class MyKeyListener implements KeyListener {
 				break;
 			case KeyEvent.VK_4:
 				this.drawer.setViewLevel(EViewLevels.FactoryLevel);
+				break;
+			case KeyEvent.VK_F12:
+				if (this.drawer.isDebugMode()) this.drawer.setDebugMode(false);
+				else this.drawer.setDebugMode(true);
 				break;
 			case KeyEvent.VK_ESCAPE:
 				// TODO exit();

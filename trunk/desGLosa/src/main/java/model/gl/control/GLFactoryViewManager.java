@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.gl.GLDrawer;
+import model.gl.GLSingleton;
+import model.gl.GLUtils;
 import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
 
@@ -34,6 +37,8 @@ public class GLFactoryViewManager extends GLViewManager {
 			IOException {
 		super.drawFloor();
 		this.drawItems();
+		GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
+		GLUtils.renderBitmapString(0, 0, 0, 2, "asdfasdfasdfasdfasdf");
 	}
 	
 	public static void setupItems() {
