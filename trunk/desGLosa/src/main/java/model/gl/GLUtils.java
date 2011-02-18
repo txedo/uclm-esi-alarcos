@@ -248,15 +248,12 @@ public class GLUtils {
 
 	static public void setOrthoProjection(int screenHeight, int screenWidth,
 			float glDim) throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glDisable(GL.GL_DEPTH_TEST); // Disables Depth
-															// Testing
+		GLSingleton.getGL().glDisable(GL.GL_DEPTH_TEST); // Disables Depth Testing
 		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
 		GLSingleton.getGL().glLoadIdentity();
 		float h = (float) screenHeight / (float) screenWidth;
-		// GLSingleton.getGLU().gluOrtho2D(0.0, glDim, 0.0, glDim*h);
 		GLSingleton.getGL().glOrtho(0.0, glDim, 0.0, glDim * h, -1, 1);
 		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
-		GLSingleton.getGL().glLoadIdentity();
 	}
 
 	static public void setPerspectiveProjection(int screenHeight,
@@ -267,7 +264,6 @@ public class GLUtils {
 		float h = (float) screenWidth / (float) screenHeight;
 		GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 1000.0f);
 		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
-		GLSingleton.getGL().glLoadIdentity();
 	}
 
 	static public void debugPrintCoords(int x, int y)

@@ -31,7 +31,7 @@ public class GLInit {
 		capabilities.setHardwareAccelerated(true);
 		capabilities.setDoubleBuffered(true);
 		
-		glCanvas = new GLCanvas();
+		glCanvas = new GLCanvas(capabilities);
 	    glCanvas.addGLEventListener(new GLDrawer());
 	    glCanvas.setFocusable(true);
 	    glCanvas.requestFocus();

@@ -1,5 +1,6 @@
 package model.gl.control;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,7 +30,7 @@ public class GLTowerViewManager extends GLViewManager {
 	}
 
 	@Override
-	public void manageView() throws GLSingletonNotInitializedException {
+	public void manageView() throws GLSingletonNotInitializedException, IOException {
 		super.drawFloor();
 		this.drawItems();
 	}

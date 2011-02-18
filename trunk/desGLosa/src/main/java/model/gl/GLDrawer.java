@@ -102,11 +102,11 @@ public class GLDrawer implements GLEventListener, IConstants {
 					this.towerView.manageView();
 					break;
 			}
-			if (this.debugMode) {
-				GLUtils.beginOrtho(this.screenHeight, this.screenHeight, this.DIM);
-				GLUtils.renderBitmapString(0.0f, 0.0f, 1, this.log.toString());
-				GLUtils.endOrtho();
-			}
+//			if (this.debugMode) {
+//				GLUtils.beginOrtho(this.screenHeight, this.screenHeight, this.DIM);
+//				GLUtils.renderBitmapString(0.0f, 0.0f, 1, this.log.toString());
+//				GLUtils.endOrtho();
+//			}
 			glDrawable.swapBuffers();
 			GLSingleton.getGL().glFlush();
 		} catch (GLSingletonNotInitializedException e) {
@@ -166,15 +166,17 @@ public class GLDrawer implements GLEventListener, IConstants {
 			
 			// Creamos una cámara y un foco de luz
 			camera = new Camera(5.0f, 7.0f, 15.0f, 0.0f, -0.5f, -1.0f);
-			spotlight = new Spotlight(1.0f, 1.0f, 1.0f);
+			spotlight = new Spotlight(0.6f, 0.6f, 0.6f);
 	
 			// Habilitamos el color natural de los materiales
 			GLSingleton.getGL().glEnable(GL.GL_COLOR_MATERIAL);
+			GLSingleton.getGL().glEnable(GL.GL_NORMALIZE);
 			
 			// Configuramos los parámetros del mundo
 			((GLMetricIndicatorViewManager)metricIndicatorView).setupItems();
 			setupCaptions();
-			GLProjectViewManager.setupItems();			
+			GLProjectViewManager.setupItems();
+			GLFactoryViewManager.setupItems();
 			
 			// Añadimos los listener de teclado y ratón
 			glDrawable.addKeyListener(new MyKeyListener(this));

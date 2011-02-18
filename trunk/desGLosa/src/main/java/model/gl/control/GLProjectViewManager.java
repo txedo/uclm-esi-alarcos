@@ -10,7 +10,6 @@ import javax.media.opengl.glu.GLUquadric;
 
 import model.gl.GLDrawer;
 import model.gl.GLSingleton;
-import model.gl.GLUtils;
 import model.gl.TextureLoader;
 import model.gl.knowledge.AntennaBall;
 import model.gl.knowledge.GLObject;
@@ -47,8 +46,6 @@ public class GLProjectViewManager extends GLViewManager {
 			GLSingleton.getGLU().gluQuadricDrawStyle( quadric, GLU.GLU_FILL);
 			GLSingleton.getGLU().gluQuadricOrientation( quadric, GLU.GLU_OUTSIDE);
 			
-			GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
-			
 			for (GLObject ball : antennaBalls) {
 				((AntennaBall)ball).setQuadric(quadric);
 				((AntennaBall)ball).setTextures(textureLoader.getTextureNames());
@@ -69,6 +66,7 @@ public class GLProjectViewManager extends GLViewManager {
 			IOException {
 		if (this.isSelectionMode()) this.selectItem();
 		super.drawFloor();
+		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
 		this.drawItems();
 	}
 	
@@ -79,7 +77,7 @@ public class GLProjectViewManager extends GLViewManager {
 		antennaBalls.add(ab);
 		ab = new AntennaBall(5.0f, 5.0f);
 		ab.setProgression(false);
-		ab.setColor(new Color(0.5f, 0.5f, 0.5f, 0.5f));
+		ab.setColor(new Color(0.8f, 0.8f, 0.8f));
 		ab.setLabel("projecto 2");
 		antennaBalls.add(ab);
 	}

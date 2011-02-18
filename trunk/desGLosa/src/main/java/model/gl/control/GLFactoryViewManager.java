@@ -37,8 +37,8 @@ public class GLFactoryViewManager extends GLViewManager {
 			IOException {
 		super.drawFloor();
 		this.drawItems();
-		GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
-		GLUtils.renderBitmapString(0, 0, 0, 2, "asdfasdfasdfasdfasdf");
+		//GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
+		//GLUtils.renderBitmapString(0, 0, 0, 2, "asdfasdfasdfasdfasdf");
 	}
 	
 	public static void setupItems() {

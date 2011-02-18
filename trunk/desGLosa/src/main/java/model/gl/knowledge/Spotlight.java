@@ -19,39 +19,44 @@ public class Spotlight {
 	private final float initialDirection[] = direction.clone();
 	
 	private final float light_ambient[] = {0.1f, 0.1f, 0.1f, 1.0f};
-	private final float light_full[] = {0.5f, 0.5f, 0.5f, 1.0f};
+	private final float light_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	private final float light_diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	private float mat_ambient[] = {0.0f, 0.0f, 0.0f, 1.0f};
 	private float mat_specular[] = {0.8f, 0.8f, 0.8f, 1.0f};
-	private float mat_shininess = 80.0f;
+	private float mat_diffuse[] = {0.5f, 0.5f, 0.5f, 1.0f};
+	private float mat_shininess = 96.0f;
 
 	public Spotlight (float r, float g, float b) throws GLSingletonNotInitializedException {
 		color = new float[4];
 		color[0] = r;
 		color[1] = g;
 		color[2] = b;
-		color[3] = 1.0f;
+		color[3] = 0.0f;
 		
 		if (GLSingleton.getGL() != null) {
+			GLSingleton.getGL().glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, mat_ambient, 0);
 			GLSingleton.getGL().glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, mat_specular, 0);
+			GLSingleton.getGL().glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, mat_diffuse, 0);
 			GLSingleton.getGL().glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, mat_shininess);
-			GLSingleton.getGL().glColorMaterial(GL.GL_FRONT, GL.GL_EMISSION) ;
+			//GLSingleton.getGL().glColorMaterial(GL.GL_FRONT, GL.GL_EMISSION);
 			
-			// Position The Light
-			GLSingleton.getGL().glLightfv(this.lightSource, GL.GL_AMBIENT, light_ambient, 0);
 			// Setup The Light
-			GLSingleton.getGL().glLightfv(this.lightSource, GL.GL_DIFFUSE, light_full, 0);
-			// Render The Spotlight
+			GLSingleton.getGL().glLightfv(this.lightSource, GL.GL_AMBIENT, light_ambient, 0);
+			GLSingleton.getGL().glLightfv(this.lightSource, GL.GL_SPECULAR, light_specular, 0);
+			GLSingleton.getGL().glLightfv(this.lightSource, GL.GL_DIFFUSE, light_diffuse, 0);
+			// Position and Render The Spotlight
 			Vector3f pos = new Vector3f(position[0], position[1], position[2]);
 			Vector3f dir = new Vector3f(direction[0], direction[1], direction[2]);
 			this.render(pos, dir);
 
 			// Angle of the cone light emitted by the spot : value between 0 to 180
-			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_SPOT_CUTOFF, 120.0f);
+			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_SPOT_CUTOFF, 105.0f);
 			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_SPOT_EXPONENT, 15.0f);
 		       
 	        // Light attenuation (default values used here : no attenuation with the distance)
-			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_CONSTANT_ATTENUATION, 1.0f);
-			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_LINEAR_ATTENUATION, 0.0f);
-			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_QUADRATIC_ATTENUATION, 0.0f);
+			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_CONSTANT_ATTENUATION, 0.8f);
+			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_LINEAR_ATTENUATION, 0.005f);
+			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_QUADRATIC_ATTENUATION, 0.005f);
 
 			GLSingleton.getGL().glLightModeli(GL.GL_LIGHT_MODEL_LOCAL_VIEWER, GL.GL_TRUE);
 			this.switchOn();
