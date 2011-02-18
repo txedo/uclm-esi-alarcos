@@ -31,14 +31,14 @@ public class AntennaBall extends GLObject {
 	public AntennaBall (float pos_x, float pos_y) {
 		this.positionX = pos_x;
 		this.positionY = pos_y;
-		this.color = new Color(0.0f, 0.0f, 1.0f, 1.0f);	// This will be used for the parent ball color
+		this.color = new Color(0.0f, 0.0f, 1.0f);	// This will be used for the parent ball color
 
 		this.subdivisions = 32;
 		this.parentBallRadius = 1.0f;
 		this.progression = true;
 		this.childBallRadius = 0.5f;
-		this.leftChildBallColor = new Color (0.0f, 1.0f, 0.0f, 0.5f);
-		this.rightChildBallColor = new Color (1.0f, 0.0f, 0.0f, 0.5f);
+		this.leftChildBallColor = new Color (0.0f, 1.0f, 0.0f);
+		this.rightChildBallColor = new Color (1.0f, 0.0f, 0.0f);
 		
 		this.leftChildBallValue = 0;
 		this.rightChildBallValue = 0;
@@ -82,30 +82,8 @@ public class AntennaBall extends GLObject {
 				GLSingleton.getGL().glEnd();
 				// Draw left child ball
 				GLSingleton.getGL().glTranslatef(parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
-				/**************/
-				// Enable texture mapping
-				GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
-				GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_S);
-				GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_T);
-				// Draw the parent ball
-				// Set Up Sphere Mapping
-				GLSingleton.getGL().glTexGeni(GL.GL_S, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
-				GLSingleton.getGL().glTexGeni(GL.GL_T, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
-				try {
-					GLFontBuilder.getInstance().glPrint(0, 0, "5555", 1, true);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				/*******************/
 				GLSingleton.getGL().glColor4fv(this.rightChildBallColor.getColorFB());
 				GLSingleton.getGLU().gluSphere(this.quadric, this.childBallRadius, this.subdivisions, this.subdivisions);
-				/********************/
-				// Disable everything we enabled before
-				GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_S);
-				GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_T);
-				GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
-				/*******************/
 			GLSingleton.getGL().glPopMatrix();
 			
 			// Write the label
@@ -119,25 +97,26 @@ public class AntennaBall extends GLObject {
 				e.printStackTrace();
 			}
 			// Enable texture mapping
-			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
-			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_S);
-			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_T);
+//			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
+//			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_S);
+//			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_T);
 			// Draw the parent ball
 			// Set Up Sphere Mapping
-			GLSingleton.getGL().glTexGeni(GL.GL_S, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
-			GLSingleton.getGL().glTexGeni(GL.GL_T, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
+//			GLSingleton.getGL().glTexGeni(GL.GL_S, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
+//			GLSingleton.getGL().glTexGeni(GL.GL_T, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
             // Bind the APPLY(0) or CANCEL(1) texture
 			int texture = this.textures[0];
 			if (!this.progression) texture = this.textures[1];
-			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);			
+//			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);
+//			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
 			// Now we draw the sphere
 			GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 			GLSingleton.getGLU().gluSphere(this.quadric, this.parentBallRadius, this.subdivisions, this.subdivisions);
 			
 			// Disable everything we enabled before
-			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_S);
-			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_T);
-			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+//			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_S);
+//			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_T);
+//			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
 		GLSingleton.getGL().glPopMatrix();
 	}
 

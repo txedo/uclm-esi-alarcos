@@ -11,6 +11,8 @@ public class GLLogger {
 	private float [] aliased_point_size_range = new float[2];
 	private float [] smooth_point_size_range = new float[2];
 	private float [] smooth_point_size_granularity = new float[1];
+	private int [] elements_vertices = new int[1];
+	private int [] elements_indices = new int[1];
 
 	public GLLogger () throws GLSingletonNotInitializedException {
 		vendor = GLSingleton.getGL().glGetString(GL.GL_VENDOR);
@@ -20,6 +22,9 @@ public class GLLogger {
 		GLSingleton.getGL().glGetFloatv(GL.GL_ALIASED_POINT_SIZE_RANGE, aliased_point_size_range, 0);
 		GLSingleton.getGL().glGetFloatv(GL.GL_SMOOTH_POINT_SIZE_RANGE, smooth_point_size_range, 0);
 		GLSingleton.getGL().glGetFloatv(GL.GL_SMOOTH_POINT_SIZE_GRANULARITY, smooth_point_size_granularity, 0);
+		
+		GLSingleton.getGL().glGetIntegerv(GL.GL_MAX_ELEMENTS_VERTICES, elements_vertices, 0);
+		GLSingleton.getGL().glGetIntegerv(GL.GL_MAX_ELEMENTS_INDICES, elements_indices, 0);
 	}
 
 	public String toString() {
@@ -31,6 +36,9 @@ public class GLLogger {
 		sb.append("ALIASED_POINT_SIZE_RANGE: [" + aliased_point_size_range[0] + ", " + aliased_point_size_range[1] + "]\n");
 		sb.append("SMOOTH_POINT_SIZE_RANGE: [" + smooth_point_size_range[0] + ", " + smooth_point_size_range[1] + "]\n");
 		sb.append("SMOOTH_POINT_SIZE_GRANULARITY: " + smooth_point_size_granularity[0] + "\n");
+		sb.append("\n");
+		sb.append("MAX_ELEMENTS_VERTICES: " + elements_vertices[0] + "\n");
+		sb.append("MAX_ELEMENTS_INDICES: " + elements_indices[0] + "\n");
 		sb.append("\n");
 		return sb.toString();
 	}
