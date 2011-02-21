@@ -6,6 +6,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLUquadric;
 
 import model.gl.GLSingleton;
+import model.gl.GLUtils;
 import model.gl.control.GLFontBuilder;
 import model.knowledge.Color;
 import exceptions.gl.GLSingletonNotInitializedException;
@@ -54,39 +55,15 @@ public class AntennaBall extends GLObject {
 
 	@Override
 	public void draw() throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glLineWidth(ANTENNA_WIDTH);
-		// Draw the opaque element first (child balls and antennas)
 		GLSingleton.getGL().glPushMatrix();
 			// Move to the parent ball center
 			GLSingleton.getGL().glTranslatef(this.positionX, this.parentBallRadius, this.positionY);
 			
-			// Draw left antenna
-			GLSingleton.getGL().glPushMatrix();
-				GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
-				GLSingleton.getGL().glBegin(GL.GL_LINES);
-					GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-					GLSingleton.getGL().glVertex3f(-parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
-				GLSingleton.getGL().glEnd();
-				// Draw right child ball
-				GLSingleton.getGL().glTranslatef(-parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
-				GLSingleton.getGL().glColor4fv(this.leftChildBallColor.getColorFB());
-				GLSingleton.getGLU().gluSphere(this.quadric, this.childBallRadius, this.subdivisions, this.subdivisions);
-			GLSingleton.getGL().glPopMatrix();
+			// Draw the child balls
+			this.drawChildBall(true, this.leftChildBallColor, this.leftChildBallValue);
+			this.drawChildBall(false, this.rightChildBallColor, this.rightChildBallValue);
 			
-			// Draw right antenna and its child ball
-			GLSingleton.getGL().glPushMatrix();
-				GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
-				GLSingleton.getGL().glBegin(GL.GL_LINES);
-					GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-					GLSingleton.getGL().glVertex3f(parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
-				GLSingleton.getGL().glEnd();
-				// Draw left child ball
-				GLSingleton.getGL().glTranslatef(parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
-				GLSingleton.getGL().glColor4fv(this.rightChildBallColor.getColorFB());
-				GLSingleton.getGLU().gluSphere(this.quadric, this.childBallRadius, this.subdivisions, this.subdivisions);
-			GLSingleton.getGL().glPopMatrix();
-			
-			// Write the label
+			// Write the project label
 			try {
 				GLSingleton.getGL().glPushMatrix();
 					GLSingleton.getGL().glTranslatef(0.0f, -parentBallRadius, parentBallRadius);
@@ -96,27 +73,48 @@ public class AntennaBall extends GLObject {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			// Drawing the parent ball
 			// Enable texture mapping
-//			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
-//			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_S);
-//			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_T);
-			// Draw the parent ball
+			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
+			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_S);
+			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_T);
 			// Set Up Sphere Mapping
-//			GLSingleton.getGL().glTexGeni(GL.GL_S, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
-//			GLSingleton.getGL().glTexGeni(GL.GL_T, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
+			GLSingleton.getGL().glTexGeni(GL.GL_S, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
+			GLSingleton.getGL().glTexGeni(GL.GL_T, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
             // Bind the APPLY(0) or CANCEL(1) texture
 			int texture = this.textures[0];
 			if (!this.progression) texture = this.textures[1];
-//			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);
-//			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
+			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);
 			// Now we draw the sphere
 			GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 			GLSingleton.getGLU().gluSphere(this.quadric, this.parentBallRadius, this.subdivisions, this.subdivisions);
 			
 			// Disable everything we enabled before
-//			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_S);
-//			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_T);
-//			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_S);
+			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_T);
+			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+		GLSingleton.getGL().glPopMatrix();
+	}
+	
+	private void drawChildBall (boolean left, Color color, int value) throws GLSingletonNotInitializedException {
+		int x = 1;
+		if (left) x = -1;
+		GLSingleton.getGL().glLineWidth(ANTENNA_WIDTH);
+		// Draw the antenna
+		GLSingleton.getGL().glPushMatrix();
+			GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glBegin(GL.GL_LINES);
+				GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
+				GLSingleton.getGL().glVertex3f(x*parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
+			GLSingleton.getGL().glEnd();
+			// Draw the child ball
+			GLSingleton.getGL().glTranslatef(x*parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
+			GLSingleton.getGL().glColor4fv(color.getColorFB());
+			GLSingleton.getGLU().gluSphere(this.quadric, this.childBallRadius, this.subdivisions, this.subdivisions);
+			// Draw its value
+			GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
+			GLUtils.renderBitmapString(0, this.childBallRadius*1.10f, 0, 2, ""+value);
 		GLSingleton.getGL().glPopMatrix();
 	}
 

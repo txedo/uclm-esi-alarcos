@@ -28,7 +28,7 @@ public class GLFontBuilder {
 	 */
 	protected GLFontBuilder() throws GLSingletonNotInitializedException, IOException {
 		textureLoader = new TextureLoader(new String[]{"src/main/resources/gl/Font.bmp"});
-		textureLoader.loadTexures(true);		// Load and Bind Our Font Texture
+		textureLoader.loadTexures(true, true, true);		// Load and Bind Our Font Texture
 	}
 
 	/**

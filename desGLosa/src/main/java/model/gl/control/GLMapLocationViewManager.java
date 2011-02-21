@@ -54,7 +54,7 @@ public class GLMapLocationViewManager extends GLViewManager {
 		if (hasTextureMapChanged) {
 			isTextureMapReady = false;
 			setupItems();
-			textureMapLoader.loadTexures(false);
+			textureMapLoader.loadTexures(false, false, true);
 			hasTextureMapChanged = false;
 			isTextureMapReady = true;
 		}

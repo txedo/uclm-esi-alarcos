@@ -55,7 +55,7 @@ public class Camera {
 		Vector3f aux = new Vector3f();
 		aux = position.add(direccion.mult(IConstants.DESPL*multiplicator));
 		if (aux.getY() < 0) aux.setY(0);
-		position = aux;
+		position = aux.clone();
 	}
 	
 	public void strafeLeft() {

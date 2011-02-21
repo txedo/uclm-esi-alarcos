@@ -53,20 +53,28 @@ public class TextureLoader {
         }
     }
 	
-	public void loadTexures (boolean isAlpha) throws GLSingletonNotInitializedException, IOException {	
+	public void loadTexures (boolean useAlphaChannel, boolean useMipmaps, boolean linearFiltering) throws GLSingletonNotInitializedException, IOException {	
 		textureNames = this.genTextures(textureNames.length);
 		
 		for (int i = 0; i < textureNames.length; i++) {
-            textures[i] = TextureReader.readTexture(tileNames[i], isAlpha);
+            textures[i] = TextureReader.readTexture(tileNames[i], useAlphaChannel);
             //Create Nearest Filtered Texture
             GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureNames[i]);
 
-            makeRGBTexture(textures[i], GL.GL_TEXTURE_2D, isAlpha);
-            
-            GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-            GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-//            GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
-//            GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+            if (useMipmaps) {
+            	GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR_MIPMAP_LINEAR);
+            	GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR_MIPMAP_LINEAR);
+            }
+            else {
+                if (linearFiltering) {
+                    GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+                    GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+                } else {
+                    GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+                    GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+                }
+            }
+            makeRGBTexture(textures[i], GL.GL_TEXTURE_2D, useMipmaps);
         }
 		
 		this.texturesLoaded = true;
