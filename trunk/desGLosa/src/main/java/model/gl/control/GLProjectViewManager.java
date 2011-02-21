@@ -35,7 +35,7 @@ public class GLProjectViewManager extends GLViewManager {
 	@Override
 	public void configureView() throws GLSingletonNotInitializedException {
 		try {
-			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true);
+			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
 		
 			// Create A New Quadratic
 			this.quadric = GLSingleton.getGLU().gluNewQuadric();

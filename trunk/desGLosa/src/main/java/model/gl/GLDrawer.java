@@ -68,8 +68,7 @@ public class GLDrawer implements GLEventListener, IConstants {
      */
 	public void display(GLAutoDrawable glDrawable) {
 		try {
-			GLSingleton.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-			GLSingleton.getGL().glLoadIdentity();
+
 			// This state machine prevents calls to updateProjection every time display() is called
 			// Due to JOGL multi-threading issues, this is used to change to 2D or 3D projection within the main thread (not keyboard or mouse inputs)
 			// http://staff.www.ltu.se/~mjt/ComputerGraphics/jogl-doc/jogl_usersguide/index.html
@@ -79,6 +78,8 @@ public class GLDrawer implements GLEventListener, IConstants {
 				getViewManager(viewLevel).configureView();
 				oldViewLevel = viewLevel;
 			}
+			GLSingleton.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+			GLSingleton.getGL().glLoadIdentity();
 			if (getViewManager(this.viewLevel).isThreeDimensional()) {
 				camera.render();
 				spotlight.render(camera.getPosition(), camera.getViewDir());
@@ -153,7 +154,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLSingleton.getGL().glClearColor(1.0f, 1.0f, 1.0f, 1.0f);			// White Background
 			GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);						// Enables Depth Testing
 			GLSingleton.getGL().glClearDepth(1.0f);								// Depth Buffer Setup
-			GLSingleton.getGL().glDepthFunc(GL.GL_LESS);						// The Type Of Depth Testing To Do
+			GLSingleton.getGL().glDepthFunc(GL.GL_LEQUAL);						// The Type Of Depth Testing To Do
 			GLSingleton.getGL().glShadeModel(GL.GL_SMOOTH);						// Enable Smooth Shading
 			// Textures are enabled and its environment configured just before mapping them
 			// Configuración para obtener un antialiasing en las líneas

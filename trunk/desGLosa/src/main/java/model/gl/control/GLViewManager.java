@@ -118,25 +118,17 @@ public abstract class GLViewManager {
 	}
 	
 	protected void drawFloor () throws GLSingletonNotInitializedException, IOException {
-		if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true);
+		if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
 		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
-		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_S);
-		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_T);
 		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
-		GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
-		GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
-//		GLSingleton.getGL().glTexParameteri(GL.GL_S, GL.GL_TEXTURE_GEN_MODE, GL.GL_REFLECTION_MAP);
-//		GLSingleton.getGL().glTexParameteri(GL.GL_T, GL.GL_TEXTURE_GEN_MODE, GL.GL_REFLECTION_MAP);
 		GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureLoader.getTextureNames()[0]);
 		GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
-		GLSingleton.getGL().glBegin(GL.GL_POLYGON);
+		GLSingleton.getGL().glBegin(GL.GL_QUADS);
 			GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);	GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glTexCoord2f(1.0f, 0.0f);	GLSingleton.getGL().glVertex3f(10.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glTexCoord2f(1.0f, 1.0f);	GLSingleton.getGL().glVertex3f(10.0f, 0.0f, 10.0f);
-			GLSingleton.getGL().glTexCoord2f(0.0f, 1.0f);	GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 10.0f);
+			GLSingleton.getGL().glTexCoord2f(10.0f, 0.0f);	GLSingleton.getGL().glVertex3f(10.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glTexCoord2f(10.0f, 10.0f);	GLSingleton.getGL().glVertex3f(10.0f, 0.0f, 10.0f);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 10.0f);	GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 10.0f);
 		GLSingleton.getGL().glEnd();
-		GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_S);
-		GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_T);
 		GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
 	}
 

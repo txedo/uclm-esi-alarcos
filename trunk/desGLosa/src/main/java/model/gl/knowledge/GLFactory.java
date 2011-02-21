@@ -92,17 +92,23 @@ public class GLFactory extends GLObject {
 		GLSingleton.getGL().glPushMatrix();
 			GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 			GLSingleton.getGL().glTranslatef(0.0f, 1.0f, 0.0f);
+			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);
 			GLSingleton.getGL().glBegin(GL.GL_POLYGON);
 //				GLSingleton.getGL().glVertex3f(-1.0f,0.0f,0.5f);
 //				GLSingleton.getGL().glVertex3f(1.0f,0.0f,0.5f);
 //				GLSingleton.getGL().glVertex3f(0.0f,1.6f,0.5f);
 //				GLSingleton.getGL().glVertex3f(0.0f,0.4f,0.5f);
 //				GLSingleton.getGL().glVertex3f(-1.0f,0.4f,0.5f);
-				GLSingleton.getGL().glVertex3f(-1.0f,0.0f,0.5f);
 				GLSingleton.getGL().glVertex3f(1.0f,0.0f,0.5f);
-				GLSingleton.getGL().glVertex3f(1.0f,1.6f,0.5f);
+				GLSingleton.getGL().glVertex3f(1.0f,2.0f,0.5f);
+				GLSingleton.getGL().glVertex3f(0.66f,1.6f,0.5f);
+				GLSingleton.getGL().glVertex3f(0.66f,2.0f,0.5f);
+				GLSingleton.getGL().glVertex3f(0.33f,1.6f,0.5f);
+				GLSingleton.getGL().glVertex3f(0.33f,2.0f,0.5f);
+				GLSingleton.getGL().glVertex3f(0.0f,1.6f,0.5f);
 				GLSingleton.getGL().glVertex3f(0.0f,0.4f,0.5f);
 				GLSingleton.getGL().glVertex3f(-1.0f,0.4f,0.5f);
+				GLSingleton.getGL().glVertex3f(-1.0f,0.0f,0.5f);
 			GLSingleton.getGL().glEnd();
 		GLSingleton.getGL().glPopMatrix();
 		
