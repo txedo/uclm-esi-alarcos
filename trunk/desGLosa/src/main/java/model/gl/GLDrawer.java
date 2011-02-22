@@ -103,11 +103,9 @@ public class GLDrawer implements GLEventListener, IConstants {
 					this.towerView.manageView();
 					break;
 			}
-//			if (this.debugMode) {
-//				GLUtils.beginOrtho(this.screenHeight, this.screenHeight, this.DIM);
-//				GLUtils.renderBitmapString(0.0f, 0.0f, 1, this.log.toString());
-//				GLUtils.endOrtho();
-//			}
+			if (this.debugMode) {
+				this.log.printToGL(this.screenHeight, this.screenWidth, this.DIM);
+			}
 			glDrawable.swapBuffers();
 			GLSingleton.getGL().glFlush();
 		} catch (GLSingletonNotInitializedException e) {
@@ -228,10 +226,10 @@ public class GLDrawer implements GLEventListener, IConstants {
 	}
 	
 	private void updateProjection() throws GLSingletonNotInitializedException {
-		if (viewLevel.equals(EViewLevels.MapLevel) || viewLevel.equals(EViewLevels.MetricIndicatorLevel))
-			GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth, this.DIM);
-		else if (viewLevel.equals(EViewLevels.TowerLevel) || viewLevel.equals(EViewLevels.ProjectLevel) || viewLevel.equals(EViewLevels.FactoryLevel))
+		if (this.getViewManager(viewLevel).isThreeDimensional())
 			GLUtils.setPerspectiveProjection(this.screenHeight, this.screenWidth);
+		else
+			GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth, this.DIM);
 	}
 	
 	private void setupCaptions (){
@@ -256,9 +254,17 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.oldViewLevel = this.viewLevel;
 		this.viewLevel = viewLevel;
 		// We reset the camera position in case that the view level is 3D
-		if (this.getViewManager(viewLevel).isThreeDimensional()) {
-			this.spotlight.reset();
-			this.camera.reset();
+		try {
+			if (this.getViewManager(viewLevel).isThreeDimensional()) {
+				this.spotlight.switchOn();
+				this.spotlight.reset();
+				this.camera.reset();
+			} else {
+				this.spotlight.switchOff();
+			}
+		} catch (GLSingletonNotInitializedException e) {
+			// TODO auto-generated block code
+			e.printStackTrace();
 		}
 	}
 
@@ -292,7 +298,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 	
 	public GLViewManager getViewManager (EViewLevels viewLevel) {
 		GLViewManager result = null;
-			switch (viewLevel) {
+		switch (viewLevel) {
 			case MapLevel:
 				result = this.mapLocationView;
 				break;
@@ -308,7 +314,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 			case TowerLevel:
 				result = this.towerView;
 				break;
-			}
+		}
 		return result;
 	}
 

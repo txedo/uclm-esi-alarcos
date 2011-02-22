@@ -9,6 +9,7 @@ import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Spotlight {
 	private final int lightSource = GL.GL_LIGHT1;
+	@SuppressWarnings("unused")
 	private final float DIRECTIONAL = 0.0f;
 	private final float POSITIONAL = 1.0f;
 	
@@ -78,14 +79,14 @@ public class Spotlight {
 
 	public void switchOn () throws GLSingletonNotInitializedException {
 		// Enable Lighting
-		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
 		GLSingleton.getGL().glEnable(this.lightSource);	
+		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
 	}
 	
 	public void switchOff () throws GLSingletonNotInitializedException {
-		// Enable Lighting
+		// Disable Lighting
+		GLSingleton.getGL().glDisable(this.lightSource);
 		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
-		GLSingleton.getGL().glDisable(this.lightSource);	
 	}
 
 	public void reset() {
