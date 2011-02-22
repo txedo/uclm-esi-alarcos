@@ -1,18 +1,15 @@
 package model.gl.knowledge;
 
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
 import javax.media.opengl.GL;
-
-import com.sun.opengl.util.BufferUtil;
+import javax.media.opengl.glu.GLUquadric;
 
 import model.gl.GLSingleton;
+import model.gl.GLUtils;
 import model.knowledge.Color;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 public class GLFactory extends GLObject {
+	private GLUquadric GLUQuadric;
 	// We define the base dimensions
 	private float baseLength;
 	private float baseWidth;
@@ -20,23 +17,13 @@ public class GLFactory extends GLObject {
 	// Smokestack radius and building length will depend on base dimensions
 	private int smokestackHeight;
 	private float smokestackRadius;
+	// Building dimensions
+	private float buildingLength;
+	private float buildingWidth;
 	private float buildingHeight;
 	// Roof height will be 1/3 of building height
 	private float roofHeight;
-	private final float ROOFANGLE = 45.0f;
-	
-	FloatBuffer normals;
-	FloatBuffer vertices;
-	FloatBuffer colors;
-	IntBuffer indices;
-	
-	float vNormals[] = { 0,0,1 , 0,0,1 , 0,0,1 , 0,0,1 , 0,0,1 , 0,0,1 , 0,0,1 , 0,0,1 , 0,0,1 , 0,0,1};// , 
-			//0,0,-1 , 0,0,-1 , 0,0,-1 , 0,0,-1 , 0,0,-1 , 0,0,-1 , 0,0,-1 , 0,0,-1 , 0,0,-1 , 0,0,-1};
-	float vVertices[] = { -1.0f,0.0f,0.5f , -1.0f,0.4f,0.5f , 0.0f,0.4f,0.5f , 0.0f,1.6f,0.5f , 0.33f,2.0f,0.5f , 0.33f,1.6f,0.5f , 0.67f,2.0f,0.5f , 0.67f,1.6f,0.5f , 1.0f,2.0f,0.5f , 1.0f,0.0f,0.5f};// , 
-			//-1,0,-0.5f , 1,0,-0.5f , 1,2.5f,-0.5f , 0.67f,2,-0.5f , 0.67f,2.5f,-0.5f , 0.33f,2,-0.5f , 0.33f,2.5f,-0.5f , 0,2,-0.5f , 0,0.3f,-0.5f , -1,0.3f,-0.5f};
-	int vIndices[] = { 0,1,2,3,9 };// , 
-			//10,11,12,13,14,15,16,17,18,19};
-	
+	private int ROOFS = 3;
 	
 	public GLFactory (float pos_x, float pos_y) {
 		this.positionX = pos_x;
@@ -47,69 +34,46 @@ public class GLFactory extends GLObject {
 		this.baseWidth = 1.0f;
 		this.baseHeight = 0.5f;
 		
-		this.smokestackHeight = 0;
-		if (this.baseLength/2 > this.baseWidth)	this.smokestackRadius = this.baseWidth/2;
-		else this.smokestackRadius = this.baseLength/2;
+		this.buildingLength = this.baseLength/2;
+		this.buildingWidth = this.baseWidth;
+		this.buildingHeight = 1.2f;
 		
-		this.buildingHeight = 3.0f;
-		this.roofHeight = this.buildingHeight/3;
-		
-		this.normals = BufferUtil.newFloatBuffer(vNormals.length);
-		for (int i = 0; i < vNormals.length; i++) {
-			this.normals.put(vNormals[i]);
-		}
-		this.normals.rewind();
+		this.smokestackHeight = 2;
+		if (this.baseLength/2 > this.baseWidth)	this.smokestackRadius = this.baseWidth/4*0.80f;
+		else this.smokestackRadius = this.baseLength/4*0.80f;
 
-		this.vertices = BufferUtil.newFloatBuffer(vVertices.length);
-		for (int i = 0; i < vVertices.length; i++) {
-			this.vertices.put(vVertices[i]);
-		}
-		this.vertices.rewind();
-		
-		this.indices = BufferUtil.newIntBuffer(vIndices.length);
-		for (int i = 0; i < vIndices.length; i++) {
-			this.indices.put(vIndices[i]);
-		}
-		this.indices.rewind();
+		this.roofHeight = 0.3f;
 	}
 	
 	@Override
 	public void draw() throws GLSingletonNotInitializedException {
-		// Enable and specificy pointers to vertex arrays
-		GLSingleton.getGL().glEnableClientState(GL.GL_NORMAL_ARRAY);
-		GLSingleton.getGL().glEnableClientState(GL.GL_VERTEX_ARRAY);
-		
-		GLSingleton.getGL().glNormalPointer(GL.GL_FLOAT, 0, normals);
-		GLSingleton.getGL().glVertexPointer(3, GL.GL_FLOAT, 0, vertices);
-		
+		GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 		GLSingleton.getGL().glPushMatrix();
-			GLSingleton.getGL().glColor4fv(this.color.getColorFB());
-			GLSingleton.getGL().glTranslatef(this.positionX, 1.0f, this.positionY);
-			GLSingleton.getGL().glDrawElements(GL.GL_POLYGON, 5, GL.GL_UNSIGNED_INT, indices);
-			//GLSingleton.getGL().glDrawRangeElements(GL.GL_POLYGON, 10, 19, 10, GL.GL_UNSIGNED_INT, indices);
-		GLSingleton.getGL().glPopMatrix();
-		
-		GLSingleton.getGL().glPushMatrix();
-			GLSingleton.getGL().glColor4fv(this.color.getColorFB());
-			GLSingleton.getGL().glTranslatef(0.0f, 1.0f, 0.0f);
-			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);
-			GLSingleton.getGL().glBegin(GL.GL_POLYGON);
-//				GLSingleton.getGL().glVertex3f(-1.0f,0.0f,0.5f);
-//				GLSingleton.getGL().glVertex3f(1.0f,0.0f,0.5f);
-//				GLSingleton.getGL().glVertex3f(0.0f,1.6f,0.5f);
-//				GLSingleton.getGL().glVertex3f(0.0f,0.4f,0.5f);
-//				GLSingleton.getGL().glVertex3f(-1.0f,0.4f,0.5f);
-				GLSingleton.getGL().glVertex3f(1.0f,0.0f,0.5f);
-				GLSingleton.getGL().glVertex3f(1.0f,2.0f,0.5f);
-				GLSingleton.getGL().glVertex3f(0.66f,1.6f,0.5f);
-				GLSingleton.getGL().glVertex3f(0.66f,2.0f,0.5f);
-				GLSingleton.getGL().glVertex3f(0.33f,1.6f,0.5f);
-				GLSingleton.getGL().glVertex3f(0.33f,2.0f,0.5f);
-				GLSingleton.getGL().glVertex3f(0.0f,1.6f,0.5f);
-				GLSingleton.getGL().glVertex3f(0.0f,0.4f,0.5f);
-				GLSingleton.getGL().glVertex3f(-1.0f,0.4f,0.5f);
-				GLSingleton.getGL().glVertex3f(-1.0f,0.0f,0.5f);
-			GLSingleton.getGL().glEnd();
+			// Base
+			GLSingleton.getGL().glTranslatef(this.positionX, 0.0f, this.positionY);
+			this.drawBase();
+			// Building
+			GLSingleton.getGL().glPushMatrix();
+				GLSingleton.getGL().glTranslatef(this.baseLength*1/4, this.baseHeight, 0.0f);
+				this.drawBuilding();
+			GLSingleton.getGL().glPopMatrix();
+			// Roof
+			GLSingleton.getGL().glPushMatrix();
+				GLSingleton.getGL().glTranslatef(0.0f, this.baseHeight+this.buildingHeight, 0.0f);
+				this.drawBuildingRoof();
+			GLSingleton.getGL().glPopMatrix();
+			// Smokestack
+			GLSingleton.getGL().glPushMatrix();
+				GLSingleton.getGL().glTranslatef(-this.baseLength*1/4, this.baseHeight, 0.0f);
+				GLSingleton.getGL().glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+				this.drawSmokestack();
+			GLSingleton.getGL().glPopMatrix();
+			// Draw the smokestak height
+			GLSingleton.getGL().glPushMatrix();
+				GLSingleton.getGL().glTranslatef(this.baseLength*1/4, (this.baseHeight+this.buildingHeight+this.roofHeight)*1.20f, 0.0f);
+				GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
+				GLUtils.renderBitmapString(0.0f, 0.0f, 0, 2, ""+this.smokestackHeight);
+			GLSingleton.getGL().glPopMatrix();
 		GLSingleton.getGL().glPopMatrix();
 		
 		GLSingleton.getGL().glDisableClientState(GL.GL_VERTEX_ARRAY);
@@ -120,72 +84,102 @@ public class GLFactory extends GLObject {
 		GLSingleton.getGL().glBegin(GL.GL_QUADS);
 			// Back
 			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, -1.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, this.baseHeight, 0.0f);
-			GLSingleton.getGL().glVertex3f(this.baseLength, this.baseHeight, 0.0f);
-			GLSingleton.getGL().glVertex3f(this.baseLength, 0.0f, 0.0f);
+			GLSingleton.getGL().glVertex3f(-this.baseLength/2, 0.0f,            -this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f( this.baseLength/2, this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f( this.baseLength/2, 0.0f,            -this.baseWidth/2);
 			// Right
 			GLSingleton.getGL().glNormal3f(1.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, this.baseHeight, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, this.baseHeight, this.baseWidth);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, this.baseWidth);
+			GLSingleton.getGL().glVertex3f(this.baseLength/2, 0.0f,            -this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f(this.baseLength/2, this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f(this.baseLength/2, this.baseHeight,  this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f(this.baseLength/2, 0.0f, 			this.baseWidth/2);
 			// Front
 			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glVertex3f(-this.baseLength/2, 0.0f,            this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight, this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f( this.baseLength/2, this.baseHeight, this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f( this.baseLength/2, 0.0f,            this.baseWidth/2);
 			// Left
 			GLSingleton.getGL().glNormal3f(-1.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glVertex3f(-this.baseLength/2, 0.0f,            -this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight,  this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f(-this.baseLength/2, 0.0f, 			 this.baseWidth/2);
 			// Top
 			GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f( 0.0f, 			   this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f( 0.0f,              this.baseHeight,  this.baseWidth/2);
+			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight,  this.baseWidth/2);
 		GLSingleton.getGL().glEnd();
 	}
 	
 	private void drawBuilding() throws GLSingletonNotInitializedException {
 		GLSingleton.getGL().glBegin(GL.GL_QUADS);
-			// Front
-			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			// Right
-			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
 			// Back
-			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, -1.0f);
+			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, 0.0f,            -this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, this.buildingHeight, -this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f( this.buildingLength/2, this.buildingHeight, -this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f( this.buildingLength/2, 0.0f,            -this.buildingWidth/2);
+			// Right
+			GLSingleton.getGL().glNormal3f(1.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glVertex3f(this.buildingLength/2, 0.0f,            -this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f(this.buildingLength/2, this.buildingHeight, -this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f(this.buildingLength/2, this.buildingHeight,  this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f(this.buildingLength/2, 0.0f, 			this.buildingWidth/2);
+			// Front
+			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);
+			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, 0.0f,            this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, this.buildingHeight, this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f( this.buildingLength/2, this.buildingHeight, this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f( this.buildingLength/2, 0.0f,            this.buildingWidth/2);
 			// Left
-			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glNormal3f(-1.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, 0.0f,            -this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, this.buildingHeight, -this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, this.buildingHeight,  this.buildingWidth/2);
+			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, 0.0f, 			 this.buildingWidth/2);
 		GLSingleton.getGL().glEnd();
 	}
 	
 	private void drawBuildingRoof() throws GLSingletonNotInitializedException {
-		
+		float roofLength = this.buildingLength/this.ROOFS;
+		float alpha = (float)Math.asin(this.roofHeight/roofLength);
+		for (int i = 0; i < this.ROOFS; i++) {
+			GLSingleton.getGL().glBegin(GL.GL_QUADS);
+				// Top
+				GLSingleton.getGL().glNormal3f((float)Math.cos(180.0-alpha), (float)Math.sin(180.0-alpha), 0.0f);
+				GLSingleton.getGL().glVertex3f(i*roofLength,     0.0f,            -this.buildingWidth/2);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight, -this.buildingWidth/2);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight,  this.buildingWidth/2);
+				GLSingleton.getGL().glVertex3f(i*roofLength,     0.0f, 			  this.buildingWidth/2);
+				// Wall
+				GLSingleton.getGL().glNormal3f(1.0f, 0.0f, 0.0f);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, 0.0f,             this.buildingWidth/2);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight,  this.buildingWidth/2);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight, -this.buildingWidth/2);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, 0.0f,            -this.buildingWidth/2);
+			GLSingleton.getGL().glEnd();
+			GLSingleton.getGL().glBegin(GL.GL_TRIANGLES);
+				// Back
+				GLSingleton.getGL().glNormal3f(0.0f, 0.0f, -1.0f);
+				GLSingleton.getGL().glVertex3f(i*roofLength,     0.0f,             -this.buildingWidth/2);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight,  -this.buildingWidth/2);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, 0.0f,             -this.buildingWidth/2);
+				// Front
+				GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);
+				GLSingleton.getGL().glVertex3f(i*roofLength,     0.0f,             this.buildingWidth/2);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight,  this.buildingWidth/2);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, 0.0f,             this.buildingWidth/2);
+			GLSingleton.getGL().glEnd();
+		}
+
 	}
 	
 	private void drawSmokestack() throws GLSingletonNotInitializedException {
-		
+		GLSingleton.getGLU().gluCylinder(this.GLUQuadric, this.smokestackRadius, this.smokestackRadius, this.smokestackHeight/5.0, 32, 32);
 	}
 
 	public int getSmokestackHeight() {
@@ -194,6 +188,10 @@ public class GLFactory extends GLObject {
 
 	public void setSmokestackHeight(int smokestackHeight) {
 		this.smokestackHeight = smokestackHeight;
+	}
+
+	public void setGLUQuadric(GLUquadric gLUQuadric) {
+		GLUQuadric = gLUQuadric;
 	}
 
 }

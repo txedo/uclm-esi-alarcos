@@ -84,24 +84,13 @@ public class GLUtils {
 		 * in the orthographic mode. Projection matrix stack defines how the
 		 * scene is projected to the screen.
 		 */
-		GLSingleton.getGL().glDisable(GL.GL_DEPTH_TEST); // Disables Depth
-															// Testing
-		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION); // select the
-															// Projection matrix
-		GLSingleton.getGL().glPushMatrix(); // save the current projection
-											// matrix
-		GLSingleton.getGL().glLoadIdentity(); // reset the current projection
-												// matrix to creates a new
-												// Orthographic projection
+		GLSingleton.getGL().glDisable(GL.GL_DEPTH_TEST); // Disables Depth Testing
+		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION); // select the Projection matrix
+		GLSingleton.getGL().glPushMatrix(); // save the current projection matrix
+		GLSingleton.getGL().glLoadIdentity(); // reset the current projection matrix to creates a new Orthographic projection
 		// Creates a new orthographic viewing volume
 		float h = (float) screenHeight / (float) screenWidth;
-		GLSingleton.getGL().glOrtho(0.0f, glDim, 0.0f, glDim * h, -1.0, 1.0); // left,
-																				// right,
-																				// bottom,
-																				// top,
-																				// near,
-																				// far
-
+		GLSingleton.getGL().glOrtho(0.0f, glDim, 0.0f, glDim * h, -1.0, 1.0); // left, right, bottom, top, near, far
 		/*
 		 * Select, save and reset the modelview matrix. Modelview matrix stack
 		 * store transformation like translation, rotation ...
@@ -120,8 +109,7 @@ public class GLUtils {
 	static public void endOrtho() throws GLSingletonNotInitializedException {
 		// Select the Projection matrix stack
 		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
-		// Load the previous Projection matrix (Generaly, it is a Perspective
-		// projection)
+		// Load the previous Projection matrix (Generally, it is a Perspective projection)
 		GLSingleton.getGL().glPopMatrix();
 		// Select the Modelview matrix stack
 		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
