@@ -10,6 +10,7 @@ import exceptions.gl.GLSingletonNotInitializedException;
 
 public class GLFactory extends GLObject {
 	private GLUquadric GLUQuadric;
+	private int texture;
 	// We define the base dimensions
 	private float baseLength;
 	private float baseWidth;
@@ -28,7 +29,7 @@ public class GLFactory extends GLObject {
 	public GLFactory (float pos_x, float pos_y) {
 		this.positionX = pos_x;
 		this.positionY = pos_y;
-		this.color = new Color(0.0f, 0.0f, 1.0f, 1.0f);
+		this.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 		
 		this.baseLength = 2.0f;
 		this.baseWidth = 1.0f;
@@ -46,8 +47,12 @@ public class GLFactory extends GLObject {
 	}
 	
 	@Override
-	public void draw() throws GLSingletonNotInitializedException {
+	public void draw() throws GLSingletonNotInitializedException {	
 		GLSingleton.getGL().glColor4fv(this.color.getColorFB());
+		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
+		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
+		GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);
+		
 		GLSingleton.getGL().glPushMatrix();
 			// Base
 			GLSingleton.getGL().glTranslatef(this.positionX, 0.0f, this.positionY);
@@ -62,6 +67,7 @@ public class GLFactory extends GLObject {
 				GLSingleton.getGL().glTranslatef(0.0f, this.baseHeight+this.buildingHeight, 0.0f);
 				this.drawBuildingRoof();
 			GLSingleton.getGL().glPopMatrix();
+			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
 			// Smokestack
 			GLSingleton.getGL().glPushMatrix();
 				GLSingleton.getGL().glTranslatef(-this.baseLength*1/4, this.baseHeight, 0.0f);
@@ -75,42 +81,59 @@ public class GLFactory extends GLObject {
 				GLUtils.renderBitmapString(0.0f, 0.0f, 0, 2, ""+this.smokestackHeight);
 			GLSingleton.getGL().glPopMatrix();
 		GLSingleton.getGL().glPopMatrix();
-		
-		GLSingleton.getGL().glDisableClientState(GL.GL_VERTEX_ARRAY);
-		GLSingleton.getGL().glDisableClientState(GL.GL_NORMAL_ARRAY);
 	}
 	
-	private void drawBase() throws GLSingletonNotInitializedException {
+	private void drawBase() throws GLSingletonNotInitializedException {	
 		GLSingleton.getGL().glBegin(GL.GL_QUADS);
 			// Back
 			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, -1.0f);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);
 			GLSingleton.getGL().glVertex3f(-this.baseLength/2, 0.0f,            -this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.25f);
 			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(1.0f, 0.25f);
 			GLSingleton.getGL().glVertex3f( this.baseLength/2, this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(1.0f, 0.0f);
 			GLSingleton.getGL().glVertex3f( this.baseLength/2, 0.0f,            -this.baseWidth/2);
 			// Right
 			GLSingleton.getGL().glNormal3f(1.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);
 			GLSingleton.getGL().glVertex3f(this.baseLength/2, 0.0f,            -this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.25f);
 			GLSingleton.getGL().glVertex3f(this.baseLength/2, this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.5f, 0.25f);
 			GLSingleton.getGL().glVertex3f(this.baseLength/2, this.baseHeight,  this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.5f, 0.0f);
 			GLSingleton.getGL().glVertex3f(this.baseLength/2, 0.0f, 			this.baseWidth/2);
 			// Front
 			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);
 			GLSingleton.getGL().glVertex3f(-this.baseLength/2, 0.0f,            this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.25f);
 			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight, this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(1.0f, 0.25f);
 			GLSingleton.getGL().glVertex3f( this.baseLength/2, this.baseHeight, this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(1.0f, 0.0f);
 			GLSingleton.getGL().glVertex3f( this.baseLength/2, 0.0f,            this.baseWidth/2);
 			// Left
 			GLSingleton.getGL().glNormal3f(-1.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);
 			GLSingleton.getGL().glVertex3f(-this.baseLength/2, 0.0f,            -this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.25f);
 			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.5f, 0.25f);
 			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight,  this.baseWidth/2);
-			GLSingleton.getGL().glVertex3f(-this.baseLength/2, 0.0f, 			 this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.5f, 0.0f);
+			GLSingleton.getGL().glVertex3f(-this.baseLength/2, 0.0f, 			this.baseWidth/2);
 			// Top
 			GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);
 			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.25f);
 			GLSingleton.getGL().glVertex3f( 0.0f, 			   this.baseHeight, -this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.5f, 0.25f);
 			GLSingleton.getGL().glVertex3f( 0.0f,              this.baseHeight,  this.baseWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.5f, 0.0f);
 			GLSingleton.getGL().glVertex3f(-this.baseLength/2, this.baseHeight,  this.baseWidth/2);
 		GLSingleton.getGL().glEnd();
 	}
@@ -119,27 +142,43 @@ public class GLFactory extends GLObject {
 		GLSingleton.getGL().glBegin(GL.GL_QUADS);
 			// Back
 			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, -1.0f);
-			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, 0.0f,            -this.buildingWidth/2);
-			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, this.buildingHeight, -this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.25f);
+			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, 0.0f,                -this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.46875f, 0.25f);
+			GLSingleton.getGL().glVertex3f( this.buildingLength/2, 0.0f,                -this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.46875f, 0.80f);
 			GLSingleton.getGL().glVertex3f( this.buildingLength/2, this.buildingHeight, -this.buildingWidth/2);
-			GLSingleton.getGL().glVertex3f( this.buildingLength/2, 0.0f,            -this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.8f);
+			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, this.buildingHeight, -this.buildingWidth/2);
 			// Right
 			GLSingleton.getGL().glNormal3f(1.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glTexCoord2f(0.46875f, 0.25f);
 			GLSingleton.getGL().glVertex3f(this.buildingLength/2, 0.0f,            -this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.46875f*2, 0.25f);
 			GLSingleton.getGL().glVertex3f(this.buildingLength/2, this.buildingHeight, -this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.46875f*2, 0.80f);
 			GLSingleton.getGL().glVertex3f(this.buildingLength/2, this.buildingHeight,  this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.46875f, 0.80f);
 			GLSingleton.getGL().glVertex3f(this.buildingLength/2, 0.0f, 			this.buildingWidth/2);
 			// Front
 			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.25f);
 			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, 0.0f,            this.buildingWidth/2);
-			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, this.buildingHeight, this.buildingWidth/2);
-			GLSingleton.getGL().glVertex3f( this.buildingLength/2, this.buildingHeight, this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.46875f, 0.25f);
 			GLSingleton.getGL().glVertex3f( this.buildingLength/2, 0.0f,            this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.46875f, 0.80f);
+			GLSingleton.getGL().glVertex3f( this.buildingLength/2, this.buildingHeight, this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 0.8f);
+			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, this.buildingHeight, this.buildingWidth/2);
 			// Left
 			GLSingleton.getGL().glNormal3f(-1.0f, 0.0f, 0.0f);
+			GLSingleton.getGL().glTexCoord2f(0.46875f, 0.25f);
 			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, 0.0f,            -this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.46875f*2, 0.25f);
 			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, this.buildingHeight, -this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.46875f*2, 0.80f);
 			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, this.buildingHeight,  this.buildingWidth/2);
+			GLSingleton.getGL().glTexCoord2f(0.46875f, 0.80f);
 			GLSingleton.getGL().glVertex3f(-this.buildingLength/2, 0.0f, 			 this.buildingWidth/2);
 		GLSingleton.getGL().glEnd();
 	}
@@ -151,16 +190,24 @@ public class GLFactory extends GLObject {
 			GLSingleton.getGL().glBegin(GL.GL_QUADS);
 				// Top
 				GLSingleton.getGL().glNormal3f((float)Math.cos(180.0-alpha), (float)Math.sin(180.0-alpha), 0.0f);
+				GLSingleton.getGL().glTexCoord2f(0.703125f, 0.80f);
 				GLSingleton.getGL().glVertex3f(i*roofLength,     0.0f,            -this.buildingWidth/2);
-				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight, -this.buildingWidth/2);
-				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight,  this.buildingWidth/2);
+				GLSingleton.getGL().glTexCoord2f(0.9375f, 0.80f);
 				GLSingleton.getGL().glVertex3f(i*roofLength,     0.0f, 			  this.buildingWidth/2);
+				GLSingleton.getGL().glTexCoord2f(0.9375f, 1.0f);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight,  this.buildingWidth/2);
+				GLSingleton.getGL().glTexCoord2f(0.703125f, 1.0f);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight, -this.buildingWidth/2);
 				// Wall
 				GLSingleton.getGL().glNormal3f(1.0f, 0.0f, 0.0f);
+				GLSingleton.getGL().glTexCoord2f(0.46875f, 0.80f);
 				GLSingleton.getGL().glVertex3f((i+1)*roofLength, 0.0f,             this.buildingWidth/2);
-				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight,  this.buildingWidth/2);
-				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight, -this.buildingWidth/2);
+				GLSingleton.getGL().glTexCoord2f(0.703125f, 0.80f);
 				GLSingleton.getGL().glVertex3f((i+1)*roofLength, 0.0f,            -this.buildingWidth/2);
+				GLSingleton.getGL().glTexCoord2f(0.703125f, 1.0f);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight, -this.buildingWidth/2);
+				GLSingleton.getGL().glTexCoord2f(0.46875f, 1.0f);
+				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight,  this.buildingWidth/2);
 			GLSingleton.getGL().glEnd();
 			GLSingleton.getGL().glBegin(GL.GL_TRIANGLES);
 				// Back
@@ -179,6 +226,7 @@ public class GLFactory extends GLObject {
 	}
 	
 	private void drawSmokestack() throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glColor3f(0.3f, 0.3f, 0.3f);
 		GLSingleton.getGLU().gluCylinder(this.GLUQuadric, this.smokestackRadius, this.smokestackRadius, this.smokestackHeight/5.0, 32, 32);
 	}
 
@@ -192,6 +240,10 @@ public class GLFactory extends GLObject {
 
 	public void setGLUQuadric(GLUquadric gLUQuadric) {
 		GLUQuadric = gLUQuadric;
+	}
+
+	public void setTexture(int textureName) {
+		this.texture = textureName;
 	}
 
 }

@@ -74,8 +74,12 @@ public class GLProjectViewManager extends GLViewManager {
 		AntennaBall ab = new AntennaBall(1.0f, 1.0f);
 		ab.setLabel("projecto 1");
 		ab.setParentBallRadius(2.0f);
+		ab.setLeftChildBallValue(12);
+		ab.setRightChildBallValue(21);
 		antennaBalls.add(ab);
 		ab = new AntennaBall(5.0f, 5.0f);
+		ab.setLeftChildBallValue(45);
+		ab.setRightChildBallValue(54);
 		ab.setProgression(false);
 		ab.setColor(new Color(0.8f, 0.8f, 0.8f));
 		ab.setLabel("projecto 2");

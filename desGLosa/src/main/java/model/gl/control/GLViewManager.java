@@ -120,9 +120,10 @@ public abstract class GLViewManager {
 	protected void drawFloor () throws GLSingletonNotInitializedException, IOException {
 		if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
 		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
-		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
 		GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureLoader.getTextureNames()[0]);
 		GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
+		GLSingleton.getGL().glColor3f(1.0f, 1.0f, 1.0f);
 		GLSingleton.getGL().glBegin(GL.GL_QUADS);
 			GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);	GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
 			GLSingleton.getGL().glTexCoord2f(10.0f, 0.0f);	GLSingleton.getGL().glVertex3f(10.0f, 0.0f, 0.0f);

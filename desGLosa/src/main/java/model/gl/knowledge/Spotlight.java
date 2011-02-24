@@ -24,7 +24,7 @@ public class Spotlight {
 	private float mat_ambient[] = {0.0f, 0.0f, 0.0f, 1.0f};
 	private float mat_specular[] = {0.8f, 0.8f, 0.8f, 1.0f};
 	private float mat_diffuse[] = {0.5f, 0.5f, 0.5f, 1.0f};
-	private float mat_shininess = 96.0f;
+	private float mat_shininess = 60.0f;
 
 	public Spotlight (float r, float g, float b) throws GLSingletonNotInitializedException {
 		color = new float[4];

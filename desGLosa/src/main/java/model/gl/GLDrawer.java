@@ -104,7 +104,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 					break;
 			}
 			if (this.debugMode) {
-				this.log.printToGL(this.screenHeight, this.screenWidth, this.DIM);
+				this.log.printToGL(this.screenHeight, this.screenWidth-100, this.DIM);
 			}
 			glDrawable.swapBuffers();
 			GLSingleton.getGL().glFlush();
