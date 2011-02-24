@@ -9,8 +9,7 @@ import javax.media.opengl.glu.GLUquadric;
 
 import model.gl.GLDrawer;
 import model.gl.GLSingleton;
-import model.gl.GLUtils;
-import model.gl.knowledge.AntennaBall;
+import model.gl.TextureLoader;
 import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
 
@@ -18,25 +17,37 @@ import exceptions.gl.GLSingletonNotInitializedException;
 
 public class GLFactoryViewManager extends GLViewManager {
 	private static List<GLObject> glFactories;
+	private TextureLoader textureLoader;
 	private GLUquadric quadric;
+	
+	private final String FACTORY_TEXTURE = "src/main/resources/gl/factory-texture.png";
 
 	public GLFactoryViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
 		glFactories = new ArrayList<GLObject>();
+		textureLoader = new TextureLoader(new String[] {FACTORY_TEXTURE});
 	}
 	
 	@Override
 	public void configureView() throws GLSingletonNotInitializedException {
-		// Create A New Quadratic
-		this.quadric = GLSingleton.getGLU().gluNewQuadric();
-		// Generate Smooth Normals For The Quadric
-		GLSingleton.getGLU().gluQuadricNormals(quadric, GLU.GLU_SMOOTH);
-		// Enable Texture Coords For The Quadric
-		GLSingleton.getGLU().gluQuadricDrawStyle( quadric, GLU.GLU_FILL);
-		GLSingleton.getGLU().gluQuadricOrientation( quadric, GLU.GLU_OUTSIDE);
-		
-		for (GLObject factory : glFactories) {
-			((GLFactory)factory).setGLUQuadric(quadric);
+		try {
+			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
+
+			// Create A New Quadratic
+			this.quadric = GLSingleton.getGLU().gluNewQuadric();
+			// Generate Smooth Normals For The Quadric
+			GLSingleton.getGLU().gluQuadricNormals(quadric, GLU.GLU_SMOOTH);
+			// Enable Texture Coords For The Quadric
+			GLSingleton.getGLU().gluQuadricDrawStyle( quadric, GLU.GLU_FILL);
+			GLSingleton.getGLU().gluQuadricOrientation( quadric, GLU.GLU_OUTSIDE);
+			
+			for (GLObject factory : glFactories) {
+				((GLFactory)factory).setGLUQuadric(quadric);
+				((GLFactory)factory).setTexture(textureLoader.getTextureNames()[0]);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
