@@ -7,7 +7,7 @@ import model.knowledge.Color;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
-public class Tower extends GLObject {
+public class Tower extends GLObject3D {
 	/*
 	 * El origen de coordenadas se toma en una esquina de la base (0, 0, 0)
 	 * La base se encuentra en el plano ZX, será cuadrada y tendrá de lado el valor de la variable width.
@@ -30,29 +30,36 @@ public class Tower extends GLObject {
 		this.edge_width = 1.0f;
 	}
 	
-	public void draw() throws GLSingletonNotInitializedException {
-		// Aplicamos el mismo color a todos los vértices de la torre
-		GLSingleton.getGL().glColor4fv(color.getColorFB());
-		// Dibujamos la torre con relleno
-		this.drawTower();							
-		// Pintamos las aristas de la torre
-		// Si se especifica el grosor de la arista, la pintaremos de negro
-		// Si no se especifica el grosor de la arista, la pintaremos del mismo color de la torre para tener antialiasing
-		if (this.edge_width > 0.0f)
-			GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);			// Configuramos el color NEGRO para todas las líneas
-		// Configuración y pintado de aristas
-		GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_FILL);	// Deshabilitamos el modo relleno
-		super.disableLight();
-		GLSingleton.getGL().glLineWidth(edge_width > 0.0f? edge_width : 1.0f);	// Configuramos el grosor de la arista
-		GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_LINE);	// Habilitamos el modo línea
-		GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f);		// Desfasamos un poco para no dejar huecos en blanco sin rellenar entre la línea y el polígono
-		GLSingleton.getGL().glPolygonMode(GL.GL_FRONT, GL.GL_LINE);	// Renderizamos únicamente la parte frontal de la cara por razones de rendimiento
-		this.drawTower();						// Dibujamos la torre (sólo los bordes)
-		GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_LINE);	// Restauramos todo
-		GLSingleton.getGL().glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
-		GLSingleton.getGL().glPolygonOffset(0.0f, 0.0f);// Configuramos el offset del polígono sin desfase
-		GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_FILL);		// Habilitamos el modo relleno
-		super.enableLight();
+	@Override
+	protected void draw(boolean shadow) throws GLSingletonNotInitializedException {
+		if (!shadow) {
+			// Aplicamos el mismo color a todos los vértices de la torre
+			GLSingleton.getGL().glColor4fv(color.getColorFB());
+			// Dibujamos la torre con relleno
+			this.drawTower();							
+			// Pintamos las aristas de la torre
+			// Si se especifica el grosor de la arista, la pintaremos de negro
+			// Si no se especifica el grosor de la arista, la pintaremos del mismo color de la torre para tener antialiasing
+			if (this.edge_width > 0.0f)
+				GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);			// Configuramos el color NEGRO para todas las líneas
+			// Configuración y pintado de aristas
+			GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_FILL);	// Deshabilitamos el modo relleno
+			super.disableLight();
+			GLSingleton.getGL().glLineWidth(edge_width > 0.0f? edge_width : 1.0f);	// Configuramos el grosor de la arista
+			GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_LINE);	// Habilitamos el modo línea
+			GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f);		// Desfasamos un poco para no dejar huecos en blanco sin rellenar entre la línea y el polígono
+			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT, GL.GL_LINE);	// Renderizamos únicamente la parte frontal de la cara por razones de rendimiento
+			this.drawTower();						// Dibujamos la torre (sólo los bordes)
+			GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_LINE);	// Restauramos todo
+			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+			GLSingleton.getGL().glPolygonOffset(0.0f, 0.0f);// Configuramos el offset del polígono sin desfase
+			GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_FILL);		// Habilitamos el modo relleno
+			super.enableLight();
+		} else {
+			GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
+			this.drawTower();
+		}
+
 	}
 	
 	private void drawTower () throws GLSingletonNotInitializedException {

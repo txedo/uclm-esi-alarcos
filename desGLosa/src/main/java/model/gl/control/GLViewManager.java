@@ -22,10 +22,14 @@ public abstract class GLViewManager {
 	protected boolean selectionMode;
 	protected static double pickingRegion;
 	private TextureLoader textureLoader;
+	
+	protected boolean shadowSupport;
+	protected boolean drawingShadows = false;
 
 	public GLViewManager (GLDrawer d, boolean is3D) {
 		this.drawer = d;
 		this.threeDimensional = is3D;
+		this.shadowSupport = false;
 		this.selectionMode = false;
 		pickingRegion = 0.1;
 		textureLoader = new TextureLoader(new String[]{FLOOR_TEXTURE});
@@ -44,6 +48,14 @@ public abstract class GLViewManager {
 	public abstract void manageView() throws GLSingletonNotInitializedException, IOException ;
 	
 	public abstract void drawItems () throws GLSingletonNotInitializedException;
+	
+	public void drawShadows () throws GLSingletonNotInitializedException {
+		if (this.shadowSupport) {
+			this.drawingShadows = true;
+			this.drawItems();
+			this.drawingShadows = false;
+		}
+	}
 	
 	public void selectItem () throws GLSingletonNotInitializedException {
 		int[] selectBuff = new int[BUFFSIZE];
@@ -119,11 +131,12 @@ public abstract class GLViewManager {
 	
 	protected void drawFloor () throws GLSingletonNotInitializedException, IOException {
 		if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
+		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
 		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
 		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
 		GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureLoader.getTextureNames()[0]);
 		GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
-		GLSingleton.getGL().glColor3f(1.0f, 1.0f, 1.0f);
+		GLSingleton.getGL().glColor3f(0.9f, 0.9f, 0.9f);
 		GLSingleton.getGL().glBegin(GL.GL_QUADS);
 			GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);	GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
 			GLSingleton.getGL().glTexCoord2f(10.0f, 0.0f);	GLSingleton.getGL().glVertex3f(10.0f, 0.0f, 0.0f);
@@ -131,6 +144,7 @@ public abstract class GLViewManager {
 			GLSingleton.getGL().glTexCoord2f(0.0f, 10.0f);	GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 10.0f);
 		GLSingleton.getGL().glEnd();
 		GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
 	}
 
 	protected abstract void selectedObjectHandler(int selectedObject);
@@ -149,6 +163,14 @@ public abstract class GLViewManager {
 
 	public boolean isThreeDimensional() {
 		return threeDimensional;
+	}
+
+	public boolean isShadowSupport() {
+		return shadowSupport;
+	}
+
+	public void setShadowSupport(boolean shadowSupport) {
+		this.shadowSupport = shadowSupport;
 	}
 	
 }

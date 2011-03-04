@@ -40,9 +40,16 @@ public class MyKeyListener implements KeyListener {
 			case KeyEvent.VK_4:
 				this.drawer.setViewLevel(EViewLevels.FactoryLevel);
 				break;
+			case KeyEvent.VK_F10:
+				this.drawer.setStencilShadow(!this.drawer.isStencilShadow());
+				System.err.println("Stencil shadow: " + this.drawer.isStencilShadow());
+				break;
+			case KeyEvent.VK_F11:
+				this.drawer.setRenderShadow(!this.drawer.isRenderShadow());
+				System.err.println("Render shadow: " + this.drawer.isRenderShadow());
+				break;
 			case KeyEvent.VK_F12:
-				if (this.drawer.isDebugMode()) this.drawer.setDebugMode(false);
-				else this.drawer.setDebugMode(true);
+				this.drawer.setDebugMode(!this.drawer.isDebugMode());
 				break;
 			case KeyEvent.VK_ESCAPE:
 				// TODO exit();

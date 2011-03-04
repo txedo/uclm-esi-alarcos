@@ -1,11 +1,13 @@
 package model.gl;
 
 import java.io.IOException;
-import java.util.Vector;
+import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
+
+import com.sun.opengl.util.BufferUtil;
 
 import model.gl.control.EViewLevels;
 import model.gl.control.GLFactoryViewManager;
@@ -18,9 +20,8 @@ import model.gl.control.GLViewManager;
 import model.gl.knowledge.Camera;
 import model.gl.knowledge.IConstants;
 import model.gl.knowledge.Spotlight;
-import model.gl.knowledge.caption.Caption;
-import model.knowledge.Color;
 import model.knowledge.Vector2f;
+import model.knowledge.Vector3f;
 import model.listeners.MyKeyListener;
 import model.listeners.MyMouseListener;
 import model.listeners.MyMouseMotionListener;
@@ -53,13 +54,13 @@ public class GLDrawer implements GLEventListener, IConstants {
 	private GLLogger log;
 	
 	private boolean debugMode;
+	private boolean renderShadow;
+	private boolean stencilShadow;
 	private Vector2f pickPoint = new Vector2f(0, 0);
 	
 	private int screenWidth;
 	private int screenHeight;
 	public final float DIM = IConstants.INIT_DIM;
-	
-	private Vector<Caption> captions;
 
 	 /** Called by the drawable to initiate OpenGL rendering by the client.
      * After all GLEventListeners have been notified of a display event, the
@@ -68,7 +69,6 @@ public class GLDrawer implements GLEventListener, IConstants {
      */
 	public void display(GLAutoDrawable glDrawable) {
 		try {
-
 			// This state machine prevents calls to updateProjection every time display() is called
 			// Due to JOGL multi-threading issues, this is used to change to 2D or 3D projection within the main thread (not keyboard or mouse inputs)
 			// http://staff.www.ltu.se/~mjt/ComputerGraphics/jogl-doc/jogl_usersguide/index.html
@@ -78,30 +78,76 @@ public class GLDrawer implements GLEventListener, IConstants {
 				getViewManager(viewLevel).configureView();
 				oldViewLevel = viewLevel;
 			}
-			GLSingleton.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+			if (this.stencilShadow && this.renderShadow) {
+				GLSingleton.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
+			}
+			else {
+				/* Avoid clearing stencil when not using it. */
+				GLSingleton.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+			}
 			GLSingleton.getGL().glLoadIdentity();
 			if (getViewManager(this.viewLevel).isThreeDimensional()) {
 				camera.render();
 				spotlight.render(camera.getPosition(), camera.getViewDir());
 			}
-			// TODO quitar este switch y llamar directmamente a getViewManager(this.viewLevel).manageView()
-			switch (this.viewLevel) {
-				case MapLevel:
-					this.mapLocationView.manageView();
-					break;
-				case ProjectLevel:
-					this.projectView.manageView();
-					break;
-				case FactoryLevel:
-					this.factoryView.manageView();
-					break;
-				case MetricIndicatorLevel:
-					this.metricIndicatorView.manageView();
-					drawCaptions();
-					break;
-				case TowerLevel:
-					this.towerView.manageView();
-					break;
+			// After we render the new camera and spotlight position we calculate the floor shadow
+			// The spotlight and the camera are together, so we use camera position plus an additional offset to calculate the shadow matrix
+			float [] floorPlane = {0.0f, 1.0f, 0.0f, 0.0f};
+			Vector3f lightSource = this.camera.getPosition().clone();
+			lightSource.setX(lightSource.getX()-1.0f);
+			lightSource.setY(lightSource.getY()+1.0f);
+			float [][] floorShadow = GLUtils.getShadowMatrix(floorPlane, lightSource);
+//			float [][] floorShadow = GLUtils.getShadowMatrix(GLUtils.findPlane(new Vector3f(0.0f,0.0f,0.0f), new Vector3f(0.0f,0.0f,1.0f), new Vector3f(1.0f,0.0f,0.0f)), lightSource);
+			FloatBuffer floorShadowBuf = BufferUtil.newFloatBuffer(16);
+			for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					floorShadowBuf.put(floorShadow[i][j]);
+				}
+			}
+			floorShadowBuf.rewind();
+			if (this.renderShadow) {
+				if (this.stencilShadow) {
+				    /* Draw the floor with stencil value 3.  This helps us only 
+			        draw the shadow once per floor pixel (and only on the
+			        floor pixels). */
+					GLSingleton.getGL().glEnable(GL.GL_STENCIL_TEST);
+					GLSingleton.getGL().glStencilFunc(GL.GL_ALWAYS, 3, 0xffffffff);
+					GLSingleton.getGL().glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
+				}
+			}
+			this.getViewManager(viewLevel).manageView();
+			if (this.renderShadow) {
+				/* Render the projected shadow. */
+				if (this.stencilShadow) {
+			        /* Now, only render where stencil is set above 2 (ie, 3 where
+			          the top floor is).  Update stencil with 2 where the shadow
+			          gets drawn so we don't redraw (and accidently reblend) the
+			          shadow). */
+					GLSingleton.getGL().glStencilFunc(GL.GL_LESS, 2, 0xffffffff);  /* draw if ==1 */
+					GLSingleton.getGL().glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
+				}
+				/* To eliminate depth buffer artifacts, we use polygon offset
+		        to raise the depth of the projected shadow slightly so
+		        that it does not depth buffer alias with the floor. */
+				GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_FILL);
+				GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f);
+			      /* Render 50% black shadow color on top of whatever the
+		         floor appareance is. */
+//				GLSingleton.getGL().glEnable(GL.GL_BLEND);
+//				GLSingleton.getGL().glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+				GLSingleton.getGL().glDisable(GL.GL_LIGHTING);  /* Force the 50% black. */
+				GLSingleton.getGL().glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
+				GLSingleton.getGL().glPushMatrix();
+			       /* Project the shadow. */
+					GLSingleton.getGL().glMultMatrixf(floorShadowBuf);
+					this.getViewManager(viewLevel).drawShadows();
+				GLSingleton.getGL().glPopMatrix();
+//				GLSingleton.getGL().glDisable(GL.GL_BLEND);
+				GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
+				GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_FILL);
+			    if (stencilShadow) {
+			    	GLSingleton.getGL().glDisable(GL.GL_STENCIL_TEST);
+			    }
 			}
 			if (this.debugMode) {
 				this.log.printToGL(this.screenHeight, this.screenWidth-100, this.DIM);
@@ -117,7 +163,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 		}
 	}
 
-	 /** Called when the display mode has been changed.  <B>
+	/** Called when the display mode has been changed.  <B>
      * !! CURRENTLY UNIMPLEMENTED IN JOGL !!</B>
      * @param gLDrawable The GLAutoDrawable object.
      * @param modeChanged Indicates if the video mode has changed.
@@ -137,6 +183,8 @@ public class GLDrawer implements GLEventListener, IConstants {
 		GLSingleton.init(glDrawable);
 		
 		this.debugMode = false;
+		this.renderShadow = false;
+		this.stencilShadow = false;
 		
 		this.oldViewLevel = EViewLevels.UnSetLevel;
 		this.viewLevel = EViewLevels.MapLevel;
@@ -144,8 +192,11 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.mapLocationView = new GLMapLocationViewManager(this, false);			// 2D View
 		this.metricIndicatorView = new GLMetricIndicatorViewManager(this, false);	// 2D View
 		this.towerView = new GLTowerViewManager(this, true);						// 3D View
+		this.towerView.setShadowSupport(true);
 		this.projectView = new GLProjectViewManager(this, true);					// 3D View
+		this.projectView.setShadowSupport(true);
 		this.factoryView = new GLFactoryViewManager(this, true);					// 3D View
+		this.factoryView.setShadowSupport(true);
 		
 		try {
 			GLSingleton.getGL().glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
@@ -173,7 +224,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 			
 			// Configuramos los parámetros del mundo
 			((GLMetricIndicatorViewManager)metricIndicatorView).setupItems();
-			setupCaptions();
 			GLProjectViewManager.setupItems();
 			GLFactoryViewManager.setupItems();
 			
@@ -232,20 +282,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth, this.DIM);
 	}
 	
-	private void setupCaptions (){
-		captions = new Vector<Caption>();
-		Caption c = new Caption(3.2f, 2.8f);
-		c.addLine(new Color (1.0f, 0.0f, 1.0f), "Hello World!");
-		c.addLine(new Color (0.0f, 1.0f, 1.0f), "Goodbye World!");
-		captions.add(c);
-	}
-	
-	private void drawCaptions () throws GLSingletonNotInitializedException {
-		for (Caption c : captions) {
-			c.draw();
-		}
-	}
-
 	public EViewLevels getViewLevel() {
 		return viewLevel;
 	}
@@ -326,5 +362,20 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.debugMode = debugMode;
 	}
 
+	public boolean isRenderShadow() {
+		return renderShadow;
+	}
+
+	public void setRenderShadow(boolean renderShadow) {
+		this.renderShadow = renderShadow;
+	}
+
+	public boolean isStencilShadow() {
+		return stencilShadow;
+	}
+
+	public void setStencilShadow(boolean stencilShadow) {
+		this.stencilShadow = stencilShadow;
+	}
 	
 }

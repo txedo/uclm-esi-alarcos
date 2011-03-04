@@ -337,5 +337,65 @@ public class GLUtils {
 					+ spacing;
 		}
 	}
+	
+	public static float[][] getShadowMatrix (float[] groundPlane, Vector3f lightPosition) {
+		float [][] shadowMatrix = new float[4][4];
+		
+		  /* Find dot product between light position vector and ground plane normal. */
+		float dot = groundPlane[0] * lightPosition.getX() +
+		groundPlane[1] * lightPosition.getY() +
+		groundPlane[2] * lightPosition.getZ() +
+		groundPlane[3] * 1.0f;
+
+		shadowMatrix[0][0] = dot - lightPosition.getX() * groundPlane[0];
+		shadowMatrix[1][0] = 0.f - lightPosition.getX() * groundPlane[1];
+		shadowMatrix[2][0] = 0.f - lightPosition.getX() * groundPlane[2];
+		shadowMatrix[3][0] = 0.f - 1.0f                 * groundPlane[3];
+
+		shadowMatrix[0][1] = 0.f - lightPosition.getY() * groundPlane[0];
+		shadowMatrix[1][1] = dot - lightPosition.getY() * groundPlane[1];
+		shadowMatrix[2][1] = 0.f - lightPosition.getY() * groundPlane[2];
+		shadowMatrix[3][1] = 0.f - 1.0f                 * groundPlane[3];
+
+		shadowMatrix[0][2] = 0.f - lightPosition.getZ() * groundPlane[0];
+		shadowMatrix[1][2] = 0.f - lightPosition.getZ() * groundPlane[1];
+		shadowMatrix[2][2] = dot - lightPosition.getZ() * groundPlane[2];
+		shadowMatrix[3][2] = 0.f - 1.0f                 * groundPlane[3];
+		
+		shadowMatrix[0][3] = 0.f - 1.0f * groundPlane[0];
+		shadowMatrix[1][3] = 0.f - 1.0f * groundPlane[1];
+		shadowMatrix[2][3] = 0.f - 1.0f * groundPlane[2];
+		shadowMatrix[3][3] = dot - 1.0f * groundPlane[3];
+
+		return shadowMatrix;
+	}
+	
+	/* Find the plane equation given 3 points. */
+	public static float[] findPlane(Vector3f A, Vector3f B, Vector3f C) {
+		float [] plane = new float[4];
+		// http://www.jtaylor1142001.net/calcjat/Solutions/VPlanes/VP3Pts.htm
+		Vector3f AB = new Vector3f();
+		Vector3f AC = new Vector3f();
+
+		/* Need 2 vectors to find cross product. */
+		AB.setX(B.getX() - A.getX());
+		AB.setY(B.getY() - A.getY());
+		AB.setZ(B.getZ() - A.getZ());
+		
+		AC.setX(C.getX() - A.getX());
+		AC.setY(C.getY() - A.getY());
+		AC.setZ(C.getZ() - A.getZ());
+		// Find the cross product
+		Vector3f n = AB.cross(AC);
+
+		// Create the plane
+		plane[0] = n.getX();
+		plane[1] = n.getY();
+		plane[2] = n.getZ();
+		plane[3] = -(plane[0]*A.getX() + plane[1]*A.getY() + plane[2]*A.getZ());
+		
+		return plane;
+	}
+
 
 }

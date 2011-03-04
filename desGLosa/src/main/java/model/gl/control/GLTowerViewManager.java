@@ -7,6 +7,7 @@ import java.util.Random;
 
 import model.gl.GLDrawer;
 import model.gl.knowledge.GLObject;
+import model.gl.knowledge.GLObject3D;
 import model.gl.knowledge.Tower;
 import model.knowledge.Color;
 import exceptions.gl.GLSingletonNotInitializedException;
@@ -49,8 +50,9 @@ public class GLTowerViewManager extends GLViewManager {
 
 	@Override
 	public void drawItems() throws GLSingletonNotInitializedException {
-		for (GLObject f : towers) {
-			f.draw();
+		for (GLObject glo : towers) {
+			if (this.drawingShadows) ((GLObject3D)glo).drawShadow();
+			else ((GLObject3D)glo).draw();
 		}
 	}
 

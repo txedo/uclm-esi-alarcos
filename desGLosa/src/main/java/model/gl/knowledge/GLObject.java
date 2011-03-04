@@ -13,7 +13,19 @@ public abstract class GLObject {
 	protected float positionY;
 	protected Color color;
 	
-	public abstract void draw () throws GLSingletonNotInitializedException;
+	public GLObject () {
+		this.positionX = 0.0f;
+		this.positionY = 0.0f;
+		this.color = new Color(0.0f, 0.0f, 0.0f);
+	}
+	
+	public GLObject (float posx, float posy) {
+		this.positionX = posx;
+		this.positionY = posy;
+		this.color = new Color(0.0f, 0.0f, 0.0f);
+	}
+	
+	public abstract void draw() throws GLSingletonNotInitializedException;
 	
 	protected void enableLight () throws GLSingletonNotInitializedException {
 		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
