@@ -10,6 +10,7 @@ import model.gl.knowledge.Edge;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.IEdge;
 import model.gl.knowledge.MetricIndicator;
+import model.gl.knowledge.caption.Caption;
 import model.knowledge.Color;
 
 import exceptions.gl.GLSingletonNotInitializedException;
@@ -17,11 +18,13 @@ import exceptions.gl.GLSingletonNotInitializedException;
 public class GLMetricIndicatorViewManager extends GLViewManager {
 	private List<GLObject> nodes;
 	private List<GLObject> edges;
+	private List<GLObject> captions;
 
 	public GLMetricIndicatorViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
 		this.nodes = new ArrayList<GLObject>();
 		this.edges = new ArrayList<GLObject>();
+		this.captions = new ArrayList<GLObject>();
 	}
 	
 	@Override
@@ -45,6 +48,7 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 	public void setupItems() {
 		this.setupNodes();
 		this.setupEdges();
+		this.setupCaptions();
 	}
 	
 	private void setupNodes () {
@@ -75,25 +79,39 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 		e.setType(IEdge.SOLID);
 		this.edges.add(e);
 	}
+	
+	private void setupCaptions () {
+		Caption c = new Caption(3.2f, 2.8f);
+		c.addLine(new Color (1.0f, 0.0f, 1.0f), "Hello World!");
+		c.addLine(new Color (0.0f, 1.0f, 1.0f), "Goodbye World!");
+		this.captions.add(c);
+	}
 
 	@Override
 	public void drawItems() throws GLSingletonNotInitializedException {
 		this.drawNodes();
 		this.drawEdges();
+		this.drawCaptions();
 	}
 	
 	private void drawNodes () throws GLSingletonNotInitializedException {
 		int cont = 1;
-		for (GLObject f : nodes) {
+		for (GLObject glo : nodes) {
 			if (selectionMode)
 				GLSingleton.getGL().glLoadName(cont++);
-			f.draw();
+			glo.draw();
 		}
 	}
 	
 	private void drawEdges () throws GLSingletonNotInitializedException {
-		for (GLObject f : edges) {
-			f.draw();
+		for (GLObject glo : edges) {
+			glo.draw();
+		}
+	}
+	
+	private void drawCaptions () throws GLSingletonNotInitializedException {
+		for (GLObject glo : captions) {
+			glo.draw();
 		}
 	}
 

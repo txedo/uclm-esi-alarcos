@@ -30,6 +30,7 @@ public class GLInit {
 		// Setting some OpenGL parameters.
 		capabilities.setHardwareAccelerated(true);
 		capabilities.setDoubleBuffered(true);
+		capabilities.setStencilBits(8);
 		
 		glCanvas = new GLCanvas(capabilities);
 	    glCanvas.addGLEventListener(new GLDrawer());

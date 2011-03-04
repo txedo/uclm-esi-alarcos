@@ -1,4 +1,4 @@
-package model.gl.control;
+package model.gl;
 
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.MetricIndicator;

@@ -8,7 +8,15 @@ import model.gl.GLUtils;
 import model.knowledge.Color;
 import exceptions.gl.GLSingletonNotInitializedException;
 
-public class GLFactory extends GLObject {
+public class GLFactory extends GLObject3D {
+	// Constants to define object dimensions
+	private final float BASE_LENGTH = 2.0f;
+	private final float BASE_WIDTH = 1.0f;
+	private final float BASE_HEIGHT = 0.5f;
+	private final float BUILDING_HEIGHT = 1.2f;
+	private final float ROOF_HEIGHT = 0.3f;
+	private final float SMOKESTACK_BUILDING_GAP = 0.80f;
+	
 	private GLUquadric GLUQuadric;
 	private int texture;
 	// We define the base dimensions
@@ -16,7 +24,7 @@ public class GLFactory extends GLObject {
 	private float baseWidth;
 	private float baseHeight;
 	// Smokestack radius and building length will depend on base dimensions
-	private int smokestackHeight;
+	private int smokestackHeight;	// The number of projects assigned to this factory
 	private float smokestackRadius;
 	// Building dimensions
 	private float buildingLength;
@@ -31,27 +39,33 @@ public class GLFactory extends GLObject {
 		this.positionY = pos_y;
 		this.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 		
-		this.baseLength = 2.0f;
-		this.baseWidth = 1.0f;
-		this.baseHeight = 0.5f;
+		this.baseLength = this.BASE_LENGTH;
+		this.baseWidth = this.BASE_WIDTH;
+		this.baseHeight = this.BASE_HEIGHT;
 		
 		this.buildingLength = this.baseLength/2;
 		this.buildingWidth = this.baseWidth;
-		this.buildingHeight = 1.2f;
+		this.buildingHeight = this.BUILDING_HEIGHT;
 		
-		this.smokestackHeight = 2;
-		if (this.baseLength/2 > this.baseWidth)	this.smokestackRadius = this.baseWidth/4*0.80f;
-		else this.smokestackRadius = this.baseLength/4*0.80f;
+		this.smokestackHeight = 0;
+		if (this.baseLength/2 > this.baseWidth)	this.smokestackRadius = this.baseWidth/4*SMOKESTACK_BUILDING_GAP;
+		else this.smokestackRadius = this.baseLength/4*SMOKESTACK_BUILDING_GAP;
 
-		this.roofHeight = 0.3f;
+		this.roofHeight = this.ROOF_HEIGHT;
 	}
 	
 	@Override
-	public void draw() throws GLSingletonNotInitializedException {	
-		GLSingleton.getGL().glColor4fv(this.color.getColorFB());
-		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
-		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
-		GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);
+	protected void draw(boolean shadow) throws GLSingletonNotInitializedException {
+		// Only enable texture if you are going to draw the real object, no its shadow
+		if (shadow){
+			GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
+		}
+		else {
+			GLSingleton.getGL().glColor4fv(this.color.getColorFB());
+			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
+			GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
+			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);	
+		}
 		
 		GLSingleton.getGL().glPushMatrix();
 			// Base
@@ -67,19 +81,21 @@ public class GLFactory extends GLObject {
 				GLSingleton.getGL().glTranslatef(0.0f, this.baseHeight+this.buildingHeight, 0.0f);
 				this.drawBuildingRoof();
 			GLSingleton.getGL().glPopMatrix();
-			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+			// If we enabled textures before, we disable them now to draw the smokestack
+			if (!shadow) GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);	
 			// Smokestack
 			GLSingleton.getGL().glPushMatrix();
 				GLSingleton.getGL().glTranslatef(-this.baseLength*1/4, this.baseHeight, 0.0f);
 				GLSingleton.getGL().glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-				this.drawSmokestack();
+				this.drawSmokestack(shadow);
 			GLSingleton.getGL().glPopMatrix();
-			// Draw the smokestak height
-			GLSingleton.getGL().glPushMatrix();
-				GLSingleton.getGL().glTranslatef(this.baseLength*1/4, (this.baseHeight+this.buildingHeight+this.roofHeight)*1.20f, 0.0f);
-				GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
-				GLUtils.renderBitmapString(0.0f, 0.0f, 0, 2, ""+this.smokestackHeight);
-			GLSingleton.getGL().glPopMatrix();
+			if (!shadow) {
+				// Draw the smokestack value (only if we are drawing the real object
+				GLSingleton.getGL().glPushMatrix();
+					GLSingleton.getGL().glTranslatef(this.baseLength*1/4, (this.baseHeight+this.buildingHeight+this.roofHeight)*1.20f, 0.0f);
+					GLUtils.renderBitmapString(0.0f, 0.0f, 0, 2, ""+this.smokestackHeight);
+				GLSingleton.getGL().glPopMatrix();
+			}
 		GLSingleton.getGL().glPopMatrix();
 	}
 	
@@ -225,8 +241,12 @@ public class GLFactory extends GLObject {
 
 	}
 	
-	private void drawSmokestack() throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glColor3f(0.3f, 0.3f, 0.3f);
+	private void drawSmokestack(boolean shadow) throws GLSingletonNotInitializedException {
+		// Choose a color based on shadow or real object drawing
+		if (shadow)
+			GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
+		else
+			GLSingleton.getGL().glColor3f(0.3f, 0.3f, 0.3f);
 		GLSingleton.getGLU().gluCylinder(this.GLUQuadric, this.smokestackRadius, this.smokestackRadius, this.smokestackHeight/5.0, 32, 32);
 	}
 
@@ -236,6 +256,14 @@ public class GLFactory extends GLObject {
 
 	public void setSmokestackHeight(int smokestackHeight) {
 		this.smokestackHeight = smokestackHeight;
+	}
+	
+	public void setNumberOfProjects (int p) {
+		this.setSmokestackHeight(p);
+	}
+	
+	public int getNumberOfProjects () {
+		return this.getSmokestackHeight();
 	}
 
 	public void setGLUQuadric(GLUquadric gLUQuadric) {

@@ -12,6 +12,7 @@ import model.gl.GLSingleton;
 import model.gl.TextureLoader;
 import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
+import model.gl.knowledge.GLObject3D;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -67,9 +68,12 @@ public class GLFactoryViewManager extends GLViewManager {
 	public static void setupItems() {
 		glFactories = new ArrayList<GLObject>();
 		GLFactory glf = new GLFactory(5.0f, 5.0f);
-		glFactories.add(glf);
-		glf = new GLFactory(1.0f, 1.0f);
 		glf.setSmokestackHeight(10);
+		glFactories.add(glf);
+		glf = new GLFactory(8.0f, 2.0f);
+		glf.setSmokestackHeight(8);
+		glFactories.add(glf);
+		glf = new GLFactory(1.0f, 3.0f);
 		glFactories.add(glf);
 	}
 
@@ -79,7 +83,8 @@ public class GLFactoryViewManager extends GLViewManager {
 		for (GLObject glo : glFactories) {
 			if (selectionMode)
 				GLSingleton.getGL().glLoadName(cont++);
-			glo.draw();
+			if (this.drawingShadows) ((GLObject3D)glo).drawShadow();
+			else ((GLObject3D)glo).draw();
 		}
 	}
 

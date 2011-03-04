@@ -13,6 +13,7 @@ import model.gl.GLSingleton;
 import model.gl.TextureLoader;
 import model.gl.knowledge.AntennaBall;
 import model.gl.knowledge.GLObject;
+import model.gl.knowledge.GLObject3D;
 import model.knowledge.Color;
 
 import exceptions.gl.GLSingletonNotInitializedException;
@@ -89,10 +90,11 @@ public class GLProjectViewManager extends GLViewManager {
 	@Override
 	public void drawItems() throws GLSingletonNotInitializedException {
 		int cont = 1;
-		for (GLObject ball : antennaBalls) {
+		for (GLObject glo : antennaBalls) {
 			if (selectionMode)
 				GLSingleton.getGL().glLoadName(cont++);
-			ball.draw();
+			if (this.drawingShadows) ((GLObject3D)glo).drawShadow();
+			else ((GLObject3D)glo).draw();
 		}
 	}
 
