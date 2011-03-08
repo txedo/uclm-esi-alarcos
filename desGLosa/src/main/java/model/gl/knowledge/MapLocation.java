@@ -7,15 +7,18 @@ import model.gl.GLSingleton;
 import model.knowledge.Color;
 
 public class MapLocation extends Node {
-	private final Color highlightColor = new Color(1.0f, 0.0f, 0.0f);
+	private final Color highlightColor = new Color(0.0f, 1.0f, 0.0f, 1.0f);
 	private int id;
 	private boolean hightlighted;
+	private int highlightTexture;
+	private float textureRotation = 0.0f;
+	private float foo = 0.0f;
 	private float size;
 	
 	public MapLocation (int id) {
 		this.id = id;
 		this.hightlighted = false;
-		this.color = new Color(0.0f, 0.0f, 0.0f);
+		this.color = new Color(0.0f, 0.0f, 0.0f, 0.5f);
 		this.size = 20.0f;
 	}
 	
@@ -43,6 +46,8 @@ public class MapLocation extends Node {
 
 	public void setHightlighted(boolean hightlighted) {
 		this.hightlighted = hightlighted;
+		this.textureRotation = 0.0f;
+		this.foo = 0.0f;
 	}
 
 	public float getSize() {
@@ -70,7 +75,32 @@ public class MapLocation extends Node {
 	}
 
 	private void handleHighlighting() throws GLSingletonNotInitializedException {
+//		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
+//		GLSingleton.getGL().glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+//		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
+//		GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, this.highlightTexture);
+//		
+//		float dim = 0.20f;
+//		GLSingleton.getGL().glPushMatrix();
+//			GLSingleton.getGL().glTranslatef(this.positionX, this.positionY, 0.0f);
+//			GLSingleton.getGL().glRotatef(textureRotation, 0.0f, 0.0f, 1.0f);
+//			GLSingleton.getGL().glBegin(GL.GL_QUADS);
+//				GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);	GLSingleton.getGL().glVertex2f(-dim, -dim);
+//				GLSingleton.getGL().glTexCoord2f(1.0f, 0.0f);	GLSingleton.getGL().glVertex2f( dim, -dim);
+//				GLSingleton.getGL().glTexCoord2f(1.0f, 1.0f);	GLSingleton.getGL().glVertex2f( dim,  dim);
+//				GLSingleton.getGL().glTexCoord2f(0.0f, 1.0f);	GLSingleton.getGL().glVertex2f(-dim,  dim);
+//			GLSingleton.getGL().glEnd();
+//			this.textureRotation -= 10.0f;
+//		GLSingleton.getGL().glPopMatrix();
+//		GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+		
+		this.size = this.size + (float)Math.sin(this.foo%180.0f)*1.5f;
+		this.foo += 0.5;
 		GLSingleton.getGL().glColor3fv(this.highlightColor.getColorFB());
+	}
+
+	public void setHighlightTexture(int highlightTexture) {
+		this.highlightTexture = highlightTexture;
 	}
 
 }

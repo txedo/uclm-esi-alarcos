@@ -302,27 +302,22 @@ public class GLUtils {
 	public static void renderBitmapString(float x, float y, int font,
 			String string) throws GLSingletonNotInitializedException {
 		GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
-		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
 		GLSingleton.getGL().glRasterPos2f(x, y);
 		GLSingleton.getGLUT()
 				.glutBitmapString(GLUtils.selectFont(font), string);
-		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
 	}
 
 	public static void renderBitmapString(float x, float y, int z, int font,
 			String string) throws GLSingletonNotInitializedException {
 		GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
-		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
 		GLSingleton.getGL().glRasterPos3f(x, y, z);
 		GLSingleton.getGLUT()
 				.glutBitmapString(GLUtils.selectFont(font), string);
-		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
 	}
 
 	public static void renderSpacedBitmapString(float x, float y, int spacing,
 			int font, String string) throws GLSingletonNotInitializedException {
 		GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
-		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
 		float x1 = x;
 		for (int i = 0; i < string.length(); i++) {
 			GLSingleton.getGL().glRasterPos2f(x1, y);
@@ -333,7 +328,6 @@ public class GLUtils {
 							GLUtils.selectFont(font), string.charAt(i))
 					+ spacing;
 		}
-		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
 	}
 
 	public static float[][] getShadowMatrix(float[] groundPlane,
