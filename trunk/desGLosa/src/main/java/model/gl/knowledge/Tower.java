@@ -3,6 +3,7 @@ package model.gl.knowledge;
 import javax.media.opengl.GL;
 
 import model.gl.GLSingleton;
+import model.gl.GLUtils;
 import model.knowledge.Color;
 
 import exceptions.gl.GLSingletonNotInitializedException;
@@ -15,7 +16,8 @@ public class Tower extends GLObject3D {
 	 */
 	private float width;
 	private float depth;
-	private float height;
+	private float fill_height;	// Real measure
+	private float edge_height;	// Estimated measure
 	private float edge_width;
 
 	public Tower(float pos_x, float pos_y, float width, float depth,
@@ -26,7 +28,8 @@ public class Tower extends GLObject3D {
 		// Base rectangular
 		this.width = width;
 		this.depth = depth;
-		this.height = height;
+		this.fill_height = height;
+		this.edge_height = this.fill_height;
 		this.edge_width = 1.0f;
 	}
 	
@@ -35,8 +38,10 @@ public class Tower extends GLObject3D {
 		if (!shadow) {
 			// Aplicamos el mismo color a todos los vértices de la torre
 			GLSingleton.getGL().glColor4fv(color.getColorFB());
-			// Dibujamos la torre con relleno
-			this.drawTower();							
+			// Dibujamos la torre con relleno with multisample enabled to get polygons antialiased
+			GLUtils.enableMultisample();
+				this.drawTower(this.fill_height);
+			GLUtils.disableMultisample();
 			// Pintamos las aristas de la torre
 			// Si se especifica el grosor de la arista, la pintaremos de negro
 			// Si no se especifica el grosor de la arista, la pintaremos del mismo color de la torre para tener antialiasing
@@ -48,8 +53,8 @@ public class Tower extends GLObject3D {
 			GLSingleton.getGL().glLineWidth(edge_width > 0.0f? edge_width : 1.0f);	// Configuramos el grosor de la arista
 			GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_LINE);	// Habilitamos el modo línea
 			GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f);		// Desfasamos un poco para no dejar huecos en blanco sin rellenar entre la línea y el polígono
-			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT, GL.GL_LINE);	// Renderizamos únicamente la parte frontal de la cara por razones de rendimiento
-			this.drawTower();						// Dibujamos la torre (sólo los bordes)
+			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);	// Renderizamos únicamente la parte frontal de la cara por razones de rendimiento
+			this.drawTower(this.edge_height);						// Dibujamos la torre (sólo los bordes)
 			GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_LINE);	// Restauramos todo
 			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 			GLSingleton.getGL().glPolygonOffset(0.0f, 0.0f);// Configuramos el offset del polígono sin desfase
@@ -57,12 +62,14 @@ public class Tower extends GLObject3D {
 			super.enableLight();
 		} else {
 			GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
-			this.drawTower();
+			GLUtils.enableMultisample();
+				this.drawTower(this.fill_height);
+			GLUtils.disableMultisample();
 		}
 
 	}
 	
-	private void drawTower () throws GLSingletonNotInitializedException {
+	private void drawTower (float height) throws GLSingletonNotInitializedException {
 		/* Dibujamos las caras en sentido contrario a las agujas del reloj
 		 * -Counter-ClockWise (CCW)- para especificar la cara frontal.
 		 * Con gl.glFrontFace(GL.GL_CW) podríamos especificarlo al contrario
@@ -104,5 +111,16 @@ public class Tower extends GLObject3D {
 			GLSingleton.getGL().glEnd();
 		GLSingleton.getGL().glPopMatrix();
 	}
-
+	
+	public void setEstimatedMeasure (float em) {
+		this.edge_height = em;
+	}
+	
+	public void setRealMeasure (float rm) {
+		this.fill_height = rm;
+	}
+	
+	public float getRealMeasure () {
+		return this.fill_height;
+	}
 }

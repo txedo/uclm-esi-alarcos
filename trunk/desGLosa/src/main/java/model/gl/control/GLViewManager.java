@@ -11,6 +11,7 @@ import exceptions.gl.GLSingletonNotInitializedException;
 
 import model.gl.GLDrawer;
 import model.gl.GLSingleton;
+import model.gl.GLUtils;
 import model.gl.TextureLoader;
 
 public abstract class GLViewManager {
@@ -130,7 +131,9 @@ public abstract class GLViewManager {
 	}
 	
 	protected void drawFloor () throws GLSingletonNotInitializedException, IOException {
+		final float FLOOR_DIMENSION = 10.0f;
 		if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
+		GLUtils.enableMultisample();
 		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
 		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
 		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
@@ -138,13 +141,14 @@ public abstract class GLViewManager {
 		GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
 		GLSingleton.getGL().glColor3f(0.9f, 0.9f, 0.9f);
 		GLSingleton.getGL().glBegin(GL.GL_QUADS);
-			GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);	GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glTexCoord2f(10.0f, 0.0f);	GLSingleton.getGL().glVertex3f(10.0f, 0.0f, 0.0f);
-			GLSingleton.getGL().glTexCoord2f(10.0f, 10.0f);	GLSingleton.getGL().glVertex3f(10.0f, 0.0f, 10.0f);
-			GLSingleton.getGL().glTexCoord2f(0.0f, 10.0f);	GLSingleton.getGL().glVertex3f(0.0f, 0.0f, 10.0f);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 				0.0f);				GLSingleton.getGL().glVertex3f(0.0f, 			0.0f, 0.0f);
+			GLSingleton.getGL().glTexCoord2f(FLOOR_DIMENSION, 	0.0f);				GLSingleton.getGL().glVertex3f(FLOOR_DIMENSION, 0.0f, 0.0f);
+			GLSingleton.getGL().glTexCoord2f(FLOOR_DIMENSION, 	FLOOR_DIMENSION);	GLSingleton.getGL().glVertex3f(FLOOR_DIMENSION, 0.0f, FLOOR_DIMENSION);
+			GLSingleton.getGL().glTexCoord2f(0.0f, 				FLOOR_DIMENSION);	GLSingleton.getGL().glVertex3f(0.0f, 			0.0f, FLOOR_DIMENSION);
 		GLSingleton.getGL().glEnd();
 		GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
 		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
+		GLUtils.disableMultisample();
 	}
 
 	protected abstract void selectedObjectHandler(int selectedObject);

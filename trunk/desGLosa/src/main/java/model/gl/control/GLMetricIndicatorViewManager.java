@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GL;
+
 import model.gl.GLDrawer;
 import model.gl.GLSingleton;
 import model.gl.knowledge.Edge;
@@ -29,14 +31,12 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 	
 	@Override
 	public void configureView() throws GLSingletonNotInitializedException {
-		// TODO Auto-generated method stub
-		
+		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
 	}
 
 	@Override
 	public void deconfigureView() throws GLSingletonNotInitializedException {
-		// TODO Auto-generated method stub
-		
+		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
 	}
 	
 	@Override
@@ -82,8 +82,9 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 	
 	private void setupCaptions () {
 		Caption c = new Caption(3.2f, 2.8f);
-		c.addLine(new Color (1.0f, 0.0f, 1.0f), "Hello World!");
-		c.addLine(new Color (0.0f, 1.0f, 1.0f), "Goodbye World!");
+		c.addLine(new Color (1.0f, 0.0f, 0.0f), "Hello World!");
+		c.addLine(new Color (0.0f, 1.0f, 0.0f), "Good eveing World!");
+		c.addLine(new Color (0.0f, 0.0f, 1.0f), "Goodbye World!");
 		this.captions.add(c);
 	}
 

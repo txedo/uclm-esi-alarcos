@@ -1,9 +1,13 @@
 package model.gl;
 
+import java.nio.FloatBuffer;
+
 import javax.media.opengl.GL;
 
+import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.GLUT;
 
+import model.gl.control.GLViewManager;
 import model.gl.knowledge.IConstants;
 import model.knowledge.Vector3f;
 
@@ -11,6 +15,23 @@ import exceptions.gl.GLSingletonNotInitializedException;
 
 public class GLUtils {
 
+	/**
+	 * Convert screen coordinates into OpenGL world coordinates. The world
+	 * coordinates can be both relative or absolute. This is used to measure
+	 * lengths or convert points.
+	 * 
+	 * @param screenX
+	 *            Horizontal screen coordinate in pixels.
+	 * @param screenY
+	 *            Vertical screen coordinate in pixels.
+	 * @param relative
+	 *            true for relative coordinates (measurement purposes); false
+	 *            for absolute coordinates (conversion purposes)
+	 * @return A Vector3f whose components are the world coordinates
+	 *         corresponding to the given screen coordinates.
+	 * @throws GLSingletonNotInitializedException
+	 * @see {@link #getWorld2Screen(float, float)}
+	 */
 	static public Vector3f getScreen2World(int screenX, int screenY,
 			boolean relative) throws GLSingletonNotInitializedException {
 		int viewport[] = new int[4];
@@ -49,6 +70,19 @@ public class GLUtils {
 				(float) wcoord[2]);
 	}
 
+	/**
+	 * Converts OpenGL world coordinates into screen pixel coordinates. At the
+	 * moment, this only works on a 2D paradigm.
+	 * 
+	 * @param objX
+	 *            X-axis world coordinate.
+	 * @param objY
+	 *            Y-axis world coordinate
+	 * @return A vector whose components are the screen coordinates
+	 *         corresponding to the given world coordinates.
+	 * @throws GLSingletonNotInitializedException
+	 * @see {@link #getScreen2World(int, int, boolean)}
+	 */
 	static public Vector3f getWorld2Screen(float objX, float objY)
 			throws GLSingletonNotInitializedException {
 		int viewport[] = new int[4];
@@ -73,8 +107,14 @@ public class GLUtils {
 	 * matrix are saved (push). You can loads projection and modelview matrices
 	 * with endOrtho
 	 * 
+	 * @param screenHeight
+	 *            The height of the screen.
+	 * @param screenWidth
+	 *            The width of the screen.
+	 * @param glDim
+	 *            Horizontal dimension of 2D plane.
 	 * @throws GLSingletonNotInitializedException
-	 * @see #endOrtho()
+	 * @see {@link #endOrtho()}
 	 */
 	static public void beginOrtho(int screenHeight, int screenWidth, float glDim)
 			throws GLSingletonNotInitializedException {
@@ -89,7 +129,8 @@ public class GLUtils {
 		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
 		// Save the current projection matrix
 		GLSingleton.getGL().glPushMatrix();
-		// Reset the current projection matrix to creates a new Orthographic projection
+		// Reset the current projection matrix to creates a new Orthographic
+		// projection
 		GLSingleton.getGL().glLoadIdentity();
 		// Creates a new orthographic viewing volume
 		float h = (float) screenHeight / (float) screenWidth;
@@ -108,7 +149,7 @@ public class GLUtils {
 	 * beginOrtho
 	 * 
 	 * @throws GLSingletonNotInitializedException
-	 * @see #beginOrtho()
+	 * @see {@link #beginOrtho(int, int, float)}
 	 */
 	static public void endOrtho() throws GLSingletonNotInitializedException {
 		// Select the Projection matrix stack
@@ -122,128 +163,76 @@ public class GLUtils {
 		GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);
 	}
 
-	public static void billboardSphericalBegin(Vector3f camPos, Vector3f objPos)
+	/**
+	 * Apply a set of transformations so objects will be facing the camera while
+	 * keeping locked at floor. Before applying the transformations it saves the
+	 * current projection and modelview matrix (push). Once finished, you must
+	 * manually load the previously saved projection and modelview matrix with
+	 * billboardEnd.
+	 * 
+	 * @param cameraPosition
+	 *            A copy of camera position vector.
+	 * @param objectPosition
+	 *            The position in which the object will be placed.
+	 * @param offset
+	 *            offset used to turn around the objectPosition.
+	 * @throws GLSingletonNotInitializedException
+	 * @see {@link #billboardEnd()}
+	 */
+	public static void billboardSphericalLockedAtFloorBegin(
+			Vector3f cameraPosition, Vector3f objectPosition, float offset)
 			throws GLSingletonNotInitializedException {
-		Vector3f lookAt = new Vector3f();
-		Vector3f objToCamProj = new Vector3f();
-		Vector3f objToCam = new Vector3f();
-		Vector3f upAux = new Vector3f();
-		float angleCosine;
-
+		// Save the current modelview matrix
 		GLSingleton.getGL().glPushMatrix();
+		// zDirector is an auxiliary vector which indicates z-axis direction
+		Vector3f zDirector = new Vector3f(0.0f, 0.0f, 1.0f);
+		// Calculate the projection vector from camera to object (y=0)
+		Vector3f camToObjectProjection = new Vector3f();
+		camToObjectProjection.setX(cameraPosition.getX()
+				- objectPosition.getX());
+		camToObjectProjection.setY(0.0f);
+		camToObjectProjection.setZ(cameraPosition.getZ()
+				- objectPosition.getZ());
+		// The normalized vector will be used to calculate the dot product
+		Vector3f normalizedCamToObjectProjection = camToObjectProjection
+				.getNormalizedVector();
 
-		// objToCamProj is the vector in world coordinates from the
-		// local origin to the camera projected in the XZ plane
-		objToCamProj.setX(camPos.getX() - objPos.getX());
-		objToCamProj.setY(0);
-		objToCamProj.setZ(camPos.getZ() - objPos.getZ());
+		// upVector will indicate if the angle between two vectors is positive
+		// or negative
+		// for positive angles upAux will point in the positive y direction
+		Vector3f upVector = zDirector.cross(normalizedCamToObjectProjection);
 
-		// This is the original lookAt vector for the object
-		// in world coordinates
-		lookAt = new Vector3f(0.0f, 0.0f, 1.0f);
+		// Calculate yaw and pitch angles
+		// For yaw, pitch and roll definition see
+		// http://en.wikipedia.org/wiki/Tait-Bryan_angles#Tait-Bryan_angles
+		float yaw = zDirector.dot(normalizedCamToObjectProjection);
+		float pitch = (float) Math.atan(cameraPosition.getY()
+				/ camToObjectProjection.getLength());
 
-		// normalize both vectors to get the cosine directly afterwards
-		objToCamProj.normalize();
+		// Apply offset from object position in the direction from object
+		// position to camera position
+		Vector3f offsetPosition = objectPosition
+				.add(normalizedCamToObjectProjection.mult(offset));
 
-		// easy fix to determine whether the angle is negative or positive
-		// for positive angles upAux will be a vector pointing in the
-		// positive y direction, otherwise upAux will point downwards
-		// effectively reversing the rotation.
-		upAux = lookAt.cross(objToCamProj);
-
-		// compute the angle
-		angleCosine = lookAt.dot(objToCamProj);
-
-		// perform the rotation. The if statement is used for stability reasons
-		// if the lookAt and objToCamProj vectors are too close together then
-		// |angleCosine| could be bigger than 1 due to lack of precision
-		if ((angleCosine < 0.99990) && (angleCosine > -0.9999))
-			GLSingleton.getGL().glRotatef(
-					(float) Math.acos(angleCosine) * 180 / (float) 3.14,
-					upAux.getX(), upAux.getY(), upAux.getZ());
-
-		// so far it is just like the cylindrical billboard. The code for the
-		// second rotation comes now
-		// The second part tilts the object so that it faces the camera
-
-		// objToCam is the vector in world coordinates from
-		// the local origin to the camera
-		objToCam.setX(camPos.getX() - objPos.getX());
-		objToCam.setY(camPos.getY() - objPos.getY());
-		objToCam.setZ(camPos.getZ() - objPos.getZ());
-
-		// Normalize to get the cosine afterwards
-		objToCam.normalize();
-
-		// Compute the angle between objToCamProj and objToCam,
-		// i.e. compute the required angle for the lookup vector
-		angleCosine = objToCamProj.dot(objToCam);
-
-		// Tilt the object. The test is done to prevent instability
-		// when objToCam and objToCamProj have a very small
-		// angle between them
-		if ((angleCosine < 0.99990) && (angleCosine > -0.9999))
-			if (objToCam.getY() < 0)
-				GLSingleton.getGL().glRotatef(
-						(float) Math.acos(angleCosine) * 180 / 3.14f, 1.0f,
-						0.0f, 0.0f);
-			else
-				GLSingleton.getGL().glRotatef(
-						(float) Math.acos(angleCosine) * 180 / 3.14f, -1.0f,
-						0.0f, 0.0f);
-
+		// Now we apply the transformations: first translate, then rotate yaw
+		// and pitch
+		GLSingleton.getGL().glTranslatef(offsetPosition.getX(), 0.0f,
+				offsetPosition.getZ());
+		// upVector.getX() and upVector.getZ() will always be 0
+		GLSingleton.getGL().glRotatef((float) Math.acos(yaw) * 180 / 3.14f,
+				upVector.getX(), upVector.getY(), upVector.getZ());
+		GLSingleton.getGL().glRotatef(-pitch * 180 / 3.14f, 1.0f, 0.0f, 0.0f);
 	}
 
-	static public void billboardCheatSphericalBegin()
-			throws GLSingletonNotInitializedException {
-		double mvmatrix[] = new double[16];
-
-		// save the current modelview matrix
-		GLSingleton.getGL().glPushMatrix();
-
-		// get the current modelview matrix
-		GLSingleton.getGL().glGetDoublev(GL.GL_MODELVIEW_MATRIX, mvmatrix, 0);
-
-		// undo all rotations
-		// beware all scaling is lost as well
-		for (int i = 0; i < 3; i++)
-			for (int j = 0; j < 3; j++) {
-				if (i == j)
-					mvmatrix[i * 4 + j] = 1.0;
-				else
-					mvmatrix[i * 4 + j] = 0.0;
-			}
-
-		// set the modelview with no rotations
-		GLSingleton.getGL().glLoadMatrixd(mvmatrix, 0);
-	}
-
-	public static void billboardCheatCylindricalBegin()
-			throws GLSingletonNotInitializedException {
-		double mvmatrix[] = new double[16];
-		;
-
-		// save the current modelview matrix
-		GLSingleton.getGL().glPushMatrix();
-
-		// get the current modelview matrix
-		GLSingleton.getGL().glGetDoublev(GL.GL_MODELVIEW_MATRIX, mvmatrix, 0);
-
-		for (int i = 0; i < 3; i += 2)
-			for (int j = 0; j < 3; j++) {
-				if (i == j)
-					mvmatrix[i * 4 + j] = 1.0;
-				else
-					mvmatrix[i * 4 + j] = 0.0;
-			}
-
-		// set the modelview matrix
-		GLSingleton.getGL().glLoadMatrixd(mvmatrix, 0);
-	}
-
+	/**
+	 * Load projection and modelview matrices previously saved by the method
+	 * billboardSphericalLockedAtFloorBegin
+	 * 
+	 * @throws GLSingletonNotInitializedException
+	 * @see {@link #billboardSphericalLockedAtFloorBegin(Vector3f, Vector3f, float)}
+	 */
 	static public void billboardEnd() throws GLSingletonNotInitializedException {
-		// restore the previously
-		// stored modelview matrix
+		// restore the previously stored modelview matrix
 		GLSingleton.getGL().glPopMatrix();
 	}
 
@@ -312,20 +301,28 @@ public class GLUtils {
 
 	public static void renderBitmapString(float x, float y, int font,
 			String string) throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
+		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
 		GLSingleton.getGL().glRasterPos2f(x, y);
 		GLSingleton.getGLUT()
 				.glutBitmapString(GLUtils.selectFont(font), string);
+		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
 	}
 
 	public static void renderBitmapString(float x, float y, int z, int font,
 			String string) throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
+		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
 		GLSingleton.getGL().glRasterPos3f(x, y, z);
 		GLSingleton.getGLUT()
 				.glutBitmapString(GLUtils.selectFont(font), string);
+		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
 	}
 
 	public static void renderSpacedBitmapString(float x, float y, int spacing,
 			int font, String string) throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
+		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
 		float x1 = x;
 		for (int i = 0; i < string.length(); i++) {
 			GLSingleton.getGL().glRasterPos2f(x1, y);
@@ -336,32 +333,36 @@ public class GLUtils {
 							GLUtils.selectFont(font), string.charAt(i))
 					+ spacing;
 		}
+		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
 	}
-	
-	public static float[][] getShadowMatrix (float[] groundPlane, Vector3f lightPosition) {
-		float [][] shadowMatrix = new float[4][4];
-		
-		  /* Find dot product between light position vector and ground plane normal. */
-		float dot = groundPlane[0] * lightPosition.getX() +
-		groundPlane[1] * lightPosition.getY() +
-		groundPlane[2] * lightPosition.getZ() +
-		groundPlane[3] * 1.0f;
+
+	public static float[][] getShadowMatrix(float[] groundPlane,
+			Vector3f lightPosition) {
+		float[][] shadowMatrix = new float[4][4];
+
+		/*
+		 * Find dot product between light position vector and ground plane
+		 * normal.
+		 */
+		float dot = groundPlane[0] * lightPosition.getX() + groundPlane[1]
+				* lightPosition.getY() + groundPlane[2] * lightPosition.getZ()
+				+ groundPlane[3] * 1.0f;
 
 		shadowMatrix[0][0] = dot - lightPosition.getX() * groundPlane[0];
 		shadowMatrix[1][0] = 0.f - lightPosition.getX() * groundPlane[1];
 		shadowMatrix[2][0] = 0.f - lightPosition.getX() * groundPlane[2];
-		shadowMatrix[3][0] = 0.f - 1.0f                 * groundPlane[3];
+		shadowMatrix[3][0] = 0.f - 1.0f * groundPlane[3];
 
 		shadowMatrix[0][1] = 0.f - lightPosition.getY() * groundPlane[0];
 		shadowMatrix[1][1] = dot - lightPosition.getY() * groundPlane[1];
 		shadowMatrix[2][1] = 0.f - lightPosition.getY() * groundPlane[2];
-		shadowMatrix[3][1] = 0.f - 1.0f                 * groundPlane[3];
+		shadowMatrix[3][1] = 0.f - 1.0f * groundPlane[3];
 
 		shadowMatrix[0][2] = 0.f - lightPosition.getZ() * groundPlane[0];
 		shadowMatrix[1][2] = 0.f - lightPosition.getZ() * groundPlane[1];
 		shadowMatrix[2][2] = dot - lightPosition.getZ() * groundPlane[2];
-		shadowMatrix[3][2] = 0.f - 1.0f                 * groundPlane[3];
-		
+		shadowMatrix[3][2] = 0.f - 1.0f * groundPlane[3];
+
 		shadowMatrix[0][3] = 0.f - 1.0f * groundPlane[0];
 		shadowMatrix[1][3] = 0.f - 1.0f * groundPlane[1];
 		shadowMatrix[2][3] = 0.f - 1.0f * groundPlane[2];
@@ -369,10 +370,10 @@ public class GLUtils {
 
 		return shadowMatrix;
 	}
-	
+
 	/* Find the plane equation given 3 points. */
 	public static float[] findPlane(Vector3f A, Vector3f B, Vector3f C) {
-		float [] plane = new float[4];
+		float[] plane = new float[4];
 		// http://www.jtaylor1142001.net/calcjat/Solutions/VPlanes/VP3Pts.htm
 		Vector3f AB = new Vector3f();
 		Vector3f AC = new Vector3f();
@@ -381,7 +382,7 @@ public class GLUtils {
 		AB.setX(B.getX() - A.getX());
 		AB.setY(B.getY() - A.getY());
 		AB.setZ(B.getZ() - A.getZ());
-		
+
 		AC.setX(C.getX() - A.getX());
 		AC.setY(C.getY() - A.getY());
 		AC.setZ(C.getZ() - A.getZ());
@@ -392,10 +393,125 @@ public class GLUtils {
 		plane[0] = n.getX();
 		plane[1] = n.getY();
 		plane[2] = n.getZ();
-		plane[3] = -(plane[0]*A.getX() + plane[1]*A.getY() + plane[2]*A.getZ());
-		
+		plane[3] = -(plane[0] * A.getX() + plane[1] * A.getY() + plane[2]
+				* A.getZ());
+
 		return plane;
 	}
 
+	public static boolean enableMultisample()
+			throws GLSingletonNotInitializedException {
+		boolean multisampleAvailable = false;
+		if (GLSingleton.getGL().isExtensionAvailable("GL_ARB_multisample")) {
+			// Do not forget to set sample buffers to true in GLCapabilities
+			GLSingleton.getGL().glEnable(GL.GL_MULTISAMPLE);
+			multisampleAvailable = true;
+		}
+		return multisampleAvailable;
+	}
+
+	public static void disableMultisample()
+			throws GLSingletonNotInitializedException {
+		if (GLSingleton.getGL().isExtensionAvailable("GL_ARB_multisample")
+				&& GLSingleton.getGL().glIsEnabled(GL.GL_MULTISAMPLE)) {
+			GLSingleton.getGL().glDisable(GL.GL_MULTISAMPLE);
+		}
+	}
+
+	public static FloatBuffer doShadowCalculations(boolean renderShadow,
+			boolean stencilShadow, Vector3f lightSource)
+			throws GLSingletonNotInitializedException {
+		// After we render the new camera and spotlight position we calculate
+		// the floor shadow
+		// The spotlight and the camera are together, so we use camera position
+		// plus an additional offset to calculate the shadow matrix
+		float[] floorPlane = { 0.0f, 1.0f, 0.0f, 0.0f };
+		float[][] floorShadow = GLUtils
+				.getShadowMatrix(floorPlane, lightSource);
+		// float [][] floorShadow =
+		// GLUtils.getShadowMatrix(GLUtils.findPlane(new
+		// Vector3f(0.0f,0.0f,0.0f), new Vector3f(0.0f,0.0f,1.0f), new
+		// Vector3f(1.0f,0.0f,0.0f)), lightSource);
+		FloatBuffer floorShadowBuf = BufferUtil.newFloatBuffer(16);
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				floorShadowBuf.put(floorShadow[i][j]);
+			}
+		}
+		floorShadowBuf.rewind();
+		if (renderShadow) {
+			if (stencilShadow) {
+				/*
+				 * Draw the floor with stencil value 3. This helps us only draw
+				 * the shadow once per floor pixel (and only on the floor
+				 * pixels).
+				 */
+				GLSingleton.getGL().glEnable(GL.GL_STENCIL_TEST);
+				GLSingleton.getGL().glStencilFunc(GL.GL_ALWAYS, 3, 0xffffffff);
+				GLSingleton.getGL().glStencilOp(GL.GL_KEEP, GL.GL_KEEP,
+						GL.GL_REPLACE);
+			}
+		}
+		return floorShadowBuf;
+	}
+
+	public static void renderProjectedShadow(boolean renderShadow,
+			boolean stencilShadow, FloatBuffer floorShadowBuf,
+			GLViewManager activeViewManager)
+			throws GLSingletonNotInitializedException {
+		if (renderShadow) {
+			/* Render the projected shadow. */
+			if (stencilShadow) {
+				/*
+				 * Now, only render where stencil is set above 2 (ie, 3 where
+				 * the top floor is). Update stencil with 2 where the shadow
+				 * gets drawn so we don't redraw (and accidently reblend) the
+				 * shadow).
+				 */
+				GLSingleton.getGL().glStencilFunc(GL.GL_LESS, 2, 0xffffffff); /*
+																			 * draw
+																			 * if
+																			 * ==
+																			 * 1
+																			 */
+				GLSingleton.getGL().glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE,
+						GL.GL_REPLACE);
+			}
+			/*
+			 * To eliminate depth buffer artifacts, we use polygon offset to
+			 * raise the depth of the projected shadow slightly so that it does
+			 * not depth buffer alias with the floor.
+			 */
+			GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_FILL);
+			GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f); // Negative
+																// offset pull
+																// the object
+																// towards the
+																// viewer
+			/*
+			 * Render 50% black shadow color on top of whatever the floor
+			 * appareance is.
+			 */
+			// GLSingleton.getGL().glEnable(GL.GL_BLEND);
+			// GLSingleton.getGL().glBlendFunc(GL.GL_SRC_ALPHA,
+			// GL.GL_ONE_MINUS_SRC_ALPHA);
+			GLSingleton.getGL().glDisable(GL.GL_LIGHTING); /*
+															 * Force the 50%
+															 * black.
+															 */
+			GLSingleton.getGL().glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
+			GLSingleton.getGL().glPushMatrix();
+			/* Project the shadow. */
+			GLSingleton.getGL().glMultMatrixf(floorShadowBuf);
+			activeViewManager.drawShadows();
+			GLSingleton.getGL().glPopMatrix();
+			// GLSingleton.getGL().glDisable(GL.GL_BLEND);
+			GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
+			GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_FILL);
+			if (stencilShadow) {
+				GLSingleton.getGL().glDisable(GL.GL_STENCIL_TEST);
+			}
+		}
+	}
 
 }

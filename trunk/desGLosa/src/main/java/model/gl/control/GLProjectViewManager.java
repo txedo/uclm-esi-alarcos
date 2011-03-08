@@ -10,11 +10,13 @@ import javax.media.opengl.glu.GLUquadric;
 
 import model.gl.GLDrawer;
 import model.gl.GLSingleton;
+import model.gl.GLUtils;
 import model.gl.TextureLoader;
 import model.gl.knowledge.AntennaBall;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLObject3D;
 import model.knowledge.Color;
+import model.knowledge.Vector3f;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -95,6 +97,18 @@ public class GLProjectViewManager extends GLViewManager {
 				GLSingleton.getGL().glLoadName(cont++);
 			if (this.drawingShadows) ((GLObject3D)glo).drawShadow();
 			else ((GLObject3D)glo).draw();
+			// Write the project label
+			Vector3f cameraPosition = this.drawer.getCamera().getPosition().clone();
+			Vector3f objectPosition = new Vector3f(glo.getPositionX(), 0.0f, glo.getPositionZ());
+			float offset = ((AntennaBall)glo).getParentBallRadius();
+			GLUtils.billboardSphericalLockedAtFloorBegin(cameraPosition, objectPosition, offset);
+			try {
+				GLFontBuilder.getInstance().glPrint(0, 0, ((AntennaBall)glo).getLabel(), 1, true);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			GLUtils.billboardEnd();
 		}
 	}
 

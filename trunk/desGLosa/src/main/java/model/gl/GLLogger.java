@@ -14,6 +14,8 @@ public class GLLogger {
 	private int [] elements_vertices = new int[1];
 	private int [] elements_indices = new int[1];
 	private int [] stencilbuffer_bits = new int[1];
+	private int [] sample_buffers = new int[1];
+	private int [] samples = new int[1];
 
 	public GLLogger () throws GLSingletonNotInitializedException {
 		vendor = GLSingleton.getGL().glGetString(GL.GL_VENDOR);
@@ -28,6 +30,9 @@ public class GLLogger {
 		GLSingleton.getGL().glGetIntegerv(GL.GL_MAX_ELEMENTS_INDICES, elements_indices, 0);
 		
 		GLSingleton.getGL().glGetIntegerv(GL.GL_STENCIL_BITS, stencilbuffer_bits, 0);
+		
+		GLSingleton.getGL().glGetIntegerv(GL.GL_SAMPLE_BUFFERS, sample_buffers, 0);
+		GLSingleton.getGL().glGetIntegerv(GL.GL_SAMPLES, samples, 0);
 	}
 
 	public String toString() {
@@ -44,6 +49,9 @@ public class GLLogger {
 		sb.append("MAX_ELEMENTS_INDICES: " + elements_indices[0] + "\n");
 		sb.append("\n");
 		sb.append("SUPPORTED_STENCIL_BITS: " + stencilbuffer_bits[0] + "\n");
+		sb.append("\n");
+		sb.append("NUMBER_OF_SAMPLE_BUFFERS: " + sample_buffers[0] + "\n");
+		sb.append("NUMBER_OF_SAMPLES: " + samples[0] + "\n");
 		return sb.toString();
 	}
 	

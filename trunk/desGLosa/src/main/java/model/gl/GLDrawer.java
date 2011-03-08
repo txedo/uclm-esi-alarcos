@@ -12,10 +12,8 @@ import com.sun.opengl.util.BufferUtil;
 import model.gl.control.EViewLevels;
 import model.gl.control.GLFactoryViewManager;
 import model.gl.control.GLFontBuilder;
-import model.gl.control.GLMapLocationViewManager;
 import model.gl.control.GLMetricIndicatorViewManager;
 import model.gl.control.GLProjectViewManager;
-import model.gl.control.GLTowerViewManager;
 import model.gl.control.GLViewManager;
 import model.gl.knowledge.Camera;
 import model.gl.knowledge.IConstants;
@@ -78,7 +76,8 @@ public class GLDrawer implements GLEventListener, IConstants {
 				getViewManager(viewLevel).configureView();
 				oldViewLevel = viewLevel;
 			}
-			if (this.stencilShadow && this.renderShadow) {
+			// If the active view supports shadows, the stencil buffer is cleared in order to draw them
+			if (this.stencilShadow && this.renderShadow && this.getViewManager(viewLevel).isShadowSupport()) {
 				GLSingleton.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
 			}
 			else {
@@ -86,68 +85,24 @@ public class GLDrawer implements GLEventListener, IConstants {
 				GLSingleton.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 			}
 			GLSingleton.getGL().glLoadIdentity();
+			// Render the new camera and spotlight position if the active view is three-dimensional
 			if (getViewManager(this.viewLevel).isThreeDimensional()) {
 				camera.render();
 				spotlight.render(camera.getPosition(), camera.getViewDir());
 			}
-			// After we render the new camera and spotlight position we calculate the floor shadow
-			// The spotlight and the camera are together, so we use camera position plus an additional offset to calculate the shadow matrix
-			float [] floorPlane = {0.0f, 1.0f, 0.0f, 0.0f};
-			Vector3f lightSource = this.camera.getPosition().clone();
-			lightSource.setX(lightSource.getX()-1.0f);
-			lightSource.setY(lightSource.getY()+1.0f);
-			float [][] floorShadow = GLUtils.getShadowMatrix(floorPlane, lightSource);
-//			float [][] floorShadow = GLUtils.getShadowMatrix(GLUtils.findPlane(new Vector3f(0.0f,0.0f,0.0f), new Vector3f(0.0f,0.0f,1.0f), new Vector3f(1.0f,0.0f,0.0f)), lightSource);
+			// Perform shadow calculations if shadows are enabled
 			FloatBuffer floorShadowBuf = BufferUtil.newFloatBuffer(16);
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 4; j++) {
-					floorShadowBuf.put(floorShadow[i][j]);
-				}
+			if (this.getViewManager(viewLevel).isShadowSupport()) {
+				Vector3f lightSource = this.camera.getPosition().clone();
+				lightSource.setX(lightSource.getX()-1.0f);
+				lightSource.setY(lightSource.getY()+1.0f);
+				floorShadowBuf = GLUtils.doShadowCalculations(this.renderShadow, this.stencilShadow, lightSource);
 			}
-			floorShadowBuf.rewind();
-			if (this.renderShadow) {
-				if (this.stencilShadow) {
-				    /* Draw the floor with stencil value 3.  This helps us only 
-			        draw the shadow once per floor pixel (and only on the
-			        floor pixels). */
-					GLSingleton.getGL().glEnable(GL.GL_STENCIL_TEST);
-					GLSingleton.getGL().glStencilFunc(GL.GL_ALWAYS, 3, 0xffffffff);
-					GLSingleton.getGL().glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-				}
-			}
+			// Render the normal scene
 			this.getViewManager(viewLevel).manageView();
-			if (this.renderShadow) {
-				/* Render the projected shadow. */
-				if (this.stencilShadow) {
-			        /* Now, only render where stencil is set above 2 (ie, 3 where
-			          the top floor is).  Update stencil with 2 where the shadow
-			          gets drawn so we don't redraw (and accidently reblend) the
-			          shadow). */
-					GLSingleton.getGL().glStencilFunc(GL.GL_LESS, 2, 0xffffffff);  /* draw if ==1 */
-					GLSingleton.getGL().glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE, GL.GL_REPLACE);
-				}
-				/* To eliminate depth buffer artifacts, we use polygon offset
-		        to raise the depth of the projected shadow slightly so
-		        that it does not depth buffer alias with the floor. */
-				GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_FILL);
-				GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f);
-			      /* Render 50% black shadow color on top of whatever the
-		         floor appareance is. */
-//				GLSingleton.getGL().glEnable(GL.GL_BLEND);
-//				GLSingleton.getGL().glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-				GLSingleton.getGL().glDisable(GL.GL_LIGHTING);  /* Force the 50% black. */
-				GLSingleton.getGL().glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
-				GLSingleton.getGL().glPushMatrix();
-			       /* Project the shadow. */
-					GLSingleton.getGL().glMultMatrixf(floorShadowBuf);
-					this.getViewManager(viewLevel).drawShadows();
-				GLSingleton.getGL().glPopMatrix();
-//				GLSingleton.getGL().glDisable(GL.GL_BLEND);
-				GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
-				GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_FILL);
-			    if (stencilShadow) {
-			    	GLSingleton.getGL().glDisable(GL.GL_STENCIL_TEST);
-			    }
+			// Render the scene shadow if shadows are enabled
+			if (this.getViewManager(viewLevel).isShadowSupport()) {
+				GLUtils.renderProjectedShadow(this.renderShadow, this.stencilShadow, floorShadowBuf, this.getViewManager(viewLevel));
 			}
 			if (this.debugMode) {
 				this.log.printToGL(this.screenHeight, this.screenWidth-100, this.DIM);
@@ -173,7 +128,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 			boolean deviceChanged) {
 	}
 
-	  /** Called by the drawable immediately after the OpenGL context is
+	/** Called by the drawable immediately after the OpenGL context is
      * initialized for the first time. Can be used to perform one-time OpenGL
      * initialization such as setup of lights and display lists.
      * @param gLDrawable The GLAutoDrawable object.
@@ -183,20 +138,17 @@ public class GLDrawer implements GLEventListener, IConstants {
 		GLSingleton.init(glDrawable);
 		
 		this.debugMode = false;
-		this.renderShadow = false;
-		this.stencilShadow = false;
+		this.renderShadow = true;
+		this.stencilShadow = true;
 		
 		this.oldViewLevel = EViewLevels.UnSetLevel;
 		this.viewLevel = EViewLevels.MapLevel;
 		
-		this.mapLocationView = new GLMapLocationViewManager(this, false);			// 2D View
-		this.metricIndicatorView = new GLMetricIndicatorViewManager(this, false);	// 2D View
-		this.towerView = new GLTowerViewManager(this, true);						// 3D View
-		this.towerView.setShadowSupport(true);
-		this.projectView = new GLProjectViewManager(this, true);					// 3D View
-		this.projectView.setShadowSupport(true);
-		this.factoryView = new GLFactoryViewManager(this, true);					// 3D View
-		this.factoryView.setShadowSupport(true);
+		this.mapLocationView = IViewManagerFactoryImpl.getInstance().createMapLocationViewManager(this);
+		this.metricIndicatorView = IViewManagerFactoryImpl.getInstance().createMetricIndicatorViewManager(this);
+		this.towerView = IViewManagerFactoryImpl.getInstance().createTowerViewManager(this);
+		this.projectView = IViewManagerFactoryImpl.getInstance().createProjectViewManager(this);
+		this.factoryView = IViewManagerFactoryImpl.getInstance().createFactoryViewManager(this);
 		
 		try {
 			GLSingleton.getGL().glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
@@ -205,14 +157,19 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLSingleton.getGL().glClearDepth(1.0f);								// Depth Buffer Setup
 			GLSingleton.getGL().glDepthFunc(GL.GL_LEQUAL);						// The Type Of Depth Testing To Do
 			GLSingleton.getGL().glShadeModel(GL.GL_SMOOTH);						// Enable Smooth Shading
-			// Textures are enabled and its environment configured just before mapping them
-			// Configuración para obtener un antialiasing en las líneas
+			// Enable blending
 			GLSingleton.getGL().glEnable(GL.GL_BLEND);
 			GLSingleton.getGL().glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-			GLSingleton.getGL().glEnable(GL.GL_LINE_SMOOTH);
-			GLSingleton.getGL().glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
+			// Point antialiasing
 			GLSingleton.getGL().glEnable(GL.GL_POINT_SMOOTH);
 			GLSingleton.getGL().glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
+			// Line antialiasing
+			GLSingleton.getGL().glEnable(GL.GL_LINE_SMOOTH);
+			GLSingleton.getGL().glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
+			// Polygon antialiasing (in case this does not work, use GLUtils.enableMultisample())
+			GLSingleton.getGL().glEnable(GL.GL_POLYGON_SMOOTH);
+			GLSingleton.getGL().glHint(GL.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
+			// Textures are enabled and its environment configured just before mapping them, not here
 			
 			// Creamos una cámara y un foco de luz
 			camera = new Camera(5.0f, 7.0f, 15.0f, 0.0f, -0.5f, -1.0f);
@@ -290,17 +247,9 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.oldViewLevel = this.viewLevel;
 		this.viewLevel = viewLevel;
 		// We reset the camera position in case that the view level is 3D
-		try {
-			if (this.getViewManager(viewLevel).isThreeDimensional()) {
-				this.spotlight.switchOn();
-				this.spotlight.reset();
-				this.camera.reset();
-			} else {
-				this.spotlight.switchOff();
-			}
-		} catch (GLSingletonNotInitializedException e) {
-			// TODO auto-generated block code
-			e.printStackTrace();
+		if (this.getViewManager(viewLevel).isThreeDimensional()) {
+			this.spotlight.reset();
+			this.camera.reset();
 		}
 	}
 

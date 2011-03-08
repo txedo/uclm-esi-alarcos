@@ -30,7 +30,11 @@ public class GLInit {
 		// Setting some OpenGL parameters.
 		capabilities.setHardwareAccelerated(true);
 		capabilities.setDoubleBuffered(true);
+		// Set number of stencil bits in order to have stencil buffer working
 		capabilities.setStencilBits(8);
+		// Sample buffers are used to get polygon anti-aliasing working
+		capabilities.setSampleBuffers(true);
+		capabilities.setNumSamples(2);
 		
 		glCanvas = new GLCanvas(capabilities);
 	    glCanvas.addGLEventListener(new GLDrawer());
