@@ -56,7 +56,8 @@ public class Caption extends GLObject {
 		GLSingleton.getGL().glPushMatrix();
 			GLSingleton.getGL().glTranslatef(this.positionX + oglGAP.getX(), this.positionY - oglGAP.getY() * 2, 0.0f);
 			for (int i = 0 ; i < lines.size(); i++) {
-				GLSingleton.getGL().glTranslatef(0.0f, -vgap*i, 0.0f);
+				if (i == 0) GLSingleton.getGL().glTranslatef(0.0f, 0.0f, 0.0f);
+				else GLSingleton.getGL().glTranslatef(0.0f, -vgap, 0.0f);
 				lines.get(i).draw();
 			}
 		GLSingleton.getGL().glPopMatrix();

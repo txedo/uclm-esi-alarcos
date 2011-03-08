@@ -23,7 +23,7 @@ public class Edge extends GLObject implements IEdge {
 
 	@Override
 	public void draw() throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glColor4fv(color.getColorFB());
+		GLSingleton.getGL().glColor3fv(color.getColorFB());
 		if (this.type != SOLID) GLSingleton.getGL().glEnable(GL.GL_LINE_STIPPLE);
 		switch (this.type) {
 			case SOLID:

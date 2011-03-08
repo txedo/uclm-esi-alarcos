@@ -83,8 +83,10 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 	private void setupCaptions () {
 		Caption c = new Caption(3.2f, 2.8f);
 		c.addLine(new Color (1.0f, 0.0f, 0.0f), "Hello World!");
-		c.addLine(new Color (0.0f, 1.0f, 0.0f), "Good eveing World!");
+		c.addLine(new Color (0.0f, 1.0f, 0.0f), "Good evening World!");
 		c.addLine(new Color (0.0f, 0.0f, 1.0f), "Goodbye World!");
+		c.addLine(new Color (0.3f, 0.3f, 0.3f), "Yeah!");
+		c.addLine(new Color (0.5f, 0.3f, 0.7f), "Rolling of floor laughing!");
 		this.captions.add(c);
 	}
 

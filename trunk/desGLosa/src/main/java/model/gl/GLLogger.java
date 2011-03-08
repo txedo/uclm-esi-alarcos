@@ -57,17 +57,14 @@ public class GLLogger {
 	
 	public void printToGL(int h, int w, float d) throws GLSingletonNotInitializedException {
 		String [] lines = this.toString().split("\n");
-		float vgap = GLUtils.getScreen2World(0, 10, true).getY();
 		int counter = 0;
-		GLSingleton.getGL().glPushMatrix();
-		GLSingleton.getGL().glLoadIdentity();
 		GLUtils.beginOrtho(h, w, d);
+			float vgap = GLUtils.getScreen2World(0, 10, true).getY();
 			for (String line : lines) {
 				GLUtils.renderBitmapString(0.0f, (vgap*lines.length)-(vgap*counter), 1, line);
 				counter++;
 			}
 		GLUtils.endOrtho();
-		GLSingleton.getGL().glPopMatrix();
 	}
 
 }
