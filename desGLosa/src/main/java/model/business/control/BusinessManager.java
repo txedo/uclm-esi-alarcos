@@ -26,6 +26,9 @@ import model.knowledge.Vector2f;
 
 public class BusinessManager {
 	
+	/* 
+	 * Methods related to company management
+	 */
 	public static boolean addCompany(Company c) throws MandatoryFieldException, SQLException, CompanyAlreadyExistsException {
 		return CompanyManager.addCompany(c);
 	}
@@ -41,34 +44,34 @@ public class BusinessManager {
 	public static List<Company> getAllCompanies () throws SQLException {
 		return CompanyManager.getAllCompanies();
 	}
+	
+	/*
+	 * Methods related to factory management
+	 */
 
 	public static boolean addFactory(Factory f) throws MandatoryFieldException, SQLException, FactoryAlreadyExistsException {
 		return FactoryManager.addFactory(f);
+	}
+	
+	public static Factory getFactory(int id) throws SQLException, FactoryNotFoundException {
+		return FactoryManager.getFactory(id);
+	}
+	
+	public static Factory getFactory(String name) throws MandatoryFieldException, SQLException, FactoryNotFoundException {
+		return FactoryManager.getFactory(name);
 	}
 
 	public static List<Factory> getFactories(Company c) throws SQLException {
 		return FactoryManager.getFactories(c.getName());
 	}
-
-	public static List<Map> getAllMaps() throws SQLException {
-		return MapManager.getAllMaps();
+	
+	public static List<Factory> getAllFactories() throws SQLException {
+		return FactoryManager.getAllFactories();
 	}
-
-	public static void setActiveMap(Map m) throws GLSingletonNotInitializedException, IOException {
-		MapManager.setActiveMap(m);
-	}
-
-	public static Factory getFactory(int id) throws SQLException, FactoryNotFoundException {
-		return FactoryManager.getFactory(id);
-	}
-
-	public static boolean addLocation(Factory factory, Map map, Vector2f coordinates) throws LocationAlreadyExistsException, MandatoryFieldException, SQLException {
-		return LocationManager.addLocation (factory, map, coordinates);
-	}
-
-	public static Factory getFactory(String name) throws MandatoryFieldException, SQLException, FactoryNotFoundException {
-		return FactoryManager.getFactory(name);
-	}
+	
+	/*
+	 * Methods related to map management
+	 */
 
 	public static Map getMap(int id) throws SQLException, MapNotFoundException {
 		return MapManager.getMap(id);
@@ -77,21 +80,35 @@ public class BusinessManager {
 	public static Map getMap(String label) throws SQLException, MapNotFoundException {
 		return MapManager.getMap(label);
 	}
-
-	public static Image getImage(int id) throws SQLException, ImageNotFoundException {
-		return ImageManager.getImage(id);
+	
+	public static List<Map> getAllMaps() throws SQLException {
+		return MapManager.getAllMaps();
 	}
 
-	public static boolean updateImage(Image image) throws SQLException, ImageNotFoundException {
-		return ImageManager.updateImage(image);
+	public static void setActiveMap(Map m) throws GLSingletonNotInitializedException, IOException {
+		MapManager.setActiveMap(m);
 	}
-
+	
 	public static Map getActiveMap() {
 		return MapManager.getActiveMap();
 	}
+	
+	public static void setMapLocations(List<Factory> factories) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
+		List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
+		MapManager.setMapLocations(locations);
+	}
 
-	public static List<Location> getLocations(List<Factory> factories, Map map) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
-		return LocationManager.getLocations (factories, map);
+	public static void highlightMapLocations(List<Factory> factories) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
+		List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
+		MapManager.highlightMapLocations(locations);
+	}
+
+	/*
+	 * Methods related to location management
+	 */
+
+	public static boolean addLocation(Factory factory, Map map, Vector2f coordinates) throws LocationAlreadyExistsException, MandatoryFieldException, SQLException {
+		return LocationManager.addLocation (factory, map, coordinates);
 	}
 
 	public static Location getLocation(int id) throws SQLException, LocationNotFoundException {
@@ -101,27 +118,33 @@ public class BusinessManager {
 	public static Location getLocation(Factory factory,	Map map) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
 		return LocationManager.getLocation(factory, map);
 	}
-
-	public static List<Factory> getAllFactories() throws SQLException {
-		return FactoryManager.getAllFactories();
+	
+	public static List<Location> getLocations(List<Factory> factories, Map map) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
+		return LocationManager.getLocations (factories, map);
 	}
 
+	/*
+	 * Methods related to image management
+	 */
+
+	public static Image getImage(int id) throws SQLException, ImageNotFoundException {
+		return ImageManager.getImage(id);
+	}
+
+	public static boolean updateImage(Image image) throws SQLException, ImageNotFoundException {
+		return ImageManager.updateImage(image);
+	}
+
+	/*
+	 * Methods related to project management
+	 */
+	
 	public static boolean addProject(Project project) throws MandatoryFieldException, WorkingFactoryIsNotInvolvedFactoryException, SQLException, FactoryNotFoundException {
 		return ProjectManager.addProject(project);
 	}
 
 	public static List<Project> getAllProjects() throws SQLException {
 		return ProjectManager.getAllProjects();
-	}
-
-	public static void setMapLocations(List<Factory> factories) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
-		List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
-		MapManager.setMapLocations(locations);
-	}
-
-	public static void highlightMapLocations(List<Factory> factories) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
-		List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
-		MapManager.highlightMapLocations(locations);
 	}
 
 }

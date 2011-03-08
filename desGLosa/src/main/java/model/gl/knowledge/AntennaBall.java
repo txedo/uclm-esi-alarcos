@@ -68,19 +68,21 @@ public class AntennaBall extends GLObject3D {
 				this.drawChildBall(true, this.leftChildBallColor, this.leftChildBallValue);
 				this.drawChildBall(false, this.rightChildBallColor, this.rightChildBallValue);
 			}
-
-			if (!shadow) {
-				// Write the project label
-				try {
-					GLSingleton.getGL().glPushMatrix();
-						GLSingleton.getGL().glTranslatef(0.0f, -parentBallRadius, parentBallRadius);
-						GLFontBuilder.getInstance().glPrint(0, 0, this.label, 1, true);
-					GLSingleton.getGL().glPopMatrix();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			
+//			GLUtils.billboardCheatSphericalBegin();
+//			if (!shadow) {
+//				// Write the project label
+//				try {
+//					GLSingleton.getGL().glPushMatrix();
+//						GLSingleton.getGL().glTranslatef(0.0f, -parentBallRadius, parentBallRadius);
+//						GLFontBuilder.getInstance().glPrint(0, 0, this.label, 1, true);
+//					GLSingleton.getGL().glPopMatrix();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//			GLUtils.billboardEnd();
 			
 			// Drawing the parent ball
 			if (!shadow) {
@@ -147,6 +149,10 @@ public class AntennaBall extends GLObject3D {
 
 	public void setParentBallRadius(float parentBallRadius) {
 		this.parentBallRadius = parentBallRadius;
+	}
+	
+	public float getParentBallRadius() {
+		return this.parentBallRadius;
 	}
 
 	public String getLabel() {

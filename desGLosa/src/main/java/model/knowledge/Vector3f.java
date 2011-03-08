@@ -14,7 +14,7 @@ public class Vector3f {
 	}
 	
 	public float getLength () {
-		return (float) Math.sqrt(x*x+y*y+z*z);
+		return (float)Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
 	}
 	
 	public Vector3f getNormalizedVector () {
@@ -68,7 +68,7 @@ public class Vector3f {
 		// If both a and b have length one (i.e., they are unit vectors), their dot product simply gives the cosine of the angle between them.
 		// If only b is a unit vector, then the dot product a · b gives |a| cos(fi), i.e., the magnitude of the projection of a in the direction of b, with a minus sign if the direction is opposite. This is called the scalar projection of a onto b, or scalar component of a in the direction of b (see figure). This property of the dot product has several useful applications (for instance, see next section).
 		// If neither a nor b is a unit vector, then the magnitude of the projection of a in the direction of b, for example, would be a · (b / |b|) as the unit vector in the direction of b is b / |b|.
-		return this.x*v.x + this.y*v.y + this.z+v.z;		
+		return (this.x*v.x + this.y*v.y + this.z*v.z);
 	}
 	
 	public Vector3f cross (Vector3f v) {

@@ -43,7 +43,9 @@ public class GLTowerViewManager extends GLViewManager {
 		Tower t;
 		for (int i = 0; i < id; i++) {
 			c = new Color (r.nextFloat(), r.nextFloat(), r.nextFloat());
-			t = new Tower (r.nextFloat()*9,r.nextFloat()*9,r.nextFloat(),r.nextFloat(),r.nextFloat()*10,c);
+			t = new Tower (r.nextFloat()*9,r.nextFloat()*9,r.nextFloat(),r.nextFloat(),r.nextFloat()*5,c);
+			float aux = t.getRealMeasure();
+			t.setEstimatedMeasure(aux+1);
 			towers.add(t);
 		}
 	}
