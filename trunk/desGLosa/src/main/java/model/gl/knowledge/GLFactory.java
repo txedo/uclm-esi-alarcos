@@ -56,6 +56,7 @@ public class GLFactory extends GLObject3D {
 	
 	@Override
 	protected void draw(boolean shadow) throws GLSingletonNotInitializedException {
+		GLUtils.enableMultisample();
 		// Only enable texture if you are going to draw the real object, no its shadow
 		if (shadow){
 			GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
@@ -97,6 +98,7 @@ public class GLFactory extends GLObject3D {
 				GLSingleton.getGL().glPopMatrix();
 			}
 		GLSingleton.getGL().glPopMatrix();
+		GLUtils.disableMultisample();
 	}
 	
 	private void drawBase() throws GLSingletonNotInitializedException {	
@@ -238,7 +240,6 @@ public class GLFactory extends GLObject3D {
 				GLSingleton.getGL().glVertex3f((i+1)*roofLength, 0.0f,             this.buildingWidth/2);
 			GLSingleton.getGL().glEnd();
 		}
-
 	}
 	
 	private void drawSmokestack(boolean shadow) throws GLSingletonNotInitializedException {
