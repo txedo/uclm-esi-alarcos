@@ -7,6 +7,7 @@ import javax.media.opengl.GL;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 import model.gl.GLSingleton;
+import model.gl.GLUtils;
 import model.gl.TextureLoader;
 
 public class GLFontBuilder {
@@ -44,6 +45,7 @@ public class GLFontBuilder {
 	}
 	
 	public void buildFont() throws GLSingletonNotInitializedException {
+		GLUtils.enableMultisample();
 		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
 		base = GLSingleton.getGL().glGenLists(FONTS);// Creating 256 Display Lists
 		GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureLoader.getTextureNames()[0]);
@@ -68,6 +70,7 @@ public class GLFontBuilder {
 			GLSingleton.getGL().glEndList();		
 		}									// Loop Until All 256 Are Built
 		GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+		GLUtils.disableMultisample();
 	}
 	
 	public void killFont() throws GLSingletonNotInitializedException								// Delete The Font From Memory

@@ -55,6 +55,7 @@ public class AntennaBall extends GLObject3D {
 
 	@Override
 	protected void draw(boolean shadow) throws GLSingletonNotInitializedException {
+		GLUtils.enableMultisample();
 		GLSingleton.getGL().glPushMatrix();
 			// Move to the parent ball center
 			GLSingleton.getGL().glTranslatef(this.positionX, this.parentBallRadius, this.positionY);
@@ -111,6 +112,7 @@ public class AntennaBall extends GLObject3D {
 				GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
 			}
 		GLSingleton.getGL().glPopMatrix();
+		GLUtils.disableMultisample();
 	}
 	
 	private void drawChildBall (boolean left, Color color, int value) throws GLSingletonNotInitializedException {
