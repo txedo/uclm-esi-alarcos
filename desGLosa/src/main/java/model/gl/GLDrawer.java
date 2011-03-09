@@ -155,7 +155,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLSingleton.getGL().glClearColor(1.0f, 1.0f, 1.0f, 1.0f);			// White Background
 			GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);						// Enables Depth Testing
 			GLSingleton.getGL().glClearDepth(1.0f);								// Depth Buffer Setup
-			GLSingleton.getGL().glDepthFunc(GL.GL_LEQUAL);						// The Type Of Depth Testing To Do
+			GLSingleton.getGL().glDepthFunc(GL.GL_LESS);						// The Type Of Depth Testing To Do
 			GLSingleton.getGL().glShadeModel(GL.GL_SMOOTH);						// Enable Smooth Shading
 			// Enable blending
 			GLSingleton.getGL().glEnable(GL.GL_BLEND);

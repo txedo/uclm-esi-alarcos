@@ -7,12 +7,12 @@ import model.gl.GLSingleton;
 import model.knowledge.Color;
 
 public class MapLocation extends Node {
-	private final Color highlightColor = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+	private final Color highlightColor = new Color(0.7294f, 0.0f, 1.0f);
 	private int id;
 	private boolean hightlighted;
 	private int highlightTexture;
 	private float textureRotation = 0.0f;
-	private float foo = 0.0f;
+	private float frequency = 0.0f;	// higher value implies higher speed
 	private float size;
 	
 	public MapLocation (int id) {
@@ -47,7 +47,7 @@ public class MapLocation extends Node {
 	public void setHightlighted(boolean hightlighted) {
 		this.hightlighted = hightlighted;
 		this.textureRotation = 0.0f;
-		this.foo = 0.0f;
+		this.frequency = 0.0f;
 	}
 
 	public float getSize() {
@@ -94,8 +94,8 @@ public class MapLocation extends Node {
 //		GLSingleton.getGL().glPopMatrix();
 //		GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
 		
-		this.size = this.size + (float)Math.sin(this.foo%180.0f)*1.5f;
-		this.foo += 0.5;
+		this.size = this.size + (float)Math.sin(this.frequency*180.0f/3.14f)*1.5f;
+		this.frequency += 0.005;
 		GLSingleton.getGL().glColor3fv(this.highlightColor.getColorFB());
 	}
 

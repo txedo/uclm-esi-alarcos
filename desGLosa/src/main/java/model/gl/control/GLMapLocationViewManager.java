@@ -41,6 +41,7 @@ public class GLMapLocationViewManager extends GLViewManager {
 
 	@Override
 	public void configureView() throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
 		try {
 			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
 		} catch (IOException e) {
@@ -51,8 +52,7 @@ public class GLMapLocationViewManager extends GLViewManager {
 
 	@Override
 	public void deconfigureView() throws GLSingletonNotInitializedException {
-		// TODO Auto-generated method stub
-
+		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
 	}
 
 	@Override

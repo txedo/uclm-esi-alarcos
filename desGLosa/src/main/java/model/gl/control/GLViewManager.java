@@ -120,7 +120,7 @@ public abstract class GLViewManager {
 			int depth = data[1];								// Store How Far Away It Is
 			for (int loop = 1; loop < hits; loop++) {			// Loop Through All The Detected Hits
 				// If This Object Is Closer To Us Than The One We Have Selected
-				if (data[loop*4+1] < depth) {
+				if (data[loop*4+1] <= depth) {
 					choose = data[loop*4+3];					// Select The Closer Object
 					depth = data[loop*4+1];						// Store How Far Away It Is
 				}
