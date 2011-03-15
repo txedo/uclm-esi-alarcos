@@ -39,4 +39,19 @@ public class MapsJComboBox extends JComboBox {
 			addItem(m);
 		}
 	}
+	
+	public void reload () throws SQLException {
+		Map oldSelection = (Map)getSelectedItem();
+		ComboBoxModel cbMapsModel = new DefaultComboBoxModel();
+		setModel(cbMapsModel);
+		this.load();
+		boolean found = false;
+		for (int i = 0; i < getItemCount() && !found; i++) {
+			if (getItemAt(i).equals(oldSelection)) {
+				setSelectedIndex(i);
+				found = true;
+			}
+		}
+		if (!found) setSelectedIndex(-1);
+	}
 }

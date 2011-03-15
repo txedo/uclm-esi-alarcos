@@ -187,14 +187,14 @@ public class JPConfigureProject extends javax.swing.JPanel {
 		for (Object factory : jListAvailableFactories.getSelectedValues()) {
 			this.factorySelector(jListAvailableFactories, jListInvolvedFactories, (Factory)factory);
 		}
-		cbFactories.loadFactories(jListInvolvedFactories.toList());
+		cbFactories.load(jListInvolvedFactories.toList());
 	}
 	
 	private void btnRemoveInvolvedFactoryActionPerformed(ActionEvent evt) {
 		for (Object factory : jListInvolvedFactories.getSelectedValues()) {
 			this.factorySelector(jListInvolvedFactories, jListAvailableFactories, (Factory)factory);	
 		}
-		cbFactories.loadFactories(jListInvolvedFactories.toList());
+		cbFactories.load(jListInvolvedFactories.toList());
 	}
 	
 	private void btnOkActionPerformed(ActionEvent evt) {

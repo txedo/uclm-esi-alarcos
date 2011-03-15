@@ -71,7 +71,7 @@ public class GLFactoryViewManager extends GLViewManager {
 		glf.setSmokestackHeight(10);
 		glFactories.add(glf);
 		glf = new GLFactory(8.0f, 2.0f);
-		glf.setSmokestackHeight(8);
+		glf.setSmokestackHeight(5);
 		glFactories.add(glf);
 		glf = new GLFactory(1.0f, 3.0f);
 		glFactories.add(glf);

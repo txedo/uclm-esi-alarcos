@@ -292,7 +292,7 @@ SET AUTOCOMMIT=0;
 USE `desglosadb`;
 INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (1, 2, 1, 3.5191083, 3.630573);
 INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (2, 2, 2, 3.9968152, 4.6019106);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (3, 1, 1, 4.5409017, 3.2303839);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (4, 1, 2, 4.5575957, 3.338898);
+INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (3, 1, 1, 1.7647059, 3.3898304);
+INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (4, 1, 2, 1.8910257, 3.611111);
 
 COMMIT;

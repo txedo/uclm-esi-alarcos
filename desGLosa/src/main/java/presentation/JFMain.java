@@ -32,7 +32,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JToolBar;
 import javax.swing.border.BevelBorder;
@@ -79,6 +78,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
     private JMenuBar menuBar;
     private JPanel configureFactoryPanel;
     private JButton btnSetCoordinates;
+    private JPanel infoPanel;
     private MapsJComboBox cbMaps;
     private JLabel lblAvailableMaps;
     private JPanel activeMapPanel;
@@ -92,11 +92,10 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
     private JLabel lblStatusBar;
     private JComboBox cbConfigureFactoryFactories;
     private JLabel lblConfigureFactoryFactory;
-    private JComboBox cbConfigureFactoryMaps;
+    private MapsJComboBox cbConfigureFactoryMaps;
     private JLabel lblConfigureFactoryMap;
     private JLabel lblConfigureFactoryCompany;
     private JComboBox cbConfigureFactoryCompanies;
-    private JScrollPane jScrollPane1;
     private JPanel statusPanel;
     private JPanel widgetPanel;
     private JPanel canvasPanel;
@@ -145,10 +144,9 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
         settingCoordinates = false;
         GLInit.getGLCanvas().addMouseListener(new MyAppMouseListener(this, GLInit.getGLCanvas()));
         try {
-        	cbMaps.load();
-        	cbMaps.setSelectedIndex(-1);
-			cbProjects.load();
-			cbProjects.setSelectedIndex(-1);
+        	cbMaps.reload();
+			cbProjects.reload();
+			cbConfigureFactoryMaps.reload();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -160,39 +158,38 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 	@Override
     protected void startup() {
     	{
-	    	getMainFrame().setSize(791, 486);
+	    	getMainFrame().setSize(1121, 613);
     	}
         {
             topPanel = new JPanel();
-            BorderLayout panelLayout = new BorderLayout();
+            AnchorLayout panelLayout = new AnchorLayout();
             topPanel.setLayout(panelLayout);
             topPanel.setPreferredSize(new java.awt.Dimension(659, 404));
             {
                 contentPanel = new JPanel();
-                AnchorLayout contentPanelLayout = new AnchorLayout();
+                FormLayout contentPanelLayout = new FormLayout(
+                		"max(p;5dlu), max(p;5dlu), max(p;5dlu)", 
+                		"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)");
                 contentPanel.setLayout(contentPanelLayout);
-                topPanel.add(contentPanel, BorderLayout.CENTER);
+                topPanel.add(contentPanel, new AnchorConstraint(27, 0, 17, 0, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS));
+                contentPanel.setPreferredSize(new java.awt.Dimension(775, 383));
                 {
-                	jScrollPane1 = new JScrollPane();
-                	contentPanel.add(jScrollPane1, new AnchorConstraint(0, 0, 0, 290, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS));
-                	jScrollPane1.setPreferredSize(new java.awt.Dimension(485, 383));
-                	{
-                		canvasPanel = new JPanel();
-                		jScrollPane1.setViewportView(canvasPanel);
-                		AnchorLayout canvasPanelLayout = new AnchorLayout();
-                		canvasPanel.setLayout(canvasPanelLayout);
-                		canvasPanel.setPreferredSize(new java.awt.Dimension(349, 276));
-                		canvasPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-                	}
+                	canvasPanel = new JPanel();
+                	contentPanel.add(canvasPanel, new CellConstraints("3, 1, 1, 1, fill, fill"));
+                	AnchorLayout canvasPanelLayout = new AnchorLayout();
+                	canvasPanel.setLayout(canvasPanelLayout);
+                	canvasPanel.setPreferredSize(new java.awt.Dimension(671, 500));
+                	canvasPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+                	canvasPanel.setSize(671, 500);
                 }
                 {
                 	widgetPanel = new JPanel();
                 	FormLayout widgetPanelLayout = new FormLayout(
                 			"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)", 
                 			"46dlu, 5dlu, 79dlu, 5dlu, max(p;5dlu)");
-                	contentPanel.add(widgetPanel, new AnchorConstraint(1, 235, 1001, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_NONE, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+                	contentPanel.add(widgetPanel, new CellConstraints("2, 1, 1, 1, fill, fill"));
                 	widgetPanel.setLayout(widgetPanelLayout);
-                	widgetPanel.setPreferredSize(new java.awt.Dimension(190, 320));
+                	widgetPanel.setPreferredSize(new java.awt.Dimension(191, 381));
                 	{
                 		configureFactoryPanel = new JPanel();
                 		widgetPanel.add(configureFactoryPanel, new CellConstraints("2, 5, 1, 1, default, default"));
@@ -225,7 +222,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 		}
                 		{
                 			ComboBoxModel cbMapsModel = new DefaultComboBoxModel();
-                			cbConfigureFactoryMaps = new JComboBox();
+                			cbConfigureFactoryMaps = new MapsJComboBox();
                 			configureFactoryPanel.add(cbConfigureFactoryMaps);
                 			cbConfigureFactoryMaps.setModel(cbMapsModel);
                 			cbConfigureFactoryMaps.setBounds(78, 75, 80, 20);
@@ -316,15 +313,21 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 		}
                 	}
                 }
+                {
+                	infoPanel = new JPanel();
+                	contentPanel.add(infoPanel, new CellConstraints("3, 1, 1, 1, default, default"));
+                	infoPanel.setPreferredSize(new java.awt.Dimension(245, 335));
+                }
             }
             {
                 toolBarPanel = new JPanel();
-                topPanel.add(toolBarPanel, BorderLayout.NORTH);
+                topPanel.add(toolBarPanel, new AnchorConstraint(1, 1000, 64, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
                 BorderLayout jPanel1Layout = new BorderLayout();
                 toolBarPanel.setLayout(jPanel1Layout);
+                toolBarPanel.setPreferredSize(new java.awt.Dimension(775, 27));
                 {
                     toolBar = new JToolBar();
-                    toolBarPanel.add(toolBar, BorderLayout.CENTER);
+                    toolBarPanel.add(toolBar, BorderLayout.NORTH);
                     {
                         newButton = new JButton();
                         toolBar.add(newButton);
@@ -356,7 +359,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
             	statusPanel = new JPanel();
             	BorderLayout statusPanelLayout = new BorderLayout();
             	statusPanel.setLayout(statusPanelLayout);
-            	topPanel.add(statusPanel, BorderLayout.SOUTH);
+            	topPanel.add(statusPanel, new AnchorConstraint(961, 1000, 1001, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
             	statusPanel.setPreferredSize(new java.awt.Dimension(775, 17));
             	{
             		lblStatusBar = new JLabel();
@@ -464,11 +467,8 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 
 	public void updateMapList() {
 		try {
-			ArrayList<Map> maps = (ArrayList<Map>)BusinessManager.getAllMaps();
-			for (Map m : maps) {
-				cbConfigureFactoryMaps.addItem(m);
-			}
-			cbConfigureFactoryMaps.setSelectedIndex(-1);
+			cbConfigureFactoryMaps.reload();
+			cbMaps.reload();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -506,10 +506,15 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		}
 	}
 	
-	public void selectFactory(int locationId) {
+	public void updateProjectList() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void selectFactoryByLocation(int idLocation) {
 		// TODO patron observador. Se llama al seleccionar una localizacion de una factoria
 		try {
-			Factory factory = BusinessManager.getLocation(locationId).getFactory();
+			Factory factory = BusinessManager.getLocation(idLocation).getFactory();
 			System.err.print(factory.toString());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -518,6 +523,21 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void selectProject(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void selectFactory(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void selectTower(int id) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public boolean isSettingCoordinates () {
@@ -598,7 +618,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		try {
 			if (GLSingleton.isInitiated()) {
 				List<Factory> factories = new ArrayList<Factory>(((Project)cbProjects.getSelectedItem()).getInvolvedFactories());
-				cbInvolvedFactories.loadFactories(factories);
+				cbInvolvedFactories.load(factories);
 				BusinessManager.highlightMapLocations(factories);
 			}
 		} catch (MandatoryFieldException e) {

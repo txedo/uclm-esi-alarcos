@@ -1,6 +1,12 @@
 package model.gl;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 
 import javax.media.opengl.GL;
 
@@ -8,6 +14,7 @@ import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.GLUT;
 
 import model.gl.control.GLViewManager;
+import model.gl.knowledge.GLObject;
 import model.gl.knowledge.IConstants;
 import model.knowledge.Vector3f;
 
@@ -37,7 +44,7 @@ public class GLUtils {
 		int viewport[] = new int[4];
 		double mvmatrix[] = new double[16];
 		double projmatrix[] = new double[16];
-		double wcoord[] = new double[4];// wx, wy, wz;// returned xyz coords
+		double wcoord[] = new double[3];// wx, wy, wz;// returned xyz coords
 		double winX, winY, winZ;
 
 		GLSingleton.getGL().glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
@@ -54,10 +61,10 @@ public class GLUtils {
 			winY = (double) viewport[3] - (double) screenY - 1;
 
 		}
-		winZ = 0.0;
-
-		// GLSingleton.getGL().glReadPixels( (int)winX, (int)winY, 1, 1,
-		// GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, winZ );
+		FloatBuffer zBuffer = BufferUtil.newFloatBuffer(1);
+		GLSingleton.getGL().glReadPixels( (int)winX, (int)winY, 1, 1, GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, zBuffer );
+		winZ = (float)zBuffer.get();
+		
 		if (!GLSingleton.getGLU().gluUnProject((double) winX, (double) winY,
 				(double) winZ, mvmatrix, 0, projmatrix, 0, viewport, 0, wcoord,
 				0)) {
@@ -162,6 +169,38 @@ public class GLUtils {
 		// Enables Depth Testing
 		GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);
 	}
+	
+	public static void displacementBegin(
+			Vector3f cameraPosition, Vector3f objectPosition, float offset)
+	throws GLSingletonNotInitializedException {
+		// Save the current modelview matrix
+		GLSingleton.getGL().glPushMatrix();
+		// Calculate the projection vector from camera to object (y=0)
+		Vector3f camToObjectProjection = new Vector3f();
+		camToObjectProjection.setX(cameraPosition.getX()
+				- objectPosition.getX());
+		camToObjectProjection.setY(0.0f);
+		camToObjectProjection.setZ(cameraPosition.getZ()
+				- objectPosition.getZ());
+		// The normalized vector will be used to calculate the dot product
+		Vector3f normalizedCamToObjectProjection = camToObjectProjection
+				.getNormalizedVector();
+
+		// Apply offset from object position in the direction from object
+		// position to camera position
+		Vector3f offsetPosition = objectPosition
+				.add(normalizedCamToObjectProjection.mult(offset));
+
+		// Now we apply the transformations: first translate, then rotate yaw
+		// and pitch
+		GLSingleton.getGL().glTranslatef(offsetPosition.getX(), 0.0f,
+				offsetPosition.getZ());
+	}
+	
+	static public void displacementEnd() throws GLSingletonNotInitializedException {
+		// restore the previously stored modelview matrix
+		GLSingleton.getGL().glPopMatrix();
+	}
 
 	/**
 	 * Apply a set of transformations so objects will be facing the camera while
@@ -254,7 +293,7 @@ public class GLUtils {
 		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
 		GLSingleton.getGL().glLoadIdentity();
 		float h = (float) screenWidth / (float) screenHeight;
-		GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 1000.0f);
+		GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 50.0f);
 		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
 	}
 
@@ -307,7 +346,7 @@ public class GLUtils {
 				.glutBitmapString(GLUtils.selectFont(font), string);
 	}
 
-	public static void renderBitmapString(float x, float y, int z, int font,
+	public static void renderBitmapString(float x, float y, float z, int font,
 			String string) throws GLSingletonNotInitializedException {
 		GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
 		GLSingleton.getGL().glRasterPos3f(x, y, z);
@@ -506,6 +545,34 @@ public class GLUtils {
 				GLSingleton.getGL().glDisable(GL.GL_STENCIL_TEST);
 			}
 		}
+	}
+	
+	/**
+	 * http://www.lampos.net/how-to-sort-hashmap
+	 */
+	public static Map<GLObject,Float> sortHashMap(HashMap<GLObject,Float> input, boolean descending) {
+		Map<GLObject,Float> tempMap = new HashMap<GLObject,Float>();
+		for (GLObject glo : input.keySet())
+			tempMap.put(glo, input.get(glo));
+		
+		List<GLObject> mapKeys = new ArrayList<GLObject>(tempMap.keySet());
+		List<Float> mapValues = new ArrayList<Float>(tempMap.values());
+		Map<GLObject,Float> sortedMap = new LinkedHashMap<GLObject, Float>();
+		TreeSet<Float> sortedSet = new TreeSet<Float>(mapValues);
+		Object[] sortedArray = sortedSet.toArray();
+		
+		if (descending) {
+			for (int i = sortedArray.length-1; i >= 0; i--) {
+				sortedMap.put(mapKeys.get(mapValues.indexOf(sortedArray[i])), (Float)sortedArray[i]);
+			}
+		} else {
+			for (int i = 0; i < sortedArray.length; i++) {
+				sortedMap.put(mapKeys.get(mapValues.indexOf(sortedArray[i])), (Float)sortedArray[i]);
+			}
+		}
+
+		
+		return sortedMap;
 	}
 
 }

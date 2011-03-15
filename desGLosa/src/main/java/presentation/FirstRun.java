@@ -35,20 +35,12 @@ public class FirstRun {
 			// Add map data
 			// world map
 			Map worldMap = BusinessManager.getMap(1);
-			int imageId = worldMap.getImage().getId();
-			Image image = BusinessManager.getImage(imageId);
-			byte[] data = ResourceRetriever.getResourceAsByteArray("src/main/resources/maps/world-map.png");
-			image.setData(data);
-			worldMap.setImage(image);
+			worldMap.getImage().setData(ResourceRetriever.getResourceAsByteArray("src/main/resources/maps/dark-world-map.png"));
 			BusinessManager.updateImage(worldMap.getImage());
 			// spain
 			Map spain = BusinessManager.getMap(2);
-			spain.getImage().setData(ResourceRetriever.getResourceAsByteArray("src/main/resources/maps/mapa-espana.png"));
+			spain.getImage().setData(ResourceRetriever.getResourceAsByteArray("src/main/resources/maps/dark-spain-map.png"));
 			BusinessManager.updateImage(spain.getImage());
-			// peru
-			Map peru = BusinessManager.getMap(3);
-			peru.getImage().setData(ResourceRetriever.getResourceAsByteArray("src/main/resources/maps/MAPA-POLITICO-PERU.jpg"));
-			BusinessManager.updateImage(peru.getImage());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

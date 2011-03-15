@@ -7,29 +7,24 @@ import model.gl.GLSingleton;
 import model.knowledge.Color;
 
 public class MapLocation extends Node {
-	private final Color highlightColor = new Color(0.7294f, 0.0f, 1.0f);
 	private int id;
-	private boolean hightlighted;
-	private int highlightTexture;
-	private float textureRotation = 0.0f;
-	private float frequency = 0.0f;	// higher value implies higher speed
 	private float size;
+	private final float SIZE = 10.0f;
+	private float frequency = 0.0f;	// higher value implies higher speed
+	private boolean hightlighted;
+	private final Color highlightColor = new Color(1.0f, 1.0f, 1.0f);
+	private boolean faded;
+	private final Color fadeColor = new Color(22.0f/255.0f, 141.0f/255.0f, 165.0f/255.0f);
+	//private final Color fadeColor = new Color(9.0f/255.0f, 19.0f/255.0f, 52.0f/255.0f);
 	
-	public MapLocation (int id) {
+	public MapLocation (int id, float pos_x, float pos_y) {
 		this.id = id;
 		this.hightlighted = false;
-		this.color = new Color(0.0f, 0.0f, 0.0f, 0.5f);
-		this.size = 20.0f;
-	}
-	
-	public MapLocation (int id, float pos_x, float pos_y, float size, Color color) {
-		this.id = id;
-		this.hightlighted = false;
+		this.faded = false;
 		this.positionX = pos_x;
 		this.positionY = pos_y;
-		this.color = color;
-		// Base rectangular
-		this.size = size;
+		this.color = new Color(1.0f, 1.0f, 1.0f);
+		this.size = this.SIZE;
 	}
 	
 	public int getId() {
@@ -46,8 +41,15 @@ public class MapLocation extends Node {
 
 	public void setHightlighted(boolean hightlighted) {
 		this.hightlighted = hightlighted;
-		this.textureRotation = 0.0f;
 		this.frequency = 0.0f;
+	}
+
+	public boolean isFaded() {
+		return faded;
+	}
+
+	public void setFaded(boolean faded) {
+		this.faded = faded;
 	}
 
 	public float getSize() {
@@ -60,10 +62,15 @@ public class MapLocation extends Node {
 
 	@Override
 	public void draw() throws GLSingletonNotInitializedException {
-		if (this.hightlighted) 
+		if (this.hightlighted)
 			this.handleHighlighting();
-		else
-			GLSingleton.getGL().glColor3fv(this.color.getColorFB());
+		else {
+			if (this.faded)
+				GLSingleton.getGL().glColor3fv(this.fadeColor.getColorFB());
+			else
+				GLSingleton.getGL().glColor3fv(this.color.getColorFB());
+		}
+
 		GLSingleton.getGL().glPointSize(this.size);
 		
 		GLSingleton.getGL().glPushMatrix();
@@ -74,33 +81,10 @@ public class MapLocation extends Node {
 		GLSingleton.getGL().glPopMatrix();
 	}
 
-	private void handleHighlighting() throws GLSingletonNotInitializedException {
-//		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
-//		GLSingleton.getGL().glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-//		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
-//		GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, this.highlightTexture);
-//		
-//		float dim = 0.20f;
-//		GLSingleton.getGL().glPushMatrix();
-//			GLSingleton.getGL().glTranslatef(this.positionX, this.positionY, 0.0f);
-//			GLSingleton.getGL().glRotatef(textureRotation, 0.0f, 0.0f, 1.0f);
-//			GLSingleton.getGL().glBegin(GL.GL_QUADS);
-//				GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);	GLSingleton.getGL().glVertex2f(-dim, -dim);
-//				GLSingleton.getGL().glTexCoord2f(1.0f, 0.0f);	GLSingleton.getGL().glVertex2f( dim, -dim);
-//				GLSingleton.getGL().glTexCoord2f(1.0f, 1.0f);	GLSingleton.getGL().glVertex2f( dim,  dim);
-//				GLSingleton.getGL().glTexCoord2f(0.0f, 1.0f);	GLSingleton.getGL().glVertex2f(-dim,  dim);
-//			GLSingleton.getGL().glEnd();
-//			this.textureRotation -= 10.0f;
-//		GLSingleton.getGL().glPopMatrix();
-//		GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
-		
-		this.size = this.size + (float)Math.sin(this.frequency*180.0f/3.14f)*1.5f;
+	private void handleHighlighting() throws GLSingletonNotInitializedException {	
+		this.size = this.SIZE + (float)Math.sin(this.frequency*180.0f/3.14f)*1.5f;
 		this.frequency += 0.005;
 		GLSingleton.getGL().glColor3fv(this.highlightColor.getColorFB());
-	}
-
-	public void setHighlightTexture(int highlightTexture) {
-		this.highlightTexture = highlightTexture;
 	}
 
 }

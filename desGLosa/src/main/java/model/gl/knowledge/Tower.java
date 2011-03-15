@@ -19,6 +19,7 @@ public class Tower extends GLObject3D {
 	private float fill_height;	// Real measure
 	private float edge_height;	// Estimated measure
 	private float edge_width;
+	private final float ALPHA = 0.25f;
 
 	public Tower(float pos_x, float pos_y, float width, float depth,
 			float height, Color color) {
@@ -36,12 +37,6 @@ public class Tower extends GLObject3D {
 	@Override
 	protected void draw(boolean shadow) throws GLSingletonNotInitializedException {
 		if (!shadow) {
-			// Aplicamos el mismo color a todos los vértices de la torre
-			GLSingleton.getGL().glColor4fv(color.getColorFB());
-			// Dibujamos la torre con relleno with multisample enabled to get polygons antialiased
-			GLUtils.enableMultisample();
-				this.drawTower(this.fill_height);
-			GLUtils.disableMultisample();
 			// Pintamos las aristas de la torre
 			// Si se especifica el grosor de la arista, la pintaremos de negro
 			// Si no se especifica el grosor de la arista, la pintaremos del mismo color de la torre para tener antialiasing
@@ -54,22 +49,36 @@ public class Tower extends GLObject3D {
 			GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_LINE);	// Habilitamos el modo línea
 			GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f);		// Desfasamos un poco para no dejar huecos en blanco sin rellenar entre la línea y el polígono
 			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);	// Renderizamos únicamente la parte frontal de la cara por razones de rendimiento
-			this.drawTower(this.edge_height);						// Dibujamos la torre (sólo los bordes)
+			this.drawTower(0.0f, this.edge_height);						// Dibujamos la torre (sólo los bordes)
 			GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_LINE);	// Restauramos todo
 			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
 			GLSingleton.getGL().glPolygonOffset(0.0f, 0.0f);// Configuramos el offset del polígono sin desfase
 			GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_FILL);		// Habilitamos el modo relleno
 			super.enableLight();
+			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+			// Aplicamos el mismo color a todos los vértices de la torre
+			GLSingleton.getGL().glColor4fv(color.getColorFB());
+			// Dibujamos la torre con relleno with multisample enabled to get polygons antialiased
+			GLUtils.enableMultisample();
+				this.drawTower(0.0f, this.fill_height);
+				float oldAlpha = color.getAlpha();
+				this.color.setAlpha(this.ALPHA);
+				GLSingleton.getGL().glColor4fv(color.getColorFB());
+				this.drawTower(this.fill_height, this.edge_height);
+				this.color.setAlpha(oldAlpha);
+				GLSingleton.getGL().glColor4fv(color.getColorFB());
+			GLUtils.disableMultisample();
+
 		} else {
 			GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
 			GLUtils.enableMultisample();
-				this.drawTower(this.fill_height);
+				this.drawTower(0.0f, this.edge_height);
 			GLUtils.disableMultisample();
 		}
 
 	}
 	
-	private void drawTower (float height) throws GLSingletonNotInitializedException {
+	private void drawTower (float base, float height) throws GLSingletonNotInitializedException {
 		/* Dibujamos las caras en sentido contrario a las agujas del reloj
 		 * -Counter-ClockWise (CCW)- para especificar la cara frontal.
 		 * Con gl.glFrontFace(GL.GL_CW) podríamos especificarlo al contrario
@@ -80,34 +89,34 @@ public class Tower extends GLObject3D {
 				// Base	(en principio no es necesario dibujarla)
 				// Frente
 				GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);
-				GLSingleton.getGL().glVertex3f(0, 0, depth);
-				GLSingleton.getGL().glVertex3f(width, 0, depth);
-				GLSingleton.getGL().glVertex3f(width, height, depth);
-				GLSingleton.getGL().glVertex3f(0, height, depth);
+				GLSingleton.getGL().glVertex3f(-width/2, base,   depth/2);
+				GLSingleton.getGL().glVertex3f( width/2, base,   depth/2);
+				GLSingleton.getGL().glVertex3f( width/2, height, depth/2);
+				GLSingleton.getGL().glVertex3f(-width/2, height, depth/2);
 				// Lado derecho
 				GLSingleton.getGL().glNormal3f(1.0f, 0.0f, 0.0f);
-				GLSingleton.getGL().glVertex3f(width, 0, depth);
-				GLSingleton.getGL().glVertex3f(width, 0, 0);
-				GLSingleton.getGL().glVertex3f(width, height, 0);
-				GLSingleton.getGL().glVertex3f(width, height, depth);
+				GLSingleton.getGL().glVertex3f(width/2, base,    depth/2);
+				GLSingleton.getGL().glVertex3f(width/2, base,   -depth/2);
+				GLSingleton.getGL().glVertex3f(width/2, height, -depth/2);
+				GLSingleton.getGL().glVertex3f(width/2, height,  depth/2);
 				// Espalda
 				GLSingleton.getGL().glNormal3f(0.0f, 0.0f, -1.0f);
-				GLSingleton.getGL().glVertex3f(0, 0, 0);
-				GLSingleton.getGL().glVertex3f(0, height, 0);
-				GLSingleton.getGL().glVertex3f(width, height, 0);
-				GLSingleton.getGL().glVertex3f(width, 0, 0);
+				GLSingleton.getGL().glVertex3f(-width/2, base,   -depth/2);
+				GLSingleton.getGL().glVertex3f(-width/2, height, -depth/2);
+				GLSingleton.getGL().glVertex3f( width/2, height, -depth/2);
+				GLSingleton.getGL().glVertex3f( width/2, base,   -depth/2);
 				// Lado izquierdo
 				GLSingleton.getGL().glNormal3f(-1.0f, 0.0f, 0.0f);
-				GLSingleton.getGL().glVertex3f(0, 0, 0);
-				GLSingleton.getGL().glVertex3f(0, 0, depth);
-				GLSingleton.getGL().glVertex3f(0, height, depth);
-				GLSingleton.getGL().glVertex3f(0, height, 0);
+				GLSingleton.getGL().glVertex3f(-width/2, base,   -depth/2);
+				GLSingleton.getGL().glVertex3f(-width/2, base,    depth/2);
+				GLSingleton.getGL().glVertex3f(-width/2, height,  depth/2);
+				GLSingleton.getGL().glVertex3f(-width/2, height, -depth/2);
 				// Planta (igual que la base pero con eje Z = height
 				GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
-				GLSingleton.getGL().glVertex3f(0, height, 0);
-				GLSingleton.getGL().glVertex3f(0, height, depth);
-				GLSingleton.getGL().glVertex3f(width, height, depth);
-				GLSingleton.getGL().glVertex3f(width, height, 0);
+				GLSingleton.getGL().glVertex3f(-width/2, height, -depth/2);
+				GLSingleton.getGL().glVertex3f(-width/2, height,  depth/2);
+				GLSingleton.getGL().glVertex3f( width/2, height,  depth/2);
+				GLSingleton.getGL().glVertex3f( width/2, height, -depth/2);
 			GLSingleton.getGL().glEnd();
 		GLSingleton.getGL().glPopMatrix();
 	}
