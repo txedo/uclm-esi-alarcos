@@ -33,6 +33,14 @@ public class Color {
 		return color;
 	}
 
+	public float getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(float alpha) {
+		this.alpha = alpha;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

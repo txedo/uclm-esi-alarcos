@@ -75,7 +75,7 @@ public class GLProjectViewManager extends GLViewManager {
 	
 	public static void setupItems() {
 		AntennaBall ab = new AntennaBall(1.0f, 1.0f);
-		ab.setLabel("projecto 1");
+		ab.setLabel("Proyecto 1");
 		ab.setParentBallRadius(2.0f);
 		ab.setLeftChildBallValue(12);
 		ab.setRightChildBallValue(21);
@@ -85,7 +85,15 @@ public class GLProjectViewManager extends GLViewManager {
 		ab.setRightChildBallValue(54);
 		ab.setProgression(false);
 		ab.setColor(new Color(0.8f, 0.8f, 0.8f));
-		ab.setLabel("projecto 2");
+		ab.setLabel("Proyecto 2");
+		antennaBalls.add(ab);
+		ab = new AntennaBall(7.0f, 8.0f);
+		ab.setParentBallRadius(1.25f);
+		ab.setLeftChildBallValue(23);
+		ab.setRightChildBallValue(52);
+		ab.setProgression(true);
+		ab.setColor(new Color(0.3f, 0.5f, 0.1f));
+		ab.setLabel("Proyecto 3");
 		antennaBalls.add(ab);
 	}
 
@@ -96,19 +104,18 @@ public class GLProjectViewManager extends GLViewManager {
 			if (selectionMode)
 				GLSingleton.getGL().glLoadName(cont++);
 			if (this.drawingShadows) ((GLObject3D)glo).drawShadow();
-			else ((GLObject3D)glo).draw();
-			// Write the project label
-			Vector3f cameraPosition = this.drawer.getCamera().getPosition().clone();
-			Vector3f objectPosition = new Vector3f(glo.getPositionX(), 0.0f, glo.getPositionZ());
-			float offset = ((AntennaBall)glo).getParentBallRadius();
-			GLUtils.billboardSphericalLockedAtFloorBegin(cameraPosition, objectPosition, offset);
-			try {
-				GLFontBuilder.getInstance().glPrint(0, 0, ((AntennaBall)glo).getLabel(), 1, true);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			else {
+				((GLObject3D)glo).draw();
+				// Write the project label
+				Vector3f cameraViewDir = this.drawer.getCamera().getViewDir().clone();
+				cameraViewDir.setY(0.0f);
+				cameraViewDir.normalize();
+				Vector3f normalizedOppositeCameraViewDir = cameraViewDir.mult(-1);
+				Vector3f objectPosition = new Vector3f(glo.getPositionX(), 0.0f, glo.getPositionZ());
+				float offset = ((AntennaBall)glo).getParentBallRadius();
+				Vector3f offsetPosition = objectPosition.add(normalizedOppositeCameraViewDir.mult(offset));
+				GLUtils.renderBitmapString(offsetPosition.getX(), 0.1f, offsetPosition.getZ(), 5, ((AntennaBall)glo).getLabel());
 			}
-			GLUtils.billboardEnd();
 		}
 	}
 

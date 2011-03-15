@@ -18,9 +18,9 @@ public class NotifyUIManager {
 		}
 	}
 	
-	public static void notifyFactoryListUpdate (int companyId) {
+	public static void notifyFactoryListUpdate (int idCompany) {
 		for (IObserverUI iob : observers) {
-			iob.updateFactoryList(companyId);
+			iob.updateFactoryList(idCompany);
 		}
 	}
 
@@ -36,9 +36,9 @@ public class NotifyUIManager {
 		}
 	}
 	
-	public static void notifySelectedLocation (int locationId) {
+	public static void notifySelectedLocation (int idLocation) {
 		for (IObserverUI iob : observers) {
-			iob.selectFactory(locationId);
+			iob.selectFactoryByLocation(idLocation);
 		}
 	}
 }

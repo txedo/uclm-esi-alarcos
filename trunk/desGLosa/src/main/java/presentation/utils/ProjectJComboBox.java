@@ -40,4 +40,19 @@ public class ProjectJComboBox extends JComboBox {
 			addItem(p);
 		}
 	}
+	
+	public void reload () throws SQLException {
+		Project oldSelection = (Project)getSelectedItem();
+		ComboBoxModel cbProjectModel = new DefaultComboBoxModel();
+		setModel(cbProjectModel);
+		this.load();
+		boolean found = false;
+		for (int i = 0; i < getItemCount() && !found; i++) {
+			if (getItemAt(i).equals(oldSelection)) {
+				setSelectedIndex(i);
+				found = true;
+			}
+		}
+		if (!found) setSelectedIndex(-1);
+	}
 }

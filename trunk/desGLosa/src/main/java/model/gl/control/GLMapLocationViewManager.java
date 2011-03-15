@@ -63,46 +63,30 @@ public class GLMapLocationViewManager extends GLViewManager {
 		if (hasTextureMapChanged) {
 			isTextureMapReady = false;
 			setupItems();
-			textureMapLoader.loadTexures(false, false, true);
+			textureMapLoader.loadTexures(true, true, true);
 			hasTextureMapChanged = false;
 			isTextureMapReady = true;
 		}
 		if (isTextureMapReady) {
 			float h = 1, w = 1;
-			float textureH = (float) textureMapLoader.getTextures()[0]
-					.getHeight();
-			float textureW = (float) textureMapLoader.getTextures()[0]
-					.getWidth();
-			if (textureW > textureH)
-				h = textureH / textureW;
-			else if (textureW < textureH)
-				w = textureW / textureH;
+			float textureH = (float) textureMapLoader.getTextures()[0].getHeight();
+			float textureW = (float) textureMapLoader.getTextures()[0].getWidth();
+			if (textureW > textureH) h = textureH / textureW;
+			else if (textureW <= textureH) w = textureW / textureH;
+			final float dim = this.drawer.getDim();
 
-			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D); // Enable 2D Texture
-															// Mapping
-			GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV,
-					GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
-			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D,
-					textureMapLoader.getTextureNames()[0]);
-			GLSingleton.getGL().glBegin(GL.GL_QUADS); // Draw Our First Texture
-														// Mapped Quad
-			GLSingleton.getGL().glTexCoord2d(0.0f, 0.0f); // First Texture Coord
-			GLSingleton.getGL().glVertex2f(0.0f, 0.0f); // First Vertex
-			GLSingleton.getGL().glTexCoord2d(1.0f, 0.0f); // Second Texture
-															// Coord
-			GLSingleton.getGL().glVertex2f(this.drawer.getDim() * w, 0.0f); // Second
-																			// Vertex
-			GLSingleton.getGL().glTexCoord2d(1.0f, 1.0f); // Third Texture Coord
-			GLSingleton.getGL().glVertex2f(this.drawer.getDim() * w,
-					this.drawer.getDim() * h); // Third Vertex
-			GLSingleton.getGL().glTexCoord2d(0.0f, 1.0f); // Fourth Texture
-															// Coord
-			GLSingleton.getGL().glVertex2f(0.0f, this.drawer.getDim() * h); // Fourth
-																			// Vertex
-			GLSingleton.getGL().glEnd(); // Done Drawing The First Quad
-			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D); // Enable 2D
-																// Texture
-																// Mapping
+			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D); // Enable 2D Texture Mapping
+			GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D,	textureMapLoader.getTextureNames()[0]);
+			GLSingleton.getGL().glColor3f(1.0f, 1.0f, 1.0f);
+			GLSingleton.getGL().glBegin(GL.GL_QUADS);
+				GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);
+				GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f); GLSingleton.getGL().glVertex2f(0.0f,  0.0f);
+				GLSingleton.getGL().glTexCoord2f(1.0f, 0.0f); GLSingleton.getGL().glVertex2f(dim*w, 0.0f);
+				GLSingleton.getGL().glTexCoord2f(1.0f, 1.0f); GLSingleton.getGL().glVertex2f(dim*w, dim*h);
+				GLSingleton.getGL().glTexCoord2f(0.0f, 1.0f); GLSingleton.getGL().glVertex2f(0.0f,  dim*h);
+			GLSingleton.getGL().glEnd();
+			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D); // Disable 2D Texture Mapping
 
 			// Bind the texture to null to avoid color issues
 			// GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
@@ -139,7 +123,6 @@ public class GLMapLocationViewManager extends GLViewManager {
 			if (loc != null) {
 				GLObject temp = glFactory.createMapLocation(loc.getId(),
 						loc.getXcoord(), loc.getYcoord());
-				((MapLocation)temp).setHighlightTexture(textureLoader.getTextureNames()[0]);
 				mapLocations.add(temp);
 			}
 		}
@@ -186,9 +169,10 @@ public class GLMapLocationViewManager extends GLViewManager {
 	}
 
 	public static void highlightMapLocations(List<Location> locs) {
-		// Set all locaiton highlighting to false
+		// Set all location highlighting to false
 		for (GLObject mapLoc : mapLocations) {
 			((MapLocation) mapLoc).setHightlighted(false);
+			((MapLocation) mapLoc).setFaded(true);
 		}
 		// Highlight selected locations
 		boolean found = false;
