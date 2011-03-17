@@ -7,6 +7,7 @@ import java.util.List;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
+import model.NotifyUIManager;
 import model.gl.GLDrawer;
 import model.gl.GLSingleton;
 import model.gl.TextureLoader;
@@ -90,8 +91,8 @@ public class GLFactoryViewManager extends GLViewManager {
 
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
-		// TODO Auto-generated method stub
 		System.err.println("Selected factory: " + selectedObject);
+		NotifyUIManager.notifySelectedFactory(selectedObject);
 	}
 
 }

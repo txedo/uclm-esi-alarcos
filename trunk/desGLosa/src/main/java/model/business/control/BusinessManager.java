@@ -14,6 +14,7 @@ import exceptions.ImageNotFoundException;
 import exceptions.LocationAlreadyExistsException;
 import exceptions.LocationNotFoundException;
 import exceptions.MapNotFoundException;
+import exceptions.ProjectNotFoundException;
 import exceptions.WorkingFactoryIsNotInvolvedFactoryException;
 import exceptions.gl.GLSingletonNotInitializedException;
 import model.business.knowledge.Company;
@@ -141,6 +142,10 @@ public class BusinessManager {
 	
 	public static boolean addProject(Project project) throws MandatoryFieldException, WorkingFactoryIsNotInvolvedFactoryException, SQLException, FactoryNotFoundException {
 		return ProjectManager.addProject(project);
+	}
+	
+	public static Project getProject(int id) throws SQLException, ProjectNotFoundException {
+		return ProjectManager.getProject(id);
 	}
 
 	public static List<Project> getAllProjects() throws SQLException {

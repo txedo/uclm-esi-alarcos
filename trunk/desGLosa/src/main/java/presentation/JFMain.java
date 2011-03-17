@@ -10,6 +10,7 @@ import exceptions.FactoryNotFoundException;
 import exceptions.LocationAlreadyExistsException;
 import exceptions.LocationNotFoundException;
 import exceptions.MapNotFoundException;
+import exceptions.ProjectNotFoundException;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 import java.awt.BorderLayout;
@@ -158,21 +159,23 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 	@Override
     protected void startup() {
     	{
-	    	getMainFrame().setSize(1121, 613);
+	    	getMainFrame().setSize(1121, 632);
     	}
         {
             topPanel = new JPanel();
-            AnchorLayout panelLayout = new AnchorLayout();
+            FormLayout panelLayout = new FormLayout(
+            		"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)", 
+            		"max(p;5dlu), max(p;5dlu), max(p;5dlu)");
             topPanel.setLayout(panelLayout);
             topPanel.setPreferredSize(new java.awt.Dimension(659, 404));
             {
                 contentPanel = new JPanel();
                 FormLayout contentPanelLayout = new FormLayout(
-                		"max(p;5dlu), max(p;5dlu), max(p;5dlu)", 
-                		"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)");
+                		"max(p;5dlu), max(p;5dlu), max(p;5dlu), 5dlu, 138dlu", 
+                		"max(p;5dlu)");
                 contentPanel.setLayout(contentPanelLayout);
-                topPanel.add(contentPanel, new AnchorConstraint(27, 0, 17, 0, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS, AnchorConstraint.ANCHOR_ABS));
-                contentPanel.setPreferredSize(new java.awt.Dimension(775, 383));
+                topPanel.add(contentPanel, new CellConstraints("1, 2, 1, 1, fill, fill"));
+                contentPanel.setPreferredSize(new java.awt.Dimension(1105, 522));
                 {
                 	canvasPanel = new JPanel();
                 	contentPanel.add(canvasPanel, new CellConstraints("3, 1, 1, 1, fill, fill"));
@@ -315,19 +318,19 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 }
                 {
                 	infoPanel = new JPanel();
-                	contentPanel.add(infoPanel, new CellConstraints("3, 1, 1, 1, default, default"));
-                	infoPanel.setPreferredSize(new java.awt.Dimension(245, 335));
+                	contentPanel.add(infoPanel, new CellConstraints("5, 1, 1, 1, fill, fill"));
                 }
             }
             {
                 toolBarPanel = new JPanel();
-                topPanel.add(toolBarPanel, new AnchorConstraint(1, 1000, 64, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+                topPanel.add(toolBarPanel, new CellConstraints("1, 1, 1, 1, default, default"));
                 BorderLayout jPanel1Layout = new BorderLayout();
                 toolBarPanel.setLayout(jPanel1Layout);
-                toolBarPanel.setPreferredSize(new java.awt.Dimension(775, 27));
+                toolBarPanel.setPreferredSize(new java.awt.Dimension(1105, 30));
                 {
                     toolBar = new JToolBar();
                     toolBarPanel.add(toolBar, BorderLayout.NORTH);
+                    toolBar.setPreferredSize(new java.awt.Dimension(1105, 26));
                     {
                         newButton = new JButton();
                         toolBar.add(newButton);
@@ -359,12 +362,12 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
             	statusPanel = new JPanel();
             	BorderLayout statusPanelLayout = new BorderLayout();
             	statusPanel.setLayout(statusPanelLayout);
-            	topPanel.add(statusPanel, new AnchorConstraint(961, 1000, 1001, 0, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL, AnchorConstraint.ANCHOR_REL));
+            	topPanel.add(statusPanel, new CellConstraints("1, 3, 1, 1, default, default"));
             	statusPanel.setPreferredSize(new java.awt.Dimension(775, 17));
             	{
             		lblStatusBar = new JLabel();
             		statusPanel.add(lblStatusBar, BorderLayout.CENTER);
-            		lblStatusBar.setPreferredSize(new java.awt.Dimension(775, 23));
+            		lblStatusBar.setPreferredSize(new java.awt.Dimension(1105, 28));
             	}
             }
         }
@@ -515,7 +518,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		// TODO patron observador. Se llama al seleccionar una localizacion de una factoria
 		try {
 			Factory factory = BusinessManager.getLocation(idLocation).getFactory();
-			System.err.print(factory.toString());
+			this.selectFactory(factory.getId());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -526,18 +529,42 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 	}
 	
 	public void selectProject(int id) {
-		// TODO Auto-generated method stub
-		
+		try {
+			Project project = BusinessManager.getProject(id);
+			JPInfoProject jpip = new JPInfoProject(project);
+			infoPanel.removeAll();
+			infoPanel.add(jpip);
+			jpip.setVisible(true);
+			infoPanel.validate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ProjectNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void selectFactory(int id) {
-		// TODO Auto-generated method stub
-		
+		try {
+			Factory factory = BusinessManager.getFactory(id);
+			JPInfoFactory jpif = new JPInfoFactory(factory);
+			infoPanel.removeAll();
+			infoPanel.add(jpif);
+			jpif.setVisible(true);
+			infoPanel.validate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FactoryNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void selectTower(int id) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated catch block
+		System.err.println("Tower funcionality has not been designed yet.");
 	}
 	
 	public boolean isSettingCoordinates () {
