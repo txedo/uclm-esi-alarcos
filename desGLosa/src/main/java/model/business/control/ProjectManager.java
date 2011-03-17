@@ -6,6 +6,7 @@ import java.util.List;
 import persistence.dao.business.ProjectDAO;
 import exceptions.FactoryNotFoundException;
 import exceptions.MandatoryFieldException;
+import exceptions.ProjectNotFoundException;
 import exceptions.WorkingFactoryIsNotInvolvedFactoryException;
 import model.business.knowledge.Factory;
 import model.business.knowledge.Project;
@@ -23,6 +24,10 @@ public class ProjectManager {
 		ProjectDAO.insert(project);
 		success = true;
 		return success;
+	}
+	
+	public static Project getProject(int id) throws SQLException, ProjectNotFoundException {
+		return ProjectDAO.get(id);
 	}
 
 	public static List<Project> getAllProjects() throws SQLException {

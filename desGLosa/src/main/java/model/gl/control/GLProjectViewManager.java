@@ -8,6 +8,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
+import model.NotifyUIManager;
 import model.gl.GLDrawer;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
@@ -121,8 +122,8 @@ public class GLProjectViewManager extends GLViewManager {
 
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
-		// TODO Auto-generated method stub
 		System.err.println("Selected project: " + selectedObject);
+		NotifyUIManager.notifySelectedProject(selectedObject);
 	}
 
 }

@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import model.NotifyUIManager;
 import model.gl.GLDrawer;
+import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLObject3D;
@@ -36,6 +38,7 @@ public class GLTowerViewManager extends GLViewManager {
 
 	@Override
 	public void manageView() throws GLSingletonNotInitializedException, IOException {
+		if (this.isSelectionMode()) this.selectItem();
 		super.drawFloor();
 		this.drawItems();
 	}
@@ -56,6 +59,7 @@ public class GLTowerViewManager extends GLViewManager {
 
 	@Override
 	public void drawItems() throws GLSingletonNotInitializedException {
+		int cont = 1;
 		Vector3f cameraPosition = this.drawer.getCamera().getPosition().clone();
 		Map<GLObject,Float> sortedTowers = new HashMap<GLObject, Float>();
 		for (GLObject glo : towers) {
@@ -64,6 +68,8 @@ public class GLTowerViewManager extends GLViewManager {
 		}
 		sortedTowers = GLUtils.sortHashMap((HashMap<GLObject, Float>)sortedTowers, true);
 		for (GLObject glo : sortedTowers.keySet()) {
+			if (selectionMode)
+				GLSingleton.getGL().glLoadName(cont++);
 			if (this.drawingShadows) ((GLObject3D)glo).drawShadow();
 			else ((GLObject3D)glo).draw();
 		}
@@ -71,8 +77,8 @@ public class GLTowerViewManager extends GLViewManager {
 
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
-		// TODO Auto-generated method stub
-		
+		System.err.println("Selected tower: " + selectedObject);
+		NotifyUIManager.notifySelectedTower(selectedObject);
 	}
 
 }

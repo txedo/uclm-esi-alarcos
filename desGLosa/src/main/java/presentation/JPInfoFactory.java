@@ -2,8 +2,10 @@ package presentation;
 import com.jgoodies.forms.layout.FormLayout;
 
 import java.awt.Dimension;
+import javax.swing.BorderFactory;
 
-import model.business.knowledge.Factory;
+import javax.swing.WindowConstants;
+import javax.swing.JFrame;
 
 
 /**
@@ -20,8 +22,18 @@ import model.business.knowledge.Factory;
 */
 public class JPInfoFactory extends javax.swing.JPanel {
 
-	private static final long serialVersionUID = -2578806940827523547L;
-
+	/**
+	* Auto-generated main method to display this 
+	* JPanel inside a new JFrame.
+	*/
+	public static void main(String[] args) {
+		JFrame frame = new JFrame();
+		frame.getContentPane().add(new JPInfoFactory());
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
 	public JPInfoFactory() {
 		super();
 		initGUI();
@@ -29,18 +41,15 @@ public class JPInfoFactory extends javax.swing.JPanel {
 	
 	private void initGUI() {
 		try {
-			FormLayout thisLayout = new FormLayout(
-					"max(p;5dlu), 83dlu, 5dlu, 92dlu", 
-					"max(p;5dlu), 13dlu, 5dlu, 13dlu");
-			this.setLayout(thisLayout);
 			setPreferredSize(new Dimension(400, 300));
+			FormLayout thisLayout = new FormLayout(
+					"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)", 
+					"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)");
+			this.setLayout(thisLayout);
+			this.setBorder(BorderFactory.createTitledBorder("Factory information"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void displayInformation (Factory factory) {
-		
 	}
 
 }
