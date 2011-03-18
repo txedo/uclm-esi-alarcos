@@ -1,17 +1,16 @@
 package presentation;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-import java.awt.BorderLayout;
 
-import java.awt.Dimension;
 import javax.swing.BorderFactory;
 
-import javax.swing.WindowConstants;
-import javax.swing.border.TitledBorder;
+import model.business.knowledge.Company;
+
 import org.jdesktop.application.Application;
-import javax.swing.JFrame;
+
+import presentation.utils.Messages;
+
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -26,6 +25,7 @@ import javax.swing.JPanel;
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
 public class JPInfoCompany extends javax.swing.JPanel implements JPInfoInterface {
+	private static final long serialVersionUID = -2458846490898137049L;
 	private JLabel lblCompanyName;
 	private JLabel lblCompanyInformation;
 
@@ -42,10 +42,10 @@ public class JPInfoCompany extends javax.swing.JPanel implements JPInfoInterface
 	private void initGUI() {
 		try {
 			FormLayout thisLayout = new FormLayout(
-					"max(p;5dlu), 135dlu", 
+					"max(p;5dlu), 97dlu", 
 					"13dlu, max(p;5dlu), 13dlu");
 			this.setLayout(thisLayout);
-			this.setPreferredSize(new java.awt.Dimension(261, 89));
+			this.setPreferredSize(new java.awt.Dimension(193, 89));
 			this.setBorder(BorderFactory.createTitledBorder("Company information"));
 			{
 				lblCompanyName = new JLabel();
@@ -62,8 +62,13 @@ public class JPInfoCompany extends javax.swing.JPanel implements JPInfoInterface
 	}
 
 	public void displayInformation(Object obj) {
-		// TODO Auto-generated method stub
-		
+		if (obj instanceof Company) {
+			Company company = (Company)obj;
+			lblCompanyName.setText(company.getName());
+			lblCompanyInformation.setText(company.getInformation());
+		} else {
+			Messages.showErrorDialog(getRootPane(), "Runtime error", "Passed argument is not a company.");
+		}
 	}
 
 }

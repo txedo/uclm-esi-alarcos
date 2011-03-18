@@ -13,7 +13,7 @@
 		<property name="name" column="name" type="string" not-null="false" />
 		<property name="information" column="information" type="string" not-null="false" />
 		<many-to-one name="director" column="director_id" unique="true" not-null="true" class="Director" cascade="all" lazy="false" />
-		<property name="email" column="email" type="string" not-null="false" />
+		<property name="email" column="contact_email" type="string" not-null="false" />
 		<property name="employees" column="employees" type="int" not-null="false" />
 		<many-to-one name="address" column="address_id" unique="true" not-null="true" class="Address" cascade="all" lazy="false" />
 	</class>

@@ -219,17 +219,17 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 -- Data for table `desglosadb`.`companies`
 -- -----------------------------------------------------
-SET AUTOCOMMIT=0;
+START TRANSACTION;
 USE `desglosadb`;
 INSERT INTO `desglosadb`.`companies` (`id`, `name`, `information`) VALUES (1, 'Indra', 'information about Indra');
-INSERT INTO `desglosadb`.`companies` (`id`, `name`, `information`) VALUES (2, 'IECISA', 'informatino about IECISA');
+INSERT INTO `desglosadb`.`companies` (`id`, `name`, `information`) VALUES (2, 'IECISA', 'information about IECISA');
 
 COMMIT;
 
 -- -----------------------------------------------------
 -- Data for table `desglosadb`.`addresses`
 -- -----------------------------------------------------
-SET AUTOCOMMIT=0;
+START TRANSACTION;
 USE `desglosadb`;
 INSERT INTO `desglosadb`.`addresses` (`id`, `street`, `city`, `state`, `country`, `zip`) VALUES (1, 'calle', 'Ciudad Real', 'Ciudad Real', 'España', '13000');
 INSERT INTO `desglosadb`.`addresses` (`id`, `street`, `city`, `state`, `country`, `zip`) VALUES (2, 'calle', 'Madrid', 'Madrid', 'España', '28000');
@@ -241,19 +241,18 @@ COMMIT;
 -- -----------------------------------------------------
 -- Data for table `desglosadb`.`images`
 -- -----------------------------------------------------
-SET AUTOCOMMIT=0;
+START TRANSACTION;
 USE `desglosadb`;
 INSERT INTO `desglosadb`.`images` (`id`, `filename`, `content_type`, `data`) VALUES (1, 'anonymous', 'image/jpg', NULL);
 INSERT INTO `desglosadb`.`images` (`id`, `filename`, `content_type`, `data`) VALUES (2, 'world map', 'image/png', NULL);
 INSERT INTO `desglosadb`.`images` (`id`, `filename`, `content_type`, `data`) VALUES (3, 'spain', 'image/png', NULL);
-INSERT INTO `desglosadb`.`images` (`id`, `filename`, `content_type`, `data`) VALUES (4, 'peru', 'image/jpg', NULL);
 
 COMMIT;
 
 -- -----------------------------------------------------
 -- Data for table `desglosadb`.`directors`
 -- -----------------------------------------------------
-SET AUTOCOMMIT=0;
+START TRANSACTION;
 USE `desglosadb`;
 INSERT INTO `desglosadb`.`directors` (`id`, `name`, `first_surname`, `second_surname`, `image_id`) VALUES (1, 'director', 'de indra', 'ciudad real', 1);
 INSERT INTO `desglosadb`.`directors` (`id`, `name`, `first_surname`, `second_surname`, `image_id`) VALUES (2, 'director', 'de indra', 'madrid', 1);
@@ -265,34 +264,37 @@ COMMIT;
 -- -----------------------------------------------------
 -- Data for table `desglosadb`.`factories`
 -- -----------------------------------------------------
-SET AUTOCOMMIT=0;
+START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `company_id`, `address_id`, `director_id`) VALUES (1, 'Indra Ciudad Real', 'information about Indra Ciudad Real', 'email', 25, 1, 1, 1);
-INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `company_id`, `address_id`, `director_id`) VALUES (2, 'Indra Madrid', 'information about Indra Madrid', 'email', 35, 1, 2, 2);
-INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `company_id`, `address_id`, `director_id`) VALUES (3, 'IECISA Miguelturra', 'information about IECISA Miguelturra', 'email', 50, 2, 3, 3);
-INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `company_id`, `address_id`, `director_id`) VALUES (4, 'IECISA Mirasierra', 'information about IECISA Mirasierra', 'email', 60, 2, 4, 4);
+INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `company_id`, `address_id`, `director_id`) VALUES (1, 'Indra Ciudad Real', 'information about Indra Ciudad Real', 'indra@ciudadreal.es', 25, 1, 1, 1);
+INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `company_id`, `address_id`, `director_id`) VALUES (2, 'Indra Madrid', 'information about Indra Madrid', 'indra@madrid.es', 35, 1, 2, 2);
+INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `company_id`, `address_id`, `director_id`) VALUES (3, 'IECISA Miguelturra', 'information about IECISA Miguelturra', 'iecisa@miguelturra.es', 50, 2, 3, 3);
+INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_email`, `employees`, `company_id`, `address_id`, `director_id`) VALUES (4, 'IECISA Mirasierra', 'information about IECISA Mirasierra', 'iecisa@mirasierra.es', 60, 2, 4, 4);
 
 COMMIT;
 
 -- -----------------------------------------------------
 -- Data for table `desglosadb`.`maps`
 -- -----------------------------------------------------
-SET AUTOCOMMIT=0;
+START TRANSACTION;
 USE `desglosadb`;
 INSERT INTO `desglosadb`.`maps` (`id`, `parentId`, `label`, `checksum`, `image_id`) VALUES (1, -1, 'World Map', '-1', 2);
 INSERT INTO `desglosadb`.`maps` (`id`, `parentId`, `label`, `checksum`, `image_id`) VALUES (2, 1, 'Mapa España', '-1', 3);
-INSERT INTO `desglosadb`.`maps` (`id`, `parentId`, `label`, `checksum`, `image_id`) VALUES (3, 1, 'Peru', '-1', 4);
 
 COMMIT;
 
 -- -----------------------------------------------------
 -- Data for table `desglosadb`.`locations`
 -- -----------------------------------------------------
-SET AUTOCOMMIT=0;
+START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (1, 2, 1, 3.5191083, 3.630573);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (2, 2, 2, 3.9968152, 4.6019106);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (3, 1, 1, 1.7647059, 3.3898304);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (4, 1, 2, 1.8910257, 3.611111);
+INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (1, 1, 1, 1.2293853, 3.7331333);
+INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (2, 1, 2, 1.4542729, 3.958021);
+INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (3, 1, 3, 1.4092953, 3.6731632);
+INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (4, 1, 4, 1.6041979, 4.107946);
+INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (5, 2, 1, 3.4782608, 3.2083957);
+INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (6, 2, 2, 3.7631183, 3.9130433);
+INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (7, 2, 3, 3.9730134, 3.0884557);
+INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (8, 2, 4, 4.047976, 4.137931);
 
 COMMIT;
