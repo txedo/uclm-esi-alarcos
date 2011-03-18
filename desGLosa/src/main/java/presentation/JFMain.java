@@ -318,6 +318,10 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 }
                 {
                 	infoPanel = new JPanel();
+                	FormLayout infoPanelLayout = new FormLayout(
+                			"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)", 
+                			"max(p;5dlu)");
+                	infoPanel.setLayout(infoPanelLayout);
                 	contentPanel.add(infoPanel, new CellConstraints("5, 1, 1, 1, fill, fill"));
                 }
             }
@@ -533,7 +537,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			Project project = BusinessManager.getProject(id);
 			JPInfoProject jpip = new JPInfoProject(project);
 			infoPanel.removeAll();
-			infoPanel.add(jpip);
+			infoPanel.add(jpip, new CellConstraints("1, 1, 1, 1, fill, fill"));
 			jpip.setVisible(true);
 			infoPanel.validate();
 		} catch (SQLException e) {
@@ -550,7 +554,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			Factory factory = BusinessManager.getFactory(id);
 			JPInfoFactory jpif = new JPInfoFactory(factory);
 			infoPanel.removeAll();
-			infoPanel.add(jpif);
+			infoPanel.add(jpif, new CellConstraints("1, 1, 1, 1, fill, fill"));
 			jpif.setVisible(true);
 			infoPanel.validate();
 		} catch (SQLException e) {
