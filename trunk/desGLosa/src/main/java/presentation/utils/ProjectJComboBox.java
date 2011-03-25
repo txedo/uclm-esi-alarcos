@@ -34,8 +34,7 @@ public class ProjectJComboBox extends JComboBox {
 	}
 	
 	public void load (List<Project> projects) {
-		ComboBoxModel cbProjectModel = new DefaultComboBoxModel();
-		setModel(cbProjectModel);
+		removeAllItems();
 		for (Project p : projects) {
 			addItem(p);
 		}
@@ -43,16 +42,21 @@ public class ProjectJComboBox extends JComboBox {
 	
 	public void reload () throws SQLException {
 		Project oldSelection = (Project)getSelectedItem();
-		ComboBoxModel cbProjectModel = new DefaultComboBoxModel();
-		setModel(cbProjectModel);
+		removeAllItems();
+		setSelectedIndex(-1);
+//		this.setActionCommand("update");
+		String previousAction = this.getActionCommand();
+		this.setActionCommand("loadingData");
 		this.load();
+		this.setActionCommand(previousAction);
 		boolean found = false;
-		for (int i = 0; i < getItemCount() && !found; i++) {
-			if (getItemAt(i).equals(oldSelection)) {
-				setSelectedIndex(i);
-				found = true;
+		if (oldSelection != null) {
+			for (int i = 0; i < getItemCount() && !found; i++) {
+				if (getItemAt(i).equals(oldSelection)) {
+					setSelectedIndex(i);
+					found = true;
+				}
 			}
-		}
-		if (!found) setSelectedIndex(-1);
+		} else setSelectedIndex(-1);
 	}
 }

@@ -14,9 +14,11 @@ import exceptions.ImageNotFoundException;
 import exceptions.LocationAlreadyExistsException;
 import exceptions.LocationNotFoundException;
 import exceptions.MapNotFoundException;
+import exceptions.NoActiveMapException;
 import exceptions.ProjectNotFoundException;
 import exceptions.WorkingFactoryIsNotInvolvedFactoryException;
 import exceptions.gl.GLSingletonNotInitializedException;
+import model.NotifyUIManager;
 import model.business.knowledge.Company;
 import model.business.knowledge.Factory;
 import model.business.knowledge.Image;
@@ -31,7 +33,12 @@ public class BusinessManager {
 	 * Methods related to company management
 	 */
 	public static boolean addCompany(Company c) throws MandatoryFieldException, SQLException, CompanyAlreadyExistsException {
-		return CompanyManager.addCompany(c);
+		boolean result;
+		if (result = CompanyManager.addCompany(c)) {
+			// Notify changes to the observer
+			NotifyUIManager.notifyCompanyListUpdate();
+		}
+		return result;
 	}
 
 	public static Company getCompany(String name) throws MandatoryFieldException, SQLException, CompanyNotFoundException {
@@ -51,7 +58,12 @@ public class BusinessManager {
 	 */
 
 	public static boolean addFactory(Factory f) throws MandatoryFieldException, SQLException, FactoryAlreadyExistsException {
-		return FactoryManager.addFactory(f);
+		boolean result;
+		if (result = FactoryManager.addFactory(f)) {
+			// Notify changes to the observer
+			NotifyUIManager.notifyFactoryListUpdate(f.getCompany().getId());
+		}
+		return result;
 	}
 	
 	public static Factory getFactory(int id) throws SQLException, FactoryNotFoundException {
@@ -90,16 +102,16 @@ public class BusinessManager {
 		MapManager.setActiveMap(m);
 	}
 	
-	public static Map getActiveMap() {
+	public static Map getActiveMap() throws NoActiveMapException {
 		return MapManager.getActiveMap();
 	}
 	
-	public static void setMapLocations(List<Factory> factories) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
+	public static void setMapLocations(List<Factory> factories) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException, NoActiveMapException {
 		List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
 		MapManager.setMapLocations(locations);
 	}
 
-	public static void highlightMapLocations(List<Factory> factories) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
+	public static void highlightMapLocations(List<Factory> factories) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException, NoActiveMapException {
 		List<Location> locations = BusinessManager.getLocations(factories, BusinessManager.getActiveMap());
 		MapManager.highlightMapLocations(locations);
 	}
@@ -123,6 +135,10 @@ public class BusinessManager {
 	public static List<Location> getLocations(List<Factory> factories, Map map) throws MandatoryFieldException, SQLException, FactoryNotFoundException, MapNotFoundException, LocationNotFoundException {
 		return LocationManager.getLocations (factories, map);
 	}
+	
+	public static void removeLocation(Factory factory, Map map) throws SQLException, LocationNotFoundException {
+		LocationManager.removeLocation (factory, map);
+	}
 
 	/*
 	 * Methods related to image management
@@ -141,7 +157,12 @@ public class BusinessManager {
 	 */
 	
 	public static boolean addProject(Project project) throws MandatoryFieldException, WorkingFactoryIsNotInvolvedFactoryException, SQLException, FactoryNotFoundException {
-		return ProjectManager.addProject(project);
+		boolean result;
+		if (result = ProjectManager.addProject(project)) {
+			// Notify changes to the observer
+			NotifyUIManager.notifyProjectListUpdate();
+		}
+		return result;
 	}
 	
 	public static Project getProject(int id) throws SQLException, ProjectNotFoundException {

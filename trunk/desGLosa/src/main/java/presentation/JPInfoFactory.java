@@ -96,7 +96,7 @@ public class JPInfoFactory extends javax.swing.JPanel implements JPInfoInterface
 			lblContact.setText("Contact: " + factory.getEmail());
 			lblEmployees.setText(factory.getEmployees() + " employees.");
 		} else {
-			Messages.showErrorDialog(getRootPane(), "Runtime error", "Passed argument is not a factory.");
+			Messages.getInstance().showErrorDialog(getRootPane(), "Runtime error", "Passed argument is not a factory.");
 		}
 	}
 

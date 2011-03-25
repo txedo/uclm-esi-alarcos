@@ -65,6 +65,11 @@ public class LocationManager {
 		Location result = LocationDAO.get(id);
 		return result;
 	}
+
+	public static void removeLocation(Factory factory, Map map) throws SQLException, LocationNotFoundException {
+		// Check if the location already exists for this factory and map (1:1 relationship)
+		LocationDAO.delete(factory, map);
+	}
 	
 	
 

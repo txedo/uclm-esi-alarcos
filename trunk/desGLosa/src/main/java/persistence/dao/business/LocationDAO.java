@@ -59,4 +59,13 @@ public class LocationDAO {
 		return result;
 	}
 
+	public static void delete(Factory factory, Map map) throws SQLException, LocationNotFoundException {
+		try {
+			ConnectionManager.beginTransaction();
+			ConnectionManager.delete(LocationDAO.get(factory, map));
+		} finally {
+			ConnectionManager.endTransaction();
+		}
+	}
+
 }

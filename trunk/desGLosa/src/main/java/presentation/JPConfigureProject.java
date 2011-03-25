@@ -40,11 +40,8 @@ import javax.swing.JScrollPane;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class JPConfigureProject extends javax.swing.JPanel {
+public class JPConfigureProject extends javax.swing.JPanel implements JPConfigureInterface, WindowNotifierObserverInterface {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1886335960423908741L;
 	private JLabel lblInvolvedFactories;
 	private JLabel lblAvailableFactories;
@@ -201,10 +198,10 @@ public class JPConfigureProject extends javax.swing.JPanel {
 		try {
 			Project project = BusinessFactory.createProject(txtProjectCode.getText(), txtProjectPlanName.getText(), (Factory)cbFactories.getSelectedItem(), jListInvolvedFactories.toList());
 			if (BusinessManager.addProject(project)) {
-				Messages.showInfoDialog(getRootPane(), "Operation successful", "The project has been created successfully.");
+				Messages.getInstance().showInfoDialog(getRootPane(), "Operation successful", "The project has been created successfully.");
 			}
 		} catch (WorkingFactoryIsNotInvolvedFactoryException e) {
-			Messages.showWarningDialog(getRootPane(), "Warning!", "Working factory has not been added as involved factory. Retry this operation, please.");
+			Messages.getInstance().showWarningDialog(getRootPane(), "Warning!", "Working factory has not been added as involved factory. Retry this operation, please.");
 			this.factorySelector(jListAvailableFactories, jListInvolvedFactories, workingFactory);
 		} catch (MandatoryFieldException e) {
 			// TODO Auto-generated catch block
@@ -216,6 +213,18 @@ public class JPConfigureProject extends javax.swing.JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void setApplicationCore (IAppCore applicationCore) {
+	}
+
+	public boolean isApplicationCoreNeeded () {
+		return false;
+	}
+
+	public void manageOperation(WindowNotifierOperationCodes code, Object... objects) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

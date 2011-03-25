@@ -37,7 +37,7 @@ import presentation.utils.Messages;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class JPConfigureCompany extends javax.swing.JPanel {
+public class JPConfigureCompany extends javax.swing.JPanel implements JPConfigureInterface, WindowNotifierObserverInterface {
 	/**
 	 * 
 	 */
@@ -111,17 +111,29 @@ public class JPConfigureCompany extends javax.swing.JPanel {
     	try {
     		Company c = BusinessFactory.createCompany(txtCompanyName.getText(), txtCompanyInformation.getText());
 			BusinessManager.addCompany(c);
-			Messages.showInfoDialog(null, "Information", "Company successfully added.");
+			Messages.getInstance().showInfoDialog(null, "Information", "Company successfully added.");
 			txtCompanyName.setText("");
 			txtCompanyInformation.setText("");
 		} catch (CompanyAlreadyExistsException e) {
-			Messages.showErrorDialog(null, "Error", "This company already exists.");
+			Messages.getInstance().showErrorDialog(null, "Error", "This company already exists.");
 		} catch (MandatoryFieldException e) {
-			Messages.showErrorDialog(null, "Error", "The company name field must be filled in.");
+			Messages.getInstance().showErrorDialog(null, "Error", "The company name field must be filled in.");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void setApplicationCore (IAppCore applicationCore) {
+	}
+
+	public boolean isApplicationCoreNeeded () {
+		return false;
+	}
+
+	public void manageOperation(WindowNotifierOperationCodes code, Object... objects) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -67,7 +67,7 @@ public class JPInfoCompany extends javax.swing.JPanel implements JPInfoInterface
 			lblCompanyName.setText(company.getName());
 			lblCompanyInformation.setText(company.getInformation());
 		} else {
-			Messages.showErrorDialog(getRootPane(), "Runtime error", "Passed argument is not a company.");
+			Messages.getInstance().showErrorDialog(getRootPane(), "Runtime error", "Passed argument is not a company.");
 		}
 	}
 

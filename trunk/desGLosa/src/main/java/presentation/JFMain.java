@@ -4,12 +4,12 @@ import com.cloudgarden.layout.AnchorLayout;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
-import exceptions.CompanyNotFoundException;
 import exceptions.MandatoryFieldException;
 import exceptions.FactoryNotFoundException;
 import exceptions.LocationAlreadyExistsException;
 import exceptions.LocationNotFoundException;
 import exceptions.MapNotFoundException;
+import exceptions.NoActiveMapException;
 import exceptions.ProjectNotFoundException;
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -24,10 +24,7 @@ import java.util.List;
 
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -41,7 +38,6 @@ import javax.swing.border.TitledBorder;
 import model.IObserverUI;
 import model.NotifyUIManager;
 import model.business.control.BusinessManager;
-import model.business.knowledge.Company;
 import model.business.knowledge.Factory;
 import model.business.knowledge.Map;
 import model.business.knowledge.Project;
@@ -77,8 +73,6 @@ import presentation.utils.ProjectJComboBox;
  */
 public class JFMain extends SingleFrameApplication implements IAppCore, IObserverUI {
     private JMenuBar menuBar;
-    private JPanel configureFactoryPanel;
-    private JButton btnSetCoordinates;
     private JPanel infoPanel;
     private MapsJComboBox cbMaps;
     private JLabel lblAvailableMaps;
@@ -91,12 +85,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
     private JMenuItem jMenuItem8;
     private JMenu toolsMenu;
     private JLabel lblStatusBar;
-    private JComboBox cbConfigureFactoryFactories;
-    private JLabel lblConfigureFactoryFactory;
-    private MapsJComboBox cbConfigureFactoryMaps;
-    private JLabel lblConfigureFactoryMap;
-    private JLabel lblConfigureFactoryCompany;
-    private JComboBox cbConfigureFactoryCompanies;
     private JPanel statusPanel;
     private JPanel widgetPanel;
     private JPanel canvasPanel;
@@ -118,6 +106,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
     private JPanel toolBarPanel;
     private JPanel contentPanel;
 	private boolean settingCoordinates;
+	private JFConfiguration configurationFrame;
 
     @Action
     public void open() {
@@ -147,7 +136,6 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
         try {
         	cbMaps.reload();
 			cbProjects.reload();
-			cbConfigureFactoryMaps.reload();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -189,77 +177,10 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 	widgetPanel = new JPanel();
                 	FormLayout widgetPanelLayout = new FormLayout(
                 			"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)", 
-                			"46dlu, 5dlu, 79dlu, 5dlu, max(p;5dlu)");
+                			"46dlu, 5dlu, 79dlu, 5dlu");
                 	contentPanel.add(widgetPanel, new CellConstraints("2, 1, 1, 1, fill, fill"));
                 	widgetPanel.setLayout(widgetPanelLayout);
                 	widgetPanel.setPreferredSize(new java.awt.Dimension(191, 381));
-                	{
-                		configureFactoryPanel = new JPanel();
-                		widgetPanel.add(configureFactoryPanel, new CellConstraints("2, 5, 1, 1, default, default"));
-                		configureFactoryPanel.setPreferredSize(new java.awt.Dimension(173, 132));
-                		configureFactoryPanel.setBorder(BorderFactory.createTitledBorder("Configure factory"));
-                		configureFactoryPanel.setLayout(null);
-                		{
-                			lblConfigureFactoryCompany = new JLabel();
-                			configureFactoryPanel.add(lblConfigureFactoryCompany);
-                			lblConfigureFactoryCompany.setName("lblConfigureFactoryCompany");
-                			lblConfigureFactoryCompany.setBounds(6, 28, 61, 14);
-                		}
-                		{
-                			ComboBoxModel cbCompaniesModel = new DefaultComboBoxModel();
-                			cbConfigureFactoryCompanies = new JComboBox();
-                			configureFactoryPanel.add(cbConfigureFactoryCompanies);
-                			cbConfigureFactoryCompanies.setModel(cbCompaniesModel);
-                			cbConfigureFactoryCompanies.setBounds(77, 25, 82, 20);
-                			cbConfigureFactoryCompanies.addActionListener(new ActionListener() {
-                				public void actionPerformed(ActionEvent evt) {
-                					cbConfigureFactoryCompaniesActionPerformed(evt);
-                				}
-                			});
-                		}
-                		{
-                			lblConfigureFactoryMap = new JLabel();
-                			configureFactoryPanel.add(lblConfigureFactoryMap);
-                			lblConfigureFactoryMap.setName("lblConfigureFactoryMap");
-                			lblConfigureFactoryMap.setBounds(6, 77, 62, 12);
-                		}
-                		{
-                			ComboBoxModel cbMapsModel = new DefaultComboBoxModel();
-                			cbConfigureFactoryMaps = new MapsJComboBox();
-                			configureFactoryPanel.add(cbConfigureFactoryMaps);
-                			cbConfigureFactoryMaps.setModel(cbMapsModel);
-                			cbConfigureFactoryMaps.setBounds(78, 75, 80, 20);
-                			cbConfigureFactoryMaps.addActionListener(new ActionListener() {
-                				public void actionPerformed(ActionEvent evt) {
-                					cbConfigureFactoryMapsActionPerformed(evt);
-                				}
-                			});
-                		}
-                		{
-                			btnSetCoordinates = new JButton();
-                			configureFactoryPanel.add(btnSetCoordinates);
-                			btnSetCoordinates.setName("btnSetCoordinates");
-                			btnSetCoordinates.setBounds(31, 104, 107, 21);
-                			btnSetCoordinates.addActionListener(new ActionListener() {
-                				public void actionPerformed(ActionEvent evt) {
-                					btnSetCoordinatesActionPerformed(evt);
-                				}
-                			});
-                		}
-                		{
-                			lblConfigureFactoryFactory = new JLabel();
-                			configureFactoryPanel.add(lblConfigureFactoryFactory);
-                			lblConfigureFactoryFactory.setBounds(6, 52, 41, 14);
-                			lblConfigureFactoryFactory.setName("lblConfigureFactoryFactory");
-                		}
-                		{
-                			ComboBoxModel cbConfigureFactoryFactoriesModel = new DefaultComboBoxModel();
-                			cbConfigureFactoryFactories = new JComboBox();
-                			configureFactoryPanel.add(cbConfigureFactoryFactories);
-                			cbConfigureFactoryFactories.setModel(cbConfigureFactoryFactoriesModel);
-                			cbConfigureFactoryFactories.setBounds(77, 49, 83, 20);
-                		}
-                	}
                 	{
                 		projectPanel = new JPanel();
                 		FormLayout projectPanelLayout = new FormLayout(
@@ -439,43 +360,25 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
     }
     
 	public void updateCompanyList() {
+		// TODO Auto-generated catch block
+	}
+	
+	public void updateFactoryList(int companyId) {
+		// TODO Auto-generated catch block
+	}
+
+	public void updateMapList() {
 		try {
-			// Clean already added factories
-			cbConfigureFactoryCompanies.setModel(new DefaultComboBoxModel());
-			// Add the updated company factories	
-			for (Company c : BusinessManager.getAllCompanies()) {
-				cbConfigureFactoryCompanies.addItem(c);
-			}
+			cbMaps.reload();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void updateFactoryList(int companyId) {
+	public void updateProjectList() {
 		try {
-			if (((Company)cbConfigureFactoryCompanies.getSelectedItem()).getId() == companyId) {
-				// Clean already added factories
-				cbConfigureFactoryFactories.setModel(new DefaultComboBoxModel());
-				// Add the updated company factories				
-				Company c = BusinessManager.getCompany(companyId);
-				for (Factory f : BusinessManager.getFactories(c)) {
-					cbConfigureFactoryFactories.addItem(f);
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CompanyNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void updateMapList() {
-		try {
-			cbConfigureFactoryMaps.reload();
-			cbMaps.reload();
+			cbProjects.reload();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -484,38 +387,11 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 	
 	public void updateClickedWorldCoords(Vector2f coordinates) {
 		if (isSettingCoordinates()) {
-			try {
-				if (BusinessManager.addLocation(((Factory)cbConfigureFactoryFactories.getSelectedItem()), ((Map)cbConfigureFactoryMaps.getSelectedItem()), coordinates)) {
-					List<Factory> factories = BusinessManager.getFactories(((Company)cbConfigureFactoryCompanies.getSelectedItem()));
-					BusinessManager.setMapLocations (factories);
-				}
-			} catch (LocationAlreadyExistsException e) {
-				Messages.showErrorDialog(getMainFrame(), "Error", "This location is already configured.");
-			} catch (MandatoryFieldException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (FactoryNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (MapNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (LocationNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			settingCoordinates = false;
 			lblStatusBar.setText("");
 			GLInit.getGLCanvas().setCursor(Cursor.getDefaultCursor());
+			WindowNotifier.executeOperation(WindowNotifierOperationCodes.LocationCreated, coordinates);
 		}
-	}
-	
-	public void updateProjectList() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public void selectFactoryByLocation(int idLocation) {
@@ -533,20 +409,14 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 	}
 	
 	public void selectProject(int id) {
-		try {
-			Project project = BusinessManager.getProject(id);
-			JPInfoProject jpip = new JPInfoProject(project);
-			infoPanel.removeAll();
-			infoPanel.add(jpip, new CellConstraints("1, 1, 1, 1, fill, fill"));
-			jpip.setVisible(true);
-			infoPanel.validate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ProjectNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		Project project = BusinessManager.getProject(id);
+//		JPInfoProject jpip = new JPInfoProject(project);
+//		infoPanel.removeAll();
+//		infoPanel.add(jpip, new CellConstraints("1, 1, 1, 1, fill, fill"));
+//		jpip.setVisible(true);
+//		infoPanel.validate();
+		// TODO Auto-generated catch block
+		System.err.println("Project funcionality has not been implemented yet.");
 	}
 
 	public void selectFactory(int id) {
@@ -568,7 +438,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 
 	public void selectTower(int id) {
 		// TODO Auto-generated catch block
-		System.err.println("Tower funcionality has not been designed yet.");
+		System.err.println("Tower funcionality has not been implemented yet.");
 	}
 	
 	public boolean isSettingCoordinates () {
@@ -579,78 +449,25 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		this.settingCoordinates = b;
 	}
 	
-	private void btnSetCoordinatesActionPerformed(ActionEvent evt) {
-		System.out.println("btnSetCoordinates.actionPerformed, event="+evt);
-		if (cbConfigureFactoryCompanies.getSelectedItem() != null
-				&& cbConfigureFactoryFactories.getSelectedItem() != null
-				&& cbConfigureFactoryMaps.getSelectedItem() != null) {
-			this.settingCoordinates = true;
-			lblStatusBar.setText("Click the location of the factory on the map...");
-		} else {
-			Messages.showWarningDialog(getMainFrame(), "Warning", "You have to select a factory and a map to set its coordinates.");
-		}
-	}
-	
-	private void cbConfigureFactoryCompaniesActionPerformed(ActionEvent evt) {
-		// Clean already added factories
-		ComboBoxModel cbConfigureFactoryFactoriesModel = new DefaultComboBoxModel();
-		cbConfigureFactoryFactories.setModel(cbConfigureFactoryFactoriesModel);
-		// Add the selected company factories
-		Company selectedCompany = (Company)cbConfigureFactoryCompanies.getSelectedItem();
-		try {
-			for (Factory fact : BusinessManager.getFactories(selectedCompany)) {
-				cbConfigureFactoryFactories.addItem(fact);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	private void cbConfigureFactoryMapsActionPerformed(ActionEvent evt) {
-		try {
-			if (GLSingleton.isInitiated()) {
-				BusinessManager.setActiveMap((Map)cbConfigureFactoryMaps.getSelectedItem());
-				List<Factory> factories = BusinessManager.getFactories(((Company)cbConfigureFactoryCompanies.getSelectedItem()));
-				BusinessManager.setMapLocations (factories);
-			}
-		} catch (GLSingletonNotInitializedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MandatoryFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FactoryNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MapNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (LocationNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void setCoordinates () {
+		this.settingCoordinates(true);
+		lblStatusBar.setText("Click the location of the factory on the map...");
 	}
 	
 	private void jMenuItem8ActionPerformed(ActionEvent evt) {
-		JFConfiguration jfc = new JFConfiguration();
-		jfc.setLocationRelativeTo(getMainFrame());
-		jfc.setVisible(true);
+		configurationFrame = new JFConfiguration(this);
+		configurationFrame.setLocationRelativeTo(getMainFrame());
+		configurationFrame.setVisible(true);
 	}
 	
 	private void cbProjectsActionPerformed(ActionEvent evt) {
-
 		try {
-			if (GLSingleton.isInitiated()) {
-				List<Factory> factories = new ArrayList<Factory>(((Project)cbProjects.getSelectedItem()).getInvolvedFactories());
-				cbInvolvedFactories.load(factories);
-				BusinessManager.highlightMapLocations(factories);
+			if (!evt.getActionCommand().equals("loadingData")) {
+				if (GLSingleton.isInitiated()) {
+					List<Factory> factories = new ArrayList<Factory>(((Project)cbProjects.getSelectedItem()).getInvolvedFactories());
+					cbInvolvedFactories.load(factories);
+					BusinessManager.highlightMapLocations(factories);
+				}
 			}
 		} catch (MandatoryFieldException e) {
 			// TODO Auto-generated catch block
@@ -665,6 +482,9 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (LocationNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoActiveMapException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -680,6 +500,12 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (GLSingletonNotInitializedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (MandatoryFieldException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -692,13 +518,11 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		} catch (LocationNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (GLSingletonNotInitializedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (NoActiveMapException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
 
 }
