@@ -30,6 +30,12 @@ public class NotifyUIManager {
 		}
 	}
 	
+	public static void notifyProjectListUpdate() {
+		for (IObserverUI iob : observers) {
+			iob.updateProjectList();
+		}
+	}
+	
 	public static void notifyClickedWorldCoords (Vector2f coordinates) {
 		for (IObserverUI iob : observers) {
 			iob.updateClickedWorldCoords(coordinates);
@@ -59,4 +65,5 @@ public class NotifyUIManager {
 			iob.selectTower(idTower);
 		}
 	}
+
 }

@@ -8,11 +8,6 @@ public class Operation {
 	private String container;
 	private String type;
 	
-	/**
-	 * @param name
-	 * @param icon
-	 * @param container
-	 */
 	public Operation(String name, String description, String icon, String container, String type) {
 		this.name = name;
 		this.description = description;
@@ -61,7 +56,5 @@ public class Operation {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
 	
 }

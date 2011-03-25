@@ -18,7 +18,6 @@ import presentation.JFMain;
  * Use Singleton.instance() to access this instance.
  */
 public class MainManager {
-	private static RunningMode runningMode = RunningMode.Initialization;
 	/**
 	 * A handle to the unique Singleton instance.
 	 */
@@ -39,14 +38,6 @@ public class MainManager {
 			_instance = new MainManager();
 		}
 		return _instance;
-	}
-
-	public static RunningMode getRunningMode() {
-		return runningMode;
-	}
-
-	public static void setRunningMode(RunningMode mode) {
-		runningMode = mode;
 	}
 
 	public void run(String[] args) {

@@ -11,7 +11,7 @@
 		</id>
 		<property name="code" column="code" type="string" not-null="false" />
 		<property name="planName" column="planName" type="string" not-null="false" />
-		<many-to-one name="workingFactory" column="workingFactory_id" not-null="true" class="Factory" cascade="all" lazy="false" />
+		<many-to-one name="workingFactory" column="workingFactory_id" not-null="true" class="Factory" cascade="save-update" lazy="false" />
 		<set name="involvedFactories" table="projects_has_factories" lazy="false">
         	<key column="project_id"/>
         	<many-to-many column="factory_id" class="Factory"/>

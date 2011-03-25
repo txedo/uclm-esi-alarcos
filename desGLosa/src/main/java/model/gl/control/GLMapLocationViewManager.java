@@ -19,13 +19,13 @@ import model.gl.knowledge.GLObject;
 import model.gl.knowledge.MapLocation;
 import model.knowledge.Vector2f;
 import model.knowledge.Vector3f;
+import exceptions.NoActiveMapException;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 public class GLMapLocationViewManager extends GLViewManager {
 	private static TextureLoader textureMapLoader;
-	private static TextureLoader textureLoader;
 	private static boolean hasTextureMapChanged;
-	private boolean isTextureMapReady;
+	private static boolean isTextureMapReady;
 
 	private static List<Location> locations;
 	private static List<GLObject> mapLocations;
@@ -33,21 +33,14 @@ public class GLMapLocationViewManager extends GLViewManager {
 	public GLMapLocationViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
 		GLMapLocationViewManager.hasTextureMapChanged = false;
-		this.isTextureMapReady = false;
+		GLMapLocationViewManager.isTextureMapReady = false;
 		locations = new ArrayList<Location>();
 		mapLocations = new ArrayList<GLObject>();
-		textureLoader = new TextureLoader(new String[]{"src/main/resources/gl/round-highlight.png"});
 	}
 
 	@Override
 	public void configureView() throws GLSingletonNotInitializedException {
 		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
-		try {
-			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -108,12 +101,15 @@ public class GLMapLocationViewManager extends GLViewManager {
 		}
 	}
 
-	public static void updateMapChanged()
-			throws GLSingletonNotInitializedException, IOException {
-		GLMapLocationViewManager.textureMapLoader = new TextureLoader(
-				new String[] { MapManager.getActiveMap().getImage()
-						.getFilename() });
-		GLMapLocationViewManager.hasTextureMapChanged = true;
+	public static void updateMapChanged() throws GLSingletonNotInitializedException, IOException {
+		try {
+			String mapFileName = MapManager.getActiveMap().getImage().getFilename();
+			GLMapLocationViewManager.textureMapLoader = new TextureLoader(new String[] { mapFileName });
+			GLMapLocationViewManager.hasTextureMapChanged = true;
+		} catch (NoActiveMapException e) {
+			GLMapLocationViewManager.hasTextureMapChanged = false;
+			GLMapLocationViewManager.isTextureMapReady = false;
+		}
 	}
 
 	public static void setupItems() {
@@ -171,6 +167,7 @@ public class GLMapLocationViewManager extends GLViewManager {
 	public static void highlightMapLocations(List<Location> locs) {
 		// Set all location highlighting to false
 		for (GLObject mapLoc : mapLocations) {
+			((MapLocation) mapLoc).setSize(MapLocation.SIZE_INIT);
 			((MapLocation) mapLoc).setHightlighted(false);
 			((MapLocation) mapLoc).setFaded(true);
 		}

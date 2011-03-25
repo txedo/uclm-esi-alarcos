@@ -12,13 +12,15 @@ import model.gl.control.GLMapLocationViewManager;
 import persistence.dao.business.MapDAO;
 import exceptions.MapAlreadyExistsException;
 import exceptions.MapNotFoundException;
+import exceptions.NoActiveMapException;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 public class MapManager {
 	
 	private static Map activeMap;
 	
-	public static Map getActiveMap() {
+	public static Map getActiveMap() throws NoActiveMapException {
+		if (activeMap == null) throw new NoActiveMapException();
 		return MapManager.activeMap;
 	}
 

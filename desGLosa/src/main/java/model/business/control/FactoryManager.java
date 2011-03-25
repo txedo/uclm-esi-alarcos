@@ -5,13 +5,10 @@ import java.util.List;
 
 import persistence.dao.business.FactoryDAO;
 
-import exceptions.CompanyNotFoundException;
 import exceptions.MandatoryFieldException;
 import exceptions.FactoryAlreadyExistsException;
 import exceptions.FactoryNotFoundException;
 
-import model.NotifyUIManager;
-import model.business.knowledge.Company;
 import model.business.knowledge.Factory;
 
 public class FactoryManager {
@@ -30,8 +27,6 @@ public class FactoryManager {
 		} catch (FactoryNotFoundException e) {
 			// Insert the factory
 			FactoryDAO.insert(f);
-			// Notify changes to the observer
-			//NotifyUIController.notifyFactoryListUpdate(f.getCompany());
 			success = true;
 		}
 		return success;

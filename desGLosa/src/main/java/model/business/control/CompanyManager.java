@@ -8,7 +8,6 @@ import persistence.dao.business.CompanyDAO;
 import exceptions.CompanyAlreadyExistsException;
 import exceptions.CompanyNotFoundException;
 import exceptions.MandatoryFieldException;
-import model.NotifyUIManager;
 import model.business.knowledge.Company;
 
 public class CompanyManager {
@@ -24,8 +23,6 @@ public class CompanyManager {
 		} catch (CompanyNotFoundException e) {
 			// If the company does not exist, insert it
 			CompanyDAO.insert(c);
-			// Notify changes to the observer
-			NotifyUIManager.notifyCompanyListUpdate();
 			success = true;
 		}
 		return success;
