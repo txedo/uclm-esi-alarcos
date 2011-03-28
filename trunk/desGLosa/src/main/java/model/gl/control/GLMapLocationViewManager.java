@@ -135,7 +135,7 @@ public class GLMapLocationViewManager extends GLViewManager {
 		/*
 		 * We draw the map locations in two passes: first pass draws
 		 * no-highlighted nodes and second pass draws highlighted ones. By this
-		 * way, highlighted nodes are drawed over no-highlighted nodes.
+		 * way, highlighted nodes are drawn over no-highlighted nodes.
 		 */
 		for (GLObject glo : mapLocations) {
 			if (!((MapLocation) glo).isHightlighted()) {
@@ -155,6 +155,12 @@ public class GLMapLocationViewManager extends GLViewManager {
 
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
+		List<Location> locs = new ArrayList<Location>();
+		for (Location loc : locations) {
+			if (loc.getId() == selectedObject)
+				locs.add((Location)loc.clone());
+		}
+		GLMapLocationViewManager.highlightMapLocations(locs);
 		NotifyUIManager.notifySelectedLocation(selectedObject);
 	}
 

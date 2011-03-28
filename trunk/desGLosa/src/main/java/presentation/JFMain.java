@@ -6,7 +6,6 @@ import com.jgoodies.forms.layout.FormLayout;
 
 import exceptions.MandatoryFieldException;
 import exceptions.FactoryNotFoundException;
-import exceptions.LocationAlreadyExistsException;
 import exceptions.LocationNotFoundException;
 import exceptions.MapNotFoundException;
 import exceptions.NoActiveMapException;
@@ -152,21 +151,21 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
         {
             topPanel = new JPanel();
             FormLayout panelLayout = new FormLayout(
-            		"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)", 
-            		"max(p;5dlu), max(p;5dlu), max(p;5dlu)");
+            		"pref:grow", 
+            		"max(p;5dlu), fill:pref:grow, max(p;5dlu)");
             topPanel.setLayout(panelLayout);
             topPanel.setPreferredSize(new java.awt.Dimension(659, 404));
             {
                 contentPanel = new JPanel();
                 FormLayout contentPanelLayout = new FormLayout(
-                		"max(p;5dlu), max(p;5dlu), max(p;5dlu), 5dlu, 138dlu", 
-                		"max(p;5dlu)");
+                		"max(p;5dlu), left:pref, 5dlu, pref:grow, 5dlu, fill:pref:grow", 
+                		"fill:pref:grow");
                 contentPanel.setLayout(contentPanelLayout);
                 topPanel.add(contentPanel, new CellConstraints("1, 2, 1, 1, fill, fill"));
                 contentPanel.setPreferredSize(new java.awt.Dimension(1105, 522));
                 {
                 	canvasPanel = new JPanel();
-                	contentPanel.add(canvasPanel, new CellConstraints("3, 1, 1, 1, fill, fill"));
+                	contentPanel.add(canvasPanel, new CellConstraints("4, 1, 1, 1, fill, fill"));
                 	AnchorLayout canvasPanelLayout = new AnchorLayout();
                 	canvasPanel.setLayout(canvasPanelLayout);
                 	canvasPanel.setPreferredSize(new java.awt.Dimension(671, 500));
@@ -176,8 +175,8 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 {
                 	widgetPanel = new JPanel();
                 	FormLayout widgetPanelLayout = new FormLayout(
-                			"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)", 
-                			"46dlu, 5dlu, 79dlu, 5dlu");
+                			"max(p;5dlu), max(p;5dlu)", 
+                			"46dlu, 5dlu, 79dlu");
                 	contentPanel.add(widgetPanel, new CellConstraints("2, 1, 1, 1, fill, fill"));
                 	widgetPanel.setLayout(widgetPanelLayout);
                 	widgetPanel.setPreferredSize(new java.awt.Dimension(191, 381));
@@ -187,7 +186,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 				"max(p;5dlu), 75dlu", 
                 				"13dlu, 13dlu, max(p;15dlu), max(p;15dlu)");
                 		projectPanel.setLayout(projectPanelLayout);
-                		widgetPanel.add(projectPanel, new CellConstraints("2, 3, 1, 2, default, default"));
+                		widgetPanel.add(projectPanel, new CellConstraints("2, 3, 1, 1, default, default"));
                 		projectPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createTitledBorder(""), "Project view", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION));
                 		{
                 			lblProject = new JLabel();
@@ -240,10 +239,10 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 {
                 	infoPanel = new JPanel();
                 	FormLayout infoPanelLayout = new FormLayout(
-                			"max(p;5dlu), max(p;5dlu), max(p;5dlu), max(p;5dlu)", 
-                			"max(p;5dlu)");
+                			"fill:pref", 
+                			"pref");
                 	infoPanel.setLayout(infoPanelLayout);
-                	contentPanel.add(infoPanel, new CellConstraints("5, 1, 1, 1, fill, fill"));
+                	contentPanel.add(infoPanel, new CellConstraints("6, 1, 1, 1, fill, fill"));
                 }
             }
             {
@@ -423,10 +422,12 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 		try {
 			Factory factory = BusinessManager.getFactory(id);
 			JPInfoFactory jpif = new JPInfoFactory(factory);
+			
 			infoPanel.removeAll();
-			infoPanel.add(jpif, new CellConstraints("1, 1, 1, 1, fill, fill"));
+			infoPanel.add(jpif, new CellConstraints("1, 1, 1, 1, default, default"));
 			jpif.setVisible(true);
 			infoPanel.validate();
+			infoPanel.repaint();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -485,8 +486,9 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NoActiveMapException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Messages.getInstance().showErrorDialog(getMainFrame(), "Error", "A map must be selected in order to show factories involved in project.");
+			cbProjects.setSelectedIndex(-1);
+			cbInvolvedFactories.removeAllItems();
 		}
 	}
 	
