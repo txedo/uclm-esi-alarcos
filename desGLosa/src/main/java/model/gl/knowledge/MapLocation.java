@@ -8,7 +8,6 @@ import model.knowledge.Color;
 
 public class MapLocation extends Node {
 	public static final float SIZE_INIT = 10.0f;
-	private int id;
 	private float size;
 	private float frequency = 0.0f;	// higher value implies higher speed
 	private boolean hightlighted;
@@ -19,21 +18,13 @@ public class MapLocation extends Node {
 	//private final Color fadeColor = new Color(9.0f/255.0f, 19.0f/255.0f, 52.0f/255.0f);
 	
 	public MapLocation (int id, float pos_x, float pos_y) {
-		this.id = id;
+		super.id = id;
 		this.hightlighted = false;
 		this.faded = false;
 		this.positionX = pos_x;
 		this.positionY = pos_y;
 		this.color = new Color(1.0f, 1.0f, 1.0f);
 		this.size = MapLocation.SIZE_INIT;
-	}
-	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public boolean isHightlighted() {

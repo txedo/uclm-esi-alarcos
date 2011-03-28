@@ -42,7 +42,7 @@ public class JPInfoCompany extends javax.swing.JPanel implements JPInfoInterface
 	private void initGUI() {
 		try {
 			FormLayout thisLayout = new FormLayout(
-					"max(p;5dlu), 97dlu", 
+					"max(p;5dlu), pref:grow, max(p;5dlu)", 
 					"13dlu, max(p;5dlu), 13dlu");
 			this.setLayout(thisLayout);
 			this.setPreferredSize(new java.awt.Dimension(193, 89));

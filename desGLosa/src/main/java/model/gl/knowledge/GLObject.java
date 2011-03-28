@@ -40,6 +40,14 @@ public abstract class GLObject {
 		GLSingleton.getGL().glDisable(GL.GL_LIGHT1);			// Deshabilitamos la iluminación
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public float getPositionX() {
 		return positionX;
 	}

@@ -44,43 +44,38 @@ public class JPConfigureCompany extends javax.swing.JPanel implements JPConfigur
 	private static final long serialVersionUID = -5515867769356310203L;
 	private JTextField txtCompanyName;
 	private JLabel lblCompanyInformation;
-	private JButton btnCancel;
-	private JButton btnOk;
+	private JButton btnCreate;
+	private JButton btnReset;
 	private JTextArea txtCompanyInformation;
 	private JLabel lblName;
 
 	public JPConfigureCompany() {
 		super();
 		initGUI();
+		txtCompanyName.grabFocus();
 	}
 	
 	private void initGUI() {
 		try {
 			FormLayout thisLayout = new FormLayout(
-					"5dlu, max(p;5dlu), 6dlu, 60dlu, 23dlu, 60dlu", 
-					"5dlu, max(p;5dlu), 5dlu, max(p;5dlu), 5dlu, max(p;5dlu), max(p;5dlu)");
+					"5dlu, max(p;5dlu), 5dlu, 58dlu, 36dlu, p:grow, 5dlu", 
+					"5dlu, max(p;5dlu), 5dlu, max(p;5dlu), 5dlu, max(p;5dlu)");
 			this.setLayout(thisLayout);
-			this.setPreferredSize(new java.awt.Dimension(456, 333));
+			this.setPreferredSize(new java.awt.Dimension(410, 180));
 			{
-				btnOk = new JButton();
-				this.add(btnOk, new CellConstraints("4, 6, 1, 1, default, default"));
-				btnOk.setPreferredSize(new java.awt.Dimension(79, 23));
-				btnOk.setName("btnOk");
-				btnOk.addActionListener(new ActionListener() {
+				btnCreate = new JButton();
+				this.add(btnCreate, new CellConstraints("4, 6, 1, 1, default, default"));
+				btnCreate.setPreferredSize(new java.awt.Dimension(79, 23));
+				btnCreate.setName("btnCreate");
+				btnCreate.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
-						btnOkActionPerformed(evt);
+						btnCreateActionPerformed(evt);
 					}
 				});
 			}
 			{
-				btnCancel = new JButton();
-				this.add(btnCancel, new CellConstraints("6, 6, 1, 1, default, default"));
-				btnCancel.setPreferredSize(new java.awt.Dimension(79, 23));
-				btnCancel.setName("btnCancel");
-			}
-			{
 				lblCompanyInformation = new JLabel();
-				this.add(lblCompanyInformation, new CellConstraints("2, 4, 1, 1, default, default"));
+				this.add(lblCompanyInformation, new CellConstraints("2, 4, 1, 1, default, top"));
 				lblCompanyInformation.setPreferredSize(new java.awt.Dimension(124, 16));
 				lblCompanyInformation.setName("lblCompanyInformation");
 			}
@@ -101,13 +96,23 @@ public class JPConfigureCompany extends javax.swing.JPanel implements JPConfigur
 				lblName.setName("lblName");
 				lblName.setPreferredSize(new java.awt.Dimension(111, 19));
 			}
+			{
+				btnReset = new JButton();
+				this.add(btnReset, new CellConstraints("6, 6, 1, 1, default, default"));
+				btnReset.setName("btnReset");
+				btnReset.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						btnResetActionPerformed(evt);
+					}
+				});
+			}
 			Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void btnOkActionPerformed(ActionEvent evt) {
+	private void btnCreateActionPerformed(ActionEvent evt) {
     	try {
     		Company c = BusinessFactory.createCompany(txtCompanyName.getText(), txtCompanyInformation.getText());
 			BusinessManager.addCompany(c);
@@ -134,6 +139,12 @@ public class JPConfigureCompany extends javax.swing.JPanel implements JPConfigur
 	public void manageOperation(WindowNotifierOperationCodes code, Object... objects) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void btnResetActionPerformed(ActionEvent evt) {
+		txtCompanyName.setText("");
+		txtCompanyInformation.setText("");
+		txtCompanyName.grabFocus();
 	}
 
 }

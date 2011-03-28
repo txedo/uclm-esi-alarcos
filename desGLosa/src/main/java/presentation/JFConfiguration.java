@@ -20,6 +20,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import javax.swing.WindowConstants;
 
@@ -55,7 +56,8 @@ public class JFConfiguration extends JFrame {
 	private JPanel operationPanel;
 	private IAppCore core;
 	private Map activeMap;
-	
+	private JScrollPane jScrollPane1;
+
 	public JFConfiguration(IAppCore appCore) {
 		super();
 		initGUI();
@@ -117,10 +119,12 @@ public class JFConfiguration extends JFrame {
 					if (((JPConfigureInterface)aux).isApplicationCoreNeeded())
 						((JPConfigureInterface)aux).setApplicationCore(core);
 					// Add the new panel
-					operationPanel.add((JPanel)aux);
+					//operationPanel.add((JPanel)aux);
+					operationPanel.add((JPanel)aux, new CellConstraints("1, 1, 1, 1, default, default"));
 					aux.setVisible(true);
 					// The recently added panel won't be repainted until validate()
 					operationPanel.validate();
+					operationPanel.repaint();
 					((JButton)evt.getSource()).setContentAreaFilled(true);
 				} catch (InstantiationException e) {
 					// TODO Auto-generated catch block
@@ -141,11 +145,11 @@ public class JFConfiguration extends JFrame {
 		try {
 			setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 			FormLayout thisLayout = new FormLayout(
-					"104dlu, 284dlu", 
-					"359dlu");
+					"104dlu, 5dlu, p:grow", 
+					"fill:max(p;10dlu):grow");
 			getContentPane().setLayout(thisLayout);
 			this.setName("parent");
-			this.setPreferredSize(new java.awt.Dimension(686, 736));
+			this.setPreferredSize(new java.awt.Dimension(591, 622));
 			this.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent evt) {
 					thisWindowClosing(evt);
@@ -153,22 +157,29 @@ public class JFConfiguration extends JFrame {
 			});
 			{
 				operationPanel = new JPanel();
-				getContentPane().add(operationPanel, new CellConstraints("2, 1, 1, 1, fill, fill"));
-				BorderLayout operationPanelLayout = new BorderLayout();
+				getContentPane().add(operationPanel, new CellConstraints("3, 1, 1, 1, fill, fill"));
+				FormLayout operationPanelLayout = new FormLayout(
+						"p:grow", 
+						"fill:p:grow");
 				operationPanel.setLayout(operationPanelLayout);
-				operationPanel.setPreferredSize(new java.awt.Dimension(238, 262));
+				operationPanel.setPreferredSize(new java.awt.Dimension(410, 262));
 			}
 			{
-				menuPanel = new JPanel();
-				getContentPane().add(menuPanel, new CellConstraints("1, 1, 1, 1, fill, fill"));
-				FlowLayout menuPanelLayout = new FlowLayout();
-				menuPanel.setLayout(menuPanelLayout);
-				menuPanel.setPreferredSize(new java.awt.Dimension(128, 276));
-				menuPanel.setName("menuPanel");
+				jScrollPane1 = new JScrollPane();
+				getContentPane().add(jScrollPane1, new CellConstraints("1, 1, 1, 1, fill, fill"));
+				jScrollPane1.setName("jScrollPane1");
+				{
+					menuPanel = new JPanel();
+					jScrollPane1.setViewportView(menuPanel);
+					FlowLayout menuPanelLayout = new FlowLayout();
+					menuPanel.setLayout(menuPanelLayout);
+					menuPanel.setPreferredSize(new java.awt.Dimension(128, 276));
+					menuPanel.setName("menuPanel");
+				}
 			}
 			initOperationList();
 			pack();
-			this.setSize(686, 736);
+			this.setSize(591, 622);
 			Application.getInstance().getContext().getResourceMap(getClass()).injectComponents(getContentPane());
 		} catch (Exception e) {
 		    //add your error handling code here

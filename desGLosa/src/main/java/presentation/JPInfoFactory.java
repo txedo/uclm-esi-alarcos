@@ -2,11 +2,7 @@ package presentation;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
-import java.awt.Dimension;
 import javax.swing.BorderFactory;
-import javax.swing.JEditorPane;
-
-import javax.swing.WindowConstants;
 
 import model.business.knowledge.Factory;
 
@@ -14,11 +10,7 @@ import org.jdesktop.application.Application;
 
 import presentation.utils.Messages;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -53,9 +45,9 @@ public class JPInfoFactory extends javax.swing.JPanel implements JPInfoInterface
 	
 	private void initGUI() {
 		try {
-			this.setPreferredSize(new java.awt.Dimension(220, 300));
+			this.setPreferredSize(new java.awt.Dimension(226, 300));
 			FormLayout thisLayout = new FormLayout(
-					"max(p;5dlu), 112dlu", 
+					"5dlu, left:pref, 5dlu", 
 					"max(p;15dlu), 5dlu, 13dlu, max(p;5dlu), 13dlu, max(p;5dlu), max(p;15dlu), 5dlu, max(p;15dlu), 5dlu, max(p;15dlu)");
 			this.setLayout(thisLayout);
 			this.setBorder(BorderFactory.createTitledBorder("Factory information"));
