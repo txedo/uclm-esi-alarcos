@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+import model.business.knowledge.Factory;
 import model.knowledge.Vector2f;
 
 
@@ -57,6 +58,12 @@ public class NotifyUIManager {
 	public static void notifySelectedFactory (int idFactory) {
 		for (IObserverUI iob : observers) {
 			iob.selectFactory(idFactory);
+		}
+	}
+	
+	public static void notifySelectedFactory (Factory factory) {
+		for (IObserverUI iob : observers) {
+			iob.selectFactory(factory);
 		}
 	}
 	
