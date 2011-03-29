@@ -210,6 +210,11 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
                 		{
                 			cbInvolvedFactories = new FactoryJComboBox();
                 			projectPanel.add(cbInvolvedFactories, new CellConstraints("2, 4, 1, 1, default, default"));
+                			cbInvolvedFactories.addActionListener(new ActionListener() {
+                				public void actionPerformed(ActionEvent evt) {
+                					cbInvolvedFactoriesActionPerformed(evt);
+                				}
+                			});
                 		}
                 	}
                 	{
@@ -421,13 +426,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 	public void selectFactory(int id) {
 		try {
 			Factory factory = BusinessManager.getFactory(id);
-			JPInfoFactory jpif = new JPInfoFactory(factory);
-			
-			infoPanel.removeAll();
-			infoPanel.add(jpif, new CellConstraints("1, 1, 1, 1, default, default"));
-			jpif.setVisible(true);
-			infoPanel.validate();
-			infoPanel.repaint();
+			this.selectFactory(factory);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -435,6 +434,15 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void selectFactory(Factory factory) {
+		JPInfoFactory jpif = new JPInfoFactory(factory);
+		infoPanel.removeAll();
+		infoPanel.add(jpif, new CellConstraints("1, 1, 1, 1, default, default"));
+		jpif.setVisible(true);
+		infoPanel.validate();
+		infoPanel.repaint();
 	}
 
 	public void selectTower(int id) {
@@ -467,6 +475,7 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 				if (GLSingleton.isInitiated()) {
 					List<Factory> factories = new ArrayList<Factory>(((Project)cbProjects.getSelectedItem()).getInvolvedFactories());
 					cbInvolvedFactories.load(factories);
+					cbInvolvedFactories.setSelectedIndex(-1);
 					BusinessManager.highlightMapLocations(factories);
 				}
 			}
@@ -525,6 +534,36 @@ public class JFMain extends SingleFrameApplication implements IAppCore, IObserve
 			e.printStackTrace();
 		}
 	}
-
+	
+	private void cbInvolvedFactoriesActionPerformed(ActionEvent evt) {
+		try {
+			if (cbInvolvedFactories.getSelectedIndex() != -1) {
+				List<Factory> toHighlight = new ArrayList<Factory>();
+				toHighlight.add((Factory)cbInvolvedFactories.getSelectedItem());
+				BusinessManager.highlightMapLocations(toHighlight);
+				NotifyUIManager.notifySelectedFactory((Factory)cbInvolvedFactories.getSelectedItem());
+			} else {
+				infoPanel.removeAll();
+			}
+		} catch (MandatoryFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FactoryNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MapNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LocationNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoActiveMapException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }
