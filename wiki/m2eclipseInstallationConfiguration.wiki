@@ -34,4 +34,15 @@ C:/Program Files/Java/jdkx.x.x_xx/bin/javaw
   # Open Eclipse.
   # Go to _Help -> Install New Software..._ and add a new repository.
   # The repository location must be _http://m2eclipse.sonatype.org/sites/m2e/_
-  # Install _Maven Integration for Eclipse".
+  # Install _Maven Integration for Eclipse_.
+
+== Add a new Maven2 repository ==
+
+In this step we will configure Maven2 repositories through Eclipse.
+  # Open Eclipse and go to _Window -> Show View -> Other..._.
+  # Look for _Maven -> Maven repositories_. Here you can check your local, global, project and custom repositories.
+  # To add a new *Project repository* open _pom.xml_ of target project and click _Show advanced tabs_ (placed at the top-right corner).
+  # Open _Repositories_ tab and create a new repository with http://download.java.net/maven/2 as URL.
+  # Finally, click on _Refresh_ button (two yellow arrows placed near the _Show advanced tabs_ button) and wait until the index/update operation finishes (this could take a while).
+
+(Source: http://www.sonatype.com/books/m2eclipse-book/reference/eclipse-sect-repo-view.html)
