@@ -52,11 +52,13 @@ public class GLInit {
 		glCanvas.setSize(container.getSize());
 	    mainFrame.addWindowListener(new WindowAdapter() {
 	        public void windowClosing(WindowEvent e) {
-	          new Thread(new Runnable() {
-	              public void run() {
-	                animator.stop();
-	                System.exit(0);
-	              }
+	        	// Use a dedicate thread to run the stop() to ensure that the
+	        	// animator stops before program exits.
+	        	new Thread(new Runnable() {
+	        		public void run() {
+	        			animator.stop();
+	        			System.exit(0);
+	        		}
 	            }).start();
 	        }
 	      });
