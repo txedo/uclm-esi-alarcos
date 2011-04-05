@@ -1,10 +1,119 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>desGLosa</groupId>
-  <artifactId>desGLosa</artifactId>
+  <groupId>es.uclm.inf-cr.alarcos</groupId>
+  <artifactId>desglosa</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>desGLosa</name>
   <description>OpenGL-based application to support geographically distributed software teams.</description>
+  <developers>
+  	<developer>
+  		<id>lopez.josedomingo</id>
+  		<name>Jose Domingo Lopez Lopez</name>
+  		<email>lopez.josedomingo@gmail.com</email>
+  		<timezone>GMT +1</timezone>
+  		<roles>
+  			<role>Analyst</role>
+  			<role>Designer</role>
+  			<role>Developer</role>
+  			<role>Tester</role>
+  		</roles>
+  	</developer>
+  </developers>
+  <build>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-compiler-plugin</artifactId>
+  			<version>2.3.2</version>
+  			<configuration>
+  				<source>1.6</source>
+  				<target>1.6</target>
+  			</configuration>
+  		</plugin>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-antrun-plugin</artifactId>
+  			<version>1.6</version>
+  			<executions>
+  				<execution>
+  					<id>unzip</id>
+  					<phase>compile</phase>
+  					<goals>
+  						<goal>run</goal>
+  					</goals>
+  					<configuration>											
+						<target name="libraries.jogl">
+						    <condition property="joglostype" value="windows-i586">
+						        <and>
+						            <os family="windows" />
+						            <or>
+						                <os arch="i386" />
+						                <os arch="x86" />
+						            </or>
+						        </and>
+						    </condition>
+						    <condition property="joglostype" value="windows-amd64">
+						        <and>
+						            <os family="windows" />
+						            <os arch="amd64" />
+						        </and>
+						    </condition>
+						    <condition property="joglostype" value="linux-i586">
+						        <and>
+						            <os name="Linux" />
+						            <or>
+						                <os arch="i386" />
+						                <os arch="x86" />
+						            </or>
+						        </and>
+						    </condition>
+						    <condition property="joglostype" value="linux-amd64">
+						        <and>
+						            <os name="Linux" />
+						            <or>
+						                <os arch="AMD64" />
+						                <os arch="x86_64" />
+						            </or>
+						        </and>
+						    </condition>
+						    <echo>Detected operating system: ${joglostype}</echo>
+						    <echo>(if invalid OS, update ant build file)</echo>
+						
+						    <mkdir dir="target/lib" />
+						    <get src="http://download.java.net/media/jogl/builds/archive/jsr-231-1.1.1a/jogl-1.1.1a-${joglostype}.zip" dest="target/lib/jogl.zip" usetimestamp="true" />
+						
+						    <unzip src="target/lib/jogl.zip" dest="target/lib/">
+						        <patternset>
+						            <include name="**/*.so" />
+						            <include name="**/*.jnilib" />
+						            <include name="**/*.dll" />
+						        </patternset>
+						        <mapper type="flatten" />
+						    </unzip>
+						    <unzip src="target/lib/jogl.zip" dest="lib/">
+						        <patternset>
+						        	<include name="**/gluegen-rt.jar" />
+						        	<include name="**/jogl.jar" />
+						        </patternset>
+						        <mapper type="flatten" />
+						    </unzip>
+						    
+						    <delete file="target/lib/jogl.zip" />
+						</target>
+  					</configuration>
+  				</execution>
+  			</executions>
+  		</plugin>
+  	</plugins>
+  </build>
+  <repositories>
+  	<repository>
+   		<id>maven2-repository.dev.java.net</id>
+   		<name>Java.net Repository for Maven</name>
+   		<url>http://download.java.net/maven/2/</url>
+   		<layout>default</layout>
+  	</repository>
+  </repositories>
   <dependencies>
   	<dependency>
   		<groupId>junit</groupId>
@@ -69,5 +178,37 @@
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
+  	<dependency>
+  		<groupId>net.java.dev.appframework</groupId>
+  		<artifactId>appframework</artifactId>
+  		<version>1.03</version>
+  		<type>jar</type>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.codehaus.mojo.webstart</groupId>
+  		<artifactId>webstart-jnlp-servlet</artifactId>
+  		<version>1.0-6.0.02_ea_b02.1</version>
+  		<type>jar</type>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>net.java.dev.jogl</groupId>
+  		<artifactId>jogl</artifactId>
+  		<version>1.1.1-rc6</version>
+  		<type>jar</type>
+  		<scope>provided</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>net.java.dev.gluegen</groupId>
+  		<artifactId>gluegen-rt</artifactId>
+  		<version>1.0b05</version>
+  		<type>jar</type>
+  		<scope>provided</scope>
+  	</dependency>
   </dependencies>
+  <dependencyManagement>
+  	<dependencies>
+  	</dependencies>
+  </dependencyManagement>
 </project>
