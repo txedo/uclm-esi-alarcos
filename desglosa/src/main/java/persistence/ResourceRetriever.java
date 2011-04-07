@@ -39,7 +39,7 @@ public class ResourceRetriever {
             try {
 				stream = new FileInputStream(filename);
 			} catch (FileNotFoundException e) {
-				// If not found in disk, the load from database
+				// If not found in disk, then load from database
 				byte[] imageInByte;
 				try {
 					imageInByte = ImageDAO.get(filename).getData();
@@ -48,6 +48,20 @@ public class ResourceRetriever {
 					throw new IOException();
 				} catch (ImageNotFoundException e1) {
 					throw new IOException();
+//					// If not found in database, then load from server URL
+//					URL server = null;
+//					URLConnection conn = null;
+//					try {
+//						server = ClassLoader.getSystemResource(filename);
+//						conn = server.openConnection();
+//						conn.connect();
+//						stream = conn.getInputStream();
+//					} catch (MalformedURLException e2) {
+//						// TODO Auto-generated catch block
+//						e2.printStackTrace();
+//					} catch (IOException e3) {
+//						throw new IOException("File not found on any resource. Please, contact admin to solve this problem.");
+//					}
 				}
 			}
         }

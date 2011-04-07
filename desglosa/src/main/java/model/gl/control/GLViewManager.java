@@ -17,7 +17,7 @@ import model.gl.TextureLoader;
 public abstract class GLViewManager {
 	protected final int BUFFSIZE = 512;
 	/* http://www.cgtextures.com/ */
-	private final String FLOOR_TEXTURE = "src/main/resources/gl/metal-floor-texture-01.jpg";
+	private final String FLOOR_TEXTURE = "textures/metal-floor-texture-01.jpg";
 	
 	protected GLDrawer drawer;
 	protected boolean threeDimensional;

@@ -22,7 +22,7 @@ public class GLFactoryViewManager extends GLViewManager {
 	private TextureLoader textureLoader;
 	private GLUquadric quadric;
 	
-	private final String FACTORY_TEXTURE = "src/main/resources/gl/factory-texture.png";
+	private final String FACTORY_TEXTURE = "textures/factory-texture.png";
 
 	public GLFactoryViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);

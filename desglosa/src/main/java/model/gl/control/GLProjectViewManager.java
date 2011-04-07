@@ -22,9 +22,8 @@ import model.knowledge.Vector3f;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 public class GLProjectViewManager extends GLViewManager {
-	private final String TEXTURE_PATH = "src/main/resources/gl/";
-	private final String APPLY = "gtk-apply.png";
-	private final String CANCEL = "gtk-cancel.png";
+	private final String APPLY = "textures/gtk-apply.png";
+	private final String CANCEL = "textures/gtk-cancel.png";
 	
 	private GLUquadric quadric;
 	private TextureLoader textureLoader;
@@ -33,7 +32,7 @@ public class GLProjectViewManager extends GLViewManager {
 	public GLProjectViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
 		antennaBalls = new ArrayList<GLObject>();
-		textureLoader = new TextureLoader(new String[] {TEXTURE_PATH+APPLY, TEXTURE_PATH+CANCEL});
+		textureLoader = new TextureLoader(new String[] {APPLY, CANCEL});
 	}
 	
 	@Override
