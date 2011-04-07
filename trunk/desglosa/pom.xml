@@ -195,16 +195,18 @@
   	<dependency>
   		<groupId>net.java.dev.jogl</groupId>
   		<artifactId>jogl</artifactId>
-  		<version>1.1.1-rc6</version>
+  		<version>1.1.1a</version>
   		<type>jar</type>
-  		<scope>provided</scope>
+  		<scope>system</scope>
+  		<systemPath>${basedir}/lib/jogl.jar</systemPath>
   	</dependency>
   	<dependency>
-  		<groupId>net.java.dev.gluegen</groupId>
-  		<artifactId>gluegen-rt</artifactId>
-  		<version>1.0b05</version>
+  		<groupId>net.java.dev.jogl</groupId>
+  		<artifactId>gluegen</artifactId>
+  		<version>1.1.1a</version>
   		<type>jar</type>
-  		<scope>provided</scope>
+  		<scope>system</scope>
+  		<systemPath>${basedir}/lib/gluegen-rt.jar</systemPath>
   	</dependency>
   </dependencies>
   <dependencyManagement>
