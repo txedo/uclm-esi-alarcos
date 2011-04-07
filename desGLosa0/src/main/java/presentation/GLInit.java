@@ -23,6 +23,10 @@ public class GLInit {
 		return glCanvas;
 	}
 	
+	public static Animator getAnimator () {
+		return animator;
+	}
+	
 	public static void init() {
 		// Creating an object to manipulate OpenGL parameters.
 		GLCapabilities capabilities = new GLCapabilities();
@@ -42,7 +46,7 @@ public class GLInit {
 	    glCanvas.requestFocus();
 	    
 	    // Creating an animator that will redraw the scene 40 times per second
-	    animator = new FPSAnimator(40);
+	    animator = new FPSAnimator(glCanvas, 40, true);
 	    // Registering the canvas to the animator
 	    animator.add(glCanvas);
 	}
