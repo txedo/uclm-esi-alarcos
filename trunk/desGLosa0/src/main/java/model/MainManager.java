@@ -39,8 +39,8 @@ public class MainManager {
 		}
 		return _instance;
 	}
-
-	public void run(String[] args) {
+	
+	public void configure () {
 		// Create a new database connection
 		IDBConnection idb = new DBConnection("mysql server", "127.0.0.1", 3306, "desglosadb");
 		if (!((DBConnection)idb).test()) {
@@ -48,6 +48,9 @@ public class MainManager {
 		}
 		// Add it to the ConnectionManager
 		ConnectionManager.addConnection(idb);
+	}
+
+	public void run(String[] args) {
 		// Launch the GUI
 		Application.launch(JFMain.class, args);
 	}
