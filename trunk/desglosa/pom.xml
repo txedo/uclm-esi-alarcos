@@ -3,7 +3,7 @@
   <groupId>es.uclm.inf-cr.alarcos</groupId>
   <artifactId>desglosa</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>desGLosa</name>
+  <name>desglosa</name>
   <description>OpenGL-based application to support geographically distributed software teams.</description>
   <developers>
   	<developer>
