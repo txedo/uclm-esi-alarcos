@@ -1,0 +1,126 @@
+% clase article a una cara, con letra de 12pt, en papel A4
+% y con página separada para el título
+\documentclass[oneside,12pt,a4paper,titlepage]{article}
+
+% Carga de paquetes necesarios. "customarticle" es un paquete personalizado
+\usepackage[spanish,english]{babel} % Internacionalización de LaTeX
+\usepackage[ansinew]{inputenx}% Código de caracteres de teclado
+\usepackage[T1]{fontenc}      % Codificación de fundiciones
+\usepackage{times}            % Familia base de fundiciones
+\usepackage{graphicx}
+\usepackage{pifont}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{colortbl}
+\usepackage{makeidx}
+\usepackage{indentfirst}
+\hypersetup{bookmarksopen,bookmarksopenlevel=3,linktocpage,colorlinks,urlcolor=blue,citecolor=blue,linkcolor=black,filecolor=blue,pdfnewwindow, 	pdftitle={desGLosa: Un sistema de visualización 3D para Desarrollo Global de Software}, pdfsubject={Anteproyecto} pdfauthor={Jose Domingo López López}}
+\usepackage[spanish,caption,counter,title,fancy]{customarticle}
+\usepackage[fixlanguage]{babelbib}
+\usepackage{url}
+%% Define a new 'leo' style for the package that will use a smaller font.
+\makeatletter
+\def\url@leostyle{%
+\@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\footnotesize\ttfamily}}}
+\makeatother
+
+\makeindex
+
+% Macro para insertar una imagen
+%       Uso: \imagen{nombreFichero}{Factor escala}{Caption (leyenda)}{Label (identificador para referenciarla)}
+\def\imagen#1#2#3#4{
+ \begin{figure}[h]
+ \begin{center}
+   \includegraphics[keepaspectratio,scale=#2]{#1}
+ \caption {#3}
+ \label{#4}
+ \end{center}
+ \end{figure}
+}
+
+% Macro para insertar una imagen con borde en el marco
+%       Uso: \imagenBorde{nombreFichero}{Factor escala}{Caption (leyenda)}{Label (identificador para referenciarla)}
+\def\imagenBorde#1#2#3#4{
+\setlength\fboxsep{0pt}
+\setlength\fboxrule{0.5pt}
+ \begin{figure}[h]
+ \begin{center}
+  \fbox{\includegraphics[keepaspectratio,scale=#2]{#1}}
+ \caption{#3}
+ \label{#4}
+ \end{center}
+\end{figure}}
+
+% Definición de una lista personalizada 
+\newenvironment{myitemize}%
+{\begin{list}{\textbullet}%
+{\settowidth{\labelwidth}{\textbullet}
+\addtolength{\topsep}{-1.0ex}
+\addtolength{\itemsep}{\dimexpr 0ex plus 0.15ex minus 0.25ex}
+\setlength{\parsep}{0.0ex}
+\setlength{\partopsep}{1.75ex}
+\setlength{\parskip}{0.0ex}
+}}%
+{\end{list}}
+
+\begin{document}
+\selectlanguage{spanish}
+% En las páginas de portada e índices, no hay encabezado ni pie de página
+\pagestyle{empty}
+\input{Portada.tex}
+% Derechos de autor
+\parskip=10pt
+\mbox{}
+\vfill{}
+\begin{small}
+	\noindent desGLosa\\
+	\noindent Un sistema de visualización 3D para Desarrollo Global de Software
+
+	\noindent\copyright~ 2010 Jose Domingo López López \\
+	\phantom{\copyright~ 2010} M\textordfeminine{} Ángeles Moraga de la Rubia
+
+	\noindent En virtud del Artículo 7 del Real Decreto Legislativo 1/1996, de 12 de abril por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, modificado por la Ley 23/2006 de 7 de julio, este PFC se considera una obra en colaboración entre las diferentes partes. Por tanto la propiedad intelectual de este PFC será compartida con iguales porcentajes entre el alumno y el director del PFC.
+
+	\noindent Este documento ha sido compuesto con \LaTeX{} y sus imágenes generadas con GIMP.
+\end{small}
+\clearpage
+% En los índices numeramos las páginas en números romanos
+\pagestyle{plain}
+\pagenumbering{Roman}
+% Índice de secciones
+\tableofcontents
+\clearpage
+
+\parskip=10pt
+%\onehalfspacing   % Espaciado 1,5 líneas (facilitado por setspace)
+\pagenumbering{arabic}
+\pagestyle{fancy}
+% Aqui se incluyen los archivos .tex que forman el documento
+\input{Introduccion.tex}
+\clearpage
+\input{Objetivos.tex}
+%\clearpage
+\input{Metodos.tex}
+\clearpage
+\input{Medios.tex}
+\clearpage
+
+\phantomsection
+%% Now actually use the newly defined style.
+\urlstyle{leo}
+\pagestyle{plain}
+% Bibliografía
+\selectbiblanguage{spanish}
+\renewcommand{\bibname}{Bibliografía}
+\renewcommand{\refname}{\bibname}
+\addcontentsline{toc}{section}{\refname} % Añade la bibliografía al índice
+\bibliographystyle{bababbrv} % Estilo de bibliografía
+\bibliography{Bibliografia}
+\clearpage
+% Añade los apéndices al índice
+\addcontentsline{toc}{section}{Anexos}
+% Apéndices
+\input{Anexos.tex}
+
+\end{document}

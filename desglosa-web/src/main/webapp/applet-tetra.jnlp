@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp href="applet-tetra.jnlp">
+  <information>
+    <title>TETRA JOGL JNLP Applet</title>
+    <vendor>TETRA</vendor>
+    <homepage href="http://tetra.es"/>
+    <description>tetra</description>
+    <description kind="short">tetra desc</description>
+    <offline-allowed/>
+  </information>
+
+    <resources>
+      <j2se href="http://java.sun.com/products/autodl/j2se" version="1.4+"/>
+      <property name="sun.java2d.noddraw" value="true"/>
+      <jar href="applet/tetra.jar" main="true"/>
+      <extension name="tetra" href="http://download.java.net/media/jogl/builds/archive/jsr-231-1.1.1a/webstart/jogl.jnlp" />
+    </resources>
+
+  <applet-desc 
+      name="TETRA-Applet"
+      main-class="JOGLTetrahedron"
+      width="640" 
+      height="480">
+  </applet-desc>
+</jnlp>
