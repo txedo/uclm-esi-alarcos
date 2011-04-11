@@ -81,19 +81,12 @@
 						
 						    <mkdir dir="target/lib" />
 						    <get src="http://download.java.net/media/jogl/builds/archive/jsr-231-1.1.1a/jogl-1.1.1a-${joglostype}.zip" dest="target/lib/jogl.zip" usetimestamp="true" />
-						
-						    <unzip src="target/lib/jogl.zip" dest="target/lib/">
+							
+						    <unzip src="target/lib/jogl.zip" dest="target/lib">
 						        <patternset>
 						            <include name="**/*.so" />
 						            <include name="**/*.jnilib" />
 						            <include name="**/*.dll" />
-						        </patternset>
-						        <mapper type="flatten" />
-						    </unzip>
-						    <unzip src="target/lib/jogl.zip" dest="lib/">
-						        <patternset>
-						        	<include name="**/gluegen-rt.jar" />
-						        	<include name="**/jogl.jar" />
 						        </patternset>
 						        <mapper type="flatten" />
 						    </unzip>
@@ -128,7 +121,14 @@
 				    </configuration>
   				</execution>
   			</executions>
-
+  		</plugin>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-surefire-plugin</artifactId>
+  			<version>2.8</version>
+  			<configuration>
+ 				<argLine>-Djava.library.path=${basedir}/target/lib</argLine>
+	        </configuration>
   		</plugin>
   	</plugins>
   </build>
@@ -136,7 +136,7 @@
   	<repository>
    		<id>maven2-repository.dev.java.net</id>
    		<name>Java.net Repository for Maven</name>
-   		<url>http://download.java.net/maven/2/</url>
+   		<url>http://download.java.net/maven/2</url>
    		<layout>default</layout>
   	</repository>
   </repositories>
@@ -219,20 +219,18 @@
   		<scope>compile</scope>
   	</dependency>
   	<dependency>
+  		<groupId>net.java.dev.gluegen</groupId>
+  		<artifactId>gluegen-rt</artifactId>
+  		<version>1.1.1a</version>
+  		<type>jar</type>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
   		<groupId>net.java.dev.jogl</groupId>
   		<artifactId>jogl</artifactId>
   		<version>1.1.1a</version>
   		<type>jar</type>
-  		<scope>system</scope>
-  		<systemPath>${basedir}/lib/jogl.jar</systemPath>
-  	</dependency>
-  	<dependency>
-  		<groupId>net.java.dev.jogl</groupId>
-  		<artifactId>gluegen</artifactId>
-  		<version>1.1.1a</version>
-  		<type>jar</type>
-  		<scope>system</scope>
-  		<systemPath>${basedir}/lib/gluegen-rt.jar</systemPath>
+  		<scope>compile</scope>
   	</dependency>
   </dependencies>
   <dependencyManagement>
