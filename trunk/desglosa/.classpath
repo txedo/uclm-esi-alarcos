@@ -14,7 +14,5 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="desglosa/target/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="lib/jogl.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
