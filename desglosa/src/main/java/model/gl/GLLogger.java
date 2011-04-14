@@ -1,6 +1,6 @@
 package model.gl;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -19,22 +19,22 @@ public class GLLogger {
 	private int [] samples = new int[1];
 
 	public GLLogger () throws GLSingletonNotInitializedException {
-		vendor = GLSingleton.getGL().glGetString(GL.GL_VENDOR);
-		renderer = GLSingleton.getGL().glGetString(GL.GL_RENDERER);
-		version = GLSingleton.getGL().glGetString(GL.GL_VERSION);
-		extensions = GLSingleton.getGL().glGetString(GL.GL_EXTENSIONS);
+		vendor = GLSingleton.getGL().glGetString(GL2.GL_VENDOR);
+		renderer = GLSingleton.getGL().glGetString(GL2.GL_RENDERER);
+		version = GLSingleton.getGL().glGetString(GL2.GL_VERSION);
+		extensions = GLSingleton.getGL().glGetString(GL2.GL_EXTENSIONS);
 		
-		GLSingleton.getGL().glGetFloatv(GL.GL_ALIASED_POINT_SIZE_RANGE, aliased_point_size_range, 0);
-		GLSingleton.getGL().glGetFloatv(GL.GL_SMOOTH_POINT_SIZE_RANGE, smooth_point_size_range, 0);
-		GLSingleton.getGL().glGetFloatv(GL.GL_SMOOTH_POINT_SIZE_GRANULARITY, smooth_point_size_granularity, 0);
+		GLSingleton.getGL().glGetFloatv(GL2.GL_ALIASED_POINT_SIZE_RANGE, aliased_point_size_range, 0);
+		GLSingleton.getGL().glGetFloatv(GL2.GL_SMOOTH_POINT_SIZE_RANGE, smooth_point_size_range, 0);
+		GLSingleton.getGL().glGetFloatv(GL2.GL_SMOOTH_POINT_SIZE_GRANULARITY, smooth_point_size_granularity, 0);
 		
-		GLSingleton.getGL().glGetIntegerv(GL.GL_MAX_ELEMENTS_VERTICES, elements_vertices, 0);
-		GLSingleton.getGL().glGetIntegerv(GL.GL_MAX_ELEMENTS_INDICES, elements_indices, 0);
+		GLSingleton.getGL().glGetIntegerv(GL2.GL_MAX_ELEMENTS_VERTICES, elements_vertices, 0);
+		GLSingleton.getGL().glGetIntegerv(GL2.GL_MAX_ELEMENTS_INDICES, elements_indices, 0);
 		
-		GLSingleton.getGL().glGetIntegerv(GL.GL_STENCIL_BITS, stencilbuffer_bits, 0);
+		GLSingleton.getGL().glGetIntegerv(GL2.GL_STENCIL_BITS, stencilbuffer_bits, 0);
 		
-		GLSingleton.getGL().glGetIntegerv(GL.GL_SAMPLE_BUFFERS, sample_buffers, 0);
-		GLSingleton.getGL().glGetIntegerv(GL.GL_SAMPLES, samples, 0);
+		GLSingleton.getGL().glGetIntegerv(GL2.GL_SAMPLE_BUFFERS, sample_buffers, 0);
+		GLSingleton.getGL().glGetIntegerv(GL2.GL_SAMPLES, samples, 0);
 	}
 
 	public String toString() {

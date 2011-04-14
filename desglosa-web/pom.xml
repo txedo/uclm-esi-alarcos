@@ -63,13 +63,6 @@
 			<artifactId>dwr</artifactId>
 			<version>1.1-beta-3</version>
 		</dependency>
-		<dependency>
-			<groupId>es.uclm.inf-cr.alarcos</groupId>
-			<artifactId>desglosa</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>import</scope>
-		</dependency>
 	</dependencies>
 	
     <build>

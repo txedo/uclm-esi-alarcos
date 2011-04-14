@@ -24,6 +24,7 @@ public class GLTowerViewManager extends GLViewManager {
 	public GLTowerViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
 		towers = new ArrayList<GLObject>();
+		setupItems(10);
 	}
 	
 	@Override
@@ -39,7 +40,7 @@ public class GLTowerViewManager extends GLViewManager {
 	@Override
 	public void manageView() throws GLSingletonNotInitializedException, IOException {
 		if (this.isSelectionMode()) this.selectItem();
-		super.drawFloor();
+//		super.drawFloor();
 		this.drawItems();
 	}
 

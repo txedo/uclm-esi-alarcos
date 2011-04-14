@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import model.gl.GLDrawer;
 import model.gl.GLSingleton;
@@ -31,12 +31,12 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 	
 	@Override
 	public void configureView() throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
+		GLSingleton.getGL().glDisable(GL2.GL_LIGHTING);
 	}
 
 	@Override
 	public void deconfigureView() throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
+		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
 	}
 	
 	@Override

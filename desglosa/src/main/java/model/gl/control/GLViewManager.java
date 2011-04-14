@@ -3,9 +3,9 @@ package model.gl.control;
 import java.io.IOException;
 import java.nio.IntBuffer;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
-import com.sun.opengl.util.BufferUtil;
+import com.jogamp.common.nio.Buffers;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -17,7 +17,7 @@ import model.gl.TextureLoader;
 public abstract class GLViewManager {
 	protected final int BUFFSIZE = 512;
 	/* http://www.cgtextures.com/ */
-	private final String FLOOR_TEXTURE = "textures/metal-floor-texture-01.jpg";
+//	private final String FLOOR_TEXTURE = "textures/metal-floor-texture-01.jpg";
 	
 	protected GLDrawer drawer;
 	protected boolean threeDimensional;
@@ -34,7 +34,7 @@ public abstract class GLViewManager {
 		this.shadowSupport = false;
 		this.selectionMode = false;
 		pickingRegion = 0.1;
-		textureLoader = new TextureLoader(new String[]{FLOOR_TEXTURE});
+//		textureLoader = new TextureLoader(new String[]{FLOOR_TEXTURE});
 	}
 	
 	 /** Called by the GLDrawer.setViewLevel() function to configure OpenGL properties.
@@ -61,21 +61,21 @@ public abstract class GLViewManager {
 	
 	public void selectItem () throws GLSingletonNotInitializedException {
 		int[] selectBuff = new int[BUFFSIZE];
-		IntBuffer selectBuffer = BufferUtil.newIntBuffer(BUFFSIZE);
+		IntBuffer selectBuffer = Buffers.newDirectIntBuffer(BUFFSIZE);
 		int hits = 0;
 		int[] viewport = new int[4];
 		// Save somewhere the info about the current viewport
-		GLSingleton.getGL().glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		GLSingleton.getGL().glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
 		// Initialize a selection buffer, which will contain data about selected objects
 		GLSingleton.getGL().glSelectBuffer(BUFFSIZE, selectBuffer);
 		// Switch to GL_SELECT mode
-		GLSingleton.getGL().glRenderMode(GL.GL_SELECT);
+		GLSingleton.getGL().glRenderMode(GL2.GL_SELECT);
 		// Initialize the name stack
 		GLSingleton.getGL().glInitNames();
 		// Now fill the stack with one element (or glLoadName will generate an error)
 		GLSingleton.getGL().glPushName(-1);
 		// Restrict the drawing area around the mouse position (5x5 pixel region)
-		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
+		GLSingleton.getGL().glMatrixMode(GL2.GL_PROJECTION);
 		GLSingleton.getGL().glPushMatrix();
 		GLSingleton.getGL().glLoadIdentity();
 			//Important: gl (0,0) is bottom left but window coordinates (0,0) are top left so we have to change this!
@@ -89,16 +89,16 @@ public abstract class GLViewManager {
 				GLSingleton.getGL().glOrtho(0.0, this.drawer.getDim(), 0.0, this.drawer.getDim()*h, -1, 1);
 			}
 		// 6. Draw the objects with their names
-			GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+			GLSingleton.getGL().glMatrixMode(GL2.GL_MODELVIEW);
 			GLSingleton.getGL().glPushMatrix(); ////////////////////////////////////////////////
 			this.drawItems();
-			GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
+			GLSingleton.getGL().glMatrixMode(GL2.GL_PROJECTION);
 			GLSingleton.getGL().glPopMatrix();
-			GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+			GLSingleton.getGL().glMatrixMode(GL2.GL_MODELVIEW);
 			GLSingleton.getGL().glPopMatrix(); ////////////////////////////////////////////////
 			GLSingleton.getGL().glFlush();
 		// 7. Get the number of hits
-		hits = GLSingleton.getGL().glRenderMode(GL.GL_RENDER);
+		hits = GLSingleton.getGL().glRenderMode(GL2.GL_RENDER);
 		// 8. Handle the hits, and get the picked object 
 		selectBuffer.get(selectBuff);
 		this.handleHits(hits, selectBuff);
@@ -135,20 +135,20 @@ public abstract class GLViewManager {
 		final float FLOOR_DIMENSION = 100.0f;
 		if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
 		GLUtils.enableMultisample();
-		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
-		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
-		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
-		GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureLoader.getTextureNames()[0]);
+		GLSingleton.getGL().glDisable(GL2.GL_LIGHTING);
+		GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D);
+		GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE);
+		GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, textureLoader.getTextureNames()[0]);
 		GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
 		GLSingleton.getGL().glColor3f(0.9f, 0.9f, 0.9f);
-		GLSingleton.getGL().glBegin(GL.GL_QUADS);
+		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
 			GLSingleton.getGL().glTexCoord2f(0.0f, 				FLOOR_DIMENSION);	GLSingleton.getGL().glVertex3f(-FLOOR_DIMENSION, 0.0f, -FLOOR_DIMENSION);
 			GLSingleton.getGL().glTexCoord2f(0.0f, 				0.0f);				GLSingleton.getGL().glVertex3f(-FLOOR_DIMENSION, 0.0f,  FLOOR_DIMENSION);
 			GLSingleton.getGL().glTexCoord2f(FLOOR_DIMENSION, 	0.0f);				GLSingleton.getGL().glVertex3f( FLOOR_DIMENSION, 0.0f,  FLOOR_DIMENSION);
 			GLSingleton.getGL().glTexCoord2f(FLOOR_DIMENSION, 	FLOOR_DIMENSION);	GLSingleton.getGL().glVertex3f( FLOOR_DIMENSION, 0.0f, -FLOOR_DIMENSION);
 		GLSingleton.getGL().glEnd();
-		GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
-		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
+		GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);
+		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
 		GLUtils.disableMultisample();
 	}
 

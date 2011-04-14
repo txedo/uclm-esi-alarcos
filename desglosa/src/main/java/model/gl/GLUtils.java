@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
-import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.GLUT;
+import com.jogamp.common.nio.Buffers;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 import model.gl.control.GLViewManager;
 import model.gl.knowledge.GLObject;
@@ -47,10 +47,10 @@ public class GLUtils {
 		double wcoord[] = new double[3];// wx, wy, wz;// returned xyz coords
 		double winX, winY, winZ;
 
-		GLSingleton.getGL().glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		GLSingleton.getGL().glGetDoublev(GL.GL_MODELVIEW_MATRIX, mvmatrix, 0);
+		GLSingleton.getGL().glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
+		GLSingleton.getGL().glGetDoublev(GL2.GL_MODELVIEW_MATRIX, mvmatrix, 0);
 		GLSingleton.getGL()
-				.glGetDoublev(GL.GL_PROJECTION_MATRIX, projmatrix, 0);
+				.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projmatrix, 0);
 
 		winX = (double) screenX;
 		winY = (double) screenY;
@@ -61,8 +61,8 @@ public class GLUtils {
 			winY = (double) viewport[3] - (double) screenY - 1;
 
 		}
-		FloatBuffer zBuffer = BufferUtil.newFloatBuffer(1);
-		GLSingleton.getGL().glReadPixels( (int)winX, (int)winY, 1, 1, GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, zBuffer );
+		FloatBuffer zBuffer = Buffers.newDirectFloatBuffer(1);
+		GLSingleton.getGL().glReadPixels( (int)winX, (int)winY, 1, 1, GL2.GL_DEPTH_COMPONENT, GL2.GL_FLOAT, zBuffer );
 		winZ = (float)zBuffer.get();
 		
 		if (!GLSingleton.getGLU().gluUnProject((double) winX, (double) winY,
@@ -97,10 +97,10 @@ public class GLUtils {
 		double projmatrix[] = new double[16];
 		double scoord[] = new double[4];// wx, wy, wz;// returned xyz coords
 
-		GLSingleton.getGL().glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		GLSingleton.getGL().glGetDoublev(GL.GL_MODELVIEW_MATRIX, mvmatrix, 0);
+		GLSingleton.getGL().glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
+		GLSingleton.getGL().glGetDoublev(GL2.GL_MODELVIEW_MATRIX, mvmatrix, 0);
 		GLSingleton.getGL()
-				.glGetDoublev(GL.GL_PROJECTION_MATRIX, projmatrix, 0);
+				.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projmatrix, 0);
 
 		GLSingleton.getGLU().gluProject(objX, objY, 0.0f, mvmatrix, 0,
 				projmatrix, 0, viewport, 0, scoord, 0);
@@ -131,9 +131,9 @@ public class GLUtils {
 		 * scene is projected to the screen.
 		 */
 		// Disables Depth Testing
-		GLSingleton.getGL().glDisable(GL.GL_DEPTH_TEST);
+		GLSingleton.getGL().glDisable(GL2.GL_DEPTH_TEST);
 		// Select the Projection matrix
-		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
+		GLSingleton.getGL().glMatrixMode(GL2.GL_PROJECTION);
 		// Save the current projection matrix
 		GLSingleton.getGL().glPushMatrix();
 		// Reset the current projection matrix to creates a new Orthographic
@@ -147,7 +147,7 @@ public class GLUtils {
 		 * Select, save and reset the modelview matrix. Modelview matrix stack
 		 * store transformation like translation, rotation ...
 		 */
-		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+		GLSingleton.getGL().glMatrixMode(GL2.GL_MODELVIEW);
 		GLSingleton.getGL().glLoadIdentity();
 	}
 
@@ -160,14 +160,14 @@ public class GLUtils {
 	 */
 	static public void endOrtho() throws GLSingletonNotInitializedException {
 		// Select the Projection matrix stack
-		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
+		GLSingleton.getGL().glMatrixMode(GL2.GL_PROJECTION);
 		// Load the previous Projection matrix (Generally, it is a Perspective
 		// projection)
 		GLSingleton.getGL().glPopMatrix();
 		// Select the Modelview matrix stack
-		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+		GLSingleton.getGL().glMatrixMode(GL2.GL_MODELVIEW);
 		// Enables Depth Testing
-		GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);
+		GLSingleton.getGL().glEnable(GL2.GL_DEPTH_TEST);
 	}
 	
 	public static void displacementBegin(
@@ -278,23 +278,23 @@ public class GLUtils {
 	static public void setOrthoProjection(int screenHeight, int screenWidth,
 			float glDim) throws GLSingletonNotInitializedException {
 		// Disables Depth Testing
-		GLSingleton.getGL().glDisable(GL.GL_DEPTH_TEST);
-		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
+		GLSingleton.getGL().glDisable(GL2.GL_DEPTH_TEST);
+		GLSingleton.getGL().glMatrixMode(GL2.GL_PROJECTION);
 		GLSingleton.getGL().glLoadIdentity();
 		float h = (float) screenHeight / (float) screenWidth;
 		GLSingleton.getGL().glOrtho(0.0, glDim, 0.0, glDim * h, -1, 1);
-		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+		GLSingleton.getGL().glMatrixMode(GL2.GL_MODELVIEW);
 	}
 
 	static public void setPerspectiveProjection(int screenHeight,
 			int screenWidth) throws GLSingletonNotInitializedException {
 		// Enables Depth Testing
-		GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);
-		GLSingleton.getGL().glMatrixMode(GL.GL_PROJECTION);
+		GLSingleton.getGL().glEnable(GL2.GL_DEPTH_TEST);
+		GLSingleton.getGL().glMatrixMode(GL2.GL_PROJECTION);
 		GLSingleton.getGL().glLoadIdentity();
 		float h = (float) screenWidth / (float) screenHeight;
 		GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 50.0f);
-		GLSingleton.getGL().glMatrixMode(GL.GL_MODELVIEW);
+		GLSingleton.getGL().glMatrixMode(GL2.GL_MODELVIEW);
 	}
 
 	static public void debugPrintCoords(int x, int y)
@@ -437,7 +437,7 @@ public class GLUtils {
 		boolean multisampleAvailable = false;
 		if (GLSingleton.getGL().isExtensionAvailable("GL_ARB_multisample")) {
 			// Do not forget to set sample buffers to true in GLCapabilities
-			GLSingleton.getGL().glEnable(GL.GL_MULTISAMPLE);
+			GLSingleton.getGL().glEnable(GL2.GL_MULTISAMPLE);
 			multisampleAvailable = true;
 		}
 		return multisampleAvailable;
@@ -446,8 +446,8 @@ public class GLUtils {
 	public static void disableMultisample()
 			throws GLSingletonNotInitializedException {
 		if (GLSingleton.getGL().isExtensionAvailable("GL_ARB_multisample")
-				&& GLSingleton.getGL().glIsEnabled(GL.GL_MULTISAMPLE)) {
-			GLSingleton.getGL().glDisable(GL.GL_MULTISAMPLE);
+				&& GLSingleton.getGL().glIsEnabled(GL2.GL_MULTISAMPLE)) {
+			GLSingleton.getGL().glDisable(GL2.GL_MULTISAMPLE);
 		}
 	}
 
@@ -465,7 +465,7 @@ public class GLUtils {
 		// GLUtils.getShadowMatrix(GLUtils.findPlane(new
 		// Vector3f(0.0f,0.0f,0.0f), new Vector3f(0.0f,0.0f,1.0f), new
 		// Vector3f(1.0f,0.0f,0.0f)), lightSource);
-		FloatBuffer floorShadowBuf = BufferUtil.newFloatBuffer(16);
+		FloatBuffer floorShadowBuf = Buffers.newDirectFloatBuffer(16);
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				floorShadowBuf.put(floorShadow[i][j]);
@@ -479,10 +479,10 @@ public class GLUtils {
 				 * the shadow once per floor pixel (and only on the floor
 				 * pixels).
 				 */
-				GLSingleton.getGL().glEnable(GL.GL_STENCIL_TEST);
-				GLSingleton.getGL().glStencilFunc(GL.GL_ALWAYS, 3, 0xffffffff);
-				GLSingleton.getGL().glStencilOp(GL.GL_KEEP, GL.GL_KEEP,
-						GL.GL_REPLACE);
+				GLSingleton.getGL().glEnable(GL2.GL_STENCIL_TEST);
+				GLSingleton.getGL().glStencilFunc(GL2.GL_ALWAYS, 3, 0xffffffff);
+				GLSingleton.getGL().glStencilOp(GL2.GL_KEEP, GL2.GL_KEEP,
+						GL2.GL_REPLACE);
 			}
 		}
 		return floorShadowBuf;
@@ -501,21 +501,21 @@ public class GLUtils {
 				 * gets drawn so we don't redraw (and accidently reblend) the
 				 * shadow).
 				 */
-				GLSingleton.getGL().glStencilFunc(GL.GL_LESS, 2, 0xffffffff); /*
+				GLSingleton.getGL().glStencilFunc(GL2.GL_LESS, 2, 0xffffffff); /*
 																			 * draw
 																			 * if
 																			 * ==
 																			 * 1
 																			 */
-				GLSingleton.getGL().glStencilOp(GL.GL_REPLACE, GL.GL_REPLACE,
-						GL.GL_REPLACE);
+				GLSingleton.getGL().glStencilOp(GL2.GL_REPLACE, GL2.GL_REPLACE,
+						GL2.GL_REPLACE);
 			}
 			/*
 			 * To eliminate depth buffer artifacts, we use polygon offset to
 			 * raise the depth of the projected shadow slightly so that it does
 			 * not depth buffer alias with the floor.
 			 */
-			GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_FILL);
+			GLSingleton.getGL().glEnable(GL2.GL_POLYGON_OFFSET_FILL);
 			GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f); // Negative
 																// offset pull
 																// the object
@@ -525,10 +525,10 @@ public class GLUtils {
 			 * Render 50% black shadow color on top of whatever the floor
 			 * appareance is.
 			 */
-			// GLSingleton.getGL().glEnable(GL.GL_BLEND);
-			// GLSingleton.getGL().glBlendFunc(GL.GL_SRC_ALPHA,
-			// GL.GL_ONE_MINUS_SRC_ALPHA);
-			GLSingleton.getGL().glDisable(GL.GL_LIGHTING); /*
+			// GLSingleton.getGL().glEnable(GL2.GL_BLEND);
+			// GLSingleton.getGL().glBlendFunc(GL2.GL_SRC_ALPHA,
+			// GL2.GL_ONE_MINUS_SRC_ALPHA);
+			GLSingleton.getGL().glDisable(GL2.GL_LIGHTING); /*
 															 * Force the 50%
 															 * black.
 															 */
@@ -538,11 +538,11 @@ public class GLUtils {
 			GLSingleton.getGL().glMultMatrixf(floorShadowBuf);
 			activeViewManager.drawShadows();
 			GLSingleton.getGL().glPopMatrix();
-			// GLSingleton.getGL().glDisable(GL.GL_BLEND);
-			GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
-			GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_FILL);
+			// GLSingleton.getGL().glDisable(GL2.GL_BLEND);
+			GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
+			GLSingleton.getGL().glDisable(GL2.GL_POLYGON_OFFSET_FILL);
 			if (stencilShadow) {
-				GLSingleton.getGL().glDisable(GL.GL_STENCIL_TEST);
+				GLSingleton.getGL().glDisable(GL2.GL_STENCIL_TEST);
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 package model.gl.knowledge.caption;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
@@ -29,7 +29,7 @@ public class Icon extends GLObject {
 			Vector3f v = GLUtils.getScreen2World(this.width, this.height, true);
 		GLSingleton.getGL().glPopMatrix();
 		GLSingleton.getGL().glColor3fv (color.getColorFB());
-		GLSingleton.getGL().glBegin(GL.GL_QUADS);
+		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
 			GLSingleton.getGL().glVertex2f(0.0f, 0.0f);
 			GLSingleton.getGL().glVertex2f(0.0f, v.getY());
 			GLSingleton.getGL().glVertex2f(v.getX(), v.getY());

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
@@ -26,19 +26,19 @@ public class GLProjectViewManager extends GLViewManager {
 	private final String CANCEL = "textures/gtk-cancel.png";
 	
 	private GLUquadric quadric;
-	private TextureLoader textureLoader;
+//	private TextureLoader textureLoader;
 	private static List<GLObject> antennaBalls;
 
 	public GLProjectViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
 		antennaBalls = new ArrayList<GLObject>();
-		textureLoader = new TextureLoader(new String[] {APPLY, CANCEL});
+//		textureLoader = new TextureLoader(new String[] {APPLY, CANCEL});
 	}
 	
 	@Override
 	public void configureView() throws GLSingletonNotInitializedException {
-		try {
-			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
+//		try {
+//			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
 		
 			// Create A New Quadratic
 			this.quadric = GLSingleton.getGLU().gluNewQuadric();
@@ -51,12 +51,12 @@ public class GLProjectViewManager extends GLViewManager {
 			
 			for (GLObject ball : antennaBalls) {
 				((AntennaBall)ball).setQuadric(quadric);
-				((AntennaBall)ball).setTextures(textureLoader.getTextureNames());
+//				((AntennaBall)ball).setTextures(textureLoader.getTextureNames());
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
@@ -68,8 +68,8 @@ public class GLProjectViewManager extends GLViewManager {
 	public void manageView() throws GLSingletonNotInitializedException,
 			IOException {
 		if (this.isSelectionMode()) this.selectItem();
-		super.drawFloor();
-		GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
+//		super.drawFloor();
+		GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
 		this.drawItems();
 	}
 	

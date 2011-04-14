@@ -2,7 +2,7 @@ package model.gl;
 
 import java.io.IOException;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import persistence.TextureReader;
 import model.gl.knowledge.Texture;
@@ -45,11 +45,11 @@ public class TextureLoader {
     
     private void makeRGBTexture(Texture img, int target, boolean mipmapped) throws GLSingletonNotInitializedException {
         if (mipmapped) {
-        	GLSingleton.getGLU().gluBuild2DMipmaps(target, GL.GL_RGBA, img.getWidth(), 
-                    img.getHeight(), GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, img.getPixels());
+        	GLSingleton.getGLU().gluBuild2DMipmaps(target, GL2.GL_RGBA, img.getWidth(), 
+                    img.getHeight(), GL2.GL_RGBA, GL2.GL_UNSIGNED_BYTE, img.getPixels());
         } else {
-        	GLSingleton.getGL().glTexImage2D(target, 0, GL.GL_RGB8, img.getWidth(), 
-                    img.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE, img.getPixels());
+        	GLSingleton.getGL().glTexImage2D(target, 0, GL2.GL_RGB8, img.getWidth(), 
+                    img.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE, img.getPixels());
         }
     }
 	
@@ -60,22 +60,22 @@ public class TextureLoader {
 			for (int i = 0; i < textureNames.length; i++) {
 	            textures[i] = TextureReader.readTexture(tileNames[i], useAlphaChannel);
 	            //Create Nearest Filtered Texture
-	            GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureNames[i]);
+	            GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, textureNames[i]);
 	
 	            if (useMipmaps) {
-	            	GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR_MIPMAP_LINEAR);
-	            	GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR_MIPMAP_LINEAR);
+	            	GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR_MIPMAP_LINEAR);
+	            	GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR_MIPMAP_LINEAR);
 	            }
 	            else {
 	                if (linearFiltering) {
-	                    GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-	                    GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+	                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
+	                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
 	                } else {
-	                    GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
-	                    GLSingleton.getGL().glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+	                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST);
+	                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_NEAREST);
 	                }
 	            }
-	            makeRGBTexture(textures[i], GL.GL_TEXTURE_2D, useMipmaps);
+	            makeRGBTexture(textures[i], GL2.GL_TEXTURE_2D, useMipmaps);
 	        }
 			
 			this.texturesLoaded = true;

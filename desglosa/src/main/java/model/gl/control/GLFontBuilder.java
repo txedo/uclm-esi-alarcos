@@ -3,7 +3,7 @@ package model.gl.control;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 import model.gl.GLSingleton;
@@ -46,17 +46,17 @@ public class GLFontBuilder {
 	
 	public void buildFont() throws GLSingletonNotInitializedException {
 		GLUtils.enableMultisample();
-		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
+		GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D);
 		base = GLSingleton.getGL().glGenLists(FONTS);// Creating 256 Display Lists
-		GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureLoader.getTextureNames()[0]);
+		GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, textureLoader.getTextureNames()[0]);
 		
 		for (int loop=0; loop<FONTS; loop++)					// Loop Through All 95 Lists
 		{
 			float cx=(float)(loop%16)/16.0f;					// X Position Of Current Character
 			float cy=(float)(loop/16)/16.0f;					// Y Position Of Current Character
 
-			GLSingleton.getGL().glNewList(base+loop, GL.GL_COMPILE);
-				GLSingleton.getGL().glBegin(GL.GL_QUADS);
+			GLSingleton.getGL().glNewList(base+loop, GL2.GL_COMPILE);
+				GLSingleton.getGL().glBegin(GL2.GL_QUADS);
 					GLSingleton.getGL().glTexCoord2f(cx,1-cy-0.0625f);   // Texture Coord (Bottom Left)
 					GLSingleton.getGL().glVertex2f(0,0);	// Vertex Coord (Bottom Left)
 					GLSingleton.getGL().glTexCoord2f(cx+0.0625f,1-cy-0.0625f);   // Texture Coord (Bottom Right)
@@ -69,7 +69,7 @@ public class GLFontBuilder {
 				GLSingleton.getGL().glTranslatef(LETTER_GAP,0,0);    // Move To The Right Of The Character
 			GLSingleton.getGL().glEndList();		
 		}									// Loop Until All 256 Are Built
-		GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+		GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);
 		GLUtils.disableMultisample();
 	}
 	
@@ -84,16 +84,16 @@ public class GLFontBuilder {
         if (set > 1) set = 1;
         if (centered) x = text.length()/2 * LETTER_GAP;
         
-		GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
-		GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, textureLoader.getTextureNames()[0]);
-		//GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+		GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D);
+		GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, textureLoader.getTextureNames()[0]);
+		//GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
 		GLSingleton.getGL().glPushMatrix();
 	        GLSingleton.getGL().glTranslated(-x, y, 0);
 	        GLSingleton.getGL().glListBase(base-32+(128*set));
-	        GLSingleton.getGL().glCallLists(text.length(), GL.GL_UNSIGNED_BYTE, ByteBuffer.wrap(text.getBytes()));
+	        GLSingleton.getGL().glCallLists(text.length(), GL2.GL_UNSIGNED_BYTE, ByteBuffer.wrap(text.getBytes()));
 	    GLSingleton.getGL().glPopMatrix();
-	    //GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_DECAL);
-        GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+	    //GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
+        GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);
 	}
 
 }

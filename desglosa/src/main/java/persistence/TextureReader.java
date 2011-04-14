@@ -1,6 +1,6 @@
 package persistence;
 
-import com.sun.opengl.util.BufferUtil;
+import com.jogamp.common.nio.Buffers;
 
 import javax.imageio.ImageIO;
 
@@ -46,7 +46,7 @@ public class TextureReader {
         }
 
         int bytesPerPixel = storeAlphaChannel ? 4 : 3;
-        ByteBuffer unpackedPixels = BufferUtil.newByteBuffer(packedPixels.length * bytesPerPixel);
+        ByteBuffer unpackedPixels = Buffers.newDirectByteBuffer(packedPixels.length * bytesPerPixel);
 
         for (int row = img.getHeight() - 1; row >= 0; row--) {
             for (int col = 0; col < img.getWidth(); col++) {

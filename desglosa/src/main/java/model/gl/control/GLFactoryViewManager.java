@@ -62,7 +62,7 @@ public class GLFactoryViewManager extends GLViewManager {
 	public void manageView() throws GLSingletonNotInitializedException,
 			IOException {
 		if (this.isSelectionMode()) this.selectItem();
-		super.drawFloor();
+//		super.drawFloor();
 		this.drawItems();
 	}
 	

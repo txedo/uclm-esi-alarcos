@@ -1,6 +1,6 @@
 package model.gl.knowledge;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import model.gl.GLSingleton;
 import model.knowledge.Vector3f;
@@ -8,7 +8,7 @@ import model.knowledge.Vector3f;
 import exceptions.gl.GLSingletonNotInitializedException;
 
 public class Spotlight {
-	private final int lightSource = GL.GL_LIGHT1;
+	private final int lightSource = GL2.GL_LIGHT1;
 	@SuppressWarnings("unused")
 	private final float DIRECTIONAL = 0.0f;
 	private final float POSITIONAL = 1.0f;
@@ -34,31 +34,31 @@ public class Spotlight {
 		color[3] = 0.0f;
 		
 		if (GLSingleton.getGL() != null) {
-			GLSingleton.getGL().glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, mat_ambient, 0);
-			GLSingleton.getGL().glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, mat_specular, 0);
-			GLSingleton.getGL().glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, mat_diffuse, 0);
-			GLSingleton.getGL().glMaterialf(GL.GL_FRONT, GL.GL_SHININESS, mat_shininess);
-			//GLSingleton.getGL().glColorMaterial(GL.GL_FRONT, GL.GL_EMISSION);
+			GLSingleton.getGL().glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, mat_ambient, 0);
+			GLSingleton.getGL().glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, mat_specular, 0);
+			GLSingleton.getGL().glMaterialfv(GL2.GL_FRONT, GL2.GL_DIFFUSE, mat_diffuse, 0);
+			GLSingleton.getGL().glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, mat_shininess);
+			//GLSingleton.getGL().glColorMaterial(GL2.GL_FRONT, GL2.GL_EMISSION);
 			
 			// Setup The Light
-			GLSingleton.getGL().glLightfv(this.lightSource, GL.GL_AMBIENT, light_ambient, 0);
-			GLSingleton.getGL().glLightfv(this.lightSource, GL.GL_SPECULAR, light_specular, 0);
-			GLSingleton.getGL().glLightfv(this.lightSource, GL.GL_DIFFUSE, light_diffuse, 0);
+			GLSingleton.getGL().glLightfv(this.lightSource, GL2.GL_AMBIENT, light_ambient, 0);
+			GLSingleton.getGL().glLightfv(this.lightSource, GL2.GL_SPECULAR, light_specular, 0);
+			GLSingleton.getGL().glLightfv(this.lightSource, GL2.GL_DIFFUSE, light_diffuse, 0);
 			// Position and Render The Spotlight
 			Vector3f pos = new Vector3f(position[0], position[1], position[2]);
 			Vector3f dir = new Vector3f(direction[0], direction[1], direction[2]);
 			this.render(pos, dir);
 
 			// Angle of the cone light emitted by the spot : value between 0 to 180
-			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_SPOT_CUTOFF, 105.0f);
-			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_SPOT_EXPONENT, 15.0f);
+			GLSingleton.getGL().glLightf(this.lightSource, GL2.GL_SPOT_CUTOFF, 105.0f);
+			GLSingleton.getGL().glLightf(this.lightSource, GL2.GL_SPOT_EXPONENT, 15.0f);
 		       
 	        // Light attenuation (default values used here : no attenuation with the distance)
-			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_CONSTANT_ATTENUATION, 0.8f);
-			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_LINEAR_ATTENUATION, 0.005f);
-			GLSingleton.getGL().glLightf(this.lightSource, GL.GL_QUADRATIC_ATTENUATION, 0.005f);
+			GLSingleton.getGL().glLightf(this.lightSource, GL2.GL_CONSTANT_ATTENUATION, 0.8f);
+			GLSingleton.getGL().glLightf(this.lightSource, GL2.GL_LINEAR_ATTENUATION, 0.005f);
+			GLSingleton.getGL().glLightf(this.lightSource, GL2.GL_QUADRATIC_ATTENUATION, 0.005f);
 
-			GLSingleton.getGL().glLightModeli(GL.GL_LIGHT_MODEL_LOCAL_VIEWER, GL.GL_TRUE);
+			GLSingleton.getGL().glLightModeli(GL2.GL_LIGHT_MODEL_LOCAL_VIEWER, GL2.GL_TRUE);
 			this.switchOn();
 		} else throw new GLSingletonNotInitializedException();
 						
@@ -69,10 +69,10 @@ public class Spotlight {
 			GLSingleton.getGL().glPushMatrix();
 				// Position The Light
 				GLSingleton.getGL().glTranslatef(position.getX(), position.getY(), position.getZ());
-				GLSingleton.getGL().glLightfv(this.lightSource, GL.GL_POSITION, this.position, 0);		// Position The Light
+				GLSingleton.getGL().glLightfv(this.lightSource, GL2.GL_POSITION, this.position, 0);		// Position The Light
 				// Setup the spot direction
 				this.direction = viewDir.toArray();
-				GLSingleton.getGL().glLightfv(this.lightSource, GL.GL_SPOT_DIRECTION, this.direction, 0);
+				GLSingleton.getGL().glLightfv(this.lightSource, GL2.GL_SPOT_DIRECTION, this.direction, 0);
 			GLSingleton.getGL().glPopMatrix();
 		} else throw new GLSingletonNotInitializedException();
 	}
@@ -80,13 +80,13 @@ public class Spotlight {
 	public void switchOn () throws GLSingletonNotInitializedException {
 		// Enable Lighting
 		GLSingleton.getGL().glEnable(this.lightSource);	
-		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
+		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
 	}
 	
 	public void switchOff () throws GLSingletonNotInitializedException {
 		// Disable Lighting
 		GLSingleton.getGL().glDisable(this.lightSource);
-		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
+		GLSingleton.getGL().glDisable(GL2.GL_LIGHTING);
 	}
 
 	public void reset() {

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import model.NotifyUIManager;
 import model.business.control.MapManager;
@@ -40,12 +40,12 @@ public class GLMapLocationViewManager extends GLViewManager {
 
 	@Override
 	public void configureView() throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
+		GLSingleton.getGL().glDisable(GL2.GL_LIGHTING);
 	}
 
 	@Override
 	public void deconfigureView() throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
+		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
 	}
 
 	@Override
@@ -68,21 +68,21 @@ public class GLMapLocationViewManager extends GLViewManager {
 			else if (textureW <= textureH) w = textureW / textureH;
 			final float dim = this.drawer.getDim();
 
-			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D); // Enable 2D Texture Mapping
-			GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
-			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D,	textureMapLoader.getTextureNames()[0]);
+			GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D); // Enable 2D Texture Mapping
+			GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
+			GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D,	textureMapLoader.getTextureNames()[0]);
 			GLSingleton.getGL().glColor3f(1.0f, 1.0f, 1.0f);
-			GLSingleton.getGL().glBegin(GL.GL_QUADS);
+			GLSingleton.getGL().glBegin(GL2.GL_QUADS);
 				GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);
 				GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f); GLSingleton.getGL().glVertex2f(0.0f,  0.0f);
 				GLSingleton.getGL().glTexCoord2f(1.0f, 0.0f); GLSingleton.getGL().glVertex2f(dim*w, 0.0f);
 				GLSingleton.getGL().glTexCoord2f(1.0f, 1.0f); GLSingleton.getGL().glVertex2f(dim*w, dim*h);
 				GLSingleton.getGL().glTexCoord2f(0.0f, 1.0f); GLSingleton.getGL().glVertex2f(0.0f,  dim*h);
 			GLSingleton.getGL().glEnd();
-			GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D); // Disable 2D Texture Mapping
+			GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D); // Disable 2D Texture Mapping
 
 			// Bind the texture to null to avoid color issues
-			// GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, 0);
+			// GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, 0);
 
 			if (this.selectionMode) {
 				GLUtils.debugPrintCoords((int) this.drawer.getPickPoint()
