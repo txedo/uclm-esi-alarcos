@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="model.business.knowledge">
+	<class name="Director" table="directors" lazy="false">
+		<id name="id" column="id" type="int">
+			<generator class="native" />
+		</id>
+		<property name="name" column="name" type="string" not-null="false" />
+		<property name="firstSurname" column="first_surname" type="string" not-null="false" />
+		<property name="secondSurname" column="second_surname" type="string" not-null="false" />
+		<many-to-one name="picture" column="image_id" unique="true" not-null="true" class="Image" cascade="all" lazy="false" />
+	</class>
+</hibernate-mapping>

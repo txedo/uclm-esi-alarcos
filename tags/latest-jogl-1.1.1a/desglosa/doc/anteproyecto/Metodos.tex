@@ -1,0 +1,39 @@
+\section{Método y fases de trabajo}
+
+Dada la naturaleza del proyecto, en el que se irán definiendo requisitos y funcionalidades a lo largo de todo su ciclo de vida, se ha optado por utilizar una metodología de desarrollo de software genérica que permita adaptarse a este caso de estudio. Por estas razones, se ha seleccionado el \textbf{Proceso Unificado de Desarrollo} (en adelante PUD) como metodología de trabajo.
+
+El PUD \cite{jac00} es una evolución del Proceso Unificado de Rational, que define un ``conjunto de actividades necesarias para transformar los requisitos de usuario en un sistema software''. Es un marco genérico que puede especializarse para una gran variedad de sistemas de software cualesquiera que sean el área de aplicación o el tamaño del proyecto. Sus principales características son las siguientes:
+\begin{myitemize}
+	\item \textbf{Dirigido por casos de uso}. Para poder desarrollar un sistema es necesario saber qué necesitan sus usuarios. Un usuario puede ser un ser humano u otro sistema que interacciona con el sistema que se está desarrollando. Las necesidades de un usuario se denominan requisitos funcionales y se representan por medio de casos de uso.
+	
+	Los casos de uso guían el proceso de desarrollo desde la especificación de requisitos hasta las pruebas y se utilizan para crear los modelos que permitan la construcción e implementación de los mismos. Todos los casos de uso juntos constituyen el \textbf{modelo de casos de uso}.
+	
+	\item \textbf{Centrado en la arquitectura}. Un sistema software puede contemplarse desde varios puntos de vista. La arquitectura software incluye los aspectos estáticos y dinámicos más significativos del sistema y debe estar profundamente relacionada con los casos de uso ya que debe permitir el desarrollo de los mismos. Por esta razón, la arquitectura y los casos de uso deben desarrollarse en paralelo.
+	
+	\item \textbf{Iterativo e incremental}. Partiendo del dicho latino \textit{divide et impera} (en castellano, \textit{divide y vencerás}), el ciclo de vida del proyecto (Fig. \ref{fig:mapa-conceptual-pud}) se divide en ciclos. Cada ciclo consta de cuatro fases que a su vez se dividen en iteraciones. Las fases de un ciclo son las siguientes:
+	\begin{myitemize}
+		\item \textbf{Inicio o Factibilidad}. Se obtiene un modelo de casos de uso simplificado, se identifican riesgos potenciales y se estima el proyecto de manera aproximada.
+		
+		\item \textbf{Elaboración}. Se mejora el modelo de casos de uso y se diseña la arquitectura del sistema. A continuación, se desarrollan los casos de uso más críticos que se identificaron en la fase de inicio y se obtiene una \textit{línea base} de la arquitectura para planificar las actividades y estimar los recursos necesarios para terminar el proyecto.
+		
+		\item \textbf{Construcción}. Se crea el producto en base a las dos fases anteriores.
+		
+		\item \textbf{Transición}. Implica la corrección de errores y \textit{bugs}, así como el mantenimiento del sistema.
+	\end{myitemize}
+	
+	 En cierto modo, una iteración se corresponde con un mini-proyecto que resulta en un \textit{incremento}. En cada iteración se aborda un conjunto de casos de uso que amplían la funcionalidad global del producto desarrollado y trata los riesgos más importantes. Si la iteración cumple sus objetivos se continúa con la próxima, en caso contrario se vuelve a las primeras etapas de la misma y se toman otras decisiones que permitan cumplir sus objetivos. Las iteraciones deben ser seleccionadas y ejecutarse de forma controlada y siguiendo un flujo de trabajo. Este flujo de trabajo consta de cinco etapas:
+	\begin{myitemize}
+		\item \textbf{Requisitos}. El equipo de desarrollo y los clientes establecen comunicaciones por diferentes medios para especificar qué es lo que el usuario espera del sistema que se va a desarrollar.
+		
+		\item \textbf{Análisis}. Se identifican y especifican los casos de uso relevantes.
+		
+		\item \textbf{Diseño}. Se crea un diseño utilizando la arquitectura seleccionada como guía para tratar de dotar al sistema de las funcionalidades representadas por los casos de uso identificados en la etapa de análisis.
+		
+		\item \textbf{Implementación}. Se implementan las decisiones tomadas en la etapa de diseño, con el fin de construir las funcionalidades que satisfacen los casos de uso identificados en la etapa de análisis.
+		
+		\item \textbf{Pruebas}. Se verifica que los cambios realizados en el sistema satisfacen los casos de uso.
+	\end{myitemize}
+\end{myitemize}
+
+
+\imagenBorde{./images/mapa-conceptual-pud.png}{0.46}{Mapa conceptual del PUD}{fig:mapa-conceptual-pud}

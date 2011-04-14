@@ -1,0 +1,59 @@
+\section{Medios que se pretenden utilizar} \label{sec:medios}
+
+Como ya se ha explicado anteriormente (Ver Sección \ref{sec:objetivo-principal}), se elaborará una aplicación web utilizando tecnologías actuales empleadas en desarrollo y diseño web con el fin de obtener una RIA. 
+
+Una aplicación web tiene dos contextos bien diferenciados: el lado del cliente (client-side) y el lado del servidor (server-side). Para poder dotar una aplicación web de las características de una aplicación de escritorio es necesario trabajar desde el lado del cliente. Para ello, se dispone de tecnologías como CSS, Ajax y JavaScript que nos permiten cambiar dinámicamente el contenido que el usuario recibe en su navegador web a través del DOM\footnote{DOM, acrónimo de Document Object Model, es un API a través del cuál se puede modificar dinámicamente el contenido, estructura y estilo de los documentos HTML y XML.}.
+
+A continuación se exponen algunas de las tecnologías y librerías que han sido consideradas para elaborar el PFC, no siendo necesario utilizar todas y cada una de ellas, y dejando abierta la posibilidad de utilizar alguna que se estudie después de haber presentado el anteproyecto.
+
+
+\subsection{Tecnologías para desarrollo y diseño web} \label{sec:tec-des-dis-web}
+
+Para poder desarrollar la aplicación web descrita en los objetivos del PFC (Ver Sección \ref{sec:objetivo-principal}) se han considerado tecnologías que se ejecutan tanto en el lado del cliente, como en el lado del servidor.
+
+\begin{myitemize}
+	\item \textbf{HTML 5} (HyperText Markup Language, versión 5). Es la quinta revisión de HTML. Incorpora, de forma nativa, numerosas características y funcionalidades que le permiten no depender de programas externos o \textit{plugins} del navegador. No obstante, aún tiene ciertos problemas de compatibilidad con determinados navegadores, por lo que no se descarta el uso de HTML4.
+	
+	\item \textbf{DWR: Direct Web Remoting} \cite{site:dwr}. Es una librería que permite ejecutar funciones Java desde JavaScript y viceversa. Además, es posible integrarlo con tecnologías como jQuery, Struts e Hibernate.
+
+	\item \textbf{Struts2}. Es un \textit{framework} de desarrollo web basado en el patrón MVC (Modelo-Vista-Controlador), permitiendo así reducir el acoplamiento entre las tres capas de las que se compone un sistema software.
+	
+	\item \textbf{jQuery} \cite{site:jquery} y \textbf{Dojo} \cite{site:dojo}. Son \textit{frameworks} para JavaScript que proveen al programador de un mayor nivel de abstracción para el desarrollo de interfaces gráficas de usuario en aplicaciones web.
+\end{myitemize}
+
+
+
+\subsection{Tecnologías para visualización}
+
+En este documento se denomina como tecnologías o librerías de visualización a aquellas que permiten la generación de modelos o diagramas que nos permiten representar información de un modo gráfico. A continuación se enumeran las características que debe poseer una librería de este tipo:
+
+\begin{myitemize}
+	\item Generación dinámica de diagramas.
+	\item Posibilidad de elección entre una gran colección de modelos (diagramas de barras, sectores, kiviat, etcétera).
+	\item Permitir la interacción por parte del usuario.
+	\item Visualización atractiva.
+	\item Integración fácil en la aplicación web, desarrollada en Java.
+	\item Gratuito y, preferiblemente, libre para poder desarrollar nuevos modelos si fuera necesario.
+	\item Una licencia conforme a nuestros requisitos y objetivos.
+\end{myitemize}
+
+Algunas de las librerías que se proponen para su estudio, a fin de satisfacer los requisitos anteriormente expresados, y pudiendo añadir nuevas librerías en un futuro, son las siguientes \cite{site:chart-list}: 
+
+\begin{myitemize}
+	\item \textbf{DojoX Charting}. Es una extensión para Dojo (Ver Sección \ref{sec:tec-des-dis-web}) que permite la generación de gráficas y diagramas.
+
+	\item \textbf{Google Visualization API} \cite{site:google-visualization-api} (Fig. \ref{fig:google-visualization-api-geomap}). Es una librería basada en JavaScript y que pertenece a Google. Goza de un buen soporte por parte del equipo de desarrollo y una comunidad de desarrolladores que aportan una gran cantidad documentación y nuevos modelos.
+
+\imagen{./images/google-visualization-api-geomap.png}{0.45}{\textit{Geomapa} generado con Google Visualization API}{fig:google-visualization-api-geomap}
+
+	\item \textbf{The JavaScript InfoVis Toolkit} \cite{site:jit}. Está desarrollada por completo en JavaScript y goza de un gran potencial para representar y manejar grafos, \textit{treemaps} y \textit{sunbursts}.
+	
+	\item \textbf{Open Flash Chart} \cite{site:open-flash-chart} (Fig. \ref{fig:open-flash-chart-menu}). Es una librería libre y gratuita, con licencia LGPL, que se basa en flash para generar los diagramas. Además, incluye un plug-in para ser integrado con numerosos lenguajes, entre ellos Java y el framework Struts2.
+
+\imagen{./images/open-flash-chart-menu.png}{0.45}{Diagrama de barras generado con Open Flash Chart}{fig:open-flash-chart-menu}
+
+	\item \textbf{JOGL: JavaOpenGL}. Es un \textit{binding} de Java para el API de OpenGL (JSR-231), que permite desarrollar aplicaciones que manejen gráficos 3D. JOGL implementa todas las funciones de OpenGL 1.3 - 3.0, 3.1, ES 1.x y ES 2.x, y se integra con AWT y Swing.
+	
+	\item \textbf{WebGL: OpenGL ES 2.0 for the Web}. Es una especificación estándar para un API basada en OpenGL ES 2.0, que permite desplegar gráficos en 3D a través del elemento \textit{canvas} de HTML 5.
+
+\end{myitemize}
