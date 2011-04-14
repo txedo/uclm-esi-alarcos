@@ -6,30 +6,37 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLAnimatorControl;
 import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLProfile;
+import javax.media.opengl.awt.GLCanvas;
+
+import com.jogamp.opengl.util.FPSAnimator;
 
 import model.gl.GLDrawer;
 
-import com.sun.opengl.util.Animator;
-import com.sun.opengl.util.FPSAnimator;
-
 
 public class GLInit {
-	private static GLCanvas glCanvas;
-	private static Animator animator;
+	private static GLCanvas canvas;
+	private static GLAnimatorControl animator;
 	
 	public static Canvas getGLCanvas () {
-		return glCanvas;
+		return canvas;
 	}
 	
-	public static Animator getAnimator () {
+	public static GLAnimatorControl getAnimator () {
 		return animator;
+	}
+	
+	public static void setAnimator(GLAnimatorControl animator) {
+		GLInit.animator = animator;
 	}
 	
 	public static void init() {
 		// Creating an object to manipulate OpenGL parameters.
-		GLCapabilities capabilities = new GLCapabilities();
+		GLProfile.initSingleton(false);
+		GLProfile profile = GLProfile.getDefault();
+		GLCapabilities capabilities = new GLCapabilities(profile);
  
 		// Setting some OpenGL parameters.
 		capabilities.setHardwareAccelerated(true);
@@ -40,20 +47,19 @@ public class GLInit {
 		capabilities.setSampleBuffers(true);
 		capabilities.setNumSamples(2);
 		
-		glCanvas = new GLCanvas(capabilities);
-	    glCanvas.addGLEventListener(new GLDrawer());
-	    glCanvas.setFocusable(true);
-	    glCanvas.requestFocus();
+		canvas = new GLCanvas(capabilities);
+	    canvas.addGLEventListener(new GLDrawer());
+	    canvas.setFocusable(true);
+	    canvas.requestFocus();
 	    
-	    // Creating an animator that will redraw the scene 40 times per second
-	    animator = new FPSAnimator(glCanvas, 40, true);
-	    // Registering the canvas to the animator
-	    animator.add(glCanvas);
+	    // Creating an animator that will redraw the scene 60 times per second
+	    // and registering the canvas to the animator
+	    animator = new FPSAnimator(canvas, 60);
 	}
 	
 	public static void setContext (Frame mainFrame, Container container, Object containerConstraint) {
-		container.add(glCanvas, containerConstraint);
-		glCanvas.setSize(container.getSize());
+		container.add(canvas, containerConstraint);
+		canvas.setSize(container.getSize());
 	    mainFrame.addWindowListener(new WindowAdapter() {
 	        public void windowClosing(WindowEvent e) {
 	        	// Use a dedicate thread to run the stop() to ensure that the
@@ -70,4 +76,5 @@ public class GLInit {
 	    // Starting the animator
 	    animator.start();
 	}
+	
 }

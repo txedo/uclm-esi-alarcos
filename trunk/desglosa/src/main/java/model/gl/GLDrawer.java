@@ -1,29 +1,34 @@
 package model.gl;
 
+import java.awt.Component;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import com.sun.opengl.util.BufferUtil;
+import com.jogamp.common.nio.Buffers;
+import com.jogamp.newt.Window;
+import com.jogamp.newt.event.KeyListener;
+import com.jogamp.newt.event.MouseListener;
+import com.jogamp.newt.event.awt.AWTKeyAdapter;
+import com.jogamp.newt.event.awt.AWTMouseAdapter;
 
 import model.gl.control.EViewLevels;
 import model.gl.control.GLFactoryViewManager;
 import model.gl.control.GLFontBuilder;
 import model.gl.control.GLMetricIndicatorViewManager;
 import model.gl.control.GLProjectViewManager;
+import model.gl.control.GLTowerViewManager;
 import model.gl.control.GLViewManager;
 import model.gl.knowledge.Camera;
 import model.gl.knowledge.IConstants;
 import model.gl.knowledge.Spotlight;
 import model.knowledge.Vector2f;
 import model.knowledge.Vector3f;
-import model.listeners.MyKeyListener;
-import model.listeners.MyMouseListener;
-import model.listeners.MyMouseMotionListener;
-import model.listeners.MyMouseWheelListener;
+import model.listeners.MyKeyAdapter;
+import model.listeners.MyMouseAdapter;
 
 
 import exceptions.gl.GLSingletonNotInitializedException;
@@ -78,11 +83,11 @@ public class GLDrawer implements GLEventListener, IConstants {
 			}
 			// If the active view supports shadows, the stencil buffer is cleared in order to draw them
 			if (this.stencilShadow && this.renderShadow && this.getViewManager(viewLevel).isShadowSupport()) {
-				GLSingleton.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
+				GLSingleton.getGL().glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT | GL2.GL_STENCIL_BUFFER_BIT);
 			}
 			else {
 				/* Avoid clearing stencil when not using it. */
-				GLSingleton.getGL().glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+				GLSingleton.getGL().glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 			}
 			GLSingleton.getGL().glLoadIdentity();
 			// Render the new camera and spotlight position if the active view is three-dimensional
@@ -91,7 +96,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 				spotlight.render(camera.getPosition(), camera.getViewDir());
 			}
 			// Perform shadow calculations if shadows are enabled
-			FloatBuffer floorShadowBuf = BufferUtil.newFloatBuffer(16);
+			FloatBuffer floorShadowBuf = Buffers.newDirectFloatBuffer(16);
 			if (this.getViewManager(viewLevel).isShadowSupport()) {
 				Vector3f lightSource = this.camera.getPosition().clone();
 				lightSource.setX(lightSource.getX()-1.0f);
@@ -141,9 +146,8 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.renderShadow = true;
 		this.stencilShadow = true;
 		
-//		this.oldViewLevel = EViewLevels.UnSetLevel;
-//		this.viewLevel = EViewLevels.MapLevel;
 		this.oldViewLevel = EViewLevels.UnSetLevel;
+//		this.viewLevel = EViewLevels.MapLevel;
 		this.viewLevel = EViewLevels.ProjectLevel;
 		
 		this.mapLocationView = IViewManagerFactoryImpl.getInstance().createMapLocationViewManager(this);
@@ -153,24 +157,24 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.factoryView = IViewManagerFactoryImpl.getInstance().createFactoryViewManager(this);
 		
 		try {
-			GLSingleton.getGL().glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);		// Really Nice Perspective Calculations
+			GLSingleton.getGL().glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);		// Really Nice Perspective Calculations
 			GLSingleton.getGL().glClearColor(1.0f, 1.0f, 1.0f, 1.0f);			// White Background
-			GLSingleton.getGL().glEnable(GL.GL_DEPTH_TEST);						// Enables Depth Testing
+			GLSingleton.getGL().glEnable(GL2.GL_DEPTH_TEST);						// Enables Depth Testing
 			GLSingleton.getGL().glClearDepth(1.0f);								// Depth Buffer Setup
-			GLSingleton.getGL().glDepthFunc(GL.GL_LESS);						// The Type Of Depth Testing To Do
-			GLSingleton.getGL().glShadeModel(GL.GL_SMOOTH);						// Enable Smooth Shading
+			GLSingleton.getGL().glDepthFunc(GL2.GL_LESS);						// The Type Of Depth Testing To Do
+			GLSingleton.getGL().glShadeModel(GL2.GL_SMOOTH);						// Enable Smooth Shading
 			// Enable blending
-			GLSingleton.getGL().glEnable(GL.GL_BLEND);
-			GLSingleton.getGL().glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			GLSingleton.getGL().glEnable(GL2.GL_BLEND);
+			GLSingleton.getGL().glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			// Point antialiasing
-			GLSingleton.getGL().glEnable(GL.GL_POINT_SMOOTH);
-			GLSingleton.getGL().glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
+			GLSingleton.getGL().glEnable(GL2.GL_POINT_SMOOTH);
+			GLSingleton.getGL().glHint(GL2.GL_POINT_SMOOTH_HINT, GL2.GL_NICEST);
 			// Line antialiasing
-			GLSingleton.getGL().glEnable(GL.GL_LINE_SMOOTH);
-			GLSingleton.getGL().glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
+			GLSingleton.getGL().glEnable(GL2.GL_LINE_SMOOTH);
+			GLSingleton.getGL().glHint(GL2.GL_LINE_SMOOTH_HINT, GL2.GL_NICEST);
 			// Polygon antialiasing (in case this does not work, use GLUtils.enableMultisample())
-			GLSingleton.getGL().glEnable(GL.GL_POLYGON_SMOOTH);
-			GLSingleton.getGL().glHint(GL.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
+			GLSingleton.getGL().glEnable(GL2.GL_POLYGON_SMOOTH);
+			GLSingleton.getGL().glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL2.GL_NICEST);
 			// Textures are enabled and its environment configured just before mapping them, not here
 			
 			// Creamos una cámara y un foco de luz
@@ -178,8 +182,8 @@ public class GLDrawer implements GLEventListener, IConstants {
 			spotlight = new Spotlight(0.6f, 0.6f, 0.6f);
 	
 			// Habilitamos el color natural de los materiales
-			GLSingleton.getGL().glEnable(GL.GL_COLOR_MATERIAL);
-			GLSingleton.getGL().glEnable(GL.GL_NORMALIZE);
+			GLSingleton.getGL().glEnable(GL2.GL_COLOR_MATERIAL);
+			GLSingleton.getGL().glEnable(GL2.GL_NORMALIZE);
 			
 			// Configuramos los parámetros del mundo
 			((GLMetricIndicatorViewManager)metricIndicatorView).setupItems();
@@ -187,29 +191,36 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLFactoryViewManager.setupItems();
 			
 			// Añadimos los listener de teclado y ratón
-			glDrawable.addKeyListener(new MyKeyListener(this));
-			glDrawable.addMouseListener(new MyMouseListener(this));
-			glDrawable.addMouseWheelListener(new MyMouseWheelListener(this.camera));
-			glDrawable.addMouseMotionListener(new MyMouseMotionListener(this));
+			MouseListener myMouse = new MyMouseAdapter(this);
+			KeyListener myKey = new MyKeyAdapter(this);
+		    if (glDrawable instanceof Component) {
+		        Component comp = (Component) glDrawable;
+		        new AWTMouseAdapter(myMouse).addTo(comp);
+		        new AWTKeyAdapter(myKey).addTo(comp);
+		    } else if (glDrawable instanceof Window) {
+		        Window window = (Window) glDrawable;
+		        window.addMouseListener(myMouse);
+		        window.addKeyListener(myKey);
+		    }
 			
-			GLFontBuilder.getInstance().buildFont();
+//			GLFontBuilder.getInstance().buildFont();
 			
 			log = new GLLogger();
 			System.err.print(log.toString());
 		} catch (GLSingletonNotInitializedException e) {
 			GLSingleton.init(glDrawable);
 			this.init(glDrawable);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 		}
 	}
 
 	 /** Called by the drawable during the first repaint after the component has
      * been resized. The client can update the viewport and view volume of the
      * window appropriately, for example by a call to
-     * GL.glViewport(int, int, int, int); note that for convenience the component
-     * has already called GL.glViewport(int, int, int, int)(x, y, width, height)
+     * gl.glViewport(int, int, int, int); note that for convenience the component
+     * has already called gl.glViewport(int, int, int, int)(x, y, width, height)
      * when this method is called, so the client may not have to do anything in
      * this method.
      * @param gLDrawable The GLAutoDrawable object.
@@ -232,6 +243,10 @@ public class GLDrawer implements GLEventListener, IConstants {
 			GLSingleton.init(glDrawable);
 			this.init(glDrawable);
 		}
+	}
+	@Override
+	public void dispose(GLAutoDrawable arg0) {
+		System.err.println("Desglosa: Dispose");
 	}
 	
 	private void updateProjection() throws GLSingletonNotInitializedException {

@@ -1,6 +1,6 @@
 package model.gl.knowledge;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import model.gl.GLSingleton;
 import model.knowledge.Color;
@@ -24,7 +24,7 @@ public class Edge extends GLObject implements IEdge {
 	@Override
 	public void draw() throws GLSingletonNotInitializedException {
 		GLSingleton.getGL().glColor3fv(color.getColorFB());
-		if (this.type != SOLID) GLSingleton.getGL().glEnable(GL.GL_LINE_STIPPLE);
+		if (this.type != SOLID) GLSingleton.getGL().glEnable(GL2.GL_LINE_STIPPLE);
 		switch (this.type) {
 			case SOLID:
 				GLSingleton.getGL().glLineStipple(1, (short)0xFFFF);
@@ -40,11 +40,11 @@ public class Edge extends GLObject implements IEdge {
 				break;
 		}
 		GLSingleton.getGL().glLineWidth(this.width);
-		GLSingleton.getGL().glBegin(GL.GL_LINES);	
+		GLSingleton.getGL().glBegin(GL2.GL_LINES);	
 			GLSingleton.getGL().glVertex2f(this.source.getGravityPoint().getX(), this.source.getGravityPoint().getY());
 			GLSingleton.getGL().glVertex2f(this.destination.getGravityPoint().getX(), this.destination.getGravityPoint().getY());
 		GLSingleton.getGL().glEnd();
-		GLSingleton.getGL().glDisable(GL.GL_LINE_STIPPLE);
+		GLSingleton.getGL().glDisable(GL2.GL_LINE_STIPPLE);
 	}
 
 	public int getType() {

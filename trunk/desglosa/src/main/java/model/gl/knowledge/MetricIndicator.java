@@ -1,6 +1,6 @@
 package model.gl.knowledge;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import model.gl.GLSingleton;
 import model.knowledge.Color;
@@ -33,7 +33,7 @@ public class MetricIndicator extends Node {
 		GLSingleton.getGL().glColor4fv(color.getColorFB());
 		GLSingleton.getGL().glPushMatrix();
 			GLSingleton.getGL().glTranslatef(this.positionX, this.positionY, 0.0f);
-			GLSingleton.getGL().glBegin(GL.GL_QUADS);	
+			GLSingleton.getGL().glBegin(GL2.GL_QUADS);	
 				GLSingleton.getGL().glVertex2f(0.0f, 0.0f);
 				GLSingleton.getGL().glVertex2f(0.0f, width);
 				GLSingleton.getGL().glVertex2f(width, width);

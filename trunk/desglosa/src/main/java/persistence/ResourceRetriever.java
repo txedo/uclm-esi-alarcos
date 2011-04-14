@@ -34,36 +34,24 @@ public class ResourceRetriever {
     public static InputStream getResourceAsStream(final String filename) throws IOException {
         // Try to load resource from jar
         InputStream stream = ClassLoader.getSystemResourceAsStream(filename);
+        if (stream == null)
+        	stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
         // If not found in jar, then load from disk
         if (stream == null) {
-            try {
+//            try {
 				stream = new FileInputStream(filename);
-			} catch (FileNotFoundException e) {
-				// If not found in disk, then load from database
-				byte[] imageInByte;
-				try {
-					imageInByte = ImageDAO.get(filename).getData();
-					stream = toInputStream(imageInByte);
-				} catch (SQLException e1) {
-					throw new IOException();
-				} catch (ImageNotFoundException e1) {
-					throw new IOException();
-//					// If not found in database, then load from server URL
-//					URL server = null;
-//					URLConnection conn = null;
-//					try {
-//						server = ClassLoader.getSystemResource(filename);
-//						conn = server.openConnection();
-//						conn.connect();
-//						stream = conn.getInputStream();
-//					} catch (MalformedURLException e2) {
-//						// TODO Auto-generated catch block
-//						e2.printStackTrace();
-//					} catch (IOException e3) {
-//						throw new IOException("File not found on any resource. Please, contact admin to solve this problem.");
-//					}
-				}
-			}
+//			} catch (FileNotFoundException e) {
+//				// If not found in disk, then load from database
+//				byte[] imageInByte;
+//				try {
+//					imageInByte = ImageDAO.get(filename).getData();
+//					stream = toInputStream(imageInByte);
+//				} catch (SQLException e1) {
+//					throw new IOException();
+//				} catch (ImageNotFoundException e1) {
+//					throw new IOException();
+//				}
+//			}
         }
         return stream;
     }

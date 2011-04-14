@@ -1,10 +1,10 @@
 package model.gl;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.glu.GLU;
+import javax.media.opengl.glu.gl2.GLUgl2;
 
-import com.sun.opengl.util.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -19,8 +19,8 @@ import exceptions.gl.GLSingletonNotInitializedException;
 public class GLSingleton {
 	static private boolean initiated;
 	static private GLAutoDrawable drawable;
-	static private GL gl;
-	static private GLU glu;
+	static private GL2 gl;
+	static private GLUgl2 glu;
 	static private GLUT glut;
 	
 	static public double scale = 1.0;
@@ -55,8 +55,8 @@ public class GLSingleton {
 	
 	static public void init (GLAutoDrawable glDrawable) {
 		drawable = glDrawable;
-		gl = glDrawable.getGL();
-		glu = new GLU();
+		gl = glDrawable.getGL().getGL2();
+		glu = new GLUgl2();
 		glut = new GLUT();
 		initiated = true;
 	}
@@ -69,18 +69,18 @@ public class GLSingleton {
 		return drawable;
 	}
 
-	static public GL getGL() throws GLSingletonNotInitializedException {
+	static public GL2 getGL() throws GLSingletonNotInitializedException {
 		if (gl == null) throw new GLSingletonNotInitializedException();
-		else return drawable.getGL();
+		else return gl;
 	}
 
-	static public GLU getGLU() throws GLSingletonNotInitializedException {
-		if (gl == null) throw new GLSingletonNotInitializedException();
+	static public GLUgl2 getGLU() throws GLSingletonNotInitializedException {
+		if (glu == null) throw new GLSingletonNotInitializedException();
 		else return glu;
 	}
 
 	static public GLUT getGLUT() throws GLSingletonNotInitializedException {
-		if (gl == null) throw new GLSingletonNotInitializedException();
+		if (glut == null) throw new GLSingletonNotInitializedException();
 		else return glut;
 	}
 

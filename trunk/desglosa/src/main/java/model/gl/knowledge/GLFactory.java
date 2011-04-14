@@ -1,6 +1,6 @@
 package model.gl.knowledge;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLUquadric;
 
 import model.gl.GLSingleton;
@@ -63,9 +63,9 @@ public class GLFactory extends GLObject3D {
 		}
 		else {
 			GLSingleton.getGL().glColor4fv(this.color.getColorFB());
-			GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
-			GLSingleton.getGL().glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_MODULATE);
-			GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);	
+			GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D);
+			GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE);
+			GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, texture);	
 		}
 		
 		GLSingleton.getGL().glPushMatrix();
@@ -83,7 +83,7 @@ public class GLFactory extends GLObject3D {
 				this.drawBuildingRoof();
 			GLSingleton.getGL().glPopMatrix();
 			// If we enabled textures before, we disable them now to draw the smokestack
-			if (!shadow) GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);	
+			if (!shadow) GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);	
 			// Smokestack
 			GLSingleton.getGL().glPushMatrix();
 				GLSingleton.getGL().glTranslatef(-this.baseLength*1/4, this.baseHeight, 0.0f);
@@ -102,7 +102,7 @@ public class GLFactory extends GLObject3D {
 	}
 	
 	private void drawBase() throws GLSingletonNotInitializedException {	
-		GLSingleton.getGL().glBegin(GL.GL_QUADS);
+		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
 			// Back
 			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, -1.0f);
 			GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);
@@ -157,7 +157,7 @@ public class GLFactory extends GLObject3D {
 	}
 	
 	private void drawBuilding() throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glBegin(GL.GL_QUADS);
+		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
 			// Back
 			GLSingleton.getGL().glNormal3f(0.0f, 0.0f, -1.0f);
 			GLSingleton.getGL().glTexCoord2f(0.0f, 0.25f);
@@ -205,7 +205,7 @@ public class GLFactory extends GLObject3D {
 		float roofLength = this.buildingLength/this.ROOFS;
 		float alpha = (float)Math.asin(this.roofHeight/roofLength);
 		for (int i = 0; i < this.ROOFS; i++) {
-			GLSingleton.getGL().glBegin(GL.GL_QUADS);
+			GLSingleton.getGL().glBegin(GL2.GL_QUADS);
 				// Top
 				GLSingleton.getGL().glNormal3f((float)Math.cos(180.0-alpha), (float)Math.sin(180.0-alpha), 0.0f);
 				GLSingleton.getGL().glTexCoord2f(0.703125f, 0.80f);
@@ -227,7 +227,7 @@ public class GLFactory extends GLObject3D {
 				GLSingleton.getGL().glTexCoord2f(0.46875f, 1.0f);
 				GLSingleton.getGL().glVertex3f((i+1)*roofLength, this.roofHeight,  this.buildingWidth/2);
 			GLSingleton.getGL().glEnd();
-			GLSingleton.getGL().glBegin(GL.GL_TRIANGLES);
+			GLSingleton.getGL().glBegin(GL2.GL_TRIANGLES);
 				// Back
 				GLSingleton.getGL().glNormal3f(0.0f, 0.0f, -1.0f);
 				GLSingleton.getGL().glVertex3f(i*roofLength,     0.0f,             -this.buildingWidth/2);
