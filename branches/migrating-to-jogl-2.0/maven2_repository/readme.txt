@@ -1,0 +1,244 @@
+* Añadir un nuevo repositorio (ignoramos el error de "Unable to update index")
+  	<repository>
+   		<id>maven2-repository.dev.java.net</id>
+   		<name>Java.net Repository for Maven</name>
+   		<url>http://download.java.net/maven/2/</url>
+   		<layout>default</layout>
+  	</repository>
+
+* Descargar todos los ficheros que hay en http://download.java.net/maven/2/net/java/dev/jogl/ respetando el mismo árbol de directorios.
+
+* Instalamos las dependencias en nuestro repositorio local. Para ello nos vamos situando en cada uno de los directorios en los que hay un pom.xml y ejecutamos las siguientes sentencias:
+
+	mvn install:install-file -Dfile=jogl-windows-i586-1.1.1-rc6.jar -DgroupId=net.java.dev.jogl -DartifactId=jogl-windows-i586 -Dversion=1.1.1-rc6 -Dpackaging=jar
+	mvn install:install-file -Dfile=jogl-linux-i586-1.1.1-rc6.jar -DgroupId=net.java.dev.jogl -DartifactId=jogl-linux-i586 -Dversion=1.1.1-rc6 -Dpackaging=jar
+	mvn install:install-file -Dfile=jogl-macosx-universal-1.1.1-rc6.jar -DgroupId=net.java.dev.jogl -DartifactId=jogl-macosx-universal -Dversion=1.1.1-rc6 -Dpackaging=jar
+
+Acto seguido nos vamos al directorio de nuestro repositorio local de Maven y comprobamos que se han descargado correctamente las dependencias. Hay que fijarse que gluegen y jogl se descargan automáticamente del repositorio de Java.net.
+
+	mvn install:install-file -Dfile=gluegen-rt-windows-i586-1.0b05.jar -DgroupId=net.java.dev.gluegen -DartifactId=gluegen-rt-windows-i586 -Dversion=1.0b05 -Dpackaging=jar
+	mvn install:install-file -Dfile=gluegen-rt-linux-i586-1.0b05.jar -DgroupId=net.java.dev.gluegen -DartifactId=gluegen-rt-linux-i586 -Dversion=1.0b05 -Dpackaging=jar
+	mvn install:install-file -Dfile=gluegen-rt-macosx-universal-1.0b05.jar -DgroupId=net.java.dev.gluegen -DartifactId=gluegen-rt-macosx-universal -Dversion=1.0b05 -Dpackaging=jar
+
+
+* Dentro de Eclipse, en la ventana de los repositorios, buscamos el repositorio local y ejecutamos "Rebuild index".
+
+* Añadimos las dependencias gluegen-rt, jogl, jogl-windows, jogl-linux, jogl-macosx
+
+* Creamos tres perfiles tal y como se indica a continuación:
+
+  <profiles>
+  	<profile>
+  		<id>windows-i568</id>
+  		<activation>
+  			<os>
+  				<name>windows</name>
+  				<family>windows</family>
+  				<arch>i386</arch>
+  			</os>
+  		</activation>
+  	</profile>
+  	<profile>
+  		<id>linux-i586</id>
+  		<activation>
+  			<os>
+  				<name>linux</name>
+  				<family>unix</family>
+  				<arch>i386</arch>
+  			</os>
+  		</activation>
+  	</profile>
+  	<profile>
+  		<id>macosx-universal</id>
+  		<activation>
+  			<os>
+  				<name>macosx</name>
+  				<family>macosx</family>
+  				<arch>universal</arch>
+  			</os>
+  		</activation>
+  	</profile>
+  </profiles>
+
+* En el directorio de desGLosa ejecutamos "mvn clean install"
+
+
+
+
+  <profiles>
+  	<profile>
+  		<id>windows-i568</id>
+  		<activation>
+  			<os>
+  				<name>windows</name>
+  				<family>windows</family>
+  				<arch>i386</arch>
+  			</os>
+  		</activation>
+  		<dependencyManagement>
+  			<dependencies>
+  				<dependency>
+  					<groupId>net.java.dev.gluegen</groupId>
+  					<artifactId>gluegen-rt-windows-i586</artifactId>
+  					<version>1.0b05</version>
+  					<type>jar</type>
+  					<scope>compile</scope>
+  				</dependency>
+  				<dependency>
+  					<groupId>net.java.dev.jogl</groupId>
+  					<artifactId>jogl-windows-i586</artifactId>
+  					<version>1.1.1-rc6</version>
+  					<type>jar</type>
+  					<scope>compile</scope>
+  				</dependency>
+  			</dependencies>
+  		</dependencyManagement>
+  	</profile>
+  	<profile>
+  		<id>linux-i586</id>
+  		<activation>
+  			<os>
+  				<name>linux</name>
+  				<family>unix</family>
+  				<arch>i386</arch>
+  			</os>
+  		</activation>
+  		<dependencyManagement>
+  			<dependencies>
+  				<dependency>
+  					<groupId>net.java.dev.gluegen</groupId>
+  					<artifactId>gluegen-rt-linux-i586</artifactId>
+  					<version>1.0b05</version>
+  					<type>jar</type>
+  					<scope>compile</scope>
+  				</dependency>
+  				<dependency>
+  					<groupId>net.java.dev.jogl</groupId>
+  					<artifactId>jogl-linux-i586</artifactId>
+  					<version>1.1.1-rc6</version>
+  					<type>jar</type>
+  					<scope>compile</scope>
+  				</dependency>
+  			</dependencies>
+  		</dependencyManagement>
+  	</profile>
+  	<profile>
+  		<id>macosx-universal</id>
+  		<activation>
+  			<os>
+  				<name>macosx</name>
+  				<family>macosx</family>
+  				<arch>universal</arch>
+  			</os>
+  		</activation>
+  		<dependencyManagement>
+  			<dependencies>
+  				<dependency>
+  					<groupId>net.java.dev.gluegen</groupId>
+  					<artifactId>gluegen-rt-macosx-universal</artifactId>
+  					<version>1.0b05</version>
+  					<type>jar</type>
+  					<scope>compile</scope>
+  				</dependency>
+  				<dependency>
+  					<groupId>net.java.dev.jogl</groupId>
+  					<artifactId>jogl-macosx-universal</artifactId>
+  					<version>1.1.1-rc6</version>
+  					<type>jar</type>
+  					<scope>compile</scope>
+  				</dependency>
+  			</dependencies>
+  		</dependencyManagement>
+  	</profile>
+  	<profile>
+  		<id>windows-amd64</id>
+  		<activation>
+  			<os>
+  				<name>windows</name>
+  				<family>windows</family>
+  				<arch>amd64</arch>
+  			</os>
+  		</activation>
+  	</profile>
+  	<profile>
+  		<id>linux-amd64</id>
+  		<activation>
+  			<os>
+  				<name>linux</name>
+  				<family>unix</family>
+  				<arch>amd64</arch>
+  			</os>
+  		</activation>
+  	</profile>
+  </profiles>
+  
+  
+  
+
+
+
+
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-dependency-plugin</artifactId>
+  			<version>2.2</version>
+  			<executions>
+  				<execution>
+  					<id>unpack</id>
+  					<phase>compile</phase>
+  					<goals>
+  						<goal>unpack</goal>
+  					</goals>
+  					<configuration>
+  						<artifactItems>
+  						  	<artifactItem>
+						  		<groupId>net.java.dev.gluegen</groupId>
+						  		<artifactId>gluegen-rt-windows-i586</artifactId>
+						  		<version>1.0b05</version>
+						  		<type>jar</type>
+								<overWrite>true</overWrite>
+								<outputDirectory>${project.build.directory}/lib</outputDirectory>
+  							</artifactItem>
+  							<artifactItem>
+				 				<groupId>net.java.dev.jogl</groupId>
+								<artifactId>jogl-windows-i586</artifactId>
+								<version>1.1.1-rc6</version>
+								<type>jar</type>
+								<overWrite>true</overWrite>
+								<outputDirectory>${project.build.directory}/lib</outputDirectory>
+  							</artifactItem>
+  						</artifactItems>
+  					</configuration>
+  				</execution>
+  			</executions>
+  		</plugin>
+		
+		
+		
+		
+		
+		
+mvn help:describe -Dplugin=org.apache.maven.plugins:maven-antrun-plugin
+
+Name: Maven AntRun Plugin
+Description: Runs Ant scripts embedded in the POM
+Group Id: org.apache.maven.plugins
+Artifact Id: maven-antrun-plugin
+Version: 1.6
+Goal Prefix: antrun
+
+This plugin has 2 goals:
+
+antrun:help
+  Description: Display help information on maven-antrun-plugin.
+    Call
+      mvn antrun:help -Ddetail=true -Dgoal=<goal-name>
+    to display parameter details.
+
+antrun:run
+  Description: Maven AntRun Mojo. This plugin provides the capability of
+    calling Ant tasks from a POM by running the nested ant tasks inside the
+    <tasks/> parameter. It is encouraged to move the actual tasks to a separate
+    build.xml file and call that file with an <ant/> task.
+
+For more information, run 'mvn help:describe [...] -Ddetail'

@@ -1,0 +1,96 @@
+\begin{thebibliography}{10}
+  \providebibliographyfont{name}{}%
+  \providebibliographyfont{lastname}{}%
+  \providebibliographyfont{title}{\emph}%
+  \providebibliographyfont{jtitle}{\btxtitlefont}%
+  \providebibliographyfont{etal}{\emph}%
+  \providebibliographyfont{journal}{}%
+  \providebibliographyfont{volume}{}%
+  \providebibliographyfont{ISBN}{\MakeUppercase}%
+  \providebibliographyfont{ISSN}{\MakeUppercase}%
+  \providebibliographyfont{url}{\url}%
+  \providebibliographyfont{numeral}{}%
+  \expandafter\btxselectlanguage\expandafter {\btxfallbacklanguage}
+
+\btxselectlanguage {english}
+\bibitem {site:chart-list}
+\btxnamefont {\btxlastnamefont {{22 Awesome Visualization Libraries: Charts and
+  Diagrams}}}.
+\newblock
+  \url{http://www.onextrapixel.com/2009/11/24/22-awesome-visualization-libraries-charts-and-diagrams/},
+  \btxprintmonthyear{.}{11}{2009}{short}.
+
+\bibitem {gil95}
+\btxnamefont {\btxlastnamefont {Giles},~A.} \btxandshort {.}\ \btxnamefont
+  {G.~\btxlastnamefont {Daich}}\btxauthorcolon\ \btxjtitlefont
+  {\btxifchangecase {Metrics tools}{Metrics Tools}}.
+\newblock \btxjournalfont {Crosstalk}, 1995.
+\newblock {\latintext
+  \btxurlfont{http://www.stsc.hill.af.mil/crosstalk/1995/02/Metrics.asp}}.
+
+\expandafter\btxselectlanguage\expandafter {\btxfallbacklanguage}
+\bibitem {iso14598}
+\btxnamefont {\btxlastnamefont {ISO}}\btxauthorcolon\ \btxjtitlefont
+  {\btxifchangecase {{ISO/IEC 14598 Software engineering. Product
+  evaluation}}{{ISO/IEC 14598 Software engineering. Product evaluation}}}.
+
+\bibitem {iso9126}
+\btxnamefont {\btxlastnamefont {ISO}}\btxauthorcolon\ \btxjtitlefont
+  {\btxifchangecase {{ISO/IEC 9126 Software engineering. Product
+  quality}}{{ISO/IEC 9126 Software engineering. Product quality}}}.
+\newblock 1991.
+
+\btxselectlanguage {spanish}
+\bibitem {jac00}
+\btxnamefont {\btxlastnamefont {Jacobson},~I.}, \btxnamefont
+  {G.~\btxlastnamefont {Booch}}\btxandcomma {} \btxandshort {.}\ \btxnamefont
+  {J.~\btxlastnamefont {Rumbaugh}}\btxauthorcolon\ \btxtitlefont {El proceso
+  unificado de desarrollo de software}.
+\newblock \btxpublisherfont {Addison Wesley}, 2000.
+
+\bibitem {evaluacion-calidad}
+\btxnamefont {\btxlastnamefont {Mellado},~D.}, \btxnamefont
+  {M.~\btxlastnamefont {Rodriguez}}, \btxnamefont {J.~\btxlastnamefont
+  {Verdugo}}, \btxnamefont {M.~\btxlastnamefont {Piattini}}\btxandcomma {}
+  \btxandshort {.}\ \btxnamefont {E.~\btxlastnamefont
+  {Fernández-Medina}}\btxauthorcolon\ \btxjtitlefont {\btxifchangecase
+  {Evaluación de la calidad y seguridad en productos software}{Evaluación de la
+  calidad y seguridad en productos software}}.
+
+\bibitem {def:ria}
+\btxnamefont {\btxlastnamefont {Nascimbene},~C.}\btxauthorcolon\ \btxtitlefont
+  {\btxifchangecase {¿qué son las rich internet applications?}{¿Qué son las
+  Rich Internet Applications?}}, \btxprintmonthyear{.}{12}{2005}{short}.
+\newblock {\latintext
+  \btxurlfont{http://www.canal-ar.com.ar/noticias/noticiamuestra.asp?Id=2639}}.
+
+\btxselectlanguage {english}
+\bibitem {site:dojo}
+\btxnamefont {\btxlastnamefont {{Página web de Dojo Toolkit}}}.
+\newblock {\latintext \btxurlfont{http://www.dojotoolkit.org/}}.
+
+\bibitem {site:dwr}
+\btxnamefont {\btxlastnamefont {{Página web de DWR: Easy Ajax for Java}}}.
+\newblock {\latintext
+  \btxurlfont{http://directwebremoting.org/dwr/index.html}}.
+
+\btxselectlanguage {spanish}
+\bibitem {site:google-visualization-api}
+\btxnamefont {\btxlastnamefont {{Página web de Google Visualization API}}}.
+\newblock {\latintext
+  \btxurlfont{http://code.google.com/intl/es-ES/apis/visualization/interactive_charts.html}}.
+
+\btxselectlanguage {english}
+\bibitem {site:jit}
+\btxnamefont {\btxlastnamefont {{Página web de JavaScript InfoVis Toolkit}}}.
+\newblock {\latintext \btxurlfont{http://thejit.org/}}.
+
+\bibitem {site:jquery}
+\btxnamefont {\btxlastnamefont {{Página web de jQuery}}}.
+\newblock {\latintext \btxurlfont{http://jquery.com/}}.
+
+\bibitem {site:open-flash-chart}
+\btxnamefont {\btxlastnamefont {{Página web de Open Flash Chart v2}}}.
+\newblock \mbox{\url{http://teethgrinder.co.uk/open-flash-chart-2/}}.
+
+\end{thebibliography}

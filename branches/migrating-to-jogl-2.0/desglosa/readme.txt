@@ -1,0 +1,1 @@
+In order to run this project, corresponding JOGL libraries (DLL files) must be placed in this folder. Different builds for most architectures can be found under "builds" folder.
