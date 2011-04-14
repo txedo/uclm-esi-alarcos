@@ -1,13 +1,10 @@
 package model.gl.knowledge;
 
-import java.io.IOException;
-
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLUquadric;
 
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
-import model.gl.control.GLFontBuilder;
 import model.knowledge.Color;
 import exceptions.gl.GLSingletonNotInitializedException;
 
@@ -70,34 +67,19 @@ public class AntennaBall extends GLObject3D {
 				this.drawChildBall(false, this.rightChildBallColor, this.rightChildBallValue);
 			}
 			
-//			GLUtils.billboardCheatSphericalBegin();
-//			if (!shadow) {
-//				// Write the project label
-//				try {
-//					GLSingleton.getGL().glPushMatrix();
-//						GLSingleton.getGL().glTranslatef(0.0f, -parentBallRadius, parentBallRadius);
-//						GLFontBuilder.getInstance().glPrint(0, 0, this.label, 1, true);
-//					GLSingleton.getGL().glPopMatrix();
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-//			GLUtils.billboardEnd();
-			
 			// Drawing the parent ball
 			if (!shadow) {
-				// Enable texture mapping
-				GLSingleton.getGL().glEnable(GL.GL_TEXTURE_2D);
-				GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_S);
-				GLSingleton.getGL().glEnable(GL.GL_TEXTURE_GEN_T);
-				// Set Up Sphere Mapping
-				GLSingleton.getGL().glTexGeni(GL.GL_S, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
-				GLSingleton.getGL().glTexGeni(GL.GL_T, GL.GL_TEXTURE_GEN_MODE, GL.GL_SPHERE_MAP);
-	            // Bind the APPLY(0) or CANCEL(1) texture
-				int texture = this.textures[0];
-				if (!this.progression) texture = this.textures[1];
-				GLSingleton.getGL().glBindTexture(GL.GL_TEXTURE_2D, texture);
+//				// Enable texture mapping
+//				GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D);
+//				GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_GEN_S);
+//				GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_GEN_T);
+//				// Set Up Sphere Mapping
+//				GLSingleton.getGL().glTexGeni(GL2.GL_S, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_SPHERE_MAP);
+//				GLSingleton.getGL().glTexGeni(GL2.GL_T, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_SPHERE_MAP);
+//	            // Bind the APPLY(0) or CANCEL(1) texture
+//				int texture = this.textures[0];
+//				if (!this.progression) texture = this.textures[1];
+//				GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, texture);
 				GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 			} else {
 				GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
@@ -106,10 +88,10 @@ public class AntennaBall extends GLObject3D {
 			GLSingleton.getGLU().gluSphere(this.quadric, this.parentBallRadius, this.subdivisions, this.subdivisions);
 			
 			if (!shadow) {
-				// Disable everything we enabled before
-				GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_S);
-				GLSingleton.getGL().glDisable(GL.GL_TEXTURE_GEN_T);
-				GLSingleton.getGL().glDisable(GL.GL_TEXTURE_2D);
+//				// Disable everything we enabled before
+//				GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_GEN_S);
+//				GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_GEN_T);
+//				GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);
 			}
 		GLSingleton.getGL().glPopMatrix();
 		GLUtils.disableMultisample();
@@ -125,7 +107,7 @@ public class AntennaBall extends GLObject3D {
 				GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
 			else
 				GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
-			GLSingleton.getGL().glBegin(GL.GL_LINES);
+			GLSingleton.getGL().glBegin(GL2.GL_LINES);
 				GLSingleton.getGL().glVertex3f(x*parentBallRadius*(float)Math.cos(ANTENNA_ANGLE), parentBallRadius*(float)Math.sin(ANTENNA_ANGLE), 0.0f);
 				GLSingleton.getGL().glVertex3f(x*parentBallRadius-x*childBallRadius*(float)Math.cos(90-ANTENNA_ANGLE), parentBallRadius*(float)Math.tan(ANTENNA_ANGLE)-childBallRadius*(float)Math.sin(90-ANTENNA_ANGLE), 0.0f);
 			GLSingleton.getGL().glEnd();

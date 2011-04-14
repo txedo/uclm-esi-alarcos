@@ -1,6 +1,6 @@
 package model.gl.knowledge.caption;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import exceptions.gl.GLSingletonNotInitializedException;
 import model.gl.GLSingleton;
@@ -23,7 +23,7 @@ public class Frame extends GLObject {
 			GLSingleton.getGL().glLoadIdentity();
 			Vector3f v = GLUtils.getScreen2World(this.width, this.height, true);
 		GLSingleton.getGL().glPopMatrix();
-		GLSingleton.getGL().glBegin(GL.GL_LINE_LOOP);
+		GLSingleton.getGL().glBegin(GL2.GL_LINE_LOOP);
 			GLSingleton.getGL().glVertex2f(0.0f, 0.0f);
 			GLSingleton.getGL().glVertex2f(v.getX(), 0.0f);
 			GLSingleton.getGL().glVertex2f(v.getX(), -v.getY());

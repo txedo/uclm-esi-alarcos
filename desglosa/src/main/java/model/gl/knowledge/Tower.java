@@ -1,6 +1,6 @@
 package model.gl.knowledge;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
@@ -43,19 +43,19 @@ public class Tower extends GLObject3D {
 			if (this.edge_width > 0.0f)
 				GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);			// Configuramos el color NEGRO para todas las líneas
 			// Configuración y pintado de aristas
-			GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_FILL);	// Deshabilitamos el modo relleno
+			GLSingleton.getGL().glDisable(GL2.GL_POLYGON_OFFSET_FILL);	// Deshabilitamos el modo relleno
 			super.disableLight();
 			GLSingleton.getGL().glLineWidth(edge_width > 0.0f? edge_width : 1.0f);	// Configuramos el grosor de la arista
-			GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_LINE);	// Habilitamos el modo línea
+			GLSingleton.getGL().glEnable(GL2.GL_POLYGON_OFFSET_LINE);	// Habilitamos el modo línea
 			GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f);		// Desfasamos un poco para no dejar huecos en blanco sin rellenar entre la línea y el polígono
-			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);	// Renderizamos únicamente la parte frontal de la cara por razones de rendimiento
+			GLSingleton.getGL().glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_LINE);	// Renderizamos únicamente la parte frontal de la cara por razones de rendimiento
 			this.drawTower(0.0f, this.edge_height);						// Dibujamos la torre (sólo los bordes)
-			GLSingleton.getGL().glDisable(GL.GL_POLYGON_OFFSET_LINE);	// Restauramos todo
-			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+			GLSingleton.getGL().glDisable(GL2.GL_POLYGON_OFFSET_LINE);	// Restauramos todo
+			GLSingleton.getGL().glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
 			GLSingleton.getGL().glPolygonOffset(0.0f, 0.0f);// Configuramos el offset del polígono sin desfase
-			GLSingleton.getGL().glEnable(GL.GL_POLYGON_OFFSET_FILL);		// Habilitamos el modo relleno
+			GLSingleton.getGL().glEnable(GL2.GL_POLYGON_OFFSET_FILL);		// Habilitamos el modo relleno
 			super.enableLight();
-			GLSingleton.getGL().glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+			GLSingleton.getGL().glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
 			// Aplicamos el mismo color a todos los vértices de la torre
 			GLSingleton.getGL().glColor4fv(color.getColorFB());
 			// Dibujamos la torre con relleno with multisample enabled to get polygons antialiased
@@ -81,11 +81,11 @@ public class Tower extends GLObject3D {
 	private void drawTower (float base, float height) throws GLSingletonNotInitializedException {
 		/* Dibujamos las caras en sentido contrario a las agujas del reloj
 		 * -Counter-ClockWise (CCW)- para especificar la cara frontal.
-		 * Con gl.glFrontFace(GL.GL_CW) podríamos especificarlo al contrario
+		 * Con gl.glFrontFace(GL2.GL_CW) podríamos especificarlo al contrario
 		 */
 		GLSingleton.getGL().glPushMatrix();
 			GLSingleton.getGL().glTranslatef(this.positionX, 0, this.positionY);
-			GLSingleton.getGL().glBegin(GL.GL_QUADS);
+			GLSingleton.getGL().glBegin(GL2.GL_QUADS);
 				// Base	(en principio no es necesario dibujarla)
 				// Frente
 				GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);

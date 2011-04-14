@@ -1,6 +1,6 @@
 package model.gl.knowledge;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import model.gl.GLSingleton;
 import model.knowledge.Color;
@@ -31,13 +31,13 @@ public abstract class GLObject {
 	public abstract void draw() throws GLSingletonNotInitializedException;
 	
 	protected void enableLight () throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glEnable(GL.GL_LIGHTING);
-		GLSingleton.getGL().glEnable(GL.GL_LIGHT1);			// Habilitamos la iluminacion
+		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
+		GLSingleton.getGL().glEnable(GL2.GL_LIGHT1);			// Habilitamos la iluminacion
 	}
 	
 	protected void disableLight () throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glDisable(GL.GL_LIGHTING);
-		GLSingleton.getGL().glDisable(GL.GL_LIGHT1);			// Deshabilitamos la iluminación
+		GLSingleton.getGL().glDisable(GL2.GL_LIGHTING);
+		GLSingleton.getGL().glDisable(GL2.GL_LIGHT1);			// Deshabilitamos la iluminación
 	}
 
 	public int getId() {
