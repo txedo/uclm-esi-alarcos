@@ -13,17 +13,17 @@
 </head>
 <body>
 	Insert your applet code here.<br>
-	<applet code="org.jdesktop.applet.util.JNLPAppletLauncher"
-	      width=600
-	      height=400
-	      archive="http://jogamp.org/deployment/util/applet-launcher.jar,
-	               http://jogamp.org/deployment/webstart/newt.all.jar,
-	               http://jogamp.org/deployment/webstart/nativewindow.all.jar,
-	               http://jogamp.org/deployment/webstart/jogl.all.jar,
-	               http://jogamp.org/deployment/webstart/gluegen-rt.jar,
-	               applet/desglosa.jar">
+	<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
+		codebase="./"
+	    width=600
+	    height=400
+	    archive="http://jogamp.org/deployment/util/applet-launcher.jar,
+	             http://jogamp.org/deployment/webstart/newt.all.jar,
+	             http://jogamp.org/deployment/webstart/nativewindow.all.jar,
+	             http://jogamp.org/deployment/webstart/jogl.all.jar,
+	             http://jogamp.org/deployment/webstart/gluegen-rt.jar,
+	             applet/desglosa-0.0.1-SNAPSHOT.jar">
 	   <param name="codebase_lookup" value="false">
-	
 	   <param name="subapplet.classname" value="presentation.AppletMain">
 	   <param name="subapplet.displayname" value="Desglosa Applet">
 	   <param name="noddraw.check" value="true">

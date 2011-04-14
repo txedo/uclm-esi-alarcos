@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>JOGL JNLP Applet Test</title>
+</head>
+<body>
+
+<P>
+In case your <a href="https://jdk6.dev.java.net/plugin2/jnlp/">Java Plugin supports JNLP</a>, 
+the <em>applet-gears.jnlp</em> is used, 
+otherwise it shall fallback to <a href="http://jogamp.org/applet-launcher/www/">JNLPAppletLauncher</a>.
+
+</P>
+
+<P>
+Note that it is important for the startup time to have the same JVM arguments in the applet tags,
+as well as within the JNLP applet description, here see property <em>sun.java2d.noddraw</em>. <br>
+Only if JVM arguments of the JNLP applet description are satisfied by the applet tag's JVM,<br>
+the plugin will not need to start a new JVM. OF course, the applet tag's JVM spec may exceed the
+JNLP applet's one.
+</P>
+
+<P>
+
+<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
+	codebase="./"
+    width=600
+    height=400
+    archive="http://jogamp.org/deployment/util/applet-launcher.jar,
+             http://jogamp.org/deployment/webstart/newt.all.jar,
+             http://jogamp.org/deployment/webstart/nativewindow.all.jar,
+             http://jogamp.org/deployment/webstart/jogl.all.jar,
+             http://jogamp.org/deployment/webstart/gluegen-rt.jar,
+             desglosa-0.0.1-SNAPSHOT.jar">
+   <param name="codebase_lookup" value="false">
+   <param name="subapplet.classname" value="presentation.AppletMain">
+   <param name="subapplet.displayname" value="Desglosa Applet">
+   <param name="noddraw.check" value="true">
+   <param name="progressbar" value="true">
+   <param name="jnlpNumExtensions" value="1">
+   <param name="jnlpExtension1"
+          value="http://jogamp.org/deployment/webstart/jogl-core.jnlp">
+   <param name="java_arguments" value="-Dsun.java2d.noddraw=true">
+   <param name="jnlp_href" value="applet-desglosa.jnlp">
+</applet>
+
+</P>
+<P>
+
+The applet above is instantiated with the following code:
+
+<pre>
+&lt;applet code="org.jdesktop.applet.util.JNLPAppletLauncher"
+      width=600
+      height=400
+      archive="http://jogamp.org/deployment/util/applet-launcher.jar,
+               http://jogamp.org/deployment/webstart/nativewindow.all.jar,
+               http://jogamp.org/deployment/webstart/jogl.all.jar,
+               http://jogamp.org/deployment/webstart/gluegen-rt.jar,
+               http://jogamp.org/deployment/webstart/jogl-demos/jogl-demos.jar"&gt;
+   &lt;param name="codebase_lookup" value="false"&gt;
+   &lt;param name="subapplet.classname" value="demos.applets.GearsApplet"&gt;
+   &lt;param name="subapplet.displayname" value="JOGL Gears Applet"&gt;
+
+   &lt;param name="noddraw.check" value="true"&gt;
+   &lt;param name="progressbar" value="true"&gt;
+   &lt;param name="jnlpNumExtensions" value="1"&gt;
+   &lt;param name="jnlpExtension1"
+          value="http://jogamp.org/deployment/webstart/jogl-core.jnlp"&gt;
+   &lt;param name="java_arguments" value="-Dsun.java2d.noddraw=true"&gt;
+   &lt;param name="jnlp_href" value="applet-gears.jnlp"&gt;
+
+&lt;/applet&gt;
+</pre>
+
+Where the referenced JNLP file <em>applet-gears.jnlp</em> looks as follow:
+
+<pre>
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;jnlp href="applet-desglosa.jnlp"&gt;
+  &lt;information&gt;
+    &lt;title&gt;JOGL JNLP Applet Desglosa&lt;/title&gt;
+
+    &lt;vendor&gt;JogAmp Community&lt;/vendor&gt;
+    &lt;homepage href="http://jogamp.org/jogl-demos/"/&gt;
+    &lt;description&gt;Gears Demo&lt;/description&gt;
+    &lt;description kind="short"&gt;Brian Paul's Gears demo ported to Java and JOGL.&lt;/description&gt;
+
+    &lt;offline-allowed/&gt;
+  &lt;/information&gt;
+
+    &lt;resources&gt;
+      &lt;j2se href="http://java.sun.com/products/autodl/j2se" version="1.4+"/&gt;
+      &lt;property name="sun.java2d.noddraw" value="true"/&gt;
+      &lt;jar href="desglosa.jar" main="true"/&gt;
+
+      &lt;extension name="newt-all-awt" href="http://jogamp.org/deployment/webstart/newt-all-awt.jnlp" /&gt;
+    &lt;/resources&gt;
+
+  &lt;applet-desc 
+      name="Desglosa-Applet"
+      main-class="presentation.AppletMain"
+      width="640" 
+      height="480"&gt;
+  &lt;/applet-desc&gt;
+&lt;/jnlp&gt;
+
+</pre>
+
+</P>
+<P>
+
+Note that the jogl-demos.jar, which contains the GearsApplet class,
+<B>does not need to be signed</B>! JogAmp Community signs
+applet-launcher.jar, jogl.jar and gluegen-rt.jar, which contain the
+JNLPAppletLauncher and JOGL's supporting classes; this is the only
+Java code which needs to be signed in order to deploy applets using
+JOGL and is the only certificate the end user must accept.
+
+</P>
+<P>
+
+The <a href="http://jogamp.org/applet-launcher/www/">JNLPAppletLauncher
+home page</a> contains more information about what files must be
+placed on the web server in order to enable the deployment of applets
+using JOGL and other extensions.
+
+</P>
+
+</body>
+</html>

@@ -17,7 +17,7 @@ import model.gl.TextureLoader;
 public abstract class GLViewManager {
 	protected final int BUFFSIZE = 512;
 	/* http://www.cgtextures.com/ */
-//	private final String FLOOR_TEXTURE = "textures/metal-floor-texture-01.jpg";
+	private final String FLOOR_TEXTURE = "textures/metal-floor-texture-01.jpg";
 	
 	protected GLDrawer drawer;
 	protected boolean threeDimensional;
@@ -34,7 +34,7 @@ public abstract class GLViewManager {
 		this.shadowSupport = false;
 		this.selectionMode = false;
 		pickingRegion = 0.1;
-//		textureLoader = new TextureLoader(new String[]{FLOOR_TEXTURE});
+		textureLoader = new TextureLoader(new String[]{FLOOR_TEXTURE});
 	}
 	
 	 /** Called by the GLDrawer.setViewLevel() function to configure OpenGL properties.

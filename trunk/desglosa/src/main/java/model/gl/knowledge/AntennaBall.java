@@ -69,17 +69,17 @@ public class AntennaBall extends GLObject3D {
 			
 			// Drawing the parent ball
 			if (!shadow) {
-//				// Enable texture mapping
-//				GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D);
-//				GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_GEN_S);
-//				GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_GEN_T);
-//				// Set Up Sphere Mapping
-//				GLSingleton.getGL().glTexGeni(GL2.GL_S, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_SPHERE_MAP);
-//				GLSingleton.getGL().glTexGeni(GL2.GL_T, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_SPHERE_MAP);
-//	            // Bind the APPLY(0) or CANCEL(1) texture
-//				int texture = this.textures[0];
-//				if (!this.progression) texture = this.textures[1];
-//				GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, texture);
+				// Enable texture mapping
+				GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D);
+				GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_GEN_S);
+				GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_GEN_T);
+				// Set Up Sphere Mapping
+				GLSingleton.getGL().glTexGeni(GL2.GL_S, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_SPHERE_MAP);
+				GLSingleton.getGL().glTexGeni(GL2.GL_T, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_SPHERE_MAP);
+	            // Bind the APPLY(0) or CANCEL(1) texture
+				int texture = this.textures[0];
+				if (!this.progression) texture = this.textures[1];
+				GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, texture);
 				GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 			} else {
 				GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
@@ -88,10 +88,10 @@ public class AntennaBall extends GLObject3D {
 			GLSingleton.getGLU().gluSphere(this.quadric, this.parentBallRadius, this.subdivisions, this.subdivisions);
 			
 			if (!shadow) {
-//				// Disable everything we enabled before
-//				GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_GEN_S);
-//				GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_GEN_T);
-//				GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);
+				// Disable everything we enabled before
+				GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_GEN_S);
+				GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_GEN_T);
+				GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);
 			}
 		GLSingleton.getGL().glPopMatrix();
 		GLUtils.disableMultisample();
