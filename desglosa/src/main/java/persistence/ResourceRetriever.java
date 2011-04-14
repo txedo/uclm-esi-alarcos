@@ -30,7 +30,7 @@ public class ResourceRetriever {
             return url;
         }
     }
-
+    
     public static InputStream getResourceAsStream(final String filename) throws IOException {
         // Try to load resource from jar
         InputStream stream = ClassLoader.getSystemResourceAsStream(filename);

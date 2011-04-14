@@ -148,7 +148,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 		
 		this.oldViewLevel = EViewLevels.UnSetLevel;
 //		this.viewLevel = EViewLevels.MapLevel;
-		this.viewLevel = EViewLevels.ProjectLevel;
+		this.viewLevel = EViewLevels.TowerLevel;
 		
 		this.mapLocationView = IViewManagerFactoryImpl.getInstance().createMapLocationViewManager(this);
 		this.metricIndicatorView = IViewManagerFactoryImpl.getInstance().createMetricIndicatorViewManager(this);
