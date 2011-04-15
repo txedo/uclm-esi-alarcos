@@ -15,6 +15,8 @@ El documento se divide en dos secciones dos diferenciadas. En la primera se indi
 
   * Añadir una *variable del sistema* (variable de entorno) llamada CATALINA_HOME y como valor la ruta al directorio del apache que acabamos de descomprimir (p.e. _E:\Archivos de programa\apache-tomcat-6.0.26_).
 
+  * Añadir una nueva *variable del sistema*. En este caso con el nombre CATALINA_OPTS y el valor _-Xms1024m -Xmx1024m -Dorg.apache.jaspper.runtime.BodyContentImpl.LIMIT_BUFFER=true -XX:MaxPermSize=256m_.
+
   * Descargar Axis2 de http://ws.apache.org/axis2/download.cgi/. En la fecha de edición de este documento la última versión disponible es la 1.5.1. Es necesario descargar dos ficheros:
         * Standard Binary Distribution
         * WAR (Web Archive) Distribution
