@@ -120,29 +120,29 @@
   	</dependency>
   	<dependency>
   		<groupId>com.jogamp.jogl</groupId>
-  		<artifactId>jogl</artifactId>
-  		<version>2.0</version>
+  		<artifactId>jogl.all</artifactId>
+  		<version>2.0-b23-20110303</version>
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
   	<dependency>
   		<groupId>com.jogamp.gluegen</groupId>
   		<artifactId>gluegen-rt</artifactId>
-  		<version>2.0</version>
+  		<version>2.0-b23-20110303</version>
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
   	<dependency>
   		<groupId>com.jogamp.newt</groupId>
-  		<artifactId>newt</artifactId>
-  		<version>2.0</version>
+  		<artifactId>newt.all</artifactId>
+  		<version>2.0-b23-20110303</version>
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>
   	<dependency>
   		<groupId>com.jogamp.nativewindow</groupId>
-  		<artifactId>nativewindow</artifactId>
-  		<version>2.0</version>
+  		<artifactId>nativewindow.all</artifactId>
+  		<version>2.0-b23-20110303</version>
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>

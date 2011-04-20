@@ -1,0 +1,11 @@
+1 - Descomprimir el fichero jogl-2.0-b23-XXXXXXXX-os-arch.7z correspondiente a la arquitectura de la máquina y el sistema operativo instalado en la misma. Este proceso será automatizado mediante un script ANT embebido en el pom.xml. De todo el contenido que se acaba de descomprimir será utilizado el directorio LIB y el directorio JAR.
+
+2 - El contenido del directorio LIB (gluegen.dll, jogl_desktop.dll, jogl_es1.dll, jogl_es2.dll, nativewindow_awt.dll, nativewindow_win32.dll y newt.dll) será movido al directorio raiz del proyecto DESGLOSA. Para que Eclipse tenga conocimiento de causa, será necesario esta ruta en la variable "Native library location" de "Java Build Path -> Libraries -> Maven Dependencies".
+
+3 - A continuación añadiremos las librerías contenidas en el directorio JAR a nuestro repositorio local de Maven, ya que son dependencias del proyecto DESGLOSA. Para ello se abrirá una consola de comandos y, previa situación en el directorio correspondiente, se ejecutarán los siguientes comandos:
+	mvn install:install-file -Dfile=gluegen-rt.jar -DgroupId=com.jogamp.gluegen -DartifactId=gluegen-rt -Dversion=2.0-b23-20110303 -Dpackaging=jar
+	mvn install:install-file -Dfile=jogl.all.jar -DgroupId=com.jogamp.jogl -DartifactId=jogl.all -Dversion=2.0-b23-20110303 -Dpackaging=jar
+	mvn install:install-file -Dfile=nativewindow.all.jar -DgroupId=com.jogamp.nativewindow -DartifactId=nativewindow.all -Dversion=2.0-b23-20110303 -Dpackaging=jar
+	mvn install:install-file -Dfile=newt.all.jar -DgroupId=com.jogamp.newt -DartifactId=newt.all -Dversion=2.0-b23-20110303 -Dpackaging=jar
+
+4 - En Eclipse mostramos la vista "Maven repositories". Para ello nos dirigimos a "Window -> Show view -> Other... -> Maven -> Maven repositories". A continuación hacemos click en nuestro "Local repository" y seleccionamos "Rebuild index".
