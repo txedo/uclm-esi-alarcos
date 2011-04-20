@@ -33,6 +33,7 @@
 	          value="http://jogamp.org/deployment/webstart/jogl-core.jnlp">
 	   <param name="java_arguments" value="-Dsun.java2d.noddraw=true">
 	   <param name="jnlp_href" value="applet/applet-desglosa.jnlp">
+	   You have no JRE installed.
 	</applet>
 </body>
 </html>
