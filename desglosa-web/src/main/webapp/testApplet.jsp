@@ -10,6 +10,23 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Index</title>
 	<s:head />
+	<script type="text/javascript">	
+		function selectTower(id) {
+			alert('Selected tower: ' + id);
+		}
+		
+		function selectFactory(id) {
+			alert('Selected factory: ' + id);
+		}
+		
+		function selectProject(id) {
+			alert('Selected project: ' + id);
+		}
+		
+		function selectFactoryByLocation(id) {
+			alert('Selected factory by location: ' + id);
+		}
+	</script>
 </head>
 <body>
 	Insert your applet code here.<br>
@@ -37,4 +54,3 @@
 	</applet>
 </body>
 </html>
-	
