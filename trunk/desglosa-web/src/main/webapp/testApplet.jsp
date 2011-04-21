@@ -26,12 +26,19 @@
 		function selectFactoryByLocation(id) {
 			alert('Selected factory by location: ' + id);
 		}
+		
+		function startJSDesglosa() {
+			var value = -1;
+	        value = document.DesglosaApplet.js2java("holaaaaaaaa");
+	        alert(value);
+	}
 	</script>
 </head>
 <body>
 	Insert your applet code here.<br>
 	<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
-		codebase="./"
+		codebase="./" 
+		ID="DesglosaApplet"
 	    width=600
 	    height=400
 	    archive="http://jogamp.org/deployment/util/applet-launcher.jar,
@@ -52,5 +59,7 @@
 	   <param name="jnlp_href" value="applet/applet-desglosa.jnlp">
 	   You have no JRE installed.
 	</applet>
+	<br>
+	<input type="button" name="Button1" value="Start" onClick="javascript:startJSDesglosa()">
 </body>
 </html>
