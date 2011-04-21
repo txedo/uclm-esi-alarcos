@@ -160,5 +160,10 @@ public class AppletMain extends Applet implements IObserverUI {
 			} catch (MalformedURLException e1) {}
 		}
 	}
+	
+	public int js2java (String message) {
+		System.err.println(message);
+		return 1;
+	}
 
 }
