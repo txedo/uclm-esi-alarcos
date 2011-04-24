@@ -23,7 +23,7 @@
         display: inline;
     }
     div#sub {
-        display: none;
+        display: always;
     }
     div#nav {
         position: absolute;

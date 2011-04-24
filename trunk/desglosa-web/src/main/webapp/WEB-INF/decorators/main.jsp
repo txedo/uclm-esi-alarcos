@@ -42,6 +42,8 @@
             
             <div id="sub">
             	<h3>Sub Content</h3>
+            	Here you can write some sub content information.
+            	<div id="extra1">&nbsp;</div>
             </div>
             
             

@@ -8,8 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Index</title>
-	<s:head />
+	<title>Applet testing page</title>
 	<script type="text/javascript">	
 		function selectTower(id) {
 			alert('Selected tower: ' + id);
@@ -33,12 +32,13 @@
 	        alert(value);
 	}
 	</script>
+	<s:head />
 </head>
 <body>
-	Insert your applet code here.<br>
 	<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
 		codebase="./" 
 		ID="DesglosaApplet"
+		alt="Check your browser configuration to allow java applets." 
 	    width=600
 	    height=400
 	    archive="http://jogamp.org/deployment/util/applet-launcher.jar,
@@ -57,7 +57,8 @@
 	          value="http://jogamp.org/deployment/webstart/jogl-core.jnlp">
 	   <param name="java_arguments" value="-Dsun.java2d.noddraw=true">
 	   <param name="jnlp_href" value="applet/applet-desglosa.jnlp">
-	   You have no JRE installed.
+	   You have no JRE installed.<br>
+	   Visit <a href="http://www.java.com/download/index.jsp" alt="Java.com homepage" target="_blank">Java download page</a> to verify and/or install a JRE.
 	</applet>
 	<br>
 	<input type="button" name="Button1" value="Start" onClick="javascript:startJSDesglosa()">
