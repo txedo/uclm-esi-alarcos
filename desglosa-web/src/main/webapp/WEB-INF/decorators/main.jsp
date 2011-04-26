@@ -9,8 +9,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title><decorator:title default="Struts Starter"/></title>
-    <link href="<s:url value='/styles/main.css'/>" rel="stylesheet" type="text/css" media="all"/>
+	<title><decorator:title default="Desglosa Visualization System"/></title>
+	<link href="<s:url value='/styles/style.css'/>" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/cufon-yui.js"></script>
+	<script type="text/javascript" src="js/arial.js"></script>
+	<script type="text/javascript" src="js/cuf_run.js"></script>
+    <!-- <link href="<s:url value='/styles/main.css'/>" rel="stylesheet" type="text/css" media="all"/>  -->
     <link href="<s:url value='/struts/niftycorners/niftyCorners.css'/>" rel="stylesheet" type="text/css"/>
     <link href="<s:url value='/struts/niftycorners/niftyPrint.css'/>" rel="stylesheet" type="text/css" media="print"/>
     <script language="JavaScript" type="text/javascript" src="<s:url value='/struts/niftycorners/nifty.js'/>"></script>
@@ -27,62 +31,63 @@
     <decorator:head/>
 </head>
 <body id="page-home">
-    <div id="page">
-        <div id="header" class="clearfix">
-        	HEADER
-            <hr />
-        </div>
-        
-        <div id="content" class="clearfix">
-            <div id="main">
-            	<h3>Main Content</h3>
+    <div id="page" class="main">
+		<div class="header">
+			<div class="header_resize">
+				<div class="logo">
+					<h1><a href="index.action">des<span>gl</span>osa</a></h1>
+				</div>
+				<div class="menu_nav">
+					<ul>
+						<li class="active"><a href="index.action"><span>Home</span></a></li>
+						<li><a href="support.html"><span>My Account</span></a></li>
+						<li><a href="startVisualization.action"><span>Visualization</span></a></li>
+						<li><a href="contact.html"><span>Contact Us</span></a></li>
+					</ul>
+					<div class="clr"></div>
+				</div>
+		
+		    	<div class="clr"></div>
+			    <div class="header_img"><img src="images/logo.png" alt="" width="271" height="234" />
+					<h2>desglosa visualization engine</h2>
+					<p><strong>a tagline </strong><br />
+					a description about desglosa
+					</p>
+					<div class="clr"></div>
+			    </div>
+			</div>
+		</div>
+
+		<div class="content">
+			<div class="content_resize">
             	<decorator:body/>
                 <hr />
-            </div>
-            
-            <div id="sub">
-            	<h3>Sub Content</h3>
-            	Here you can write some sub content information.
-            	<div id="extra1">&nbsp;</div>
-            </div>
-            
-            
-            <div id="local">
-                <h3>Local Nav. Bar</h3>
-                <ul>
-                    <li><a href="#">Content page 1</a></li>
-                    <li><a href="#">Content page 2</a></li>
-                    <li><a href="#">Content page 3</a></li>
-                    <li><a href="#">Content page 4</a></li>
-                    <li><a href="#">Content page 5</a></li>
-                    <li><a href="#">Content page 6</a></li>
-                </ul>
-            </div>
-            
-            
-            <div id="nav">
-                <div class="wrapper">
-                <h3>Nav. bar</h3>
-                <ul class="clearfix">
-                     <li><a href="#">Menu 1</a></li>
-                     <li><a href="#">Menu 2</a></li>
-                     <li><a href="#">Menu 3</a></li>
-                     <li><a href="#">Menu 4</a></li>
-                     <li><a href="#">Menu 5</a></li>
-                     <li class="last"><a href="#">Menu 6</a></li>
-                </ul>
-                </div>
-                <hr />
-            </div>
-        </div>
-        
-        <div id="footer" class="clearfix">
-            Footer
-        </div>
-        
+			</div>
+		</div>
+ 
+		<div class="fbg">
+			<div class="fbg_resize">
+				<div class="col c1">
+					<h2><span>Sitemap section 1</span></h2>
+					<p>subsections</p>
+				</div>
+				<div class="col c2">
+					<h2><span>Sitemap section 2</span></h2>
+					<p>more subsections</p>
+				</div>
+				<div class="col c3">
+					<h2><span>Sitemap section 3</span></h2>
+					<p>... and more subsections</p>
+				</div>
+				<div class="clr"></div>
+			</div>
+			<div class="footer">
+				<p class="lf">&copy; Copyright <a href="#">Desglosa</a>.</p>
+				
+				<p class="rf">Layout by Cool <a href="http://www.coolwebtemplates.net/">Website Templates</a></p>
+				<div class="clr"></div>
+			</div>
+		</div>
     </div>
-    
-    <div id="extra1">&nbsp;</div>
-    <div id="extra2">&nbsp;</div>
 </body>
 </html>
