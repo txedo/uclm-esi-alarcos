@@ -42,6 +42,7 @@
 						<li class="active"><a href="index.action"><span>Home</span></a></li>
 						<li><a href="support.html"><span>My Account</span></a></li>
 						<li><a href="startVisualization.action"><span>Visualization</span></a></li>
+						<li><a href="administrationPanel.action"><span>Management</span></a></li>
 						<li><a href="contact.html"><span>Contact Us</span></a></li>
 					</ul>
 					<div class="clr"></div>

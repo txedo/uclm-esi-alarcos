@@ -22,7 +22,7 @@ html, .main {
 .logo {
 	padding:15px 0 20px 0;
 	margin:0 auto;
-	width:450px;
+	width:430px;
 	float:left;
 }
 .logo img {
@@ -124,11 +124,43 @@ a.rm, a.com {
 	line-height:1.8em;
 	padding:10px 0 0 0;
 }
+/*
+	http://css-tricks.com/examples/ButtonMaker/
+	
+	.button {
+   border-top: 1px solid #96d1f8;
+   background: #65a9d7;
+   background: -webkit-gradient(linear, left top, left bottom, from(#383939), to(#65a9d7));
+   background: -moz-linear-gradient(top, #383939, #65a9d7);
+   padding: 5.5px 11px;
+   -webkit-border-radius: 9px;
+   -moz-border-radius: 9px;
+   border-radius: 9px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 13px;
+   font-family: Arial, Helvetica, Sans-Serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.button:hover {
+   border-top-color: #1e557a;
+   background: #1e557a;
+   color: #ccc;
+   }
+.button:active {
+   border-top-color: #1e557a;
+   background: #1e557a;
+   }
+*/
 .menu_nav {
 	margin:20px 0 0 0;
 	padding:3px 0 0 10px;
 	float:right;
-	width:500px;
+	width:520px;
 }
 .menu_nav ul {
 	list-style:none;
@@ -138,6 +170,9 @@ a.rm, a.com {
 .menu_nav li {
 	float:left;
 	padding:0 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 }
 .menu_nav li a {
 	background:url(../images/r_menu_one.gif) no-repeat right;

@@ -15,36 +15,39 @@
 	<s:head />
 </head>
 <body>
-	<div id="map_canvas" style="width: 600px; height: 400px"></div>
-	<script type="text/javascript">initialize();</script>
-	<div id="jogl_canvas">
-		<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
-			codebase="./" 
-			ID="DesglosaApplet"
-			alt="Check your browser configuration to allow java applets." 
-		    width=600
-		    height=400
-		    archive="http://jogamp.org/deployment/util/applet-launcher.jar,
-		             http://jogamp.org/deployment/webstart/newt.all.jar,
-		             http://jogamp.org/deployment/webstart/nativewindow.all.jar,
-		             http://jogamp.org/deployment/webstart/jogl.all.jar,
-		             http://jogamp.org/deployment/webstart/gluegen-rt.jar,
-		             applet/desglosa-0.0.1-SNAPSHOT.jar">
-		   <param name="codebase_lookup" value="false">
-		   <param name="subapplet.classname" value="presentation.AppletMain">
-		   <param name="subapplet.displayname" value="Desglosa Applet">
-		   <param name="noddraw.check" value="true">
-		   <param name="progressbar" value="true">
-		   <param name="jnlpNumExtensions" value="1">
-		   <param name="jnlpExtension1"
-		          value="http://jogamp.org/deployment/webstart/jogl-core.jnlp">
-		   <param name="java_arguments" value="-Dsun.java2d.noddraw=true">
-		   <param name="jnlp_href" value="applet/applet-desglosa.jnlp">
-		   You have no JRE installed.<br>
-		   Visit <a href="http://www.java.com/download/index.jsp" alt="Java.com homepage" target="_blank">Java download page</a> to verify and/or install a JRE.
-		</applet>
+	<div id="visualization_canvas">
+		<div id="map_canvas" style="width: 600px; height: 400px">
+			<script type="text/javascript">initialize();</script>
+		</div>
+		<div id="jogl_canvas">
+			<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
+				codebase="./" 
+				ID="DesglosaApplet"
+				alt="Check your browser configuration to allow java applets." 
+			    width=600
+			    height=400
+			    archive="http://jogamp.org/deployment/util/applet-launcher.jar,
+			             http://jogamp.org/deployment/webstart/newt.all.jar,
+			             http://jogamp.org/deployment/webstart/nativewindow.all.jar,
+			             http://jogamp.org/deployment/webstart/jogl.all.jar,
+			             http://jogamp.org/deployment/webstart/gluegen-rt.jar,
+			             applet/desglosa-0.0.1-SNAPSHOT.jar">
+			   <param name="codebase_lookup" value="false">
+			   <param name="subapplet.classname" value="presentation.AppletMain">
+			   <param name="subapplet.displayname" value="Desglosa Applet">
+			   <param name="noddraw.check" value="true">
+			   <param name="progressbar" value="true">
+			   <param name="jnlpNumExtensions" value="1">
+			   <param name="jnlpExtension1"
+			          value="http://jogamp.org/deployment/webstart/jogl-core.jnlp">
+			   <param name="java_arguments" value="-Dsun.java2d.noddraw=true">
+			   <param name="jnlp_href" value="applet/applet-desglosa.jnlp">
+			   You have no JRE installed.<br>
+			   Visit <a href="http://www.java.com/download/index.jsp" alt="Java.com homepage" target="_blank">Java download page</a> to verify and/or install a JRE.
+			</applet>
+		</div>
+		<br>
+		<input type="button" name="Button1" value="Start" onClick="javascript:startJSDesglosa()">
 	</div>
-	<br>
-	<input type="button" name="Button1" value="Start" onClick="javascript:startJSDesglosa()">
 </body>
 </html>
