@@ -161,9 +161,8 @@ public class AppletMain extends Applet implements IObserverUI {
 		}
 	}
 	
-	public int js2java (String message) {
-		System.err.println(message);
-		return 1;
+	public String js2java (String message) {
+		return message + " from js2java";
 	}
 
 }

@@ -17,5 +17,5 @@ function selectFactoryByLocation(id) {
 function startJSDesglosa() {
 	var value = -1;
     value = document.DesglosaApplet.js2java("holaaaaaaaa");
-        alert(value);
+    alert(value);
 }
