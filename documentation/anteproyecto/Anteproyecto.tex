@@ -69,22 +69,24 @@
 % En las páginas de portada e índices, no hay encabezado ni pie de página
 \pagestyle{empty}
 \input{Portada.tex}
-% Derechos de autor
-\parskip=10pt
-\mbox{}
-\vfill{}
-\begin{small}
-	\noindent DESGLOSA\\
-	\noindent Un sistema de visualización 3D para dar soporte al Desarrollo Global de Software
-
-	\noindent\copyright~ 2011 Jose Domingo López López (Alumno del PFC)\\
-	\phantom{\copyright~ 2011} M\textordfeminine{} Ángeles Moraga de la Rubia (Director del PFC)
-
-	\noindent En virtud del Artículo 7 del Real Decreto Legislativo 1/1996, de 12 de abril por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, modificado por la Ley 23/2006 de 7 de julio, este PFC se considera una obra en colaboración entre las diferentes partes. Por tanto la propiedad intelectual de este PFC será compartida con iguales porcentajes entre el alumno y el director del PFC.
-
-	\noindent Este documento ha sido compuesto con \LaTeX{} y sus imágenes generadas con Inkscape y GIMP.
-\end{small}
-\clearpage
+% -------------
+%% Derechos de autor
+%\parskip=10pt
+%\mbox{}
+%\vfill{}
+%\begin{small}
+%	\noindent DESGLOSA\\
+%	\noindent Un sistema de visualización 3D para dar soporte al Desarrollo Global de Software
+%
+%	\noindent\copyright~ 2011 Jose Domingo López López (Alumno del PFC)\\
+%	\phantom{\copyright~ 2011} M\textordfeminine{} Ángeles Moraga de la Rubia (Director del PFC)
+%
+%	\noindent En virtud del Artículo 7 del Real Decreto Legislativo 1/1996, de 12 de abril por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, modificado por la Ley 23/2006 de 7 de julio, este PFC se considera una obra en colaboración entre las diferentes partes. Por tanto la propiedad intelectual de este PFC será compartida con iguales porcentajes entre el alumno y el director del PFC.
+%
+%	\noindent Este documento ha sido compuesto con \LaTeX{} y sus imágenes generadas con Inkscape y GIMP.
+%\end{small}
+%\clearpage
+% -------------
 % En los índices numeramos las páginas en números romanos
 \pagestyle{plain}
 \pagenumbering{Roman}
@@ -120,9 +122,5 @@
 \bibliographystyle{bababbrv} % Estilo de bibliografía
 \bibliography{Bibliografia}
 \clearpage
-% Añade los apéndices al índice
-\addcontentsline{toc}{section}{Anexos}
-% Apéndices
-\input{Anexos.tex}
-
+\input{SolicitudEvaluacion.tex}
 \end{document}

@@ -31,7 +31,7 @@
 			             http://jogamp.org/deployment/webstart/nativewindow.all.jar,
 			             http://jogamp.org/deployment/webstart/jogl.all.jar,
 			             http://jogamp.org/deployment/webstart/gluegen-rt.jar,
-			             applet/desglosa-0.0.1-SNAPSHOT.jar">
+			             applet/desglosa.jar">
 			   <param name="codebase_lookup" value="false">
 			   <param name="subapplet.classname" value="presentation.AppletMain">
 			   <param name="subapplet.displayname" value="Desglosa Applet">
