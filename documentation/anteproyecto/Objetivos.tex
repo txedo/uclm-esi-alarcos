@@ -1,37 +1,39 @@
 \section{Objetivos}
 
-A continuación, y bajo el subtítulo de ``objetivo principal'', se describirá la meta final que se persigue en la elaboración de este PFC, que consiste en obtener un producto software. Un producto software no se constituye únicamente de código fuente ejecutable, sino que también se compone de la documentación, diagramas y modelos -entre otros- que se han generado en todas y cada una de las fases que conforman todo el proceso de desarrollo del software. Ello acarrea la adquisición de una serie de competencias y la compleción de un conjunto de tareas que serán expuestas bajo el título de ``subobjetivos''.
+A continuación, y bajo el subtítulo de ``objetivo principal'', se describirá la meta final que se persigue en la elaboración de este PFC, que consiste en obtener un producto software. Un producto software no se constituye únicamente de código fuente ejecutable, sino que también se compone de la documentación, diagramas y modelos -entre otros- que se han generado en todas y cada una de las fases que conforman todo el proceso de desarrollo del software. Ello acarrea la adquisición de una serie de competencias y la compleción de un conjunto de tareas que serán expuestas bajo el título de ``objetivos parciales''.
 
 
-\subsection{Objetivo principal} \label{sec:objetivo-principal}
+\subsection{Objetivo principal}
 
-El objetivo principal del PFC consiste en elaborar una \textbf{aplicación web} que permita la visualización de indicadores y métricas utilizadas en el contexto empresarial bajo el paradigma del \textbf{Desarrollo Global de Software}, escenificadas por un conjunto de metáforas previamente definidas. La visualización se llevará a cabo mediante tecnologías basadas en gráficos 2D y 3D, utilizándose en cada momento la que se considere oportuna en función de las necesidades de representación de cada métrica.
-
-A fin de desarrollar un sistema extensible y que satisfaga los requisitos de visualización más exigentes, se desarrollará un \textbf{motor gráfico 3D} basado en \textit{Java} y \textit{OpenGL}, que será integrado en la aplicación Web mediante un applet. Asimismo, el usuario deberá ser capaz de interactuar con dicho applet por medio de un navegador Web convencional.
-
-El motor gráfico implementará un conjunto de \textbf{metáforas de visualización} y permitirá que sean utilizadas para representar las distintas dimensiones de los datos o información que se quiera representar visualmente. Por otro lado, se dejarán abiertas determinadas guías para permitir la incorporación de nuevos modelos y metáforas de un modo fácil, viable, rápido y poco costoso por parte del desarrollador.
-
-La visualización se podrá hacer en base a dos niveles de abstracción:
+El objetivo principal del PFC consiste en elaborar una \textbf{herramienta} que permita la visualización de algunas \textbf{métricas software} utilizadas en el contexto empresarial bajo el paradigma del \textbf{Desarrollo Global de Software}. Para ello, será necesario definir un conjunto de \textbf{metáforas visuales} capaces de escenificar las características más relevantes de un producto o un proceso software. Para lograr una herramienta intuitiva y utilizable, se consideran, \textit{a priori}, dos niveles visuales de abstracción: \textit{nivel de fábrica} y \textit{nivel de proyecto}.
 \begin{myitemize}
-	\item \textbf{Nivel de fábrica}, en el que se podrá acceder a información relativa a una fábrica determinada o a un conjunto de fábricas. Una fábrica puede estar desarrollando varios proyectos.
-	\item \textbf{Nivel de proyecto}, desde el que se podrá visualizar la información de un proyecto. Un proyecto puede estar desarrollándose en varias fábricas.
+	\item \textbf{Nivel de fábrica}. El GSD implica la colaboración entre varias organizaciones y cada organización puede estar compuesta por una o más fábricas de software. A su vez, una fábrica puede estar desarrollando varios proyectos, o parte de ellos, de forma simultánea. En este nivel se podrá acceder a la información relativa a una fábrica determinada o a un conjunto de fábricas.
+	\item \textbf{Nivel de proyecto}. Un proyecto puede estar desarrollándose en varias fábricas pertenecientes a distintas organizaciones. Desde este nivel se podrá visualizar la información relativa a los proyectos software.
 \end{myitemize}
 
-\clearpage
-\subsection{Subobjetivos}
+Para permitir que las distintas organizaciones y fábricas involucradas en un conjunto común de proyectos puedan utilizar el sistema de visualización y manejar la información globalizada, la herramienta se diseñará como una \textbf{aplicación web}, que deberá ser accesible por medio de un navegador web convencional.
+
+Además, a fin de desarrollar un sistema extensible y que satisfaga los requisitos de visualización más exigentes, se desarrollará un \textbf{motor gráfico} basado alguna librería de gráficos 3D, que será integrado en la aplicación web. El motor gráfico implementará un conjunto de \textbf{metáforas de visualización} que representarán de un modo visual los datos contenidos en los atributos de distintas métricas software.
+
+Para conseguir este objetivo se deben llevar a cabo los objetivos parciales que se abordan en las siguiente subsección.
+
+
+\subsection{Objetivos parciales}
 
 La consecución del objetivo principal acarrea la adquisición y compleción de las siguientes competencias y tareas:
 \begin{myitemize}
-	\item Revisión sistemática de las distintas técnicas de visualización empleadas para escenificar indicadores y métricas que representan información.
-	\item Análisis del mundo real, en el contexto del GSD, para lograr un diseño conceptual que abstraiga la información relevante.
-	\item Revisión sistemática de librerías para la generación de gráficos 3D y técnicas de visualización de datos empleando gráficos 3D.
-	\item Definición de una arquitectura estable y extensible de un motor gráfico que permita la representación de modelos para escenificar metáforas de visualización, empleando buenas prácticas de programación así como patrones de diseño.
-	\item Desarrollo de un motor gráfico para la visualización de datos empleando modelos en 3D.
-	\item Revisión sistemática de tecnologías y \textit{frameworks} para desarrollo de aplicaciones Web y tecnologías para la generación de gráficos y modelos de visualización en la Web.
-	\item Definición de una arquitectura estable y extensible de una aplicación Web, utilizando patrones de diseño.
-	\item Diseño de una base de datos para la gestión de la lógica de negocio utilizada por el sistema a implementar.
-	\item Desarrollo de una aplicación Web para la visualización de información empleando técnicas basadas en gráficos en tres dimensiones.
-	\item Integración del motor gráfico basado en OpenGL con la aplicación Web.
-	\item Desarrollo de pruebas unitarias para el software.
-	\item Elaboración de la documentación técnica asociada al proyecto.
+	\item Seleccionar un conjunto de \textbf{métricas software} utilizadas en el contexto empresarial bajo el paradigma del GSD.
+	\item Definir \textbf{metáforas de visualización} para cada uno de los niveles de abstracción que se desean escenificar.
+	\item Analizar las distintas técnicas de visualización empleadas para escenificar métricas.
+	\item Establecer un mecanismo de asociación entre las subcaracterísticas de las metáforas de visualización y los atributos de las métricas software.
+	\item Analizar el mundo real, en el contexto del GSD, para lograr un diseño conceptual que abstraiga la información relevante. Este punto implica el diseño de una base de datos para la gestión de la lógica de negocio utilizada por la herramienta.
+	\item Investigar sobre librerías para la generación de gráficos 3D y técnicas de visualización de datos empleando gráficos 3D.
+	\item Definir una arquitectura estable y extensible de un motor gráfico que permita la representación de modelos para escenificar metáforas de visualización, empleando buenas prácticas de programación así como patrones de diseño.
+	\item Desarrollar un \textbf{motor gráfico} para la visualización de datos empleando modelos en 3D.
+	\item Analizar tecnologías y \textit{frameworks} para el desarrollo de aplicaciones Web y tecnologías para la generación de gráficos y modelos de visualización en la Web.
+	\item Definir una arquitectura estable y extensible de una aplicación web, utilizando patrones de diseño.
+	\item Desarrollar una \textbf{aplicación web} para la visualización de métricas software empleando técnicas basadas en gráficos en dos y tres dimensiones.
+	\item Integrar del motor gráfico desarrollado en la aplicación web.
+	\item Desarrollar las \textbf{pruebas unitarias} del software.
+	\item Elaborar la documentación técnica asociada al proyecto.
 \end{myitemize}
