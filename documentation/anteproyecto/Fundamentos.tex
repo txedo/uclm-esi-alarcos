@@ -1,10 +1,10 @@
 \section{Fundamentos teóricos}
 
-Para la realización de este PFC es necesario definir y estudiar tres conceptos fundamentales:
+La realización de este PFC se basa en tres pilares fundamentales:
 \begin{myitemize}
-	\item Qué es el Desarrollo Global de Software (GSD).
-	\item Qué son las métricas y su uso en el ciclo de vida del software.
-	\item Principios para la representación visual de métricas.
+	\item El Desarrollo Global de Software (GSD).
+	\item Las medidas software.
+	\item La representación visual de medidas software.
 \end{myitemize}
 
 
@@ -14,17 +14,19 @@ Sahay Sundeep \cite{sahay:globalit} define el GSD como \textit{``una forma coord
 Por tanto, tal y como se ha definido el GSD, se infiere que el desarrollo global afecta tanto al proceso de desarrollo del software como a la gestión de proyectos, y es susceptible de problemas tales como las diferencias horarias, culturales o lingüísticas, coordinación, motivación, etcétera \cite{herb-mockus-2001}. Por el contrario, también ofrece una serie de ventajas como la disponibilidad de recursos especializados y la reducción de costes, que prometen, entre otros, beneficios económicos \cite{herb-moitra-2001}.
 
 
-\subsection{Métricas software}
+\subsection{Medidas software}
 
-Una \textbf{métrica} es \textit{``un sistema de medida que incluye la entidad que se está midiendo, una unidad de medida y un valor''} \cite{geisler:metrics} y se define para uno o más atributos comunes para un conjunto de entidades. Un atributo es una propiedad, física o abstracta, que se puede medir.
+En lo que a \textit{métricas} o \textit{medidas software} se refiere, cada autor emplea una terminología, no quedando claro el uso de algunos términos y surgiendo situaciones de homonimia y sinonimia que pueden dar lugar a conflictos y malentendidos. Para evitar este tipo de problemas, este área se abordará en base a la \textbf{Ontología de la Medición del Software} (\textit{Software Measurement Ontology} o SMO) propuesta por \cite{garcia:ontology} y las cuatro sub-ontologías en las que se subdivide: caracterización y objetivos de la medición software, medidas software, formas de medir y medición.
 
-Las \textbf{métricas software} son medidas cuantificables que se utilizan para medir diferentes características o atributos de un producto software o un proceso de desarrollo software \cite{shaik:oometrics}. Según \cite{pfleeger:measurement} y \cite{fenton:measurement}, el uso de métricas en el software es una buena práctica para conocer qué ocurre durante el proceso de desarrollo y mantenimiento del software, predecir lo que puede ocurrir y, por consiguiente, tomar las mejores decisiones cuando se considere oportuno.
+En la SMO se afirma que el objetivo de una medición es \textit{satisfacer ciertas necesidades de información}. Para ello, es necesario identificar las entidades que se quieren medir y sus atributos, siendo un atributo una propiedad, física o abstracta, que se puede medir. Por ejemplo, en el contexto del software orientado a objetos, una \textit{clase} podría ser una entidad y, las \textit{líneas de código}, un atributo de dicha entidad.
+
+Según \cite{pfleeger:measurement} y \cite{fenton:measurement}, el uso de medidas en el software es una buena práctica para conocer qué ocurre durante el proceso de desarrollo y mantenimiento del software. Gracias a ello, es posible predecir lo que puede ocurrir y, por consiguiente, tomar las mejores decisiones cuando se considere oportuno.
 
 
-\subsection{Visualización de métricas}
+\subsection{Visualización de medidas software}
 
 Los sistemas de visualización deben proporcionar vistas intuitivas, efectivas y eficaces que hagan del análisis de datos una tarea rápida y precisa. Para lograrlo, se hace uso de una cualidad del sistema visual humano denominado \textbf{\textit{proceso pre-atentivo}} \cite{hea92}. Los procesos pre-atentivos son procesos que ``saltan a la vista'', siendo detectados inmediatamente y evitando que el usuario deba centrar su atención en una determinada región de una imagen para captar la presencia o ausencia de una característica determinada \cite{ducasse10}.
 
 Existen cuatro categorías básicas de características que se procesan de forma pre-atentiva \cite{ware99}: color, forma, movimiento y localización espacial. De cada una de estas características se puede obtener un gran conjunto de subcaracterísticas como curvatura, tamaño, orientación, longitud, etcétera.
 
-Para representar una \textbf{métrica software} visualmente es necesario qué entidad se quiere escenificar por medio de un modelo gráfico y cuáles son sus atributos más relevantes. De este modo, es posible establecer un conjunto de asociaciones entre los atributos de la entidad y las subcaracterísticas del modelo gráfico. Este concepto recibe el nombre de \textit{vista polimétrica} \cite{lanza03} y permite que los modelos gráficos adopten una determinada forma, orientación o color en función de los valores de las métricas, beneficiándose así de los procesos pre-atentivos.
+Para representar una \textbf{medida software} visualmente es necesario identificar qué entidad se quiere escenificar por medio de un modelo gráfico y cuáles son sus atributos más relevantes. De este modo, es posible establecer un conjunto de asociaciones entre los atributos de la entidad y las subcaracterísticas del modelo gráfico. Este concepto recibe el nombre de \textit{vista polimétrica} \cite{lanza03} y permite que los modelos gráficos adopten una determinada forma, orientación o color en función de los resultados de las mediciones, beneficiándose así de los procesos pre-atentivos.
