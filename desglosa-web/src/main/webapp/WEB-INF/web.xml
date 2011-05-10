@@ -7,9 +7,21 @@
 	
 	<display-name>Struts 2 - Maven Archetype - Starter</display-name>
 	
+	<!-- Define the basename for a resource bundle for I18N -->
+    <context-param>
+        <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+        <param-value>ApplicationResources</param-value>
+    </context-param>
+    <!-- Fallback locale if no bundles found for browser's preferred locale -->
+    <!-- Force a single locale using param-name 'javax.servlet.jsp.jstl.fmt.locale' -->
+    <context-param>
+        <param-name>javax.servlet.jsp.jstl.fmt.fallbackLocale</param-name>
+        <param-value>en</param-value>
+    </context-param>
+    <!-- Context Configuration locations for Spring XML files -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath*:applicationContext*.xml</param-value>
+		<param-value>classpath*:/applicationContext*.xml</param-value>
 	</context-param>
 	
 	<!-- Filters -->
@@ -25,6 +37,14 @@
         <filter-name>action2</filter-name>
         <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
     </filter>
+    <filter>
+        <filter-name>securityFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetBeanName</param-name>
+            <param-value>springSecurityFilterChain</param-value>
+        </init-param>
+    </filter>
 	
 	<filter-mapping>
         <filter-name>action2-cleanup</filter-name>
@@ -38,11 +58,21 @@
         <filter-name>action2</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>securityFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping> 
 	
 	<!-- Listeners -->
 	<listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>net.sf.navigator.menu.MenuContextListener</listener-class>
+	</listener> 
     
     
     <!-- Servlets -->
@@ -65,6 +95,9 @@
         <url-pattern>/dwr/*</url-pattern>
     </servlet-mapping>
     
+    <session-config>
+        <session-timeout>10</session-timeout>
+    </session-config>
     
     <!-- Welcome file lists -->
     <welcome-file-list>
@@ -73,4 +106,20 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>400</error-code>
+        <location>/index.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/403.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.jsp</location>
+    </error-page>
 </web-app>
