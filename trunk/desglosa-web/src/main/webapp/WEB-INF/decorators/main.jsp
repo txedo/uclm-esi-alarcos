@@ -39,20 +39,20 @@
 				</div>
 				<div class="menu_nav">
 					<ul>
-						<li class="active"><a href="index.action"><span>Home</span></a></li>
-						<li><a href="support.html"><span>My Account</span></a></li>
-						<li><a href="startVisualization.action"><span>Visualization</span></a></li>
-						<li><a href="administrationPanel.action"><span>Management</span></a></li>
-						<li><a href="contact.html"><span>Contact Us</span></a></li>
+						<li class="active"><a href="index.action"><span><s:text name="Menu.home" /></span></a></li>
+						<li><a href="support.html"><span><s:text name="Menu.myAccount" /></span></a></li>
+						<li><a href="startVisualization.action"><span><s:text name="Menu.visualization" /></span></a></li>
+						<li><a href="showAdminPanel.action"><span><s:text name="Menu.adminPanel" /></span></a></li>
+						<li><a href="contact.html"><span><s:text name="Menu.contactUs" /></span></a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>
 		
 		    	<div class="clr"></div>
 			    <div class="header_img"><img src="images/logo.png" alt="" width="271" height="234" />
-					<h2>desglosa visualization engine</h2>
-					<p><strong>a tagline </strong><br />
-					a description about desglosa
+					<h2><s:text name="Desglosa.title" /></h2>
+					<p><strong><s:text name="Desglosa.tagline" /></strong><br />
+					<s:text name="Desglosa.description" />
 					</p>
 					<div class="clr"></div>
 			    </div>

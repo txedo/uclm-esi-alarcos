@@ -6,7 +6,7 @@
 
 <struts>
 	<!-- When adding an action in struts.xml, edit applicationContext.xml to instantiate it by Spring -->
-	<package name="myPackage" extends="struts-default">
+	<package name="default" extends="struts-default">
 		<action name="index" class="indexAction">
 			<result>/jsp/index.jsp</result>
 		</action>
@@ -16,6 +16,9 @@
 		</action>
 		<action name="startVisualization" class="startVisualizationAction">
 			<result>/jsp/visualizationEngine.jsp</result>
+		</action>
+		<action name="showAdminPanel" class="showAdminPanelAction">
+			<result>/jsp/adminPanel.jsp</result>
 		</action>
 	</package>
 </struts>
