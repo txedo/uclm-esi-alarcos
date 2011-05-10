@@ -8,6 +8,7 @@
     <bean id="helloWorldAction" class="es.uclm.inf_cr.alarcos.desglosa_web.HelloWorldAction" singleton="false" />
     <!-- SAF2 actions instantiated by Spring -->
     <bean id="indexAction" class="es.uclm.inf_cr.alarcos.desglosa_web.IndexAction" singleton="false" />
-    <bean id="startVisualizationAction" class="es.uclm.inf_cr.alarcos.desglosa_web.StartVisualizationAction" singleton="true" />
+    <bean id="startVisualizationAction" class="es.uclm.inf_cr.alarcos.desglosa_web.StartVisualizationAction" singleton="false" />
+    <bean id="showAdminPanelAction" class="es.uclm.inf_cr.alarcos.desglosa_web.ShowAdminPanelAction" singleton="false" />
 </beans>
 
