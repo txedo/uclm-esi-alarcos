@@ -8,16 +8,30 @@
         http://www.springframework.org/schema/security 
         http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
 
-	<http>
-    	<form-login />
+	<global-method-security secured-annotations="enabled" />
+
+	<http auto-config="true">
+        <intercept-url pattern="/index.jsp" filters="none" />
+        <intercept-url pattern="/login.jsp" filters="none" />
+        <intercept-url pattern="/jsp/adminPanel.jsp" access="ROLE_ADMIN" />
+        <intercept-url pattern="/jsp/myAccount.jsp" access="ROLE_ADMIN, ROLE_EXECUTIVE, ROLE_MANAGER, ROLE_USER" />
+        <intercept-url pattern="/*" filters="none" />
+    	<form-login login-page="/login.jsp" default-target-url="/loginSucessfull.jsp"  always-use-default-target="true" />
     	<http-basic />
-    	<logout />
+    	<logout logout-success-url="/index.jsp" />
   	</http>
     
-    <authentication-provider >
-      <user-service>
-         <user name="admin" password="admin" authorities="ROLE_ADMIN"/>
-      </user-service>
-    </authentication-provider>
+	<authentication-provider user-service-ref='userDetailsService'/>
+
+    <beans:bean id="userDetailsService" class="org.springframework.security.userdetails.jdbc.JdbcDaoImpl">
+            <beans:property name="dataSource" ref="dataSource" />
+            <beans:property name="enableGroups" value="true" />
+    </beans:bean>
     
+    <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+        <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />  
+        <beans:property name="url" value="jdbc:mysql://localhost:3306/desglosadb" />  
+        <beans:property name="username" value="desglosaadmin" />  
+        <beans:property name="password" value="nimdaasolgsed" />  
+    </beans:bean>  
 </beans:beans>

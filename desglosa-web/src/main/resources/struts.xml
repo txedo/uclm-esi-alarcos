@@ -20,5 +20,8 @@
 		<action name="showAdminPanel" class="showAdminPanelAction">
 			<result>/jsp/adminPanel.jsp</result>
 		</action>
+		<action name="showMyAccount" class="showMyAccountAction">
+			<result>/jsp/myAccount.jsp</result>
+		</action>
 	</package>
 </struts>

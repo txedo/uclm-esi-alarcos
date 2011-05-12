@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Desglosa Visualization Engine</title>
+	<title><s:text name="Desglosa.title" /></title>
 	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAxuDgnVkR83ZsPPJVN5640BT2yXp_ZAY8_ufC3CFXhHIE1NvwkxRwX1ZX0A76eLz5aso7mDQkPeuUnA" type="text/javascript"></script>
 	<script src="js/googlemaps.js" type="text/javascript"></script>
 	<script src="js/desglosa-facade.js" type="text/javascript"></script>
