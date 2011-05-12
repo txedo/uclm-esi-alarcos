@@ -6,7 +6,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title>:: DESGLOSA :: Supporting Global Software Development Projects and Teams</title>
+	<title><s:text name="Desglosa.title" /></title>
 	<s:head />
 </head>
 <body>

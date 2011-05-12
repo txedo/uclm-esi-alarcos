@@ -202,6 +202,75 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`projects_has_factories` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `desglosadb`.`users`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`users` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`users` (
+  `username` VARCHAR(50) NOT NULL ,
+  `password` VARCHAR(50) NOT NULL ,
+  `enabled` TINYINT(1)  NOT NULL ,
+  PRIMARY KEY (`username`) )
+ENGINE = InnoDB, 
+COMMENT = 'http://static.springsource.org/spring-security/site/docs/3.0' /* comment truncated */ ;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`groups`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`groups` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`groups` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `group_name` VARCHAR(50) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`group_authorities`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`group_authorities` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`group_authorities` (
+  `group_id` INT NOT NULL ,
+  `authority` VARCHAR(50) NOT NULL ,
+  PRIMARY KEY (`group_id`) ,
+  INDEX `fk_group_authorities_group` (`group_id` ASC) ,
+  CONSTRAINT `fk_group_authorities_group`
+    FOREIGN KEY (`group_id` )
+    REFERENCES `desglosadb`.`groups` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`group_members`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`group_members` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`group_members` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `username` VARCHAR(50) NOT NULL ,
+  `group_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_group_members_group` (`group_id` ASC) ,
+  INDEX `fk_group_members_users` (`username` ASC) ,
+  CONSTRAINT `fk_group_members_group`
+    FOREIGN KEY (`group_id` )
+    REFERENCES `desglosadb`.`groups` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_group_members_users`
+    FOREIGN KEY (`username` )
+    REFERENCES `desglosadb`.`users` (`username` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 grant ALL on TABLE `desglosadb`.`companies` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`factories` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`addresses` to desglosaadmin;
@@ -323,5 +392,59 @@ INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) V
 INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (1, 5);
 INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (2, 2);
 INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (2, 4);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`users`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`users` (`username`, `password`, `enabled`) VALUES ('admin', 'admin', 1);
+INSERT INTO `desglosadb`.`users` (`username`, `password`, `enabled`) VALUES ('executive', 'executive', 1);
+INSERT INTO `desglosadb`.`users` (`username`, `password`, `enabled`) VALUES ('manager', 'manager', 1);
+INSERT INTO `desglosadb`.`users` (`username`, `password`, `enabled`) VALUES ('user', 'user', 1);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`groups`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`groups` (`id`, `group_name`) VALUES (1, 'administrators');
+INSERT INTO `desglosadb`.`groups` (`id`, `group_name`) VALUES (2, 'executives');
+INSERT INTO `desglosadb`.`groups` (`id`, `group_name`) VALUES (3, 'managers');
+INSERT INTO `desglosadb`.`groups` (`id`, `group_name`) VALUES (4, 'users');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`group_authorities`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`group_authorities` (`group_id`, `authority`) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO `desglosadb`.`group_authorities` (`group_id`, `authority`) VALUES (2, 'ROLE_EXECUTIVE');
+INSERT INTO `desglosadb`.`group_authorities` (`group_id`, `authority`) VALUES (3, 'ROLE_MANAGER');
+INSERT INTO `desglosadb`.`group_authorities` (`group_id`, `authority`) VALUES (4, 'ROLE_USER');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`group_members`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (1, 'admin', 1);
+INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (2, 'admin', 2);
+INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (3, 'admin', 3);
+INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (4, 'admin', 4);
+INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (5, 'executive', 2);
+INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (6, 'executive', 3);
+INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (7, 'executive', 4);
+INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (8, 'manager', 3);
+INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (9, 'manager', 4);
+INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (10, 'user', 4);
 
 COMMIT;

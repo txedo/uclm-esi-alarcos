@@ -9,7 +9,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title><decorator:title default="Desglosa Visualization System"/></title>
+	<title><decorator:title default="Desglosa Visualization System" /></title>
 	<link href="<s:url value='/styles/style.css'/>" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="js/cufon-yui.js"></script>
 	<script type="text/javascript" src="js/arial.js"></script>
@@ -40,7 +40,7 @@
 				<div class="menu_nav">
 					<ul>
 						<li class="active"><a href="index.action"><span><s:text name="Menu.home" /></span></a></li>
-						<li><a href="support.html"><span><s:text name="Menu.myAccount" /></span></a></li>
+						<li><a href="showMyAccount.action"><span><s:text name="Menu.myAccount" /></span></a></li>
 						<li><a href="startVisualization.action"><span><s:text name="Menu.visualization" /></span></a></li>
 						<li><a href="showAdminPanel.action"><span><s:text name="Menu.adminPanel" /></span></a></li>
 						<li><a href="contact.html"><span><s:text name="Menu.contactUs" /></span></a></li>
@@ -50,7 +50,7 @@
 		
 		    	<div class="clr"></div>
 			    <div class="header_img"><img src="images/logo.png" alt="" width="271" height="234" />
-					<h2><s:text name="Desglosa.title" /></h2>
+					<h2><s:text name="Desglosa.fullname" /></h2>
 					<p><strong><s:text name="Desglosa.tagline" /></strong><br />
 					<s:text name="Desglosa.description" />
 					</p>
