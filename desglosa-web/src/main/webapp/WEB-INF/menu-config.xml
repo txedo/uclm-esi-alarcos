@@ -2,8 +2,14 @@
 <MenuConfig>
     <Displayers>
         <Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
+        <Displayer name="Simple" type="net.sf.navigator.displayer.SimpleMenuDisplayer"/>
     </Displayers>
     <Menus>
+    	<Menu name="AdminMenu" title="menu.admin" description="Admin Menu" page="/menutest.jsp" roles="ROLE_ADMIN">
+    		<Item name="ViewUsers" title="menu.admin.users.view" page="/menutest.jsp"/>
+    		<Item name="EditUsers" title="menu.admin.users.edit" page="/menutest.jsp"/>
+    	</Menu>
+    	<Menu name="UserMenu" title="menu.user" description="User Menu" page="/menutest.jsp" roles="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER" />
     	<!--
         <Menu name="MainMenu" title="mainMenu.title" page="/mainMenu.html" roles="ROLE_ADMIN,ROLE_USER"/>
         <Menu name="UserMenu" title="menu.user" description="User Menu" page="/editProfile.html" roles="ROLE_ADMIN,ROLE_USER"/>
@@ -15,7 +21,7 @@
             <Item name="FlushCache" title="menu.flushCache" page="/admin/flushCache.html"/>
             <Item name="Clickstream" title="menu.clickstream" page="/admin/clickstreams.jsp"/>
         </Menu>
-        <Menu name="Logout" title="user.logout" page="/logout.jsp" roles="ROLE_ADMIN,ROLE_USER"/>
         -->
+        <Menu name="Logout" title="user.logout" page="/logout.jsp" roles="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER" />
     </Menus>
 </MenuConfig>

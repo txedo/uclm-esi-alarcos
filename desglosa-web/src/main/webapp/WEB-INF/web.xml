@@ -25,8 +25,8 @@
 	</context-param>
 	
 	<!-- Filters -->
-	<filter>
-        <filter-name>action2-cleanup</filter-name>
+    <filter>
+        <filter-name>struts-cleanup</filter-name>
         <filter-class>org.apache.struts2.dispatcher.ActionContextCleanUp</filter-class>
     </filter>
     <filter>
@@ -40,11 +40,13 @@
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
+    </filter>    
 	
-	<filter-mapping>
-        <filter-name>action2-cleanup</filter-name>
+    <filter-mapping>
+        <filter-name>struts-cleanup</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
     <filter-mapping>
         <filter-name>sitemesh</filter-name>
@@ -64,8 +66,17 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
     <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+    <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
+    <!--
+   - Loads the menu-config.xml for struts-menu at startup,
+   - by default from "/WEB-INF/menu-config.xml".
+   - To override this, add a context-param named "menuConfigLocation"
+   - web.xml file.
+   -->
     <listener>
         <listener-class>net.sf.navigator.menu.MenuContextListener</listener-class>
 	</listener> 
@@ -98,8 +109,6 @@
     <!-- Welcome file lists -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
-        <welcome-file>default.jsp</welcome-file>
-        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
     <error-page>
