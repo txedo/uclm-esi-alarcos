@@ -271,6 +271,24 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`group_members` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `desglosadb`.`authorities`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`authorities` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`authorities` (
+  `username` VARCHAR(50) NOT NULL ,
+  `authority` VARCHAR(50) NOT NULL ,
+  PRIMARY KEY (`username`) ,
+  INDEX `fk_authorities_users` (`username` ASC) ,
+  CONSTRAINT `fk_authorities_users`
+    FOREIGN KEY (`username` )
+    REFERENCES `desglosadb`.`users` (`username` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 grant ALL on TABLE `desglosadb`.`companies` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`factories` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`addresses` to desglosaadmin;
@@ -280,6 +298,11 @@ grant ALL on TABLE `desglosadb`.`directors` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`images` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`projects` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`projects_has_factories` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`group_authorities` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`group_members` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`groups` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`users` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`authorities` to desglosaadmin;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
