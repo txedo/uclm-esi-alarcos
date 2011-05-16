@@ -7,8 +7,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-		<title><s:text name="Desglosa.title" /></title>
+		<title><s:text name="desglosa.title" /></title>
+		<meta name="menu" content="Login"/>
 		<script type="text/javascript">		    
 		    function saveUsername(theForm) {
 		        var expires = new Date();
@@ -22,12 +22,6 @@
 		</script>
 	</head>
 	<body>
-	<menu:useMenuDisplayer name="Velocity" config="cssHorizontalMenu.vm" permissions="rolesAdapter">
-		<c:if test="${empty pageContext.request.remoteUser}"><li><a href="<c:url value="/login.jsp"/>" class="current"><fmt:message key="login.title"/></a></li></c:if>
-		<menu:displayMenu name="AdminMenu" />
-		<menu:displayMenu name="UserMenu" />
-		<menu:displayMenu name="Logout" />
-	</menu:useMenuDisplayer>
 		<c:if test="${param.result == 'failed' }">
 		    error login in
 		    Reason: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>.
