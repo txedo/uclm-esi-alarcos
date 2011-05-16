@@ -7,15 +7,10 @@
 
     ## create a single menu item
     #if ($menu.components.size() == 0)
-        #if ($count == $renderedChildren)
-          <li class="last">
-        #else
-          <li>
-        #end
         #if ($menu.name == $currentMenu)
-          <a href="$url" title="$title" class="current" #if($menu.target)target="$menu.target" #end#if($menu.width)style="width: ${menu.width}px"#end>${title}</a>
+          <li class="active"><a href="$url" title="$title" class="active" #if($menu.target)target="$menu.target" #end#if($menu.width)style="width: ${menu.width}px"#end><span>${title}</span></a>
         #else
-          <a href="$url" title="$title" #if($menu.target)target="$menu.target" #end#if($menu.width)style="width: ${menu.width}px"#end>${title}</a>
+          <li><a href="$url" title="$title" #if($menu.target)target="$menu.target" #end#if($menu.width)style="width: ${menu.width}px"#end><span>${title}</span></a>
         #end
     #else ## create multiple menu items in a menu
         #if ($menu.components.size() > 0)

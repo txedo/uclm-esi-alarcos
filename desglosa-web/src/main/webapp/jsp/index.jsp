@@ -6,8 +6,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title><s:text name="Desglosa.title" /></title>
-	<s:head />
+	<title><s:text name="desglosa.title" /></title>
+	<meta name="menu" content="Home"/>
 </head>
 <body>
 	<s:form action="helloWorld">

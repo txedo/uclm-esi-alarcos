@@ -3,9 +3,7 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator" %>
-<%@taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %>
-<%@taglib prefix="s" uri="/struts-tags" %>
+<%@ include file="/common/taglibs.jsp"%>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -30,7 +28,7 @@
     </script>
     <decorator:head/>
 </head>
-<body id="page-home">
+<body id="page-home"<decorator:getProperty property="body.id" writeEntireProperty="true"/><decorator:getProperty property="body.class" writeEntireProperty="true"/>>
     <div id="page" class="main">
 		<div class="header">
 			<div class="header_resize">
@@ -38,21 +36,19 @@
 					<h1><a href="index.action">des<span>gl</span>osa</a></h1>
 				</div>
 				<div class="menu_nav">
+					<c:set var="currentMenu" scope="request">
+						<decorator:getProperty property="meta.menu"/>
+					</c:set>
 					<ul>
-						<li class="active"><a href="index.action"><span><s:text name="Menu.home" /></span></a></li>
-						<li><a href="showMyAccount.action"><span><s:text name="Menu.myAccount" /></span></a></li>
-						<li><a href="startVisualization.action"><span><s:text name="Menu.visualization" /></span></a></li>
-						<li><a href="showAdminPanel.action"><span><s:text name="Menu.adminPanel" /></span></a></li>
-						<li><a href="contact.html"><span><s:text name="Menu.contactUs" /></span></a></li>
+						<jsp:include page="/common/menu.jsp"/>
 					</ul>
 					<div class="clr"></div>
 				</div>
-		
 		    	<div class="clr"></div>
 			    <div class="header_img"><img src="images/logo.png" alt="" width="271" height="234" />
-					<h2><s:text name="Desglosa.fullname" /></h2>
-					<p><strong><s:text name="Desglosa.tagline" /></strong><br />
-					<s:text name="Desglosa.description" />
+					<h2><s:text name="desglosa.fullname" /></h2>
+					<p><strong><s:text name="desglosa.tagline" /></strong><br />
+					<s:text name="desglosa.description" />
 					</p>
 					<div class="clr"></div>
 			    </div>

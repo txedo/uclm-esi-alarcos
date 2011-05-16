@@ -15,13 +15,16 @@
 			<result>/jsp/helloWorld.jsp</result>
 		</action>
 		<action name="startVisualization" class="startVisualizationAction">
-			<result>/jsp/visualizationEngine.jsp</result>
+			<result>/jsp/visualization.jsp</result>
 		</action>
 		<action name="showAdminPanel" class="showAdminPanelAction">
-			<result>/jsp/adminPanel.jsp</result>
+			<result>/jsp/admin/adminPanel.jsp</result>
 		</action>
 		<action name="showMyAccount" class="showMyAccountAction">
 			<result>/jsp/myAccount.jsp</result>
+		</action>
+		<action name="contactUs" class="contactUsAction">
+			<result>/jsp/contactUs.jsp</result>
 		</action>
 	</package>
 </struts>

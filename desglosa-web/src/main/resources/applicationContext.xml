@@ -12,4 +12,5 @@
     <bean id="startVisualizationAction" class="es.uclm.inf_cr.alarcos.desglosa_web.StartVisualizationAction" singleton="false" />
     <bean id="showAdminPanelAction" class="es.uclm.inf_cr.alarcos.desglosa_web.ShowAdminPanelAction" singleton="false" />
     <bean id="showMyAccountAction" class="es.uclm.inf_cr.alarcos.desglosa_web.ShowMyAccountAction" singleton="false" />
+    <bean id="contactUsAction" class="es.uclm.inf_cr.alarcos.desglosa_web.ContactUsAction" singleton="false" />
 </beans>

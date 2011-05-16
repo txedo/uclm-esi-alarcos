@@ -11,12 +11,13 @@
 	<global-method-security secured-annotations="enabled" />
 
 	<http auto-config="true">
-        <intercept-url pattern="/index.jsp" filters="none" />
-        <intercept-url pattern="/login.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-        <intercept-url pattern="/logout.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER" />
-        <intercept-url pattern="/jsp/adminPanel.jsp" access="ROLE_ADMIN" />
-        <intercept-url pattern="/jsp/myAccount.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER" />
-        <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/index.jsp" filters="none"/>
+        <intercept-url pattern="/login.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/logout.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
+        <intercept-url pattern="/jsp/admin/*" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/jsp/myAccount.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
+        <intercept-url pattern="/jsp/visualization.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
+        <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     	<form-login login-page="/login.jsp" default-target-url="/login.jsp?result=success"  always-use-default-target="true" authentication-failure-url="/login.jsp?result=failed" />
     	<http-basic />
     	<logout logout-url="/logout.jsp" logout-success-url="/" invalidate-session="true"/>
