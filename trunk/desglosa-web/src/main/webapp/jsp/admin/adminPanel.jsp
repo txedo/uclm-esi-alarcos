@@ -7,10 +7,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-		<title><s:text name="Desglosa.title" /></title>
+		<meta name="menu" content="AdminMenu"/>
 	</head>
 	<body>
-		<s:text name="Menu.adminPanel" />
+		<s:text name="menu.admin" />
 	</body>
 </html>

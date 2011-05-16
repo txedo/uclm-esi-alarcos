@@ -7,7 +7,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<title><decorator:title default="Desglosa Visualization System" /></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	
+	<title><decorator:title/> <fmt:message key="desglosa.title"/></title>
 	<link href="<s:url value='/styles/style.css'/>" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="js/cufon-yui.js"></script>
 	<script type="text/javascript" src="js/arial.js"></script>
@@ -28,7 +30,7 @@
     </script>
     <decorator:head/>
 </head>
-<body id="page-home"<decorator:getProperty property="body.id" writeEntireProperty="true"/><decorator:getProperty property="body.class" writeEntireProperty="true"/>>
+<body id="page-home">
     <div id="page" class="main">
 		<div class="header">
 			<div class="header_resize">
