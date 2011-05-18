@@ -27,11 +27,11 @@ DROP TABLE IF EXISTS `desglosadb`.`addresses` ;
 
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`addresses` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `street` TINYTEXT NOT NULL ,
+  `address` TINYTEXT NOT NULL ,
   `city` VARCHAR(65) NOT NULL ,
-  `state` VARCHAR(65) NOT NULL ,
+  `province` VARCHAR(65) NOT NULL ,
   `country` VARCHAR(65) NOT NULL ,
-  `zip` VARCHAR(45) NOT NULL ,
+  `postalCode` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -109,47 +109,17 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `desglosadb`.`maps`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`maps` ;
-
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`maps` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `parentId` INT NULL ,
-  `label` VARCHAR(45) NULL ,
-  `checksum` VARCHAR(45) NULL ,
-  `image_id` INT NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `label_UNIQUE` (`label` ASC) ,
-  INDEX `fk_maps_images` (`image_id` ASC) ,
-  CONSTRAINT `fk_maps_images1`
-    FOREIGN KEY (`image_id` )
-    REFERENCES `desglosadb`.`images` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `desglosadb`.`locations`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `desglosadb`.`locations` ;
 
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`locations` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `map_id` INT NOT NULL ,
   `factory_id` INT NOT NULL ,
-  `xcoord` FLOAT NOT NULL ,
-  `ycoord` FLOAT NOT NULL ,
-  INDEX `fk_locations_maps` (`map_id` ASC) ,
+  `long` FLOAT NOT NULL ,
+  `lat` FLOAT NOT NULL ,
   INDEX `fk_locations_factories` (`factory_id` ASC) ,
   PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `fk_maps_factories_id_UNIQUE` (`map_id` ASC, `factory_id` ASC) ,
-  CONSTRAINT `fk_locations_maps`
-    FOREIGN KEY (`map_id` )
-    REFERENCES `desglosadb`.`maps` (`id` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
   CONSTRAINT `fk_locations_factories`
     FOREIGN KEY (`factory_id` )
     REFERENCES `desglosadb`.`factories` (`id` )
@@ -208,10 +178,12 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `desglosadb`.`users` ;
 
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`users` (
-  `username` VARCHAR(50) NOT NULL ,
-  `password` VARCHAR(50) NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `username` VARCHAR(45) NOT NULL ,
+  `password` VARCHAR(45) NOT NULL ,
   `enabled` TINYINT(1)  NOT NULL ,
-  PRIMARY KEY (`username`) )
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) )
 ENGINE = InnoDB, 
 COMMENT = 'http://static.springsource.org/spring-security/site/docs/3.0' /* comment truncated */ ;
 
@@ -222,70 +194,73 @@ COMMENT = 'http://static.springsource.org/spring-security/site/docs/3.0' /* comm
 DROP TABLE IF EXISTS `desglosadb`.`groups` ;
 
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`groups` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `group_name` VARCHAR(50) NOT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `desglosadb`.`group_authorities`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`group_authorities` ;
-
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`group_authorities` (
-  `group_id` INT NOT NULL ,
-  `authority` VARCHAR(50) NOT NULL ,
-  PRIMARY KEY (`group_id`) ,
-  INDEX `fk_group_authorities_group` (`group_id` ASC) ,
-  CONSTRAINT `fk_group_authorities_group`
-    FOREIGN KEY (`group_id` )
-    REFERENCES `desglosadb`.`groups` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `desglosadb`.`group_members`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`group_members` ;
-
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`group_members` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `username` VARCHAR(50) NOT NULL ,
-  `group_id` INT NOT NULL ,
+  `id` INT NOT NULL ,
+  `name` VARCHAR(45) NOT NULL ,
+  `description` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_group_members_group` (`group_id` ASC) ,
-  INDEX `fk_group_members_users` (`username` ASC) ,
-  CONSTRAINT `fk_group_members_group`
-    FOREIGN KEY (`group_id` )
-    REFERENCES `desglosadb`.`groups` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_group_members_users`
-    FOREIGN KEY (`username` )
-    REFERENCES `desglosadb`.`users` (`username` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `desglosadb`.`authorities`
+-- Table `desglosadb`.`users_groups`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`authorities` ;
+DROP TABLE IF EXISTS `desglosadb`.`users_groups` ;
 
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`authorities` (
-  `username` VARCHAR(50) NOT NULL ,
-  `authority` VARCHAR(50) NOT NULL ,
-  PRIMARY KEY (`username`) ,
-  INDEX `fk_authorities_users` (`username` ASC) ,
-  CONSTRAINT `fk_authorities_users`
-    FOREIGN KEY (`username` )
-    REFERENCES `desglosadb`.`users` (`username` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`users_groups` (
+  `user_id` INT NOT NULL ,
+  `group_id` INT NOT NULL ,
+  PRIMARY KEY (`user_id`, `group_id`) ,
+  INDEX `fk_users_groups_users` (`user_id` ASC) ,
+  INDEX `fk_users_groups_groups` (`group_id` ASC) ,
+  CONSTRAINT `fk_users_groups_users`
+    FOREIGN KEY (`user_id` )
+    REFERENCES `desglosadb`.`users` (`id` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_users_groups_groups`
+    FOREIGN KEY (`group_id` )
+    REFERENCES `desglosadb`.`groups` (`id` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`roles`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`roles` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`roles` (
+  `id` INT NOT NULL ,
+  `name` VARCHAR(45) NOT NULL ,
+  `description` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`groups_roles`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`groups_roles` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`groups_roles` (
+  `group_id` INT NOT NULL ,
+  `role_id` INT NOT NULL ,
+  PRIMARY KEY (`group_id`, `role_id`) ,
+  INDEX `fk_groups_roles_groups` (`group_id` ASC) ,
+  INDEX `fk_groups_roles_roles` (`role_id` ASC) ,
+  CONSTRAINT `fk_groups_roles_groups`
+    FOREIGN KEY (`group_id` )
+    REFERENCES `desglosadb`.`groups` (`id` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_groups_roles_roles`
+    FOREIGN KEY (`role_id` )
+    REFERENCES `desglosadb`.`roles` (`id` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -293,16 +268,11 @@ grant ALL on TABLE `desglosadb`.`companies` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`factories` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`addresses` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`locations` to desglosaadmin;
-grant ALL on TABLE `desglosadb`.`maps` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`directors` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`images` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`projects` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`projects_has_factories` to desglosaadmin;
-grant ALL on TABLE `desglosadb`.`group_authorities` to desglosaadmin;
-grant ALL on TABLE `desglosadb`.`group_members` to desglosaadmin;
-grant ALL on TABLE `desglosadb`.`groups` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`users` to desglosaadmin;
-grant ALL on TABLE `desglosadb`.`authorities` to desglosaadmin;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -324,11 +294,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`addresses` (`id`, `street`, `city`, `state`, `country`, `zip`) VALUES (1, 'calle', 'Ciudad Real', 'Ciudad Real', 'España', '13000');
-INSERT INTO `desglosadb`.`addresses` (`id`, `street`, `city`, `state`, `country`, `zip`) VALUES (2, 'calle', 'Madrid', 'Madrid', 'España', '28000');
-INSERT INTO `desglosadb`.`addresses` (`id`, `street`, `city`, `state`, `country`, `zip`) VALUES (3, 'calle', 'Miguelturra', 'Ciudad Real', 'España', '13000');
-INSERT INTO `desglosadb`.`addresses` (`id`, `street`, `city`, `state`, `country`, `zip`) VALUES (4, 'mirasierra', 'Madrid', 'Madrid', 'España', '28000');
-INSERT INTO `desglosadb`.`addresses` (`id`, `street`, `city`, `state`, `country`, `zip`) VALUES (5, 'liverpool street', 'London', 'England', 'England', 'GBH8Z');
+INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postalCode`) VALUES (1, 'calle', 'Ciudad Real', 'Ciudad Real', 'España', '13000');
+INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postalCode`) VALUES (2, 'calle', 'Madrid', 'Madrid', 'España', '28000');
+INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postalCode`) VALUES (3, 'calle', 'Miguelturra', 'Ciudad Real', 'España', '13000');
+INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postalCode`) VALUES (4, 'mirasierra', 'Madrid', 'Madrid', 'España', '28000');
+INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postalCode`) VALUES (5, 'liverpool street', 'London', 'England', 'England', 'GBH8Z');
 
 COMMIT;
 
@@ -370,29 +340,19 @@ INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_emai
 COMMIT;
 
 -- -----------------------------------------------------
--- Data for table `desglosadb`.`maps`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `desglosadb`;
-INSERT INTO `desglosadb`.`maps` (`id`, `parentId`, `label`, `checksum`, `image_id`) VALUES (1, -1, 'World Map', '-1', 2);
-INSERT INTO `desglosadb`.`maps` (`id`, `parentId`, `label`, `checksum`, `image_id`) VALUES (2, 1, 'Mapa España', '-1', 3);
-
-COMMIT;
-
--- -----------------------------------------------------
 -- Data for table `desglosadb`.`locations`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (1, 1, 1, 1.27436, 3.76312);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (2, 1, 2, 1.3943, 3.92804);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (3, 1, 3, 1.4093, 3.67316);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (4, 1, 4, 1.55922, 4.01799);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (5, 2, 1, 3.55064, 3.31781);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (6, 2, 2, 3.93319, 4.27802);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (7, 2, 3, 3.88306, 3.13343);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (8, 2, 4, 4.18405, 4.44172);
-INSERT INTO `desglosadb`.`locations` (`id`, `map_id`, `factory_id`, `xcoord`, `ycoord`) VALUES (9, 1, 5, 7.153374, 4.2944784);
+INSERT INTO `desglosadb`.`locations` (`id`, `factory_id`, `long`, `lat`) VALUES (1, 1, 1.27436, 3.76312);
+INSERT INTO `desglosadb`.`locations` (`id`, `factory_id`, `long`, `lat`) VALUES (2, 2, 1.3943, 3.92804);
+INSERT INTO `desglosadb`.`locations` (`id`, `factory_id`, `long`, `lat`) VALUES (3, 3, 1.4093, 3.67316);
+INSERT INTO `desglosadb`.`locations` (`id`, `factory_id`, `long`, `lat`) VALUES (4, 4, 1.55922, 4.01799);
+INSERT INTO `desglosadb`.`locations` (`id`, `factory_id`, `long`, `lat`) VALUES (5, 1, 3.55064, 3.31781);
+INSERT INTO `desglosadb`.`locations` (`id`, `factory_id`, `long`, `lat`) VALUES (6, 2, 3.93319, 4.27802);
+INSERT INTO `desglosadb`.`locations` (`id`, `factory_id`, `long`, `lat`) VALUES (7, 3, 3.88306, 3.13343);
+INSERT INTO `desglosadb`.`locations` (`id`, `factory_id`, `long`, `lat`) VALUES (8, 4, 4.18405, 4.44172);
+INSERT INTO `desglosadb`.`locations` (`id`, `factory_id`, `long`, `lat`) VALUES (9, 5, 7.153374, 4.2944784);
 
 COMMIT;
 
@@ -423,10 +383,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`users` (`username`, `password`, `enabled`) VALUES ('admin', 'admin', 1);
-INSERT INTO `desglosadb`.`users` (`username`, `password`, `enabled`) VALUES ('executive', 'executive', 1);
-INSERT INTO `desglosadb`.`users` (`username`, `password`, `enabled`) VALUES ('manager', 'manager', 1);
-INSERT INTO `desglosadb`.`users` (`username`, `password`, `enabled`) VALUES ('user', 'user', 1);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (1, 'admin', 'admin', 1);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (2, 'executive', 'executive', 1);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (3, 'manager', 'manager', 1);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (4, 'user', 'user', 1);
 
 COMMIT;
 
@@ -435,39 +395,51 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`groups` (`id`, `group_name`) VALUES (1, 'administrators');
-INSERT INTO `desglosadb`.`groups` (`id`, `group_name`) VALUES (2, 'executives');
-INSERT INTO `desglosadb`.`groups` (`id`, `group_name`) VALUES (3, 'managers');
-INSERT INTO `desglosadb`.`groups` (`id`, `group_name`) VALUES (4, 'users');
+INSERT INTO `desglosadb`.`groups` (`id`, `name`, `description`) VALUES (1, 'administradores', 'grupo de admins');
+INSERT INTO `desglosadb`.`groups` (`id`, `name`, `description`) VALUES (2, 'ejecutivos', 'grupo de execs');
+INSERT INTO `desglosadb`.`groups` (`id`, `name`, `description`) VALUES (3, 'jefes de proyecto', 'grupo de managers');
+INSERT INTO `desglosadb`.`groups` (`id`, `name`, `description`) VALUES (4, 'usuarios', 'grupo de users');
 
 COMMIT;
 
 -- -----------------------------------------------------
--- Data for table `desglosadb`.`group_authorities`
+-- Data for table `desglosadb`.`users_groups`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`group_authorities` (`group_id`, `authority`) VALUES (1, 'ROLE_ADMIN');
-INSERT INTO `desglosadb`.`group_authorities` (`group_id`, `authority`) VALUES (2, 'ROLE_EXECUTIVE');
-INSERT INTO `desglosadb`.`group_authorities` (`group_id`, `authority`) VALUES (3, 'ROLE_MANAGER');
-INSERT INTO `desglosadb`.`group_authorities` (`group_id`, `authority`) VALUES (4, 'ROLE_USER');
+INSERT INTO `desglosadb`.`users_groups` (`user_id`, `group_id`) VALUES (1, 1);
+INSERT INTO `desglosadb`.`users_groups` (`user_id`, `group_id`) VALUES (2, 2);
+INSERT INTO `desglosadb`.`users_groups` (`user_id`, `group_id`) VALUES (3, 3);
+INSERT INTO `desglosadb`.`users_groups` (`user_id`, `group_id`) VALUES (4, 4);
 
 COMMIT;
 
 -- -----------------------------------------------------
--- Data for table `desglosadb`.`group_members`
+-- Data for table `desglosadb`.`roles`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (1, 'admin', 1);
-INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (2, 'admin', 2);
-INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (3, 'admin', 3);
-INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (4, 'admin', 4);
-INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (5, 'executive', 2);
-INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (6, 'executive', 3);
-INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (7, 'executive', 4);
-INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (8, 'manager', 3);
-INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (9, 'manager', 4);
-INSERT INTO `desglosadb`.`group_members` (`id`, `username`, `group_id`) VALUES (10, 'user', 4);
+INSERT INTO `desglosadb`.`roles` (`id`, `name`, `description`) VALUES (1, 'ROLE_ADMIN', 'rol de admin');
+INSERT INTO `desglosadb`.`roles` (`id`, `name`, `description`) VALUES (2, 'ROLE_EXECUTIVE', 'rol de executive');
+INSERT INTO `desglosadb`.`roles` (`id`, `name`, `description`) VALUES (3, 'ROLE_MANAGER', 'rol de manager');
+INSERT INTO `desglosadb`.`roles` (`id`, `name`, `description`) VALUES (4, 'ROLE_USER', 'rol de user');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`groups_roles`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (1, 1);
+INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (1, 2);
+INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (1, 3);
+INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (1, 4);
+INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (2, 2);
+INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (2, 3);
+INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (2, 4);
+INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (3, 3);
+INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (3, 4);
+INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (4, 4);
 
 COMMIT;
