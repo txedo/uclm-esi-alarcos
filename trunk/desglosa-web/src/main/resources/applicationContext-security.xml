@@ -19,23 +19,60 @@
         <intercept-url pattern="/jsp/visualization.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     	<form-login login-page="/login.jsp" default-target-url="/login.jsp?result=success"  always-use-default-target="true" authentication-failure-url="/login.jsp?result=failed" />
+    	<anonymous />
     	<http-basic />
     	<logout logout-url="/logout.jsp" logout-success-url="/" invalidate-session="true"/>
+    	<remember-me />
   	</http>
     
 	<authentication-provider user-service-ref='userDetailsService'>
 		<!-- <password-encoder hash="md5"/>  -->
   	</authentication-provider>
 
-    <beans:bean id="userDetailsService" class="org.springframework.security.userdetails.jdbc.JdbcDaoImpl">
-    	<beans:property name="dataSource" ref="dataSource" />
-    	<beans:property name="enableGroups" value="true" />
-    </beans:bean>
+	<beans:bean id="userDetailsService" class="es.uclm.inf_cr.alarcos.desglosa_web.security.CustomUserDetailsService">
+		<beans:property name="hibernateTemplate" ref="hibernateTemplate" /> 
+	</beans:bean>
     
     <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
         <beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />  
         <beans:property name="url" value="jdbc:mysql://localhost:3306/desglosadb" />  
         <beans:property name="username" value="desglosaadmin" />  
         <beans:property name="password" value="nimdaasolgsed" />  
-    </beans:bean>  
+    </beans:bean>
+    
+    
+    <!-- HIBERNATE CONFIGURATION -->
+    
+	<beans:bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+	    <beans:property name="dataSource" ref="dataSource" />
+	    <beans:property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+	    <!-- Annotated classes are mapped in hibernate.cfg.xml -->
+	    <beans:property name="hibernateProperties">
+	        <beans:props>
+	            <beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</beans:prop>
+	            <beans:prop key="hibernate.show_sql">true</beans:prop>
+	            <beans:prop key="hibernate.hbm2ddl.auto">update</beans:prop>
+	        </beans:props>
+	    </beans:property>
+	</beans:bean>
+    
+    <beans:bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+    	<beans:property name="sessionFactory" ref="sessionFactory" />
+	</beans:bean>
+	 
+    <beans:bean id="userDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.UserDAOHibernate">
+    	<beans:constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.User"/>
+        <beans:property name="hibernateTemplate" ref="hibernateTemplate" /> 
+	</beans:bean>
+	
+	<beans:bean id="groupDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.GroupDAOHibernate">
+    	<beans:constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Group"/>
+        <beans:property name="hibernateTemplate" ref="hibernateTemplate" />  
+	</beans:bean>
+	 
+	<beans:bean id="roleDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.RoleDAOHibernate">
+    	<beans:constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Role"/>
+        <beans:property name="hibernateTemplate" ref="hibernateTemplate" />  
+	</beans:bean>
+	
 </beans:beans>

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package es.uclm.inf_cr.alarcos.desglosa_web;
+package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
 import org.apache.struts2.util.StrutsTypeConverter;
 

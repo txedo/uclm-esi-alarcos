@@ -1,4 +1,4 @@
-package es.uclm.inf_cr.alarcos.desglosa_web;
+package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
 
