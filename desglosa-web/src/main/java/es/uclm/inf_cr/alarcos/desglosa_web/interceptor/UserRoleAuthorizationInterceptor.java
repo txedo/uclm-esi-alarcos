@@ -1,11 +1,9 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.security.Authentication;
-import org.springframework.security.GrantedAuthority;
 import org.springframework.security.context.SecurityContextHolder;
 
 import com.opensymphony.xwork2.ActionInvocation;
