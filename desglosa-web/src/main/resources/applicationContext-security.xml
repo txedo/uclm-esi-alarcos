@@ -26,7 +26,7 @@
   	</http>
     
 	<authentication-provider user-service-ref='userDetailsService'>
-		<!-- <password-encoder hash="md5"/>  -->
+		<password-encoder hash="md5"/>
   	</authentication-provider>
 
 	<beans:bean id="userDetailsService" class="es.uclm.inf_cr.alarcos.desglosa_web.security.CustomUserDetailsService">

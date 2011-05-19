@@ -13,4 +13,18 @@
     <bean id="showAdminPanelAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ShowAdminPanelAction" singleton="false" />
     <bean id="showMyAccountAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ShowMyAccountAction" singleton="false" />
     <bean id="contactUsAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ContactUsAction" singleton="false" />
+    
+    <!-- Struts2 interceptors instantiated by Spring -->
+    <bean id="adminInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_ADMIN"/>
+    </bean>
+    <bean id="executiveInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_EXECUTIVE"/>
+    </bean>
+    <bean id="managerInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_MANAGER"/>
+    </bean>
+    <bean id="allUsersInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
+    </bean>
 </beans>

@@ -7,6 +7,21 @@
 <struts>
 	<!-- When adding an action in struts.xml, edit applicationContext.xml to instantiate it by Spring -->
 	<package name="default" extends="struts-default">
+		<!-- Interceptors -->
+	    <interceptors>
+            <!-- Interceptor to handle allowing only certains roles to certain actions -->
+            <interceptor name="adminOnly" class="adminInterceptor"/>
+            <interceptor name="executiveOnly" class="executiveInterceptor"/>
+            <interceptor name="managerOnly" class="managerInterceptor"/>
+            <interceptor name="allUsers" class="allUsersInterceptor"/>
+            <interceptor-stack name="highStandingUsersOnly">
+            	<interceptor-ref name="adminOnly"/>
+            	<interceptor-ref name="executiveOnly"/>
+            	<interceptor-ref name="managerOnly"/>
+            </interceptor-stack>
+        </interceptors>
+        
+        <!-- Actions -->
 		<action name="index" class="indexAction">
 			<result>/jsp/index.jsp</result>
 		</action>
@@ -15,12 +30,15 @@
 			<result>/jsp/helloWorld.jsp</result>
 		</action>
 		<action name="startVisualization" class="startVisualizationAction">
+			<interceptor-ref name="highStandingUsersOnly"/>
 			<result>/jsp/visualization.jsp</result>
 		</action>
 		<action name="showAdminPanel" class="showAdminPanelAction">
+			<interceptor-ref name="adminOnly"></interceptor-ref>
 			<result>/jsp/admin/adminPanel.jsp</result>
 		</action>
 		<action name="showMyAccount" class="showMyAccountAction">
+			<interceptor-ref name="allUsers"/>
 			<result>/jsp/myAccount.jsp</result>
 		</action>
 		<action name="contactUs" class="contactUsAction">
