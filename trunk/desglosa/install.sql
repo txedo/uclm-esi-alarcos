@@ -383,10 +383,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (1, 'admin', 'admin', 1);
-INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (2, 'executive', 'executive', 1);
-INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (3, 'manager', 'manager', 1);
-INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (4, 'user', 'user', 1);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (2, 'executive', '3250d1e21c4281d3cd9479f5685770b6', 1);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (3, 'manager', '1d0258c2440a8d19e716292b231e3190', 1);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (4, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', 1);
 
 COMMIT;
 
