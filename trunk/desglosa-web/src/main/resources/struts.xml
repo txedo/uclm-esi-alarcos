@@ -14,7 +14,7 @@
             <interceptor name="executiveOnly" class="executiveInterceptor"/>
             <interceptor name="managerOnly" class="managerInterceptor"/>
             <interceptor name="allUsers" class="allUsersInterceptor"/>
-            <interceptor-stack name="highStandingUsersOnly">
+            <interceptor-stack name="allButUsers">
             	<interceptor-ref name="adminOnly"/>
             	<interceptor-ref name="executiveOnly"/>
             	<interceptor-ref name="managerOnly"/>
@@ -30,7 +30,7 @@
 			<result>/jsp/helloWorld.jsp</result>
 		</action>
 		<action name="startVisualization" class="startVisualizationAction">
-			<interceptor-ref name="highStandingUsersOnly"/>
+			<interceptor-ref name="allButUsers"/>
 			<result>/jsp/visualization.jsp</result>
 		</action>
 		<action name="showAdminPanel" class="showAdminPanelAction">
@@ -44,17 +44,27 @@
 		<action name="contactUs" class="contactUsAction">
 			<result>/jsp/contactUs.jsp</result>
 		</action>
+		
+		<!-- Company related actions -->
 		<action name="listCompanies" class="companyAction">
-			<result>/jsp/admin/viewCompanies.jsp</result>
+			<interceptor-ref name="allUsers"></interceptor-ref>
+			<result>/jsp/viewCompanies.jsp</result>
 		</action>
 		<action name="saveCompany" class="companyAction" method="save">
-			<result>/jsp/admin/viewCompanies.jsp</result>
+			<interceptor-ref name="adminOnly"></interceptor-ref>
+			<!-- redirect o redirect-action? -->
+			<result name="success" type="redirect">listCompanies.action</result>
 		</action>
 		<action name="editCompany" class="companyAction" method="edit">
-			<result>/jsp/admin/viewCompanies.jsp</result>
+			<interceptor-ref name="adminOnly"></interceptor-ref>
+			<!-- redirect o redirect-action? -->
+			<result name="success" type="redirect">listCompanies.action</result>
 		</action>
 		<action name="deleteCompany" class="companyAction" method="delete">
-			<result>/jsp/admin/viewCompanies.jsp</result>
+			<interceptor-ref name="adminOnly"></interceptor-ref>
+			<!-- redirect o redirect-action? -->
+			<result name="success" type="redirect">listCompanies.action</result>
 		</action>
+		<!-- End of Company related actions -->
 	</package>
 </struts>
