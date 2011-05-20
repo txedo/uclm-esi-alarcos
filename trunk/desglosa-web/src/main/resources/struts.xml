@@ -44,5 +44,17 @@
 		<action name="contactUs" class="contactUsAction">
 			<result>/jsp/contactUs.jsp</result>
 		</action>
+		<action name="listCompanies" class="companyAction">
+			<result>/jsp/admin/viewCompanies.jsp</result>
+		</action>
+		<action name="saveCompany" class="companyAction" method="save">
+			<result>/jsp/admin/viewCompanies.jsp</result>
+		</action>
+		<action name="editCompany" class="companyAction" method="edit">
+			<result>/jsp/admin/viewCompanies.jsp</result>
+		</action>
+		<action name="deleteCompany" class="companyAction" method="delete">
+			<result>/jsp/admin/viewCompanies.jsp</result>
+		</action>
 	</package>
 </struts>

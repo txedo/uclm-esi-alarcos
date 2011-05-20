@@ -13,6 +13,9 @@
     <bean id="showAdminPanelAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ShowAdminPanelAction" singleton="false" />
     <bean id="showMyAccountAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ShowMyAccountAction" singleton="false" />
     <bean id="contactUsAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ContactUsAction" singleton="false" />
+    <bean id="companyAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.CompanyAction" singleton="false">
+    	<property name="companyDao" ref="companyDao"/>
+    </bean>
     
     <!-- Struts2 interceptors instantiated by Spring -->
     <bean id="adminInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">

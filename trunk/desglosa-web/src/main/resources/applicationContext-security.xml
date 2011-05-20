@@ -30,7 +30,7 @@
   	</authentication-provider>
 
 	<beans:bean id="userDetailsService" class="es.uclm.inf_cr.alarcos.desglosa_web.security.CustomUserDetailsService">
-		<beans:property name="hibernateTemplate" ref="hibernateTemplate" /> 
+		<beans:property name="userDao" ref="userDao"/>
 	</beans:bean>
     
     <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
@@ -59,7 +59,7 @@
     <beans:bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
     	<beans:property name="sessionFactory" ref="sessionFactory" />
 	</beans:bean>
-	 
+	
     <beans:bean id="userDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.UserDAOHibernate">
     	<beans:constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.User"/>
         <beans:property name="hibernateTemplate" ref="hibernateTemplate" /> 
@@ -72,6 +72,11 @@
 	 
 	<beans:bean id="roleDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.RoleDAOHibernate">
     	<beans:constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Role"/>
+        <beans:property name="hibernateTemplate" ref="hibernateTemplate" />  
+	</beans:bean>
+
+	<beans:bean id="companyDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.CompanyDAOHibernate">
+    	<beans:constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Company"/>
         <beans:property name="hibernateTemplate" ref="hibernateTemplate" />  
 	</beans:bean>
 	
