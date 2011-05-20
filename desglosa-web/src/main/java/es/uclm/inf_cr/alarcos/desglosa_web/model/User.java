@@ -55,22 +55,19 @@ public class User implements UserDetails {
 		return enabled;
 	}
 
-	@Transient
+	@Column(name="account_expired",nullable=false)
 	public boolean isAccountNonExpired() {
-		//return accountNonExpired;
-		return true;
+		return !accountNonExpired;
 	}
 
-	@Transient
+	@Column(name="credentials_expired",nullable=false)
 	public boolean isCredentialsNonExpired() {
-		//return credentialsNonExpired;
-		return true;
+		return !credentialsNonExpired;
 	}
 
-	@Transient
+	@Column(name="account_locked",nullable=false)
 	public boolean isAccountNonLocked() {
-		//return accountNonLocked;
-		return true;
+		return !accountNonLocked;
 	}
 
     @ManyToMany(fetch = FetchType.EAGER) 

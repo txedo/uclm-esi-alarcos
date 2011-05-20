@@ -181,7 +181,10 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `username` VARCHAR(45) NOT NULL ,
   `password` VARCHAR(45) NOT NULL ,
-  `enabled` TINYINT(1)  NOT NULL ,
+  `enabled` TINYINT(1)  NOT NULL DEFAULT 1 ,
+  `account_expired` TINYINT(1)  NOT NULL DEFAULT 0 ,
+  `account_locked` TINYINT(1)  NOT NULL DEFAULT 0 ,
+  `credentials_expired` TINYINT(1)  NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `username_UNIQUE` (`username` ASC) )
 ENGINE = InnoDB, 
@@ -383,10 +386,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1);
-INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (2, 'executive', '3250d1e21c4281d3cd9479f5685770b6', 1);
-INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (3, 'manager', '1d0258c2440a8d19e716292b231e3190', 1);
-INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`) VALUES (4, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', 1);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`, `account_expired`, `account_locked`, `credentials_expired`) VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, 0, 0, 0);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`, `account_expired`, `account_locked`, `credentials_expired`) VALUES (2, 'executive', '3250d1e21c4281d3cd9479f5685770b6', 1, 0, 0, 0);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`, `account_expired`, `account_locked`, `credentials_expired`) VALUES (3, 'manager', '1d0258c2440a8d19e716292b231e3190', 1, 0, 1, 0);
+INSERT INTO `desglosadb`.`users` (`id`, `username`, `password`, `enabled`, `account_expired`, `account_locked`, `credentials_expired`) VALUES (4, 'user', 'ee11cbb19052e40b07aac0ca060c23ee', 1, 0, 0, 0);
 
 COMMIT;
 

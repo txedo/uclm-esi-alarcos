@@ -6,5 +6,6 @@
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.User"/>
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Group"/>
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Role"/>
+        <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Company"/>
     </session-factory>
 </hibernate-configuration>

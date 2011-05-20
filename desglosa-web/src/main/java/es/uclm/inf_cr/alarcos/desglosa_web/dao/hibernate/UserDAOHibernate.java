@@ -2,6 +2,8 @@ package es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate;
 
 import java.util.List;
 
+import org.springframework.security.userdetails.UsernameNotFoundException;
+
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.UserDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.User;
 
@@ -13,6 +15,16 @@ public class UserDAOHibernate extends GenericDAOHibernate<User, Long> implements
 
 	public User getUser(int id) {
 		return (User) getHibernateTemplate().get(User.class, id);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public User getUser(String username) {
+		List users = getHibernateTemplate().find("from User where username=?", username);
+	    if (users == null || users.isEmpty()) {
+	    	throw new UsernameNotFoundException("user '" + username + "' not found...");
+	    } else {
+	    	return (User) users.get(0);
+	    }
 	}
 
 	@SuppressWarnings("unchecked")
