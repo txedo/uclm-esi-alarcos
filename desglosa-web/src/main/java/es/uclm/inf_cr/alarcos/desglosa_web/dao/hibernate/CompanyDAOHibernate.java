@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 
 public class CompanyDAOHibernate extends GenericDAOHibernate<Company, Long> implements
@@ -19,10 +20,10 @@ public class CompanyDAOHibernate extends GenericDAOHibernate<Company, Long> impl
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public Company getCompany(String name) {
+	public Company getCompany(String name) throws CompanyNotFoundException {
 		List companies = getHibernateTemplate().find("from Company where name=?", name);
 	    if (companies == null || companies.isEmpty()) {
-	    	throw new UsernameNotFoundException("user '" + name + "' not found...");
+	    	throw new CompanyNotFoundException("company '" + name + "' not found...");
 	    } else {
 	    	return (Company) companies.get(0);
 	    }
