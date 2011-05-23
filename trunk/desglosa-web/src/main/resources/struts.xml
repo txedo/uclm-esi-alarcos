@@ -47,22 +47,30 @@
 		
 		<!-- Company related actions -->
 		<action name="listCompanies" class="companyAction">
-			<interceptor-ref name="allUsers"></interceptor-ref>
+			<!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
 			<result>/jsp/viewCompanies.jsp</result>
 		</action>
+		<action name="addCompany" class="companyAction" method="add">
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<result name="success">/jsp/formCompany.jsp</result>
+		</action>
 		<action name="saveCompany" class="companyAction" method="save">
-			<interceptor-ref name="adminOnly"></interceptor-ref>
-			<!-- redirect o redirect-action? -->
-			<result name="success" type="redirect">listCompanies.action</result>
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<result name="error">/jsp/formCompany.jsp</result>
+			<result name="input">/jsp/formCompany.jsp</result>
+			<result name="success" type="redirect-action">
+				<param name="actionName">listCompanies.action</param>
+				<param name="parse">true</param>
+				<param name="action">save</param>
+				<param name="result">sucess</param>
+			</result>
 		</action>
 		<action name="editCompany" class="companyAction" method="edit">
-			<interceptor-ref name="adminOnly"></interceptor-ref>
-			<!-- redirect o redirect-action? -->
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
 			<result name="success" type="redirect">listCompanies.action</result>
 		</action>
 		<action name="deleteCompany" class="companyAction" method="delete">
-			<interceptor-ref name="adminOnly"></interceptor-ref>
-			<!-- redirect o redirect-action? -->
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
 			<result name="success" type="redirect">listCompanies.action</result>
 		</action>
 		<!-- End of Company related actions -->

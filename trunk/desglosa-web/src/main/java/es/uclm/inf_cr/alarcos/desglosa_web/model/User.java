@@ -27,9 +27,9 @@ public class User implements UserDetails {
 	private String username;
 	private String password;
 	private boolean enabled;
-	private boolean accountNonExpired;
-	private boolean credentialsNonExpired;
-	private boolean accountNonLocked;
+	private boolean accountExpired;
+	private boolean credentialsExpired;
+	private boolean accountLocked;
 	private Set<Group> groups = new HashSet<Group>();
 	
 	public User() {
@@ -56,18 +56,18 @@ public class User implements UserDetails {
 	}
 
 	@Column(name="account_expired",nullable=false)
-	public boolean isAccountNonExpired() {
-		return !accountNonExpired;
+	public boolean isAccountExpired() {
+		return accountExpired;
 	}
 
 	@Column(name="credentials_expired",nullable=false)
-	public boolean isCredentialsNonExpired() {
-		return !credentialsNonExpired;
+	public boolean isCredentialsExpired() {
+		return credentialsExpired;
 	}
 
 	@Column(name="account_locked",nullable=false)
-	public boolean isAccountNonLocked() {
-		return !accountNonLocked;
+	public boolean isAccountLocked() {
+		return accountLocked;
 	}
 
     @ManyToMany(fetch = FetchType.EAGER) 
@@ -91,6 +91,21 @@ public class User implements UserDetails {
 		return authorities.toArray(new GrantedAuthority[0]);
 	}
 	
+	@Transient
+	public boolean isAccountNonExpired() {
+		return !accountExpired;
+	}
+
+	@Transient
+	public boolean isCredentialsNonExpired() {
+		return !credentialsExpired;
+	}
+
+	@Transient
+	public boolean isAccountNonLocked() {
+		return !accountLocked;
+	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -107,16 +122,16 @@ public class User implements UserDetails {
 		this.enabled = enabled;
 	}
 
-	public void setAccountNonExpired(boolean accountNonExpired) {
-		this.accountNonExpired = accountNonExpired;
+	public void setAccountExpired(boolean accountExpired) {
+		this.accountExpired = accountExpired;
 	}
 
-	public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-		this.credentialsNonExpired = credentialsNonExpired;
+	public void setCredentialsExpired(boolean credentialsExpired) {
+		this.credentialsExpired = credentialsExpired;
 	}
 
-	public void setAccountNonLocked(boolean accountNonLocked) {
-		this.accountNonLocked = accountNonLocked;
+	public void setAccountLocked(boolean accountLocked) {
+		this.accountLocked = accountLocked;
 	}
 
 	public void setGroups(Set<Group> groups) {

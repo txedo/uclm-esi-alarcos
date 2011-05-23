@@ -17,7 +17,12 @@
 		    }
 		    
 		    function validateForm(form) {                                                               
-		        return validateRequired(form); 
+		    	return validateRequired(form); 
+		    }
+		    
+		    function required () { 
+		        this.aa = new Array("j_username", "<s:text name="errors.requiredField"><s:param><s:text name="label.username"/></s:param></s:text>", new Function ("varName", " return this[varName];"));
+		        this.ab = new Array("j_password", "<s:text name="errors.requiredField"><s:param><s:text name="label.password"/></s:param></s:text>", new Function ("varName", " return this[varName];"));
 		    }
 		</script>
 	</head>
