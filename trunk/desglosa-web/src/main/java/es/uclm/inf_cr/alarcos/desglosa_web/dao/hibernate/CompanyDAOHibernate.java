@@ -2,8 +2,6 @@ package es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate;
 
 import java.util.List;
 
-import org.springframework.security.userdetails.UsernameNotFoundException;
-
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;

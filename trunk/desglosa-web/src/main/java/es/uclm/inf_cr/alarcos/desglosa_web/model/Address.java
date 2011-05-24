@@ -1,6 +1,14 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="addresses")
 public class Address {
 	private int id;
 	private String address;
@@ -9,58 +17,56 @@ public class Address {
 	private String country;
 	private String postalCode;
 	
-	public Address(String address, String city, String province, String country,
-			String postalCode) {
-		this.id = -1;
-		this.address = address;
-		this.city = city;
-		this.province = province;
-		this.country = country;
-		this.postalCode = postalCode;
-	}
+	public Address() {}
 
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	public int getId() {
 		return id;
+	}
+
+	@Column
+	public String getAddress() {
+		return address;
+	}
+
+	@Column
+	public String getCity() {
+		return city;
+	}
+
+	@Column
+	public String getProvince() {
+		return province;
+	}
+
+	@Column
+	public String getCountry() {
+		return country;
+	}
+
+	@Column(name="postal_code")
+	public String getPostalCode() {
+		return postalCode;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public String getCity() {
-		return city;
 	}
 
 	public void setCity(String city) {
 		this.city = city;
 	}
 
-	public String getProvince() {
-		return province;
-	}
-
 	public void setProvince(String province) {
 		this.province = province;
 	}
 
-	public String getCountry() {
-		return country;
-	}
-
 	public void setCountry(String country) {
 		this.country = country;
-	}
-
-	public String getPostalCode() {
-		return postalCode;
 	}
 
 	public void setPostalCode(String postalCode) {
