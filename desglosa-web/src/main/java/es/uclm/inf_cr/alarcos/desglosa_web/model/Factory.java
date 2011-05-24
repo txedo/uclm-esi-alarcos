@@ -1,0 +1,115 @@
+package es.uclm.inf_cr.alarcos.desglosa_web.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="factories")
+public class Factory {
+	private int id;
+	private Company company;
+	private String name;
+	private String information;
+	private Director director;
+	private String email;
+	private int employees;
+	private Address address;
+	private Location location;
+	
+	public Factory() {}
+
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	public int getId() {
+		return id;
+	}
+
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="company_id")
+	public Company getCompany() {
+		return company;
+	}
+
+	@Column(name="name",nullable=false,length=45,unique=true)
+	public String getName() {
+		return name;
+	}
+
+	@Column
+	public String getInformation() {
+		return information;
+	}
+
+	@OneToOne(fetch=FetchType.EAGER)
+	@PrimaryKeyJoinColumn
+	public Director getDirector() {
+		return director;
+	}
+
+	@Column(name="contact_email")
+	public String getEmail() {
+		return email;
+	}
+
+	@Column
+	public int getEmployees() {
+		return employees;
+	}
+
+	@OneToOne(fetch=FetchType.EAGER)
+	@PrimaryKeyJoinColumn
+	public Address getAddress() {
+		return address;
+	}
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@PrimaryKeyJoinColumn
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setInformation(String information) {
+		this.information = information;
+	}
+
+	public void setDirector(Director director) {
+		this.director = director;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setEmployees(int employees) {
+		this.employees = employees;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+	
+	public void setLocation(Location location){
+		this.location = location;
+	}
+	
+}

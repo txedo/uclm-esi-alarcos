@@ -88,5 +88,14 @@
 			<result name="success" type="redirect-action">listCompanies.action</result>
 		</action>
 		<!-- End of Company related actions -->
+		
+		<!-- Factory related actions -->
+		<action name="listFactories" class="factoryAction">
+			<!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/viewFactories.jsp</result>
+			<result name="input">/jsp/viewFactories.jsp</result>
+			<result name="success">/jsp/viewFactories.jsp</result>
+		</action>
 	</package>
 </struts>

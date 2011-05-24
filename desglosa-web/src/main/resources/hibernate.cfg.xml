@@ -7,5 +7,10 @@
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Group"/>
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Role"/>
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Company"/>
+        <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Address"/>
+        <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Image"/>
+        <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Director"/>
+        <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Location"/>
+        <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Factory"/>
     </session-factory>
 </hibernate-configuration>
