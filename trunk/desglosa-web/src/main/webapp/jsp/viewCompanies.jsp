@@ -10,14 +10,15 @@
 </head>
 <body>
 	<s:text name="menu.admin.companies" />
-	</br>
+	<s:actionerror />
+	<s:actionmessage />
 	<display:table name="requestScope.companies" id="company" cellspacing="0" cellpadding="0"
 	    defaultsort="1" class="" pagesize="50" requestURI="">
 	  
 	    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.company.name" sortable="true"/>
 	    <display:column property="information" escapeXml="true" style="width: 30%" titleKey="table.header.company.information" sortable="false"/>
 	    
-	    <display:column href="editCompany.action" style="width: 5%" paramId="id" paramProperty="id">edit</display:column>
+	    <display:column href="showCompanyForm.action" style="width: 5%" paramId="id" paramProperty="id">edit</display:column>
 	    <display:column href="deleteCompany.action" style="width: 5%" paramId="id" paramProperty="id">delete</display:column>
 	    
 	    <display:setProperty name="paging.banner.placement" value="top"/>
@@ -29,6 +30,6 @@
 	    <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>
 	</display:table>
 	<!-- TODO add security tag -->
-	<a href="<c:url value="/addCompany.action"/>"><fmt:message key="button.add_company"/></a>
+	<a href="<c:url value="/showCompanyForm.action"/>"><fmt:message key="button.add_company"/></a>
 </body>
 </html>
