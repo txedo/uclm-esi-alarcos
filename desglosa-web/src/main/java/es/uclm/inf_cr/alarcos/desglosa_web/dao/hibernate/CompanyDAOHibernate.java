@@ -15,8 +15,10 @@ public class CompanyDAOHibernate extends GenericDAOHibernate<Company, Long> impl
 		super(persistentClass);
 	}
 
-	public Company getCompany(int id) {
-		return (Company) getHibernateTemplate().get(Company.class, id);
+	public Company getCompany(int id) throws CompanyNotFoundException {
+		Company c = (Company) getHibernateTemplate().get(Company.class, id);
+		if (c == null) throw new CompanyNotFoundException("company '" + id + "' not found...");
+		return c;
 	}
 	
 	@SuppressWarnings("rawtypes")

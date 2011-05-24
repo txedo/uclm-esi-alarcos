@@ -9,6 +9,12 @@
 	<package name="default" extends="struts-default">
 		<!-- Interceptors -->
 	    <interceptors>
+	    	<!-- Interceptor to pass messages between actions -->
+	    	<interceptor name="redirectMessage" class="redirectMessageInterceptor" />
+	    	<interceptor-stack name="redirectMessageAndParams">
+            	<interceptor-ref name="redirectMessage"/>
+            	<interceptor-ref name="paramsPrepareParamsStack"/>
+            </interceptor-stack>
             <!-- Interceptor to handle allowing only certains roles to certain actions -->
             <interceptor name="adminOnly" class="adminInterceptor"/>
             <interceptor name="executiveOnly" class="executiveInterceptor"/>
@@ -48,30 +54,38 @@
 		<!-- Company related actions -->
 		<action name="listCompanies" class="companyAction">
 			<!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
-			<result>/jsp/viewCompanies.jsp</result>
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/viewCompanies.jsp</result>
+			<result name="input">/jsp/viewCompanies.jsp</result>
+			<result name="success">/jsp/viewCompanies.jsp</result>
 		</action>
-		<action name="addCompany" class="companyAction" method="add">
+		<action name="showCompanyForm" class="companyAction" method="showForm">
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/formCompany.jsp</result>
+			<result name="input">/jsp/formCompany.jsp</result>
 			<result name="success">/jsp/formCompany.jsp</result>
 		</action>
 		<action name="saveCompany" class="companyAction" method="save">
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/formCompany.jsp</result>
 			<result name="input">/jsp/formCompany.jsp</result>
-			<result name="success" type="redirect-action">
-				<param name="actionName">listCompanies.action</param>
-				<param name="parse">true</param>
-				<param name="action">save</param>
-				<param name="result">sucess</param>
-			</result>
+			<result name="success" type="redirect-action">listCompanies.action</result>
 		</action>
 		<action name="editCompany" class="companyAction" method="edit">
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
-			<result name="success" type="redirect">listCompanies.action</result>
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/formCompany.jsp</result>
+			<result name="input">/jsp/formCompany.jsp</result>
+			<result name="success" type="redirect-action">listCompanies.action</result>
 		</action>
 		<action name="deleteCompany" class="companyAction" method="delete">
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
-			<result name="success" type="redirect">listCompanies.action</result>
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error" type="redirect-action">listCompanies.action</result>
+			<result name="input" type="redirect-action">listCompanies.action</result>
+			<result name="success" type="redirect-action">listCompanies.action</result>
 		</action>
 		<!-- End of Company related actions -->
 	</package>

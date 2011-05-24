@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@page import="org.apache.struts2.ServletActionContext"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ include file="/common/taglibs.jsp"%>
@@ -11,18 +12,27 @@
 <body>
 	<s:text name="menu.admin.companies" />
 	<s:actionerror />
-	<form id="formCompany" method="post" action="<c:url value='/saveCompany.action'/>">
+	<c:set var="form" value="/editCompany.action"/>
+	<c:set var="buttonLabel" value="button.edit_company"/>
+	<c:if test="${empty param.id}">
+		<c:set var="form" value="/saveCompany.action"/>
+		<c:set var="buttonLabel" value="button.add_company"/>
+	</c:if>
+	<form id="formCompany" method="post" action="<c:url value="${form}"/>">
 	<ul>
 		<li>
 			<label for="companyName"><fmt:message key="label.company.name"/></label>
-			<s:textfield id="companyName" name="name" value="" tabindex="1"/>
+			<s:textfield id="companyName" name="name" tabindex="1"/>
 		</li>
 		<li>
 			<label for="companyInformation"><fmt:message key="label.company.information"/></label>
-			<s:textarea id="companyInformation" name="information" value="" tabindex="2" cols="15" rows="3"/>
+			<s:textarea id="companyInformation" name="information" tabindex="2" cols="15" rows="3"/>
 		</li>
 		<li>
-			<input type="submit" name="addCompany" value="<fmt:message key='button.add_company'/>" tabindex="3" />
+			<c:if test="${not empty param.id}">
+				<s:hidden name="id"/>
+			</c:if>
+			<input type="submit" name="addCompany" value="<fmt:message key="${buttonLabel}"/>" tabindex="3" />
 		</li>
 	</ul>
 	</form>
