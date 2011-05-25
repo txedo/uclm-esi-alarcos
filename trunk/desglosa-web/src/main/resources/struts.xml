@@ -97,5 +97,12 @@
 			<result name="input">/jsp/viewFactories.jsp</result>
 			<result name="success">/jsp/viewFactories.jsp</result>
 		</action>
+		<action name="showFactoryForm" class="factoryAction" method="showForm">
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/formFactory.jsp</result>
+			<result name="input">/jsp/formFactory.jsp</result>
+			<result name="success">/jsp/formFactory.jsp</result>
+		</action>
 	</package>
 </struts>

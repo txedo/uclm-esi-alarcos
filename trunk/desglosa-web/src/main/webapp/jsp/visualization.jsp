@@ -39,8 +39,7 @@
 			          value="http://jogamp.org/deployment/webstart/jogl-core.jnlp"/>
 			   <param name="java_arguments" value="-Dsun.java2d.noddraw=true"/>
 			   <param name="jnlp_href" value="applet/applet-desglosa.jnlp"/>
-			   You have no JRE installed.<br>
-			   Visit <a href="http://www.java.com/download/index.jsp" target="_blank">Java download page</a> to verify and/or install a JRE.
+			   You have no JRE installed.<br/>Visit <a href="http://www.java.com/download/index.jsp" target="_blank">Java download page</a> to verify and/or install a JRE.
 			</applet>
 		</div>
 		<br>
