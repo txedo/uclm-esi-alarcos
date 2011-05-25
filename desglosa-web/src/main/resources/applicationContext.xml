@@ -18,6 +18,7 @@
     </bean>
     <bean id="factoryAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.FactoryAction" singleton="false">
     	<property name="factoryDao" ref="factoryDao"/>
+    	<property name="companyDao" ref="companyDao"/>
     </bean>
     
     <!-- Struts2 interceptors instantiated by Spring -->
