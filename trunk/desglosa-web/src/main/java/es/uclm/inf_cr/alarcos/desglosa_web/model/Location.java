@@ -11,14 +11,19 @@ import javax.persistence.Table;
 @Table(name="locations")
 public class Location {
 	private int id;
-	private float longitude;
 	private float latitude;
-	
+	private float longitude;
+
 	public Location() {}
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	public int getId() {
 		return id;
+	}
+	
+	@Column
+	public float getLatitude() {
+		return latitude;
 	}
 
 	@Column
@@ -26,21 +31,16 @@ public class Location {
 		return longitude;
 	}
 
-	@Column
-	public float getLatitude() {
-		return latitude;
-	}
-
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public void setLatitude(float latitude) {
+		this.latitude = latitude;
 	}
 
 	public void setLongitude(float longitude) {
 		this.longitude = longitude;
-	}
-
-	public void setLatitude(float latitude) {
-		this.latitude = latitude;
 	}
 
 }
