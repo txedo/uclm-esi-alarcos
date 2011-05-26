@@ -1,5 +1,6 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,7 +33,7 @@ public class Factory {
 		return id;
 	}
 
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE})
 	@JoinColumn(name="company_id")
 	public Company getCompany() {
 		return company;
@@ -48,7 +49,7 @@ public class Factory {
 		return information;
 	}
 
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
 	@PrimaryKeyJoinColumn
 	public Director getDirector() {
 		return director;
@@ -64,13 +65,13 @@ public class Factory {
 		return employees;
 	}
 
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
 	@PrimaryKeyJoinColumn
 	public Address getAddress() {
 		return address;
 	}
 	
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
 	@PrimaryKeyJoinColumn
 	public Location getLocation() {
 		return location;

@@ -10,6 +10,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
@@ -29,10 +30,20 @@ public class FactoryAction extends ActionSupport {
 	// factoryDao is set from applicationContext.xml
 	private FactoryDAO factoryDao;
 	private CompanyDAO companyDao;
-	// List Action needed attributes
+	// Required attributes by List Action
 	private List<Factory> factories;
 	private List<Company> companies;
+	// Required attributes by Save Action
+	private Factory factory;
 	
+	public Factory getFactory() {
+		return factory;
+	}
+
+	public void setFactory(Factory factory) {
+		this.factory = factory;
+	}
+
 	public void setFactoryDao(FactoryDAO factoryDao) {
 		this.factoryDao = factoryDao;
 	}
@@ -82,5 +93,41 @@ public class FactoryAction extends ActionSupport {
 			}
 		} // Else, show a blank form
 		return result;
+	}
+	
+	public void validateDoSave() {
+		try {
+			// Check that the company ID exists
+			Company c = companyDao.getCompany(factory.getCompany().getId());
+			// If it exists, set it to factory
+			factory.setCompany(c);
+			// Check that factory name is already taken
+			factoryDao.getFactory(factory.getName());
+			addFieldError("factory.name", getText("error.factory.name"));
+			// If factory name is available, then throw and catch FactoryNotFoundException
+		} catch (CompanyNotFoundException e) {
+			addActionError(getText("error.company.id"));
+		} catch (FactoryNotFoundException e) {
+			// Check that required fields are filled in
+			// Factory data
+			if (factory.getName().trim().length() == 0) addFieldError("factory.name", getText("error.factory.name"));
+			// Director data
+			if (factory.getDirector().getName().trim().length() == 0) addFieldError("factory.director.name", getText("error.director.name"));
+			if (factory.getDirector().getFirstSurname().trim().length() == 0) addFieldError("factory.director.name", getText("error.director.first_surname"));
+			// Address data
+			if (factory.getAddress().getAddress().trim().length() == 0) addFieldError("factory.address.address", getText("error.address.address"));
+			if (factory.getAddress().getCity().trim().length() == 0) addFieldError("factory.address.city", getText("error.address.city"));
+			//if (factory.getAddress().getProvince().trim().length() == 0) addFieldError("factory.address.province", getText("error.address.province"));
+			if (factory.getAddress().getCountry().trim().length() == 0) addFieldError("factory.address.country", getText("error.address.country"));
+			//if (factory.getAddress().getPostalCode().trim().length() == 0) addFieldError("factory.address.postalCode", getText("error.address.postal_code"));
+			// Location data
+			if (factory.getLocation().getLatitude() == 0.0f) addFieldError("factory.location.latitude", getText("error.location.latitude"));
+			if (factory.getLocation().getLongitude() == 0.0f) addFieldError("factory.location.longitude", getText("error.location.longitude"));
+		}
+	}
+	
+	public String save() {
+		factoryDao.saveFactory(factory);
+		return SUCCESS;
 	}
 }

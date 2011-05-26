@@ -8,7 +8,7 @@
 <head>
 	<meta name="menu" content="ManageFactories"/>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
 	<script src="js/radio.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	function swapDivVisibility (toHide, toShow) {
@@ -22,13 +22,25 @@
 	var marker;
 	
 	function getFullAddress () {
-		var address = document.getElementById("address.address").value;
-		var city = document.getElementById("address.city").value;
-		var province = document.getElementById("address.province").value;
-		var country = document.getElementById("address.country").value;
-		var postalCode = document.getElementById("address.postalCode").value;
+		var address = document.getElementById("factory.address.address").value;
+		var city = document.getElementById("factory.address.city").value;
+		var province = document.getElementById("factory.address.province").value;
+		var country = document.getElementById("factory.address.country").value;
+		var postalCode = document.getElementById("factory.address.postalCode").value;
 		
 		return (address + ", " + postalCode + " " + city + ", " + province + ", " + country);
+	}
+	
+	function placeMark(latLng) {
+        marker = new google.maps.Marker({
+            map: map, 
+            position: latLng
+        });
+        map.panTo(latLng);
+        isLocationSet = true;
+        document.getElementById('factory.location.latitude').value = latLng.lat();
+        document.getElementById('factory.location.longitude').value = latLng.lng();
+        codeLatLng(latLng);
 	}
 	
 	function codeAddress (fullAddress, infoDiv) {
@@ -42,11 +54,7 @@
 	        	case google.maps.GeocoderStatus.OK:
 	        		if (infoDiv != null) document.getElementById(infoDiv).innerHTML="Address found: " + fullAddress;
 		            map.setCenter(results[0].geometry.location);
-		            marker = new google.maps.Marker({
-		                map: map, 
-		                position: results[0].geometry.location
-		            });
-		            isLocationSet = true;
+		            placeMark(results[0].geometry.location);
 	        		break;
 	        	case google.maps.GeocoderStatus.ZERO_RESULTS:
 	        		var message = "Could not find specified address. Please, check that the address data is correct or click on the map.";
@@ -58,14 +66,7 @@
 	        				marker.setMap(null);
 	        				isLocationSet = false;
 	        			}
-	        			var location = event.latLng;
-	        			  var clickedLocation = new google.maps.LatLng(location);
-	        			  marker = new google.maps.Marker({
-	        			      position: location, 
-	        			      map: map
-	        			  });
-	        			  map.panTo(location);
-	        			  isLocationSet = true;
+	        			placeMark(event.latLng);
 	        	    });
 	        		break;
 	        	case google.maps.GeocoderStatus.INVALID_REQUEST:
@@ -83,6 +84,46 @@
 	        	}
 	        });
 	      }
+	}
+	
+	function codeLatLng(latlng) {
+		var street_number;
+		var street_address;
+		var city;
+		var province;
+		var country;
+		var postal_code;
+		
+		if(geocoder) {
+		      geocoder.geocode({'latLng': latlng}, function(results, status) {
+		          if (status == google.maps.GeocoderStatus.OK) {
+		            if (results[0]) {
+		            	var i;
+		            	var j;
+		            	for (i = 0; i < results[0].address_components.length; i++) {
+		            		var component = results[0].address_components[i];
+		            		for (j = 0; j < component.types.length; j++) {
+		            			var type = component.types[j];
+		            			if (type == "street_number") street_number = component.long_name;
+		            			if (type == "route") street_address = component.long_name;
+		            			if (type == "locality") city = component.long_name;
+		            			if (type == "administrative_area_level_2") province = component.long_name;
+		            			if (type == "country") country = component.long_name;
+		            			if (type == "postal_code") postal_code = component.long_name;
+		            		}
+		            	}
+	            		document.getElementById("factory.address.address").value = street_address + ", " + street_number;
+	            		document.getElementById("factory.address.city").value = city;
+	            		document.getElementById("factory.address.province").value = province;
+	            		document.getElementById("factory.address.country").value = country;
+	            		document.getElementById("factory.address.postalCode").value = postal_code;
+		            }
+		          } else {
+		            alert("Geocoder failed due to: " + status);
+		          }
+		        });
+
+		}
 	}
 	
 	function initializeGMaps() {
@@ -110,6 +151,7 @@
 <body>
 	<s:text name="menu.admin.factories" />
 	<s:actionerror />
+	<s:fielderror />
 	<c:set var="form" value="/editFactory.action"/>
 	<c:set var="buttonLabel" value="button.edit_factory"/>
 	<c:if test="${empty param.id}">
@@ -125,7 +167,7 @@
 				<li>
 					<display:table name="requestScope.companies" id="company" cellspacing="0" cellpadding="0" defaultsort="1" class="" pagesize="50" requestURI="">
 						<display:column style="width: 5%">
-							<input type="radio" name="choosenCompanyId" value="${company.id}" onclick="document.getElementById('gotoSecondStep').disabled=''"/>
+							<input type="radio" name="factory.company.id" value="${company.id}" onclick="document.getElementById('gotoSecondStep').disabled=''"/>
 						</display:column>
 					    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.company.name" sortable="true"/>
 					    <display:column property="information" escapeXml="true" style="width: 30%" titleKey="table.header.company.information" sortable="false"/>
@@ -178,16 +220,16 @@
 					<fmt:message key="label.configure.factory.director"/>
 				</li>
 				<li>
-					<label for="director.name"><fmt:message key="label.configure.factory.director.name"></fmt:message></label>
-					<s:textfield id="director.name" name="director.name" tabindex="1"/>
+					<label for="factory.director.name"><fmt:message key="label.configure.factory.director.name"></fmt:message></label>
+					<s:textfield id="factory.director.name" name="factory.director.name" tabindex="1"/>
 				</li>
 				<li>
-					<label for="director.firstSurname"><fmt:message key="label.configure.factory.director.first_surname"></fmt:message></label>
-					<s:textfield id="director.firstSurname" name="director.firstSurname" tabindex="2"/>
+					<label for="factory.director.firstSurname"><fmt:message key="label.configure.factory.director.first_surname"></fmt:message></label>
+					<s:textfield id="factory.director.firstSurname" name="factory.director.firstSurname" tabindex="2"/>
 				</li>
 				<li>
-					<label for="director.lastSurname"><fmt:message key="label.configure.factory.director.last_surname"></fmt:message></label>
-					<s:textfield id="director.lastSurname" name="director.lastSurname" tabindex="3"/>
+					<label for="factory.director.lastSurname"><fmt:message key="label.configure.factory.director.last_surname"></fmt:message></label>
+					<s:textfield id="factory.director.lastSurname" name="factory.director.lastSurname" tabindex="3"/>
 				</li>
 				<li>
 					image
@@ -204,24 +246,24 @@
 					<fmt:message key="label.configure.factory.address"/>
 				</li>
 				<li>
-					<label for="address.address"><fmt:message key="label.configure.factory.address.address"></fmt:message></label>
-					<s:textfield id="address.address" name="address.address" tabindex="1"/>
+					<label for="factory.address.address"><fmt:message key="label.configure.factory.address.address"></fmt:message></label>
+					<s:textfield id="factory.address.address" name="factory.address.address" tabindex="1"/>
 				</li>
 				<li>
-					<label for="address.city"><fmt:message key="label.configure.factory.address.city"></fmt:message></label>
-					<s:textfield id="address.city" name="address.city" tabindex="2"/>
+					<label for="factory.address.city"><fmt:message key="label.configure.factory.address.city"></fmt:message></label>
+					<s:textfield id="factory.address.city" name="factory.address.city" tabindex="2"/>
 				</li>
 				<li>
-					<label for="address.province"><fmt:message key="label.configure.factory.address.province"></fmt:message></label>
-					<s:textfield id="address.province" name="address.province" tabindex="3"/>
+					<label for="factory.address.province"><fmt:message key="label.configure.factory.address.province"></fmt:message></label>
+					<s:textfield id="factory.address.province" name="factory.address.province" tabindex="3"/>
 				</li>
 				<li>
-					<label for="address.country"><fmt:message key="label.configure.factory.address.country"></fmt:message></label>
-					<s:textfield id="address.country" name="address.country" tabindex="4"/>
+					<label for="factory.address.country"><fmt:message key="label.configure.factory.address.country"></fmt:message></label>
+					<s:textfield id="factory.address.country" name="factory.address.country" tabindex="4"/>
 				</li>
 				<li>
-					<label for="address.postalCode"><fmt:message key="label.configure.factory.address.postal_code"></fmt:message></label>
-					<s:textfield id="address.postalCode" name="address.postalCode" tabindex="5"/>
+					<label for="factory.address.postalCode"><fmt:message key="label.configure.factory.address.postal_code"></fmt:message></label>
+					<s:textfield id="factory.address.postalCode" name="factory.address.postalCode" tabindex="5"/>
 				</li>				
 				<li>
 					<!-- address, number, postal_code city, province, country -->
@@ -229,10 +271,12 @@
 					<div id="map_info"></div>
 					<div id="map_canvas" style="width: 600px; height: 400px; display: none;">
 					</div>
+					<input type="hidden" id="factory.location.latitude" name="factory.location.latitude" value=""/>
+					<input type="hidden" id="factory.location.longitude" name="factory.location.longitude" value=""/>
 				</li>
 				<li>
 					<input type="button" id="gotoFourthStep" name="gotoFourthStep" value="< Back" onclick="swapDivVisibility('fillAddress','fillDirector')"/>
-					<input type="submit" id="submit" name="submit" value="Finish" onclick=""/>
+					<input type="submit" id="submit" name="submit" value="Finish"/>
 				</li>
 			</ul>
 		</div>
