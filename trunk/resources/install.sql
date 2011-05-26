@@ -29,9 +29,9 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`addresses` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `address` TINYTEXT NOT NULL ,
   `city` VARCHAR(65) NOT NULL ,
-  `province` VARCHAR(65) NOT NULL ,
+  `province` VARCHAR(65) NULL ,
   `country` VARCHAR(65) NOT NULL ,
-  `postal_code` VARCHAR(45) NOT NULL ,
+  `postal_code` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -60,7 +60,7 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`directors` (
   `name` VARCHAR(45) NOT NULL ,
   `first_surname` VARCHAR(45) NOT NULL ,
   `last_surname` VARCHAR(45) NULL ,
-  `image_id` INT NOT NULL ,
+  `image_id` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_directors_images` (`image_id` ASC) ,
   CONSTRAINT `fk_directors_images`
@@ -96,9 +96,9 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`factories` (
   `contact_email` VARCHAR(65) NULL ,
   `employees` INT NULL ,
   `company_id` INT NOT NULL ,
-  `address_id` INT NOT NULL ,
-  `director_id` INT NOT NULL ,
-  `location_id` INT NOT NULL ,
+  `address_id` INT NULL ,
+  `director_id` INT NULL ,
+  `location_id` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_factories_companies` (`company_id` ASC) ,
   INDEX `fk_factories_addresses` (`address_id` ASC) ,

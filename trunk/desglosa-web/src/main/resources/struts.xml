@@ -104,5 +104,12 @@
 			<result name="input">/jsp/formFactory.jsp</result>
 			<result name="success">/jsp/formFactory.jsp</result>
 		</action>
+		<action name="saveFactory" class="factoryAction" method="save">
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/formFactory.jsp</result>
+			<result name="input">/jsp/formFactory.jsp</result>
+			<result name="success">listFactories.action</result>
+		</action>
 	</package>
 </struts>
