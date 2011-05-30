@@ -114,6 +114,8 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 			} catch (CompanyNotFoundException e1) {
 				addActionError(getText("error.company.id"));
 			}
+			// Check company name is not empty
+			if (company.getName().trim().length() == 0) addFieldError("company.name", getText("error.company.name"));
 			// Check that there is no company with same name and different id
 			try {
 				cAux = companyDao.getCompany(company.getName());
@@ -127,14 +129,7 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 	}
 
 	public String edit() throws Exception {
-		// Check if the company id exists
-		Company cAux = companyDao.getCompany(company.getId());
-		// Update it if it exists
-		if (!cAux.getName().equals(company.getName()))
-			cAux.setName(company.getName());
-		if (!cAux.getInformation().equals(company.getInformation()))
-			cAux.setInformation(company.getInformation());
-		companyDao.saveCompany(cAux);
+		companyDao.saveCompany(company);
 		addActionMessage(getText("message.company.updated_successfully"));
 
 		return SUCCESS;

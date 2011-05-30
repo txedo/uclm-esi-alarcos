@@ -9,7 +9,6 @@
 	<meta name="menu" content="ManageFactories"/>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
-	<script src="js/radio.js" type="text/javascript"></script>
 	<script type="text/javascript">
 	function swapDivVisibility (toHide, toShow) {
 		document.getElementById(toHide).style.display='none';
@@ -159,6 +158,9 @@
 		<c:set var="buttonLabel" value="button.add_factory"/>
 	</c:if>
 	<form id="formFactory" method="post" action="<c:url value="${form}"/>">
+		<c:if test="${not empty param.id}">
+			<s:hidden name="factory.id"/>
+		</c:if>
 		<div id="chooseCompany" style="display:">
 			<ul>
 				<li>
@@ -167,7 +169,16 @@
 				<li>
 					<display:table name="requestScope.companies" id="company" cellspacing="0" cellpadding="0" defaultsort="1" class="" pagesize="50" requestURI="">
 						<display:column style="width: 5%">
-							<input type="radio" name="factory.company.id" value="${company.id}" onclick="document.getElementById('gotoSecondStep').disabled=''"/>
+							<c:choose>
+								<c:when test="${factory.company.id == company.id}">
+									<c:set var="companyChecked" value="true"/>
+									<input type="radio" name="factory.company.id" value="${company.id}" onclick="document.getElementById('gotoSecondStep').disabled=''" checked/>
+								</c:when>
+								<c:otherwise>
+									<c:set var="companyChecked" value="false"/>
+									<input type="radio" name="factory.company.id" value="${company.id}" onclick="document.getElementById('gotoSecondStep').disabled=''"/>
+								</c:otherwise>
+							</c:choose>
 						</display:column>
 					    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.company.name" sortable="true"/>
 					    <display:column property="information" escapeXml="true" style="width: 30%" titleKey="table.header.company.information" sortable="false"/>
@@ -183,7 +194,15 @@
 				</li>
 				<li>
 					<input type="button" value="< Back" disabled="disabled" style="visibility: hidden"/>
-					<input type="button" id="gotoSecondStep" name="gotoSecondStep" value="Next >" disabled="disabled" onclick="swapDivVisibility('chooseCompany','fillFactoryData')"/>
+					<c:set var="foo" value="javascript:getCheckedValue(document.forms['formFactory'].elements['factory.company.id'])"></c:set>
+					<c:choose>
+						<c:when test="${companyChecked == 'false'}">
+							<input type="button" id="gotoSecondStep" name="gotoSecondStep" value="Next >" disabled="disabled" onclick="swapDivVisibility('chooseCompany','fillFactoryData')"/>
+						</c:when>
+						<c:otherwise>
+							<input type="button" id="gotoSecondStep" name="gotoSecondStep" value="Next >" onclick="swapDivVisibility('chooseCompany','fillFactoryData')"/>
+						</c:otherwise>
+					</c:choose>
 				</li>
 			</ul>
 		</div>
