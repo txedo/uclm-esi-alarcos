@@ -52,7 +52,7 @@
 	        	switch(status)
 	        	{
 	        	case google.maps.GeocoderStatus.OK:
-	        		if (infoDiv != null) document.getElementById(infoDiv).innerHTML="Address found: " + fullAddress;
+	        		if (infoDiv != null) document.getElementById(infoDiv).innerHTML="Address found.";
 		            map.setCenter(results[0].geometry.location);
 		            placeMark(results[0].geometry.location);
 	        		break;
@@ -143,7 +143,7 @@
 		initializeGMaps();
 		document.getElementById('map_info').innerHTML="Map initialized.";
 		var fullAddress = getFullAddress();
-		document.getElementById('map_info').innerHTML="Searching address: " + fullAddress;
+		document.getElementById('map_info').innerHTML="Searching address...";
 		codeAddress(fullAddress, 'map_info');
 	}
 	</script>
@@ -271,8 +271,8 @@
 					<div id="map_info"></div>
 					<div id="map_canvas" style="width: 600px; height: 400px; display: none;">
 					</div>
-					<input type="hidden" id="factory.location.latitude" name="factory.location.latitude" value=""/>
-					<input type="hidden" id="factory.location.longitude" name="factory.location.longitude" value=""/>
+					<s:hidden id="factory.location.latitude" name="factory.location.latitude"/>
+					<s:hidden id="factory.location.longitude" name="factory.location.longitude"/>
 				</li>
 				<li>
 					<input type="button" id="gotoFourthStep" name="gotoFourthStep" value="< Back" onclick="swapDivVisibility('fillAddress','fillDirector')"/>

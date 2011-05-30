@@ -9,7 +9,7 @@
 	<meta name="menu" content="ViewFactories"/>
 </head>
 <body>
-	<s:text name="menu.admin.factories" />
+	<s:text name="menu.admin.factories"/>
 	<s:actionerror />
 	<s:actionmessage />
 	<display:table name="requestScope.factories" id="factory" cellspacing="0" cellpadding="0"

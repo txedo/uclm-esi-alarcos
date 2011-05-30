@@ -20,16 +20,16 @@
 	<form id="formCompany" method="post" action="<c:url value="${form}"/>">
 	<ul>
 		<li>
-			<label for="companyName"><fmt:message key="label.company.name"/></label>
-			<s:textfield id="companyName" name="name" tabindex="1"/>
+			<label for="company.name"><fmt:message key="label.company.name"/></label>
+			<s:textfield id="company.name" name="company.name" tabindex="1"/>
 		</li>
 		<li>
-			<label for="companyInformation"><fmt:message key="label.company.information"/></label>
-			<s:textarea id="companyInformation" name="information" tabindex="2" cols="15" rows="3"/>
+			<label for="company.information"><fmt:message key="label.company.information"/></label>
+			<s:textarea id="company.information" name="company.information" tabindex="2" cols="15" rows="3"/>
 		</li>
 		<li>
 			<c:if test="${not empty param.id}">
-				<s:hidden name="id"/>
+				<s:hidden name="company.id"/>
 			</c:if>
 			<input type="submit" name="addCompany" value="<fmt:message key="${buttonLabel}"/>" tabindex="3" />
 		</li>
