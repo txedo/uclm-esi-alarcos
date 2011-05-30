@@ -115,5 +115,16 @@
 			<result name="input">/jsp/formFactory.jsp</result>
 			<result name="success">listFactories.action</result>
 		</action>
+		<action name="editFactory" class="factoryAction" method="edit">
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/viewFactories.jsp</result>
+			<result name="input">
+				<param name="location">/jsp/formFactory.jsp?id=${id}</param>
+      			<param name="parse">true</param>
+      			<param name="encode">true</param>
+			</result>
+			<result name="success" type="redirect-action">listFactories.action</result>
+		</action>
 	</package>
 </struts>

@@ -27,6 +27,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
  * are best used as adapters, rather than as a class where coding logic is defined.
 */
 public class FactoryAction extends ActionSupport {
+	private int id;
 	// factoryDao is set from applicationContext.xml
 	private FactoryDAO factoryDao;
 	private CompanyDAO companyDao;
@@ -36,6 +37,14 @@ public class FactoryAction extends ActionSupport {
 	// Required attributes by Save Action
 	private Factory factory;
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public Factory getFactory() {
 		return factory;
 	}
@@ -80,12 +89,8 @@ public class FactoryAction extends ActionSupport {
 				result = ERROR;
 			} else {
 				try {
-					// Check if the factory id exists
-					Factory f = factoryDao.getFactory(id);
-					// Set attributes
-//					setId(f.getId());
-//					setName(f.getName());
-//					setInformation(f.getInformation());
+					// Check if the factory id exists and place it in value stack
+					factory = factoryDao.getFactory(id);
 				} catch (FactoryNotFoundException e) {
 					addActionError(getText("error.factory.id"));
 					result = ERROR;
@@ -96,18 +101,70 @@ public class FactoryAction extends ActionSupport {
 	}
 	
 	public void validateDoSave() {
-		try {
-			// Check that the company ID exists
-			Company c = companyDao.getCompany(factory.getCompany().getId());
-			// If it exists, set it to factory
-			factory.setCompany(c);
-			// Check that factory name is already taken
-			factoryDao.getFactory(factory.getName());
-			addFieldError("factory.name", getText("error.factory.name"));
-			// If factory name is available, then throw and catch FactoryNotFoundException
-		} catch (CompanyNotFoundException e) {
-			addActionError(getText("error.company.id"));
-		} catch (FactoryNotFoundException e) {
+		if (factory != null) {
+			try {
+				// Check that the company ID exists
+				Company c = companyDao.getCompany(factory.getCompany().getId());
+				// If it exists, set it to factory
+				factory.setCompany(c);
+				// Check that factory name is already taken
+				factoryDao.getFactory(factory.getName());
+				addFieldError("factory.name", getText("error.factory.name"));
+				// If factory name is available, then throw and catch FactoryNotFoundException
+			} catch (CompanyNotFoundException e) {
+				addActionError(getText("error.company.id"));
+			} catch (FactoryNotFoundException e) {
+				// Check that required fields are filled in
+				// Factory data
+				if (factory.getName().trim().length() == 0) addFieldError("factory.name", getText("error.factory.name"));
+				// Director data
+				if (factory.getDirector().getName().trim().length() == 0) addFieldError("factory.director.name", getText("error.director.name"));
+				if (factory.getDirector().getFirstSurname().trim().length() == 0) addFieldError("factory.director.name", getText("error.director.first_surname"));
+				// Address data
+				if (factory.getAddress().getAddress().trim().length() == 0) addFieldError("factory.address.address", getText("error.address.address"));
+				if (factory.getAddress().getCity().trim().length() == 0) addFieldError("factory.address.city", getText("error.address.city"));
+				//if (factory.getAddress().getProvince().trim().length() == 0) addFieldError("factory.address.province", getText("error.address.province"));
+				if (factory.getAddress().getCountry().trim().length() == 0) addFieldError("factory.address.country", getText("error.address.country"));
+				//if (factory.getAddress().getPostalCode().trim().length() == 0) addFieldError("factory.address.postalCode", getText("error.address.postal_code"));
+				// Location data
+				if (factory.getLocation().getLatitude() == 0.0f) addFieldError("factory.location.latitude", getText("error.location.latitude"));
+				if (factory.getLocation().getLongitude() == 0.0f) addFieldError("factory.location.longitude", getText("error.location.longitude"));
+			} 
+		}else {
+			addActionError(getText("error.general"));
+		}
+		if (hasActionErrors() || hasErrors() || hasFieldErrors()) companies = companyDao.getAll();
+	}
+	
+	public String save() {
+		factoryDao.saveFactory(factory);
+		return SUCCESS;
+	}
+	
+	public void validateDoEdit() {
+		Factory fAux;
+		if (factory != null) {
+			// Check if factory ID is valid
+			try {
+				if (factory.getId() <= 0) addActionError(getText("error.factory.id"));
+				fAux = factoryDao.getFactory(factory.getId());
+			} catch  (FactoryNotFoundException e) {
+				addActionError(getText("error.factory.id"));
+			}
+			try {
+				// Check that the company ID exists
+				Company c = companyDao.getCompany(factory.getCompany().getId());
+				// If it exists, set it to factory
+				factory.setCompany(c);
+				// Check that there is no company with same name and different id
+				fAux = factoryDao.getFactory(factory.getName());
+				if (fAux.getId() != factory.getId())addFieldError("factory.name", getText("error.factory.name"));
+				// If factory name is available, then throw and catch FactoryNotFoundException
+			} catch (CompanyNotFoundException e) {
+				addActionError(getText("error.company.id"));
+			} catch (FactoryNotFoundException e) {
+				// Name not taken. Nothing to do here.
+			}
 			// Check that required fields are filled in
 			// Factory data
 			if (factory.getName().trim().length() == 0) addFieldError("factory.name", getText("error.factory.name"));
@@ -123,11 +180,13 @@ public class FactoryAction extends ActionSupport {
 			// Location data
 			if (factory.getLocation().getLatitude() == 0.0f) addFieldError("factory.location.latitude", getText("error.location.latitude"));
 			if (factory.getLocation().getLongitude() == 0.0f) addFieldError("factory.location.longitude", getText("error.location.longitude"));
+		}else {
+			addActionError(getText("error.general"));
 		}
 		if (hasActionErrors() || hasErrors() || hasFieldErrors()) companies = companyDao.getAll();
 	}
 	
-	public String save() {
+	public String edit() {
 		factoryDao.saveFactory(factory);
 		return SUCCESS;
 	}
