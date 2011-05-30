@@ -276,6 +276,10 @@ grant ALL on TABLE `desglosadb`.`images` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`projects` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`projects_has_factories` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`users` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`groups` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`groups_roles` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`roles` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`users_groups` to desglosaadmin;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

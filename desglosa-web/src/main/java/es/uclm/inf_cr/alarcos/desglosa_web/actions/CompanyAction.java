@@ -13,46 +13,40 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 
 public class CompanyAction extends ActionSupport implements GenericActionInterface {
+	private int id;
 	// companyDao is set from applicationContext.xml
 	private CompanyDAO companyDao;
-	// Save Action needed attributes
-	private String name;
-	private String information;
-	// List Action needed attributes
+	// Attributes required by Save, Delete and Edit action methods
+	private Company company;
+	// Attributes required by List action (default method execute)
 	private List<Company> companies;
-	// Delete and Edit Action needed attributes
-	private int id;
 	
 	public void setCompanyDao(CompanyDAO companyDao) {
 		this.companyDao = companyDao;
 	}
 
-	public List<Company> getCompanies() {
-		return companies;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getInformation() {
-		return information;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setInformation(String information) {
-		this.information = information;
-	}
-	
 	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+
+
+	public List<Company> getCompanies() {
+		return companies;
 	}
 
 	@Override
@@ -62,86 +56,100 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 	}
 	
 	public String showForm() throws Exception {
+		// validateDoShowForm is not necessary since it would do the same as this method
 		String result = SUCCESS;
 		// Get the company id attribute from URL
 		HttpServletRequest request = ServletActionContext.getRequest();
 		if (request.getParameter("id") != null) {
-			int id = Integer.parseInt(request.getParameter("id"));
+			id = Integer.parseInt(request.getParameter("id"));
 			// If id <= 0, then ERROR
 			if (id <= 0) {
 				addActionError(getText("error.company.id"));
-				result = ERROR;
 			} else {
 				try {
-					// Check if the company id exists
-					Company c = companyDao.getCompany(id);
-					// Set attributes
-					setId(c.getId());
-					setName(c.getName());
-					setInformation(c.getInformation());
+					// Check if the company id exists and place it in value stack
+					company = companyDao.getCompany(id);
 				} catch (CompanyNotFoundException e) {
 					addActionError(getText("error.company.id"));
-					result = ERROR;
 				}
 			}
 		} // Else, show a blank form
+		if (hasActionErrors()) {
+			result = ERROR;
+			companies = companyDao.getAll();
+		}
 		return result;
 	}
 	
 	public void validateDoSave(){
-		if (getName().trim().length() == 0) addFieldError("name", getText("error.company.name"));
+		if (company != null) {
+			// Check company name is not empty
+			if (company.getName().trim().length() == 0) addFieldError("company.name", getText("error.company.name"));
+			// Check company name is not already taken
+			try {
+				companyDao.getCompany(company.getName());
+				addFieldError("company.name", getText("error.company.already_exists"));
+			} catch (CompanyNotFoundException e) {
+				// Name not taken. Nothing to do here
+			}
+		} else {
+			addActionError(getText("error.general"));
+		}
 	}
 
 	public String save() {
-		String result = SUCCESS;
-		try {
-			// Check if the company exits
-			companyDao.getCompany(name);
-			addActionError(getText("error.company.already_exists"));
-			result = ERROR;
-		} catch (CompanyNotFoundException e) {
-			// If the company does not exists, then save it
-			Company newCompany = new Company(name, information);
-			companyDao.saveCompany(newCompany);
-			addActionMessage(getText("message.company.added_successfully"));
+		companyDao.saveCompany(company);
+		addActionMessage(getText("message.company.added_successfully"));
+
+		return SUCCESS;
+	}
+	
+	public void validateDoEdit () {
+		Company cAux;
+		if (company != null) {
+			// Check if company id is valid
+			if (company.getId() <= 0) addActionError(getText("error.company.id"));
+			try {
+				cAux = companyDao.getCompany(company.getId());
+			} catch (CompanyNotFoundException e1) {
+				addActionError(getText("error.company.id"));
+			}
+			// Check that there is no company with same name and different id
+			try {
+				cAux = companyDao.getCompany(company.getName());
+				if (cAux.getId() != company.getId()) addFieldError("company.name", getText("error.company.already_exists"));
+			} catch (CompanyNotFoundException e) {
+				// Name not taken. Nothing to do here.
+			}
+		} else {
+			addActionError(getText("error.general"));
 		}
-		return result;
 	}
 
 	public String edit() throws Exception {
-		String result = SUCCESS;
-		// If id <= 0, then ERROR
-		if (getId() <= 0) {
-			addActionError(getText("error.company.id"));
-			result = ERROR;
-		} else {
-			try {
-				// Check if the company id exists
-				Company newCompany = companyDao.getCompany(getId());
-				// Update it if it exists
-				newCompany.setId(getId());
-				newCompany.setName(getName());
-				newCompany.setInformation(getInformation());
-				companyDao.saveCompany(newCompany);
-				addActionMessage(getText("message.company.updated_successfully"));
-			} catch (CompanyNotFoundException e) {
-				addActionError(getText("error.company.id"));
-				result = ERROR;
-			}
-		}
-		return result;
+		// Check if the company id exists
+		Company cAux = companyDao.getCompany(company.getId());
+		// Update it if it exists
+		if (!cAux.getName().equals(company.getName()))
+			cAux.setName(company.getName());
+		if (!cAux.getInformation().equals(company.getInformation()))
+			cAux.setInformation(company.getInformation());
+		companyDao.saveCompany(cAux);
+		addActionMessage(getText("message.company.updated_successfully"));
+
+		return SUCCESS;
 	}
 
 	public String delete() {
+		// validateDoDelete is not necessary since it would do nearly the same as this method
 		String result = SUCCESS;
 		// Get the company id attribute from URL
 		HttpServletRequest request = ServletActionContext.getRequest();
 		if (request.getParameter("id") != null) {
-			int id = Integer.parseInt(request.getParameter("id"));
+			id = Integer.parseInt(request.getParameter("id"));
 			// If id <= 0, then ERROR
 			if (id <= 0) {
 				addActionError(getText("error.company.id"));
-				result = ERROR;
 			} else {
 				try {
 					// Check if the company id exists
@@ -151,12 +159,14 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 					addActionMessage(getText("message.company.deleted_successfully"));
 				} catch (CompanyNotFoundException e) {
 					addActionError(getText("error.company.id"));
-					result = ERROR;
 				}
 			}
 		} else {
 			addActionError(getText("error.company.id"));
+		}
+		if (hasActionErrors()) {
 			result = ERROR;
+			companies = companyDao.getAll();
 		}
 		return result;
 	}

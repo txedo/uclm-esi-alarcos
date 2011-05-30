@@ -124,6 +124,7 @@ public class FactoryAction extends ActionSupport {
 			if (factory.getLocation().getLatitude() == 0.0f) addFieldError("factory.location.latitude", getText("error.location.latitude"));
 			if (factory.getLocation().getLongitude() == 0.0f) addFieldError("factory.location.longitude", getText("error.location.longitude"));
 		}
+		if (hasActionErrors() || hasErrors() || hasFieldErrors()) companies = companyDao.getAll();
 	}
 	
 	public String save() {
