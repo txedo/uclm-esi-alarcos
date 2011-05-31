@@ -15,6 +15,14 @@
 		document.getElementById(toShow).style.display='';
 	}
 	
+	function resetAddrFields(){
+		document.getElementById("factory.address.address").value = '';
+		document.getElementById("factory.address.city").value = '';
+		document.getElementById("factory.address.province").value = '';
+		document.getElementById("factory.address.country").value = '';
+		document.getElementById("factory.address.postalCode").value = '';
+	}
+	
 	var map;
 	var geocoder;
 	var isLocationSet;
@@ -39,7 +47,6 @@
         isLocationSet = true;
         document.getElementById('factory.location.latitude').value = latLng.lat();
         document.getElementById('factory.location.longitude').value = latLng.lng();
-        codeLatLng(latLng);
 	}
 	
 	function codeAddress (fullAddress, infoDiv) {
@@ -60,13 +67,6 @@
 	        		if (infoDiv != null) document.getElementById(infoDiv).innerHTML=message;
 	        		map.setZoom(1);
 	        		map.setCenter(defaultLatLng);
-	        		google.maps.event.addListener(map, 'click', function(event) {
-	        			if (isLocationSet) {
-	        				marker.setMap(null);
-	        				isLocationSet = false;
-	        			}
-	        			placeMark(event.latLng);
-	        	    });
 	        		break;
 	        	case google.maps.GeocoderStatus.INVALID_REQUEST:
 	        		alert("Geocode INVALID_REQUEST: not implemented yet. " + status);
@@ -134,6 +134,14 @@
 	    geocoder = new google.maps.Geocoder();
 	    isLocationSet = false;
 	    marker = null;
+		google.maps.event.addListener(map, 'click', function(event) {
+			if (isLocationSet) {
+				marker.setMap(null);
+				isLocationSet = false;
+			}
+			placeMark(event.latLng);
+	        codeLatLng(event.latLng);
+	    });
 	}
 	
 	function searchAddress() {
@@ -144,6 +152,13 @@
 		var fullAddress = getFullAddress();
 		document.getElementById('map_info').innerHTML="Searching address...";
 		codeAddress(fullAddress, 'map_info');
+	}
+	
+	function showCurrentLocation() {
+		initializeGMaps();
+		var latlng = new google.maps.LatLng(document.getElementById('factory.location.latitude').value,document.getElementById('factory.location.longitude').value);
+		map.setCenter(latlng);
+        placeMark(latlng);
 	}
 	</script>
 </head>
@@ -167,6 +182,7 @@
 					<fmt:message key="label.configure.factory.choose_company"/>
 				</li>
 				<li>
+					<c:set var="companyChecked" value="false"/>
 					<display:table name="requestScope.companies" id="company" cellspacing="0" cellpadding="0" defaultsort="1" class="" pagesize="50" requestURI="">
 						<display:column style="width: 5%">
 							<c:choose>
@@ -175,7 +191,6 @@
 									<input type="radio" name="factory.company.id" value="${company.id}" onclick="document.getElementById('gotoSecondStep').disabled=''" checked/>
 								</c:when>
 								<c:otherwise>
-									<c:set var="companyChecked" value="false"/>
 									<input type="radio" name="factory.company.id" value="${company.id}" onclick="document.getElementById('gotoSecondStep').disabled=''"/>
 								</c:otherwise>
 							</c:choose>
@@ -194,7 +209,6 @@
 				</li>
 				<li>
 					<input type="button" value="< Back" disabled="disabled" style="visibility: hidden"/>
-					<c:set var="foo" value="javascript:getCheckedValue(document.forms['formFactory'].elements['factory.company.id'])"></c:set>
 					<c:choose>
 						<c:when test="${companyChecked == 'false'}">
 							<input type="button" id="gotoSecondStep" name="gotoSecondStep" value="Next >" disabled="disabled" onclick="swapDivVisibility('chooseCompany','fillFactoryData')"/>
@@ -255,7 +269,14 @@
 				</li>
 				<li>
 					<input type="button" id="gotoThirdStep" name="gotoThirdStep" value="< Back" onclick="swapDivVisibility('fillDirector','fillFactoryData')"/>
-					<input type="button" id="gotoFourthStep" name="gotoFourthStep" value="Next >" onclick="swapDivVisibility('fillDirector','fillAddress')"/>
+					<c:choose>
+						<c:when test="${not empty factory.location.latitude && not empty factory.location.longitude}">
+							<input type="button" id="gotoFourthStep" name="gotoFourthStep" value="Next >" onclick="swapDivVisibility('fillDirector','fillAddress');showCurrentLocation();"/>
+						</c:when>
+						<c:otherwise>
+							<input type="button" id="gotoFourthStep" name="gotoFourthStep" value="Next >" onclick="swapDivVisibility('fillDirector','fillAddress');searchAddress();"/>
+						</c:otherwise>
+					</c:choose>
 				</li>
 			</ul>
 		</div>
@@ -286,12 +307,13 @@
 				</li>				
 				<li>
 					<!-- address, number, postal_code city, province, country -->
-					<input type="button" id="searchLocation" name="searchLocation" value="Search" onclick="searchAddress();"/>
-					<div id="map_info"></div>
-					<div id="map_canvas" style="width: 600px; height: 400px; display: none;">
-					</div>
 					<s:hidden id="factory.location.latitude" name="factory.location.latitude"/>
 					<s:hidden id="factory.location.longitude" name="factory.location.longitude"/>
+					<input type="button" id="searchLocation" name="searchLocation" value="Locate" onclick="searchAddress();codeLatLng(new google.maps.LatLng(document.getElementById('factory.location.latitude').value,document.getElementById('factory.location.longitude').value));"/>
+					<input type="button" id="resetAddressFields" name="resetAddressFields" value="Reset fields" onclick="resetAddrFields()"/>
+					<div id="map_info"></div>
+					<div id="map_canvas" style="width: 600px; height: 400px; display: ;">
+					</div>
 				</li>
 				<li>
 					<input type="button" id="gotoFourthStep" name="gotoFourthStep" value="< Back" onclick="swapDivVisibility('fillAddress','fillDirector')"/>

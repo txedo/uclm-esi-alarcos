@@ -126,5 +126,13 @@
 			</result>
 			<result name="success" type="redirect-action">listFactories.action</result>
 		</action>
+		<action name="deleteFactory" class="factoryAction" method="delete">
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/viewFactories.jsp</result>
+			<result name="input">/jsp/viewFactories.jsp</result>
+			<result name="success" type="redirect-action">listFactories.action</result>
+		</action>
+		<!-- End of Factory related actions -->
 	</package>
 </struts>

@@ -30,7 +30,7 @@
     </script>
     <decorator:head/>
 </head>
-<body id="page-home">
+<body id="page-home" onload="<decorator:getProperty property="body.onload" />">
     <div id="page" class="main">
 		<div class="header">
 			<div class="header_resize">
