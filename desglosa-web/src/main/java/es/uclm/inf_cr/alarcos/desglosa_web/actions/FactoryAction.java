@@ -190,4 +190,33 @@ public class FactoryAction extends ActionSupport {
 		factoryDao.saveFactory(factory);
 		return SUCCESS;
 	}
+	
+	public void validateDoDelete(){
+		// Get the company id attribute from URL
+		HttpServletRequest request = ServletActionContext.getRequest();
+		if (request.getParameter("id") != null) {
+			id = Integer.parseInt(request.getParameter("id"));
+			// If id <= 0, then ERROR
+			if (id <= 0) {
+				addActionError(getText("error.factory.id"));
+			} else {
+				try {
+					// Check if the factory id exists
+					factoryDao.getFactory(id);
+				} catch (FactoryNotFoundException e) {
+					addActionError(getText("error.factory.id"));
+				}
+			}
+		} else {
+			addActionError(getText("error.factory.id"));
+		}
+		if (hasActionErrors()) factories = factoryDao.getAll();
+	}
+	
+	public String delete(){
+		factoryDao.removeFactory(id);
+		addActionMessage(getText("message.factory.deleted_successfully"));
+		
+		return SUCCESS;
+	}
 }

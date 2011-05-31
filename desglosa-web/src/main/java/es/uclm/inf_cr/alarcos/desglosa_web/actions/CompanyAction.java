@@ -134,10 +134,8 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 
 		return SUCCESS;
 	}
-
-	public String delete() {
-		// validateDoDelete is not necessary since it would do nearly the same as this method
-		String result = SUCCESS;
+	
+	public void validateDoDelete() {
 		// Get the company id attribute from URL
 		HttpServletRequest request = ServletActionContext.getRequest();
 		if (request.getParameter("id") != null) {
@@ -149,9 +147,6 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 				try {
 					// Check if the company id exists
 					companyDao.getCompany(id);
-					// Remove it if it exists
-					companyDao.removeCompany(id);
-					addActionMessage(getText("message.company.deleted_successfully"));
 				} catch (CompanyNotFoundException e) {
 					addActionError(getText("error.company.id"));
 				}
@@ -159,11 +154,14 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 		} else {
 			addActionError(getText("error.company.id"));
 		}
-		if (hasActionErrors()) {
-			result = ERROR;
-			companies = companyDao.getAll();
-		}
-		return result;
+		if (hasActionErrors()) companies = companyDao.getAll();
+	}
+
+	public String delete() {
+		companyDao.removeCompany(id);
+		addActionMessage(getText("message.company.deleted_successfully"));
+
+		return SUCCESS;
 	}
 
 	public String get() throws Exception {
