@@ -10,30 +10,22 @@
 </head>
 <body>
 	<s:text name="menu.admin.companies" />
+	
 	<s:actionerror />
+	
 	<c:set var="form" value="/editCompany.action"/>
 	<c:set var="buttonLabel" value="button.edit_company"/>
 	<c:if test="${empty param.id}">
 		<c:set var="form" value="/saveCompany.action"/>
 		<c:set var="buttonLabel" value="button.add_company"/>
 	</c:if>
-	<form id="formCompany" method="post" action="<c:url value="${form}"/>">
-	<ul>
-		<li>
-			<label for="company.name"><fmt:message key="label.company.name"/></label>
-			<s:textfield id="company.name" name="company.name" tabindex="1"/>
-		</li>
-		<li>
-			<label for="company.information"><fmt:message key="label.company.information"/></label>
-			<s:textarea id="company.information" name="company.information" tabindex="2" cols="15" rows="3"/>
-		</li>
-		<li>
-			<c:if test="${not empty param.id}">
-				<s:hidden name="company.id"/>
-			</c:if>
-			<input type="submit" name="addCompany" value="<fmt:message key="${buttonLabel}"/>" tabindex="3" />
-		</li>
-	</ul>
-	</form>
+	<s:form id="formCompany" method="post" action="%{#attr.form}">
+		<c:if test="${not empty param.id}">
+			<s:hidden name="company.id"/>
+		</c:if>
+		<s:textfield id="company.name" name="company.name" tabindex="1" label="%{getText('label.company.name')}"/>
+		<s:textarea id="company.information" name="company.information" tabindex="2" cols="15" rows="3" label="%{getText('label.company.information')}"/>
+		<s:submit value="%{getText(#attr.buttonLabel)}" tabindex="3"></s:submit>
+	</s:form>
 </body>
 </html>

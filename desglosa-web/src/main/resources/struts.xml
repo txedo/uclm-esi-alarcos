@@ -36,15 +36,15 @@
 			<result>/jsp/helloWorld.jsp</result>
 		</action>
 		<action name="startVisualization" class="startVisualizationAction">
-			<interceptor-ref name="allButUsers"/>
+			<!-- <interceptor-ref name="allButUsers"/> -->
 			<result>/jsp/visualization.jsp</result>
 		</action>
 		<action name="showAdminPanel" class="showAdminPanelAction">
-			<interceptor-ref name="adminOnly"></interceptor-ref>
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
 			<result>/jsp/admin/adminPanel.jsp</result>
 		</action>
 		<action name="showMyAccount" class="showMyAccountAction">
-			<interceptor-ref name="allUsers"/>
+			<!-- <interceptor-ref name="allUsers"/> -->
 			<result>/jsp/myAccount.jsp</result>
 		</action>
 		<action name="contactUs" class="contactUsAction">

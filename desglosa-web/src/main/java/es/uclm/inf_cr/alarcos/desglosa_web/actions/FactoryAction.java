@@ -104,12 +104,17 @@ public class FactoryAction extends ActionSupport {
 		if (factory != null) {
 			try {
 				// Check that the company ID exists
-				Company c = companyDao.getCompany(factory.getCompany().getId());
-				// If it exists, set it to factory
-				factory.setCompany(c);
+				Company c;
+				if (factory.getCompany() != null) {
+					c = companyDao.getCompany(factory.getCompany().getId());
+					// If it exists, set it to factory
+					factory.setCompany(c);
+				} else {
+					addActionError(getText("error.company.is_mandatory"));
+				}
 				// Check that factory name is already taken
 				factoryDao.getFactory(factory.getName());
-				addFieldError("factory.name", getText("error.factory.name"));
+				addFieldError("factory.name", getText("error.factory.already_exists"));
 				// If factory name is available, then throw and catch FactoryNotFoundException
 			} catch (CompanyNotFoundException e) {
 				addActionError(getText("error.company.id"));
@@ -138,6 +143,8 @@ public class FactoryAction extends ActionSupport {
 	
 	public String save() {
 		factoryDao.saveFactory(factory);
+		addActionMessage(getText("message.factory.added_successfully"));
+		
 		return SUCCESS;
 	}
 	
@@ -153,12 +160,17 @@ public class FactoryAction extends ActionSupport {
 			}
 			try {
 				// Check that the company ID exists
-				Company c = companyDao.getCompany(factory.getCompany().getId());
-				// If it exists, set it to factory
-				factory.setCompany(c);
+				Company c;
+				if (factory.getCompany() != null) {
+					c = companyDao.getCompany(factory.getCompany().getId());
+					// If it exists, set it to factory
+					factory.setCompany(c);
+				} else {
+					addActionError(getText("error.company.is_mandatory"));
+				}
 				// Check that there is no company with same name and different id
 				fAux = factoryDao.getFactory(factory.getName());
-				if (fAux.getId() != factory.getId())addFieldError("factory.name", getText("error.factory.name"));
+				if (fAux.getId() != factory.getId())addFieldError("factory.name", getText("error.factory.already_exists"));
 				// If factory name is available, then throw and catch FactoryNotFoundException
 			} catch (CompanyNotFoundException e) {
 				addActionError(getText("error.company.id"));
@@ -188,6 +200,8 @@ public class FactoryAction extends ActionSupport {
 	
 	public String edit() {
 		factoryDao.saveFactory(factory);
+		addActionMessage(getText("message.factory.updated_successfully"));
+		
 		return SUCCESS;
 	}
 	
