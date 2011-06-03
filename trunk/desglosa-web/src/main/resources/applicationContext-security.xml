@@ -15,9 +15,12 @@
         <intercept-url pattern="/login.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/logout.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
         <intercept-url pattern="/jsp/admin/*" access="ROLE_ADMIN"/>
+        <!-- <intercept-url pattern="/jsp/viewCompanies.jsp" access="ROLE_ADMIN"/> -->
         <!-- <intercept-url pattern="/jsp/formCompany.jsp" access="ROLE_ADMIN"/> -->
-        <intercept-url pattern="/jsp/myAccount.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
-        <intercept-url pattern="/jsp/visualization.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
+        <!-- <intercept-url pattern="/jsp/viewFactories.jsp" access="ROLE_ADMIN"/> -->
+        <!-- <intercept-url pattern="/jsp/formFactory.jsp" access="ROLE_ADMIN"/> -->
+        <!-- <intercept-url pattern="/jsp/myAccount.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/> -->
+        <!-- <intercept-url pattern="/jsp/visualization.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/> -->
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     	<form-login login-page="/login.jsp" default-target-url="/login.jsp?result=success"  always-use-default-target="true" authentication-failure-url="/login.jsp?result=failed" />
     	<anonymous />
