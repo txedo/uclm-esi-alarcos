@@ -7,31 +7,93 @@
 <html lang="en">
 <head>
 	<meta name="menu" content="Visualization"/>
-	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAxuDgnVkR83ZsPPJVN5640BT2yXp_ZAY8_ufC3CFXhHIE1NvwkxRwX1ZX0A76eLz5aso7mDQkPeuUnA" type="text/javascript"></script>
-	<script src="js/googlemaps.js" type="text/javascript"></script>
-	<script src="js/desglosa-facade.js" type="text/javascript"></script>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	
+	<sj:head/>
+	
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/desglosa-facade.js"></script>
+	<script type="text/javascript">
+	var map;
+	var geocoder;
+	var factories;
+	
+	function initializeMap() {
+		var latlng = new google.maps.LatLng(-34.397, 150.644);
+	    var myOptions = {
+	    	      zoom: 1,
+	    	      center: latlng,
+	    	      mapTypeId: google.maps.MapTypeId.ROADMAP
+	    	    };
+	    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	    geocoder = new google.maps.Geocoder();
+	    factories = new Array();
+	}
+	
+	function createFactory (id, lat, lng) {
+		var factory = new Object();
+		factory.id = id;
+		factory.location = new google.maps.LatLng(lat,lng);
+		factories.push(factory);
+	}
+	
+	function placeMark(lat, lng) {
+		var latLng = new google.maps.LatLng(lat,lng);
+		marker = new google.maps.Marker({
+		    map: map, 
+		    position: latLng
+		});
+	}
+	
+	function showFactoryLocation(targetElement) {
+		if (targetElement.options[targetElement.selectedIndex].value == '') {
+			// show all factory locations
+			alert ('todas');
+		} else {
+			//targetElement.options[targetElement.selectedIndex].value;
+			// show only one factory location
+			alert (targetElement.options[targetElement.selectedIndex].value + '');
+		}
+	}
+	</script>
 </head>
-<body>
-	<div id="visualization_canvas">
-		<div id="map_canvas" style="width: 600px; height: 400px">
-			<script type="text/javascript">initialize();</script>
-		</div>
-		<div id="jogl_canvas">
-			<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
-				codebase="./" 
-				ID="DesglosaApplet"
-				alt="Check your browser configuration to allow java applets." 
-			    width=600
-			    height=400
-			    archive="http://jogamp.org/deployment/util/applet-launcher.jar,
-			             http://jogamp.org/deployment/webstart/newt.all.jar,
-			             http://jogamp.org/deployment/webstart/nativewindow.all.jar,
-			             http://jogamp.org/deployment/webstart/jogl.all.jar,
-			             http://jogamp.org/deployment/webstart/gluegen-rt.jar,
-			             applet/desglosa.jar">
-			   <param name="codebase_lookup" value="false"/>
-			   <param name="subapplet.classname" value="presentation.AppletMain"/>
-			   <param name="subapplet.displayname" value="Desglosa Applet"/>
+<body onload="initializeMap()">
+	<s:label for="selectFactory" value="%{getText('label.select.factory')}:"/>
+	<select id="selectFactory" onchange="showFactoryLocation(this)">
+		<option value=""><fmt:message key="label.all_female"/></option>
+		<s:iterator var="factory" value="factories">
+			<option value="<s:property value='id'/>"><s:property value="name"/></option>
+		</s:iterator>
+	</select>
+
+	<s:label for="selectCompay" value="%{getText('label.select.company')}:"/>
+	<select id="selectCompay" onchange="showFactoryLocation(this)">
+		<option value=""><fmt:message key="label.all_female"/></option>
+		<s:iterator var="company" value="companies">
+			<option value="<s:property value='id'/>"><s:property value="name"/></option>
+		</s:iterator>
+	</select>
+	
+	<div id="map_canvas" style="width: 600px; height: 400px; display: ;">
+	</div>
+	
+	<div id="jogl_canvas" style="display: none;">
+		<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
+			codebase="./" 
+			ID="DesglosaApplet"
+			alt="Check your browser configuration to allow java applets." 
+		    width=600
+		    height=400
+		    archive="http://jogamp.org/deployment/util/applet-launcher.jar,
+		             http://jogamp.org/deployment/webstart/newt.all.jar,
+		             http://jogamp.org/deployment/webstart/nativewindow.all.jar,
+		             http://jogamp.org/deployment/webstart/jogl.all.jar,
+		             http://jogamp.org/deployment/webstart/gluegen-rt.jar,
+		             applet/desglosa.jar">
+		   <param name="codebase_lookup" value="false"/>
+		   <param name="subapplet.classname" value="presentation.AppletMain"/>
+		   <param name="subapplet.displayname" value="Desglosa Applet"/>
 			   <param name="noddraw.check" value="true"/>
 			   <param name="progressbar" value="true"/>
 			   <param name="jnlpNumExtensions" value="1"/>
@@ -44,6 +106,5 @@
 		</div>
 		<br>
 		<input type="button" name="Button1" value="Start" onClick="javascript:startJSDesglosa()"/>
-	</div>
 </body>
 </html>

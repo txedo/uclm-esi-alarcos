@@ -14,8 +14,7 @@ import javax.persistence.Table;
 public class Director {
 	private int id;
 	private String name;
-	private String firstSurname;
-	private String lastSurname;
+	private String lastName;
 	private Image picture;
 	
 	
@@ -31,14 +30,9 @@ public class Director {
 		return name;
 	}
 	
-	@Column(name="first_surname")
-	public String getFirstSurname() {
-		return firstSurname;
-	}
-	
-	@Column(name="last_surname")
-	public String getLastSurname() {
-		return lastSurname;
+	@Column(name="last_name")
+	public String getLastName() {
+		return lastName;
 	}
 	
 	@OneToOne
@@ -55,12 +49,8 @@ public class Director {
 		this.name = name;
 	}
 	
-	public void setFirstSurname(String firstSurname) {
-		this.firstSurname = firstSurname;
-	}
-	
-	public void setLastSurname(String lastSurname) {
-		this.lastSurname = lastSurname;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	
 	public void setPicture(Image picture) {

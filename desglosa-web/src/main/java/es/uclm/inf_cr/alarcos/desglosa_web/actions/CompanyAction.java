@@ -33,8 +33,6 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 		this.id = id;
 	}
 
-
-
 	public Company getCompany() {
 		return company;
 	}
@@ -42,8 +40,6 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-
-
 
 	public List<Company> getCompanies() {
 		return companies;

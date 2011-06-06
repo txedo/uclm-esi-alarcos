@@ -110,35 +110,35 @@ public class FactoryAction extends ActionSupport {
 					// If it exists, set it to factory
 					factory.setCompany(c);
 				} else {
-					addActionError(getText("error.company.is_mandatory"));
+					addFieldError("error.company_mandatory", getText("error.company.is_mandatory"));
 				}
 				// Check that factory name is already taken
 				factoryDao.getFactory(factory.getName());
-				addFieldError("factory.name", getText("error.factory.already_exists"));
+				addFieldError("error.factory.name", getText("error.factory.already_exists"));
 				// If factory name is available, then throw and catch FactoryNotFoundException
 			} catch (CompanyNotFoundException e) {
 				addActionError(getText("error.company.id"));
 			} catch (FactoryNotFoundException e) {
-				// Check that required fields are filled in
-				// Factory data
-				if (factory.getName().trim().length() == 0) addFieldError("factory.name", getText("error.factory.name"));
-				// Director data
-				if (factory.getDirector().getName().trim().length() == 0) addFieldError("factory.director.name", getText("error.director.name"));
-				if (factory.getDirector().getFirstSurname().trim().length() == 0) addFieldError("factory.director.name", getText("error.director.first_surname"));
-				// Address data
-				if (factory.getAddress().getAddress().trim().length() == 0) addFieldError("factory.address.address", getText("error.address.address"));
-				if (factory.getAddress().getCity().trim().length() == 0) addFieldError("factory.address.city", getText("error.address.city"));
-				//if (factory.getAddress().getProvince().trim().length() == 0) addFieldError("factory.address.province", getText("error.address.province"));
-				if (factory.getAddress().getCountry().trim().length() == 0) addFieldError("factory.address.country", getText("error.address.country"));
-				//if (factory.getAddress().getPostalCode().trim().length() == 0) addFieldError("factory.address.postalCode", getText("error.address.postal_code"));
-				// Location data
-				if (factory.getLocation().getLatitude() == 0.0f) addFieldError("factory.location.latitude", getText("error.location.latitude"));
-				if (factory.getLocation().getLongitude() == 0.0f) addFieldError("factory.location.longitude", getText("error.location.longitude"));
-			} 
+				// Name not taken. Nothing to do here.
+			}
+			// Check that required fields are filled in
+			// Factory data
+			if (factory.getName().trim().length() == 0) addFieldError("error.factory.name", getText("error.factory.name"));
+			// Director data
+			if (factory.getDirector().getName().trim().length() == 0) addFieldError("error.factory.director.name", getText("error.director.name"));
+			if (factory.getDirector().getLastName().trim().length() == 0) addFieldError("error.factory.director.last_name", getText("error.director.last_name"));
+			// Address data
+			if (factory.getAddress().getAddress().trim().length() == 0) addFieldError("error.factory.address.address", getText("error.address.address"));
+			if (factory.getAddress().getCity().trim().length() == 0) addFieldError("error.factory.address.city", getText("error.address.city"));
+			if (factory.getAddress().getCountry().trim().length() == 0) addFieldError("error.factory.address.country", getText("error.address.country"));
+			// Location data
+			if (factory.getLocation().getLatitude() == 0.0f || factory.getLocation().getLongitude() == 0.0f)
+				addFieldError("error.factory.location", getText("error.location"));
 		}else {
 			addActionError(getText("error.general"));
 		}
 		if (hasActionErrors() || hasErrors() || hasFieldErrors()) companies = companyDao.getAll();
+		if (hasFieldErrors()) addFieldError("error.mandatory_fields", getText("error.mandatory_fields"));
 	}
 	
 	public String save() {
@@ -166,11 +166,11 @@ public class FactoryAction extends ActionSupport {
 					// If it exists, set it to factory
 					factory.setCompany(c);
 				} else {
-					addActionError(getText("error.company.is_mandatory"));
+					addFieldError("error.company_mandatory", getText("error.company.is_mandatory"));
 				}
 				// Check that there is no company with same name and different id
 				fAux = factoryDao.getFactory(factory.getName());
-				if (fAux.getId() != factory.getId())addFieldError("factory.name", getText("error.factory.already_exists"));
+				if (fAux.getId() != factory.getId())addFieldError("error.factory.name", getText("error.factory.already_exists"));
 				// If factory name is available, then throw and catch FactoryNotFoundException
 			} catch (CompanyNotFoundException e) {
 				addActionError(getText("error.company.id"));
@@ -179,23 +179,22 @@ public class FactoryAction extends ActionSupport {
 			}
 			// Check that required fields are filled in
 			// Factory data
-			if (factory.getName().trim().length() == 0) addFieldError("factory.name", getText("error.factory.name"));
+			if (factory.getName().trim().length() == 0) addFieldError("error.factory.name", getText("error.factory.name"));
 			// Director data
-			if (factory.getDirector().getName().trim().length() == 0) addFieldError("factory.director.name", getText("error.director.name"));
-			if (factory.getDirector().getFirstSurname().trim().length() == 0) addFieldError("factory.director.name", getText("error.director.first_surname"));
+			if (factory.getDirector().getName().trim().length() == 0) addFieldError("error.factory.director.name", getText("error.director.name"));
+			if (factory.getDirector().getLastName().trim().length() == 0) addFieldError("error.factory.director.last_name", getText("error.director.last_name"));
 			// Address data
-			if (factory.getAddress().getAddress().trim().length() == 0) addFieldError("factory.address.address", getText("error.address.address"));
-			if (factory.getAddress().getCity().trim().length() == 0) addFieldError("factory.address.city", getText("error.address.city"));
-			//if (factory.getAddress().getProvince().trim().length() == 0) addFieldError("factory.address.province", getText("error.address.province"));
-			if (factory.getAddress().getCountry().trim().length() == 0) addFieldError("factory.address.country", getText("error.address.country"));
-			//if (factory.getAddress().getPostalCode().trim().length() == 0) addFieldError("factory.address.postalCode", getText("error.address.postal_code"));
+			if (factory.getAddress().getAddress().trim().length() == 0) addFieldError("error.factory.address.address", getText("error.address.address"));
+			if (factory.getAddress().getCity().trim().length() == 0) addFieldError("error.factory.address.city", getText("error.address.city"));
+			if (factory.getAddress().getCountry().trim().length() == 0) addFieldError("error.factory.address.country", getText("error.address.country"));
 			// Location data
-			if (factory.getLocation().getLatitude() == 0.0f) addFieldError("factory.location.latitude", getText("error.location.latitude"));
-			if (factory.getLocation().getLongitude() == 0.0f) addFieldError("factory.location.longitude", getText("error.location.longitude"));
+			if (factory.getLocation().getLatitude() == 0.0f || factory.getLocation().getLongitude() == 0.0f)
+				addFieldError("error.factory.location", getText("error.location"));
 		}else {
 			addActionError(getText("error.general"));
 		}
 		if (hasActionErrors() || hasErrors() || hasFieldErrors()) companies = companyDao.getAll();
+		if (hasFieldErrors()) addFieldError("error.mandatory_fields", getText("error.mandatory_fields"));
 	}
 	
 	public String edit() {

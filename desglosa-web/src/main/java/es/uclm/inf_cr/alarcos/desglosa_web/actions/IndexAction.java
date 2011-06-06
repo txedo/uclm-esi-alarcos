@@ -16,23 +16,13 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
-import java.util.Date;
-import com.opensymphony.xwork2.conversion.annotations.Conversion;
-import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 
 /**
  * 
  */
-@Conversion()
 public class IndexAction extends ActionSupport {
     
-    private Date now = new Date(System.currentTimeMillis());
-    
-    @TypeConversion(converter = "es.uclm.inf_cr.alarcos.desglosa_web.DateConverter")
-    public Date getDateNow() { return now; }
-    
     public String execute() throws Exception {
-        now = new Date(System.currentTimeMillis());
         return SUCCESS;
     }
 }
