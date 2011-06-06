@@ -31,11 +31,7 @@
 		<action name="index" class="indexAction">
 			<result>/jsp/index.jsp</result>
 		</action>
-		<action name="helloWorld" class="helloWorldAction"> 
-			<result name="input">/jsp/index.jsp</result>
-			<result>/jsp/helloWorld.jsp</result>
-		</action>
-		<action name="startVisualization" class="startVisualizationAction">
+		<action name="visualization" class="visualizationAction">
 			<!-- <interceptor-ref name="allButUsers"/> -->
 			<result>/jsp/visualization.jsp</result>
 		</action>
@@ -71,7 +67,7 @@
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/formCompany.jsp</result>
 			<result name="input">/jsp/formCompany.jsp</result>
-			<result name="success" type="redirect-action">listCompanies.action</result>
+			<result name="success" type="redirectAction">listCompanies.action</result>
 		</action>
 		<action name="editCompany" class="companyAction" method="edit">
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
@@ -82,14 +78,14 @@
       			<param name="parse">true</param>
       			<param name="encode">true</param>
 			</result>
-			<result name="success" type="redirect-action">listCompanies.action</result>
+			<result name="success" type="redirectAction">listCompanies.action</result>
 		</action>
 		<action name="deleteCompany" class="companyAction" method="delete">
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewCompanies.jsp</result>
 			<result name="input">/jsp/viewCompanies.jsp</result>
-			<result name="success" type="redirect-action">listCompanies.action</result>
+			<result name="success" type="redirectAction">listCompanies.action</result>
 		</action>
 		<!-- End of Company related actions -->
 		
@@ -124,14 +120,14 @@
       			<param name="parse">true</param>
       			<param name="encode">true</param>
 			</result>
-			<result name="success" type="redirect-action">listFactories.action</result>
+			<result name="success" type="redirectAction">listFactories.action</result>
 		</action>
 		<action name="deleteFactory" class="factoryAction" method="delete">
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewFactories.jsp</result>
 			<result name="input">/jsp/viewFactories.jsp</result>
-			<result name="success" type="redirect-action">listFactories.action</result>
+			<result name="success" type="redirectAction">listFactories.action</result>
 		</action>
 		<!-- End of Factory related actions -->
 	</package>

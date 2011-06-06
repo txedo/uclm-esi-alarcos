@@ -9,12 +9,10 @@
 	<meta name="menu" content="ManageFactories"/>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
-	<script type="text/javascript">
-	function swapDivVisibility (toHide, toShow) {
-		document.getElementById(toHide).style.display='none';
-		document.getElementById(toShow).style.display='';
-	}
-	
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript">	
+	/** Reset address fields.
+	 */
 	function resetAddrFields(){
 		document.getElementById("factory.address.address").value = '';
 		document.getElementById("factory.address.city").value = '';
@@ -23,11 +21,9 @@
 		document.getElementById("factory.address.postalCode").value = '';
 	}
 	
-	var map;
-	var geocoder;
-	var isLocationSet;
-	var marker;
-	
+	/** Format address fields into a long address name.
+	 * @return full address name (long name).
+	 */
 	function getFullAddress () {
 		var address = document.getElementById("factory.address.address").value;
 		var city = document.getElementById("factory.address.city").value;
@@ -38,20 +34,43 @@
 		return (address + ", " + postalCode + " " + city + ", " + province + ", " + country);
 	}
 	
+	// Page-scope global objects used by Google maps functions.
+	var map;
+	var geocoder;
+	var marker;
+	var isLocationSet; // boolean used as control variable.
+
+	
+
+	/** Place a Google marker in Google map (global variable).
+	 * @param latLng Google LatLng object which specifies latitude and longitude.
+	 * @param guessAddress boolean which evaluates if the LatLng object must be coded as address.
+	 */
 	function placeMark(latLng, guessAddress) {
-        marker = new google.maps.Marker({
-            map: map, 
-            position: latLng
-        });
+		// Create a new Google marker into the map
+		marker = new google.maps.Marker({
+		    map: map, 
+		    position: latLng
+		});
+		// Move to the new marker location
         map.panTo(latLng);
+		// Set the control variable as true, indicating that the location has been set
         isLocationSet = true;
+		// Set latitude and longitude fields
         document.getElementById('factory.location.latitude').value = latLng.lat();
         document.getElementById('factory.location.longitude').value = latLng.lng();
+        // Code latitude and longitude to address name if needed
         if (guessAddress) codeLatLng(latLng);
 	}
 	
+	/** Code a full address into LatLng object in order to create a marker.
+	 * @param fullAddress A string containing the full address that will be coded into a LatLng object.
+	 * @param infoDiv Optional param. This is a HTML div ID in which feedback information will be printed in.
+	 */
 	function codeAddress (fullAddress, infoDiv) {
+		// Set a default latlng (Madrid, km. 0) that will be used if geocoder can find a latlng value for the address
 		var defaultLatLng = new google.maps.LatLng(40.41663944983577,-3.703686048961572);
+		// if a marker is already set, remove it. This will allow only one marker in the map because of configuration reasons.
 		if (marker != null) marker.setMap(null);
 		var status = -1;
 		if (geocoder) {
@@ -86,6 +105,9 @@
 	      }
 	}
 	
+	/** Code a Google LatLng object into an address and places its values in HTML fields.
+	 * @param latlng Google LatLng object that will be coded into an address.
+	 */
 	function codeLatLng(latlng) {
 		var street_number;
 		var street_address;
@@ -127,6 +149,9 @@
 		}
 	}
 	
+	/** Initialization function called by searchAddress and showCurrentLocation functions. Developers must NOT call this function.
+	 * It initiates the page-scope global variables mentioned before and add an event to the map that will allow to place a marker by clicking in it.
+	 */
 	function initializeGMaps() {
 	    var myOptions = {
 	    	      zoom: 13,
@@ -145,6 +170,8 @@
 	    });
 	}
 	
+	/** This function initiates Google objects, prints feedback and places a marker by coding the address fields.
+	 */
 	function searchAddress() {
 		document.getElementById('map_info').innerHTML="Initializing maps...";
 		document.getElementById('map_canvas').style.display='';
@@ -155,6 +182,8 @@
 		codeAddress(fullAddress, 'map_info');
 	}
 	
+	/** This function initiates Google objects and places a marker if a latitude and longitude values are set.
+	 */
 	function showCurrentLocation() {
 		initializeGMaps();
 		var latlng = new google.maps.LatLng(document.getElementById('factory.location.latitude').value,document.getElementById('factory.location.longitude').value);
@@ -163,11 +192,12 @@
         return latlng
 	}
 	
-	function foo () {
+	/** This function initiates Google objects, shows current location if latitude and longitude values are set and code them into an address given by Google.
+	 */
+	function locate () {
 		searchAddress();
 		var latlng = showCurrentLocation();
 		codeLatLng(latlng);
-		
 	}
 	</script>
 </head>
@@ -175,7 +205,7 @@
 	<s:text name="menu.admin.factories" />
 	
 	<s:actionerror />
-	<s:fielderror />
+	<s:fielderror><s:param>error.mandatory_fields</s:param></s:fielderror>
 	
 	<c:set var="form" value="/editFactory.action"/>
 	<c:set var="buttonLabel" value="button.edit_factory"/>
@@ -191,16 +221,19 @@
 		</c:if>
 		
 		<s:div id="fillFactoryData" cssStyle="display: ">
+			<s:fielderror><s:param>error.company_mandatory</s:param></s:fielderror>
 			<s:text name="%{getText('label.configure.factory.choose_company')}:"/>
 			
-			<display:table name="requestScope.companies" id="company" cellspacing="0" cellpadding="0" defaultsort="1" pagesize="10">
+			<s:set name="companies" value="companies" scope="request"/>  
+			<s:set name="factory" value="factory" scope="request"/>
+			<display:table name="companies" id="company" cellspacing="0" cellpadding="0" defaultsort="1" pagesize="10">
 				<display:column style="width: 5%">
 					<c:choose>
 						<c:when test="${factory.company.id == company.id}">
-							<input type="radio" name="factory.company.id" value="${company.id}" onclick="document.getElementById('gotoSecondStep').disabled=''" checked/>
+							<input type="radio" name="factory.company.id" value="${company.id}" checked/>
 						</c:when>
 						<c:otherwise>
-							<input type="radio" name="factory.company.id" value="${company.id}" onclick="document.getElementById('gotoSecondStep').disabled=''"/>
+							<input type="radio" name="factory.company.id" value="${company.id}" />
 						</c:otherwise>
 					</c:choose>
 				</display:column>
@@ -220,12 +253,19 @@
 
 			<br /><s:label for="factory.name" value="%{getText('label.configure.factory.data.name')}:"/>
 			<s:textfield id="factory.name" name="factory.name" tabindex="1"/>
+			<s:fielderror><s:param>error.factory.name</s:param></s:fielderror>
+			
 			<br /><s:label for="factory.information" value="%{getText('label.configure.factory.data.information')}:"/>
 			<s:textfield id="factory.information" name="factory.information" tabindex="2"/>
+			<s:fielderror><s:param>error.factory.information</s:param></s:fielderror>
+			
 			<br /><s:label for="factory.email" value="%{getText('label.configure.factory.data.email')}:"/>
 			<s:textfield id="factory.email" name="factory.email" tabindex="3"/>
+			<s:fielderror><s:param>error.factory.email</s:param></s:fielderror>
+			
 			<br /><s:label for="factory.employees" value="%{getText('label.configure.factory.data.employees')}:"/>
 			<s:textfield id="factory.employees" name="factory.employees" tabindex="4"/>
+			<s:fielderror><s:param>error.factory.employees</s:param></s:fielderror>
 			
 			<br /><s:a href="#" onclick="swapDivVisibility('fillFactoryData','fillDirector')">Next &gt;</s:a>
 		</s:div>
@@ -235,11 +275,13 @@
 
 			<br /><s:label for="factory.director.name" value="%{getText('label.configure.factory.director.name')}:"/>
 			<s:textfield id="factory.director.name" name="factory.director.name" tabindex="1"/>
-			<br /><s:label for="factory.director.firstSurname" value="%{getText('label.configure.factory.director.first_surname')}:"/>
-			<s:textfield id="factory.director.firstSurname" name="factory.director.firstSurname" tabindex="2"/>
-			<br /><s:label for="factory.director.lastSurname" value="%{getText('label.configure.factory.director.last_surname')}:"/>
-			<s:textfield id="factory.director.lastSurname" name="factory.director.lastSurname" tabindex="3"/>
+			<s:fielderror><s:param>error.factory.director.name</s:param></s:fielderror>
+			<br /><s:label for="factory.director.lastName" value="%{getText('label.configure.factory.director.last_name')}:"/>
+			<s:textfield id="factory.director.lastName" name="factory.director.lastName" tabindex="2"/>
+			<s:fielderror><s:param>error.factory.director.lastName</s:param></s:fielderror>
+			
 			<br />image
+			<s:fielderror><s:param>error.factory.director.image</s:param></s:fielderror>
 
 			<br /><s:a href="#" onclick="swapDivVisibility('fillDirector','fillFactoryData')">&lt; Back</s:a>
 			<c:choose>
@@ -257,19 +299,29 @@
 
 			<br /><s:label for="factory.address.address" value="%{getText('label.configure.factory.address.address')}:"/>
 			<s:textfield id="factory.address.address" name="factory.address.address" tabindex="1"/>
+			<s:fielderror><s:param>error.factory.address.address</s:param></s:fielderror>
 			<br /><s:label for="factory.address.city" value="%{getText('label.configure.factory.address.city')}:"/>
 			<s:textfield id="factory.address.city" name="factory.address.city" tabindex="2"/>
+			<s:fielderror><s:param>error.factory.address.city</s:param></s:fielderror>
+			
 			<br /><s:label for="factory.address.province" value="%{getText('label.configure.factory.address.province')}:"/>
 			<s:textfield id="factory.address.province" name="factory.address.province" tabindex="3"/>
+			<s:fielderror><s:param>error.factory.address.province</s:param></s:fielderror>
+			
 			<br /><s:label for="factory.address.country" value="%{getText('label.configure.factory.address.country')}:"/>
 			<s:textfield id="factory.address.country" name="factory.address.country" tabindex="4"/>
+			<s:fielderror><s:param>error.factory.address.country</s:param></s:fielderror>
+			
 			<br /><s:label for="factory.address.postalCode" value="%{getText('label.configure.factory.address.postal_code')}:"/>
 			<s:textfield id="factory.address.postalCode" name="factory.address.postalCode" tabindex="5"/>
+			<s:fielderror><s:param>error.factory.address.postalCode</s:param></s:fielderror>			
 
 			<!-- address, number, postal_code city, province, country -->
 			<s:hidden id="factory.location.latitude" name="factory.location.latitude"/>
 			<s:hidden id="factory.location.longitude" name="factory.location.longitude"/>
-			<br /><s:a href="#" onclick="foo()">Locate</s:a>
+			<s:fielderror><s:param>error.factory.location</s:param></s:fielderror>
+			
+			<br /><s:a href="#" onclick="locate()">Locate</s:a>
 			<s:a href="#" onclick="resetAddrFields()">Reset</s:a>
 			<br /><s:div id="map_info"></s:div>
 			<br /><s:div id="map_canvas" cssStyle="width: 600px; height: 400px; display: ;"></s:div>

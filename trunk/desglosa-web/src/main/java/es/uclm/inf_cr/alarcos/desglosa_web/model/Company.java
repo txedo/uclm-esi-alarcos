@@ -47,6 +47,10 @@ public class Company {
 	public void setInformation(String information) {
 		this.information = information;
 	}
-	
+
+	@Override
+	public String toString() {
+		return this.name;
+	}
 	
 }

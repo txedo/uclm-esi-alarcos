@@ -12,8 +12,8 @@
 	<s:text name="menu.admin.factories"/>
 	<s:actionerror />
 	<s:actionmessage />
-	<display:table name="requestScope.factories" id="factory" cellspacing="0" cellpadding="0"
-	    defaultsort="1" class="" pagesize="50" requestURI="">
+	<s:set name="factories" value="factories" scope="request"/>  
+	<display:table name="factories" uid="factory" defaultsort="1" class="" pagesize="10" requestURI="">
 	  
 	    <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.factory.name" sortable="true"/>
 	    <display:column property="company.name" escapeXml="true" style="width: 15%" titleKey="table.header.company.name" sortable="true"/>

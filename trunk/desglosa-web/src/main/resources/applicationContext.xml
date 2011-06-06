@@ -3,13 +3,9 @@
 	"-//SPRING//DTD BEAN//EN" 
 	"http://www.springframework.org/dtd/spring-beans.dtd">
 	
-<beans>
-	<!-- Example of SAF2 action instantiated by Spring -->
-    <bean id="helloWorldAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.HelloWorldAction" singleton="false" />
-    
+<beans>    
     <!-- SAF2 actions instantiated by Spring -->
     <bean id="indexAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.IndexAction" singleton="false" />
-    <bean id="startVisualizationAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.StartVisualizationAction" singleton="false" />
     <bean id="showAdminPanelAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ShowAdminPanelAction" singleton="false" />
     <bean id="showMyAccountAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ShowMyAccountAction" singleton="false" />
     <bean id="contactUsAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ContactUsAction" singleton="false" />
@@ -17,6 +13,10 @@
     	<property name="companyDao" ref="companyDao"/>
     </bean>
     <bean id="factoryAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.FactoryAction" singleton="false">
+    	<property name="factoryDao" ref="factoryDao"/>
+    	<property name="companyDao" ref="companyDao"/>
+    </bean>
+    <bean id="visualizationAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.VisualizationAction" singleton="false">
     	<property name="factoryDao" ref="factoryDao"/>
     	<property name="companyDao" ref="companyDao"/>
     </bean>

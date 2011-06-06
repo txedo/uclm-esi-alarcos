@@ -58,8 +58,7 @@ DROP TABLE IF EXISTS `desglosadb`.`directors` ;
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`directors` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
-  `first_surname` VARCHAR(45) NOT NULL ,
-  `last_surname` VARCHAR(45) NULL ,
+  `last_name` VARCHAR(45) NOT NULL ,
   `image_id` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_directors_images` (`image_id` ASC) ,
@@ -324,11 +323,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `first_surname`, `last_surname`, `image_id`) VALUES (1, 'director', 'de indra', 'ciudad real', 1);
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `first_surname`, `last_surname`, `image_id`) VALUES (2, 'director', 'de indra', 'madrid', 1);
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `first_surname`, `last_surname`, `image_id`) VALUES (3, 'director', 'de compañia de ejemplo 1', 'miguelturra', 1);
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `first_surname`, `last_surname`, `image_id`) VALUES (4, 'director', 'de test company 2', 'mirasierra', 1);
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `first_surname`, `last_surname`, `image_id`) VALUES (5, 'director', 'of uk company', 'london', 1);
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (1, 'director', 'de indra', 1);
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (2, 'director', 'de indra', 1);
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (3, 'director', 'de compañia de ejemplo 1', 1);
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (4, 'director', 'de test company 2', 1);
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (5, 'director', 'of uk company', 1);
 
 COMMIT;
 
