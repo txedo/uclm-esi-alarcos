@@ -131,4 +131,17 @@
 		</action>
 		<!-- End of Factory related actions -->
 	</package>
+	
+	<package name="json" extends="json-default">
+		<action name="getFactoriesJSON" class="factoryAction" method="getJSON">
+			<result type="json">
+				<param name="excludeProperties">
+					companies,
+					factory,
+					id
+				</param>
+				<!-- <param name="excludeNullProperties">true</param> -->
+			</result>
+		</action>
+	</package>
 </struts>

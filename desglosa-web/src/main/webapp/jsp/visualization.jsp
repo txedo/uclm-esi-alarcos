@@ -17,7 +17,7 @@
 	<script type="text/javascript">
 	var map;
 	var geocoder;
-	var factories;
+	var markers;
 	
 	function initializeMap() {
 		var latlng = new google.maps.LatLng(-34.397, 150.644);
@@ -28,7 +28,7 @@
 	    	    };
 	    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 	    geocoder = new google.maps.Geocoder();
-	    factories = new Array();
+	    markers = new Array();
 	}
 	
 	function createFactory (id, lat, lng) {
@@ -38,45 +38,73 @@
 		factories.push(factory);
 	}
 	
-	function placeMark(lat, lng) {
+	function placeMarker(lat, lng) {
 		var latLng = new google.maps.LatLng(lat,lng);
 		marker = new google.maps.Marker({
 		    map: map, 
 		    position: latLng
 		});
+		markers.push(marker);
+		return marker;
 	}
 	
-	function showFactoryLocation(targetElement) {
-		if (targetElement.options[targetElement.selectedIndex].value == '') {
-			// show all factory locations
-			alert ('todas');
-		} else {
-			//targetElement.options[targetElement.selectedIndex].value;
-			// show only one factory location
-			alert (targetElement.options[targetElement.selectedIndex].value + '');
+	function clearAllMarkers() {
+		var i = 0;
+		for (i = 0; i < markers.length; i++) {
+			markers[i].setMap(null);
 		}
+		markers = new Array();
 	}
+	
+	function addMarkerEvents(marker) {
+		// show infowindow
+		google.maps.event.addListener(marker, 'click', function(event) {
+			
+	    });
+		// show graphic engine
+		google.maps.event.addListener(marker, 'dblclick', function(event) {
+			$("#map_canvas").css("display", "none");
+			$("#jogl_canvas").css("display", "");
+	    });
+	}
+	
+	function getFactoryLocation(idFactory) {
+		if (!idFactory) var idFactory = "0";
+		else var idFactory = idFactory+"";
+		$.getJSON("/desglosa-web/getFactoriesJSON.action",
+				{
+					id: idFactory
+				},
+				function (data, status) {
+					if (status == "success") {
+						$.each(data.factories, function (i, item) {
+							var marker = placeMarker(item.location.latitude, item.location.longitude);
+							//addMarkerInfoWindow(marker);
+							addMarkerEvents(marker);
+						});
+
+					}
+					else alert('An error has occurred while trying to retrieve factory information: ' + status);
+		});
+	}
+	
+	$(document).ready(function() {
+		initializeMap();
+		getFactoryLocation();
+	});
+
 	</script>
 </head>
-<body onload="initializeMap()">
+<body>
 	<s:label for="selectFactory" value="%{getText('label.select.factory')}:"/>
-	<select id="selectFactory" onchange="showFactoryLocation(this)">
+	<select id="selectFactory">
 		<option value=""><fmt:message key="label.all_female"/></option>
 		<s:iterator var="factory" value="factories">
 			<option value="<s:property value='id'/>"><s:property value="name"/></option>
 		</s:iterator>
 	</select>
-
-	<s:label for="selectCompay" value="%{getText('label.select.company')}:"/>
-	<select id="selectCompay" onchange="showFactoryLocation(this)">
-		<option value=""><fmt:message key="label.all_female"/></option>
-		<s:iterator var="company" value="companies">
-			<option value="<s:property value='id'/>"><s:property value="name"/></option>
-		</s:iterator>
-	</select>
 	
-	<div id="map_canvas" style="width: 600px; height: 400px; display: ;">
-	</div>
+	<sj:div id="map_canvas" style="width: 600px; height: 400px; display: ;"></sj:div>
 	
 	<div id="jogl_canvas" style="display: none;">
 		<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
@@ -106,5 +134,13 @@
 		</div>
 		<br>
 		<input type="button" name="Button1" value="Start" onClick="javascript:startJSDesglosa()"/>
+		
+		
+		<script type="text/javascript">
+		$("#selectFactory").change(	function() {
+			clearAllMarkers();
+			getFactoryLocation($("#selectFactory").val());
+		});
+		</script>
 </body>
 </html>
