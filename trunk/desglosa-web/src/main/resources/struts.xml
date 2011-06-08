@@ -149,7 +149,15 @@
 					idFactory,
 					idCompany
 				</param>
-				<!-- <param name="excludeNullProperties">true</param> -->
+			</result>
+		</action>
+		<action name="getCompaniesJSON" class="visualizationAction" method="getCompaniesJSON">
+			<result type="json">
+				<param name="excludeProperties">
+					idFactory,
+					idCompany,
+					factories
+				</param>
 			</result>
 		</action>
 	</package>
