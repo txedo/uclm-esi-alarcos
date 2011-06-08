@@ -9,12 +9,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="factories")
+@NamedQueries ({
+    @NamedQuery(
+        name = "findByCompanyId",
+        query = "select f from Factory f where f.company.id = :idCompany "
+        )
+})
 public class Factory {
 	private int id;
 	private Company company;

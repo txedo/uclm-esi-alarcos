@@ -234,19 +234,4 @@ public class FactoryAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String getJSON() {
-		if (id == 0) {
-			factories = factoryDao.getFactories();
-		}
-		else {
-			try {
-				factories = new ArrayList<Factory>();
-				factories.add(factoryDao.getFactory(id));
-			} catch (FactoryNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return SUCCESS;
-	}
 }
