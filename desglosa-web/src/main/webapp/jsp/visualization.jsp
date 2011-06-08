@@ -56,6 +56,7 @@
 			markers[i].setMap(null);
 		}
 		markers = new Array();
+		infoWindows = new Array();
 	}
 	
 	function closeAllInfoWindows() {
@@ -66,7 +67,7 @@
 	}
 	
 	function createInfoWindow(factoryJSON) {
-		var resultHTML = "<b>Company:</b> " + factoryJSON.company.name + "<br />";
+		var resultHTML = "<b>" + factoryJSON.name + "</b> (" + factoryJSON.company.name + ")<br />";
 		resultHTML += "<i>" + factoryJSON.company.information + "</i><br />";
 
 		var infoWindow = new google.maps.InfoWindow();
@@ -109,7 +110,6 @@
 							var infoWindow = createInfoWindow(item);
 							addMarkerEvents(marker, infoWindow);
 						});
-
 					}
 					else alert('An error has occurred while trying to retrieve factory information: ' + status);
 		});
@@ -124,16 +124,49 @@
 				},
 				function (data, status) {
 					if (status == "success") {
+						$("#selectFactory").attr("disabled", "");
+						$("#selectFactory").empty();
 						$.each(data.factories, function (i, item) {
 							var marker = placeMarker(item.location.latitude, item.location.longitude);
 							marker.setTitle(item.name);
 							var infoWindow = createInfoWindow(item);
 							addMarkerEvents(marker, infoWindow);
+							$('#selectFactory').append($("<option></option>").attr("value", item.id).text(item.name));
 						});
-
+						$('#selectFactory').append($("<option></option>").attr("value", 0).text("Todas"));
+						$("#selectFactory option:last").attr('selected','selected');
 					}
 					else alert('An error has occurred while trying to retrieve factory information: ' + status);
 		});
+	}
+	
+	function getCompany(idCompany) {
+		if (!idCompany) var idCompany = "0";
+		else var idCompany = idCompany+"";
+		$.getJSON("/desglosa-web/getCompaniesJSON.action",
+				{
+					idCompany: idCompany
+				},
+				function (data, status) {
+					if (status == "success") {
+						$.each(data.companies, function (i, item) {
+							formatCompanyInformation(item);
+						});
+						$("#company-indicator").css("display","none");
+					}
+					else alert('An error has occurred while trying to retrieve company information: ' + status);
+		});
+	}
+	
+	function formatCompanyInformation(companyJSON) {
+		$("#company-information").append("<b>" + companyJSON.name + "</b><br />");
+		$("#company-information").append("<i>" + companyJSON.information + "<br />");
+	}
+	
+	function resetInfoDiv (div, indicator) {
+		$(div).text("");
+		$(div).html("<img id='" + indicator + "' src='images/indicator.gif' alt='Loading...' style='display:none'/>");
+		
 	}
 	
 	$(document).ready(function() {
@@ -158,7 +191,11 @@
 		<select id="selectFactory" disabled="disabled"></select>
 	</fieldset>
 	
-	<sj:div id="map_canvas" style="width: 600px; height: 400px; display: ;"></sj:div>
+	<div id="map_canvas" style="width: 600px; height: 400px; display: ;"></div>
+		
+	<div id="company-information"></div>
+	<div id="factory-information"></div>
+	<div id="project-information"></div>
 	
 	<div id="jogl_canvas" style="display: none;">
 		<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
@@ -195,12 +232,26 @@
 		$("#selectCompany").change( function() {
 			clearAllMarkers();
 			getFactoryLocationFromCompany($("#selectCompany").val());
-			
+			if ($("#selectCompany").val() == 0) {
+				// hide company info div
+				$("#company-information").css("display","none");
+			}
+			else {
+				// show company info div
+				resetInfoDiv("#company-information", "company-indicator");
+				$("#company-information").css("display","");
+				$("#company-indicator").css("display","");
+				getCompany($("#selectCompany").val());
+				// company-indicator will be hidden inside getCompany() when the action finishes.
+			}
 		});
 		
 		$("#selectFactory").change(	function() {
 			clearAllMarkers();
-			getFactoryLocation($("#selectFactory").val());
+			if ($("#selectFactory").val() == 0)
+				getFactoryLocationFromCompany($("#selectCompany").val());
+			else
+				getFactoryLocation($("#selectFactory").val());
 		});
 		</script>
 </body>

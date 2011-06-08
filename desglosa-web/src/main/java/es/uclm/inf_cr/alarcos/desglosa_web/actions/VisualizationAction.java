@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
@@ -70,8 +71,7 @@ public class VisualizationAction extends ActionSupport {
 				factories = new ArrayList<Factory>();
 				factories.add(factoryDao.getFactory(idFactory));
 			} catch (FactoryNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return ERROR;
 			}
 		}
 		return SUCCESS;
@@ -88,5 +88,21 @@ public class VisualizationAction extends ActionSupport {
 		}
 		return SUCCESS;
 	}
+	
+	public String getCompaniesJSON() {
+		if (idCompany == 0) {
+			companies = companyDao.getCompanies();
+		}
+		else {
+			try {
+				companies = new ArrayList<Company>();
+				companies.add(companyDao.getCompany(idCompany));
+			} catch (CompanyNotFoundException e) {
+				return ERROR;
+			}
+		}
+		return SUCCESS;
+	}
+	
 
 }
