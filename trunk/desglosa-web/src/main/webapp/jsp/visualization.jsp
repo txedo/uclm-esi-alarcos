@@ -18,6 +18,7 @@
 	var map;
 	var geocoder;
 	var markers;
+	var infoWindows;
 	
 	function initializeMap() {
 		var latlng = new google.maps.LatLng(-34.397, 150.644);
@@ -29,6 +30,7 @@
 	    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 	    geocoder = new google.maps.Geocoder();
 	    markers = new Array();
+	    infoWindows = new Array();
 	}
 	
 	function createFactory (id, lat, lng) {
@@ -56,11 +58,35 @@
 		markers = new Array();
 	}
 	
-	function addMarkerEvents(marker) {
+	function closeAllInfoWindows() {
+		var i = 0;
+		for (i = 0; i < infoWindows.length; i++) {
+			infoWindows[i].close();
+		}
+	}
+	
+	function createInfoWindow(factoryJSON) {
+		var resultHTML = "<b>Company:</b> " + factoryJSON.company.name + "<br />";
+		resultHTML += "<i>" + factoryJSON.company.information + "</i><br />";
+
+		var infoWindow = new google.maps.InfoWindow();
+		infoWindow.setContent(resultHTML);
+		
+		infoWindows.push(infoWindow);
+		return infoWindow;
+	}
+	
+	function addMarkerEvents(marker, infoWindow) {
 		// show infowindow
 		google.maps.event.addListener(marker, 'click', function(event) {
-			
+			closeAllInfoWindows();
+			infoWindow.open(map, marker);
 	    });
+		
+		google.maps.event.addListener(map, "click", function(){
+			  infoWindow.close();
+		});
+		
 		// show graphic engine
 		google.maps.event.addListener(marker, 'dblclick', function(event) {
 			$("#map_canvas").css("display", "none");
@@ -79,8 +105,9 @@
 					if (status == "success") {
 						$.each(data.factories, function (i, item) {
 							var marker = placeMarker(item.location.latitude, item.location.longitude);
-							//addMarkerInfoWindow(marker);
-							addMarkerEvents(marker);
+							marker.setTitle(item.name);
+							var infoWindow = createInfoWindow(item);
+							addMarkerEvents(marker, infoWindow);
 						});
 
 					}
