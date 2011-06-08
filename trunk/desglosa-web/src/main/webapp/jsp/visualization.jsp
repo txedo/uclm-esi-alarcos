@@ -99,7 +99,28 @@
 		else var idFactory = idFactory+"";
 		$.getJSON("/desglosa-web/getFactoriesJSON.action",
 				{
-					id: idFactory
+					idFactory: idFactory
+				},
+				function (data, status) {
+					if (status == "success") {
+						$.each(data.factories, function (i, item) {
+							var marker = placeMarker(item.location.latitude, item.location.longitude);
+							marker.setTitle(item.name);
+							var infoWindow = createInfoWindow(item);
+							addMarkerEvents(marker, infoWindow);
+						});
+
+					}
+					else alert('An error has occurred while trying to retrieve factory information: ' + status);
+		});
+	}
+	
+	function getFactoryLocationFromCompany(idCompany) {
+		if (!idCompany) var idCompany = "0";
+		else var idCompany = idCompany+"";
+		$.getJSON("/desglosa-web/getFactoriesFromCompanyJSON.action",
+				{
+					idCompany: idCompany
 				},
 				function (data, status) {
 					if (status == "success") {
@@ -117,19 +138,25 @@
 	
 	$(document).ready(function() {
 		initializeMap();
-		getFactoryLocation();
 	});
 
 	</script>
 </head>
 <body>
-	<s:label for="selectFactory" value="%{getText('label.select.factory')}:"/>
-	<select id="selectFactory">
-		<option value=""><fmt:message key="label.all_female"/></option>
-		<s:iterator var="factory" value="factories">
-			<option value="<s:property value='id'/>"><s:property value="name"/></option>
-		</s:iterator>
-	</select>
+	<fieldset>
+		<legend>Filtrar por compañía:</legend>
+		<s:label for="selectCompany" value="%{getText('label.select.company')}:"/>
+		<select id="selectCompany" >
+			<option value="" disabled="disabled">-- <fmt:message key="label.choose"/>-- </option>
+			<s:iterator var="company" value="companies">
+				<option value="<s:property value='id'/>"><s:property value="name"/></option>
+			</s:iterator>
+			<option value="0"><fmt:message key="label.all_female"/></option>
+		</select>
+		
+		<s:label for="selectFactory" value="%{getText('label.select.factory')}:"/>
+		<select id="selectFactory" disabled="disabled"></select>
+	</fieldset>
 	
 	<sj:div id="map_canvas" style="width: 600px; height: 400px; display: ;"></sj:div>
 	
@@ -164,6 +191,13 @@
 		
 		
 		<script type="text/javascript">
+		$("#selectCompany option:first").attr('selected','selected');
+		$("#selectCompany").change( function() {
+			clearAllMarkers();
+			getFactoryLocationFromCompany($("#selectCompany").val());
+			
+		});
+		
 		$("#selectFactory").change(	function() {
 			clearAllMarkers();
 			getFactoryLocation($("#selectFactory").val());

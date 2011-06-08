@@ -7,36 +7,6 @@ CREATE SCHEMA IF NOT EXISTS `desglosadb` DEFAULT CHARACTER SET utf8 ;
 USE `desglosadb` ;
 
 -- -----------------------------------------------------
--- Table `desglosadb`.`companies`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`companies` ;
-
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`companies` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(45) NOT NULL ,
-  `information` TINYTEXT NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `desglosadb`.`addresses`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`addresses` ;
-
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`addresses` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `address` TINYTEXT NOT NULL ,
-  `city` VARCHAR(65) NOT NULL ,
-  `province` VARCHAR(65) NULL ,
-  `country` VARCHAR(65) NOT NULL ,
-  `postal_code` VARCHAR(45) NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `desglosadb`.`images`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `desglosadb`.`images` ;
@@ -67,6 +37,43 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`directors` (
     REFERENCES `desglosadb`.`images` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`companies`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`companies` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`companies` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NOT NULL ,
+  `information` TINYTEXT NULL ,
+  `director_id` INT NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) ,
+  INDEX `fk_companies_directors` (`director_id` ASC) ,
+  CONSTRAINT `fk_companies_directors`
+    FOREIGN KEY (`director_id` )
+    REFERENCES `desglosadb`.`directors` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`addresses`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`addresses` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`addresses` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `address` TINYTEXT NOT NULL ,
+  `city` VARCHAR(65) NOT NULL ,
+  `province` VARCHAR(65) NULL ,
+  `country` VARCHAR(65) NOT NULL ,
+  `postal_code` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
@@ -128,6 +135,19 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `desglosadb`.`markets`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`markets` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`markets` (
+  `id` INT NOT NULL ,
+  `name` VARCHAR(45) NULL ,
+  `color` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `desglosadb`.`projects`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `desglosadb`.`projects` ;
@@ -137,11 +157,18 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`projects` (
   `code` VARCHAR(45) NULL ,
   `planName` VARCHAR(45) NULL ,
   `workingFactory_id` INT NOT NULL ,
+  `market_id` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_projects_factories` (`workingFactory_id` ASC) ,
+  INDEX `fk_projects_markets` (`market_id` ASC) ,
   CONSTRAINT `fk_projects_factories`
     FOREIGN KEY (`workingFactory_id` )
     REFERENCES `desglosadb`.`factories` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_projects_markets`
+    FOREIGN KEY (`market_id` )
+    REFERENCES `desglosadb`.`markets` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -279,33 +306,11 @@ grant ALL on TABLE `desglosadb`.`groups` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`groups_roles` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`roles` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`users_groups` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`markets` to desglosaadmin;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
--- -----------------------------------------------------
--- Data for table `desglosadb`.`companies`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `desglosadb`;
-INSERT INTO `desglosadb`.`companies` (`id`, `name`, `information`) VALUES (1, 'Indra', 'information about Indra');
-INSERT INTO `desglosadb`.`companies` (`id`, `name`, `information`) VALUES (2, 'IECISA', 'información sobre IECISA');
-
-COMMIT;
-
--- -----------------------------------------------------
--- Data for table `desglosadb`.`addresses`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `desglosadb`;
-INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (1, 'calle', 'Ciudad Real', 'Ciudad Real', 'España', '13000');
-INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (2, 'calle', 'Madrid', 'Madrid', 'España', '28000');
-INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (3, 'calle', 'Miguelturra', 'Ciudad Real', 'España', '13000');
-INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (4, 'mirasierra', 'Madrid', 'Madrid', 'España', '28000');
-INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (5, 'liverpool street', 'London', 'England', 'England', 'GBH8Z');
-
-COMMIT;
 
 -- -----------------------------------------------------
 -- Data for table `desglosadb`.`images`
@@ -328,6 +333,31 @@ INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VAL
 INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (3, 'director', 'de compañia de ejemplo 1', 1);
 INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (4, 'director', 'de test company 2', 1);
 INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (5, 'director', 'of uk company', 1);
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (6, 'director de indra', 'global de todo', 1);
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (7, 'director de iecisa', 'global de todoooo', 1);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`companies`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`companies` (`id`, `name`, `information`, `director_id`) VALUES (1, 'Indra', 'information about Indra', 6);
+INSERT INTO `desglosadb`.`companies` (`id`, `name`, `information`, `director_id`) VALUES (2, 'IECISA', 'información sobre IECISA', 7);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`addresses`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (1, 'calle', 'Ciudad Real', 'Ciudad Real', 'España', '13000');
+INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (2, 'calle', 'Madrid', 'Madrid', 'España', '28000');
+INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (3, 'calle', 'Miguelturra', 'Ciudad Real', 'España', '13000');
+INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (4, 'mirasierra', 'Madrid', 'Madrid', 'España', '28000');
+INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (5, 'liverpool street', 'London', 'England', 'England', 'GBH8Z');
 
 COMMIT;
 
@@ -356,12 +386,24 @@ INSERT INTO `desglosadb`.`factories` (`id`, `name`, `information`, `contact_emai
 COMMIT;
 
 -- -----------------------------------------------------
+-- Data for table `desglosadb`.`markets`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`markets` (`id`, `name`, `color`) VALUES (1, 'Arquitectura', '00649a');
+INSERT INTO `desglosadb`.`markets` (`id`, `name`, `color`) VALUES (2, 'Defensa', '298400');
+INSERT INTO `desglosadb`.`markets` (`id`, `name`, `color`) VALUES (3, 'Sanitario', 'ff8c00');
+
+COMMIT;
+
+-- -----------------------------------------------------
 -- Data for table `desglosadb`.`projects`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`) VALUES (1, 'DGL', 'DESGLOSA', 1);
-INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`) VALUES (2, 'VLM', 'VILMA', 2);
+INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`) VALUES (1, 'DGL', 'DESGLOSA', 1, 1);
+INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`) VALUES (2, 'VLM', 'VILMA', 2, 2);
+INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`) VALUES (3, 'W2P', 'Where2Publish', 3, 3);
 
 COMMIT;
 
@@ -374,6 +416,8 @@ INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) V
 INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (2, 2);
 INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (2, 4);
 INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (1, 3);
+INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (3, 1);
+INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (3, 3);
 
 COMMIT;
 

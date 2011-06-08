@@ -133,12 +133,21 @@
 	</package>
 	
 	<package name="json" extends="json-default">
-		<action name="getFactoriesJSON" class="factoryAction" method="getJSON">
+		<action name="getFactoriesJSON" class="visualizationAction" method="getFactoriesJSON">
 			<result type="json">
 				<param name="excludeProperties">
 					companies,
-					factory,
-					id
+					idCompany,
+					idFactory
+				</param>
+				<!-- <param name="excludeNullProperties">true</param> -->
+			</result>
+		</action>
+		<action name="getFactoriesFromCompanyJSON" class="visualizationAction" method="getFactoriesFromCompanyJSON">
+			<result type="json">
+				<param name="excludeProperties">
+					idFactory,
+					idCompany
 				</param>
 				<!-- <param name="excludeNullProperties">true</param> -->
 			</result>

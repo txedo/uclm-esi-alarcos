@@ -1,10 +1,14 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -13,6 +17,7 @@ public class Company {
 	private int id;
 	private String name;
 	private String information;
+	private Director director;
 	
 	public Company(){}
 	
@@ -36,6 +41,12 @@ public class Company {
 		return information;
 	}
 
+	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
+	@PrimaryKeyJoinColumn
+	public Director getDirector() {
+		return director;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -46,6 +57,10 @@ public class Company {
 
 	public void setInformation(String information) {
 		this.information = information;
+	}
+
+	public void setDirector(Director director) {
+		this.director = director;
 	}
 
 	@Override
