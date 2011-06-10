@@ -15,20 +15,15 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 
 public class VisualizationAction extends ActionSupport {
-	private int idCompany;
-	private int idFactory;
+	private int id;
 	private FactoryDAO factoryDao;
 	private CompanyDAO companyDao;
 	
 	private List<Factory> factories;
 	private List<Company> companies;
 
-	public int getIdCompany() {
-		return idCompany;
-	}
-	
-	public int getIdFactory() {
-		return idFactory;
+	public int getId() {
+		return id;
 	}
 	
 	public List<Factory> getFactories() {
@@ -47,12 +42,8 @@ public class VisualizationAction extends ActionSupport {
 		this.companyDao = companyDao;
 	}
 	
-	public void setIdCompany(int id) {
-		this.idCompany = id;
-	}
-	
-	public void setIdFactory(int id) {
-		this.idFactory = id;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@Override
@@ -63,13 +54,13 @@ public class VisualizationAction extends ActionSupport {
 	}
 	
 	public String getFactoriesJSON() {
-		if (idFactory == 0) {
+		if (id == 0) {
 			factories = factoryDao.getFactories();
 		}
 		else {
 			try {
 				factories = new ArrayList<Factory>();
-				factories.add(factoryDao.getFactory(idFactory));
+				factories.add(factoryDao.getFactory(id));
 			} catch (FactoryNotFoundException e) {
 				return ERROR;
 			}
@@ -78,25 +69,25 @@ public class VisualizationAction extends ActionSupport {
 	}
 	
 	public String getFactoriesFromCompanyJSON() {
-		if (idCompany == 0) {
+		if (id == 0) {
 			factories = factoryDao.getFactories();
 		}
 		else {
 			Map<String, Object> queryParams = new HashMap<String, Object>();
-			queryParams.put("idCompany", idCompany);
+			queryParams.put("id", id);
 			factories = factoryDao.findByNamedQuery("findByCompanyId", queryParams);
 		}
 		return SUCCESS;
 	}
 	
 	public String getCompaniesJSON() {
-		if (idCompany == 0) {
+		if (id == 0) {
 			companies = companyDao.getCompanies();
 		}
 		else {
 			try {
 				companies = new ArrayList<Company>();
-				companies.add(companyDao.getCompany(idCompany));
+				companies.add(companyDao.getCompany(id));
 			} catch (CompanyNotFoundException e) {
 				return ERROR;
 			}

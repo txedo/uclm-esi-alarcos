@@ -109,7 +109,7 @@
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/formFactory.jsp</result>
 			<result name="input">/jsp/formFactory.jsp</result>
-			<result name="success">listFactories.action</result>
+			<result name="success" type="redirectAction">listFactories.action</result>
 		</action>
 		<action name="editFactory" class="factoryAction" method="edit">
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->

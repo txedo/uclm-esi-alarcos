@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -20,7 +19,7 @@ import javax.persistence.Table;
 @NamedQueries ({
     @NamedQuery(
         name = "findByCompanyId",
-        query = "select f from Factory f where f.company.id = :idCompany "
+        query = "select f from Factory f where f.company.id = :id "
         )
 })
 public class Factory {
@@ -58,7 +57,7 @@ public class Factory {
 	}
 
 	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	@PrimaryKeyJoinColumn
+    @JoinColumn(name="director_id")
 	public Director getDirector() {
 		return director;
 	}
@@ -74,13 +73,13 @@ public class Factory {
 	}
 
 	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	@PrimaryKeyJoinColumn
+	@JoinColumn(name="address_id")
 	public Address getAddress() {
 		return address;
 	}
 	
 	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	@PrimaryKeyJoinColumn
+	@JoinColumn(name="location_id")
 	public Location getLocation() {
 		return location;
 	}
