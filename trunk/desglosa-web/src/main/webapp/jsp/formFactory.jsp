@@ -279,6 +279,13 @@
 			<br /><s:label for="factory.director.lastName" value="%{getText('label.configure.director.last_name')}:"/>
 			<s:textfield id="factory.director.lastName" name="factory.director.lastName" tabindex="2"/>
 			<s:fielderror><s:param>error.director.lastName</s:param></s:fielderror>
+			<!-- factory var is already set at the beggining of this form -->
+			<c:if test="${not empty factory}">
+				<c:if test="${not empty factory.director.imagePath}">
+					<br /><s:label for="factory.director.image" value="%{getText('label.configure.director.current_image')}:"/>
+					<img src="<s:text name='factory.director.imagePath'/>" width="128" height="128" alt="%{getText('label.configure.director.current_image')}"/>
+				</c:if>
+			</c:if>
 			<br /><s:label for="factory.director.image" value="%{getText('label.configure.director.image')}:"/>
 			<s:file id="factory.director.image" name="upload"></s:file>
 			<s:fielderror><s:param>error.director.image</s:param></s:fielderror>
