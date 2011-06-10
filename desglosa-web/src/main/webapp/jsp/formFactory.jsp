@@ -214,7 +214,7 @@
 		<c:set var="buttonLabel" value="button.add_factory"/>
 	</c:if>
 
-	<form id="formFactory" method="post" action="<c:url value="${form}"/>">
+	<form id="formFactory" method="post" action="<c:url value="${form}"/>" enctype="multipart/form-data">
 
 		<c:if test="${not empty param.id}">
 			<s:hidden name="factory.id"/>
@@ -271,17 +271,17 @@
 		</s:div>
 		
 		<s:div id="fillDirector" cssStyle="display: none">
-			<s:text name="%{getText('label.configure.factory.director')}:"/>
+			<s:text name="%{getText('label.configure.director')}:"/>
 
-			<br /><s:label for="factory.director.name" value="%{getText('label.configure.factory.director.name')}:"/>
+			<br /><s:label for="factory.director.name" value="%{getText('label.configure.director.name')}:"/>
 			<s:textfield id="factory.director.name" name="factory.director.name" tabindex="1"/>
-			<s:fielderror><s:param>error.factory.director.name</s:param></s:fielderror>
-			<br /><s:label for="factory.director.lastName" value="%{getText('label.configure.factory.director.last_name')}:"/>
+			<s:fielderror><s:param>error.director.name</s:param></s:fielderror>
+			<br /><s:label for="factory.director.lastName" value="%{getText('label.configure.director.last_name')}:"/>
 			<s:textfield id="factory.director.lastName" name="factory.director.lastName" tabindex="2"/>
-			<s:fielderror><s:param>error.factory.director.lastName</s:param></s:fielderror>
-			
-			<br />image
-			<s:fielderror><s:param>error.factory.director.image</s:param></s:fielderror>
+			<s:fielderror><s:param>error.director.lastName</s:param></s:fielderror>
+			<br /><s:label for="factory.director.image" value="%{getText('label.configure.director.image')}:"/>
+			<s:file id="factory.director.image" name="upload"></s:file>
+			<s:fielderror><s:param>error.director.image</s:param></s:fielderror>
 
 			<br /><s:a href="#" onclick="swapDivVisibility('fillDirector','fillFactoryData')">&lt; Back</s:a>
 			<c:choose>
