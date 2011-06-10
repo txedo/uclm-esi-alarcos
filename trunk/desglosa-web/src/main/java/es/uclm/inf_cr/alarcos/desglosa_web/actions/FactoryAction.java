@@ -1,11 +1,13 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.ContextLoader;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -37,17 +39,41 @@ public class FactoryAction extends ActionSupport {
 	private List<Company> companies;
 	// Required attributes by Save Action
 	private Factory factory;
+	// Required attributes to upload files
+	private File upload;//The actual file
+	private String uploadContentType; //The content type of the file
+	private String uploadFileName; //The uploaded file name
 	
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public Factory getFactory() {
 		return factory;
+	}
+	
+	public List<Factory> getFactories() {
+		return factories;
+	}
+	
+	public List<Company> getCompanies() {
+		return companies;
+	}
+	
+	public File getUpload() {
+		return upload;
+	}
+
+	public String getUploadContentType() {
+		return uploadContentType;
+	}
+
+	public String getUploadFileName() {
+		return uploadFileName;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setFactory(Factory factory) {
@@ -61,13 +87,17 @@ public class FactoryAction extends ActionSupport {
 	public void setCompanyDao(CompanyDAO companyDao) {
 		this.companyDao = companyDao;
 	}
-
-	public List<Factory> getFactories() {
-		return factories;
-	}
 	
-	public List<Company> getCompanies() {
-		return companies;
+	public void setUpload(File upload) {
+		this.upload = upload;
+	}
+
+	public void setUploadContentType(String uploadContentType) {
+		this.uploadContentType = uploadContentType;
+	}
+
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
 	}
 
 	@Override
@@ -126,8 +156,8 @@ public class FactoryAction extends ActionSupport {
 			// Factory data
 			if (factory.getName().trim().length() == 0) addFieldError("error.factory.name", getText("error.factory.name"));
 			// Director data
-			if (factory.getDirector().getName().trim().length() == 0) addFieldError("error.factory.director.name", getText("error.director.name"));
-			if (factory.getDirector().getLastName().trim().length() == 0) addFieldError("error.factory.director.last_name", getText("error.director.last_name"));
+			if (factory.getDirector().getName().trim().length() == 0) addFieldError("error.director.name", getText("error.director.name"));
+			if (factory.getDirector().getLastName().trim().length() == 0) addFieldError("error.director.last_name", getText("error.director.last_name"));
 			// Address data
 			if (factory.getAddress().getAddress().trim().length() == 0) addFieldError("error.factory.address.address", getText("error.address.address"));
 			if (factory.getAddress().getCity().trim().length() == 0) addFieldError("error.factory.address.city", getText("error.address.city"));
@@ -143,9 +173,19 @@ public class FactoryAction extends ActionSupport {
 	}
 	
 	public String save() {
-		factoryDao.saveFactory(factory);
-		addActionMessage(getText("message.factory.added_successfully"));
-		
+		try {
+			String fileName = uploadFileName;
+			String dirName = "upload";
+			String fullFileName = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath(dirName);
+			File theFile = new File(fullFileName + "\\" + fileName);
+			FileUtils.copyFile(upload, theFile);
+			factory.getDirector().setImagePath(dirName + "/" + fileName);
+			factoryDao.saveFactory(factory);
+			addActionMessage(getText("message.factory.added_successfully"));
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			return INPUT;
+		}
 		return SUCCESS;
 	}
 	
