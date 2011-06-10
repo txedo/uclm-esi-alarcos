@@ -7,20 +7,6 @@ CREATE SCHEMA IF NOT EXISTS `desglosadb` DEFAULT CHARACTER SET utf8 ;
 USE `desglosadb` ;
 
 -- -----------------------------------------------------
--- Table `desglosadb`.`images`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`images` ;
-
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`images` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `filename` VARCHAR(45) NULL ,
-  `content_type` VARCHAR(45) NULL ,
-  `data` LONGBLOB NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `desglosadb`.`directors`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `desglosadb`.`directors` ;
@@ -29,14 +15,8 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`directors` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   `last_name` VARCHAR(45) NOT NULL ,
-  `image_id` INT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `fk_directors_images` (`image_id` ASC) ,
-  CONSTRAINT `fk_directors_images`
-    FOREIGN KEY (`image_id` )
-    REFERENCES `desglosadb`.`images` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `image_path` VARCHAR(100) NULL DEFAULT 'images/anonymous.jpg' ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
@@ -56,8 +36,8 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`companies` (
   CONSTRAINT `fk_companies_directors`
     FOREIGN KEY (`director_id` )
     REFERENCES `desglosadb`.`directors` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -298,7 +278,6 @@ grant ALL on TABLE `desglosadb`.`factories` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`addresses` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`locations` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`directors` to desglosaadmin;
-grant ALL on TABLE `desglosadb`.`images` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`projects` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`projects_has_factories` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`users` to desglosaadmin;
@@ -313,28 +292,16 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table `desglosadb`.`images`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `desglosadb`;
-INSERT INTO `desglosadb`.`images` (`id`, `filename`, `content_type`, `data`) VALUES (1, 'anonymous', 'image/jpg', NULL);
-INSERT INTO `desglosadb`.`images` (`id`, `filename`, `content_type`, `data`) VALUES (2, 'world map', 'image/png', NULL);
-INSERT INTO `desglosadb`.`images` (`id`, `filename`, `content_type`, `data`) VALUES (3, 'spain', 'image/png', NULL);
-
-COMMIT;
-
--- -----------------------------------------------------
 -- Data for table `desglosadb`.`directors`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (1, 'director', 'de indra', 1);
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (2, 'director', 'de indra', 1);
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (3, 'director', 'de compañia de ejemplo 1', 1);
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (4, 'director', 'de test company 2', 1);
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (5, 'director', 'of uk company', 1);
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (6, 'director de indra', 'global de todo', 1);
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_id`) VALUES (7, 'director de iecisa', 'global de todoooo', 1);
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (1, 'director', 'de indra', 'images/anonymous.jpg');
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (2, 'director', 'de indra', 'images/anonymous.jpg');
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (3, 'director', 'de compañia de ejemplo 1', 'images/anonymous.jpg');
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (4, 'director', 'de test company 2', 'images/anonymous.jpg');
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (5, 'director de indra', 'global de todo', 'images/anonymous.jpg');
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (6, 'director de iecisa', 'global de todoooo', 'images/anonymous.jpg');
 
 COMMIT;
 
@@ -343,8 +310,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`companies` (`id`, `name`, `information`, `director_id`) VALUES (1, 'Indra', 'information about Indra', 6);
-INSERT INTO `desglosadb`.`companies` (`id`, `name`, `information`, `director_id`) VALUES (2, 'IECISA', 'información sobre IECISA', 7);
+INSERT INTO `desglosadb`.`companies` (`id`, `name`, `information`, `director_id`) VALUES (1, 'Indra', 'information about Indra', 5);
+INSERT INTO `desglosadb`.`companies` (`id`, `name`, `information`, `director_id`) VALUES (2, 'IECISA', 'información sobre IECISA', 6);
 
 COMMIT;
 
@@ -357,7 +324,6 @@ INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `coun
 INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (2, 'calle', 'Madrid', 'Madrid', 'España', '28000');
 INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (3, 'calle', 'Miguelturra', 'Ciudad Real', 'España', '13000');
 INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (4, 'mirasierra', 'Madrid', 'Madrid', 'España', '28000');
-INSERT INTO `desglosadb`.`addresses` (`id`, `address`, `city`, `province`, `country`, `postal_code`) VALUES (5, 'liverpool street', 'London', 'England', 'England', 'GBH8Z');
 
 COMMIT;
 

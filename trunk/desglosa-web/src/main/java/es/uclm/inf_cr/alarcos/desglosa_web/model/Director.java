@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -15,7 +15,7 @@ public class Director {
 	private int id;
 	private String name;
 	private String lastName;
-	private Image picture;
+	private String imagePath;
 	
 	
 	public Director() {}
@@ -35,10 +35,9 @@ public class Director {
 		return lastName;
 	}
 	
-	@OneToOne
-	@PrimaryKeyJoinColumn
-	public Image getPicture() {
-		return picture;
+	@Column(name="image_path")
+	public String getImagePath() {
+		return imagePath;
 	}
 	
 	public void setId(int id) {
@@ -53,8 +52,8 @@ public class Director {
 		this.lastName = lastName;
 	}
 	
-	public void setPicture(Image picture) {
-		this.picture = picture;
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	
 	
