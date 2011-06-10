@@ -15,7 +15,7 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`directors` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NOT NULL ,
   `last_name` VARCHAR(45) NOT NULL ,
-  `image_path` VARCHAR(100) NULL DEFAULT 'images/anonymous.jpg' ,
+  `image_path` VARCHAR(100) NULL DEFAULT 'images/anonymous.gif' ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -296,12 +296,12 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (1, 'director', 'de indra', 'images/anonymous.jpg');
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (2, 'director', 'de indra', 'images/anonymous.jpg');
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (3, 'director', 'de compañia de ejemplo 1', 'images/anonymous.jpg');
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (4, 'director', 'de test company 2', 'images/anonymous.jpg');
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (5, 'director de indra', 'global de todo', 'images/anonymous.jpg');
-INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (6, 'director de iecisa', 'global de todoooo', 'images/anonymous.jpg');
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (1, 'director', 'de indra', 'images/anonymous.gif');
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (2, 'director', 'de indra', 'images/anonymous.gif');
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (3, 'director', 'de compañia de ejemplo 1', 'images/anonymous.gif');
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (4, 'director', 'de test company 2', 'images/anonymous.gif');
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (5, 'director de indra', 'global de todo', 'images/anonymous.gif');
+INSERT INTO `desglosadb`.`directors` (`id`, `name`, `last_name`, `image_path`) VALUES (6, 'director de iecisa', 'global de todoooo', 'images/anonymous.gif');
 
 COMMIT;
 

@@ -5,9 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
-import org.springframework.web.context.ContextLoader;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -17,6 +15,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.FileUtil;
 
 /* Experience shows that chaining should be used with care. If chaining is overused, 
  * an application can turn into "spaghetti code". Actions should be treated as a 
@@ -30,6 +29,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
  * are best used as adapters, rather than as a class where coding logic is defined.
 */
 public class FactoryAction extends ActionSupport {
+	private static String DEFAULT_PIC = "images/anonymous.gif";
 	private int id;
 	// factoryDao is set from applicationContext.xml
 	private FactoryDAO factoryDao;
@@ -174,12 +174,10 @@ public class FactoryAction extends ActionSupport {
 	
 	public String save() {
 		try {
-			String fileName = uploadFileName;
-			String dirName = "upload";
-			String fullFileName = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath(dirName);
-			File theFile = new File(fullFileName + "\\" + fileName);
-			FileUtils.copyFile(upload, theFile);
-			factory.getDirector().setImagePath(dirName + "/" + fileName);
+			String path = DEFAULT_PIC;
+			if (upload != null)
+				path = FileUtil.uploadFile(uploadFileName, upload);
+			factory.getDirector().setImagePath(path);
 			factoryDao.saveFactory(factory);
 			addActionMessage(getText("message.factory.added_successfully"));
 		} catch (Exception e) {
@@ -239,9 +237,17 @@ public class FactoryAction extends ActionSupport {
 	}
 	
 	public String edit() {
-		factoryDao.saveFactory(factory);
-		addActionMessage(getText("message.factory.updated_successfully"));
-		
+		try {
+			if (upload != null) {
+				String path = FileUtil.uploadFile(uploadFileName, upload);
+				factory.getDirector().setImagePath(path);
+			}
+			factoryDao.saveFactory(factory);
+			addActionMessage(getText("message.factory.updated_successfully"));
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			return INPUT;
+		}
 		return SUCCESS;
 	}
 	

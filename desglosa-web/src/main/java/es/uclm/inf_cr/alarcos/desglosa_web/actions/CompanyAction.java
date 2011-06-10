@@ -1,5 +1,6 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +12,10 @@ import com.opensymphony.xwork2.ActionSupport;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.FileUtil;
 
 public class CompanyAction extends ActionSupport implements GenericActionInterface {
+	private static String DEFAULT_PIC = "images/anonymous.gif";
 	private int id;
 	// companyDao is set from applicationContext.xml
 	private CompanyDAO companyDao;
@@ -20,6 +23,10 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 	private Company company;
 	// Attributes required by List action (default method execute)
 	private List<Company> companies;
+	// Required attributes to upload files
+	private File upload;//The actual file
+	private String uploadContentType; //The content type of the file
+	private String uploadFileName; //The uploaded file name
 	
 	public void setCompanyDao(CompanyDAO companyDao) {
 		this.companyDao = companyDao;
@@ -29,20 +36,44 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public Company getCompany() {
 		return company;
+	}
+	
+	public File getUpload() {
+		return upload;
+	}
+
+	public String getUploadContentType() {
+		return uploadContentType;
+	}
+
+	public String getUploadFileName() {
+		return uploadFileName;
+	}
+
+	public List<Company> getCompanies() {
+		return companies;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setCompany(Company company) {
 		this.company = company;
 	}
+	
+	public void setUpload(File upload) {
+		this.upload = upload;
+	}
 
-	public List<Company> getCompanies() {
-		return companies;
+	public void setUploadContentType(String uploadContentType) {
+		this.uploadContentType = uploadContentType;
+	}
+
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
 	}
 
 	@Override
@@ -80,23 +111,34 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 	public void validateDoSave(){
 		if (company != null) {
 			// Check company name is not empty
-			if (company.getName().trim().length() == 0) addFieldError("company.name", getText("error.company.name"));
+			if (company.getName().trim().length() == 0) addFieldError("error.company.name", getText("error.company.name"));
 			// Check company name is not already taken
 			try {
 				companyDao.getCompany(company.getName());
-				addFieldError("company.name", getText("error.company.already_exists"));
+				addFieldError("error.company.name", getText("error.company.already_exists"));
 			} catch (CompanyNotFoundException e) {
 				// Name not taken. Nothing to do here
 			}
+			// Director data
+			if (company.getDirector().getName().trim().length() == 0) addFieldError("error.director.name", getText("error.director.name"));
+			if (company.getDirector().getLastName().trim().length() == 0) addFieldError("error.director.last_name", getText("error.director.last_name"));
 		} else {
 			addActionError(getText("error.general"));
 		}
 	}
 
 	public String save() {
-		companyDao.saveCompany(company);
-		addActionMessage(getText("message.company.added_successfully"));
-
+		try {
+			String path = DEFAULT_PIC;
+			if (upload != null)
+				path = FileUtil.uploadFile(uploadFileName, upload);
+			company.getDirector().setImagePath(path);
+			companyDao.saveCompany(company);
+			addActionMessage(getText("message.company.added_successfully"));
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			return INPUT;
+		}
 		return SUCCESS;
 	}
 	
@@ -111,23 +153,34 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 				addActionError(getText("error.company.id"));
 			}
 			// Check company name is not empty
-			if (company.getName().trim().length() == 0) addFieldError("company.name", getText("error.company.name"));
+			if (company.getName().trim().length() == 0) addFieldError("error.company.name", getText("error.company.name"));
 			// Check that there is no company with same name and different id
 			try {
 				cAux = companyDao.getCompany(company.getName());
-				if (cAux.getId() != company.getId()) addFieldError("company.name", getText("error.company.already_exists"));
+				if (cAux.getId() != company.getId()) addFieldError("error.company.name", getText("error.company.already_exists"));
 			} catch (CompanyNotFoundException e) {
 				// Name not taken. Nothing to do here.
 			}
+			// Director data
+			if (company.getDirector().getName().trim().length() == 0) addFieldError("error.director.name", getText("error.director.name"));
+			if (company.getDirector().getLastName().trim().length() == 0) addFieldError("error.director.last_name", getText("error.director.last_name"));
 		} else {
 			addActionError(getText("error.general"));
 		}
 	}
 
 	public String edit() throws Exception {
-		companyDao.saveCompany(company);
-		addActionMessage(getText("message.company.updated_successfully"));
-
+		try {
+			if (upload != null) {
+				String path = FileUtil.uploadFile(uploadFileName, upload);
+				company.getDirector().setImagePath(path);
+			}
+			companyDao.saveCompany(company);
+			addActionMessage(getText("message.company.updated_successfully"));
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			return INPUT;
+		}
 		return SUCCESS;
 	}
 	
