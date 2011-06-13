@@ -172,6 +172,7 @@
 		result += "<i>" + companyJSON.information + "</i><br />";
 		result += "<br />";
 		result += formatDirectorInformation(companyJSON.director);
+		result += "<br /><a href='#' onclick='javascript:desglosa_showFactoriesFromCompany(" + companyJSON.id + ")'>Show more detailed information</a>";
 		return result;
 	}
 	
@@ -252,25 +253,15 @@
 		<select id="factorySelect" disabled="disabled"></select>
 	</fieldset>
 	
+	<input type="button" value="mapa" onclick="$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');"/>
+	<input type="button" value="jogl" onclick="$('#map_canvas').css('display','none');$('#jogl_canvas').css('display','');"/>
+	
 	<div id="map_canvas" style="width: 600px; height: 400px; display: ;"></div>
-	
-	<sj:tabbedpanel id="infoTabs" animate="true">
-		<sj:tab id="companyInfoTab" target="companyInformation" label="Company Information"/>
-		<sj:tab id="factoryInfoTab" target="factoryInformation" label="Factory Information"/>
-		<sj:tab id="projectInfoTab" target="projectInformation" label="Project Information"/>
-		<div id="companyInformation"></div>
-		<div id="factoryInformation"></div>
-		<div id="projectInformation"></div>
-	</sj:tabbedpanel>
-	
-	<div id="indicatorDiv">
-		<img id="indicator" src="images/indicator.gif" alt="Loading..." style="display:none"/>
-	</div>
 	
 	<div id="jogl_canvas" style="display: none;">
 		<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
 			codebase="./" 
-			ID="DesglosaApplet"
+			id="DesglosaApplet"
 			alt="Check your browser configuration to allow java applets." 
 		    width=600
 		    height=400
@@ -291,9 +282,23 @@
 			   <param name="java_arguments" value="-Dsun.java2d.noddraw=true"/>
 			   <param name="jnlp_href" value="applet/applet-desglosa.jnlp"/>
 			   You have no JRE installed.<br/>Visit <a href="http://www.java.com/download/index.jsp" target="_blank">Java download page</a> to verify and/or install a JRE.
-			</applet>
-		</div>
-		<br>
-		<input type="button" name="Button1" value="Start" onClick="javascript:startJSDesglosa()"/>
+		</applet>
+	</div>
+	
+	<sj:tabbedpanel id="infoTabs" animate="true">
+		<sj:tab id="companyInfoTab" target="companyInformation" label="Company Information"/>
+		<sj:tab id="factoryInfoTab" target="factoryInformation" label="Factory Information"/>
+		<sj:tab id="projectInfoTab" target="projectInformation" label="Project Information"/>
+		<div id="companyInformation"></div>
+		<div id="factoryInformation"></div>
+		<div id="projectInformation"></div>
+	</sj:tabbedpanel>
+	
+	<div id="indicatorDiv">
+		<img id="indicator" src="images/indicator.gif" alt="Loading..." style="display:none"/>
+	</div>
+	
+	<br>
+	<input type="button" name="Button1" value="Start" onClick="javascript:startJSDesglosa()"/>
 </body>
 </html>
