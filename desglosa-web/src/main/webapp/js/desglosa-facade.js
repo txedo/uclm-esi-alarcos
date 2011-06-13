@@ -14,8 +14,14 @@ function selectFactoryByLocation(id) {
 	alert('Selected factory by location: ' + id);
 }
 
+var applet = document.DesglosaApplet;
+
 function startJSDesglosa() {
 	var value = -1;
-    value = document.DesglosaApplet.js2java("holaaaaaaaa");
+    value = applet.js2java("holaaaaaaaa");
     alert(value);
+}
+
+function desglosa_showFactoriesFromCompany(id) {
+	alert ('Se van a mostrar las factorias de la compañía: ' + id);
 }
