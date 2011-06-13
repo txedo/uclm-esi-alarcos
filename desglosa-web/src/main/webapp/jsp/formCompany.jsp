@@ -40,12 +40,11 @@
 		<br /><s:label for="company.director.lastName" value="%{getText('label.configure.director.last_name')}:"/>
 		<s:textfield id="company.director.lastName" name="company.director.lastName" tabindex="4"/>
 		<s:fielderror><s:param>error.director.lastName</s:param></s:fielderror>
+		<s:hidden id="company.director.imagePath" name="company.director.imagePath"/>
 		<s:set name="company" value="company" scope="request"/>
-		<c:if test="${not empty company}">
-			<c:if test="${not empty company.director.imagePath}">
-				<br /><s:label for="company.director.image" value="%{getText('label.configure.director.current_image')}:"/>
-				<img src="<s:text name='company.director.imagePath'/>" width="128" height="128" alt="%{getText('label.configure.director.current_image')}"/>
-			</c:if>
+		<c:if test="${not empty company.director.imagePath}">
+			<br /><s:label for="company.director.image" value="%{getText('label.configure.director.current_image')}:"/>
+			<img src="<s:text name='company.director.imagePath'/>" width="128" height="128" title="%{getText('label.configure.director.current_image')}"/>
 		</c:if>
 		<br /><s:label for="company.director.image" value="%{getText('label.configure.director.image')}:"/>
 		<s:file id="company.director.image" name="upload"></s:file>

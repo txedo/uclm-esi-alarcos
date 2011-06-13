@@ -111,13 +111,16 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 	public void validateDoSave(){
 		if (company != null) {
 			// Check company name is not empty
-			if (company.getName().trim().length() == 0) addFieldError("error.company.name", getText("error.company.name"));
-			// Check company name is not already taken
-			try {
-				companyDao.getCompany(company.getName());
-				addFieldError("error.company.name", getText("error.company.already_exists"));
-			} catch (CompanyNotFoundException e) {
-				// Name not taken. Nothing to do here
+			if (company.getName().trim().length() == 0) {
+				addFieldError("error.company.name", getText("error.company.name"));
+			} else {
+				// Check company name is not already taken
+				try {
+					companyDao.getCompany(company.getName());
+					addFieldError("error.company.name", getText("error.company.already_exists"));
+				} catch (CompanyNotFoundException e) {
+					// Name not taken. Nothing to do here
+				}
 			}
 			// Director data
 			if (company.getDirector().getName().trim().length() == 0) addFieldError("error.director.name", getText("error.director.name"));
@@ -149,21 +152,24 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 			if (company.getId() <= 0) addActionError(getText("error.company.id"));
 			try {
 				cAux = companyDao.getCompany(company.getId());
+				// Check company name is not empty
+				if (company.getName().trim().length() == 0) {
+					addFieldError("error.company.name", getText("error.company.name"));
+				} else {
+					// Check that there is no company with same name and different id
+					try {
+						cAux = companyDao.getCompany(company.getName());
+						if (cAux.getId() != company.getId()) addFieldError("error.company.name", getText("error.company.already_exists"));
+					} catch (CompanyNotFoundException e) {
+						// Name not taken. Nothing to do here.
+					}
+				}
+				// Director data
+				if (company.getDirector().getName().trim().length() == 0) addFieldError("error.director.name", getText("error.director.name"));
+				if (company.getDirector().getLastName().trim().length() == 0) addFieldError("error.director.last_name", getText("error.director.last_name"));
 			} catch (CompanyNotFoundException e1) {
 				addActionError(getText("error.company.id"));
 			}
-			// Check company name is not empty
-			if (company.getName().trim().length() == 0) addFieldError("error.company.name", getText("error.company.name"));
-			// Check that there is no company with same name and different id
-			try {
-				cAux = companyDao.getCompany(company.getName());
-				if (cAux.getId() != company.getId()) addFieldError("error.company.name", getText("error.company.already_exists"));
-			} catch (CompanyNotFoundException e) {
-				// Name not taken. Nothing to do here.
-			}
-			// Director data
-			if (company.getDirector().getName().trim().length() == 0) addFieldError("error.director.name", getText("error.director.name"));
-			if (company.getDirector().getLastName().trim().length() == 0) addFieldError("error.director.last_name", getText("error.director.last_name"));
 		} else {
 			addActionError(getText("error.general"));
 		}
