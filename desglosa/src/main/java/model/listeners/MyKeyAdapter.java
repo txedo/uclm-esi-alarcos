@@ -28,9 +28,6 @@ public class MyKeyAdapter extends KeyAdapter {
 		 * RESTA					disminuir zoom
 		 */
 		switch (e.getKeyCode()) {
-			case KeyEvent.VK_1:
-				this.drawer.setViewLevel(EViewLevels.MapLevel);
-				break;
 			case KeyEvent.VK_2:
 				this.drawer.setViewLevel(EViewLevels.MetricIndicatorLevel);
 				break;

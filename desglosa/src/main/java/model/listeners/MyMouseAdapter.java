@@ -1,9 +1,5 @@
 package model.listeners;
 
-import java.awt.Component;
-
-import com.jogamp.newt.Window;
-import com.jogamp.newt.event.InputEvent;
 import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
 
@@ -36,9 +32,6 @@ public class MyMouseAdapter extends MouseAdapter {
 				this.drawer.getPickPoint().setX((float)e.getX());
 				this.drawer.getPickPoint().setY((float)e.getY());
 				this.drawer.setSelectionMode(true);
-				break;
-			case 2:
-				this.drawer.setViewLevel(EViewLevels.MapLevel);
 				break;
 			case 3:
 				this.drawer.setViewLevel(EViewLevels.ProjectLevel);
