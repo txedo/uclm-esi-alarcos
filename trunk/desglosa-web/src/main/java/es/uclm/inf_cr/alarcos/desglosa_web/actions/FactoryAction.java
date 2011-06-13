@@ -157,7 +157,7 @@ public class FactoryAction extends ActionSupport {
 			if (factory.getName().trim().length() == 0) addFieldError("error.factory.name", getText("error.factory.name"));
 			// Director data
 			if (factory.getDirector().getName().trim().length() == 0) addFieldError("error.director.name", getText("error.director.name"));
-			if (factory.getDirector().getLastName().trim().length() == 0) addFieldError("error.director.last_name", getText("error.director.last_name"));
+			if (factory.getDirector().getLastName().trim().length() == 0) addFieldError("error.director.lastName", getText("error.director.last_name"));
 			// Address data
 			if (factory.getAddress().getAddress().trim().length() == 0) addFieldError("error.factory.address.address", getText("error.address.address"));
 			if (factory.getAddress().getCity().trim().length() == 0) addFieldError("error.factory.address.city", getText("error.address.city"));
@@ -220,8 +220,8 @@ public class FactoryAction extends ActionSupport {
 			// Factory data
 			if (factory.getName().trim().length() == 0) addFieldError("error.factory.name", getText("error.factory.name"));
 			// Director data
-			if (factory.getDirector().getName().trim().length() == 0) addFieldError("error.factory.director.name", getText("error.director.name"));
-			if (factory.getDirector().getLastName().trim().length() == 0) addFieldError("error.factory.director.last_name", getText("error.director.last_name"));
+			if (factory.getDirector().getName().trim().length() == 0) addFieldError("error.director.name", getText("error.director.name"));
+			if (factory.getDirector().getLastName().trim().length() == 0) addFieldError("error.director.lastName", getText("error.director.last_name"));
 			// Address data
 			if (factory.getAddress().getAddress().trim().length() == 0) addFieldError("error.factory.address.address", getText("error.address.address"));
 			if (factory.getAddress().getCity().trim().length() == 0) addFieldError("error.factory.address.city", getText("error.address.city"));

@@ -226,7 +226,7 @@
 			
 			<s:set name="companies" value="companies" scope="request"/>  
 			<s:set name="factory" value="factory" scope="request"/>
-			<display:table name="companies" id="company" cellspacing="0" cellpadding="0" defaultsort="1" pagesize="10">
+			<display:table name="companies" id="company" cellspacing="0" cellpadding="0" defaultsort="1" pagesize="10" requestURI="showFactoryForm.action">
 				<display:column style="width: 5%">
 					<c:choose>
 						<c:when test="${factory.company.id == company.id}">
@@ -279,12 +279,11 @@
 			<br /><s:label for="factory.director.lastName" value="%{getText('label.configure.director.last_name')}:"/>
 			<s:textfield id="factory.director.lastName" name="factory.director.lastName" tabindex="2"/>
 			<s:fielderror><s:param>error.director.lastName</s:param></s:fielderror>
+			<s:hidden id="factory.director.imagePath" name="factory.director.imagePath"/>
 			<!-- factory var is already set at the beggining of this form -->
-			<c:if test="${not empty factory}">
-				<c:if test="${not empty factory.director.imagePath}">
-					<br /><s:label for="factory.director.image" value="%{getText('label.configure.director.current_image')}:"/>
-					<img src="<s:text name='factory.director.imagePath'/>" width="128" height="128" alt="%{getText('label.configure.director.current_image')}"/>
-				</c:if>
+			<c:if test="${not empty factory.director.imagePath}">
+				<br /><s:label for="factory.director.image" value="%{getText('label.configure.director.current_image')}:"/>
+				<img src="<s:text name='factory.director.imagePath'/>" width="128" height="128" alt="%{getText('label.configure.director.current_image')}"/>
 			</c:if>
 			<br /><s:label for="factory.director.image" value="%{getText('label.configure.director.image')}:"/>
 			<s:file id="factory.director.image" name="upload"></s:file>
