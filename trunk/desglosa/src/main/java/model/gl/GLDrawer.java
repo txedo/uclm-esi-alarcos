@@ -43,7 +43,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 	 * * setSelectionMode() function, in case that the view implements a selection mechanism.
 	 * * getGLViewManager() function.
 	 */
-	private GLViewManager mapLocationView;
 	private GLViewManager metricIndicatorView;
 	private GLViewManager towerView;
 	private GLViewManager projectView;
@@ -71,56 +70,59 @@ public class GLDrawer implements GLEventListener, IConstants {
      * @param gLDrawable The GLAutoDrawable object.
      */
 	public void display(GLAutoDrawable glDrawable) {
-		try {
-			// This state machine prevents calls to updateProjection every time display() is called
-			// Due to JOGL multi-threading issues, this is used to change to 2D or 3D projection within the main thread (not keyboard or mouse inputs)
-			// http://staff.www.ltu.se/~mjt/ComputerGraphics/jogl-doc/jogl_usersguide/index.html
-			if (!oldViewLevel.equals(viewLevel)) {
-				this.updateProjection();
-				if (!oldViewLevel.equals(EViewLevels.UnSetLevel)) getViewManager(oldViewLevel).deconfigureView();
-				getViewManager(viewLevel).configureView();
-				oldViewLevel = viewLevel;
+		if (!viewLevel.equals(EViewLevels.UnSetLevel)) {
+			try {
+				// This state machine prevents calls to updateProjection every time display() is called
+				// Due to JOGL multi-threading issues, this is used to change to 2D or 3D projection within the main thread (not keyboard or mouse inputs)
+				// http://staff.www.ltu.se/~mjt/ComputerGraphics/jogl-doc/jogl_usersguide/index.html
+				if (!oldViewLevel.equals(viewLevel)) {
+					this.updateProjection();
+					if (!oldViewLevel.equals(EViewLevels.UnSetLevel)) getViewManager(oldViewLevel).deconfigureView();
+					getViewManager(viewLevel).configureView();
+					oldViewLevel = viewLevel;
+				}
+				// If the active view supports shadows, the stencil buffer is cleared in order to draw them
+				if (this.stencilShadow && this.renderShadow && this.getViewManager(viewLevel).isShadowSupport()) {
+					GLSingleton.getGL().glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT | GL2.GL_STENCIL_BUFFER_BIT);
+				}
+				else {
+					/* Avoid clearing stencil when not using it. */
+					GLSingleton.getGL().glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+				}
+				GLSingleton.getGL().glLoadIdentity();
+				// Render the new camera and spotlight position if the active view is three-dimensional
+				if (getViewManager(this.viewLevel).isThreeDimensional()) {
+					camera.render();
+					spotlight.render(camera.getPosition(), camera.getViewDir());
+				}
+				// Perform shadow calculations if shadows are enabled
+				FloatBuffer floorShadowBuf = Buffers.newDirectFloatBuffer(16);
+				if (this.getViewManager(viewLevel).isShadowSupport()) {
+					Vector3f lightSource = this.camera.getPosition().clone();
+					lightSource.setX(lightSource.getX()-1.0f);
+					lightSource.setY(lightSource.getY()+1.0f);
+					floorShadowBuf = GLUtils.doShadowCalculations(this.renderShadow, this.stencilShadow, lightSource);
+				}
+				// Render the normal scene
+				this.getViewManager(viewLevel).manageView();
+				// Render the scene shadow if shadows are enabled
+				if (this.getViewManager(viewLevel).isShadowSupport()) {
+					GLUtils.renderProjectedShadow(this.renderShadow, this.stencilShadow, floorShadowBuf, this.getViewManager(viewLevel));
+				}
+				if (this.debugMode) {
+					this.log.printToGL(this.screenHeight, this.screenWidth-100, this.DIM);
+				}
+				glDrawable.swapBuffers();
+				GLSingleton.getGL().glFlush();
+			} catch (GLSingletonNotInitializedException e) {
+				GLSingleton.init(glDrawable);
+				this.init(glDrawable);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			// If the active view supports shadows, the stencil buffer is cleared in order to draw them
-			if (this.stencilShadow && this.renderShadow && this.getViewManager(viewLevel).isShadowSupport()) {
-				GLSingleton.getGL().glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT | GL2.GL_STENCIL_BUFFER_BIT);
-			}
-			else {
-				/* Avoid clearing stencil when not using it. */
-				GLSingleton.getGL().glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-			}
-			GLSingleton.getGL().glLoadIdentity();
-			// Render the new camera and spotlight position if the active view is three-dimensional
-			if (getViewManager(this.viewLevel).isThreeDimensional()) {
-				camera.render();
-				spotlight.render(camera.getPosition(), camera.getViewDir());
-			}
-			// Perform shadow calculations if shadows are enabled
-			FloatBuffer floorShadowBuf = Buffers.newDirectFloatBuffer(16);
-			if (this.getViewManager(viewLevel).isShadowSupport()) {
-				Vector3f lightSource = this.camera.getPosition().clone();
-				lightSource.setX(lightSource.getX()-1.0f);
-				lightSource.setY(lightSource.getY()+1.0f);
-				floorShadowBuf = GLUtils.doShadowCalculations(this.renderShadow, this.stencilShadow, lightSource);
-			}
-			// Render the normal scene
-			this.getViewManager(viewLevel).manageView();
-			// Render the scene shadow if shadows are enabled
-			if (this.getViewManager(viewLevel).isShadowSupport()) {
-				GLUtils.renderProjectedShadow(this.renderShadow, this.stencilShadow, floorShadowBuf, this.getViewManager(viewLevel));
-			}
-			if (this.debugMode) {
-				this.log.printToGL(this.screenHeight, this.screenWidth-100, this.DIM);
-			}
-			glDrawable.swapBuffers();
-			GLSingleton.getGL().glFlush();
-		} catch (GLSingletonNotInitializedException e) {
-			GLSingleton.init(glDrawable);
-			this.init(glDrawable);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+
 	}
 
 	/** Called when the display mode has been changed.  <B>
@@ -147,10 +149,8 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.stencilShadow = true;
 		
 		this.oldViewLevel = EViewLevels.UnSetLevel;
-//		this.viewLevel = EViewLevels.MapLevel;
-		this.viewLevel = EViewLevels.TowerLevel;
+		this.viewLevel = EViewLevels.UnSetLevel;
 		
-		this.mapLocationView = IViewManagerFactoryImpl.getInstance().createMapLocationViewManager(this);
 		this.metricIndicatorView = IViewManagerFactoryImpl.getInstance().createMetricIndicatorViewManager(this);
 		this.towerView = IViewManagerFactoryImpl.getInstance().createTowerViewManager(this);
 		this.projectView = IViewManagerFactoryImpl.getInstance().createProjectViewManager(this);
@@ -244,16 +244,22 @@ public class GLDrawer implements GLEventListener, IConstants {
 			this.init(glDrawable);
 		}
 	}
+	
 	@Override
 	public void dispose(GLAutoDrawable arg0) {
 		System.err.println("Desglosa: Dispose");
 	}
 	
 	private void updateProjection() throws GLSingletonNotInitializedException {
-		if (this.getViewManager(viewLevel).isThreeDimensional())
-			GLUtils.setPerspectiveProjection(this.screenHeight, this.screenWidth);
-		else
+		if (!viewLevel.equals(EViewLevels.UnSetLevel)) {
+			if (this.getViewManager(viewLevel).isThreeDimensional())
+				GLUtils.setPerspectiveProjection(this.screenHeight, this.screenWidth);
+			else
+				GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth, this.DIM);
+		} else {
 			GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth, this.DIM);
+		}
+
 	}
 	
 	public EViewLevels getViewLevel() {
@@ -279,7 +285,8 @@ public class GLDrawer implements GLEventListener, IConstants {
 	}
 
 	public void setSelectionMode(boolean b) {
-		getViewManager(viewLevel).setSelectionMode(true);
+		GLViewManager vm = getViewManager(viewLevel);
+		if (vm != null) getViewManager(viewLevel).setSelectionMode(true);
 	}
 	
 	public Camera getCamera() {
@@ -301,9 +308,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 	public GLViewManager getViewManager (EViewLevels viewLevel) {
 		GLViewManager result = null;
 		switch (viewLevel) {
-			case MapLevel:
-				result = this.mapLocationView;
-				break;
 			case ProjectLevel:
 				result = this.projectView;
 				break;

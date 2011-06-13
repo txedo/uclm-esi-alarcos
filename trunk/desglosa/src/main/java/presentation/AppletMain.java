@@ -13,7 +13,6 @@ import javax.media.opengl.GLAnimatorControl;
 
 import model.IObserverUI;
 import model.NotifyUIManager;
-import model.business.knowledge.Factory;
 import model.gl.GLDrawer;
 import model.knowledge.Vector2f;
 
@@ -111,11 +110,6 @@ public class AppletMain extends Applet implements IObserverUI {
 	}
 
 	@Override
-	public void selectFactory(Factory factory) {
-		this.handleEvent(EOperationCodes.FactorySelection, factory);
-	}
-
-	@Override
 	public void selectTower(int id) {
 		this.handleEvent(EOperationCodes.TowerSelection, id);
 	}
@@ -133,9 +127,6 @@ public class AppletMain extends Applet implements IObserverUI {
 				if (ob instanceof Integer) {
 					int id = (Integer)ob;
 					getAppletContext().showDocument(new URL("javascript:selectFactory(" + id + ")"));
-				} else if (ob instanceof Factory) {
-					Factory f = (Factory)ob;
-					getAppletContext().showDocument(new URL("javascript:selectFactory(" + f.getId() + ")"));
 				}
 				break;
 			case ProjectSelection:

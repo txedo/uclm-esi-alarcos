@@ -1,6 +1,5 @@
 package model;
 
-import model.business.knowledge.Factory;
 import model.knowledge.Vector2f;
 
 public interface IObserverUI {
@@ -12,6 +11,5 @@ public interface IObserverUI {
 	public void selectFactoryByLocation(int idLocation);
 	public void selectProject(int id);
 	public void selectFactory(int id);
-	public void selectFactory(Factory factory);
 	public void selectTower(int id);
 }
