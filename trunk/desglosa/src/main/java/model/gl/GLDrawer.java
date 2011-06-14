@@ -16,11 +16,7 @@ import com.jogamp.newt.event.awt.AWTKeyAdapter;
 import com.jogamp.newt.event.awt.AWTMouseAdapter;
 
 import model.gl.control.EViewLevels;
-import model.gl.control.GLFactoryViewManager;
 import model.gl.control.GLFontBuilder;
-import model.gl.control.GLMetricIndicatorViewManager;
-import model.gl.control.GLProjectViewManager;
-import model.gl.control.GLTowerViewManager;
 import model.gl.control.GLViewManager;
 import model.gl.knowledge.Camera;
 import model.gl.knowledge.IConstants;
@@ -149,7 +145,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.stencilShadow = true;
 		
 		this.oldViewLevel = EViewLevels.UnSetLevel;
-		this.viewLevel = EViewLevels.UnSetLevel;
+		this.viewLevel = EViewLevels.MetricIndicatorLevel;
 		
 		this.metricIndicatorView = IViewManagerFactoryImpl.getInstance().createMetricIndicatorViewManager(this);
 		this.towerView = IViewManagerFactoryImpl.getInstance().createTowerViewManager(this);
@@ -184,11 +180,6 @@ public class GLDrawer implements GLEventListener, IConstants {
 			// Habilitamos el color natural de los materiales
 			GLSingleton.getGL().glEnable(GL2.GL_COLOR_MATERIAL);
 			GLSingleton.getGL().glEnable(GL2.GL_NORMALIZE);
-			
-			// Configuramos los parámetros del mundo
-			((GLMetricIndicatorViewManager)metricIndicatorView).setupItems();
-			GLProjectViewManager.setupItems();
-			GLFactoryViewManager.setupItems();
 			
 			// Añadimos los listener de teclado y ratón
 			MouseListener myMouse = new MyMouseAdapter(this);

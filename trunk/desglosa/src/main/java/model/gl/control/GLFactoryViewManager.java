@@ -16,9 +16,24 @@ import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLObject3D;
 
 import exceptions.GLSingletonNotInitializedException;
+import exceptions.ViewManagerNotInstantiatedException;
 
 public class GLFactoryViewManager extends GLViewManager {
-	private static List<GLObject> glFactories;
+	
+	static private GLFactoryViewManager _instance = null;
+	
+	/**
+	 * @return The unique instance of this class.
+	 * @throws ViewManagerNotInstantiatedException 
+	 */
+	static public GLFactoryViewManager getInstance() throws ViewManagerNotInstantiatedException {
+		if (null == _instance) {
+			throw new ViewManagerNotInstantiatedException();
+		}
+		return _instance;
+	}
+	
+	private List<GLObject> glFactories;
 	private TextureLoader textureLoader;
 	private GLUquadric quadric;
 	
@@ -28,6 +43,7 @@ public class GLFactoryViewManager extends GLViewManager {
 		super(d, is3d);
 		glFactories = new ArrayList<GLObject>();
 		textureLoader = new TextureLoader(new String[] {FACTORY_TEXTURE});
+		_instance = this;
 	}
 	
 	@Override
@@ -66,16 +82,10 @@ public class GLFactoryViewManager extends GLViewManager {
 		this.drawItems();
 	}
 	
-	public static void setupItems() {
+	@Override
+	public void setItems(List objs) {
 		glFactories = new ArrayList<GLObject>();
-		GLFactory glf = new GLFactory(5.0f, 5.0f);
-		glf.setSmokestackHeight(10);
-		glFactories.add(glf);
-		glf = new GLFactory(8.0f, 2.0f);
-		glf.setSmokestackHeight(5);
-		glFactories.add(glf);
-		glf = new GLFactory(1.0f, 3.0f);
-		glFactories.add(glf);
+		glFactories.addAll(objs);
 	}
 
 	@Override

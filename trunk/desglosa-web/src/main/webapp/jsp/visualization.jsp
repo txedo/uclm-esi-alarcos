@@ -297,8 +297,6 @@
 	<div id="indicatorDiv">
 		<img id="indicator" src="images/indicator.gif" alt="Loading..." style="display:none"/>
 	</div>
-	
-	<br>
-	<input type="button" name="Button1" value="Start" onClick="javascript:startJSDesglosa()"/>
+	<input type="button" value="foo" onclick="javascript:foo()"/>
 </body>
 </html>

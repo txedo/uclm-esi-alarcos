@@ -34,6 +34,10 @@ public class GLFactory extends GLObject3D {
 	private float roofHeight;
 	private int ROOFS = 3;
 	
+	public GLFactory() {
+		this (0.0f, 0.0f);
+	}
+	
 	public GLFactory (float pos_x, float pos_y) {
 		this.positionX = pos_x;
 		this.positionY = pos_y;
@@ -257,14 +261,6 @@ public class GLFactory extends GLObject3D {
 
 	public void setSmokestackHeight(int smokestackHeight) {
 		this.smokestackHeight = smokestackHeight;
-	}
-	
-	public void setNumberOfProjects (int p) {
-		this.setSmokestackHeight(p);
-	}
-	
-	public int getNumberOfProjects () {
-		return this.getSmokestackHeight();
 	}
 
 	public void setGLUQuadric(GLUquadric gLUQuadric) {
