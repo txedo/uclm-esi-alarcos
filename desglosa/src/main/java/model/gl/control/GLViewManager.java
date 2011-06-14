@@ -2,6 +2,7 @@ package model.gl.control;
 
 import java.io.IOException;
 import java.nio.IntBuffer;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 
@@ -15,6 +16,7 @@ import model.gl.GLUtils;
 import model.gl.TextureLoader;
 
 public abstract class GLViewManager {
+	
 	protected final int BUFFSIZE = 512;
 	/* http://www.cgtextures.com/ */
 	private final String FLOOR_TEXTURE = "textures/metal-floor-texture-01.jpg";
@@ -49,6 +51,8 @@ public abstract class GLViewManager {
      */
 	public abstract void manageView() throws GLSingletonNotInitializedException, IOException ;
 	
+	public abstract void setItems(List objs);
+
 	public abstract void drawItems () throws GLSingletonNotInitializedException;
 	
 	public void drawShadows () throws GLSingletonNotInitializedException {
@@ -176,6 +180,10 @@ public abstract class GLViewManager {
 
 	public void setShadowSupport(boolean shadowSupport) {
 		this.shadowSupport = shadowSupport;
+	}
+
+	public GLDrawer getDrawer() {
+		return drawer;
 	}
 	
 }

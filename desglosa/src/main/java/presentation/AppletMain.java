@@ -9,14 +9,21 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
+
+import exceptions.ViewManagerNotInstantiatedException;
+
 import javax.media.opengl.GLAnimatorControl;
 
 import model.IObserverUI;
 import model.NotifyUIManager;
 import model.gl.GLDrawer;
+import model.gl.IGLFacade;
+import model.gl.IGLFacadeImpl;
+import model.gl.control.EViewLevels;
 
-public class AppletMain extends Applet implements IObserverUI {
+public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 	private GLAnimatorControl animator;
+	private GLDrawer drawer;
 
 	@Override
 	public void init() {
@@ -35,7 +42,8 @@ public class AppletMain extends Applet implements IObserverUI {
 		capabilities.setNumSamples(2);
 		setLayout(new BorderLayout());
 		GLCanvas canvas = new GLCanvas(capabilities);
-		canvas.addGLEventListener(new GLDrawer());
+		drawer = new GLDrawer();
+		canvas.addGLEventListener(drawer);
 		canvas.setSize(getSize());
 		add(canvas, BorderLayout.CENTER);
 		animator = new FPSAnimator(canvas, 60);
@@ -115,9 +123,16 @@ public class AppletMain extends Applet implements IObserverUI {
 			} catch (MalformedURLException e1) {}
 		}
 	}
+
+	@Override
+	public void visualizeFactories(String JSON) throws ViewManagerNotInstantiatedException {
+		//[{"neighborhood":0,"id":3,"size":50,"smokestack":1},{"neighborhood":0,"id":4,"size":60,"smokestack":1},{"neighborhood":0,"id":16,"size":111111,"smokestack":1},{"neighborhood":0,"id":17,"size":111111,"smokestack":1}]
+		//IGLFacadeImpl.getInstance().visualizeFactories(JSON);
+		drawer.setViewLevel(EViewLevels.FactoryLevel);
+	}
 	
-	public String js2java (String message) {
-		return message + " from js2java";
+	public void foo () {
+		drawer.setViewLevel(EViewLevels.TowerLevel);
 	}
 
 }

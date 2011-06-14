@@ -125,4 +125,10 @@ public class GLProjectViewManager extends GLViewManager {
 		NotifyUIManager.notifySelectedProject(selectedObject);
 	}
 
+	@Override
+	public void setItems(List objs) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

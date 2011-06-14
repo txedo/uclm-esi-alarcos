@@ -124,4 +124,10 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 		this.drawer.setViewLevel(EViewLevels.TowerLevel);
 	}
 
+	@Override
+	public void setItems(List objs) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

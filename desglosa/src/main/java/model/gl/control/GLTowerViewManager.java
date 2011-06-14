@@ -82,4 +82,10 @@ public class GLTowerViewManager extends GLViewManager {
 		NotifyUIManager.notifySelectedTower(selectedObject);
 	}
 
+	@Override
+	public void setItems(List objs) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

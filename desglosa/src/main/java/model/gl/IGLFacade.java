@@ -1,5 +1,7 @@
 package model.gl;
 
-public interface IGLFacade {
+import exceptions.ViewManagerNotInstantiatedException;
 
+public interface IGLFacade {
+	public void visualizeFactories (String JSONtext) throws ViewManagerNotInstantiatedException;
 }
