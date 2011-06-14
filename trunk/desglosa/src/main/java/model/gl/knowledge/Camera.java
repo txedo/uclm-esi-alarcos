@@ -1,9 +1,9 @@
 package model.gl.knowledge;
 
 import model.gl.GLSingleton;
-import model.knowledge.Vector3f;
+import model.util.Vector3f;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class Camera {
 	private boolean mousing;

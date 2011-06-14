@@ -15,7 +15,7 @@ import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLObject3D;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class GLFactoryViewManager extends GLViewManager {
 	private static List<GLObject> glFactories;

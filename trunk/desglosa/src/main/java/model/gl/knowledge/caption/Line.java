@@ -4,9 +4,9 @@ import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.Text;
-import model.knowledge.Color;
-import model.knowledge.Vector3f;
-import exceptions.gl.GLSingletonNotInitializedException;
+import model.util.Color;
+import model.util.Vector3f;
+import exceptions.GLSingletonNotInitializedException;
 
 public class Line extends GLObject {
 	private final int pxGAP = 10; // px

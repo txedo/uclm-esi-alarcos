@@ -6,7 +6,7 @@ import javax.media.opengl.glu.gl2.GLUgl2;
 
 import com.jogamp.opengl.util.gl2.GLUT;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 /**
  * http://radio-weblogs.com/0122027/stories/2003/10/20/

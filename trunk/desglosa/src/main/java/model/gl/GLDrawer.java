@@ -25,13 +25,13 @@ import model.gl.control.GLViewManager;
 import model.gl.knowledge.Camera;
 import model.gl.knowledge.IConstants;
 import model.gl.knowledge.Spotlight;
-import model.knowledge.Vector2f;
-import model.knowledge.Vector3f;
 import model.listeners.MyKeyAdapter;
 import model.listeners.MyMouseAdapter;
+import model.util.Vector2f;
+import model.util.Vector3f;
 
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class GLDrawer implements GLEventListener, IConstants {
 	/*

@@ -2,7 +2,7 @@ package model.gl;
 
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.MetricIndicator;
-import model.knowledge.Color;
+import model.util.Color;
 
 public abstract class GLAbstractFactory {
 	public abstract GLObject createTower (float pos_x, float pos_y, float width, float depth, float height, Color color);

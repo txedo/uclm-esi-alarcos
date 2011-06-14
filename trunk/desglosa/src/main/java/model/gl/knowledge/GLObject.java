@@ -3,10 +3,10 @@ package model.gl.knowledge;
 import javax.media.opengl.GL2;
 
 import model.gl.GLSingleton;
-import model.knowledge.Color;
+import model.util.Color;
 
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public abstract class GLObject {
 	protected int id;

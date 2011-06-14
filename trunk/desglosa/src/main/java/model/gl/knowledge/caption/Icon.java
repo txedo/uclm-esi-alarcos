@@ -5,10 +5,10 @@ import javax.media.opengl.GL2;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.knowledge.GLObject;
-import model.knowledge.Color;
-import model.knowledge.Vector3f;
+import model.util.Color;
+import model.util.Vector3f;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class Icon extends GLObject {
 	private int width;
