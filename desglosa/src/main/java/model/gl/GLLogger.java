@@ -2,7 +2,7 @@ package model.gl;
 
 import javax.media.opengl.GL2;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class GLLogger {
 	private String vendor;

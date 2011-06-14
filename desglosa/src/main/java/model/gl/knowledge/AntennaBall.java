@@ -5,8 +5,8 @@ import javax.media.opengl.glu.GLUquadric;
 
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
-import model.knowledge.Color;
-import exceptions.gl.GLSingletonNotInitializedException;
+import model.util.Color;
+import exceptions.GLSingletonNotInitializedException;
 
 public class AntennaBall extends GLObject3D {
 	private int[] textures;

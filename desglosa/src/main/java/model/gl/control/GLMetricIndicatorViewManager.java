@@ -13,9 +13,9 @@ import model.gl.knowledge.GLObject;
 import model.gl.knowledge.IEdge;
 import model.gl.knowledge.MetricIndicator;
 import model.gl.knowledge.caption.Caption;
-import model.knowledge.Color;
+import model.util.Color;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class GLMetricIndicatorViewManager extends GLViewManager {
 	private List<GLObject> nodes;

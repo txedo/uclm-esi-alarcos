@@ -6,7 +6,7 @@ import javax.media.opengl.GL2;
 
 import persistence.TextureReader;
 import model.gl.knowledge.Texture;
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class TextureLoader {
 	private String tileNames[];

@@ -3,10 +3,10 @@ package model.gl.knowledge;
 import javax.media.opengl.GL2;
 
 import model.gl.GLSingleton;
-import model.knowledge.Color;
-import model.knowledge.Vector2f;
+import model.util.Color;
+import model.util.Vector2f;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class MetricIndicator extends Node {
 	// private ... texture?

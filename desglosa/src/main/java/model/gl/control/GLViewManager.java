@@ -7,7 +7,7 @@ import javax.media.opengl.GL2;
 
 import com.jogamp.common.nio.Buffers;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 import model.gl.GLDrawer;
 import model.gl.GLSingleton;

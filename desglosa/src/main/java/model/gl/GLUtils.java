@@ -16,9 +16,9 @@ import com.jogamp.opengl.util.gl2.GLUT;
 import model.gl.control.GLViewManager;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.IConstants;
-import model.knowledge.Vector3f;
+import model.util.Vector3f;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class GLUtils {
 

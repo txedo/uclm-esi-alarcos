@@ -2,11 +2,11 @@ package model.gl.knowledge;
 
 
 import model.gl.GLSingleton;
-import model.knowledge.Color;
+import model.util.Color;
 
 import com.jogamp.opengl.util.gl2.GLUT;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class Text {
 	private String text;

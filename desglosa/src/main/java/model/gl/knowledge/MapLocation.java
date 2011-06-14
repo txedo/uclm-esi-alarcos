@@ -2,9 +2,9 @@ package model.gl.knowledge;
 
 import javax.media.opengl.GL2;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 import model.gl.GLSingleton;
-import model.knowledge.Color;
+import model.util.Color;
 
 public class MapLocation extends Node {
 	public static final float SIZE_INIT = 10.0f;

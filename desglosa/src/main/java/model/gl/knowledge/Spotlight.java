@@ -3,9 +3,9 @@ package model.gl.knowledge;
 import javax.media.opengl.GL2;
 
 import model.gl.GLSingleton;
-import model.knowledge.Vector3f;
+import model.util.Vector3f;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class Spotlight {
 	private final int lightSource = GL2.GL_LIGHT1;

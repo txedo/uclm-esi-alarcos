@@ -1,7 +1,7 @@
 package model.gl.knowledge;
 
-import model.knowledge.Color;
-import exceptions.gl.GLSingletonNotInitializedException;
+import model.util.Color;
+import exceptions.GLSingletonNotInitializedException;
 
 public abstract class GLObject3D extends GLObject {
 	protected final Color SHADOW_COLOR = new Color(0.0f, 0.0f, 0.0f, 0.4f);

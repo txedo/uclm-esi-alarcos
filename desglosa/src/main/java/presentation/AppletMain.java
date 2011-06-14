@@ -14,7 +14,6 @@ import javax.media.opengl.GLAnimatorControl;
 import model.IObserverUI;
 import model.NotifyUIManager;
 import model.gl.GLDrawer;
-import model.knowledge.Vector2f;
 
 public class AppletMain extends Applet implements IObserverUI {
 	private GLAnimatorControl animator;
@@ -62,41 +61,6 @@ public class AppletMain extends Applet implements IObserverUI {
 
 	public void destroy() {
 		System.err.println("GearsApplet: destroy() - X");
-	}
-
-	@Override
-	public void updateCompanyList() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateFactoryList(int idCompany) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateMapList() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateProjectList() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateClickedWorldCoords(Vector2f coordinates) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void selectFactoryByLocation(int idLocation) {
-		this.handleEvent(EOperationCodes.FactorySelectionByLocation, idLocation);
 	}
 
 	@Override

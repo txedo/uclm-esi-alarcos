@@ -5,7 +5,7 @@ import model.gl.knowledge.GLObject;
 import model.gl.knowledge.MapLocation;
 import model.gl.knowledge.MetricIndicator;
 import model.gl.knowledge.Tower;
-import model.knowledge.Color;
+import model.util.Color;
 
 public class JOGLFactory extends GLAbstractFactory {
 	

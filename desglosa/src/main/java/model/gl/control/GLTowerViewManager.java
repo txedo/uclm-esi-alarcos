@@ -14,9 +14,9 @@ import model.gl.GLUtils;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLObject3D;
 import model.gl.knowledge.Tower;
-import model.knowledge.Color;
-import model.knowledge.Vector3f;
-import exceptions.gl.GLSingletonNotInitializedException;
+import model.util.Color;
+import model.util.Vector3f;
+import exceptions.GLSingletonNotInitializedException;
 
 public class GLTowerViewManager extends GLViewManager {
 	private List<GLObject> towers;

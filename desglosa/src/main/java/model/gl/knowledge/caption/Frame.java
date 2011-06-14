@@ -2,11 +2,11 @@ package model.gl.knowledge.caption;
 
 import javax.media.opengl.GL2;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.knowledge.GLObject;
-import model.knowledge.Vector3f;
+import model.util.Vector3f;
 
 public class Frame extends GLObject {
 	private int width;

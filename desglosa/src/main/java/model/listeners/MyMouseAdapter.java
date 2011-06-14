@@ -5,7 +5,7 @@ import com.jogamp.newt.event.MouseEvent;
 
 import model.gl.GLDrawer;
 import model.gl.control.EViewLevels;
-import model.knowledge.Vector2f;
+import model.util.Vector2f;
 
 
 public class MyMouseAdapter extends MouseAdapter {

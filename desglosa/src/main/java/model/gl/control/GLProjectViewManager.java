@@ -16,10 +16,10 @@ import model.gl.TextureLoader;
 import model.gl.knowledge.AntennaBall;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLObject3D;
-import model.knowledge.Color;
-import model.knowledge.Vector3f;
+import model.util.Color;
+import model.util.Vector3f;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class GLProjectViewManager extends GLViewManager {
 	private final String APPLY = "textures/gtk-apply.png";

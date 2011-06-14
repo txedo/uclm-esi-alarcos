@@ -4,9 +4,9 @@ import javax.media.opengl.GL2;
 
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
-import model.knowledge.Color;
+import model.util.Color;
 
-import exceptions.gl.GLSingletonNotInitializedException;
+import exceptions.GLSingletonNotInitializedException;
 
 public class Tower extends GLObject3D {
 	/*
