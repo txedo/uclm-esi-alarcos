@@ -1,0 +1,26 @@
+<assembly>
+	<id>jar-without-jni-libraries</id>
+	<formats>
+		<format>jar</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<dependencySets>
+		<dependencySet>
+			<unpack>true</unpack>
+			<scope>runtime</scope>
+			<excludes>
+				<exclude>com.jogamp.jogl:jogl.all</exclude>
+				<exclude>com.jogamp.gluegen:gluegen-rt</exclude>
+				<exclude>com.jogamp.newt:newt.all</exclude>
+				<exclude>com.jogamp.nativewindow:nativewindow.all</exclude>
+				<exclude>es.uclm.inf-cr.alarcos:desglosa</exclude>
+			</excludes>
+		</dependencySet>
+	</dependencySets>
+	<fileSets>
+		<fileSet>
+			<directory>${project.build.outputDirectory}</directory>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
+	</fileSets>
+</assembly>

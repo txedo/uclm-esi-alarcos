@@ -3,9 +3,6 @@ package model.gl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import exceptions.ViewManagerNotInstantiatedException;
 
 import model.gl.control.EViewLevels;
@@ -16,8 +13,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
 public class IGLFacadeImpl implements IGLFacade {
-	protected final Log log = LogFactory.getLog(getClass());
-	
+
 	static private IGLFacadeImpl _instance = null;
 	
 	protected IGLFacadeImpl() {}
@@ -34,18 +30,16 @@ public class IGLFacadeImpl implements IGLFacade {
 	
 	@Override
 	public void visualizeFactories(String JSONtext) throws ViewManagerNotInstantiatedException {
-		log.debug("entering in IGLFacadeImpl.visualizeFactories");
-		log.debug("will parse this text: " + JSONtext);
-		
 		JSONArray json = (JSONArray)JSONSerializer.toJSON(JSONtext);
 		List<GLFactory> factories = new ArrayList<GLFactory>();
+		GLFactory factory;
 
 		for (int i = 0; i < json.size(); i++) {
-			GLFactory factory = new GLFactory();
+			factory = new GLFactory();
 			JSONObject jobj = json.getJSONObject(i);
 			factory.setId(jobj.getInt("id"));
 			factory.setNeightborhood(jobj.getInt("neighborhood"));
-			factory.setSmokestackHeight(jobj.getInt("smokestack"));
+			factory.setSmokestackHeight(jobj.getInt("projects"));
 			int employees = jobj.getInt("employees");
 			double scale = 1.0;
 			if (employees < 150) scale = 0.75;
@@ -54,17 +48,8 @@ public class IGLFacadeImpl implements IGLFacade {
 			factories.add(factory);
 		}
 		
-		log.debug("all factories created");
-		log.debug("will set factories in GLFactoryViewManager");
-		
 		GLFactoryViewManager.getInstance().setItems(factories);
-		
-		log.debug("factories are set up");
-		log.debug("will set factory level view");
-		
 		GLFactoryViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.FactoryLevel);
-		
-		log.debug("factory level set up");
 	}
 
 }
