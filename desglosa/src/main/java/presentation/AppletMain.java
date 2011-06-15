@@ -127,8 +127,4 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 		IGLFacadeImpl.getInstance().visualizeFactories("[{\"neighborhood\":0,\"id\":3,\"employees\":50,\"projects\":1},{\"neighborhood\":0,\"id\":4,\"employees\":60,\"projects\":1},{\"neighborhood\":0,\"id\":16,\"employees\":111111,\"projects\":1},{\"neighborhood\":0,\"id\":17,\"employees\":111111,\"projects\":1}]");
 	}
 	
-	public void foo () {
-		drawer.setViewLevel(EViewLevels.FactoryLevel);
-	}
-	
 }
