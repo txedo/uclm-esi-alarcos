@@ -15,6 +15,7 @@ import com.jogamp.newt.event.MouseListener;
 import com.jogamp.newt.event.awt.AWTKeyAdapter;
 import com.jogamp.newt.event.awt.AWTMouseAdapter;
 
+import model.Synchronizer;
 import model.gl.control.EViewLevels;
 import model.gl.control.GLFontBuilder;
 import model.gl.control.GLViewManager;
@@ -198,6 +199,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 			
 			log = new GLLogger();
 			System.err.print(log.toString());
+			Synchronizer.getInstance().conceder();
 		} catch (GLSingletonNotInitializedException e) {
 			GLSingleton.init(glDrawable);
 			this.init(glDrawable);

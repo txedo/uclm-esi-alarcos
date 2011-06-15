@@ -10,8 +10,6 @@ function selectProject(id) {
 	alert('Selected project: ' + id);
 }
 
-var applet = document.DesglosaApplet;
-
 function desglosa_showFactoriesFromCompany(id) {
 	$.getJSON("/desglosa-web/getFactoriesFromCompanyJSON.action",
 			{id: id},
@@ -29,19 +27,21 @@ function desglosa_showFactoriesFromCompany(id) {
 						factory = new Object();
 						factory.neighborhood = neighborhood;
 						factory.id = item.id;
-						factory.size = item.employees;
-						factory.smokestack = 1;
+						factory.employees = item.employees;
+						factory.projects = 1;
 						factories.push(factory);
 					});
 					// Convert factory array to JSON format
-					alert(factories);
-					JSONtext = JSON.stringify(factories);
+					var JSONtext = JSON.stringify(factories);
 					// Change active view
-					alert(JSONtext);
-					applet.visualizeFactories(JSONtext);
+					document.DesglosaApplet.visualizeFactories(JSONtext);
 				}
 				else alert('An error has occurred while trying to retrieve factory information: ' + status);
 	});
+}
+
+function foo () {
+	document.DesglosaApplet.foo();
 }
 
 function desglosa_showAllFactories() {

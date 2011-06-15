@@ -2,9 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import model.util.Vector2f;
-
-
 public class NotifyUIManager {
 	private static ArrayList<IObserverUI> observers = new ArrayList<IObserverUI>();
 
