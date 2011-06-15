@@ -138,6 +138,11 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`projects` (
   `planName` VARCHAR(45) NULL ,
   `workingFactory_id` INT NOT NULL ,
   `market_id` INT NULL ,
+  `audited` TINYINT(1)  NULL ,
+  `total_incidences` INT NULL ,
+  `repaired_incidences` INT NULL ,
+  `size` INT NULL ,
+  `delayed` TINYINT(1)  NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_projects_factories` (`workingFactory_id` ASC) ,
   INDEX `fk_projects_markets` (`market_id` ASC) ,
@@ -367,9 +372,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`) VALUES (1, 'DGL', 'DESGLOSA', 1, 1);
-INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`) VALUES (2, 'VLM', 'VILMA', 2, 2);
-INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`) VALUES (3, 'W2P', 'Where2Publish', 3, 3);
+INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (1, 'DGL', 'DESGLOSA', 1, 1, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (2, 'VLM', 'VILMA', 2, 2, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (3, 'W2P', 'Where2Publish', 3, 3, NULL, NULL, NULL, NULL, NULL);
 
 COMMIT;
 

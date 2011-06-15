@@ -11,6 +11,7 @@ function selectProject(id) {
 }
 
 function desglosa_showFactoriesFromCompany(id) {
+	showLoadingIndicator(true);
 	$.getJSON("/desglosa-web/getFactoriesFromCompanyJSON.action",
 			{id: id},
 			function (data, status) {
@@ -37,11 +38,8 @@ function desglosa_showFactoriesFromCompany(id) {
 					document.DesglosaApplet.visualizeFactories(JSONtext);
 				}
 				else alert('An error has occurred while trying to retrieve factory information: ' + status);
+				showLoadingIndicator(false);
 	});
-}
-
-function foo () {
-	document.DesglosaApplet.foo();
 }
 
 function desglosa_showAllFactories() {

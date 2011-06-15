@@ -172,7 +172,7 @@
 		result += "<i>" + companyJSON.information + "</i><br />";
 		result += "<br />";
 		result += formatDirectorInformation(companyJSON.director);
-		result += "<br /><a href='#' onclick='javascript:desglosa_showFactoriesFromCompany(" + companyJSON.id + ")'>Show more detailed information</a>";
+		result += "<br /><a href='#' onclick='javascript:desglosa_showFactoriesFromCompany(" + companyJSON.id + ")'><s:text name='label.show_more'/></a>";
 		return result;
 	}
 	
@@ -238,65 +238,78 @@
 	</script>
 </head>
 <body>
-	<fieldset>
-		<legend>Filtrar por compañía:</legend>
-		<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
-		<select id="companySelect" >
-			<option value="" disabled="disabled">-- <fmt:message key="label.choose"/>-- </option>
-			<s:iterator var="company" value="companies">
-				<option value="<s:property value='id'/>"><s:property value="name"/></option>
-			</s:iterator>
-			<option value="0"><fmt:message key="label.all_female"/></option>
-		</select>
+	<div id="filter">
+		<fieldset style="float:left">
+			<legend><s:text name="label.filter.corporative"/>:</legend>
+			<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
+			<select id="companySelect" >
+				<option value="" disabled="disabled">-- <fmt:message key="label.select.choose_company"/> --</option>
+				<s:iterator var="company" value="companies">
+					<option value="<s:property value='id'/>"><s:property value="name"/></option>
+				</s:iterator>
+				<option value="0"><fmt:message key="label.all_female"/></option>
+			</select>
+			
+			<s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
+			<select id="factorySelect" disabled="disabled"></select>
+		</fieldset>
 		
-		<s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
-		<select id="factorySelect" disabled="disabled"></select>
-	</fieldset>
-	
-	<input type="button" value="mapa" onclick="$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');"/>
-	<input type="button" value="jogl" onclick="$('#map_canvas').css('display','none');$('#jogl_canvas').css('display','');"/>
-	
-	<div id="map_canvas" style="width: 600px; height: 400px; display: ;"></div>
-	
-	<div id="jogl_canvas" style="display: none;">
-		<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
-			codebase="./" 
-			id="DesglosaApplet"
-			alt="Check your browser configuration to allow java applets." 
-		    width=600
-		    height=400
-		    archive="http://jogamp.org/deployment/util/applet-launcher.jar,
-		             http://jogamp.org/deployment/webstart/newt.all.jar,
-		             http://jogamp.org/deployment/webstart/nativewindow.all.jar,
-		             http://jogamp.org/deployment/webstart/jogl.all.jar,
-		             http://jogamp.org/deployment/webstart/gluegen-rt.jar,
-		             applet/desglosa.jar">
-		   <param name="codebase_lookup" value="false"/>
-		   <param name="subapplet.classname" value="presentation.AppletMain"/>
-		   <param name="subapplet.displayname" value="Desglosa Applet"/>
-			   <param name="noddraw.check" value="true"/>
-			   <param name="progressbar" value="true"/>
-			   <param name="jnlpNumExtensions" value="1"/>
-			   <param name="jnlpExtension1"
-			          value="http://jogamp.org/deployment/webstart/jogl-core.jnlp"/>
-			   <param name="java_arguments" value="-Dsun.java2d.noddraw=true"/>
-			   <param name="jnlp_href" value="applet/applet-desglosa.jnlp"/>
-			   You have no JRE installed.<br/>Visit <a href="http://www.java.com/download/index.jsp" target="_blank">Java download page</a> to verify and/or install a JRE.
-		</applet>
+		<fieldset style="float:left">
+			<legend><s:text name="label.filter.project"/>:</legend>
+			foo
+		</fieldset>
 	</div>
 	
-	<sj:tabbedpanel id="infoTabs" animate="true">
-		<sj:tab id="companyInfoTab" target="companyInformation" label="Company Information"/>
-		<sj:tab id="factoryInfoTab" target="factoryInformation" label="Factory Information"/>
-		<sj:tab id="projectInfoTab" target="projectInformation" label="Project Information"/>
-		<div id="companyInformation"></div>
-		<div id="factoryInformation"></div>
-		<div id="projectInformation"></div>
-	</sj:tabbedpanel>
+	<div style="clear:both;"></div>
 	
-	<div id="indicatorDiv">
-		<img id="indicator" src="images/indicator.gif" alt="Loading..." style="display:none"/>
+	<div id="workingArea" style="position:relative; height:450px">
+		<div id="map_canvas" style="position:absolute; top:0; left:0; width: 600px; height: 400px; display: ;"></div>
+		
+		<div id="jogl_canvas" style="position:absolute; top:0; left:0; width: 600px; height: 400px; display: none;">
+			<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
+				codebase="./" 
+				id="DesglosaApplet"
+				alt="Check your browser configuration to allow java applets." 
+			    width=600
+			    height=400
+			    archive="http://jogamp.org/deployment/util/applet-launcher.jar,
+			             http://jogamp.org/deployment/webstart/newt.all.jar,
+			             http://jogamp.org/deployment/webstart/nativewindow.all.jar,
+			             http://jogamp.org/deployment/webstart/jogl.all.jar,
+			             http://jogamp.org/deployment/webstart/gluegen-rt.jar,
+			             applet/desglosa.jar">
+			   <param name="codebase_lookup" value="false"/>
+			   <param name="subapplet.classname" value="presentation.AppletMain"/>
+			   <param name="subapplet.displayname" value="Desglosa Applet"/>
+				   <param name="noddraw.check" value="true"/>
+				   <param name="progressbar" value="true"/>
+				   <param name="jnlpNumExtensions" value="1"/>
+				   <param name="jnlpExtension1"
+				          value="http://jogamp.org/deployment/webstart/jogl-core.jnlp"/>
+				   <param name="java_arguments" value="-Dsun.java2d.noddraw=true"/>
+				   <param name="jnlp_href" value="applet/applet-desglosa.jnlp"/>
+				   <img src="images/gtk-cancel.png" alt="<s:text name="label.error"/>" title="<s:text name="label.error"/>" width="32" height="32"/><br />
+				   <s:text name="error.no_JRE"/>
+			</applet>
+			<a href="#" onclick="$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');"><s:text name="label.back_to_map"/></a>
+		</div>
+	
+		<div id="tabs" style="position:absolute; top:0; right:0; width:350px">
+			<s:label value="%{getText('label.detailed_info')}:"/>
+			<sj:tabbedpanel id="infoTabs" animate="true">
+				<sj:tab id="companyInfoTab" target="companyInformation" label="%{getText('label.company')}"/>
+				<sj:tab id="factoryInfoTab" target="factoryInformation" label="%{getText('label.factory')}"/>
+				<sj:tab id="projectInfoTab" target="projectInformation" label="%{getText('label.project')}"/>
+				<div id="companyInformation"></div>
+				<div id="factoryInformation"></div>
+				<div id="projectInformation"></div>
+			</sj:tabbedpanel>
+			
+			<div id="indicatorDiv">
+				<img id="indicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none"/>
+			</div>
+		</div>
 	</div>
-	<input type="button" value="foo" onclick="javascript:foo()"/>
+	
 </body>
 </html>
