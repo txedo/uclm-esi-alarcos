@@ -16,11 +16,10 @@ import javax.media.opengl.GLAnimatorControl;
 
 import model.IObserverUI;
 import model.NotifyUIManager;
-import model.Synchronizer;
 import model.gl.GLDrawer;
 import model.gl.IGLFacade;
 import model.gl.IGLFacadeImpl;
-import model.gl.control.EViewLevels;
+import model.util.Synchronizer;
 
 public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 	private GLAnimatorControl animator;
@@ -59,6 +58,36 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 	@Override
 	public void start() {
 		System.err.println("GearsApplet: start() - begin");
+
+//		try {
+//			Synchronizer.getInstance().solicitar();
+//			IGLFacadeImpl.getInstance().visualizeFactories("{\"neighborhoods\":[" +
+//					"{\"flats\":[" +
+//						"{\"id\":1,\"employees\":50,\"projects\":1}," +
+//						"{\"id\":2,\"employees\":160,\"projects\":2}," +
+//						"{\"id\":3,\"employees\":560,\"projects\":3}," +
+//						"{\"id\":4,\"employees\":10,\"projects\":4}," +
+//						"{\"id\":5,\"employees\":560,\"projects\":5}," +
+//						"{\"id\":6,\"employees\":10,\"projects\":6}" +
+//					"]}," +
+//					"{\"flats\":[" +
+//						"{\"id\":7,\"employees\":50,\"projects\":7}," +
+//						"{\"id\":8,\"employees\":160,\"projects\":8}," +
+//						"{\"id\":9,\"employees\":560,\"projects\":9}," +
+//						"{\"id\":10,\"employees\":10,\"projects\":10}" +
+//					"]}," +
+//					"{\"flats\":[" +
+//					"{\"id\":11,\"employees\":50,\"projects\":11}," +
+//					"{\"id\":12,\"employees\":160,\"projects\":12}," +
+//					"{\"id\":13,\"employees\":560,\"projects\":13}," +
+//					"{\"id\":14,\"employees\":10,\"projects\":14}" +
+//				"]}" +
+//				"]}");
+//			//
+//		} catch (ViewManagerNotInstantiatedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		System.err.println("GearsApplet: start() - end");
 	}
@@ -124,7 +153,7 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 	@Override
 	public void visualizeFactories(String JSON) throws ViewManagerNotInstantiatedException {
 		Synchronizer.getInstance().solicitar();
-		IGLFacadeImpl.getInstance().visualizeFactories("[{\"neighborhood\":0,\"id\":3,\"employees\":50,\"projects\":1},{\"neighborhood\":0,\"id\":4,\"employees\":60,\"projects\":1},{\"neighborhood\":0,\"id\":16,\"employees\":111111,\"projects\":1},{\"neighborhood\":0,\"id\":17,\"employees\":111111,\"projects\":1}]");
+		IGLFacadeImpl.getInstance().visualizeFactories(JSON);
 	}
 	
 }

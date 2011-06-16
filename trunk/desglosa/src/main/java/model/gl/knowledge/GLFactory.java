@@ -16,6 +16,9 @@ public class GLFactory extends GLObject3D {
 	private final float BUILDING_HEIGHT = 1.2f;
 	private final float ROOF_HEIGHT = 0.3f;
 	private final float SMOKESTACK_BUILDING_GAP = 0.80f;
+	public final static float SMALL = 0.75f;
+	public final static float MEDIUM = 1.00f;
+	public final static float BIG = 1.25f;
 	
 	private GLUquadric GLUQuadric;
 	private int texture;
@@ -56,6 +59,9 @@ public class GLFactory extends GLObject3D {
 		else this.smokestackRadius = this.baseLength/4*SMOKESTACK_BUILDING_GAP;
 
 		this.roofHeight = this.ROOF_HEIGHT;
+		
+		super.maxWidth = this.baseLength*GLFactory.BIG;
+		super.maxDepth = this.baseWidth*GLFactory.BIG;
 	}
 	
 	@Override
@@ -75,14 +81,19 @@ public class GLFactory extends GLObject3D {
 		GLSingleton.getGL().glPushMatrix();
 			// Base
 			GLSingleton.getGL().glTranslatef(this.positionX, 0.0f, this.positionY);
+			GLSingleton.getGL().glPushMatrix();//
+			GLSingleton.getGL().glScalef(this.scale, this.scale, this.scale);//
 			this.drawBase();
+			GLSingleton.getGL().glPopMatrix();//
 			// Building
 			GLSingleton.getGL().glPushMatrix();
+				GLSingleton.getGL().glScalef(this.scale, this.scale, this.scale);//
 				GLSingleton.getGL().glTranslatef(this.baseLength*1/4, this.baseHeight, 0.0f);
 				this.drawBuilding();
 			GLSingleton.getGL().glPopMatrix();
 			// Roof
 			GLSingleton.getGL().glPushMatrix();
+				GLSingleton.getGL().glScalef(this.scale, this.scale, this.scale);//
 				GLSingleton.getGL().glTranslatef(0.0f, this.baseHeight+this.buildingHeight, 0.0f);
 				this.drawBuildingRoof();
 			GLSingleton.getGL().glPopMatrix();
@@ -90,6 +101,7 @@ public class GLFactory extends GLObject3D {
 			if (!shadow) GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);	
 			// Smokestack
 			GLSingleton.getGL().glPushMatrix();
+				GLSingleton.getGL().glScalef(this.scale, this.scale, this.scale);//
 				GLSingleton.getGL().glTranslatef(-this.baseLength*1/4, this.baseHeight, 0.0f);
 				GLSingleton.getGL().glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
 				this.drawSmokestack(shadow);
