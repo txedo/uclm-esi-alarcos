@@ -10,18 +10,19 @@ import exceptions.GLSingletonNotInitializedException;
 
 public abstract class GLObject {
 	protected int id;
-	protected int neightborhood;
+	protected float maxWidth;
+	protected float maxDepth;
 	protected float positionX;
 	protected float positionY;
 	protected Color color;
-	protected double scale;
+	protected float scale;
 	
 	public GLObject () {
 		this.id = -1;
 		this.positionX = 0.0f;
 		this.positionY = 0.0f;
 		this.color = new Color(0.0f, 0.0f, 0.0f);
-		this.scale = 1.0;
+		this.scale = 1.0f;
 	}
 	
 	public GLObject (float posx, float posy) {
@@ -29,7 +30,7 @@ public abstract class GLObject {
 		this.positionX = posx;
 		this.positionY = posy;
 		this.color = new Color(0.0f, 0.0f, 0.0f);
-		this.scale = 1.0;
+		this.scale = 1.0f;
 	}
 	
 	public abstract void draw() throws GLSingletonNotInitializedException;
@@ -52,14 +53,6 @@ public abstract class GLObject {
 		this.id = id;
 	}
 
-	public int getNeightborhood() {
-		return neightborhood;
-	}
-
-	public void setNeightborhood(int neightborhood) {
-		this.neightborhood = neightborhood;
-	}
-
 	public float getPositionX() {
 		return positionX;
 	}
@@ -80,12 +73,20 @@ public abstract class GLObject {
 		this.color = color;
 	}
 
-	public double getScale() {
+	public float getScale() {
 		return scale;
 	}
 
-	public void setScale(double scale) {
+	public void setScale(float scale) {
 		this.scale = scale;
+	}
+
+	public float getMaxWidth() {
+		return maxWidth;
+	}
+
+	public float getMaxDepth() {
+		return maxDepth;
 	}
 	
 }

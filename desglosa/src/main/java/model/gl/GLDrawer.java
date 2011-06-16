@@ -15,7 +15,6 @@ import com.jogamp.newt.event.MouseListener;
 import com.jogamp.newt.event.awt.AWTKeyAdapter;
 import com.jogamp.newt.event.awt.AWTMouseAdapter;
 
-import model.Synchronizer;
 import model.gl.control.EViewLevels;
 import model.gl.control.GLFontBuilder;
 import model.gl.control.GLViewManager;
@@ -24,6 +23,7 @@ import model.gl.knowledge.IConstants;
 import model.gl.knowledge.Spotlight;
 import model.listeners.MyKeyAdapter;
 import model.listeners.MyMouseAdapter;
+import model.util.Synchronizer;
 import model.util.Vector2f;
 import model.util.Vector3f;
 
