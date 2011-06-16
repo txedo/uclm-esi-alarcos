@@ -42,10 +42,8 @@ function desglosa_showFactoriesFromCompany(id) {
 					city.neighborhoods.push(neighborhood);
 					// Convert factory array to JSON format
 					var JSONtext = JSON.stringify(city);
-					//alert (JSONtext);
 					// Change active view
 					document.DesglosaApplet.visualizeFactories(JSONtext);
-					alert('done');
 				}
 				else alert('An error has occurred while trying to retrieve factory information: ' + status);
 				showLoadingIndicator(false);
