@@ -9,18 +9,22 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
+import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 
 public class VisualizationAction extends ActionSupport {
 	private int id;
 	private FactoryDAO factoryDao;
 	private CompanyDAO companyDao;
+	private ProjectDAO projectDao;
 	
 	private List<Factory> factories;
 	private List<Company> companies;
+	private List<Project> projects;
 
 	public int getId() {
 		return id;
@@ -34,12 +38,20 @@ public class VisualizationAction extends ActionSupport {
 		return companies;
 	}
 	
+	public List<Project> getProjects() {
+		return projects;
+	}
+	
 	public void setFactoryDao(FactoryDAO factoryDao) {
 		this.factoryDao = factoryDao;
 	}
 
 	public void setCompanyDao(CompanyDAO companyDao) {
 		this.companyDao = companyDao;
+	}
+	
+	public void setProjectDao(ProjectDAO projectDao) {
+		this.projectDao = projectDao;
 	}
 	
 	public void setId(int id) {
@@ -50,6 +62,7 @@ public class VisualizationAction extends ActionSupport {
 	public String execute() throws Exception {
 		factories = factoryDao.getFactories();
 		companies = companyDao.getCompanies();
+		projects = projectDao.getProjects();
 		return SUCCESS;
 	}
 	

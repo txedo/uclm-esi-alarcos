@@ -134,9 +134,10 @@ DROP TABLE IF EXISTS `desglosadb`.`projects` ;
 
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`projects` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NULL ,
   `code` VARCHAR(45) NULL ,
-  `planName` VARCHAR(45) NULL ,
-  `workingFactory_id` INT NOT NULL ,
+  `plan` VARCHAR(45) NULL ,
+  `mainFactory_id` INT NOT NULL ,
   `market_id` INT NULL ,
   `audited` TINYINT(1)  NULL ,
   `total_incidences` INT NULL ,
@@ -144,10 +145,10 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`projects` (
   `size` INT NULL ,
   `delayed` TINYINT(1)  NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_projects_factories` (`workingFactory_id` ASC) ,
+  INDEX `fk_projects_factories` (`mainFactory_id` ASC) ,
   INDEX `fk_projects_markets` (`market_id` ASC) ,
   CONSTRAINT `fk_projects_factories`
-    FOREIGN KEY (`workingFactory_id` )
+    FOREIGN KEY (`mainFactory_id` )
     REFERENCES `desglosadb`.`factories` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -372,9 +373,9 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (1, 'DGL', 'DESGLOSA', 1, 1, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (2, 'VLM', 'VILMA', 2, 2, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `desglosadb`.`projects` (`id`, `code`, `planName`, `workingFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (3, 'W2P', 'Where2Publish', 3, 3, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (1, 'desglosa', 'DGL', 'DESGLOSA', 1, 1, 1, 500, 100, 50, 0);
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (2, 'vilma', 'VLM', 'VILMA', 2, 2, 0, 10, 2, 3, 1);
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (3, 'w2p', 'W2P', 'Where2Publish', 3, 3, 1, 60, 21, 4, 0);
 
 COMMIT;
 

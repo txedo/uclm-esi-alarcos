@@ -19,6 +19,7 @@
     <bean id="visualizationAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.VisualizationAction" singleton="false">
     	<property name="factoryDao" ref="factoryDao"/>
     	<property name="companyDao" ref="companyDao"/>
+    	<property name="projectDao" ref="projectDao"/>
     </bean>
     
     <!-- Struts2 interceptors instantiated by Spring -->
@@ -63,6 +64,11 @@
 	
 	<bean id="factoryDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.FactoryDAOHibernate">
     	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Factory"/>
+        <property name="hibernateTemplate" ref="hibernateTemplate" />  
+	</bean>
+	
+	<bean id="projectDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.ProjectDAOHibernate">
+    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Project"/>
         <property name="hibernateTemplate" ref="hibernateTemplate" />  
 	</bean>
 </beans>

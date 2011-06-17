@@ -172,16 +172,17 @@
 		result += "<i>" + companyJSON.information + "</i><br />";
 		result += "<br />";
 		result += formatDirectorInformation(companyJSON.director);
-		result += "<br /><a href='#' onclick='javascript:desglosa_showFactoriesFromCompany(" + companyJSON.id + ")'><s:text name='label.show_more'/></a>";
+		result += "<br /><a href='#' onclick='javascript:desglosa_showFactoriesByCompanyId(" + companyJSON.id + ")'><s:text name='label.show_more'/></a>";
 		return result;
 	}
 	
 	function formatFactoryInformation(factoryJSON) {
 		var result = "<b>" + factoryJSON.name + "</b> (" + factoryJSON.company.name + ")<br />";
-		result += "<i>" + factoryJSON.information + "<br />";
+		result += "<i>" + factoryJSON.information + "</i><br />";
 		result += "Número de empleados: " + factoryJSON.employees + "<br />"
 		result += "<br />";
 		result += formatDirectorInformation(factoryJSON.director);
+		result += "<br /><a href='#' onclick='javascript:desglosa_showFactoriesById(" + factoryJSON.id + ")'><s:text name='label.show_more'/></a>";
 		return result;
 	}
 	
@@ -219,7 +220,7 @@
 			}
 		});
 		
-		$("#factorySelect").change(	function() {
+		$("#factorySelect").change( function() {
 			clearAllMarkers();
 			if ($("#factorySelect").val() == 0) {
 				// reset factory info div
@@ -233,13 +234,28 @@
 				// Indicator will be hidden inside getFactoryLocation() when the action finishes.
 			}
 		});
+		
+		// Add the "all projects" option to the combobox
+		//$("<option value='-1'><s:text name='label.none_male'/></option>").appendTo("#projectSelect");
+		// Define and set its onChange function
+		$("#projectSelect").change( function() {
+			//alert('before');
+			//if ($("#projectSelect").val() == $("#prevSelectedProject").val())
+				alert($("#prevSelectedProject").val());
+				$("#projectSelect").val(-1);
+			//$("#prevSelectedProject").val($("#projectSelect").val());
+			//alert('after');
+		});
+		
+		// Select "all projects" option by default
+		//$("#projectSelect").val(-1);
 	});
 
 	</script>
 </head>
 <body>
 	<div id="filter">
-		<fieldset style="float:left">
+		<fieldset>
 			<legend><s:text name="label.filter.corporative"/>:</legend>
 			<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
 			<select id="companySelect" >
@@ -252,11 +268,10 @@
 			
 			<s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
 			<select id="factorySelect" disabled="disabled"></select>
-		</fieldset>
-		
-		<fieldset style="float:left">
-			<legend><s:text name="label.filter.project"/>:</legend>
-			foo
+			
+			<s:label for="projectSelect" value="%{getText('label.select.project')}:"/>
+			<s:select id="projectSelect" name="projectSelect" listKey="id" list="projects" size="5"></s:select>
+			<input type="hidden" name="prevSelectedProject" value="-1"/>
 		</fieldset>
 	</div>
 	
