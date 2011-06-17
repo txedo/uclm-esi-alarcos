@@ -11,5 +11,7 @@
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Director"/>
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Location"/>
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Factory"/>
+        <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Project"/>
+        <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Market"/>
     </session-factory>
 </hibernate-configuration>

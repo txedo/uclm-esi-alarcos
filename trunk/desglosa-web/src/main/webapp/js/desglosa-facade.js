@@ -18,9 +18,17 @@ function Neighborhood () {
 	this.flats = new Array();
 }
 
-function desglosa_showFactoriesFromCompany(id) {
+function desglosa_showFactoriesByCompanyId(id) {
+	desglosa_showFactories("/desglosa-web/getFactoriesFromCompanyJSON.action", id);
+}
+
+function desglosa_showFactoriesById(id) {
+	desglosa_showFactories("/desglosa-web/getFactoriesJSON.action", id);
+}
+
+function desglosa_showFactories(action, id) {
 	showLoadingIndicator(true);
-	$.getJSON("/desglosa-web/getFactoriesFromCompanyJSON.action",
+	$.getJSON(action,
 			{id: id},
 			function (data, status) {
 				if (status == "success") {
@@ -48,12 +56,4 @@ function desglosa_showFactoriesFromCompany(id) {
 				else alert('An error has occurred while trying to retrieve factory information: ' + status);
 				showLoadingIndicator(false);
 	});
-}
-
-function desglosa_showAllFactories() {
-	alert ('Se van a mostrar todas las factorias de todas las compañías.');
-}
-
-function desglosa_showFactories(ids) {
-	alert ('Se van a mostrar las factorias de la compañía: ' + id);
 }
