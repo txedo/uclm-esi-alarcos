@@ -160,7 +160,30 @@
 						$.each(data.companies, function (i, item) {
 							$("#companyInformation").append(formatCompanyInformation(item));
 						});
-						showLoadingIndicator(false);
+					}
+					else alert('An error has occurred while trying to retrieve company information: ' + status);
+					showLoadingIndicator(false);
+		});
+	}
+	
+	var factoriesInvolvedInSelectedProject;
+	
+	function getProject(idProject) {
+		showLoadingIndicator(true);
+		if (!idProject) var idProject = "0";
+		else var idProject = idProject+"";
+		$.getJSON("/desglosa-web/getProjectsJSON.action",
+				{
+					id: idProject
+				},
+				function (data, status) {
+					if (status == "success") {
+						$.each(data.projects, function (i, item) {
+							$("#projectInformation").append(formatProjectInformation(item));
+							$.each(item.involvedFactories, function (j, factory) {
+								placeMarker(factory.location.latitude, factory.location.longitude);
+							});
+						});
 					}
 					else alert('An error has occurred while trying to retrieve company information: ' + status);
 					showLoadingIndicator(false);
@@ -193,11 +216,44 @@
 		return result;
 	}
 	
+	function formatProjectInformation(projectJSON) {
+		var result = "";
+		result += "<br /><a href='#' onclick='javascript:desglosa_showProjectsById(" + projectJSON.id + ")'><s:text name='label.show_more'/></a>";
+		return result;
+	}
+	
 	function showLoadingIndicator(value) {
 		if (value)
 			$("#indicator").css("display","");
 		else
 			$("#indicator").css("display","none");
+	}
+	
+	function resetFilter() {
+		clearAllMarkers();
+		initializeTabs();
+		$("#companySelect").val(-1);
+		$("#factorySelect").html("");
+		$("#factorySelect").attr('disabled', 'disabled');
+		$("#projectSelect").val(-1);
+	}
+	
+	function initializeCompanyTab() {
+		$("#companyInformation").html("<i><s:text name='message.select_company'/></i>");
+	}
+	
+	function initializeFactoryTab() {
+		$("#factoryInformation").html("<i><s:text name='message.select_factory'/></i>");
+	}
+	
+	function initializeProjectTab() {
+		$("#projectInformation").html("<i><s:text name='message.select_project'/></i>");
+	}
+	
+	function initializeTabs(){
+		initializeCompanyTab();
+		initializeFactoryTab();
+		initializeProjectTab();
 	}
 	
 	$(document).ready(function() {
@@ -207,10 +263,11 @@
 		$("#companySelect option:first").attr('selected','selected');
 		$("#companySelect").change( function() {
 			clearAllMarkers();
+			$("#projectInformation").val(-1);
 			getFactoryLocationFromCompany($("#companySelect").val());
 			if ($("#companySelect").val() == 0) {
 				// reset company info div
-				$("#companyInformation").text("");
+				initializeCompanyTab();
 			}
 			else {
 				// show info in company info div
@@ -222,9 +279,10 @@
 		
 		$("#factorySelect").change( function() {
 			clearAllMarkers();
+			$("#projectInformation").val(-1);
 			if ($("#factorySelect").val() == 0) {
 				// reset factory info div
-				$("#factoryInformation").text("");
+				initializeFactoryTab();
 				getFactoryLocationFromCompany($("#companySelect").val());
 			}
 			else {
@@ -235,20 +293,21 @@
 			}
 		});
 		
-		// Add the "all projects" option to the combobox
-		//$("<option value='-1'><s:text name='label.none_male'/></option>").appendTo("#projectSelect");
-		// Define and set its onChange function
 		$("#projectSelect").change( function() {
-			//alert('before');
-			//if ($("#projectSelect").val() == $("#prevSelectedProject").val())
-				alert($("#prevSelectedProject").val());
-				$("#projectSelect").val(-1);
-			//$("#prevSelectedProject").val($("#projectSelect").val());
-			//alert('after');
+			clearAllMarkers();
+			if ($("#projectSelect").val() < 1) {
+				// reset project info div
+				initializeProjectTab();
+			}
+			else {
+				// show info in project info div
+				$("#projectInformation").text("");
+				getProject($("#projectSelect").val());
+				// Indicator will be hidden inside getFactoryLocation() when the action finishes.
+			}
 		});
 		
-		// Select "all projects" option by default
-		//$("#projectSelect").val(-1);
+		initializeTabs();
 	});
 
 	</script>
@@ -259,7 +318,7 @@
 			<legend><s:text name="label.filter.corporative"/>:</legend>
 			<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
 			<select id="companySelect" >
-				<option value="" disabled="disabled">-- <fmt:message key="label.select.choose_company"/> --</option>
+				<option value="-1" disabled="disabled">-- <fmt:message key="label.select.choose_company"/> --</option>
 				<s:iterator var="company" value="companies">
 					<option value="<s:property value='id'/>"><s:property value="name"/></option>
 				</s:iterator>
@@ -271,7 +330,8 @@
 			
 			<s:label for="projectSelect" value="%{getText('label.select.project')}:"/>
 			<s:select id="projectSelect" name="projectSelect" listKey="id" list="projects" size="5"></s:select>
-			<input type="hidden" name="prevSelectedProject" value="-1"/>
+			
+			<input type="button" value="Reset" onclick="resetFilter()"/>
 		</fieldset>
 	</div>
 	

@@ -16,12 +16,26 @@ import model.gl.TextureLoader;
 import model.gl.knowledge.AntennaBall;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLObject3D;
-import model.util.Color;
 import model.util.Vector3f;
 
 import exceptions.GLSingletonNotInitializedException;
+import exceptions.ViewManagerNotInstantiatedException;
 
 public class GLProjectViewManager extends GLViewManager {
+	
+	static private GLProjectViewManager _instance = null;
+	
+	/**
+	 * @return The unique instance of this class.
+	 * @throws ViewManagerNotInstantiatedException 
+	 */
+	static public GLProjectViewManager getInstance() throws ViewManagerNotInstantiatedException {
+		if (null == _instance) {
+			throw new ViewManagerNotInstantiatedException();
+		}
+		return _instance;
+	}
+	
 	private final String APPLY = "textures/gtk-apply.png";
 	private final String CANCEL = "textures/gtk-cancel.png";
 	
@@ -33,6 +47,7 @@ public class GLProjectViewManager extends GLViewManager {
 		super(d, is3d);
 		antennaBalls = new ArrayList<GLObject>();
 		textureLoader = new TextureLoader(new String[] {APPLY, CANCEL});
+		_instance = this;
 	}
 	
 	@Override
@@ -72,31 +87,13 @@ public class GLProjectViewManager extends GLViewManager {
 		GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
 		this.drawItems();
 	}
-	
-	public static void setupItems() {
-		AntennaBall ab = new AntennaBall(1.0f, 1.0f);
-		ab.setLabel("Proyecto 1");
-		ab.setParentBallRadius(2.0f);
-		ab.setLeftChildBallValue(12);
-		ab.setRightChildBallValue(21);
-		antennaBalls.add(ab);
-		ab = new AntennaBall(5.0f, 5.0f);
-		ab.setLeftChildBallValue(45);
-		ab.setRightChildBallValue(54);
-		ab.setProgression(false);
-		ab.setColor(new Color(0.8f, 0.8f, 0.8f));
-		ab.setLabel("Proyecto 2");
-		antennaBalls.add(ab);
-		ab = new AntennaBall(7.0f, 8.0f);
-		ab.setParentBallRadius(1.25f);
-		ab.setLeftChildBallValue(23);
-		ab.setRightChildBallValue(52);
-		ab.setProgression(true);
-		ab.setColor(new Color(0.3f, 0.5f, 0.1f));
-		ab.setLabel("Proyecto 3");
-		antennaBalls.add(ab);
-	}
 
+	@Override
+	public void setItems(List objs) {
+		antennaBalls = new ArrayList<GLObject>();
+		antennaBalls.addAll(objs);
+	}
+	
 	@Override
 	public void drawItems() throws GLSingletonNotInitializedException {
 		int cont = 1;
@@ -123,12 +120,6 @@ public class GLProjectViewManager extends GLViewManager {
 	protected void selectedObjectHandler(int selectedObject) {
 		System.err.println("Selected project: " + selectedObject);
 		NotifyUIManager.notifySelectedProject(selectedObject);
-	}
-
-	@Override
-	public void setItems(List objs) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

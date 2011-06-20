@@ -26,6 +26,10 @@ public class AntennaBall extends GLObject3D {
 	
 	private GLUquadric quadric;
 	
+	public AntennaBall() {
+		this (0.0f, 0.0f);
+	}
+	
 	public AntennaBall (float pos_x, float pos_y) {
 		this.positionX = pos_x;
 		this.positionY = pos_y;
