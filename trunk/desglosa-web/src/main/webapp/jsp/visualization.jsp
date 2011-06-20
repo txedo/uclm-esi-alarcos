@@ -166,8 +166,6 @@
 		});
 	}
 	
-	var factoriesInvolvedInSelectedProject;
-	
 	function getProject(idProject) {
 		showLoadingIndicator(true);
 		if (!idProject) var idProject = "0";
@@ -183,16 +181,16 @@
 							$.each(data.projects, function (i, item) {
 								$("#projectInformation").html("");
 								$("#projectInformation").append("<br /><a href='#' onclick='javascript:desglosa_showProjectsById(0)'><s:text name='label.show_more'/></a>");
-								$.each(item.involvedFactories, function (j, factory) {
-									placeMarker(factory.location.latitude, factory.location.longitude);
+								$.each(item.subprojects, function (j, subproject) {
+									placeMarker(subproject.factory.location.latitude, subproject.factory.location.longitude);
 								});
 							});
 						} else {
 							// A fixed project
 							$.each(data.projects, function (i, item) {
 								$("#projectInformation").append(formatProjectInformation(item));
-								$.each(item.involvedFactories, function (j, factory) {
-									placeMarker(factory.location.latitude, factory.location.longitude);
+								$.each(item.subprojects, function (j, subproject) {
+									placeMarker(subproject.factory.location.latitude, subproject.factory.location.longitude);
 								});
 							});
 						}
