@@ -9,6 +9,7 @@ import model.util.Color;
 import exceptions.GLSingletonNotInitializedException;
 
 public class AntennaBall extends GLObject3D {
+	public static final float MAX_SIZE = 1.5f;
 	private int[] textures;
 	
 	private int subdivisions;
@@ -21,6 +22,7 @@ public class AntennaBall extends GLObject3D {
 	private int rightChildBallValue;
 	private final float ANTENNA_WIDTH = 3.0f;
 	private final float ANTENNA_ANGLE = 45.0f;
+	private final float ANTENNA_LENGTH = 0.5f;
 
 	private String label;
 	
@@ -44,6 +46,9 @@ public class AntennaBall extends GLObject3D {
 		
 		this.leftChildBallValue = 0;
 		this.rightChildBallValue = 0;
+		
+		this.maxWidth = AntennaBall.MAX_SIZE*2.0f;
+		this.maxDepth = AntennaBall.MAX_SIZE*2.0f;
 	}
 
 	public boolean isProgression() {
@@ -112,11 +117,13 @@ public class AntennaBall extends GLObject3D {
 			else
 				GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
 			GLSingleton.getGL().glBegin(GL2.GL_LINES);
+				//GLSingleton.getGL().glVertex3f(x*parentBallRadius*(float)Math.cos(ANTENNA_ANGLE), parentBallRadius*(float)Math.sin(ANTENNA_ANGLE), 0.0f);
+				//GLSingleton.getGL().glVertex3f(x*parentBallRadius-x*childBallRadius*(float)Math.cos(90-ANTENNA_ANGLE), parentBallRadius*(float)Math.tan(ANTENNA_ANGLE)-childBallRadius*(float)Math.sin(90-ANTENNA_ANGLE), 0.0f);
 				GLSingleton.getGL().glVertex3f(x*parentBallRadius*(float)Math.cos(ANTENNA_ANGLE), parentBallRadius*(float)Math.sin(ANTENNA_ANGLE), 0.0f);
-				GLSingleton.getGL().glVertex3f(x*parentBallRadius-x*childBallRadius*(float)Math.cos(90-ANTENNA_ANGLE), parentBallRadius*(float)Math.tan(ANTENNA_ANGLE)-childBallRadius*(float)Math.sin(90-ANTENNA_ANGLE), 0.0f);
+				GLSingleton.getGL().glVertex3f(x*(parentBallRadius+ANTENNA_LENGTH)*(float)Math.cos(ANTENNA_ANGLE), (parentBallRadius+ANTENNA_LENGTH)*(float)Math.sin(ANTENNA_ANGLE), 0.0f);
 			GLSingleton.getGL().glEnd();
 			// Draw the child ball
-			GLSingleton.getGL().glTranslatef(x*parentBallRadius, parentBallRadius*(float)Math.tan(ANTENNA_ANGLE), 0.0f);
+			GLSingleton.getGL().glTranslatef(x*(parentBallRadius+ANTENNA_LENGTH+childBallRadius)*(float)Math.cos(ANTENNA_ANGLE), (parentBallRadius+ANTENNA_LENGTH+childBallRadius)*(float)Math.sin(ANTENNA_ANGLE), 0.0f);
 			GLSingleton.getGL().glColor4fv(color.getColorFB());
 			GLSingleton.getGLU().gluSphere(this.quadric, this.childBallRadius, this.subdivisions, this.subdivisions);
 			if (value >= 0) {

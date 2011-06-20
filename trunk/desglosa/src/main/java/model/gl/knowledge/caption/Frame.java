@@ -29,6 +29,13 @@ public class Frame extends GLObject {
 			GLSingleton.getGL().glVertex2f(v.getX(), -v.getY());
 			GLSingleton.getGL().glVertex2f(0.0f, -v.getY());
 		GLSingleton.getGL().glEnd();
+		GLSingleton.getGL().glColor3f(1.0f, 1.0f, 1.0f);
+		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
+			GLSingleton.getGL().glVertex2f(0.0f, 0.0f);
+			GLSingleton.getGL().glVertex2f(v.getX(), 0.0f);
+			GLSingleton.getGL().glVertex2f(v.getX(), -v.getY());
+			GLSingleton.getGL().glVertex2f(0.0f, -v.getY());
+		GLSingleton.getGL().glEnd();
 	}
 
 	public int getWidth() {
@@ -46,5 +53,6 @@ public class Frame extends GLObject {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+
 
 }

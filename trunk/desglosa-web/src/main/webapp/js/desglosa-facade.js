@@ -79,6 +79,7 @@ function desglosa_showProjectsById(id) {
 						project.size = item.size;
 						project.totalIncidences = item.totalIncidences;
 						project.repairedIncidences = item.repairedIncidences;
+						project.market = item.market.name;
 						project.color = item.market.color;
 						neighborhood.flats.push(project);
 					});

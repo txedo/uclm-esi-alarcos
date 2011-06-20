@@ -178,12 +178,24 @@
 				},
 				function (data, status) {
 					if (status == "success") {
-						$.each(data.projects, function (i, item) {
-							$("#projectInformation").append(formatProjectInformation(item));
-							$.each(item.involvedFactories, function (j, factory) {
-								placeMarker(factory.location.latitude, factory.location.longitude);
+						if (idProject == 0) {
+							// All projects
+							$.each(data.projects, function (i, item) {
+								$("#projectInformation").html("");
+								$("#projectInformation").append("<br /><a href='#' onclick='javascript:desglosa_showProjectsById(0)'><s:text name='label.show_more'/></a>");
+								$.each(item.involvedFactories, function (j, factory) {
+									placeMarker(factory.location.latitude, factory.location.longitude);
+								});
 							});
-						});
+						} else {
+							// A fixed project
+							$.each(data.projects, function (i, item) {
+								$("#projectInformation").append(formatProjectInformation(item));
+								$.each(item.involvedFactories, function (j, factory) {
+									placeMarker(factory.location.latitude, factory.location.longitude);
+								});
+							});
+						}
 					}
 					else alert('An error has occurred while trying to retrieve company information: ' + status);
 					showLoadingIndicator(false);
@@ -293,13 +305,18 @@
 			}
 		});
 		
+		$("<option value='0'><s:text name='label.all_male'/></option>").appendTo("#projectSelect");
 		$("#projectSelect").change( function() {
 			clearAllMarkers();
-			if ($("#projectSelect").val() < 1) {
+			if ($("#projectSelect").val() < 0) {
 				// reset project info div
 				initializeProjectTab();
-			}
-			else {
+			} else if ($("#projectSelect").val() == 0) {
+				// show info in project info div
+				$("#projectInformation").text("");
+				getProject($("#projectSelect").val());
+				// Indicator will be hidden inside getFactoryLocation() when the action finishes.
+			} else {
 				// show info in project info div
 				$("#projectInformation").text("");
 				getProject($("#projectSelect").val());

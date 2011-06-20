@@ -61,7 +61,13 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 		
 //		try {
 //			Synchronizer.getInstance().solicitar();
-//			IGLFacadeImpl.getInstance().visualizeProjects("{\"neighborhoods\":[{\"flats\":[{\"id\":2,\"name\":\"vilma\",\"audited\":false,\"size\":3,\"totalIncidences\":10,\"repairedIncidences\":2,\"color\":\"298400\"}]}]}");
+//			IGLFacadeImpl.getInstance().visualizeProjects("{\"neighborhoods\":[" +
+//					"{\"flats\":[" +
+//						"{\"id\":1,\"name\":\"desglosa\",\"audited\":true,\"size\":7,\"totalIncidences\":500,\"repairedIncidences\":100,\"market\":\"Arquitectura\",\"color\":\"00649a\"}," +
+//						"{\"id\":2,\"name\":\"vilma\",\"audited\":false,\"size\":3,\"totalIncidences\":10,\"repairedIncidences\":2,\"market\":\"Defensa\",\"color\":\"298400\"}," +
+//						"{\"id\":3,\"name\":\"w2p\",\"audited\":true,\"size\":4,\"totalIncidences\":60,\"repairedIncidences\":21,\"market\":\"Sanitario\",\"color\":\"ff8c00\"}" +
+//					"]}" +
+//				"]}");
 //		} catch (ViewManagerNotInstantiatedException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();

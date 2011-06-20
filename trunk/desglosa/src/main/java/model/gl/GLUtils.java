@@ -130,6 +130,7 @@ public class GLUtils {
 		 * in the orthographic mode. Projection matrix stack defines how the
 		 * scene is projected to the screen.
 		 */
+		GLSingleton.getGL().glDisable(GL2.GL_LIGHTING);
 		// Disables Depth Testing
 		GLSingleton.getGL().glDisable(GL2.GL_DEPTH_TEST);
 		// Select the Projection matrix
@@ -168,6 +169,7 @@ public class GLUtils {
 		GLSingleton.getGL().glMatrixMode(GL2.GL_MODELVIEW);
 		// Enables Depth Testing
 		GLSingleton.getGL().glEnable(GL2.GL_DEPTH_TEST);
+		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
 	}
 	
 	public static void displacementBegin(
@@ -571,7 +573,6 @@ public class GLUtils {
 			}
 		}
 
-		
 		return sortedMap;
 	}
 

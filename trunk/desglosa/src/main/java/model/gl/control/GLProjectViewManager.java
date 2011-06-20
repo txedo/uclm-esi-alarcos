@@ -16,6 +16,7 @@ import model.gl.TextureLoader;
 import model.gl.knowledge.AntennaBall;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLObject3D;
+import model.gl.knowledge.caption.Caption;
 import model.util.Vector3f;
 
 import exceptions.GLSingletonNotInitializedException;
@@ -86,6 +87,7 @@ public class GLProjectViewManager extends GLViewManager {
 		super.drawFloor();
 		GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
 		this.drawItems();
+		super.drawCaption();
 	}
 
 	@Override

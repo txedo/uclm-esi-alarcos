@@ -1,7 +1,10 @@
 package model.gl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import exceptions.ViewManagerNotInstantiatedException;
 
@@ -11,7 +14,9 @@ import model.gl.control.GLProjectViewManager;
 import model.gl.knowledge.AntennaBall;
 import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
+import model.gl.knowledge.caption.Caption;
 import model.util.City;
+import model.util.Color;
 import model.util.Neighborhood;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -75,11 +80,14 @@ public class IGLFacadeImpl implements IGLFacade {
 
 	@Override
 	public void visualizeProjects(String JSONtext) throws ViewManagerNotInstantiatedException {
+		Caption caption = new Caption();
+		Map<String, String> captionLines = new HashMap<String, String>();
 		JSONObject json = (JSONObject)JSONSerializer.toJSON(JSONtext);
 		List<GLObject> projects = new ArrayList<GLObject>();
 		AntennaBall project;
 		List<Neighborhood> nbh = new ArrayList<Neighborhood>();
 		City city;
+		float maxSize = 0.0f;
 
 		JSONArray jsonNeighborhoods = json.getJSONArray("neighborhoods");
 		for (int i = 0; i < jsonNeighborhoods.size(); i++) {
@@ -96,13 +104,30 @@ public class IGLFacadeImpl implements IGLFacade {
 				int repairedIncidences = jobj.getInt("repairedIncidences");
 				project.setLeftChildBallValue(repairedIncidences);
 				project.setRightChildBallValue(incidences - repairedIncidences);
-				// project.setColor();
-				project.setParentBallRadius((float)jobj.getDouble("size"));
+				project.setColor(new Color(jobj.getString("color")));
+				float size = (float)jobj.getDouble("size");
+				project.setParentBallRadius(size);
+				if (maxSize < size) maxSize = size;
+				captionLines.put(jobj.getString("market"), jobj.getString("color"));
 				projects.add(project);
 			}
 			// Build the neighborhood
 			nbh.add(new Neighborhood(projects));
 		}
+		// Normalize project size
+		for (Neighborhood n : nbh) {
+			for (GLObject o : n.getFlats()) {
+				((AntennaBall)o).setParentBallRadius(((AntennaBall)o).getParentBallRadius()*AntennaBall.MAX_SIZE/maxSize);
+			}
+		}
+		// Configure caption lines
+	    Iterator it = captionLines.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pairs = (Map.Entry)it.next();
+	        caption.addLine(new Color((String)pairs.getValue()), (String)pairs.getKey());
+	    }
+	    if (caption.getLines().size() > 0) GLProjectViewManager.getInstance().setCaption(caption);
+
 		// Build the city
 		city = new City(nbh);
 		city.placeNeighborhoods();
