@@ -161,22 +161,24 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `desglosadb`.`projects_has_factories`
+-- Table `desglosadb`.`subprojects`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`projects_has_factories` ;
+DROP TABLE IF EXISTS `desglosadb`.`subprojects` ;
 
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`projects_has_factories` (
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`subprojects` (
+  `id` INT NOT NULL ,
   `project_id` INT NOT NULL ,
   `factory_id` INT NOT NULL ,
-  PRIMARY KEY (`project_id`, `factory_id`) ,
-  INDEX `fk_projects_has_factories_factories` (`factory_id` ASC) ,
-  INDEX `fk_projects_has_factories_projects` (`project_id` ASC) ,
-  CONSTRAINT `fk_projects_has_factories_projects`
+  `name` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_subprojects_factories` (`factory_id` ASC) ,
+  INDEX `fk_subprojects_projects` (`project_id` ASC) ,
+  CONSTRAINT `fk_subprojects_projects`
     FOREIGN KEY (`project_id` )
     REFERENCES `desglosadb`.`projects` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_projects_has_factories_factories`
+  CONSTRAINT `fk_subprojects_factories`
     FOREIGN KEY (`factory_id` )
     REFERENCES `desglosadb`.`factories` (`id` )
     ON DELETE NO ACTION
@@ -279,19 +281,61 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`groups_roles` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `desglosadb`.`measures`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`measures` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`measures` (
+  `id` INT NOT NULL ,
+  `name` VARCHAR(45) NULL ,
+  `high` FLOAT NULL ,
+  `medium` FLOAT NULL ,
+  `low` FLOAT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`subprojects_has_measures`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`subprojects_has_measures` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`subprojects_has_measures` (
+  `subproject_id` INT NOT NULL ,
+  `measure_id` INT NOT NULL ,
+  `value` FLOAT NULL ,
+  PRIMARY KEY (`subproject_id`, `measure_id`) ,
+  INDEX `fk_subprojects_has_measures_measures1` (`measure_id` ASC) ,
+  INDEX `fk_subprojects_has_measures_subprojects1` (`subproject_id` ASC) ,
+  CONSTRAINT `fk_subprojects_has_measures_subprojects1`
+    FOREIGN KEY (`subproject_id` )
+    REFERENCES `desglosadb`.`subprojects` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subprojects_has_measures_measures1`
+    FOREIGN KEY (`measure_id` )
+    REFERENCES `desglosadb`.`measures` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 grant ALL on TABLE `desglosadb`.`companies` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`factories` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`addresses` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`locations` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`directors` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`projects` to desglosaadmin;
-grant ALL on TABLE `desglosadb`.`projects_has_factories` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`subprojects` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`users` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`groups` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`groups_roles` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`roles` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`users_groups` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`markets` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`measures` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`subprojects_has_measures` to desglosaadmin;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -380,16 +424,16 @@ INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_
 COMMIT;
 
 -- -----------------------------------------------------
--- Data for table `desglosadb`.`projects_has_factories`
+-- Data for table `desglosadb`.`subprojects`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (1, 1);
-INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (2, 2);
-INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (2, 4);
-INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (1, 3);
-INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (3, 1);
-INSERT INTO `desglosadb`.`projects_has_factories` (`project_id`, `factory_id`) VALUES (3, 3);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (1, 1, 1, 'fase 1');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (2, 2, 2, 'mod 1');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (3, 2, 4, 'mod 2');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (4, 1, 3, 'fase 2');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (5, 3, 1, 'fase 1');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (6, 3, 3, 'fase 2');
 
 COMMIT;
 

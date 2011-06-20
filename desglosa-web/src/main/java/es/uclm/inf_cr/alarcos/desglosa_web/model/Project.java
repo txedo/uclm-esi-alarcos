@@ -10,8 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -23,7 +22,7 @@ public class Project {
 	private String code;
 	private String plan;
 	private Factory mainFactory;
-	private Set<Factory> involvedFactories;
+	private Set<Subproject> subprojects;
 	private Market market;
 	private boolean audited;
 	private int totalIncidences;
@@ -59,14 +58,9 @@ public class Project {
 		return mainFactory;
 	}
 
-    @ManyToMany(fetch = FetchType.EAGER) 
-    @JoinTable(
-            name="projects_has_factories",
-            joinColumns = { @JoinColumn( name="project_id") },
-            inverseJoinColumns = @JoinColumn( name="factory_id")
-    )    
-	public Set<Factory> getInvolvedFactories() {
-		return involvedFactories;
+    @OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL}, mappedBy="project")
+	public Set<Subproject> getSubprojects() {
+		return subprojects;
 	}
 
 	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
@@ -120,8 +114,8 @@ public class Project {
 		this.mainFactory = mainFactory;
 	}
 
-	public void setInvolvedFactories(Set<Factory> involvedFactories) {
-		this.involvedFactories = involvedFactories;
+	public void setSubprojects(Set<Subproject> subprojects) {
+		this.subprojects = subprojects;
 	}
 
 	public void setMarket(Market market) {
@@ -151,7 +145,7 @@ public class Project {
 	@Override
 	public String toString() {
 		String res = this.name;
-		if (involvedFactories.size() > 1) res = this.name + " *";
+		if (subprojects.size() > 1) res = this.name + " *";
 		return res;
 	}
 	
