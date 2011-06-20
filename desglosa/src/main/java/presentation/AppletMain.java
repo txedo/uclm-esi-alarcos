@@ -58,7 +58,15 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 	@Override
 	public void start() {
 		System.err.println("GearsApplet: start() - begin");
-
+		
+//		try {
+//			Synchronizer.getInstance().solicitar();
+//			IGLFacadeImpl.getInstance().visualizeProjects("{\"neighborhoods\":[{\"flats\":[{\"id\":2,\"name\":\"vilma\",\"audited\":false,\"size\":3,\"totalIncidences\":10,\"repairedIncidences\":2,\"color\":\"298400\"}]}]}");
+//		} catch (ViewManagerNotInstantiatedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
 //		try {
 //			Synchronizer.getInstance().solicitar();
 //			IGLFacadeImpl.getInstance().visualizeFactories("{\"neighborhoods\":[" +
@@ -151,9 +159,15 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 	}
 
 	@Override
-	public void visualizeFactories(String JSON) throws ViewManagerNotInstantiatedException {
+	public void visualizeFactories(String JSONtext) throws ViewManagerNotInstantiatedException {
 		Synchronizer.getInstance().solicitar();
-		IGLFacadeImpl.getInstance().visualizeFactories(JSON);
+		IGLFacadeImpl.getInstance().visualizeFactories(JSONtext);
+	}
+
+	@Override
+	public void visualizeProjects(String JSONtext) throws ViewManagerNotInstantiatedException {
+		Synchronizer.getInstance().solicitar();
+		IGLFacadeImpl.getInstance().visualizeProjects(JSONtext);
 	}
 	
 }

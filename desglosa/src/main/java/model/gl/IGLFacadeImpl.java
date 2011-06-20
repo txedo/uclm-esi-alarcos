@@ -7,6 +7,8 @@ import exceptions.ViewManagerNotInstantiatedException;
 
 import model.gl.control.EViewLevels;
 import model.gl.control.GLFactoryViewManager;
+import model.gl.control.GLProjectViewManager;
+import model.gl.knowledge.AntennaBall;
 import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
 import model.util.City;
@@ -69,6 +71,48 @@ public class IGLFacadeImpl implements IGLFacade {
 		}
 		GLFactoryViewManager.getInstance().setItems(factories);
 		GLFactoryViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.FactoryLevel);
+	}
+
+	@Override
+	public void visualizeProjects(String JSONtext) throws ViewManagerNotInstantiatedException {
+		JSONObject json = (JSONObject)JSONSerializer.toJSON(JSONtext);
+		List<GLObject> projects = new ArrayList<GLObject>();
+		AntennaBall project;
+		List<Neighborhood> nbh = new ArrayList<Neighborhood>();
+		City city;
+
+		JSONArray jsonNeighborhoods = json.getJSONArray("neighborhoods");
+		for (int i = 0; i < jsonNeighborhoods.size(); i++) {
+			JSONObject jsonFlatsObject = jsonNeighborhoods.getJSONObject(i);
+			JSONArray jsonFlats = jsonFlatsObject.getJSONArray("flats");
+			projects = new ArrayList<GLObject>();
+			for (int j = 0; j < jsonFlats.size(); j++) {
+				JSONObject jobj = jsonFlats.getJSONObject(j);
+				project = new AntennaBall();
+				project.setId(jobj.getInt("id"));
+				project.setLabel(jobj.getString("name"));
+				project.setProgression(jobj.getBoolean("audited"));
+				int incidences = jobj.getInt("totalIncidences");
+				int repairedIncidences = jobj.getInt("repairedIncidences");
+				project.setLeftChildBallValue(repairedIncidences);
+				project.setRightChildBallValue(incidences - repairedIncidences);
+				// project.setColor();
+				project.setParentBallRadius((float)jobj.getDouble("size"));
+				projects.add(project);
+			}
+			// Build the neighborhood
+			nbh.add(new Neighborhood(projects));
+		}
+		// Build the city
+		city = new City(nbh);
+		city.placeNeighborhoods();
+		
+		projects = new ArrayList<GLObject>();
+		for (Neighborhood n : nbh) {
+			projects.addAll(n.getFlats());
+		}
+		GLProjectViewManager.getInstance().setItems(projects);
+		GLProjectViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.ProjectLevel);
 	}
 
 }

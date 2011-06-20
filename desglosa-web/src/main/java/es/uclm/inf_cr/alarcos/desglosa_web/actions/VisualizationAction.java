@@ -12,6 +12,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
@@ -108,5 +109,19 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	public String getProjectsJSON() {
+		if (id == 0) {
+			projects = projectDao.getProjects();
+		}
+		else {
+			try {
+				projects = new ArrayList<Project>();
+				projects.add(projectDao.getProject(id));
+			} catch (ProjectNotFoundException e) {
+				return ERROR;
+			}
+		}
+		return SUCCESS;
+	}
 
 }

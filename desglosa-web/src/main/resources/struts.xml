@@ -137,8 +137,7 @@
 			<result type="json">
 				<param name="excludeProperties">
 					companies,
-					idCompany,
-					idFactory
+					projects,
 				</param>
 				<!-- <param name="excludeNullProperties">true</param> -->
 			</result>
@@ -146,16 +145,22 @@
 		<action name="getFactoriesFromCompanyJSON" class="visualizationAction" method="getFactoriesFromCompanyJSON">
 			<result type="json">
 				<param name="excludeProperties">
-					idFactory,
-					idCompany
+					projects
 				</param>
 			</result>
 		</action>
 		<action name="getCompaniesJSON" class="visualizationAction" method="getCompaniesJSON">
 			<result type="json">
 				<param name="excludeProperties">
-					idFactory,
-					idCompany,
+					factories,
+					projects
+				</param>
+			</result>
+		</action>
+		<action name="getProjectsJSON" class="visualizationAction" method="getProjectsJSON">
+			<result type="json">
+				<param name="excludeProperties">
+					companies,
 					factories
 				</param>
 			</result>
