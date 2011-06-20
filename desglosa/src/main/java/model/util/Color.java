@@ -8,6 +8,13 @@ public class Color {
 	float b;
 	float alpha;
 	
+	public Color(String hexCode) {
+		this.r = (float)(Integer.valueOf(hexCode.substring(0, 2), 16))/255.0f;
+		this.g = (float)(Integer.valueOf(hexCode.substring(2, 4), 16))/255.0f;
+		this.b = (float)(Integer.valueOf(hexCode.substring(4, 6), 16))/255.0f;
+		this.alpha = 1.0f;
+	}
+	
 	public Color(float red, float green, float blue) {
 		this.r = red;
 		this.g = green;

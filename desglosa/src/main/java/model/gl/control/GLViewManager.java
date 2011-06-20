@@ -14,6 +14,7 @@ import model.gl.GLDrawer;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.TextureLoader;
+import model.gl.knowledge.caption.Caption;
 
 public abstract class GLViewManager {
 	
@@ -26,6 +27,8 @@ public abstract class GLViewManager {
 	protected boolean selectionMode;
 	protected static double pickingRegion;
 	private TextureLoader textureLoader;
+	
+	private Caption caption = null;
 	
 	protected boolean shadowSupport;
 	protected boolean drawingShadows = false;
@@ -135,6 +138,19 @@ public abstract class GLViewManager {
 		}
 	}
 	
+	protected void drawCaption () throws GLSingletonNotInitializedException {
+		if (caption != null) {
+			GLSingleton.getGL().glPushMatrix();
+			GLUtils.beginOrtho(drawer.getScreenHeight(), drawer.getScreenWidth(), drawer.DIM);
+				GLSingleton.getGL().glPushMatrix();
+					GLSingleton.getGL().glTranslatef(0.1f, caption.getHeight()+0.1f, 0.0f);
+					caption.draw();
+				GLSingleton.getGL().glPopMatrix();
+			GLUtils.endOrtho();
+			GLSingleton.getGL().glPopMatrix();
+		}
+	}
+	
 	protected void drawFloor () throws GLSingletonNotInitializedException, IOException {
 		final float FLOOR_DIMENSION = 100.0f;
 		if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
@@ -184,6 +200,10 @@ public abstract class GLViewManager {
 
 	public GLDrawer getDrawer() {
 		return drawer;
+	}
+	
+	public void setCaption (Caption c) {
+		this.caption = c;
 	}
 	
 }

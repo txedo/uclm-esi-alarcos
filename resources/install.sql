@@ -373,7 +373,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (1, 'desglosa', 'DGL', 'DESGLOSA', 1, 1, 1, 500, 100, 50, 0);
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (1, 'desglosa', 'DGL', 'DESGLOSA', 1, 1, 1, 500, 100, 7, 0);
 INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (2, 'vilma', 'VLM', 'VILMA', 2, 2, 0, 10, 2, 3, 1);
 INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`) VALUES (3, 'w2p', 'W2P', 'Where2Publish', 3, 3, 1, 60, 21, 4, 0);
 
