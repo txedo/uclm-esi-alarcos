@@ -22,8 +22,10 @@ public class Subproject {
 	private int id;
 	private Project project;
 	private Factory factory;
+	private Profile profile;
 	private String name;
-	private Set<Measure> measures;
+	private String pathToData;
+	private Set<Profile> profiles;
 	
 	public Subproject() {}
 
@@ -43,23 +45,32 @@ public class Subproject {
 	public Factory getFactory() {
 		return factory;
 	}
+	
+	@ManyToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
+    @JoinColumn(name="profile_id", nullable=false)
+    	public Profile getProfile() {
+		return profile;
+	}
 
 	@Column(name="name")
 	public String getName() {
 		return name;
 	}
 	
-    @ManyToMany(fetch = FetchType.EAGER) 
-    @JoinTable(
-            name="subprojects_has_measures",
-            joinColumns = { @JoinColumn( name="subproject_id") },
-            inverseJoinColumns = @JoinColumn( name="measure_id")
-    )
-	public Set<Measure> getMeasures() {
-		return measures;
+	@Column(name="path_to_data")
+	public String getPathToData() {
+		return pathToData;
 	}
 
-
+    @ManyToMany(fetch = FetchType.EAGER) 
+    @JoinTable(
+            name="subprojects_has_profiles",
+            joinColumns = { @JoinColumn( name="subproject_id") },
+            inverseJoinColumns = @JoinColumn( name="profile_id")
+    )
+	public Set<Profile> getProfiles() {
+		return profiles;
+	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -72,13 +83,21 @@ public class Subproject {
 	public void setFactory(Factory factory) {
 		this.factory = factory;
 	}
+	
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public void setMeasures(Set<Measure> measures) {
-		this.measures = measures;
+
+	public void setPathToData(String pathToData) {
+		this.pathToData = pathToData;
+	}
+
+	public void setProfiles(Set<Profile> profiles) {
+		this.profiles = profiles;
 	}
 	
 }
