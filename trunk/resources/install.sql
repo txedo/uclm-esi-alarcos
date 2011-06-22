@@ -170,6 +170,7 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`subprojects` (
   `project_id` INT NOT NULL ,
   `factory_id` INT NOT NULL ,
   `name` VARCHAR(45) NULL ,
+  `path_to_data` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_subprojects_factories` (`factory_id` ASC) ,
   INDEX `fk_subprojects_projects` (`project_id` ASC) ,
@@ -297,25 +298,90 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `desglosadb`.`subprojects_has_measures`
+-- Table `desglosadb`.`charts`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`subprojects_has_measures` ;
+DROP TABLE IF EXISTS `desglosadb`.`charts` ;
 
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`subprojects_has_measures` (
-  `subproject_id` INT NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`charts` (
+  `id` INT NOT NULL ,
+  `name` VARCHAR(45) NULL ,
+  `description` VARCHAR(255) NULL ,
+  `type` VARCHAR(45) NULL ,
+  `max_cols` INT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`profiles`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`profiles` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`profiles` (
+  `id` INT NOT NULL ,
+  `name` VARCHAR(45) NULL ,
+  `description` VARCHAR(45) NULL ,
+  `chart_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_profiles_charts` (`chart_id` ASC) ,
+  CONSTRAINT `fk_profiles_charts`
+    FOREIGN KEY (`chart_id` )
+    REFERENCES `desglosadb`.`charts` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`mappings`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`mappings` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`mappings` (
+  `id` INT NOT NULL ,
+  `profile_id` INT NOT NULL ,
+  `col_data` VARCHAR(45) NULL ,
+  `col_chart` INT NULL ,
+  `title` VARCHAR(45) NULL ,
+  `type` VARCHAR(45) NULL ,
+  `description` VARCHAR(45) NULL ,
   `measure_id` INT NOT NULL ,
-  `value` FLOAT NULL ,
-  PRIMARY KEY (`subproject_id`, `measure_id`) ,
-  INDEX `fk_subprojects_has_measures_measures1` (`measure_id` ASC) ,
-  INDEX `fk_subprojects_has_measures_subprojects1` (`subproject_id` ASC) ,
-  CONSTRAINT `fk_subprojects_has_measures_subprojects1`
+  INDEX `fk_mappings_measures` (`measure_id` ASC) ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `UNIQUE` (`profile_id` ASC, `col_data` ASC, `col_chart` ASC) ,
+  INDEX `fk_mappings_profiles1` (`profile_id` ASC) ,
+  CONSTRAINT `fk_mappings_measures`
+    FOREIGN KEY (`measure_id` )
+    REFERENCES `desglosadb`.`measures` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_mappings_profiles1`
+    FOREIGN KEY (`profile_id` )
+    REFERENCES `desglosadb`.`profiles` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `desglosadb`.`subprojects_has_profiles`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `desglosadb`.`subprojects_has_profiles` ;
+
+CREATE  TABLE IF NOT EXISTS `desglosadb`.`subprojects_has_profiles` (
+  `subproject_id` INT NOT NULL ,
+  `profile_id` INT NOT NULL ,
+  PRIMARY KEY (`subproject_id`, `profile_id`) ,
+  INDEX `fk_subprojects_has_profiles_profiles1` (`profile_id` ASC) ,
+  INDEX `fk_subprojects_has_profiles_subprojects1` (`subproject_id` ASC) ,
+  CONSTRAINT `fk_subprojects_has_profiles_subprojects1`
     FOREIGN KEY (`subproject_id` )
     REFERENCES `desglosadb`.`subprojects` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_subprojects_has_measures_measures1`
-    FOREIGN KEY (`measure_id` )
-    REFERENCES `desglosadb`.`measures` (`id` )
+  CONSTRAINT `fk_subprojects_has_profiles_profiles1`
+    FOREIGN KEY (`profile_id` )
+    REFERENCES `desglosadb`.`profiles` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -335,7 +401,10 @@ grant ALL on TABLE `desglosadb`.`roles` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`users_groups` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`markets` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`measures` to desglosaadmin;
-grant ALL on TABLE `desglosadb`.`subprojects_has_measures` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`charts` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`profiles` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`mappings` to desglosaadmin;
+grant ALL on TABLE `desglosadb`.`subprojects_has_profiles` to desglosaadmin;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -428,12 +497,12 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (1, 1, 1, 'fase 1');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (2, 2, 2, 'mod 1');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (3, 2, 4, 'mod 2');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (4, 1, 3, 'fase 2');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (5, 3, 1, 'fase 1');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`) VALUES (6, 3, 3, 'fase 2');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (1, 1, 1, 'fase 1', NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (2, 2, 2, 'mod 1', NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (3, 2, 4, 'mod 2', NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (4, 1, 3, 'fase 2', NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (5, 3, 1, 'fase 1', NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (6, 3, 3, 'fase 2', NULL);
 
 COMMIT;
 
@@ -500,5 +569,80 @@ INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (2, 4);
 INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (3, 3);
 INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (3, 4);
 INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (4, 4);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`measures`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `high`, `medium`, `low`) VALUES (1, 'Fiabilidad', 100, 50, 0);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `high`, `medium`, `low`) VALUES (2, 'Usabiildad', 100, 50, 0);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `high`, `medium`, `low`) VALUES (3, 'Eficiencia', 100, 50, 0);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `high`, `medium`, `low`) VALUES (4, 'Mantenibilidad', 100, 50, 0);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `high`, `medium`, `low`) VALUES (5, 'Portabilidad', 100, 50, 0);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `high`, `medium`, `low`) VALUES (6, 'Lineas de codigo', 100, 50, 0);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `high`, `medium`, `low`) VALUES (7, 'Comentarios', 100, 50, 0);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `high`, `medium`, `low`) VALUES (8, 'Puntos funcion', 100, 50, 0);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `high`, `medium`, `low`) VALUES (9, 'Fich. codigo', 100, 50, 0);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `high`, `medium`, `low`) VALUES (10, 'Actividad', 100, 50, 0);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`charts`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`charts` (`id`, `name`, `description`, `type`, `max_cols`) VALUES (1, 'Tower', NULL, '3D', 5);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`profiles`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`profiles` (`id`, `name`, `description`, `chart_id`) VALUES (1, 'towers 1', NULL, 1);
+INSERT INTO `desglosadb`.`profiles` (`id`, `name`, `description`, `chart_id`) VALUES (2, 'towers 2', NULL, 1);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`mappings`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`mappings` (`id`, `profile_id`, `col_data`, `col_chart`, `title`, `type`, `description`, `measure_id`) VALUES (1, 1, '1', 1, 'Fiabilidad', 'numeric', NULL, 1);
+INSERT INTO `desglosadb`.`mappings` (`id`, `profile_id`, `col_data`, `col_chart`, `title`, `type`, `description`, `measure_id`) VALUES (2, 1, '2', 2, 'Usabilidad', 'numeric', NULL, 2);
+INSERT INTO `desglosadb`.`mappings` (`id`, `profile_id`, `col_data`, `col_chart`, `title`, `type`, `description`, `measure_id`) VALUES (3, 1, '3', 3, 'Eficiencia', 'numeric', NULL, 3);
+INSERT INTO `desglosadb`.`mappings` (`id`, `profile_id`, `col_data`, `col_chart`, `title`, `type`, `description`, `measure_id`) VALUES (4, 1, '4', 4, 'Mantenibilidad', 'numeric', NULL, 4);
+INSERT INTO `desglosadb`.`mappings` (`id`, `profile_id`, `col_data`, `col_chart`, `title`, `type`, `description`, `measure_id`) VALUES (5, 1, '5', 5, 'Portabilidad', 'numeric', NULL, 5);
+INSERT INTO `desglosadb`.`mappings` (`id`, `profile_id`, `col_data`, `col_chart`, `title`, `type`, `description`, `measure_id`) VALUES (6, 2, '1', 1, 'LCD', 'numeric', NULL, 6);
+INSERT INTO `desglosadb`.`mappings` (`id`, `profile_id`, `col_data`, `col_chart`, `title`, `type`, `description`, `measure_id`) VALUES (7, 2, '2', 2, 'Comentarios', 'numeric', NULL, 7);
+INSERT INTO `desglosadb`.`mappings` (`id`, `profile_id`, `col_data`, `col_chart`, `title`, `type`, `description`, `measure_id`) VALUES (8, 2, '3', 3, 'Puntos funcion', 'numeric', NULL, 8);
+INSERT INTO `desglosadb`.`mappings` (`id`, `profile_id`, `col_data`, `col_chart`, `title`, `type`, `description`, `measure_id`) VALUES (9, 2, '4', 4, '% fich. codigo', 'numeric', NULL, 9);
+INSERT INTO `desglosadb`.`mappings` (`id`, `profile_id`, `col_data`, `col_chart`, `title`, `type`, `description`, `measure_id`) VALUES (10, 2, '5', 5, 'Actividad', 'numeric', NULL, 10);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `desglosadb`.`subprojects_has_profiles`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `desglosadb`;
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (1, 1);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (2, 1);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (3, 1);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (4, 1);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (5, 1);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (6, 1);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (1, 2);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (2, 2);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (3, 2);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (4, 2);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (5, 2);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (6, 2);
 
 COMMIT;

@@ -266,7 +266,10 @@
 		initializeProjectTab();
 	}
 	
+	var depth_level;
+	
 	$(document).ready(function() {
+		depth_level = 0;
 		// Initialize Google Maps canvas
 		initializeMap();
 		
@@ -381,7 +384,7 @@
 				   <img src="images/gtk-cancel.png" alt="<s:text name="label.error"/>" title="<s:text name="label.error"/>" width="32" height="32"/><br />
 				   <s:text name="error.no_JRE"/>
 			</applet>
-			<a href="#" onclick="$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');"><s:text name="label.back_to_map"/></a>
+			<a href="#" onclick="$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');depth_level=0;"><s:text name="label.back_to_map"/></a>
 		</div>
 	
 		<div id="tabs" style="position:absolute; top:0; right:0; width:350px">
