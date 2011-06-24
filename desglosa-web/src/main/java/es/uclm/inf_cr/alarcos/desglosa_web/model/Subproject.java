@@ -13,18 +13,25 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="subprojects")
+@NamedQueries ({
+    @NamedQuery(
+        name = "findSubprojectsByCompanyId",
+        query = "select sp from Subproject sp, Factory f where sp.factory.id = f.id and f.company.id = :id group by sp.name"
+        )
+})
 public class Subproject {
 	private int id;
 	private Project project;
 	private Factory factory;
-	private Profile profile;
 	private String name;
-	private String pathToData;
+	private String csvData;
 	private Set<Profile> profiles;
 	
 	public Subproject() {}
@@ -45,21 +52,15 @@ public class Subproject {
 	public Factory getFactory() {
 		return factory;
 	}
-	
-	@ManyToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-    @JoinColumn(name="profile_id", nullable=false)
-    	public Profile getProfile() {
-		return profile;
-	}
 
 	@Column(name="name")
 	public String getName() {
 		return name;
 	}
 	
-	@Column(name="path_to_data")
-	public String getPathToData() {
-		return pathToData;
+	@Column(name="csv_data")
+	public String getCsvData() {
+		return csvData;
 	}
 
     @ManyToMany(fetch = FetchType.EAGER) 
@@ -83,17 +84,13 @@ public class Subproject {
 	public void setFactory(Factory factory) {
 		this.factory = factory;
 	}
-	
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setPathToData(String pathToData) {
-		this.pathToData = pathToData;
+	public void setCsvData(String csvData) {
+		this.csvData = csvData;
 	}
 
 	public void setProfiles(Set<Profile> profiles) {

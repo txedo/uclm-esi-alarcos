@@ -170,7 +170,7 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`subprojects` (
   `project_id` INT NOT NULL ,
   `factory_id` INT NOT NULL ,
   `name` VARCHAR(45) NULL ,
-  `path_to_data` VARCHAR(45) NULL ,
+  `csv_data` VARCHAR(4095) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_subprojects_factories` (`factory_id` ASC) ,
   INDEX `fk_subprojects_projects` (`project_id` ASC) ,
@@ -349,13 +349,13 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`mappings` (
   INDEX `fk_mappings_measures` (`measure_id` ASC) ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `UNIQUE` (`profile_id` ASC, `col_data` ASC, `col_chart` ASC) ,
-  INDEX `fk_mappings_profiles1` (`profile_id` ASC) ,
+  INDEX `fk_mappings_profiles` (`profile_id` ASC) ,
   CONSTRAINT `fk_mappings_measures`
     FOREIGN KEY (`measure_id` )
     REFERENCES `desglosadb`.`measures` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_mappings_profiles1`
+  CONSTRAINT `fk_mappings_profiles`
     FOREIGN KEY (`profile_id` )
     REFERENCES `desglosadb`.`profiles` (`id` )
     ON DELETE NO ACTION
@@ -372,18 +372,18 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`subprojects_has_profiles` (
   `subproject_id` INT NOT NULL ,
   `profile_id` INT NOT NULL ,
   PRIMARY KEY (`subproject_id`, `profile_id`) ,
-  INDEX `fk_subprojects_has_profiles_profiles1` (`profile_id` ASC) ,
-  INDEX `fk_subprojects_has_profiles_subprojects1` (`subproject_id` ASC) ,
-  CONSTRAINT `fk_subprojects_has_profiles_subprojects1`
+  INDEX `fk_subprojects_has_profiles_profiles` (`profile_id` ASC) ,
+  INDEX `fk_subprojects_has_profiles_subprojects` (`subproject_id` ASC) ,
+  CONSTRAINT `fk_subprojects_has_profiles_subprojects`
     FOREIGN KEY (`subproject_id` )
     REFERENCES `desglosadb`.`subprojects` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_subprojects_has_profiles_profiles1`
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_subprojects_has_profiles_profiles`
     FOREIGN KEY (`profile_id` )
     REFERENCES `desglosadb`.`profiles` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -497,12 +497,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (1, 1, 1, 'fase 1', NULL);
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (2, 2, 2, 'mod 1', NULL);
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (3, 2, 4, 'mod 2', NULL);
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (4, 1, 3, 'fase 2', NULL);
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (5, 3, 1, 'fase 1', NULL);
-INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `path_to_data`) VALUES (6, 3, 3, 'fase 2', NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `csv_data`) VALUES (1, 1, 1, 'fase 1', NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `csv_data`) VALUES (2, 2, 2, 'mod 1', NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `csv_data`) VALUES (3, 2, 4, 'mod 2', NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `csv_data`) VALUES (4, 1, 3, 'fase 2', NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `project_id`, `factory_id`, `name`, `csv_data`) VALUES (6, 3, 3, 'fase 2', NULL);
 
 COMMIT;
 
@@ -635,14 +634,12 @@ USE `desglosadb`;
 INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (1, 1);
 INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (2, 1);
 INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (3, 1);
-INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (4, 1);
-INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (5, 1);
 INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (6, 1);
 INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (1, 2);
 INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (2, 2);
 INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (3, 2);
-INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (4, 2);
-INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (5, 2);
 INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (6, 2);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (4, 1);
+INSERT INTO `desglosadb`.`subprojects_has_profiles` (`subproject_id`, `profile_id`) VALUES (4, 2);
 
 COMMIT;

@@ -89,7 +89,7 @@ public class VisualizationAction extends ActionSupport {
 		else {
 			Map<String, Object> queryParams = new HashMap<String, Object>();
 			queryParams.put("id", id);
-			factories = factoryDao.findByNamedQuery("findByCompanyId", queryParams);
+			factories = factoryDao.findByNamedQuery("findFactoriesByCompanyId", queryParams);
 		}
 		return SUCCESS;
 	}
@@ -121,6 +121,32 @@ public class VisualizationAction extends ActionSupport {
 				return ERROR;
 			}
 		}
+		return SUCCESS;
+	}
+	
+	public String getProjectsByCompanyIdJSON() {
+		if (id == 0) {
+			projects = projectDao.getProjects();
+		}
+		else {
+			Map<String, Object> queryParams = new HashMap<String, Object>();
+			queryParams.put("id", id);
+			projects = projectDao.findByNamedQuery("findProjectsByCompanyId", queryParams);
+		}
+		
+		return SUCCESS;
+	}
+	
+	public String getProjectsByFactoryIdJSON() {
+		if (id == 0) {
+			projects = projectDao.getProjects();
+		}
+		else {
+			Map<String, Object> queryParams = new HashMap<String, Object>();
+			queryParams.put("id", id);
+			projects = projectDao.findByNamedQuery("findProjectsByFactoryId", queryParams);
+		}
+		
 		return SUCCESS;
 	}
 
