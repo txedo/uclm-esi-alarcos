@@ -14,7 +14,7 @@
 	<sj:head jqueryui="true"/>
 	
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
-	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/model.js"></script>
 	<script type="text/javascript" src="js/desglosa-facade.js"></script>
 	<script type="text/javascript">
 	var map;
@@ -102,9 +102,7 @@
 		if (!idFactory) var idFactory = "0";
 		else var idFactory = idFactory+"";
 		$.getJSON("/desglosa-web/getFactoriesJSON.action",
-				{
-					id: idFactory
-				},
+				{ id: idFactory	},
 				function (data, status) {
 					if (status == "success") {
 						$.each(data.factories, function (i, item) {
@@ -120,18 +118,19 @@
 		});
 	}
 	
-	function getFactoryLocationFromCompany(idCompany) {
+	function configureFactoriesByCompanyId(idCompany) {
 		showLoadingIndicator(true);
 		if (!idCompany) var idCompany = "0";
 		else var idCompany = idCompany+"";
 		$.getJSON("/desglosa-web/getFactoriesFromCompanyJSON.action",
-				{
-					id: idCompany
-				},
+				{ id: idCompany },
 				function (data, status) {
 					if (status == "success") {
 						$("#factorySelect").attr("disabled", "");
 						$("#factorySelect").empty();
+						$('#factorySelect').append($("<option></option>").attr("value", 0).text("Todas"));
+						$("#factorySelect option:first").attr('selected','selected');
+						$("#factorySelect").trigger('change');
 						$.each(data.factories, function (i, item) {
 							var marker = placeMarker(item.location.latitude, item.location.longitude);
 							marker.setTitle(item.name);
@@ -139,8 +138,6 @@
 							addMarkerEvents(marker, infoWindow);
 							$('#factorySelect').append($("<option></option>").attr("value", item.id).text(item.name));
 						});
-						$('#factorySelect').append($("<option></option>").attr("value", 0).text("Todas"));
-						$("#factorySelect option:last").attr('selected','selected');
 					}
 					else alert('An error has occurred while trying to retrieve factory information: ' + status);
 					showLoadingIndicator(false);
@@ -152,13 +149,49 @@
 		if (!idCompany) var idCompany = "0";
 		else var idCompany = idCompany+"";
 		$.getJSON("/desglosa-web/getCompaniesJSON.action",
-				{
-					id: idCompany
-				},
+				{ id: idCompany	},
 				function (data, status) {
 					if (status == "success") {
 						$.each(data.companies, function (i, item) {
 							$("#companyInformation").append(formatCompanyInformation(item));
+						});
+					}
+					else alert('An error has occurred while trying to retrieve company information: ' + status);
+					showLoadingIndicator(false);
+		});
+	}
+	
+	function configureProjectsByCompanyId(idCompany){
+		showLoadingIndicator(true);
+		var idCompany = idCompany+"";
+		$.getJSON("/desglosa-web/getProjectsByCompanyIdJSON.action",
+				{ id: idCompany },
+				function (data, status) {
+					if (status == "success") {
+						$("#companyProjectSelect").html("");
+						$.each(data.projects, function (i, project) {
+							var foo = "";
+							if (project.subprojects.length > 1) foo = " *";
+							$("<option value='"+project.id+"'>"+project.name+foo+"</option>").appendTo("#companyProjectSelect");
+						});
+					}
+					else alert('An error has occurred while trying to retrieve company information: ' + status);
+					showLoadingIndicator(false);
+		});
+	}
+	
+	function getProjectsByFactoryId(idFactory){
+		showLoadingIndicator(true);
+		var idFactory = idFactory+"";
+		$.getJSON("/desglosa-web/getProjectsByFactoryIdJSON.action",
+				{ id: idFactory },
+				function (data, status) {
+					if (status == "success") {
+						$("#factoryProjectSelect").html("");
+						$.each(data.projects, function (i, project) {
+							var foo = "";
+							if (project.subprojects.length > 1) foo = " *";
+							$("<option value='"+project.id+"'>"+project.name+foo+"</option>").appendTo("#factoryProjectSelect");
 						});
 					}
 					else alert('An error has occurred while trying to retrieve company information: ' + status);
@@ -171,9 +204,7 @@
 		if (!idProject) var idProject = "0";
 		else var idProject = idProject+"";
 		$.getJSON("/desglosa-web/getProjectsJSON.action",
-				{
-					id: idProject
-				},
+				{ id: idProject	},
 				function (data, status) {
 					if (status == "success") {
 						if (idProject == 0) {
@@ -239,15 +270,6 @@
 			$("#indicator").css("display","none");
 	}
 	
-	function resetFilter() {
-		clearAllMarkers();
-		initializeTabs();
-		$("#companySelect").val(-1);
-		$("#factorySelect").html("");
-		$("#factorySelect").attr('disabled', 'disabled');
-		$("#projectSelect").val(-1);
-	}
-	
 	function initializeCompanyTab() {
 		$("#companyInformation").html("<i><s:text name='message.select_company'/></i>");
 	}
@@ -266,18 +288,20 @@
 		initializeProjectTab();
 	}
 	
-	var depth_level;
-	
+	var depth_level; // Global variable to control in which tower level the user is surfing around
 	$(document).ready(function() {
 		depth_level = 0;
 		// Initialize Google Maps canvas
 		initializeMap();
 		
+		// Initialize companySelect select
 		$("#companySelect option:first").attr('selected','selected');
 		$("#companySelect").change( function() {
-			clearAllMarkers();
-			$("#projectInformation").val(-1);
-			getFactoryLocationFromCompany($("#companySelect").val());
+			// When a new company is selected
+			clearAllMarkers(); // clear all markers in the map
+			$("#factoryProjectSelect").val(-1); // unselect any selected factory
+			configureFactoriesByCompanyId($("#companySelect").val()); // Place map locations and fill factorySelect in
+			configureProjectsByCompanyId($("#companySelect").val()); // fill projectSelect in
 			if ($("#companySelect").val() == 0) {
 				// reset company info div
 				initializeCompanyTab();
@@ -291,12 +315,13 @@
 		});
 		
 		$("#factorySelect").change( function() {
+			// TODO si selecciondas "todas" meter los proyectos de la compañia seleccionada
 			clearAllMarkers();
-			$("#projectInformation").val(-1);
+			$("#factoryProjectSelect").attr('disabled','');
+			$("#factoryProjectSelect").val(-1);
 			if ($("#factorySelect").val() == 0) {
 				// reset factory info div
 				initializeFactoryTab();
-				getFactoryLocationFromCompany($("#companySelect").val());
 			}
 			else {
 				// show info in factory info div
@@ -304,23 +329,35 @@
 				getFactoryLocation($("#factorySelect").val());
 				// Indicator will be hidden inside getFactoryLocation() when the action finishes.
 			}
+			getProjectsByFactoryId($("#factorySelect").val());
 		});
 		
-		$("<option value='0'><s:text name='label.all_male'/></option>").appendTo("#projectSelect");
-		$("#projectSelect").change( function() {
+		$("#companyProjectSelect").change( function() {
 			clearAllMarkers();
-			if ($("#projectSelect").val() < 0) {
+			$("#factoryProjectSelect").val(-1);
+			if ($("#companyProjectSelect").val() < 0) {
 				// reset project info div
 				initializeProjectTab();
-			} else if ($("#projectSelect").val() == 0) {
-				// show info in project info div
-				$("#projectInformation").text("");
-				getProject($("#projectSelect").val());
-				// Indicator will be hidden inside getFactoryLocation() when the action finishes.
 			} else {
 				// show info in project info div
 				$("#projectInformation").text("");
-				getProject($("#projectSelect").val());
+				getProject($("#companyProjectSelect").val());
+				// Indicator will be hidden inside getFactoryLocation() when the action finishes.
+			}
+		});
+		
+		$("#factoryProjectSelect").html("");
+		$("#factoryProjectSelect").attr('disabled','disabled');
+		$("#factoryProjectSelect").change( function() {
+			clearAllMarkers();
+			$("#companyProjectSelect").val(-1);
+			if ($("#factoryProjectSelect").val() < 0) {
+				// reset project info div
+				initializeProjectTab();
+			} else {
+				// show info in project info div
+				$("#projectInformation").text("");
+				getProject($("#factoryProjectSelect").val());
 				// Indicator will be hidden inside getFactoryLocation() when the action finishes.
 			}
 		});
@@ -334,26 +371,31 @@
 	<div id="filter">
 		<fieldset>
 			<legend><s:text name="label.filter.corporative"/>:</legend>
-			<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
-			<select id="companySelect" >
-				<option value="-1" disabled="disabled">-- <fmt:message key="label.select.choose_company"/> --</option>
-				<s:iterator var="company" value="companies">
-					<option value="<s:property value='id'/>"><s:property value="name"/></option>
-				</s:iterator>
-				<option value="0"><fmt:message key="label.all_female"/></option>
-			</select>
 			
-			<s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
-			<select id="factorySelect" disabled="disabled"></select>
-			
-			<s:label for="projectSelect" value="%{getText('label.select.project')}:"/>
-			<s:select id="projectSelect" name="projectSelect" listKey="id" list="projects" size="5"></s:select>
-			
-			<input type="button" value="Reset" onclick="resetFilter()"/>
+			<div id="companyFilter" style="float:left;">
+				<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
+				<select id="companySelect" >
+					<option value="-1" disabled="disabled">-- <fmt:message key="label.select.choose_company"/> --</option>
+					<option value="0"><fmt:message key="label.all_female"/></option>
+					<s:iterator var="company" value="companies">
+						<option value="<s:property value='id'/>"><s:property value="name"/></option>
+					</s:iterator>
+				</select>
+				<br />
+				<s:label for="companyProjectSelect" value="%{getText('label.select.project')}:"/>
+				<s:select id="companyProjectSelect" name="companyProjectSelect" listKey="id" list="projects" size="5"></s:select>
+			</div>
+			<div id="factoryFilter" style="float:left;">
+				<s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
+				<select id="factorySelect" disabled="disabled"></select>
+				<br />
+				<s:label for="factoryProjectSelect" value="%{getText('label.select.project')}:"/>
+				<s:select id="factoryProjectSelect" name="factoryProjectSelect" listKey="id" list="projects" size="5"></s:select>
+			</div>
 		</fieldset>
 	</div>
 	
-	<div style="clear:both;"></div>
+	<div style="clear:both;"/>
 	
 	<div id="workingArea" style="position:relative; height:450px">
 		<div id="map_canvas" style="position:absolute; top:0; left:0; width: 600px; height: 400px; display: ;"></div>

@@ -10,12 +10,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="projects")
+@NamedQueries ({
+    @NamedQuery(
+        name = "findProjectsByCompanyId",
+        query = "select p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = f.id and f.company.id = :id "
+        ),
+    @NamedQuery(
+    	name = "findProjectsByFactoryId",
+        query = "select p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = :id group by p"
+        )
+})
 public class Project {
 	private int id;
 	private String name;

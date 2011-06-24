@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name="factories")
 @NamedQueries ({
     @NamedQuery(
-        name = "findByCompanyId",
+        name = "findFactoriesByCompanyId",
         query = "select f from Factory f where f.company.id = :id "
         )
 })
