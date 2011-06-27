@@ -118,7 +118,7 @@
 		});
 	}
 	
-	function configureFactoriesByCompanyId(idCompany) {
+	function configureFactoriesByCompanyId(idCompany, fillFactorySelect) {
 		showLoadingIndicator(true);
 		if (!idCompany) var idCompany = "0";
 		else var idCompany = idCompany+"";
@@ -126,17 +126,21 @@
 				{ id: idCompany },
 				function (data, status) {
 					if (status == "success") {
-						$("#factorySelect").attr("disabled", "");
-						$("#factorySelect").empty();
-						$('#factorySelect').append($("<option></option>").attr("value", 0).text("Todas"));
-						$("#factorySelect option:first").attr('selected','selected');
-						$("#factorySelect").trigger('change');
+						if (fillFactorySelect) {
+							$("#factorySelect").attr("disabled", "");
+							$("#factorySelect").empty();
+							$('#factorySelect').append($("<option></option>").attr("value", 0).text("Todas"));
+							$("#factorySelect option:first").attr('selected','selected');
+							$("#factorySelect").trigger('change');
+						}
 						$.each(data.factories, function (i, item) {
 							var marker = placeMarker(item.location.latitude, item.location.longitude);
 							marker.setTitle(item.name);
 							var infoWindow = createInfoWindow(item);
 							addMarkerEvents(marker, infoWindow);
-							$('#factorySelect').append($("<option></option>").attr("value", item.id).text(item.name));
+							if (fillFactorySelect) {
+								$('#factorySelect').append($("<option></option>").attr("value", item.id).text(item.name));
+							}
 						});
 					}
 					else alert('An error has occurred while trying to retrieve factory information: ' + status);
@@ -300,7 +304,7 @@
 			// When a new company is selected
 			clearAllMarkers(); // clear all markers in the map
 			$("#factoryProjectSelect").val(-1); // unselect any selected factory
-			configureFactoriesByCompanyId($("#companySelect").val()); // Place map locations and fill factorySelect in
+			configureFactoriesByCompanyId($("#companySelect").val(), true); // Place map locations and fill factorySelect in
 			configureProjectsByCompanyId($("#companySelect").val()); // fill projectSelect in
 			if ($("#companySelect").val() == 0) {
 				// reset company info div
@@ -315,13 +319,15 @@
 		});
 		
 		$("#factorySelect").change( function() {
-			// TODO si selecciondas "todas" meter los proyectos de la compañia seleccionada
+			
 			clearAllMarkers();
 			$("#factoryProjectSelect").attr('disabled','');
 			$("#factoryProjectSelect").val(-1);
 			if ($("#factorySelect").val() == 0) {
 				// reset factory info div
 				initializeFactoryTab();
+				// If "all factories" is selected, place company factories location
+				configureFactoriesByCompanyId($("#companySelect").val(), false); // Place map locations and fill factorySelect in
 			}
 			else {
 				// show info in factory info div

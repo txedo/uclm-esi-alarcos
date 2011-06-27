@@ -1,7 +1,5 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,13 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="subprojects")
@@ -24,6 +21,10 @@ import javax.persistence.Table;
     @NamedQuery(
         name = "findSubprojectsByCompanyId",
         query = "select sp from Subproject sp, Factory f where sp.factory.id = f.id and f.company.id = :id group by sp.name"
+        ),
+    @NamedQuery(
+        name = "findSubprojectsByProjectId",
+        query = "select sp from Subproject sp where sp.project.id = :id "
         )
 })
 public class Subproject {
@@ -32,7 +33,8 @@ public class Subproject {
 	private Factory factory;
 	private String name;
 	private String csvData;
-	private Set<Profile> profiles;
+	private String profileName;
+	private Profile profile;
 	
 	public Subproject() {}
 
@@ -63,14 +65,14 @@ public class Subproject {
 		return csvData;
 	}
 
-    @ManyToMany(fetch = FetchType.EAGER) 
-    @JoinTable(
-            name="subprojects_has_profiles",
-            joinColumns = { @JoinColumn( name="subproject_id") },
-            inverseJoinColumns = @JoinColumn( name="profile_id")
-    )
-	public Set<Profile> getProfiles() {
-		return profiles;
+	@Column(name="profile")
+	public String getProfileName() {
+		return profileName;
+	}
+	
+	@Transient
+	public Profile getProfile() {
+		return profile;
 	}
 
 	public void setId(int id) {
@@ -93,8 +95,11 @@ public class Subproject {
 		this.csvData = csvData;
 	}
 
-	public void setProfiles(Set<Profile> profiles) {
-		this.profiles = profiles;
+	public void setProfileName(String profileName) {
+		this.profileName = profileName;
 	}
-	
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
 }

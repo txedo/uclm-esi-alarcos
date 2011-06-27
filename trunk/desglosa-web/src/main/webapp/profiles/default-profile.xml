@@ -1,0 +1,29 @@
+<profile name="default">
+	<color>
+		<acceptable>ff0000</acceptable>
+		<peripheral>0000ff</peripheral>
+		<nonAcceptable>00ff00</nonAcceptable>
+	</color>
+	<view name="basic characteristics" chart="towers">
+		<dim attr="width" key="fia">
+			<type>numeric</type>
+			<csv_col>1</csv_col>
+		</dim>
+		<dim attr="height" key="usa">
+			<type>numeric</type>
+			<csv_col>2</csv_col>
+		</dim>
+		<dim attr="depth" key="efi">
+			<type>numeric</type>
+			<csv_col>3</csv_col>
+		</dim>
+		<dim attr="color" key="mant">
+			<type>numeric</type>
+			<csv_col>4</csv_col>
+		</dim>
+		<dim attr="fill" key="port">
+			<type>numeric</type>
+			<csv_col>5</csv_col>
+		</dim>
+	</view>
+</profile>

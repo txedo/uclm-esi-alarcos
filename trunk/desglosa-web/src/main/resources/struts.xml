@@ -181,5 +181,14 @@
 				</param>
 			</result>
 		</action>
+		<action name="getSubprojectsAndProfilesByProjectIdJSON" class="visualizationAction" method="getSubprojectsAndProfilesByProjectIdJSON">
+			<result type="json">
+				<param name="excludeProperties">
+					companies,
+					factories,
+					projects
+				</param>
+			</result>
+		</action>
 	</package>
 </struts>
