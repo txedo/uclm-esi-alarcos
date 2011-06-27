@@ -7,8 +7,43 @@ function selectFactory(id) {
 }
 
 function selectProject(id) {
-	alert('Selected project: ' + id);
+	showLoadingIndicator(true);
+	$.getJSON("/desglosa-web/getSubprojectsAndProfilesByProjectIdJSON.action",
+			{ id: id+""	},
+			function (data, status) {
+				if (status == "success") {
+//					// one project -> one neightborhood
+//					var tower;
+//					var neighborhood = new Neighborhood();
+//					$.each(data.subprojects, function (i, subproject) {
+//						// one subproject -> one flat
+//						$.each(subproject.profile.views, function (i, view) {
+//							// set innerHTML for view.name
+//							if (view.chart == "towers") {
+//								tower = new Object();
+//								tower = configureTower(view.dimensions, csvData);
+//								neighborhood.flats.push(tower);
+//							}
+//						)};
+//					});
+				}
+				else alert('An error has occurred while trying to retrieve company information: ' + status);
+				showLoadingIndicator(false);
+	});
 }
+
+//function configureTower(dimensions, csvData) {
+//	var tower = new Object();
+//	$.each(dimensions, function (i, item) {
+//		var data = csvData[item.csvCol-1];
+//		if (item.attr == "width") tower.width = data;
+//		else if (item.attr == "height") tower.height = data;
+//		else if (item.attr == "depth") tower.depth = data;
+//		else if (item.attr == "color") tower.color = data;
+//		else if (item.attr == "fill") tower.fill = data;
+//	)};
+//	return tower;
+//}
 
 function City () {
 	this.neighborhoods = new Array();

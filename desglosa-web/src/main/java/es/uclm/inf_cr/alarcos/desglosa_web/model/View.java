@@ -7,44 +7,41 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="profile")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Profile {
+public class View {
 	@XmlAttribute
 	private String name;
-	@XmlElement(name="color")
-	private Color color;
-	@XmlElement(name="view")
-	private List<View> views = new ArrayList<View>();
-	
-	public Profile() {}
+	@XmlAttribute
+	private String chart;
+	@XmlElement(name="dim")
+	private List<Dimension> dimensions = new ArrayList<Dimension>();
+
+	public View() {}
 
 	public String getName() {
 		return name;
 	}
 
-	public Color getColor() {
-		return color;
+	public String getChart() {
+		return chart;
 	}
 
-	public List<View> getViews() {
-		return views;
+	public List<Dimension> getDimensions() {
+		return dimensions;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
+	public void setChart(String chart) {
+		this.chart = chart;
 	}
 
-	public void setViews(List<View> views) {
-		this.views = views;
+	public void setDimensions(List<Dimension> dimensions) {
+		this.dimensions = dimensions;
 	}
-
-
+	
 	
 }
