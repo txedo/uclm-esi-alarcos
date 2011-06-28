@@ -11,9 +11,11 @@ import exceptions.ViewManagerNotInstantiatedException;
 import model.gl.control.EViewLevels;
 import model.gl.control.GLFactoryViewManager;
 import model.gl.control.GLProjectViewManager;
+import model.gl.control.GLTowerViewManager;
 import model.gl.knowledge.AntennaBall;
 import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
+import model.gl.knowledge.Tower;
 import model.gl.knowledge.caption.Caption;
 import model.util.City;
 import model.util.Color;
@@ -74,6 +76,7 @@ public class IGLFacadeImpl implements IGLFacade {
 		for (Neighborhood n : nbh) {
 			factories.addAll(n.getFlats());
 		}
+		// Change the active view to FactoryLevel
 		GLFactoryViewManager.getInstance().setItems(factories);
 		GLFactoryViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.FactoryLevel);
 	}
@@ -136,8 +139,51 @@ public class IGLFacadeImpl implements IGLFacade {
 		for (Neighborhood n : nbh) {
 			projects.addAll(n.getFlats());
 		}
+		// Change the active view to ProjectLevel
 		GLProjectViewManager.getInstance().setItems(projects);
 		GLProjectViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.ProjectLevel);
+	}
+
+	@Override
+	public void visualizeTowers(String JSONtext) throws ViewManagerNotInstantiatedException {
+		List<GLObject> towers = new ArrayList<GLObject>();
+		Tower tower;
+		List<Neighborhood> nbh = new ArrayList<Neighborhood>();
+		City city;
+		JSONObject json = (JSONObject)JSONSerializer.toJSON(JSONtext);
+		
+		JSONArray jsonNeighborhoods = json.getJSONArray("neighborhoods");
+		for (int i = 0; i < jsonNeighborhoods.size(); i++) {
+			JSONObject jsonFlatsObject = jsonNeighborhoods.getJSONObject(i);
+			JSONArray jsonFlats = jsonFlatsObject.getJSONArray("flats");
+			towers = new ArrayList<GLObject>();
+			for (int j = 0; j < jsonFlats.size(); j++) {
+				JSONObject jobj = jsonFlats.getJSONObject(j);
+				tower = new Tower();
+				tower.setId(jobj.getInt("id"));
+				tower.setDepth((float)jobj.getDouble("depth"));
+				tower.setHeight((float)jobj.getDouble("height"));
+				tower.setWidth((float)jobj.getDouble("width"));
+				tower.setFill((float)jobj.getDouble("fill"));
+				tower.setColor(new Color(jobj.getString("color")));
+				towers.add(tower);
+			}
+			// Build the neighborhood
+			nbh.add(new Neighborhood(towers));
+		}
+		
+		// Build the city
+		city = new City(nbh);
+		city.placeNeighborhoods();
+		
+		towers = new ArrayList<GLObject>();
+		for (Neighborhood n : nbh) {
+			towers.addAll(n.getFlats());
+		}
+		
+		// Change the active view to TowerLevel		
+		GLTowerViewManager.getInstance().setItems(towers);
+		GLTowerViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.TowerLevel);
 	}
 
 }

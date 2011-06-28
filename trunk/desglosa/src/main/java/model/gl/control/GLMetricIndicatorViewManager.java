@@ -44,6 +44,12 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 		if (this.isSelectionMode()) this.selectItem();
 		this.drawItems();
 	}
+	
+	@Override
+	public void setItems(List objs) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	public void setupItems() {
 		this.setupNodes();
@@ -120,14 +126,8 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
-		((GLTowerViewManager)super.drawer.getViewManager(EViewLevels.TowerLevel)).setupItems(selectedObject);
+		//((GLTowerViewManager)super.drawer.getViewManager(EViewLevels.TowerLevel)).setupItems(selectedObject);
 		this.drawer.setViewLevel(EViewLevels.TowerLevel);
-	}
-
-	@Override
-	public void setItems(List objs) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

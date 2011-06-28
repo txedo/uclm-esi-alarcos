@@ -9,41 +9,59 @@ function selectFactory(id) {
 function selectProject(id) {
 	showLoadingIndicator(true);
 	$.getJSON("/desglosa-web/getSubprojectsAndProfilesByProjectIdJSON.action",
-			{ id: id+""	},
+			{ id: id },
 			function (data, status) {
 				if (status == "success") {
-//					// one project -> one neightborhood
-//					var tower;
-//					var neighborhood = new Neighborhood();
-//					$.each(data.subprojects, function (i, subproject) {
-//						// one subproject -> one flat
-//						$.each(subproject.profile.views, function (i, view) {
-//							// set innerHTML for view.name
-//							if (view.chart == "towers") {
-//								tower = new Object();
-//								tower = configureTower(view.dimensions, csvData);
-//								neighborhood.flats.push(tower);
-//							}
-//						)};
-//					});
+					// one project -> one neightborhood
+					var tower;
+					var neighborhood = new Neighborhood();
+					$.each(data.subprojects, function (i, subproject) {
+						// one subproject -> one flat
+						var color = subproject.profile.color;
+						$.each(subproject.profile.views, function (i, view) {
+							// set innerHTML for view.name
+							if (view.chart.maxCols < view.dimensions.length) {
+								alert ('Hay mas atributos que columnas, se ignoraran los sobrantes.');
+							}
+							if (view.chart.name == "towers") {
+								tower = new Object();
+								tower = configureTower(color, view.dimensions);
+								tower.id = subproject.id;
+								neighborhood.flats.push(tower);
+							}
+						});
+					});
+					var city = new City();
+					city.neighborhoods.push(neighborhood);
+					// Convert project array to JSON format
+					var JSONtext = JSON.stringify(city);
+					// Change active view
+					document.DesglosaApplet.visualizeTowers(JSONtext);
 				}
 				else alert('An error has occurred while trying to retrieve company information: ' + status);
 				showLoadingIndicator(false);
 	});
 }
 
-//function configureTower(dimensions, csvData) {
-//	var tower = new Object();
-//	$.each(dimensions, function (i, item) {
-//		var data = csvData[item.csvCol-1];
-//		if (item.attr == "width") tower.width = data;
-//		else if (item.attr == "height") tower.height = data;
-//		else if (item.attr == "depth") tower.depth = data;
-//		else if (item.attr == "color") tower.color = data;
-//		else if (item.attr == "fill") tower.fill = data;
-//	)};
-//	return tower;
-//}
+function configureTower(color, dimensions) {
+	var MAX_DEPTH = 3.0;
+	var MAX_WIDTH = 3.0;
+	var MAX_HEIGHT = 12.0;
+	var tower = new Object();
+	$.each(dimensions, function (i, item) {
+		if (item.attr == "width") tower.width = item.value*MAX_WIDTH/item.measure.high;
+		else if (item.attr == "height") tower.height = item.value*MAX_HEIGHT/item.measure.high;
+		else if (item.attr == "depth") tower.depth = item.value*MAX_DEPTH/item.measure.high;
+		else if (item.attr == "color") {
+			if (item.value <= item.measure.medium * 0.90) tower.color = color.nonAcceptable;
+			else if (item.value < item.measure.medium * 0.90 && item.value > item.measure.medium * 1.10) tower.color = color.peripheral;
+			else tower.color = color.acceptable;
+		}
+		else if (item.attr == "fill") tower.fill = item.value*MAX_HEIGHT/item.measure.high;
+		else ;
+	});
+	return tower;
+}
 
 function City () {
 	this.neighborhoods = new Array();

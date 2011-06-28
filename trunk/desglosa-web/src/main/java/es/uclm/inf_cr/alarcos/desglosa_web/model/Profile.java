@@ -44,7 +44,5 @@ public class Profile {
 	public void setViews(List<View> views) {
 		this.views = views;
 	}
-
-
 	
 }
