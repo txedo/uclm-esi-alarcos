@@ -8,16 +8,22 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Dimension {
+	@XmlTransient
+	public static final Object EXPR = "expr";
+	@XmlTransient
+	public static final Object NUMERIC = "numeric";
+	@XmlTransient
+	public static final Object PERCENT = "percent";
 	@XmlAttribute
 	private String attr;
-	@XmlAttribute
+	@XmlAttribute(name="measure")
 	private String measureKey;
 	@XmlTransient
 	private Measure measure;
 	@XmlElement
 	private String type;
 	@XmlElement(name="csv_col")
-	private int csvCol;
+	private String csvCol;
 	@XmlTransient
 	private Object value;
 	
@@ -39,7 +45,7 @@ public class Dimension {
 		return type;
 	}
 
-	public int getCsvCol() {
+	public String getCsvCol() {
 		return csvCol;
 	}
 	
@@ -63,7 +69,7 @@ public class Dimension {
 		this.type = type;
 	}
 
-	public void setCsvCol(int csvCol) {
+	public void setCsvCol(String csvCol) {
 		this.csvCol = csvCol;
 	}
 	

@@ -14,7 +14,6 @@
 	<sj:head jqueryui="true"/>
 	
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
-	<script type="text/javascript" src="js/model.js"></script>
 	<script type="text/javascript" src="js/desglosa-facade.js"></script>
 	<script type="text/javascript">
 	var map;

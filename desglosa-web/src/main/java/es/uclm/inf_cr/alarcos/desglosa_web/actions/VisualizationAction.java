@@ -18,14 +18,18 @@ import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.MeasureDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.SubprojectDAO;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.ChartNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.MeasureNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Dimension;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Profile;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.View;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
 
 public class VisualizationAction extends ActionSupport {
@@ -193,7 +197,13 @@ public class VisualizationAction extends ActionSupport {
 		for (Subproject sp : subprojects) {
 			try {
 				sp.setProfile((Profile)XMLAgent.unmarshal(ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + sp.getProfileName(), Profile.class));
-				
+				for (View v : sp.getProfile().getViews()) {
+					v.obtainDimensionValues(sp.getCsvData());
+					for (Dimension d : v.getDimensions()) {
+						d.setMeasure(measureDao.getMeasure(d.getMeasureKey()));
+					}
+					v.setChart(chartDao.getChart(v.getChartName()));
+				}
 			} catch (JAXBException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -204,6 +214,12 @@ public class VisualizationAction extends ActionSupport {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MeasureNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ChartNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

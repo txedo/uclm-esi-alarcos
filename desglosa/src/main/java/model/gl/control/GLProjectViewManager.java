@@ -16,7 +16,6 @@ import model.gl.TextureLoader;
 import model.gl.knowledge.AntennaBall;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLObject3D;
-import model.gl.knowledge.caption.Caption;
 import model.util.Vector3f;
 
 import exceptions.GLSingletonNotInitializedException;

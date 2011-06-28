@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import model.NotifyUIManager;
 import model.gl.GLDrawer;
@@ -13,18 +12,31 @@ import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLObject3D;
-import model.gl.knowledge.Tower;
-import model.util.Color;
 import model.util.Vector3f;
 import exceptions.GLSingletonNotInitializedException;
+import exceptions.ViewManagerNotInstantiatedException;
 
 public class GLTowerViewManager extends GLViewManager {
+	
+	static private GLTowerViewManager _instance = null;
+	
+	/**
+	 * @return The unique instance of this class.
+	 * @throws ViewManagerNotInstantiatedException 
+	 */
+	static public GLTowerViewManager getInstance() throws ViewManagerNotInstantiatedException {
+		if (null == _instance) {
+			throw new ViewManagerNotInstantiatedException();
+		}
+		return _instance;
+	}
+	
 	private List<GLObject> towers;
 	
 	public GLTowerViewManager(GLDrawer d, boolean is3d) {
 		super(d, is3d);
 		towers = new ArrayList<GLObject>();
-		setupItems(10);
+		_instance = this;
 	}
 	
 	@Override
@@ -44,18 +56,10 @@ public class GLTowerViewManager extends GLViewManager {
 		this.drawItems();
 	}
 
-	public void setupItems(int id) {
+	@Override
+	public void setItems(List objs) {
 		towers = new ArrayList<GLObject>();
-		Random r = new Random();
-		Color c;
-		Tower t;
-		for (int i = 0; i < id; i++) {
-			c = new Color (r.nextFloat(), r.nextFloat(), r.nextFloat());
-			t = new Tower (r.nextFloat()*9,r.nextFloat()*9,r.nextFloat()*2.f,r.nextFloat()*2.f,r.nextFloat()*5,c);
-			float aux = t.getRealMeasure();
-			t.setEstimatedMeasure(aux+1);
-			towers.add(t);
-		}
+		towers.addAll(objs);
 	}
 
 	@Override
@@ -80,12 +84,6 @@ public class GLTowerViewManager extends GLViewManager {
 	protected void selectedObjectHandler(int selectedObject) {
 		System.err.println("Selected tower: " + selectedObject);
 		NotifyUIManager.notifySelectedTower(selectedObject);
-	}
-
-	@Override
-	public void setItems(List objs) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
