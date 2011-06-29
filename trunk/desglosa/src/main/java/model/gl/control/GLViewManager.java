@@ -2,6 +2,7 @@ package model.gl.control;
 
 import java.io.IOException;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -14,19 +15,31 @@ import model.gl.GLDrawer;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.TextureLoader;
+import model.gl.knowledge.GLObject;
+import model.gl.knowledge.GLPavement;
 import model.gl.knowledge.caption.Caption;
+import model.util.Vector3f;
 
 public abstract class GLViewManager {
 	
 	protected final int BUFFSIZE = 512;
 	/* http://www.cgtextures.com/ */
-	private final String FLOOR_TEXTURE = "textures/metal-floor-texture-01.jpg";
+	private final String PAVEMENT_TEXTURE = "textures/pavement-texture.jpg";
+	private final String FLOOR_TEXTURE = "textures/floor-texture.jpg";
+	private final String [] SKYBOX_TEXTURE = {  "textures/skybox0.png" , 
+												"textures/skybox1.png" , 
+												"textures/skybox2.png" , 
+												"textures/skybox3.png" , 
+												"textures/skybox4.png" };
 	
 	protected GLDrawer drawer;
 	protected boolean threeDimensional;
 	protected boolean selectionMode;
+	protected int clickCount;
 	protected static double pickingRegion;
+	private List<GLObject> pavements;
 	private TextureLoader textureLoader;
+	private TextureLoader skyboxTextureLoader;
 	
 	private Caption caption = null;
 	
@@ -38,8 +51,10 @@ public abstract class GLViewManager {
 		this.threeDimensional = is3D;
 		this.shadowSupport = false;
 		this.selectionMode = false;
+		this.clickCount = 0;
 		pickingRegion = 0.1;
-		textureLoader = new TextureLoader(new String[]{FLOOR_TEXTURE});
+		textureLoader = new TextureLoader(new String[]{FLOOR_TEXTURE, PAVEMENT_TEXTURE});
+		skyboxTextureLoader = new TextureLoader(SKYBOX_TEXTURE);
 	}
 	
 	 /** Called by the GLDrawer.setViewLevel() function to configure OpenGL properties.
@@ -55,8 +70,29 @@ public abstract class GLViewManager {
 	public abstract void manageView() throws GLSingletonNotInitializedException, IOException ;
 	
 	public abstract void setItems(List objs);
+	
+	public abstract void addItems(List objs);
 
 	public abstract void drawItems () throws GLSingletonNotInitializedException;
+	
+	public void setPavements (List<GLObject> pavs) {
+		pavements = new ArrayList<GLObject>();
+		pavements.addAll(pavs);
+	}
+	
+	public void drawPavements () throws GLSingletonNotInitializedException, IOException {
+		if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true, false);
+		if (pavements != null) {
+			for (GLObject globj : pavements) {
+				if (globj instanceof GLPavement) {
+					if (((GLPavement)globj).getTexture() == -1) {
+						((GLPavement)globj).setTexture(textureLoader.getTextureNames()[1]);
+					}
+					((GLPavement)globj).draw();
+				}
+			}
+		}
+	}
 	
 	public void drawShadows () throws GLSingletonNotInitializedException {
 		if (this.shadowSupport) {
@@ -110,6 +146,7 @@ public abstract class GLViewManager {
 		selectBuffer.get(selectBuff);
 		this.handleHits(hits, selectBuff);
 		selectionMode = false;
+		//clickCount = 0;
 	}
 	
 	 /** Called by the selectItem function.
@@ -153,7 +190,7 @@ public abstract class GLViewManager {
 	
 	protected void drawFloor () throws GLSingletonNotInitializedException, IOException {
 		final float FLOOR_DIMENSION = 100.0f;
-		if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
+		if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true, false);
 		GLUtils.enableMultisample();
 		GLSingleton.getGL().glDisable(GL2.GL_LIGHTING);
 		GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D);
@@ -171,6 +208,74 @@ public abstract class GLViewManager {
 		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
 		GLUtils.disableMultisample();
 	}
+	
+	protected void drawSkybox () throws GLSingletonNotInitializedException, IOException {
+		// This skybox technique was extracted from http://sidvind.com/wiki/Skybox_tutorial
+		if (!skyboxTextureLoader.isTexturesLoaded()) skyboxTextureLoader.loadTexures(true, true, true, true);
+		GLUtils.enableMultisample();
+		GLSingleton.getGL().glPushMatrix();
+		GLSingleton.getGL().glLoadIdentity();
+		Vector3f viewDir = this.drawer.getCamera().getViewDir();
+		GLSingleton.getGLU().gluLookAt(0, 0, 0,
+				viewDir.getX(), viewDir.getY(), viewDir.getZ(),
+				0, 1, 0);
+		GLSingleton.getGL().glPushAttrib(GL2.GL_ENABLE_BIT);
+		GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D);
+		GLSingleton.getGL().glDisable(GL2.GL_DEPTH_TEST);
+		GLSingleton.getGL().glDisable(GL2.GL_LIGHTING);
+		GLSingleton.getGL().glDisable(GL2.GL_BLEND);
+		GLSingleton.getGL().glColor4f(1,1,1,1);
+		
+		// Render the front quad
+		GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, skyboxTextureLoader.getTextureNames()[0]);
+		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
+			GLSingleton.getGL().glTexCoord2f(0, 0); GLSingleton.getGL().glVertex3f( -0.5f, -0.5f, -0.5f );
+			GLSingleton.getGL().glTexCoord2f(1, 0); GLSingleton.getGL().glVertex3f(  0.5f, -0.5f, -0.5f );
+			GLSingleton.getGL().glTexCoord2f(1, 1); GLSingleton.getGL().glVertex3f(  0.5f,  0.5f, -0.5f );
+			GLSingleton.getGL().glTexCoord2f(0, 1); GLSingleton.getGL().glVertex3f( -0.5f,  0.5f, -0.5f );
+		GLSingleton.getGL().glEnd();
+		 
+		// Render the left quad
+		GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, skyboxTextureLoader.getTextureNames()[1]);
+		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
+			GLSingleton.getGL().glTexCoord2f(0, 0); GLSingleton.getGL().glVertex3f( -0.5f, -0.5f,  0.5f );
+			GLSingleton.getGL().glTexCoord2f(1, 0); GLSingleton.getGL().glVertex3f( -0.5f, -0.5f, -0.5f );
+			GLSingleton.getGL().glTexCoord2f(1, 1); GLSingleton.getGL().glVertex3f( -0.5f,  0.5f, -0.5f );
+			GLSingleton.getGL().glTexCoord2f(0, 1); GLSingleton.getGL().glVertex3f( -0.5f,  0.5f,  0.5f );
+		GLSingleton.getGL().glEnd();
+		 
+		// Render the back quad
+		GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, skyboxTextureLoader.getTextureNames()[2]);
+		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
+			GLSingleton.getGL().glTexCoord2f(0, 0); GLSingleton.getGL().glVertex3f(  0.5f, -0.5f,  0.5f );
+			GLSingleton.getGL().glTexCoord2f(1, 0); GLSingleton.getGL().glVertex3f( -0.5f, -0.5f,  0.5f );
+			GLSingleton.getGL().glTexCoord2f(1, 1); GLSingleton.getGL().glVertex3f( -0.5f,  0.5f,  0.5f );
+			GLSingleton.getGL().glTexCoord2f(0, 1); GLSingleton.getGL().glVertex3f(  0.5f,  0.5f,  0.5f );
+		GLSingleton.getGL().glEnd();
+		 
+		// Render the right quad
+		GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, skyboxTextureLoader.getTextureNames()[3]);
+		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
+			GLSingleton.getGL().glTexCoord2f(0, 0); GLSingleton.getGL().glVertex3f(  0.5f, -0.5f, -0.5f );
+			GLSingleton.getGL().glTexCoord2f(1, 0); GLSingleton.getGL().glVertex3f(  0.5f, -0.5f,  0.5f );
+			GLSingleton.getGL().glTexCoord2f(1, 1); GLSingleton.getGL().glVertex3f(  0.5f,  0.5f,  0.5f );
+			GLSingleton.getGL().glTexCoord2f(0, 1); GLSingleton.getGL().glVertex3f(  0.5f,  0.5f, -0.5f );
+		GLSingleton.getGL().glEnd();
+		 
+		// Render the top quad
+		GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, skyboxTextureLoader.getTextureNames()[4]);
+		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
+			GLSingleton.getGL().glTexCoord2f(0, 0); GLSingleton.getGL().glVertex3f( -0.5f,  0.5f, -0.5f );
+			GLSingleton.getGL().glTexCoord2f(1, 0); GLSingleton.getGL().glVertex3f(  0.5f,  0.5f, -0.5f );
+			GLSingleton.getGL().glTexCoord2f(1, 1); GLSingleton.getGL().glVertex3f(  0.5f,  0.5f,  0.5f );
+			GLSingleton.getGL().glTexCoord2f(0, 1); GLSingleton.getGL().glVertex3f( -0.5f,  0.5f,  0.5f );
+		GLSingleton.getGL().glEnd();
+		 
+		// Restore enable bits and matrix
+		GLSingleton.getGL().glPopAttrib();
+		GLSingleton.getGL().glPopMatrix();
+		GLUtils.disableMultisample();
+	}
 
 	protected abstract void selectedObjectHandler(int selectedObject);
 
@@ -178,8 +283,9 @@ public abstract class GLViewManager {
 		return selectionMode;
 	}
 
-	public void setSelectionMode(boolean selectionMode) {
+	public void setSelectionMode(boolean selectionMode, int clickCount) {
 		this.selectionMode = selectionMode;
+		this.clickCount = clickCount;
 	}
 	
 	public static void setPickingRegion(double pickRegion) {

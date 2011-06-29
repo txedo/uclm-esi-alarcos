@@ -1,18 +1,37 @@
-function selectTower(id) {
-	alert('Selected tower: ' + id);
+var depth_level; // Global variable to control in which tower level the user is surfing around
+
+function selectTower(id, clickCount) {
+	switch (depth_level) {
+		case 1:
+			switch (clickCount) {
+				case 1:
+					
+					break;
+				case 2:
+					
+					break;
+				default:
+					break;
+			}
+			break;
+		default:
+			break;
+	}
 }
 
-function selectFactory(id) {
-	alert('Selected factory: ' + id);
+function selectFactory(id, clickCount) {
+	alert('Selected factory: ' + id + ' - clicks: ' + clickCount);
 }
 
-function selectProject(id) {
+function selectProject(id, clickCount) {
+	depth_level = 0;
 	showLoadingIndicator(true);
 	$.getJSON("/desglosa-web/getSubprojectsAndProfilesByProjectIdJSON.action",
 			{ id: id },
 			function (data, status) {
 				if (status == "success") {
 					// one project -> one neightborhood
+					var chart;
 					var tower;
 					var neighborhood = new Neighborhood();
 					$.each(data.subprojects, function (i, subproject) {
@@ -23,7 +42,8 @@ function selectProject(id) {
 							if (view.chart.maxCols < view.dimensions.length) {
 								alert ('Hay mas atributos que columnas, se ignoraran los sobrantes.');
 							}
-							if (view.chart.name == "towers") {
+							chart = view.chart.name;
+							if (chart == "towers") {
 								tower = new Object();
 								tower = configureTower(color, view.dimensions);
 								tower.id = subproject.id;
@@ -31,12 +51,15 @@ function selectProject(id) {
 							}
 						});
 					});
-					var city = new City();
-					city.neighborhoods.push(neighborhood);
-					// Convert project array to JSON format
-					var JSONtext = JSON.stringify(city);
-					// Change active view
-					document.DesglosaApplet.visualizeTowers(JSONtext);
+					if (chart == "towers") {
+						var city = new City();
+						city.neighborhoods.push(neighborhood);
+						// Convert project array to JSON format
+						var JSONtext = JSON.stringify(city);
+						// Change active view
+						depth_level=1;
+						document.DesglosaApplet.visualizeTowers(JSONtext);
+					}
 				}
 				else alert('An error has occurred while trying to retrieve company information: ' + status);
 				showLoadingIndicator(false);

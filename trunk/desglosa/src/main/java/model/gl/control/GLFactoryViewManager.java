@@ -49,7 +49,7 @@ public class GLFactoryViewManager extends GLViewManager {
 	@Override
 	public void configureView() throws GLSingletonNotInitializedException {
 		try {
-			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
+			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true, false);
 
 			// Create A New Quadratic
 			this.quadric = GLSingleton.getGLU().gluNewQuadric();
@@ -78,13 +78,21 @@ public class GLFactoryViewManager extends GLViewManager {
 	public void manageView() throws GLSingletonNotInitializedException,
 			IOException {
 		if (this.isSelectionMode()) this.selectItem();
+		super.drawSkybox();
 		super.drawFloor();
+		super.drawPavements();
 		this.drawItems();
 	}
 	
 	@Override
 	public void setItems(List objs) {
 		glFactories = new ArrayList<GLObject>();
+		glFactories.addAll(objs);
+	}
+	
+	@Override
+	public void addItems(List objs) {
+		if (glFactories == null) glFactories = new ArrayList<GLObject>();
 		glFactories.addAll(objs);
 	}
 
@@ -101,8 +109,8 @@ public class GLFactoryViewManager extends GLViewManager {
 
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
-		System.err.println("Selected factory: " + selectedObject);
-		NotifyUIManager.notifySelectedFactory(selectedObject);
+		System.err.println("Selected factory: " + selectedObject + "\tNumber of clicks: " + clickCount);
+		NotifyUIManager.notifySelectedFactory(selectedObject, clickCount);
 	}
 
 }

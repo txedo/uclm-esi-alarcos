@@ -277,9 +277,9 @@ public class GLDrawer implements GLEventListener, IConstants {
 		this.pickPoint = pickPoint;
 	}
 
-	public void setSelectionMode(boolean b) {
+	public void setSelectionMode(boolean b, int clickCount) {
 		GLViewManager vm = getViewManager(viewLevel);
-		if (vm != null) getViewManager(viewLevel).setSelectionMode(true);
+		if (vm != null) getViewManager(viewLevel).setSelectionMode(true, clickCount);
 	}
 	
 	public Camera getCamera() {

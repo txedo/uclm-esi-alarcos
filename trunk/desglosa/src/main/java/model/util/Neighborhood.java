@@ -8,6 +8,9 @@ public class Neighborhood extends City {
 	private final float X_GAP = 0.3f;
 	private final float Y_GAP = 0.6f;
 	
+	private float width;
+	private float depth;
+	
 	private List<GLObject> flats;
 
 	public Neighborhood (List<GLObject> flats) {
@@ -15,6 +18,8 @@ public class Neighborhood extends City {
 		this.flats = flats;
 		this.cols = 0;
 		this.rows = 0;
+		this.width = 0.0f;
+		this.depth = 0.0f;
 		// If the neighborhood has flats
 		if (flats != null) {
 			if (flats.size() > 0) {
@@ -52,8 +57,10 @@ public class Neighborhood extends City {
 			}
 
 		}
+		this.width = this.cols*obj.getMaxWidth() + (this.cols-1)*this.X_GAP;
+		this.depth = this.rows*obj.getMaxDepth() + (this.rows-1)*this.Y_GAP;
 		
-		return new Vector2f(this.cols*obj.getMaxWidth() + (this.cols-1)*this.X_GAP, this.rows*obj.getMaxDepth() + (this.rows-1)*this.Y_GAP);
+		return new Vector2f(this.width, this.depth);
 	}
 
 	public List<GLObject> getFlats() {
@@ -62,6 +69,14 @@ public class Neighborhood extends City {
 
 	public void setFlats(List<GLObject> flats) {
 		this.flats = flats;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public float getDepth() {
+		return depth;
 	}
 	
 }

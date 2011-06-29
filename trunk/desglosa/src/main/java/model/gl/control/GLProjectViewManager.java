@@ -53,7 +53,7 @@ public class GLProjectViewManager extends GLViewManager {
 	@Override
 	public void configureView() throws GLSingletonNotInitializedException {
 		try {
-			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true);
+			if (!textureLoader.isTexturesLoaded()) textureLoader.loadTexures(true, true, true, false);
 		
 			// Create A New Quadratic
 			this.quadric = GLSingleton.getGLU().gluNewQuadric();
@@ -83,7 +83,9 @@ public class GLProjectViewManager extends GLViewManager {
 	public void manageView() throws GLSingletonNotInitializedException,
 			IOException {
 		if (this.isSelectionMode()) this.selectItem();
+		super.drawSkybox();
 		super.drawFloor();
+		super.drawPavements();
 		GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
 		this.drawItems();
 		super.drawCaption();
@@ -92,6 +94,12 @@ public class GLProjectViewManager extends GLViewManager {
 	@Override
 	public void setItems(List objs) {
 		antennaBalls = new ArrayList<GLObject>();
+		antennaBalls.addAll(objs);
+	}
+	
+	@Override
+	public void addItems(List objs) {
+		if (antennaBalls == null) antennaBalls = new ArrayList<GLObject>();
 		antennaBalls.addAll(objs);
 	}
 	
@@ -119,8 +127,8 @@ public class GLProjectViewManager extends GLViewManager {
 
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
-		System.err.println("Selected project: " + selectedObject);
-		NotifyUIManager.notifySelectedProject(selectedObject);
+		System.err.println("Selected project: " + selectedObject + "\tNumber of clicks: " + clickCount);
+		NotifyUIManager.notifySelectedProject(selectedObject, clickCount);
 	}
 
 }
