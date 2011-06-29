@@ -291,9 +291,7 @@
 		initializeProjectTab();
 	}
 	
-	var depth_level; // Global variable to control in which tower level the user is surfing around
 	$(document).ready(function() {
-		depth_level = 0;
 		// Initialize Google Maps canvas
 		initializeMap();
 		

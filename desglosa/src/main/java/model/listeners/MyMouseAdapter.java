@@ -24,19 +24,14 @@ public class MyMouseAdapter extends MouseAdapter {
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		if (e.getClickCount() == 2){	// Double click
-			this.drawer.setViewLevel(EViewLevels.MetricIndicatorLevel);
-		} else {						// Click
-			switch (e.getButton()) {
+		switch (e.getButton()) {
 			case 1:
 				this.drawer.getPickPoint().setX((float)e.getX());
 				this.drawer.getPickPoint().setY((float)e.getY());
-				this.drawer.setSelectionMode(true);
+				this.drawer.setSelectionMode(true, e.getClickCount());
 				break;
-			case 3:
-				this.drawer.setViewLevel(EViewLevels.ProjectLevel);
+			default:
 				break;
-			}
 		}
 	}
 

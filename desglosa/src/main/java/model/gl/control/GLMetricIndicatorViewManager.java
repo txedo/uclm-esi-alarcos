@@ -48,7 +48,11 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 	@Override
 	public void setItems(List objs) {
 		// TODO Auto-generated method stub
-		
+	}
+	
+	@Override
+	public void addItems(List objs) {
+		// TODO Auto-generated method stub
 	}
 
 	public void setupItems() {

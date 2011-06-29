@@ -53,7 +53,7 @@ public class TextureLoader {
         }
     }
 	
-	public void loadTexures (boolean useAlphaChannel, boolean useMipmaps, boolean linearFiltering) throws GLSingletonNotInitializedException, IOException {
+	public void loadTexures (boolean useAlphaChannel, boolean useMipmaps, boolean linearFiltering, boolean isSkyBox) throws GLSingletonNotInitializedException, IOException {
 		if (textureNames.length > 0) {
 			textureNames = this.genTextures(textureNames.length);
 			
@@ -62,20 +62,29 @@ public class TextureLoader {
 	            //Create Nearest Filtered Texture
 	            GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, textureNames[i]);
 	
-	            if (useMipmaps) {
+	            if (isSkyBox) {
+	            	//GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+	            	//GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
 	            	GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR_MIPMAP_LINEAR);
 	            	GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR_MIPMAP_LINEAR);
+	                makeRGBTexture(textures[i], GL2.GL_TEXTURE_2D, true);
 	            }
 	            else {
-	                if (linearFiltering) {
-	                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
-	                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
-	                } else {
-	                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST);
-	                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_NEAREST);
-	                }
+		            if (useMipmaps) {
+		            	GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR_MIPMAP_LINEAR);
+		            	GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR_MIPMAP_LINEAR);
+		            }
+		            else {
+		                if (linearFiltering) {
+		                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
+		                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
+		                } else {
+		                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST);
+		                    GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_NEAREST);
+		                }
+		            }
+		            makeRGBTexture(textures[i], GL2.GL_TEXTURE_2D, useMipmaps);
 	            }
-	            makeRGBTexture(textures[i], GL2.GL_TEXTURE_2D, useMipmaps);
 	        }
 			
 			this.texturesLoaded = true;

@@ -52,13 +52,21 @@ public class GLTowerViewManager extends GLViewManager {
 	@Override
 	public void manageView() throws GLSingletonNotInitializedException, IOException {
 		if (this.isSelectionMode()) this.selectItem();
+		super.drawSkybox();
 		super.drawFloor();
+		super.drawPavements();
 		this.drawItems();
 	}
 
 	@Override
 	public void setItems(List objs) {
 		towers = new ArrayList<GLObject>();
+		towers.addAll(objs);
+	}
+	
+	@Override
+	public void addItems(List objs) {
+		if (towers == null) towers = new ArrayList<GLObject>();
 		towers.addAll(objs);
 	}
 
@@ -82,8 +90,8 @@ public class GLTowerViewManager extends GLViewManager {
 
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
-		System.err.println("Selected tower: " + selectedObject);
-		NotifyUIManager.notifySelectedTower(selectedObject);
+		System.err.println("Selected tower: " + selectedObject + "\tNumber of clicks: " + clickCount);
+		NotifyUIManager.notifySelectedTower(selectedObject, clickCount);
 	}
 
 }

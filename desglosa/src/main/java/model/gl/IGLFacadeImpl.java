@@ -77,6 +77,7 @@ public class IGLFacadeImpl implements IGLFacade {
 			factories.addAll(n.getFlats());
 		}
 		// Change the active view to FactoryLevel
+		GLFactoryViewManager.getInstance().setPavements(city.getPavements());
 		GLFactoryViewManager.getInstance().setItems(factories);
 		GLFactoryViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.FactoryLevel);
 	}
@@ -140,6 +141,7 @@ public class IGLFacadeImpl implements IGLFacade {
 			projects.addAll(n.getFlats());
 		}
 		// Change the active view to ProjectLevel
+		GLProjectViewManager.getInstance().setPavements(city.getPavements());
 		GLProjectViewManager.getInstance().setItems(projects);
 		GLProjectViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.ProjectLevel);
 	}
@@ -182,6 +184,7 @@ public class IGLFacadeImpl implements IGLFacade {
 		}
 		
 		// Change the active view to TowerLevel		
+		GLTowerViewManager.getInstance().setPavements(city.getPavements());
 		GLTowerViewManager.getInstance().setItems(towers);
 		GLTowerViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.TowerLevel);
 	}

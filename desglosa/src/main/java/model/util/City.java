@@ -3,11 +3,15 @@ package model.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.gl.knowledge.GLObject;
+import model.gl.knowledge.GLPavement;
+
 public class City {
 	private final float X_GAP = 1.5f;
 	private final float Y_GAP = 2.0f;
 	
 	private List<Neighborhood> neightborhoods;
+	private List<GLObject> pavements;
 	protected int cols;
 	protected int rows;
 	protected Vector2f placePoint;
@@ -17,6 +21,7 @@ public class City {
 		this.cols = 0;
 		this.rows = 0;
 		placePoint = new Vector2f(0.0f, 0.0f);
+		pavements = new ArrayList<GLObject>();
 	}
 	
 	public City(List<Neighborhood> neightborhoods) {
@@ -42,7 +47,8 @@ public class City {
 	}
 	
 	public void placeNeighborhoods() {
-		// Once we know how many cols and rows it will have, we can calculate a position for each flatç
+		
+		// Once we know how many columns and rows it will have, we can calculate a position for each flat
 		float x = placePoint.getX();
 		Vector2f dimensions = null;
 		double maxDepth = 0.0f;
@@ -51,14 +57,31 @@ public class City {
 			for (int j = 0; j < this.cols; j++) {
 				int index = i*this.cols+j;
 				if (neightborhoods.size() > index) {
+					// Configure Pavement
+					GLPavement pavement = new GLPavement();
+					pavement.setPositionX(placePoint.getX());
+					pavement.setPositionZ(placePoint.getY());
+					// The neighborhood place its flats by itself
 					dimensions = neightborhoods.get(index).doLayout(placePoint);
 					placePoint.setX(dimensions.getX() + this.X_GAP);
 					if (maxDepth < dimensions.getY()) maxDepth = dimensions.getY();
+					// Continue configuring pavement
+					pavement.setWidth(dimensions.getX());
+					pavement.setDepth(dimensions.getY());
+					pavements.add(pavement);
 				}
 			}
 			placePoint.setX(x);
 			if (dimensions != null) placePoint.setY((float)maxDepth + this.Y_GAP);
 		}
+	}
+
+	public List<Neighborhood> getNeightborhoods() {
+		return neightborhoods;
+	}
+
+	public List<GLObject> getPavements() {
+		return pavements;
 	}
 	
 }

@@ -126,39 +126,39 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 	}
 
 	@Override
-	public void selectProject(int id) {
-		this.handleEvent(EOperationCodes.ProjectSelection, id);
+	public void selectProject(int id, int clickCount){
+		this.handleEvent(EOperationCodes.ProjectSelection, id, clickCount);
 	}
 
 	@Override
-	public void selectFactory(int id) {
-		this.handleEvent(EOperationCodes.FactorySelection, id);
+	public void selectFactory(int id, int clickCount){
+		this.handleEvent(EOperationCodes.FactorySelection, id, clickCount);
 	}
 
 	@Override
-	public void selectTower(int id) {
-		this.handleEvent(EOperationCodes.TowerSelection, id);
+	public void selectTower(int id, int clickCount){
+		this.handleEvent(EOperationCodes.TowerSelection, id, clickCount);
 	}
 	
-	private void handleEvent (EOperationCodes opCode, Object ob) {
+	private void handleEvent (EOperationCodes opCode, Object ob, int clickCount) {
 		try {
 			switch (opCode) {
 			case TowerSelection:
 				if (ob instanceof Integer) {
 					int id = (Integer)ob;
-					getAppletContext().showDocument(new URL("javascript:selectTower(" + id + ")"));
+					getAppletContext().showDocument(new URL("javascript:selectTower(" + id + "," + clickCount +")"));
 				}
 				break;
 			case FactorySelection:
 				if (ob instanceof Integer) {
 					int id = (Integer)ob;
-					getAppletContext().showDocument(new URL("javascript:selectFactory(" + id + ")"));
+					getAppletContext().showDocument(new URL("javascript:selectFactory(" + id + "," + clickCount +")"));
 				}
 				break;
 			case ProjectSelection:
 				if (ob instanceof Integer) {
 					int id = (Integer)ob;
-					getAppletContext().showDocument(new URL("javascript:selectProject(" + id + ")"));
+					getAppletContext().showDocument(new URL("javascript:selectProject(" + id + "," + clickCount +")"));
 				}
 				break;
 			default:
