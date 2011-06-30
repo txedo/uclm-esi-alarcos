@@ -18,9 +18,9 @@ import com.jogamp.newt.event.awt.AWTMouseAdapter;
 import model.gl.control.EViewLevels;
 import model.gl.control.GLFontBuilder;
 import model.gl.control.GLViewManager;
-import model.gl.knowledge.Camera;
-import model.gl.knowledge.IConstants;
-import model.gl.knowledge.Spotlight;
+import model.gl.knowledge.GLCamera;
+import model.gl.knowledge.IGLConstants;
+import model.gl.knowledge.GLSpotlight;
 import model.listeners.MyKeyAdapter;
 import model.listeners.MyMouseAdapter;
 import model.util.Synchronizer;
@@ -30,7 +30,7 @@ import model.util.Vector3f;
 
 import exceptions.GLSingletonNotInitializedException;
 
-public class GLDrawer implements GLEventListener, IConstants {
+public class GLDrawer implements GLEventListener, IGLConstants {
 	/*
 	 * A GLViewManager must be declared for each view manager available.
 	 * When adding a new view manager, it has to be added and configured to the following sections:
@@ -48,8 +48,8 @@ public class GLDrawer implements GLEventListener, IConstants {
 	private EViewLevels oldViewLevel;
 	private EViewLevels viewLevel;
 	
-	private Camera camera;
-	private Spotlight spotlight;
+	private GLCamera camera;
+	private GLSpotlight spotlight;
 	private GLLogger log;
 	
 	private boolean debugMode;
@@ -59,7 +59,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 	
 	private int screenWidth;
 	private int screenHeight;
-	public final float DIM = IConstants.INIT_DIM;
+	public final float DIM = IGLConstants.INIT_DIM;
 
 	 /** Called by the drawable to initiate OpenGL rendering by the client.
      * After all GLEventListeners have been notified of a display event, the
@@ -175,8 +175,8 @@ public class GLDrawer implements GLEventListener, IConstants {
 			// Textures are enabled and its environment configured just before mapping them, not here
 			
 			// Creamos una cámara y un foco de luz
-			camera = new Camera(5.0f, 7.0f, 15.0f, 0.0f, -0.5f, -1.0f);
-			spotlight = new Spotlight(0.6f, 0.6f, 0.6f);
+			camera = new GLCamera(5.0f, 7.0f, 15.0f, 0.0f, -0.5f, -1.0f);
+			spotlight = new GLSpotlight(0.6f, 0.6f, 0.6f);
 	
 			// Habilitamos el color natural de los materiales
 			GLSingleton.getGL().glEnable(GL2.GL_COLOR_MATERIAL);
@@ -282,7 +282,7 @@ public class GLDrawer implements GLEventListener, IConstants {
 		if (vm != null) getViewManager(viewLevel).setSelectionMode(true, clickCount);
 	}
 	
-	public Camera getCamera() {
+	public GLCamera getCamera() {
 		return camera;
 	}
 

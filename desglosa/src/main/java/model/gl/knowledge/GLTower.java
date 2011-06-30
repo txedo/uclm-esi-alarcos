@@ -8,7 +8,7 @@ import model.util.Color;
 
 import exceptions.GLSingletonNotInitializedException;
 
-public class Tower extends GLObject3D {
+public class GLTower extends GLObject3D {
 	public static final float MAX_WIDTH = 3.0f;
 	public static final float MAX_HEIGHT = 12.0f;
 	public static final float MAX_DEPTH = 3.0f;
@@ -24,11 +24,11 @@ public class Tower extends GLObject3D {
 	private float edge_width;
 	private final float ALPHA = 0.25f;
 	
-	public Tower () {
+	public GLTower () {
 		this(0.0f, 0.0f, MAX_WIDTH, MAX_DEPTH, MAX_HEIGHT, new Color(0.0f, 0.0f, 0.0f));
 	}
 
-	public Tower(float pos_x, float pos_y, float width, float depth,
+	public GLTower(float pos_x, float pos_y, float width, float depth,
 			float height, Color color) {
 		this.positionX = pos_x;
 		this.positionY = pos_y;
@@ -40,8 +40,8 @@ public class Tower extends GLObject3D {
 		this.edge_height = this.fill_height;
 		this.edge_width = 1.0f;
 		
-		this.maxWidth = Tower.MAX_WIDTH;
-		this.maxDepth = Tower.MAX_DEPTH;
+		this.maxWidth = GLTower.MAX_WIDTH;
+		this.maxDepth = GLTower.MAX_DEPTH;
 	}
 	
 	@Override

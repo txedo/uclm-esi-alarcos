@@ -15,7 +15,8 @@ import com.jogamp.opengl.util.gl2.GLUT;
 
 import model.gl.control.GLViewManager;
 import model.gl.knowledge.GLObject;
-import model.gl.knowledge.IConstants;
+import model.gl.knowledge.IGLConstants;
+import model.util.Color;
 import model.util.Vector3f;
 
 import exceptions.GLSingletonNotInitializedException;
@@ -68,9 +69,9 @@ public class GLUtils {
 		if (!GLSingleton.getGLU().gluUnProject((double) winX, (double) winY,
 				(double) winZ, mvmatrix, 0, projmatrix, 0, viewport, 0, wcoord,
 				0)) {
-			wcoord[0] = -IConstants.INFINITE;
-			wcoord[1] = -IConstants.INFINITE;
-			wcoord[2] = -IConstants.INFINITE;
+			wcoord[0] = -IGLConstants.INFINITE;
+			wcoord[1] = -IGLConstants.INFINITE;
+			wcoord[2] = -IGLConstants.INFINITE;
 		}
 
 		return new Vector3f((float) wcoord[0], (float) wcoord[1],
@@ -350,10 +351,16 @@ public class GLUtils {
 
 	public static void renderBitmapString(float x, float y, float z, int font,
 			String string) throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
+		GLUtils.renderBitmapString(x, y, z, font, string, "000000");
+	}
+	
+	public static void renderBitmapString(float x, float y, float z, int font,
+			String string, String hexcolor) throws GLSingletonNotInitializedException {
+		GLSingleton.getGL().glDisable(GL2.GL_LIGHTING);
+		GLSingleton.getGL().glColor3fv(new Color(hexcolor).getColorFB());
 		GLSingleton.getGL().glRasterPos3f(x, y, z);
-		GLSingleton.getGLUT()
-				.glutBitmapString(GLUtils.selectFont(font), string);
+		GLSingleton.getGLUT().glutBitmapString(GLUtils.selectFont(font), string);
+		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
 	}
 
 	public static void renderSpacedBitmapString(float x, float y, int spacing,

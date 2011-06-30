@@ -12,10 +12,10 @@ import model.gl.control.EViewLevels;
 import model.gl.control.GLFactoryViewManager;
 import model.gl.control.GLProjectViewManager;
 import model.gl.control.GLTowerViewManager;
-import model.gl.knowledge.AntennaBall;
+import model.gl.knowledge.GLAntennaBall;
 import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
-import model.gl.knowledge.Tower;
+import model.gl.knowledge.GLTower;
 import model.gl.knowledge.caption.Caption;
 import model.util.City;
 import model.util.Color;
@@ -88,7 +88,7 @@ public class IGLFacadeImpl implements IGLFacade {
 		Map<String, String> captionLines = new HashMap<String, String>();
 		JSONObject json = (JSONObject)JSONSerializer.toJSON(JSONtext);
 		List<GLObject> projects = new ArrayList<GLObject>();
-		AntennaBall project;
+		GLAntennaBall project;
 		List<Neighborhood> nbh = new ArrayList<Neighborhood>();
 		City city;
 		float maxSize = 0.0f;
@@ -100,7 +100,7 @@ public class IGLFacadeImpl implements IGLFacade {
 			projects = new ArrayList<GLObject>();
 			for (int j = 0; j < jsonFlats.size(); j++) {
 				JSONObject jobj = jsonFlats.getJSONObject(j);
-				project = new AntennaBall();
+				project = new GLAntennaBall();
 				project.setId(jobj.getInt("id"));
 				project.setLabel(jobj.getString("name"));
 				project.setProgression(jobj.getBoolean("audited"));
@@ -121,7 +121,7 @@ public class IGLFacadeImpl implements IGLFacade {
 		// Normalize project size
 		for (Neighborhood n : nbh) {
 			for (GLObject o : n.getFlats()) {
-				((AntennaBall)o).setParentBallRadius(((AntennaBall)o).getParentBallRadius()*AntennaBall.MAX_SIZE/maxSize);
+				((GLAntennaBall)o).setParentBallRadius(((GLAntennaBall)o).getParentBallRadius()*GLAntennaBall.MAX_SIZE/maxSize);
 			}
 		}
 		// Configure caption lines
@@ -149,7 +149,7 @@ public class IGLFacadeImpl implements IGLFacade {
 	@Override
 	public void visualizeTowers(String JSONtext) throws ViewManagerNotInstantiatedException {
 		List<GLObject> towers = new ArrayList<GLObject>();
-		Tower tower;
+		GLTower tower;
 		List<Neighborhood> nbh = new ArrayList<Neighborhood>();
 		City city;
 		JSONObject json = (JSONObject)JSONSerializer.toJSON(JSONtext);
@@ -161,7 +161,7 @@ public class IGLFacadeImpl implements IGLFacade {
 			towers = new ArrayList<GLObject>();
 			for (int j = 0; j < jsonFlats.size(); j++) {
 				JSONObject jobj = jsonFlats.getJSONObject(j);
-				tower = new Tower();
+				tower = new GLTower();
 				tower.setId(jobj.getInt("id"));
 				tower.setDepth((float)jobj.getDouble("depth"));
 				tower.setHeight((float)jobj.getDouble("height"));

@@ -5,13 +5,13 @@ import java.io.IOException;
 import javax.media.opengl.GL2;
 
 import persistence.TextureReader;
-import model.gl.knowledge.Texture;
+import model.gl.knowledge.GLTexture;
 import exceptions.GLSingletonNotInitializedException;
 
 public class TextureLoader {
 	private String tileNames[];
 	private int textureNames[];
-	private Texture textures[];
+	private GLTexture textures[];
 	private boolean texturesLoaded;
 	
 	public String[] getTileNames() {
@@ -33,7 +33,7 @@ public class TextureLoader {
 	public TextureLoader (String [] names) {
 		this.tileNames = names;
 		textureNames = new int[names.length];
-		textures = new Texture[names.length];
+		textures = new GLTexture[names.length];
 		this.texturesLoaded = false;
 	}
 	
@@ -43,7 +43,7 @@ public class TextureLoader {
         return tmp;
     }
     
-    private void makeRGBTexture(Texture img, int target, boolean mipmapped) throws GLSingletonNotInitializedException {
+    private void makeRGBTexture(GLTexture img, int target, boolean mipmapped) throws GLSingletonNotInitializedException {
         if (mipmapped) {
         	GLSingleton.getGLU().gluBuild2DMipmaps(target, GL2.GL_RGBA, img.getWidth(), 
                     img.getHeight(), GL2.GL_RGBA, GL2.GL_UNSIGNED_BYTE, img.getPixels());
@@ -91,11 +91,11 @@ public class TextureLoader {
 		}
 	}
 
-	public Texture[] getTextures() {
+	public GLTexture[] getTextures() {
 		return textures;
 	}
 
-	public void setTextures(Texture[] textures) {
+	public void setTextures(GLTexture[] textures) {
 		this.textures = textures;
 	}
 

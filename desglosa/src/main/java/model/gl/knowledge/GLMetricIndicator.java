@@ -8,11 +8,11 @@ import model.util.Vector2f;
 
 import exceptions.GLSingletonNotInitializedException;
 
-public class MetricIndicator extends Node {
+public class GLMetricIndicator extends GLNode {
 	// private ... texture?
 	private float width;
 	
-	public MetricIndicator (float pos_x, float pos_y) {
+	public GLMetricIndicator (float pos_x, float pos_y) {
 		this.positionX = pos_x;
 		this.positionY = pos_y;
 		this.color = new Color(0.0f, 0.0f, 0.0f);
@@ -20,7 +20,7 @@ public class MetricIndicator extends Node {
 		this.width = 1.0f;
 	}
 	
-	public MetricIndicator (float pos_x, float pos_y, float width, Color color) {
+	public GLMetricIndicator (float pos_x, float pos_y, float width, Color color) {
 		this.positionX = pos_x;
 		this.positionY = pos_y;
 		this.color = color;

@@ -1,6 +1,6 @@
 package model.gl.knowledge;
 
-public interface IEdge {
+public interface IGLEdge {
 	final int SOLID = 1;
 	final int DASHED = 2;
 	final int DOTTED = 3;

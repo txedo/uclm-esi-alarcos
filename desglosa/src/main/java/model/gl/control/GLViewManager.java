@@ -216,7 +216,7 @@ public abstract class GLViewManager {
 		GLSingleton.getGL().glPushMatrix();
 		GLSingleton.getGL().glLoadIdentity();
 		Vector3f viewDir = this.drawer.getCamera().getViewDir();
-		GLSingleton.getGLU().gluLookAt(0, 0, 0,
+		GLSingleton.getGLU().gluLookAt(0, 0, 0, 
 				viewDir.getX(), viewDir.getY(), viewDir.getZ(),
 				0, 1, 0);
 		GLSingleton.getGL().glPushAttrib(GL2.GL_ENABLE_BIT);

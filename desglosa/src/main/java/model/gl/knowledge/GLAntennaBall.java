@@ -8,7 +8,7 @@ import model.gl.GLUtils;
 import model.util.Color;
 import exceptions.GLSingletonNotInitializedException;
 
-public class AntennaBall extends GLObject3D {
+public class GLAntennaBall extends GLObject3D {
 	public static final float MAX_SIZE = 1.5f;
 	private int[] textures;
 	
@@ -28,11 +28,11 @@ public class AntennaBall extends GLObject3D {
 	
 	private GLUquadric quadric;
 	
-	public AntennaBall() {
+	public GLAntennaBall() {
 		this (0.0f, 0.0f);
 	}
 	
-	public AntennaBall (float pos_x, float pos_y) {
+	public GLAntennaBall (float pos_x, float pos_y) {
 		this.positionX = pos_x;
 		this.positionY = pos_y;
 		this.color = new Color(0.0f, 0.0f, 1.0f);	// This will be used for the parent ball color
@@ -47,8 +47,8 @@ public class AntennaBall extends GLObject3D {
 		this.leftChildBallValue = 0;
 		this.rightChildBallValue = 0;
 		
-		this.maxWidth = AntennaBall.MAX_SIZE*2.0f;
-		this.maxDepth = AntennaBall.MAX_SIZE*2.0f;
+		this.maxWidth = GLAntennaBall.MAX_SIZE*2.0f;
+		this.maxDepth = GLAntennaBall.MAX_SIZE*2.0f;
 	}
 
 	public boolean isProgression() {

@@ -7,7 +7,7 @@ import model.util.Vector3f;
 
 import exceptions.GLSingletonNotInitializedException;
 
-public class Spotlight {
+public class GLSpotlight {
 	private final int lightSource = GL2.GL_LIGHT1;
 	@SuppressWarnings("unused")
 	private final float DIRECTIONAL = 0.0f;
@@ -26,7 +26,7 @@ public class Spotlight {
 	private float mat_diffuse[] = {0.5f, 0.5f, 0.5f, 1.0f};
 	private float mat_shininess = 60.0f;
 
-	public Spotlight (float r, float g, float b) throws GLSingletonNotInitializedException {
+	public GLSpotlight (float r, float g, float b) throws GLSingletonNotInitializedException {
 		color = new float[4];
 		color[0] = r;
 		color[1] = g;

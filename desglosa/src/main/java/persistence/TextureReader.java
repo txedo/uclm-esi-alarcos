@@ -4,7 +4,7 @@ import com.jogamp.common.nio.Buffers;
 
 import javax.imageio.ImageIO;
 
-import model.gl.knowledge.Texture;
+import model.gl.knowledge.GLTexture;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
@@ -17,11 +17,11 @@ import java.nio.ByteBuffer;
  * @author Pepijn Van Eeckhoudt
  */
 public class TextureReader {
-    public static Texture readTexture(String filename) throws IOException {
+    public static GLTexture readTexture(String filename) throws IOException {
         return readTexture(filename, false);
     }
 
-    public static Texture readTexture(String filename, boolean storeAlphaChannel) throws IOException {
+    public static GLTexture readTexture(String filename, boolean storeAlphaChannel) throws IOException {
         BufferedImage bufferedImage;
         if (filename.endsWith(".bmp")) {
             bufferedImage = BitmapLoader.loadBitmap(filename);
@@ -35,7 +35,7 @@ public class TextureReader {
         return ImageIO.read(ResourceRetriever.getResourceAsStream(resourceName));
     }
 
-    private static Texture readPixels(BufferedImage img, boolean storeAlphaChannel) {
+    private static GLTexture readPixels(BufferedImage img, boolean storeAlphaChannel) {
         int[] packedPixels = new int[img.getWidth() * img.getHeight()];
 
         PixelGrabber pixelgrabber = new PixelGrabber(img, 0, 0, img.getWidth(), img.getHeight(), packedPixels, 0, img.getWidth());
@@ -63,7 +63,7 @@ public class TextureReader {
         unpackedPixels.flip();
 
 
-        return new Texture(unpackedPixels, img.getWidth(), img.getHeight());
+        return new GLTexture(unpackedPixels, img.getWidth(), img.getHeight());
     }
 
 }

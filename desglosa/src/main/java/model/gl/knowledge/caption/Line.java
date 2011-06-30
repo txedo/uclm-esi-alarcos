@@ -3,7 +3,7 @@ package model.gl.knowledge.caption;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.knowledge.GLObject;
-import model.gl.knowledge.Text;
+import model.gl.knowledge.GLText;
 import model.util.Color;
 import model.util.Vector3f;
 import exceptions.GLSingletonNotInitializedException;
@@ -11,11 +11,11 @@ import exceptions.GLSingletonNotInitializedException;
 public class Line extends GLObject {
 	private final int pxGAP = 10; // px
 	private Icon icon;
-	private Text text;
+	private GLText text;
 	
 	public Line() {
 		this.icon = new Icon(10, 10, new Color(1.0f, 1.0f, 1.0f));
-		this.text = new Text("");
+		this.text = new GLText("");
 	}
 	
 	public void draw () throws GLSingletonNotInitializedException {
@@ -52,11 +52,11 @@ public class Line extends GLObject {
 		this.icon = icon;
 	}
 
-	public Text getText() {
+	public GLText getText() {
 		return text;
 	}
 
-	public void setText(Text text) {
+	public void setText(GLText text) {
 		this.text = text;
 	}
 	
