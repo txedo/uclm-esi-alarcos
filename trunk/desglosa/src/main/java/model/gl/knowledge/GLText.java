@@ -8,12 +8,12 @@ import com.jogamp.opengl.util.gl2.GLUT;
 
 import exceptions.GLSingletonNotInitializedException;
 
-public class Text {
+public class GLText {
 	private String text;
 	private int font;
 	private Color color;
 	
-	public Text(String text) {
+	public GLText(String text) {
 		this.text = text;
 		this.font = GLUT.BITMAP_HELVETICA_10;
 		this.color = new Color(0.0f, 0.0f, 0.0f);

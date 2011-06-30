@@ -8,10 +8,10 @@ import javax.media.opengl.GL2;
 
 import model.gl.GLDrawer;
 import model.gl.GLSingleton;
-import model.gl.knowledge.Edge;
+import model.gl.knowledge.GLEdge;
 import model.gl.knowledge.GLObject;
-import model.gl.knowledge.IEdge;
-import model.gl.knowledge.MetricIndicator;
+import model.gl.knowledge.IGLEdge;
+import model.gl.knowledge.GLMetricIndicator;
 import model.gl.knowledge.caption.Caption;
 import model.util.Color;
 
@@ -62,31 +62,31 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 	}
 	
 	private void setupNodes () {
-		MetricIndicator n;
+		GLMetricIndicator n;
 		Color c = new Color (0.0f, 0.0f, 0.0f);
-		n = new MetricIndicator(0.0f, 0.0f, 1.0f, c);
+		n = new GLMetricIndicator(0.0f, 0.0f, 1.0f, c);
 		this.nodes.add(n);
-		n = new MetricIndicator(2.0f, 0.0f, 1.0f, c);
+		n = new GLMetricIndicator(2.0f, 0.0f, 1.0f, c);
 		this.nodes.add(n);
-		n = new MetricIndicator(0.0f, 2.0f, 1.0f, c);
+		n = new GLMetricIndicator(0.0f, 2.0f, 1.0f, c);
 		this.nodes.add(n);
-		n = new MetricIndicator(2.0f, 2.0f, 1.0f, c);
+		n = new GLMetricIndicator(2.0f, 2.0f, 1.0f, c);
 		this.nodes.add(n);
 	}
 	
 	private void setupEdges () {
-		Edge e;
-		e = new Edge((MetricIndicator)nodes.get(0), (MetricIndicator)nodes.get(1));
-		e.setType(IEdge.DOTTED);
+		GLEdge e;
+		e = new GLEdge((GLMetricIndicator)nodes.get(0), (GLMetricIndicator)nodes.get(1));
+		e.setType(IGLEdge.DOTTED);
 		this.edges.add(e);
-		e = new Edge((MetricIndicator)nodes.get(0), (MetricIndicator)nodes.get(2));
-		e.setType(IEdge.DASHED);
+		e = new GLEdge((GLMetricIndicator)nodes.get(0), (GLMetricIndicator)nodes.get(2));
+		e.setType(IGLEdge.DASHED);
 		this.edges.add(e);
-		e = new Edge((MetricIndicator)nodes.get(1), (MetricIndicator)nodes.get(2));
-		e.setType(IEdge.DOT_AND_DASH);
+		e = new GLEdge((GLMetricIndicator)nodes.get(1), (GLMetricIndicator)nodes.get(2));
+		e.setType(IGLEdge.DOT_AND_DASH);
 		this.edges.add(e);
-		e = new Edge((MetricIndicator)nodes.get(2), (MetricIndicator)nodes.get(3));
-		e.setType(IEdge.SOLID);
+		e = new GLEdge((GLMetricIndicator)nodes.get(2), (GLMetricIndicator)nodes.get(3));
+		e.setType(IGLEdge.SOLID);
 		this.edges.add(e);
 	}
 	

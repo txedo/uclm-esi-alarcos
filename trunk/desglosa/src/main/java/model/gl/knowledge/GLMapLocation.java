@@ -6,7 +6,7 @@ import exceptions.GLSingletonNotInitializedException;
 import model.gl.GLSingleton;
 import model.util.Color;
 
-public class MapLocation extends Node {
+public class GLMapLocation extends GLNode {
 	public static final float SIZE_INIT = 10.0f;
 	private float size;
 	private float frequency = 0.0f;	// higher value implies higher speed
@@ -17,14 +17,14 @@ public class MapLocation extends Node {
 	//private final Color fadeColor = new Color(22.0f/255.0f, 141.0f/255.0f, 165.0f/255.0f);
 	//private final Color fadeColor = new Color(9.0f/255.0f, 19.0f/255.0f, 52.0f/255.0f);
 	
-	public MapLocation (int id, float pos_x, float pos_y) {
+	public GLMapLocation (int id, float pos_x, float pos_y) {
 		super.id = id;
 		this.hightlighted = false;
 		this.faded = false;
 		this.positionX = pos_x;
 		this.positionY = pos_y;
 		this.color = new Color(1.0f, 1.0f, 1.0f);
-		this.size = MapLocation.SIZE_INIT;
+		this.size = GLMapLocation.SIZE_INIT;
 	}
 
 	public boolean isHightlighted() {
@@ -74,7 +74,7 @@ public class MapLocation extends Node {
 	}
 
 	private void handleHighlighting() throws GLSingletonNotInitializedException {	
-		this.size = MapLocation.SIZE_INIT + (float)Math.sin(this.frequency*180.0f/3.14f)*1.5f;
+		this.size = GLMapLocation.SIZE_INIT + (float)Math.sin(this.frequency*180.0f/3.14f)*1.5f;
 		this.frequency += 0.005;
 		GLSingleton.getGL().glColor3fv(this.highlightColor.getColorFB());
 	}

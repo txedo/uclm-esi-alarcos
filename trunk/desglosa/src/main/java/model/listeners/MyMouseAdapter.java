@@ -4,7 +4,6 @@ import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
 
 import model.gl.GLDrawer;
-import model.gl.control.EViewLevels;
 import model.util.Vector2f;
 
 

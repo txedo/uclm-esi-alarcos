@@ -59,15 +59,15 @@ public class City {
 				if (neightborhoods.size() > index) {
 					// Configure Pavement
 					GLPavement pavement = new GLPavement();
-					pavement.setPositionX(placePoint.getX());
-					pavement.setPositionZ(placePoint.getY());
+					pavement.setPositionX(placePoint.getX()-neightborhoods.get(0).getFlats().get(0).getMaxWidth()/2-this.X_GAP/3);
+					pavement.setPositionZ(placePoint.getY()-neightborhoods.get(0).getFlats().get(0).getMaxDepth()/2-this.Y_GAP/3);
 					// The neighborhood place its flats by itself
 					dimensions = neightborhoods.get(index).doLayout(placePoint);
 					placePoint.setX(dimensions.getX() + this.X_GAP);
 					if (maxDepth < dimensions.getY()) maxDepth = dimensions.getY();
 					// Continue configuring pavement
-					pavement.setWidth(dimensions.getX());
-					pavement.setDepth(dimensions.getY());
+					pavement.setWidth(dimensions.getX()+2*this.X_GAP/3);
+					pavement.setDepth((float)maxDepth+2*this.Y_GAP/3);
 					pavements.add(pavement);
 				}
 			}

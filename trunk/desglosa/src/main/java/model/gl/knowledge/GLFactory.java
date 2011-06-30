@@ -110,7 +110,7 @@ public class GLFactory extends GLObject3D {
 				// Draw the smokestack value (only if we are drawing the real object
 				GLSingleton.getGL().glPushMatrix();
 					GLSingleton.getGL().glTranslatef(this.baseLength*1/4, (this.baseHeight+this.buildingHeight+this.roofHeight)*1.20f, 0.0f);
-					GLUtils.renderBitmapString(0.0f, 0.0f, 0, 2, ""+this.smokestackHeight);
+					GLUtils.renderBitmapString(0.0f, 0.0f, 0, 2, ""+this.smokestackHeight, "ffffff");
 				GLSingleton.getGL().glPopMatrix();
 			}
 		GLSingleton.getGL().glPopMatrix();

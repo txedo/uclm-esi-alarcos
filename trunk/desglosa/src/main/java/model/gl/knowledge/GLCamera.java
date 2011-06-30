@@ -5,7 +5,7 @@ import model.util.Vector3f;
 
 import exceptions.GLSingletonNotInitializedException;
 
-public class Camera {
+public class GLCamera {
 	private boolean mousing;
 	private Vector3f position;	// posición de la camara
 	private Vector3f viewDir;	// dirección a la que apunta el objetivo de la cámara
@@ -18,7 +18,7 @@ public class Camera {
 	private final Vector3f initialPosition;
 	private final Vector3f initialViewDir;
 	
-	public Camera(float xpos, float ypos, float zpos, float xviewdir, float yviewdir, float zviewdir) {
+	public GLCamera(float xpos, float ypos, float zpos, float xviewdir, float yviewdir, float zviewdir) {
 		this.mousing = false;
 		initialPosition = new Vector3f(xpos, ypos, zpos);
 		// Inicialmente la camara apunta al origen de coordenadas (0,0,0)
@@ -53,7 +53,7 @@ public class Camera {
 	
 	private void move(Vector3f direccion, int multiplicator) {
 		Vector3f aux = new Vector3f();
-		aux = position.add(direccion.mult(IConstants.DESPL*multiplicator));
+		aux = position.add(direccion.mult(IGLConstants.DESPL*multiplicator));
 		if (aux.getY() < 0) aux.setY(0);
 		position = aux.clone();
 	}
@@ -131,7 +131,7 @@ public class Camera {
 	}
 	
 	public void rotateLeft(int multiplicator) {
-		rotateY(-IConstants.Y_ROTATION*multiplicator);
+		rotateY(-IGLConstants.Y_ROTATION*multiplicator);
 	}
 	
 	public void rotateRight() {
@@ -139,7 +139,7 @@ public class Camera {
 	}
 	
 	public void rotateRight(int multiplicator) {
-		rotateY(IConstants.Y_ROTATION*multiplicator);
+		rotateY(IGLConstants.Y_ROTATION*multiplicator);
 	}
 	
 	public void lookUp() {
@@ -147,7 +147,7 @@ public class Camera {
 	}
 
 	public void lookUp(int multiplicator) {
-		rotateX(IConstants.X_ROTATION*multiplicator);
+		rotateX(IGLConstants.X_ROTATION*multiplicator);
 	}
 	
 	public void lookDown() {
@@ -155,7 +155,7 @@ public class Camera {
 	}
 
 	public void lookDown(int multiplicator) {
-		rotateX(-IConstants.X_ROTATION*multiplicator);
+		rotateX(-IGLConstants.X_ROTATION*multiplicator);
 	}
 
 	public Vector3f getPosition() {

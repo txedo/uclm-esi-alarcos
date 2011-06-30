@@ -13,7 +13,7 @@ import model.gl.GLDrawer;
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.gl.TextureLoader;
-import model.gl.knowledge.AntennaBall;
+import model.gl.knowledge.GLAntennaBall;
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLObject3D;
 import model.util.Vector3f;
@@ -65,8 +65,8 @@ public class GLProjectViewManager extends GLViewManager {
 			GLSingleton.getGLU().gluQuadricOrientation( quadric, GLU.GLU_OUTSIDE);
 			
 			for (GLObject ball : antennaBalls) {
-				((AntennaBall)ball).setQuadric(quadric);
-				((AntennaBall)ball).setTextures(textureLoader.getTextureNames());
+				((GLAntennaBall)ball).setQuadric(quadric);
+				((GLAntennaBall)ball).setTextures(textureLoader.getTextureNames());
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -118,9 +118,9 @@ public class GLProjectViewManager extends GLViewManager {
 				cameraViewDir.normalize();
 				Vector3f normalizedOppositeCameraViewDir = cameraViewDir.mult(-1);
 				Vector3f objectPosition = new Vector3f(glo.getPositionX(), 0.0f, glo.getPositionZ());
-				float offset = ((AntennaBall)glo).getParentBallRadius();
+				float offset = ((GLAntennaBall)glo).getParentBallRadius();
 				Vector3f offsetPosition = objectPosition.add(normalizedOppositeCameraViewDir.mult(offset));
-				GLUtils.renderBitmapString(offsetPosition.getX(), 0.1f, offsetPosition.getZ(), 5, ((AntennaBall)glo).getLabel());
+				GLUtils.renderBitmapString(offsetPosition.getX(), 0.1f, offsetPosition.getZ(), 5, ((GLAntennaBall)glo).getLabel());
 			}
 		}
 	}

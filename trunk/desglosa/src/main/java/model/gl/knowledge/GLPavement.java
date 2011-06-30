@@ -27,8 +27,8 @@ public class GLPavement extends GLObject3D {
 		GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE);
 		GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, texture);
 		GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
-		GLSingleton.getGL().glColor3f(0.9f, 0.9f, 0.9f);
 		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
+			GLSingleton.getGL().glColor3f(1.0f, 1.0f, 1.0f);
 			GLSingleton.getGL().glTexCoord2f( 0.0f, depth);	GLSingleton.getGL().glVertex3f(this.positionX, 0.001f,  this.positionY+depth);
 			GLSingleton.getGL().glTexCoord2f( 0.0f, 0.0f);	GLSingleton.getGL().glVertex3f(this.positionX, 0.001f, this.positionY);
 			GLSingleton.getGL().glTexCoord2f(width, 0.0f);	GLSingleton.getGL().glVertex3f(this.positionX+width, 0.001f,  this.positionY);

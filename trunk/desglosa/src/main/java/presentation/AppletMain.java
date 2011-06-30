@@ -59,13 +59,13 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 	public void start() {
 		System.err.println("GearsApplet: start() - begin");
 		
-//		try {
-//			Synchronizer.getInstance().solicitar();
-//			IGLFacadeImpl.getInstance().visualizeTowers("{\"neighborhoods\":[{\"flats\":[{\"width\":2.6925,\"height\":11.9676,\"depth\":2.529,\"color\":\"ff0000\",\"fill\":10.492799999999999,\"id\":1},{\"width\":2.2362,\"height\":11.694,\"depth\":2.3505,\"color\":\"00ff00\",\"fill\":4.9452,\"id\":4}]}]}");
-//		} catch (ViewManagerNotInstantiatedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			Synchronizer.getInstance().solicitar();
+			IGLFacadeImpl.getInstance().visualizeTowers("{\"neighborhoods\":[{\"flats\":[{\"width\":2.6925,\"height\":11.9676,\"depth\":2.529,\"color\":\"ff0000\",\"fill\":10.492799999999999,\"id\":1},{\"width\":2.2362,\"height\":11.694,\"depth\":2.3505,\"color\":\"00ff00\",\"fill\":4.9452,\"id\":4}]}]}");
+		} catch (ViewManagerNotInstantiatedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 //		try {
 //			Synchronizer.getInstance().solicitar();
@@ -102,10 +102,9 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 //					"{\"id\":11,\"employees\":50,\"projects\":11}," +
 //					"{\"id\":12,\"employees\":160,\"projects\":12}," +
 //					"{\"id\":13,\"employees\":560,\"projects\":13}," +
-//					"{\"id\":14,\"employees\":10,\"projects\":14}" +
+//					"{\"id\":14,\"employees\":1000,\"projects\":14}" +
 //				"]}" +
 //				"]}");
-//			//
 //		} catch (ViewManagerNotInstantiatedException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();

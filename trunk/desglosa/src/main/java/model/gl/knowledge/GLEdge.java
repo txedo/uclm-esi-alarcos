@@ -7,13 +7,13 @@ import model.util.Color;
 
 import exceptions.GLSingletonNotInitializedException;
 
-public class Edge extends GLObject implements IEdge {
-	private MetricIndicator source;
-	private MetricIndicator destination;
+public class GLEdge extends GLObject implements IGLEdge {
+	private GLMetricIndicator source;
+	private GLMetricIndicator destination;
 	private int type;
 	private float width;
 	
-	public Edge (MetricIndicator s, MetricIndicator d) {
+	public GLEdge (GLMetricIndicator s, GLMetricIndicator d) {
 		this.source = s;
 		this.destination = d;
 		this.type = SOLID;
@@ -71,19 +71,19 @@ public class Edge extends GLObject implements IEdge {
 		this.color = color;
 	}
 
-	public MetricIndicator getSource() {
+	public GLMetricIndicator getSource() {
 		return source;
 	}
 
-	public void setSource(MetricIndicator source) {
+	public void setSource(GLMetricIndicator source) {
 		this.source = source;
 	}
 
-	public MetricIndicator getDestination() {
+	public GLMetricIndicator getDestination() {
 		return destination;
 	}
 
-	public void setDestination(MetricIndicator destination) {
+	public void setDestination(GLMetricIndicator destination) {
 		this.destination = destination;
 	}
 }

@@ -2,13 +2,13 @@ package model.gl.knowledge;
 
 import java.nio.ByteBuffer;
 
-public class Texture {
+public class GLTexture {
 	
     private ByteBuffer pixels;
     private int width;
     private int height;
 
-    public Texture(ByteBuffer pixels, int width, int height) {
+    public GLTexture(ByteBuffer pixels, int width, int height) {
         this.height = height;
         this.pixels = pixels;
         this.width = width;
