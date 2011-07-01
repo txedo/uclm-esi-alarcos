@@ -26,6 +26,8 @@ public class Dimension {
 	private String csvCol;
 	@XmlTransient
 	private Object value;
+	@XmlElement(name="description", required=false)
+	private String description;
 	
 	public Dimension(){}
 
@@ -52,6 +54,10 @@ public class Dimension {
 	public Object getValue() {
 		return value;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
 
 	public void setAttr(String attr) {
 		this.attr = attr;
@@ -75,6 +81,10 @@ public class Dimension {
 	
 	public void setValue(Object obj) {
 		this.value = obj;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }

@@ -108,11 +108,11 @@ public class IGLFacadeImpl implements IGLFacade {
 				int repairedIncidences = jobj.getInt("repairedIncidences");
 				project.setLeftChildBallValue(repairedIncidences);
 				project.setRightChildBallValue(incidences - repairedIncidences);
-				project.setColor(new Color(jobj.getString("color")));
+				project.setColor(new Color(jobj.getJSONObject("market").getString("color")));
 				float size = (float)jobj.getDouble("size");
 				project.setParentBallRadius(size);
 				if (maxSize < size) maxSize = size;
-				captionLines.put(jobj.getString("market"), jobj.getString("color"));
+				captionLines.put(jobj.getJSONObject("market").getString("name"), jobj.getJSONObject("market").getString("color"));
 				projects.add(project);
 			}
 			// Build the neighborhood

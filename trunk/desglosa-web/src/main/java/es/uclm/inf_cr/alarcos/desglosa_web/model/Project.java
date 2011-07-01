@@ -10,11 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="projects")
@@ -41,6 +43,8 @@ public class Project {
 	private int repairedIncidences;
 	private int size;
 	private boolean delayed;
+	private String profileName;
+	private Profile profile;
 	
 	public Project(){}
 
@@ -70,7 +74,12 @@ public class Project {
 		return mainFactory;
 	}
 
-    @OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL}, mappedBy="project")
+    @OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
+    @JoinTable(
+    	name="projects_has_subprojects",
+    	joinColumns = @JoinColumn(name = "project_id"),
+    	inverseJoinColumns = @JoinColumn(name = "subproject_id")
+    )
 	public Set<Subproject> getSubprojects() {
 		return subprojects;
 	}
@@ -104,6 +113,16 @@ public class Project {
 	@Column(name="delayed")
 	public boolean isDelayed() {
 		return delayed;
+	}
+	
+	@Column(name="profile")
+	public String getProfileName() {
+		return profileName;
+	}
+	
+	@Transient
+	public Profile getProfile() {
+		return profile;
 	}
 
 	public void setId(int id) {
@@ -159,6 +178,15 @@ public class Project {
 		String res = this.name;
 		if (subprojects.size() > 1) res = this.name + " *";
 		return res;
+	}
+	
+
+	public void setProfileName(String profileName) {
+		this.profileName = profileName;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 	
 }

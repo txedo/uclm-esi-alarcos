@@ -14,7 +14,7 @@
 	<sj:head jqueryui="true"/>
 	
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
-	<script type="text/javascript" src="js/desglosa-facade.js"></script>
+	<!-- <script type="text/javascript" src="js/desglosa-facade.js"></script> -->
 	<script type="text/javascript">
 	var map;
 	var geocoder;
@@ -368,6 +368,200 @@
 		initializeTabs();
 	});
 
+///////////////////////////////////////////////////////
+////////// BEGINING OF DESGLOSA-FACADE.JS /////////////
+///////////////////////////////////////////////////////
+
+var depth_level; // Global variable to control in which tower level the user is surfing around
+var queriedProjects = new Array();
+var queriedFactories = new Array();
+
+function selectTower(id, clickCount) {
+	switch (depth_level) {
+		case 1:
+			switch (clickCount) {
+				case 1:
+					
+					break;
+				case 2:
+					
+					break;
+				default:
+					break;
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+function selectFactory(id, clickCount) {
+	alert('Selected factory: ' + id + ' - clicks: ' + clickCount);
+}
+
+function selectProject(id, clickCount) {
+	showLoadingIndicator(true);
+	// TODO aqui ya no vamos a volver a llamar a la acción.
+	// Vamos a utilizar el array queriedProjects que tiene toda la información que necesitamos
+	depth_level = 1;
+	// one project -> one neightborhood
+	var charts = new Array();
+	var neighborhood = new Neighborhood();
+	// Si se ha seleccionado un proyecto determinado...
+	if (id > 0) {
+		// Buscamos el proyecto en el array queriedProjects
+		$.each(queriedProjects, function (i, project) {
+			if (project.id == id) {
+				// one project -> one neightborhood
+				// one subproject -> one flat in a neighborhood
+				var color = project.profile.color;
+				$.each(project.profile.views, function (j, view) {
+					// Configuramos todas las vistas de nivel 1
+					// Sólo se soporta un diagrama 3D
+					var isGraphicEngineBusy = false;
+					if (view.level == depth_level) {
+						var chart = new Object();
+						chart.name = view.chart.name;
+						chart.type = view.chart.type;
+						if (chart.type!="3D" || !isGraphicEngineBusy) {
+							// set innerHTML for view.name
+							if (view.chart.maxCols < view.dimensions.length) {
+								alert ('Hay mas atributos que columnas, se ignoraran los sobrantes.');
+							}
+							if (chart.name == "towers") {
+								var tower = new Object();
+								tower = configureTower(color, view.dimensions);
+								tower.id = subproject.id;
+								neighborhood.flats.push(tower);
+							}
+							if (chart.type == "3D") {
+								isGraphichEngineBusy = true;
+							}
+							charts.push(chart);
+						}
+					}
+				});
+			}
+		});
+		// Una vez que hemos configurado todos los diagramas, los mostramos	
+		$.each(charts, function (i, chart) {
+			if (chart == "towers") {
+				var city = new City();
+				city.neighborhoods.push(neighborhood);
+				// Convert project array to JSON format
+				var JSONtext = JSON.stringify(city);
+				// Change active view
+				document.DesglosaApplet.visualizeTowers(JSONtext);
+			}
+		});
+	}
+	showLoadingIndicator(false);
+}
+
+function configureTower(color, dimensions) {
+	var MAX_DEPTH = 3.0;
+	var MAX_WIDTH = 3.0;
+	var MAX_HEIGHT = 12.0;
+	var tower = new Object();
+	$.each(dimensions, function (i, item) {
+		if (item.attr == "width") tower.width = item.value*MAX_WIDTH/item.measure.high;
+		else if (item.attr == "height") tower.height = item.value*MAX_HEIGHT/item.measure.high;
+		else if (item.attr == "depth") tower.depth = item.value*MAX_DEPTH/item.measure.high;
+		else if (item.attr == "color") {
+			if (item.value <= item.measure.medium * 0.90) tower.color = color.nonAcceptable;
+			else if (item.value < item.measure.medium * 0.90 && item.value > item.measure.medium * 1.10) tower.color = color.peripheral;
+			else tower.color = color.acceptable;
+		}
+		else if (item.attr == "fill") tower.fill = item.value*MAX_HEIGHT/item.measure.high;
+		else ;
+	});
+	return tower;
+}
+
+function City () {
+	this.neighborhoods = new Array();
+}
+
+function Neighborhood () {
+	this.flats = new Array();
+}
+
+function desglosa_showFactoriesByCompanyId(id) {
+	desglosa_showFactories("/desglosa-web/getFactoriesFromCompanyJSON.action", id);
+}
+
+function desglosa_showFactoriesById(id) {
+	desglosa_showFactories("/desglosa-web/getFactoriesJSON.action", id);
+}
+
+function desglosa_showFactories(action, id) {
+	queriedFactories = new Array();
+	showLoadingIndicator(true);
+	$.getJSON(action,
+			{id: id},
+			function (data, status) {
+				if (status == "success") {
+					// Hide map canvas
+					$('#map_canvas').css('display','none');
+					// Show jogl canvas
+					$('#jogl_canvas').css('display','');
+					// Configure items
+					var neighborhood = new Neighborhood();
+					$.each(data.factories, function (i, item) {
+						var factory = new Object();
+						factory = item;
+						factory.projects = 1;
+						neighborhood.flats.push(factory);
+						queriedFactories.push(factory);
+					});
+					var city = new City();
+					city.neighborhoods.push(neighborhood);
+					// Convert factory array to JSON format
+					var JSONtext = JSON.stringify(city);
+					// Change active view
+					document.DesglosaApplet.visualizeFactories(JSONtext);
+				}
+				else alert('An error has occurred while trying to retrieve factory information: ' + status);
+				showLoadingIndicator(false);
+	});
+}
+
+function desglosa_showProjectsById(id) {
+	queriedProjects = new Array();
+	showLoadingIndicator(true);
+	$.getJSON("/desglosa-web/getProjectsJSON.action",
+			{id: id},
+			function (data, status) {
+				if (status == "success") {
+					// Hide map canvas
+					$('#map_canvas').css('display','none');
+					// Show jogl canvas
+					$('#jogl_canvas').css('display','');
+					// Configure items
+					var neighborhood = new Neighborhood();
+					$.each(data.projects, function (i, item) {
+						var project = new Object();
+						project = item;
+						neighborhood.flats.push(project);
+						queriedProjects.push(project);
+					});
+					var city = new City();
+					city.neighborhoods.push(neighborhood);
+					// Convert project array to JSON format
+					var JSONtext = JSON.stringify(city);
+					// Change active view
+					document.DesglosaApplet.visualizeProjects(JSONtext);
+				}
+				else alert('An error has occurred while trying to retrieve factory information: ' + status);
+				showLoadingIndicator(false);
+	});
+}
+
+
+///////////////////////////////////////////////////////
+//////////// END OF DESGLOSA-FACADE.JS ////////////////
+///////////////////////////////////////////////////////
+
 	</script>
 </head>
 <body>
@@ -401,9 +595,9 @@
 	<div style="clear:both;"/>
 	
 	<div id="workingArea" style="position:relative; height:450px">
-		<div id="map_canvas" style="position:absolute; top:0; left:0; width: 600px; height: 400px; display: ;"></div>
+		<div id="map_canvas" style="position:relative; top:0; left:0; width: 600px; height: 400px; display: ;"></div>
 		
-		<div id="jogl_canvas" style="position:absolute; top:0; left:0; width: 600px; height: 400px; display: none;">
+		<div id="jogl_canvas" style="position:relative; top:0; left:0; width: 600px; height: 400px; display: none;">
 			<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
 				codebase="./" 
 				id="DesglosaApplet"
@@ -431,6 +625,8 @@
 			</applet>
 			<a href="#" onclick="$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');depth_level=0;"><s:text name="label.back_to_map"/></a>
 		</div>
+		
+		<div id="charts" style="position:relative"></div>
 	
 		<div id="tabs" style="position:absolute; top:0; right:0; width:350px">
 			<s:label value="%{getText('label.detailed_info')}:"/>

@@ -144,6 +144,43 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	private void completeProjectData () {
+		if (projects != null && projects.size() > 0) {
+			for (Project p : projects) {
+				try {
+					p.setProfile((Profile)XMLAgent.unmarshal(ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + p.getProfileName(), Profile.class));
+					for (View v : p.getProfile().getViews()) {
+						for (Subproject sp : p.getSubprojects()) {
+							v.obtainDimensionValues(sp.getCsvData());
+							for (Dimension d : v.getDimensions()) {
+								d.setMeasure(measureDao.getMeasure(d.getMeasureKey()));
+							}
+						}
+						v.setChart(chartDao.getChart(v.getChartName()));
+					}
+				} catch (JAXBException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (MeasureNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ChartNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	public String getProjectsJSON() {
 		if (id == 0) {
 			projects = projectDao.getProjects();
@@ -156,6 +193,7 @@ public class VisualizationAction extends ActionSupport {
 				return ERROR;
 			}
 		}
+		completeProjectData();
 		return SUCCESS;
 	}
 	
@@ -168,7 +206,7 @@ public class VisualizationAction extends ActionSupport {
 			queryParams.put("id", id);
 			projects = projectDao.findByNamedQuery("findProjectsByCompanyId", queryParams);
 		}
-		
+		completeProjectData();
 		return SUCCESS;
 	}
 	
@@ -181,51 +219,9 @@ public class VisualizationAction extends ActionSupport {
 			queryParams.put("id", id);
 			projects = projectDao.findByNamedQuery("findProjectsByFactoryId", queryParams);
 		}
-		
+		completeProjectData();
 		return SUCCESS;
 	}
 	
-	public String getSubprojectsAndProfilesByProjectIdJSON() {
-		if (id == 0) {
-			subprojects = subprojectDao.getSubprojects();
-		}
-		else {
-			Map<String, Object> queryParams = new HashMap<String, Object>();
-			queryParams.put("id", id);
-			subprojects = subprojectDao.findByNamedQuery("findSubprojectsByProjectId", queryParams);
-		}
-		for (Subproject sp : subprojects) {
-			try {
-				sp.setProfile((Profile)XMLAgent.unmarshal(ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + sp.getProfileName(), Profile.class));
-				for (View v : sp.getProfile().getViews()) {
-					v.obtainDimensionValues(sp.getCsvData());
-					for (Dimension d : v.getDimensions()) {
-						d.setMeasure(measureDao.getMeasure(d.getMeasureKey()));
-					}
-					v.setChart(chartDao.getChart(v.getChartName()));
-				}
-			} catch (JAXBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (MeasureNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ChartNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		return SUCCESS;
-	}
 
 }
