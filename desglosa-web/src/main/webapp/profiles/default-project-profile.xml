@@ -4,7 +4,7 @@
 		<peripheral>0000ff</peripheral>
 		<nonAcceptable>00ff00</nonAcceptable>
 	</color>
-	<view name="basic characteristics" chart="towers">
+	<view id="1" level="1" name="basic characteristics" chart="towers">
 		<dim attr="width" measure="fia">
 			<type>numeric</type>
 			<csv_col>1</csv_col>
@@ -24,6 +24,28 @@
 		<dim attr="fill" measure="port">
 			<type>numeric</type>
 			<csv_col>5</csv_col>
+		</dim>
+	</view>
+	<view id="2" level="2" name="actividad" chart="towers">
+		<dim attr="width" measure="pfunc">
+			<type>numeric</type>
+			<csv_col>6</csv_col>
+		</dim>
+		<dim attr="height" measure="lcd">
+			<type>numeric</type>
+			<csv_col>7</csv_col>
+		</dim>
+		<dim attr="depth" measure="comm">
+			<type>numeric</type>
+			<csv_col>8</csv_col>
+		</dim>
+		<dim attr="color" measure="act">
+			<type>numeric</type>
+			<csv_col>9</csv_col>
+		</dim>
+		<dim attr="fill" measure="ftot">
+			<type>percent</type>
+			<csv_col>10,11</csv_col>
 		</dim>
 	</view>
 </profile>

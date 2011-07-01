@@ -12,6 +12,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class View {
 	@XmlAttribute
+	private int id;
+	@XmlAttribute
+	private int level;
+	@XmlAttribute
 	private String name;
 	@XmlAttribute(name="chart")
 	private String chartName;
@@ -21,6 +25,14 @@ public class View {
 	private List<Dimension> dimensions = new ArrayList<Dimension>();
 
 	public View() {}
+
+	public int getId() {
+		return id;
+	}
+
+	public int getLevel() {
+		return level;
+	}
 
 	public String getName() {
 		return name;
@@ -36,6 +48,14 @@ public class View {
 
 	public List<Dimension> getDimensions() {
 		return dimensions;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
 	public void setName(String name) {

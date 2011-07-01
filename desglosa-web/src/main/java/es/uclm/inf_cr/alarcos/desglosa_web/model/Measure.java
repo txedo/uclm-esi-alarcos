@@ -12,6 +12,7 @@ import javax.persistence.Table;
 public class Measure {
 	private int id;
 	private String name;
+	private String description;
 	private String key;
 	private float high;
 	private float medium;
@@ -29,6 +30,11 @@ public class Measure {
 		return name;
 	}
 	
+	@Column(name="description")
+	public String getDescription() {
+		return description;
+	}
+
 	@Column(name="key")
 	public String getKey() {
 		return key;
@@ -55,6 +61,10 @@ public class Measure {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public void setKey(String key) {
