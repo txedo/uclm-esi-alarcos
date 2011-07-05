@@ -109,8 +109,9 @@ public class GLFactoryViewManager extends GLViewManager {
 
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
-		System.err.println("Selected factory: " + selectedObject + "\tNumber of clicks: " + clickCount);
-		NotifyUIManager.notifySelectedFactory(selectedObject, clickCount);
+		int GLObjectId = glFactories.get(selectedObject-1).getId();
+		System.err.println("Selected factory: " + GLObjectId + "\tNumber of clicks: " + clickCount);
+		NotifyUIManager.notifySelectedFactory(GLObjectId, clickCount);
 	}
 
 }

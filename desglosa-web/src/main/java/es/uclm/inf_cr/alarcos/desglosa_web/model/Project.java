@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -74,12 +73,7 @@ public class Project {
 		return mainFactory;
 	}
 
-    @OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
-    @JoinTable(
-    	name="projects_has_subprojects",
-    	joinColumns = @JoinColumn(name = "project_id"),
-    	inverseJoinColumns = @JoinColumn(name = "subproject_id")
-    )
+    @OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL}, mappedBy="project")
 	public Set<Subproject> getSubprojects() {
 		return subprojects;
 	}
@@ -172,21 +166,20 @@ public class Project {
 	public void setDelayed(boolean delayed) {
 		this.delayed = delayed;
 	}
-
-	@Override
-	public String toString() {
-		String res = this.name;
-		if (subprojects.size() > 1) res = this.name + " *";
-		return res;
-	}
 	
-
 	public void setProfileName(String profileName) {
 		this.profileName = profileName;
 	}
 
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+	}
+
+	@Override
+	public String toString() {
+		String res = this.name;
+		if (subprojects.size() > 1) res = this.name + " *";
+		return res;
 	}
 	
 }
