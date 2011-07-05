@@ -403,57 +403,40 @@ function selectProject(id, clickCount) {
 	showLoadingIndicator(true);
 	// TODO aqui ya no vamos a volver a llamar a la acción.
 	// Vamos a utilizar el array queriedProjects que tiene toda la información que necesitamos
-	depth_level = 1;
 	// one project -> one neightborhood
-	var charts = new Array();
-	var neighborhood = new Neighborhood();
-	// Si se ha seleccionado un proyecto determinado...
-	if (id > 0) {
-		// Buscamos el proyecto en el array queriedProjects
-		$.each(queriedProjects, function (i, project) {
-			if (project.id == id) {
-				// one project -> one neightborhood
-				// one subproject -> one flat in a neighborhood
-				var color = project.profile.color;
-				$.each(project.profile.views, function (j, view) {
-					// Configuramos todas las vistas de nivel 1
-					// Sólo se soporta un diagrama 3D
-					var isGraphicEngineBusy = false;
-					if (view.level == depth_level) {
-						var chart = new Object();
-						chart.name = view.chart.name;
-						chart.type = view.chart.type;
-						if (chart.type!="3D" || !isGraphicEngineBusy) {
-							// set innerHTML for view.name
-							if (view.chart.maxCols < view.dimensions.length) {
-								alert ('Hay mas atributos que columnas, se ignoraran los sobrantes.');
-							}
-							if (chart.name == "towers") {
-								var tower = new Object();
-								tower = configureTower(color, view.dimensions);
-								tower.id = subproject.id;
-								neighborhood.flats.push(tower);
-							}
-							if (chart.type == "3D") {
-								isGraphichEngineBusy = true;
-							}
-							charts.push(chart);
-						}
-					}
-				});
-			}
-		});
-		// Una vez que hemos configurado todos los diagramas, los mostramos	
-		$.each(charts, function (i, chart) {
-			if (chart == "towers") {
-				var city = new City();
-				city.neighborhoods.push(neighborhood);
-				// Convert project array to JSON format
-				var JSONtext = JSON.stringify(city);
-				// Change active view
-				document.DesglosaApplet.visualizeTowers(JSONtext);
-			}
-		});
+	var chart;
+	var city = new City();
+	var neighborhood;
+	// Buscamos el proyecto en el array queriedProjects
+	$.each(queriedProjects, function (i, project) {
+		neightborhood = new Neighborhood();
+		// one project -> one neightborhood
+		// one subproject -> one flat in a neighborhood
+		// In first versions, only one project chart is permitted. So, XML profile must have only one view
+		chart = new Object();
+		chart.name = project.profile.views[0].chart.name;
+		chart.type = project.profile.views[0].chart.type;
+		// set innerHTML for view.name
+		if (project.profile.views[0].chart.maxCols < project.profile.views[0].dimensions.length) {
+			alert ('Hay mas atributos que columnas, se ignoraran los sobrantes.');
+		}
+		if (chart.name == "towers") {
+			$.each(project.subprojects, function(j, subproject) {
+				var tower = new Object();
+				tower = configureTower(project.profile.color, project.profile.views[0].dimensions);
+				tower.id = subproject.id;
+				neighborhood.flats.push(tower);
+			});
+		}
+		city.neighborhoods.push(neightborhood);
+	});
+	// Convert project array to JSON format
+	var JSONtext = JSON.stringify(city);
+	alert(JSONtext);
+	// Una vez configurado el diagrama, lo mostramos
+	if (chart == "towers") {
+		// Change active view
+		document.DesglosaApplet.visualizeTowers(JSONtext);
 	}
 	showLoadingIndicator(false);
 }
@@ -542,6 +525,7 @@ function desglosa_showProjectsById(id) {
 					$.each(data.projects, function (i, item) {
 						var project = new Object();
 						project = item;
+						project.id = id;
 						neighborhood.flats.push(project);
 						queriedProjects.push(project);
 					});

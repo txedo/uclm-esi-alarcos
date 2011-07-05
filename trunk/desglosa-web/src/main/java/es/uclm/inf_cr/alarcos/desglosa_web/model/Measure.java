@@ -83,5 +83,20 @@ public class Measure {
 		this.low = low;
 	}
 
+	@Override
+	public Object clone() {
+		Measure res = new Measure();
+		res.setId(id);
+		res.setName(name);
+		res.setDescription(description);
+		res.setKey(key);
+		res.setHigh(high);
+		res.setMedium(medium);
+		res.setLow(low);
+		return res;
+	}
+	
+	
+
 
 }

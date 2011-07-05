@@ -86,5 +86,19 @@ public class Dimension {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	@Override
+	public Object clone() {
+		Dimension res = new Dimension();
+		res.setAttr(attr);
+		res.setMeasureKey(measureKey);
+		res.setMeasure((Measure)measure.clone());
+		res.setType(type);
+		res.setCsvCol(csvCol);
+		res.setValue(value);
+		res.setDescription(description);
+		
+		return res;
+	}
 	
 }

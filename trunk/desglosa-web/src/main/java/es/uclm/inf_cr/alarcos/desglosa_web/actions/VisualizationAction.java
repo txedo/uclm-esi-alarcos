@@ -149,14 +149,22 @@ public class VisualizationAction extends ActionSupport {
 			for (Project p : projects) {
 				try {
 					p.setProfile((Profile)XMLAgent.unmarshal(ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + p.getProfileName(), Profile.class));
-					for (View v : p.getProfile().getViews()) {
-						for (Subproject sp : p.getSubprojects()) {
-							v.obtainDimensionValues(sp.getCsvData());
-							for (Dimension d : v.getDimensions()) {
-								d.setMeasure(measureDao.getMeasure(d.getMeasureKey()));
-							}
+					if (p.getProfile().getViews().size() > 0) {
+						View v = (View) p.getProfile().getViews().get(0).clone();
+						for (Dimension d : v.getDimensions()) {
+							d.setMeasure(measureDao.getMeasure(d.getMeasureKey()));
 						}
 						v.setChart(chartDao.getChart(v.getChartName()));
+						// A continuación se hace un pequeño tweak en el que haremos una vista por cada subprojecto
+						// manteniendo la misma configuración de dimensiones entre vistas y actualizando únicamente sus valores
+						// correspondiendo cada conjunto de valores con un subprojecto.
+						List<View> tweakedViews = new ArrayList<View>();
+						for (Subproject sp : p.getSubprojects()) {
+							View aux = (View) v.clone();
+							aux.obtainDimensionValues(sp.getCsvData());
+							tweakedViews.add(aux);
+						}
+						p.getProfile().setViews(tweakedViews);
 					}
 				} catch (JAXBException e) {
 					// TODO Auto-generated catch block

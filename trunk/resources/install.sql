@@ -169,13 +169,21 @@ DROP TABLE IF EXISTS `desglosadb`.`subprojects` ;
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`subprojects` (
   `id` INT NOT NULL ,
   `factory_id` INT NOT NULL ,
+  `project_id` INT NOT NULL ,
   `name` VARCHAR(45) NULL ,
   `csv_data` VARCHAR(4095) NULL ,
+  `profile` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_subprojects_factories` (`factory_id` ASC) ,
+  INDEX `fk_subprojects_projects` (`project_id` ASC) ,
   CONSTRAINT `fk_subprojects_factories`
     FOREIGN KEY (`factory_id` )
     REFERENCES `desglosadb`.`factories` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_subprojects_projects`
+    FOREIGN KEY (`project_id` )
+    REFERENCES `desglosadb`.`projects` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -196,7 +204,7 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`users` (
   `credentials_expired` TINYINT(1)  NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `username_UNIQUE` (`username` ASC) )
-ENGINE = InnoDB, 
+ENGINE = InnoDB
 COMMENT = 'http://static.springsource.org/spring-security/site/docs/3.0' /* comment truncated */ ;
 
 
@@ -308,30 +316,6 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`charts` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `desglosadb`.`projects_has_subprojects`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`projects_has_subprojects` ;
-
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`projects_has_subprojects` (
-  `subproject_id` INT NOT NULL ,
-  `project_id` INT NULL ,
-  PRIMARY KEY (`subproject_id`) ,
-  INDEX `fk_projects_has_subprojects_subprojects` (`subproject_id` ASC) ,
-  INDEX `fk_projects_has_subprojects_projects` (`project_id` ASC) ,
-  CONSTRAINT `fk_projects_has_subprojects_subprojects`
-    FOREIGN KEY (`subproject_id` )
-    REFERENCES `desglosadb`.`subprojects` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_projects_has_subprojects_projects`
-    FOREIGN KEY (`project_id` )
-    REFERENCES `desglosadb`.`projects` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
 grant ALL on TABLE `desglosadb`.`companies` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`factories` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`addresses` to desglosaadmin;
@@ -439,11 +423,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `name`, `csv_data`) VALUES (1, 1, 'fase 1', '89.75;99.73;84.3;76.17;87.44;305789;4125987;547;89;5997;13425');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `name`, `csv_data`) VALUES (2, 2, 'mod 1', '4.13;100;54.51;95.22;84.89;10254;1254784;123;74;1233;7844');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `name`, `csv_data`) VALUES (3, 4, 'mod 2', '55.61;62.15;89.03;45.52;78.21;23423;14512431;3145;23;5233;52134');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `name`, `csv_data`) VALUES (4, 3, 'fase 2', '74.54;97.45;78.35;43.1;41.21;1234;124123;5123;85;1234;14134');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `name`, `csv_data`) VALUES (6, 3, 'fase 2', '89.57;99.55;59;97;85;52355;525252234;4124;53;53344;52452');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (1, 1, 1, 'fase 1', '89.75;99.73;84.3;76.17;87.44;305789;4125987;547;89;5997;13425', 'default-subproject-profile.xml');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (2, 2, 2, 'mod 1', '4.13;100;54.51;95.22;84.89;10254;1254784;123;74;1233;7844', 'default-subproject-profile.xml');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (3, 4, 2, 'mod 2', '55.61;62.15;89.03;45.52;78.21;23423;14512431;3145;23;5233;52134', 'default-subproject-profile.xml');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (4, 3, 1, 'fase 2', '74.54;97.45;78.35;43.1;41.21;1234;124123;5123;85;1234;14134', 'default-subproject-profile.xml');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (6, 3, 3, 'fase 2', '89.57;99.55;59;97;85;52355;525252234;4124;53;53344;52452', 'default-subproject-profile.xml');
 
 COMMIT;
 
@@ -538,18 +522,5 @@ COMMIT;
 START TRANSACTION;
 USE `desglosadb`;
 INSERT INTO `desglosadb`.`charts` (`id`, `name`, `description`, `type`, `max_cols`) VALUES (1, 'towers', NULL, '3D', 5);
-
-COMMIT;
-
--- -----------------------------------------------------
--- Data for table `desglosadb`.`projects_has_subprojects`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `desglosadb`;
-INSERT INTO `desglosadb`.`projects_has_subprojects` (`subproject_id`, `project_id`) VALUES (1, 1);
-INSERT INTO `desglosadb`.`projects_has_subprojects` (`subproject_id`, `project_id`) VALUES (2, 2);
-INSERT INTO `desglosadb`.`projects_has_subprojects` (`subproject_id`, `project_id`) VALUES (3, 2);
-INSERT INTO `desglosadb`.`projects_has_subprojects` (`subproject_id`, `project_id`) VALUES (4, 1);
-INSERT INTO `desglosadb`.`projects_has_subprojects` (`subproject_id`, `project_id`) VALUES (6, 3);
 
 COMMIT;

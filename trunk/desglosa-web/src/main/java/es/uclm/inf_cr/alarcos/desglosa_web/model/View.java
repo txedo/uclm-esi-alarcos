@@ -89,6 +89,17 @@ public class View {
 			}
 		}
 	}
-	
+
+	@Override
+	public Object clone() {
+		View res = new View();
+		res.setId(id);
+		res.setLevel(level);
+		res.setName(name);
+		res.setChartName(chartName);
+		res.setChart((Chart) chart.clone());
+		res.setDimensions(new ArrayList<Dimension>(dimensions));
+		return res;
+	}
 	
 }

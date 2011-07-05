@@ -53,5 +53,16 @@ public class Chart {
 	public void setMaxCols(int maxCols) {
 		this.maxCols = maxCols;
 	}
+
+	@Override
+	public Object clone() {
+		Chart res = new Chart();
+		res.setId(id);
+		res.setName(name);
+		res.setType(type);
+		res.setMaxCols(maxCols);
+		return res;
+	}
+	
 	
 }
