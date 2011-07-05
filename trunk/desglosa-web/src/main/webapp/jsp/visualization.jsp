@@ -266,6 +266,12 @@
 		return result;
 	}
 	
+	function formatSubprojectInformation(subprojectJSON) {
+		var result = "";
+		result += subprojectJSON.name;
+		return result;
+	}
+	
 	function showLoadingIndicator(value) {
 		if (value)
 			$("#indicator").css("display","");
@@ -374,21 +380,38 @@
 
 var depth_level; // Global variable to control in which tower level the user is surfing around
 var queriedProjects = new Array();
+var queriedSubprojects = new Array();
 var queriedFactories = new Array();
 
 function selectTower(id, clickCount) {
 	switch (depth_level) {
 		case 1:
-			switch (clickCount) {
-				case 1:
-					
-					break;
-				case 2:
-					
-					break;
-				default:
-					break;
-			}
+			showLoadingIndicator(true);
+			$.getJSON("/desglosa-web/getSubprojectByIdJSON.action",
+					{id: id},
+					function (data, status) {
+						if (status == "success") {
+							switch (clickCount) {
+								case 1:
+									// set div innerHTML with subproject info
+									$.each(data.subprojects , function (i, subproject) {
+										var fmtSp = formatSubprojectInformation(subproject);
+										$("#projectInformation").append("<br />" + fmtSP);
+									});
+									break;
+								case 2:
+									// draw subproject profile views
+									
+									// Increment depth level view
+									depth_level++;
+									break;
+								default:
+									break;
+							}
+						}
+						else alert('An error has occurred while trying to retrieve factory information: ' + status);
+						showLoadingIndicator(false);
+			});
 			break;
 		default:
 			break;
@@ -400,17 +423,19 @@ function selectFactory(id, clickCount) {
 }
 
 function selectProject(id, clickCount) {
+	depth_level = 1;
 	showLoadingIndicator(true);
+	queriedSubprojects = new Array();
 	// TODO aqui ya no vamos a volver a llamar a la acción.
 	// Vamos a utilizar el array queriedProjects que tiene toda la información que necesitamos
-	// one project -> one neightborhood
+	// one project -> one neighborhood
 	var chart;
 	var city = new City();
 	var neighborhood;
 	// Buscamos el proyecto en el array queriedProjects
 	$.each(queriedProjects, function (i, project) {
-		neightborhood = new Neighborhood();
-		// one project -> one neightborhood
+		neighborhood = new Neighborhood();
+		// one project -> one neighborhood
 		// one subproject -> one flat in a neighborhood
 		// In first versions, only one project chart is permitted. So, XML profile must have only one view
 		chart = new Object();
@@ -423,18 +448,17 @@ function selectProject(id, clickCount) {
 		if (chart.name == "towers") {
 			$.each(project.subprojects, function(j, subproject) {
 				var tower = new Object();
-				tower = configureTower(project.profile.color, project.profile.views[0].dimensions);
+				tower = configureTower(project.profile.color, project.profile.views[j].dimensions);
 				tower.id = subproject.id;
 				neighborhood.flats.push(tower);
 			});
 		}
-		city.neighborhoods.push(neightborhood);
+		city.neighborhoods.push(neighborhood);
 	});
 	// Convert project array to JSON format
 	var JSONtext = JSON.stringify(city);
-	alert(JSONtext);
 	// Una vez configurado el diagrama, lo mostramos
-	if (chart == "towers") {
+	if (chart.name == "towers") {
 		// Change active view
 		document.DesglosaApplet.visualizeTowers(JSONtext);
 	}
@@ -511,6 +535,7 @@ function desglosa_showFactories(action, id) {
 
 function desglosa_showProjectsById(id) {
 	queriedProjects = new Array();
+	queriedSubprojects = new Array();
 	showLoadingIndicator(true);
 	$.getJSON("/desglosa-web/getProjectsJSON.action",
 			{id: id},

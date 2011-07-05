@@ -93,12 +93,18 @@ public class View {
 	@Override
 	public Object clone() {
 		View res = new View();
-		res.setId(id);
-		res.setLevel(level);
-		res.setName(name);
-		res.setChartName(chartName);
-		res.setChart((Chart) chart.clone());
-		res.setDimensions(new ArrayList<Dimension>(dimensions));
+		res.setId(new Integer(id));
+		res.setLevel(new Integer(level));
+		if (name != null) res.setName(new String(name));
+		if (chartName != null) res.setChartName(new String(chartName));
+		if (chart != null) res.setChart((Chart) chart.clone());
+		if (dimensions != null) {
+			List<Dimension> tmpDims = new ArrayList<Dimension>();
+			for (Dimension d : dimensions) {
+				tmpDims.add((Dimension) d.clone());
+			}
+			res.setDimensions(tmpDims);
+		}
 		return res;
 	}
 	

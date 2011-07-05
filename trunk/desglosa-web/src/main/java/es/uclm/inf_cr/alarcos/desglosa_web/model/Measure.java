@@ -86,13 +86,13 @@ public class Measure {
 	@Override
 	public Object clone() {
 		Measure res = new Measure();
-		res.setId(id);
-		res.setName(name);
-		res.setDescription(description);
-		res.setKey(key);
-		res.setHigh(high);
-		res.setMedium(medium);
-		res.setLow(low);
+		res.setId(new Integer(id));
+		if (name != null) res.setName(new String(name));
+		if (description != null) res.setDescription(new String(description));
+		if (key != null) res.setKey(new String(key));
+		res.setHigh(new Float(high));
+		res.setMedium(new Float(medium));
+		res.setLow(new Float(low));
 		return res;
 	}
 	
