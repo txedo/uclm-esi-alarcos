@@ -15,8 +15,7 @@ public class Chart {
 	private String type;
 	private int maxCols;
 	
-	public Chart() {
-	}
+	public Chart() {}
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	public int getId() {
@@ -57,10 +56,10 @@ public class Chart {
 	@Override
 	public Object clone() {
 		Chart res = new Chart();
-		res.setId(id);
-		res.setName(name);
-		res.setType(type);
-		res.setMaxCols(maxCols);
+		res.setId(new Integer(id));
+		res.setName(new String(name));
+		res.setType(new String(type));
+		res.setMaxCols(new Integer(maxCols));
 		return res;
 	}
 	

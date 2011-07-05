@@ -90,13 +90,13 @@ public class Dimension {
 	@Override
 	public Object clone() {
 		Dimension res = new Dimension();
-		res.setAttr(attr);
-		res.setMeasureKey(measureKey);
-		res.setMeasure((Measure)measure.clone());
-		res.setType(type);
-		res.setCsvCol(csvCol);
-		res.setValue(value);
-		res.setDescription(description);
+		if (attr != null) res.setAttr(new String(attr));
+		if (measureKey != null) res.setMeasureKey(new String(measureKey));
+		if (measure != null) res.setMeasure((Measure)measure.clone());
+		if (type != null) res.setType(new String(type));
+		if (csvCol != null) res.setCsvCol(new String(csvCol));
+		if (value != null) res.setValue(value);
+		if (description != null) res.setDescription(new String(description));
 		
 		return res;
 	}

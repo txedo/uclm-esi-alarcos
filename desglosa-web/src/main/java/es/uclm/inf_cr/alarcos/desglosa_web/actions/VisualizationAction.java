@@ -23,6 +23,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.MeasureNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Dimension;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
@@ -189,6 +190,41 @@ public class VisualizationAction extends ActionSupport {
 		}
 	}
 	
+	private void completeSubprojectData () {
+		if (subprojects != null && subprojects.size() > 0) {
+			for (Subproject sp : subprojects) {
+				try {
+					sp.setProfile((Profile)XMLAgent.unmarshal(ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + sp.getProfileName(), Profile.class));
+					for (View v : sp.getProfile().getViews()) {
+						v.obtainDimensionValues(sp.getCsvData());
+						for (Dimension d : v.getDimensions()) {
+							d.setMeasure(measureDao.getMeasure(d.getMeasureKey()));
+						}
+						v.setChart(chartDao.getChart(v.getChartName()));
+					}
+				} catch (JAXBException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (MeasureNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ChartNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	public String getProjectsJSON() {
 		if (id == 0) {
 			projects = projectDao.getProjects();
@@ -231,5 +267,19 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-
+	public String getSubprojectByIdJSON() {
+		if (id == 0) {
+			subprojects = subprojectDao.getSubprojects();
+		}
+		else {
+			try {
+				subprojects = new ArrayList<Subproject>();
+				subprojects.add(subprojectDao.getSubproject(id));
+			} catch (SubprojectNotFoundException e) {
+				return ERROR;
+			}
+		}
+		completeSubprojectData();
+		return SUCCESS;
+	}
 }
