@@ -1,4 +1,4 @@
-#summary Google Maps example
+#summary (Deprecated) Google Maps V2 example
 #labels Google,Maps,JSP,JavaScript,JS
 
 = Introduction =
