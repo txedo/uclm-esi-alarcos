@@ -387,34 +387,47 @@ function selectTower(id, clickCount) {
 	switch (depth_level) {
 		case 1:
 			showLoadingIndicator(true);
-			$.getJSON("/desglosa-web/getSubprojectByIdJSON.action",
-					{id: id},
-					function (data, status) {
-						if (status == "success") {
-							switch (clickCount) {
-								case 1:
-									// set div innerHTML with subproject info
-									$.each(data.subprojects , function (i, subproject) {
-										var fmtSp = formatSubprojectInformation(subproject);
-										$("#projectInformation").append("<br />" + fmtSP);
-									});
-									break;
-								case 2:
-									// draw subproject profile views
-									
-									// Increment depth level view
-									depth_level++;
-									break;
-								default:
-									break;
+			if (typeof(queriedSubprojects) == 'undefined' || queriedSubprojects == null || queriedSubprojects.length == 0) {
+				queriedSubprojects = new Array();
+				$.getJSON("/desglosa-web/getSubprojectByIdJSON.action",
+						{id: id},
+						function (data, status) {
+							if (status == "success") {
+								queriedSubprojects = data.subprojects;
+								handleTowerEvent(clickCount);
 							}
-						}
-						else alert('An error has occurred while trying to retrieve factory information: ' + status);
-						showLoadingIndicator(false);
-			});
+							else alert('An error has occurred while trying to retrieve factory information: ' + status);
+							showLoadingIndicator(false);
+				});
+			} else {
+				handleTowerEvent(clickCount);
+				showLoadingIndicator(false);
+			}
 			break;
 		default:
 			break;
+	}
+}
+
+function handleTowerEvent(clickCount) {
+	if (typeof(queriedSubprojects) != 'undefined' && queriedSubprojects != null && queriedSubprojects.length > 0) {
+		$.each(queriedSubprojects, function (i, subproject) {
+			switch (clickCount) {
+				case 1:
+					// set div innerHTML with subproject info
+					var fmtSp = formatSubprojectInformation(subproject);
+					$("#projectInformation").append("<br />" + fmtSp);
+					break;
+				case 2:
+					// draw subproject profile views
+					
+					// Increment depth level view
+					depth_level++;
+					break;
+				default:
+					break;
+			}
+		});
 	}
 }
 
@@ -475,8 +488,8 @@ function configureTower(color, dimensions) {
 		else if (item.attr == "height") tower.height = item.value*MAX_HEIGHT/item.measure.high;
 		else if (item.attr == "depth") tower.depth = item.value*MAX_DEPTH/item.measure.high;
 		else if (item.attr == "color") {
-			if (item.value <= item.measure.medium * 0.90) tower.color = color.nonAcceptable;
-			else if (item.value < item.measure.medium * 0.90 && item.value > item.measure.medium * 1.10) tower.color = color.peripheral;
+			if (item.value <= item.measure.medium * item.measure.lowOffset) tower.color = color.nonAcceptable;
+			else if (item.value < item.measure.medium * item.measure.lowOffset && item.value > item.measure.medium * item.measure.highOffset) tower.color = color.peripheral;
 			else tower.color = color.acceptable;
 		}
 		else if (item.attr == "fill") tower.fill = item.value*MAX_HEIGHT/item.measure.high;
