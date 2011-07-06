@@ -297,6 +297,8 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`measures` (
   `high` FLOAT NULL ,
   `medium` FLOAT NULL ,
   `low` FLOAT NULL ,
+  `high_offset` FLOAT NULL ,
+  `low_offset` FLOAT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -502,17 +504,17 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`) VALUES (1, 'Fiabilidad', 'Descripción de fiabilidad', 'fia', 100, 50, 0);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`) VALUES (2, 'Usabiildad', 'Descripción de usabilidad', 'usa', 100, 50, 0);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`) VALUES (3, 'Eficiencia', 'Descripción de eficiencia', 'efi', 100, 50, 0);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`) VALUES (4, 'Mantenibilidad', 'Descripción de mantenibilidad', 'mant', 100, 50, 0);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`) VALUES (5, 'Portabilidad', 'Descripción de portabilidad', 'port', 100, 50, 0);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`) VALUES (6, 'Lineas de codigo', 'Descripción de lcd', 'lcd', 100, 50, 0);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`) VALUES (7, 'Comentarios', 'Descripción de comentarios', 'comm', 100, 50, 0);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`) VALUES (8, 'Puntos funcion', 'Descripción de puntos función', 'pfunc', 100, 50, 0);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`) VALUES (9, 'Fich. codigo', 'Descripción de fich. código', 'fcod', 100, 50, 0);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`) VALUES (11, 'Actividad', 'Descripción de actividad', 'act', 100, 50, 0);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`) VALUES (10, 'Fich. total', 'Descripción de fich. total', 'ftot', 100, 50, 0);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (1, 'Fiabilidad', 'Descripción de fiabilidad', 'fia', 100, 50, 0, 0.1, 0.1);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (2, 'Usabiildad', 'Descripción de usabilidad', 'usa', 100, 50, 0, 0.1, 0.1);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (3, 'Eficiencia', 'Descripción de eficiencia', 'efi', 100, 50, 0, 0.1, 0.1);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (4, 'Mantenibilidad', 'Descripción de mantenibilidad', 'mant', 100, 50, 0, 0.1, 0.1);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (5, 'Portabilidad', 'Descripción de portabilidad', 'port', 100, 50, 0, 0.1, 0.1);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (6, 'Lineas de codigo', 'Descripción de lcd', 'lcd', 100, 50, 0, 0.1, 0.1);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (7, 'Comentarios', 'Descripción de comentarios', 'comm', 100, 50, 0, 0.1, 0.1);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (8, 'Puntos funcion', 'Descripción de puntos función', 'pfunc', 100, 50, 0, 0.1, 0.1);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (9, 'Fich. codigo', 'Descripción de fich. código', 'fcod', 100, 50, 0, 0.1, 0.1);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (11, 'Actividad', 'Descripción de actividad', 'act', 100, 50, 0, 0.1, 0.1);
+INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (10, 'Fich. total', 'Descripción de fich. total', 'ftot', 100, 50, 0, 0.1, 0.1);
 
 COMMIT;
 

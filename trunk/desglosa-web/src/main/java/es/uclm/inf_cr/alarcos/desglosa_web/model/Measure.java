@@ -17,6 +17,8 @@ public class Measure {
 	private float high;
 	private float medium;
 	private float low;
+	private float highOffset;
+	private float lowOffset;
 	
 	public Measure() {}
 
@@ -54,6 +56,16 @@ public class Measure {
 	public float getLow() {
 		return low;
 	}
+	
+	@Column(name="high_offset")
+	public float getHighOffset() {
+		return highOffset;
+	}
+	
+	@Column(name="low_offset")
+	public float getLowOffset() {
+		return lowOffset;
+	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -81,6 +93,14 @@ public class Measure {
 
 	public void setLow(float low) {
 		this.low = low;
+	}
+	
+	public void setHighOffset(float highOffset) {
+		this.highOffset = highOffset;
+	}
+	
+	public void setLowOffset(float lowOffset) {
+		this.lowOffset = lowOffset;
 	}
 
 	@Override
