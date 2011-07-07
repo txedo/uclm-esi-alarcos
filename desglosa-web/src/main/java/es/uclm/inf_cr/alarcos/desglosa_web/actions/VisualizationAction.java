@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
+import model.gl.knowledge.GLFactory;
+
 import org.springframework.web.context.ContextLoader;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -15,6 +17,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.ChartDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
+import es.uclm.inf_cr.alarcos.desglosa_web.dao.MarketDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.MeasureDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.SubprojectDAO;
@@ -27,6 +30,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Dimension;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Market;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Profile;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
@@ -35,20 +39,28 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
 
 public class VisualizationAction extends ActionSupport {
 	private int id;
+	private String groupBy; //company, market, factory, project
 	private FactoryDAO factoryDao;
 	private CompanyDAO companyDao;
 	private ProjectDAO projectDao;
 	private SubprojectDAO subprojectDao;
 	private ChartDAO chartDao;
 	private MeasureDAO measureDao;
+	private MarketDAO marketDao;
 	
 	private List<Factory> factories;
 	private List<Company> companies;
 	private List<Project> projects;
 	private List<Subproject> subprojects;
+	
+	private List<GLFactory> glFactories;
 
 	public int getId() {
 		return id;
+	}
+	
+	public String getGroupBy(){
+		return this.groupBy;
 	}
 	
 	public List<Factory> getFactories() {
@@ -87,12 +99,20 @@ public class VisualizationAction extends ActionSupport {
 		this.measureDao = measureDao;
 	}
 	
+	public void setMarketDao(MarketDAO marketDao) {
+		this.marketDao = marketDao;
+	}
+	
 	public void setChartDao(ChartDAO chartDao) {
 		this.chartDao = chartDao;
 	}
 	
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public void setGroupBy(String groupBy){
+		this.groupBy = groupBy;
 	}
 
 	@Override
@@ -101,6 +121,36 @@ public class VisualizationAction extends ActionSupport {
 		companies = companyDao.getCompanies();
 		projects = projectDao.getProjects();
 		return SUCCESS;
+	}
+	
+	private void createGLFactories() {
+		if (factories != null && factories.size() > 0) {
+			glFactories = new ArrayList<GLFactory>();
+			for (Factory f : factories) {
+				GLFactory glf = new GLFactory();
+				// Set factory id -> id
+				glf.setId(f.getId());
+				// Set number of projects -> smokestack height
+				Map<String, Object> queryParams = new HashMap<String, Object>();
+				queryParams.put("id", f.getId());
+				glf.setSmokestackHeight(projectDao.findByNamedQuery("findProjectsByFactoryId", queryParams).size());
+				// Set factory specialized market -> smokestack color
+				List<Market> markets = marketDao.findByNamedQuery("findMostRepresentativeMarketByFactoryId", queryParams);
+				if (markets.size() > 0) {
+					Market market = markets.get(0);
+					glf.setSmokestackColor(market.getColor());
+				}
+				else glf.setSmokestackColor("000000");
+				// Set number of employees -> scale
+				int employees = f.getEmployees();
+				float scale = GLFactory.SMALL;
+				if (employees < 150) scale = GLFactory.MEDIUM;
+				else if (employees > 500) scale = GLFactory.BIG;
+				glf.setScale(scale);
+				// Add the glFactory to the glFactories list
+				glFactories.add(glf);
+			}			
+		}
 	}
 	
 	public String getFactoriesJSON() {
@@ -115,6 +165,7 @@ public class VisualizationAction extends ActionSupport {
 				return ERROR;
 			}
 		}
+		createGLFactories();
 		return SUCCESS;
 	}
 	

@@ -23,6 +23,7 @@
     	<property name="subprojectDao" ref="subprojectDao"/>
     	<property name="measureDao" ref="measureDao"/>
     	<property name="chartDao" ref="chartDao"/>
+    	<property name="marketDao" ref="marketDao"/>
     </bean>
     
     <!-- Struts2 interceptors instantiated by Spring -->
@@ -87,6 +88,11 @@
 	
 	<bean id="chartDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.ChartDAOHibernate">
     	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Chart"/>
+        <property name="hibernateTemplate" ref="hibernateTemplate" />  
+	</bean>
+	
+	<bean id="marketDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MarketDAOHibernate">
+    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Market"/>
         <property name="hibernateTemplate" ref="hibernateTemplate" />  
 	</bean>
 </beans>

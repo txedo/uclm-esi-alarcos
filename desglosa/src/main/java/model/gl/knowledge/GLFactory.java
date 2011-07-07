@@ -29,6 +29,7 @@ public class GLFactory extends GLObject3D {
 	// Smokestack radius and building length will depend on base dimensions
 	private int smokestackHeight;	// The number of projects assigned to this factory
 	private float smokestackRadius;
+	private Color smokestackColor;
 	// Building dimensions
 	private float buildingLength;
 	private float buildingWidth;
@@ -263,7 +264,7 @@ public class GLFactory extends GLObject3D {
 		if (shadow)
 			GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
 		else
-			GLSingleton.getGL().glColor3f(0.3f, 0.3f, 0.3f);
+			GLSingleton.getGL().glColor3fv(smokestackColor.getColorFB());
 		GLSingleton.getGLU().gluCylinder(this.GLUQuadric, this.smokestackRadius, this.smokestackRadius, this.smokestackHeight/5.0, 32, 32);
 	}
 
@@ -281,6 +282,14 @@ public class GLFactory extends GLObject3D {
 
 	public void setTexture(int textureName) {
 		this.texture = textureName;
+	}
+
+	public void setSmokestackColor(Color smokestackColor) {
+		this.smokestackColor = smokestackColor;
+	}
+	
+	public void setSmokestackColor(String hexColor) {
+		this.setSmokestackColor(new Color(hexColor));
 	}
 
 }

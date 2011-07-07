@@ -417,6 +417,7 @@ USE `desglosadb`;
 INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`) VALUES (1, 'desglosa', 'DGL', 'DESGLOSA', 1, 1, 1, 500, 100, 7, 0, 'default-project-profile.xml');
 INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`) VALUES (2, 'vilma', 'VLM', 'VILMA', 2, 2, 0, 10, 2, 3, 1, 'default-project-profile.xml');
 INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`) VALUES (3, 'w2p', 'W2P', 'Where2Publish', 3, 3, 1, 60, 21, 4, 0, 'default-project-profile.xml');
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`) VALUES (4, 'asdf', 'asdf', 'asdf', 1, 1, 1, 23, 32, 3, 1, 'default-project-profile.xml');
 
 COMMIT;
 
@@ -430,6 +431,8 @@ INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`
 INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (3, 4, 2, 'mod 2', '55.61;62.15;89.03;45.52;78.21;23423;14512431;3145;23;5233;52134', 'default-subproject-profile.xml');
 INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (4, 3, 1, 'fase 2', '74.54;97.45;78.35;43.1;41.21;1234;124123;5123;85;1234;14134', 'default-subproject-profile.xml');
 INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (6, 3, 3, 'fase 2', '89.57;99.55;59;97;85;52355;525252234;4124;53;53344;52452', 'default-subproject-profile.xml');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (7, 1, 4, 'fase 1', '89.57;99.55;59;97;85;52355;525252234;4124;53;53344;52452', 'default-subproject-profile.xml');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (8, 3, 4, 'fase 2', '74.54;97.45;78.35;43.1;41.21;1234;124123;5123;85;1234;14134', 'default-subproject-profile.xml');
 
 COMMIT;
 
