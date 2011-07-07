@@ -259,6 +259,14 @@
 			<version>2.1</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>es.uclm.inf-cr.alarcos</groupId>
+			<artifactId>desglosa</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>jar</type>
+			<classifier>jar-without-jni-libraries</classifier>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 	
     <build>
