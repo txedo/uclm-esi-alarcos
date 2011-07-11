@@ -292,4 +292,8 @@ public class GLFactory extends GLObject3D {
 		this.setSmokestackColor(new Color(hexColor));
 	}
 
+	public Color getSmokestackColor() {
+		return smokestackColor;
+	}
+
 }

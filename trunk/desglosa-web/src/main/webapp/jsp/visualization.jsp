@@ -272,11 +272,15 @@
 		return result;
 	}
 	
+	var operationPool = new Array();
 	function showLoadingIndicator(value) {
-		if (value)
-			$("#indicator").css("display","");
-		else
-			$("#indicator").css("display","none");
+		if (value) {
+			if (operationPool.length == 0) $("#indicator").css("display","");
+			operationPool.push(1);
+		} else {
+			operationPool.pop();
+			if (operationPool.length == 0) $("#indicator").css("display","none");	
+		}
 	}
 	
 	function initializeCompanyTab() {
@@ -307,7 +311,8 @@
 			// When a new company is selected
 			clearAllMarkers(); // clear all markers in the map
 			$("#factoryProjectSelect").val(-1); // unselect any selected factory
-			configureFactoriesByCompanyId($("#companySelect").val(), true); // Place map locations and fill factorySelect in
+			// concurrent functions
+			configureFactoriesByCompanyId($("#companySelect").val(), true), // Place map locations and fill factorySelect in
 			configureProjectsByCompanyId($("#companySelect").val()); // fill projectSelect in
 			if ($("#companySelect").val() == 0) {
 				// reset company info div
@@ -322,7 +327,6 @@
 		});
 		
 		$("#factorySelect").change( function() {
-			
 			clearAllMarkers();
 			$("#factoryProjectSelect").attr('disabled','');
 			$("#factoryProjectSelect").val(-1);

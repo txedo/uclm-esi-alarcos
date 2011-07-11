@@ -3,12 +3,16 @@ package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
 import model.gl.knowledge.GLFactory;
+import model.gl.knowledge.GLObject;
+import model.util.City;
+import model.util.Neighborhood;
 
 import org.springframework.web.context.ContextLoader;
 
@@ -149,7 +153,60 @@ public class VisualizationAction extends ActionSupport {
 				glf.setScale(scale);
 				// Add the glFactory to the glFactories list
 				glFactories.add(glf);
-			}			
+			}
+			
+			// factories and glFactories lists are correlative
+			City c = new City();
+			List <GLObject> flats;
+			if (groupBy.equals("company")) {
+				List <Company> availableCompanies = companyDao.getAll();
+				for (Company comp : availableCompanies) {
+					int factoryIndex = 0;
+					flats = new ArrayList<GLObject>();
+					for (Factory f : factories) {
+						if (f.getName().equals(comp.getName())) {
+							flats.add(glFactories.get(factoryIndex++));
+						}
+					}
+					if (flats.size() > 0) c.getNeightborhoods().add(new Neighborhood(comp.getName(), flats));
+				}
+			} else if (groupBy.equals("market")) {
+				List <Market> availableMarkets = marketDao.getAll();
+				for (Market m : availableMarkets) {
+					int factoryIndex = 0;
+					flats = new ArrayList<GLObject>();
+					for (Factory f : factories) {
+						GLFactory glfaux = glFactories.get(factoryIndex++);
+						if (glfaux.getSmokestackColor().equals(m.getColor())) {
+							flats.add(glfaux);
+						}
+					}
+					if (flats.size() > 0) c.getNeightborhoods().add(new Neighborhood(m.getName(), flats));
+				}
+			} else if (groupBy.equals("project")) {
+				List <Project> availableProjects = projectDao.getAll();
+				for (Project p : availableProjects) {
+					int factoryIndex = 0;
+					flats = new ArrayList<GLObject>();
+					for (Factory f : factories) {
+						boolean found = false;
+						Iterator it = p.getSubprojects().iterator();
+						while (it.hasNext() && !found) {
+							Subproject spaux = (Subproject)it.next();
+							if (spaux.getFactory().getId() == f.getId()) {
+								flats.add(glFactories.get(factoryIndex));
+								found = true;
+							}
+						}
+						factoryIndex++;
+					}
+				}
+			} else { // no group by
+				flats = new ArrayList<GLObject>();
+				flats.addAll(glFactories);
+				c.getNeightborhoods().add(new Neighborhood(flats));
+			}
+			c.placeNeighborhoods();
 		}
 	}
 	
@@ -165,7 +222,6 @@ public class VisualizationAction extends ActionSupport {
 				return ERROR;
 			}
 		}
-		createGLFactories();
 		return SUCCESS;
 	}
 	
