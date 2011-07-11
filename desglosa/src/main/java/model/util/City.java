@@ -5,39 +5,42 @@ import java.util.List;
 
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLPavement;
+import model.gl.knowledge.caption.Caption;
 
 public class City {
 	private final float X_GAP = 1.5f;
 	private final float Y_GAP = 2.0f;
 	
-	private List<Neighborhood> neightborhoods;
+	private List<Neighborhood> neighborhoods;
 	private List<GLObject> pavements;
+	private Caption caption;
+	
 	protected int cols;
 	protected int rows;
 	protected Vector2f placePoint;
 
 	public City() {
-		this.neightborhoods = new ArrayList<Neighborhood>();
+		this.neighborhoods = new ArrayList<Neighborhood>();
 		this.cols = 0;
 		this.rows = 0;
 		placePoint = new Vector2f(0.0f, 0.0f);
 		pavements = new ArrayList<GLObject>();
 	}
 	
-	public City(List<Neighborhood> neightborhoods) {
+	public City(List<Neighborhood> neighborhoods) {
 		this();
-		this.neightborhoods = neightborhoods;
+		this.neighborhoods = neighborhoods;
 		calculateRowsAndCols();
 	}
 	
 	protected void calculateRowsAndCols() {
-		if (neightborhoods != null) {
-			if (neightborhoods.size() > 0) {
-				this.cols = calculateCols(neightborhoods.size());
-				if (neightborhoods.size()%this.cols == 0)
-					this.rows = neightborhoods.size()/this.cols;
+		if (neighborhoods != null) {
+			if (neighborhoods.size() > 0) {
+				this.cols = calculateCols(neighborhoods.size());
+				if (neighborhoods.size()%this.cols == 0)
+					this.rows = neighborhoods.size()/this.cols;
 				else
-					this.rows = (neightborhoods.size()/this.cols + 1);
+					this.rows = (neighborhoods.size()/this.cols + 1);
 			}
 		}
 	}
@@ -47,7 +50,7 @@ public class City {
 	}
 	
 	public void placeNeighborhoods() {
-		
+		calculateRowsAndCols();
 		// Once we know how many columns and rows it will have, we can calculate a position for each flat
 		float x = placePoint.getX();
 		Vector2f dimensions = null;
@@ -56,13 +59,13 @@ public class City {
 			maxDepth = 0.0f;
 			for (int j = 0; j < this.cols; j++) {
 				int index = i*this.cols+j;
-				if (neightborhoods.size() > index) {
+				if (neighborhoods.size() > index) {
 					// Configure Pavement
 					GLPavement pavement = new GLPavement();
-					pavement.setPositionX(placePoint.getX()-neightborhoods.get(0).getFlats().get(0).getMaxWidth()/2-this.X_GAP/3);
-					pavement.setPositionZ(placePoint.getY()-neightborhoods.get(0).getFlats().get(0).getMaxDepth()/2-this.Y_GAP/3);
+					pavement.setPositionX(placePoint.getX()-neighborhoods.get(0).getFlats().get(0).getMaxWidth()/2-this.X_GAP/3);
+					pavement.setPositionZ(placePoint.getY()-neighborhoods.get(0).getFlats().get(0).getMaxDepth()/2-this.Y_GAP/3);
 					// The neighborhood place its flats by itself
-					dimensions = neightborhoods.get(index).doLayout(placePoint);
+					dimensions = neighborhoods.get(index).doLayout(placePoint);
 					placePoint.setX(dimensions.getX() + this.X_GAP);
 					if (maxDepth < dimensions.getY()) maxDepth = dimensions.getY();
 					// Continue configuring pavement
@@ -76,12 +79,21 @@ public class City {
 		}
 	}
 
-	public List<Neighborhood> getNeightborhoods() {
-		return neightborhoods;
+	public List<Neighborhood> getNeighborhoods() {
+		return neighborhoods;
 	}
 
 	public List<GLObject> getPavements() {
 		return pavements;
 	}
+
+	public Caption getCaption() {
+		return caption;
+	}
+
+	public void setCaption(Caption caption) {
+		this.caption = caption;
+	}
+	
 	
 }

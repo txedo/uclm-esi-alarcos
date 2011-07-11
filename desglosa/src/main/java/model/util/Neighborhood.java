@@ -19,7 +19,6 @@ public class Neighborhood extends City {
 	}
 
 	public Neighborhood (String name, List<GLObject> flats) {
-		super();
 		this.name = name;
 		this.flats = flats;
 		this.cols = 0;

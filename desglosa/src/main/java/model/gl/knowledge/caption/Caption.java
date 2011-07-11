@@ -1,6 +1,8 @@
 package model.gl.knowledge.caption;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.media.opengl.GL2;
@@ -38,6 +40,18 @@ public class Caption extends GLObject {
 		l.getIcon().setColor(c);
 		l.getText().setText(t);
 		lines.add(l);
+	}
+	
+	/**
+	 * @param lines A Map which keys are the caption line label and values are the icon color
+	 */
+	public void addLines (Map<String,String> lines) {
+		// Configure caption lines
+	    Iterator it = lines.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pairs = (Map.Entry)it.next();
+	        this.addLine(new Color((String)pairs.getValue()), (String)pairs.getKey());
+	    }
 	}
 	
 	public void draw () throws GLSingletonNotInitializedException {

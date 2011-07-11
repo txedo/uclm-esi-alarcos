@@ -41,8 +41,8 @@ public class IGLFacadeImpl implements IGLFacade {
 	}
 	
 	@Override
-	public void visualizeFactories(String JSONtext) throws ViewManagerNotInstantiatedException {
-		JSONObject json = (JSONObject)JSONSerializer.toJSON(JSONtext);
+	public void visualizeFactories(String JSONcity) throws ViewManagerNotInstantiatedException {
+		JSONObject json = (JSONObject)JSONSerializer.toJSON(JSONcity);
 		List<GLObject> factories = new ArrayList<GLObject>();
 		GLFactory factory;
 		List<Neighborhood> nbh = new ArrayList<Neighborhood>();
@@ -57,12 +57,15 @@ public class IGLFacadeImpl implements IGLFacade {
 				JSONObject jobj = jsonFlats.getJSONObject(j);
 				factory = new GLFactory();
 				factory.setId(jobj.getInt("id"));
-				factory.setSmokestackHeight(jobj.getInt("projects"));
-				int employees = jobj.getInt("employees");
-				float scale = GLFactory.SMALL;
-				if (employees < 150) scale = GLFactory.MEDIUM;
-				else if (employees > 500) scale = GLFactory.BIG;
-				factory.setScale(scale);
+				factory.setSmokestackHeight(jobj.getInt("smokestackHeight"));
+				float r = (float)(jobj.getJSONObject("smokestackColor")).getDouble("r");
+				float g = (float)(jobj.getJSONObject("smokestackColor")).getDouble("g");
+				float b = (float)(jobj.getJSONObject("smokestackColor")).getDouble("b");
+				float alpha = (float)(jobj.getJSONObject("smokestackColor")).getDouble("alpha");
+				Color color = new Color(r,g,b);
+				color.setAlpha(alpha);
+				factory.setSmokestackColor(color);
+				factory.setScale((float)jobj.getDouble("scale"));
 				factories.add(factory);
 			}
 			// Build the neighborhood

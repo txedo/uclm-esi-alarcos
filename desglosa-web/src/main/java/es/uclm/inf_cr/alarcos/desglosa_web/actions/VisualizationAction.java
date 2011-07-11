@@ -18,6 +18,7 @@ import org.springframework.web.context.ContextLoader;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.control.GLObjectManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.ChartDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
@@ -43,7 +44,11 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
 
 public class VisualizationAction extends ActionSupport {
 	private int id;
-	private String groupBy; //company, market, factory, project
+	private boolean generateGLObjects;
+	private String groupBy = ""; //company, market, factory, project
+	private City city;
+	private GLObjectManager glObjectManager;
+	
 	private FactoryDAO factoryDao;
 	private CompanyDAO companyDao;
 	private ProjectDAO projectDao;
@@ -56,15 +61,17 @@ public class VisualizationAction extends ActionSupport {
 	private List<Company> companies;
 	private List<Project> projects;
 	private List<Subproject> subprojects;
-	
-	private List<GLFactory> glFactories;
 
 	public int getId() {
 		return id;
 	}
-	
+
 	public String getGroupBy(){
 		return this.groupBy;
+	}
+	
+	public City getCity () {
+		return this.city;
 	}
 	
 	public List<Factory> getFactories() {
@@ -83,6 +90,14 @@ public class VisualizationAction extends ActionSupport {
 		return subprojects;
 	}
 	
+	public void setGenerateGLObjects(boolean generateGLObjects) {
+		this.generateGLObjects = generateGLObjects;
+	}
+	
+	public void setGlObjectManager(GLObjectManager glObjectManager) {
+		this.glObjectManager = glObjectManager;
+	}
+
 	public void setFactoryDao(FactoryDAO factoryDao) {
 		this.factoryDao = factoryDao;
 	}
@@ -127,90 +142,7 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	private void createGLFactories() {
-		if (factories != null && factories.size() > 0) {
-			glFactories = new ArrayList<GLFactory>();
-			for (Factory f : factories) {
-				GLFactory glf = new GLFactory();
-				// Set factory id -> id
-				glf.setId(f.getId());
-				// Set number of projects -> smokestack height
-				Map<String, Object> queryParams = new HashMap<String, Object>();
-				queryParams.put("id", f.getId());
-				glf.setSmokestackHeight(projectDao.findByNamedQuery("findProjectsByFactoryId", queryParams).size());
-				// Set factory specialized market -> smokestack color
-				List<Market> markets = marketDao.findByNamedQuery("findMostRepresentativeMarketByFactoryId", queryParams);
-				if (markets.size() > 0) {
-					Market market = markets.get(0);
-					glf.setSmokestackColor(market.getColor());
-				}
-				else glf.setSmokestackColor("000000");
-				// Set number of employees -> scale
-				int employees = f.getEmployees();
-				float scale = GLFactory.SMALL;
-				if (employees < 150) scale = GLFactory.MEDIUM;
-				else if (employees > 500) scale = GLFactory.BIG;
-				glf.setScale(scale);
-				// Add the glFactory to the glFactories list
-				glFactories.add(glf);
-			}
-			
-			// factories and glFactories lists are correlative
-			City c = new City();
-			List <GLObject> flats;
-			if (groupBy.equals("company")) {
-				List <Company> availableCompanies = companyDao.getAll();
-				for (Company comp : availableCompanies) {
-					int factoryIndex = 0;
-					flats = new ArrayList<GLObject>();
-					for (Factory f : factories) {
-						if (f.getName().equals(comp.getName())) {
-							flats.add(glFactories.get(factoryIndex++));
-						}
-					}
-					if (flats.size() > 0) c.getNeightborhoods().add(new Neighborhood(comp.getName(), flats));
-				}
-			} else if (groupBy.equals("market")) {
-				List <Market> availableMarkets = marketDao.getAll();
-				for (Market m : availableMarkets) {
-					int factoryIndex = 0;
-					flats = new ArrayList<GLObject>();
-					for (Factory f : factories) {
-						GLFactory glfaux = glFactories.get(factoryIndex++);
-						if (glfaux.getSmokestackColor().equals(m.getColor())) {
-							flats.add(glfaux);
-						}
-					}
-					if (flats.size() > 0) c.getNeightborhoods().add(new Neighborhood(m.getName(), flats));
-				}
-			} else if (groupBy.equals("project")) {
-				List <Project> availableProjects = projectDao.getAll();
-				for (Project p : availableProjects) {
-					int factoryIndex = 0;
-					flats = new ArrayList<GLObject>();
-					for (Factory f : factories) {
-						boolean found = false;
-						Iterator it = p.getSubprojects().iterator();
-						while (it.hasNext() && !found) {
-							Subproject spaux = (Subproject)it.next();
-							if (spaux.getFactory().getId() == f.getId()) {
-								flats.add(glFactories.get(factoryIndex));
-								found = true;
-							}
-						}
-						factoryIndex++;
-					}
-				}
-			} else { // no group by
-				flats = new ArrayList<GLObject>();
-				flats.addAll(glFactories);
-				c.getNeightborhoods().add(new Neighborhood(flats));
-			}
-			c.placeNeighborhoods();
-		}
-	}
-	
-	public String getFactoriesJSON() {
+	public String getFactoryById() {
 		if (id == 0) {
 			factories = factoryDao.getFactories();
 		}
@@ -222,10 +154,11 @@ public class VisualizationAction extends ActionSupport {
 				return ERROR;
 			}
 		}
+		if (generateGLObjects) city = glObjectManager.createGLFactories(factories, groupBy);
 		return SUCCESS;
 	}
 	
-	public String getFactoriesFromCompanyJSON() {
+	public String getFactoriesByCompanyId() {
 		if (id == 0) {
 			factories = factoryDao.getFactories();
 		}
@@ -234,10 +167,11 @@ public class VisualizationAction extends ActionSupport {
 			queryParams.put("id", id);
 			factories = factoryDao.findByNamedQuery("findFactoriesByCompanyId", queryParams);
 		}
+		if (generateGLObjects) city = glObjectManager.createGLFactories(factories, groupBy);
 		return SUCCESS;
 	}
 	
-	public String getCompaniesJSON() {
+	public String getCompanyById() {
 		if (id == 0) {
 			companies = companyDao.getCompanies();
 		}
@@ -332,7 +266,7 @@ public class VisualizationAction extends ActionSupport {
 		}
 	}
 	
-	public String getProjectsJSON() {
+	public String getProjectById() {
 		if (id == 0) {
 			projects = projectDao.getProjects();
 		}
@@ -345,10 +279,11 @@ public class VisualizationAction extends ActionSupport {
 			}
 		}
 		completeProjectData();
+		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
 		return SUCCESS;
 	}
 	
-	public String getProjectsByCompanyIdJSON() {
+	public String getProjectsByCompanyId() {
 		if (id == 0) {
 			projects = projectDao.getProjects();
 		}
@@ -358,10 +293,11 @@ public class VisualizationAction extends ActionSupport {
 			projects = projectDao.findByNamedQuery("findProjectsByCompanyId", queryParams);
 		}
 		completeProjectData();
+		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
 		return SUCCESS;
 	}
 	
-	public String getProjectsByFactoryIdJSON() {
+	public String getProjectsByFactoryId() {
 		if (id == 0) {
 			projects = projectDao.getProjects();
 		}
@@ -371,10 +307,11 @@ public class VisualizationAction extends ActionSupport {
 			projects = projectDao.findByNamedQuery("findProjectsByFactoryId", queryParams);
 		}
 		completeProjectData();
+		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
 		return SUCCESS;
 	}
 	
-	public String getSubprojectByIdJSON() {
+	public String getSubprojectById() {
 		if (id == 0) {
 			subprojects = subprojectDao.getSubprojects();
 		}

@@ -72,6 +72,14 @@ public abstract class GLObject {
 	public void setColor(Color color) {
 		this.color = color;
 	}
+	
+	public void setColor(String hexCode) {
+		this.color = new Color(hexCode);
+	}
+
+	public Color getColor() {
+		return color;
+	}
 
 	public float getScale() {
 		return scale;

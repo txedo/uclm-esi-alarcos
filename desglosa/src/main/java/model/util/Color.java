@@ -40,23 +40,36 @@ public class Color {
 		return color;
 	}
 
+	public float getR() {
+		return r;
+	}
+
+	public float getG() {
+		return g;
+	}
+
+	public float getB() {
+		return b;
+	}
+
 	public float getAlpha() {
 		return alpha;
 	}
 
-	public void setAlpha(float alpha) {
-		this.alpha = alpha;
+	public void setR(float r) {
+		this.r = r;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Float.floatToIntBits(alpha);
-		result = prime * result + Float.floatToIntBits(b);
-		result = prime * result + Float.floatToIntBits(g);
-		result = prime * result + Float.floatToIntBits(r);
-		return result;
+	public void setG(float g) {
+		this.g = g;
+	}
+
+	public void setB(float b) {
+		this.b = b;
+	}
+
+	public void setAlpha(float alpha) {
+		this.alpha = alpha;
 	}
 
 	@Override
