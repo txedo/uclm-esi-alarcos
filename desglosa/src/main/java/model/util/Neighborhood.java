@@ -11,10 +11,16 @@ public class Neighborhood extends City {
 	private float width;
 	private float depth;
 	
+	private String name;
 	private List<GLObject> flats;
-
+	
 	public Neighborhood (List<GLObject> flats) {
+		this("", flats);
+	}
+
+	public Neighborhood (String name, List<GLObject> flats) {
 		super();
+		this.name = name;
 		this.flats = flats;
 		this.cols = 0;
 		this.rows = 0;
@@ -61,6 +67,14 @@ public class Neighborhood extends City {
 		this.depth = this.rows*obj.getMaxDepth() + (this.rows-1)*this.Y_GAP;
 		
 		return new Vector2f(this.width, this.depth);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<GLObject> getFlats() {
