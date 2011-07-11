@@ -75,34 +75,13 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 //			e.printStackTrace();
 //		}
 		
-//		try {
-//			Synchronizer.getInstance().solicitar();
-//			IGLFacadeImpl.getInstance().visualizeFactories("{\"neighborhoods\":[" +
-//					"{\"flats\":[" +
-//						"{\"id\":1,\"employees\":50,\"projects\":1}," +
-//						"{\"id\":2,\"employees\":160,\"projects\":2}," +
-//						"{\"id\":3,\"employees\":560,\"projects\":3}," +
-//						"{\"id\":4,\"employees\":10,\"projects\":4}," +
-//						"{\"id\":5,\"employees\":560,\"projects\":5}," +
-//						"{\"id\":6,\"employees\":10,\"projects\":6}" +
-//					"]}," +
-//					"{\"flats\":[" +
-//						"{\"id\":7,\"employees\":50,\"projects\":7}," +
-//						"{\"id\":8,\"employees\":160,\"projects\":8}," +
-//						"{\"id\":9,\"employees\":560,\"projects\":9}," +
-//						"{\"id\":10,\"employees\":10,\"projects\":10}" +
-//					"]}," +
-//					"{\"flats\":[" +
-//					"{\"id\":11,\"employees\":50,\"projects\":11}," +
-//					"{\"id\":12,\"employees\":160,\"projects\":12}," +
-//					"{\"id\":13,\"employees\":560,\"projects\":13}," +
-//					"{\"id\":14,\"employees\":1000,\"projects\":14}" +
-//				"]}" +
-//				"]}");
-//		} catch (ViewManagerNotInstantiatedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			Synchronizer.getInstance().solicitar();
+			IGLFacadeImpl.getInstance().visualizeFactories("{\"caption\":null,\"neighborhoods\":[{\"caption\":null,\"depth\":1.25,\"flats\":[{\"color\":{\"alpha\":1.0,\"b\":1.0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":1.0,\"r\":1.0},\"id\":3,\"maxDepth\":1.25,\"maxWidth\":2.5,\"positionX\":6.8,\"positionZ\":0.0,\"scale\":1.0,\"smokestackColor\":{\"alpha\":1.0,\"b\":0.6039216,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.39215687,\"r\":0.0},\"smokestackHeight\":3},{\"color\":{\"alpha\":1.0,\"b\":1.0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":1.0,\"r\":1.0},\"id\":4,\"maxDepth\":1.25,\"maxWidth\":2.5,\"positionX\":9.6,\"positionZ\":0.0,\"scale\":1.0,\"smokestackColor\":{\"alpha\":1.0,\"b\":0.0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.5176471,\"r\":0.16078432},\"smokestackHeight\":1}],\"name\":\"Indra\",\"neighborhoods\":[],\"pavements\":[],\"width\":5.3},{\"caption\":null,\"depth\":1.25,\"flats\":[{\"color\":{\"alpha\":1.0,\"b\":1.0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":1.0,\"r\":1.0},\"id\":3,\"maxDepth\":1.25,\"maxWidth\":2.5,\"positionX\":6.8,\"positionZ\":0.0,\"scale\":1.0,\"smokestackColor\":{\"alpha\":1.0,\"b\":0.6039216,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.39215687,\"r\":0.0},\"smokestackHeight\":3},{\"color\":{\"alpha\":1.0,\"b\":1.0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":1.0,\"r\":1.0},\"id\":4,\"maxDepth\":1.25,\"maxWidth\":2.5,\"positionX\":9.6,\"positionZ\":0.0,\"scale\":1.0,\"smokestackColor\":{\"alpha\":1.0,\"b\":0.0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.5176471,\"r\":0.16078432},\"smokestackHeight\":1}],\"name\":\"IECISA\",\"neighborhoods\":[],\"pavements\":[],\"width\":5.3}],\"pavements\":[{\"color\":{\"alpha\":1.0,\"b\":0.0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.0,\"r\":0.0},\"depth\":2.5833335,\"id\":-1,\"maxDepth\":0.0,\"maxWidth\":0.0,\"positionX\":-1.75,\"positionZ\":-1.2916667,\"scale\":1.0,\"texture\":-1,\"width\":6.3},{\"color\":{\"alpha\":1.0,\"b\":0.0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.0,\"r\":0.0},\"depth\":2.5833335,\"id\":-1,\"maxDepth\":0.0,\"maxWidth\":0.0,\"positionX\":5.05,\"positionZ\":-1.2916667,\"scale\":1.0,\"texture\":-1,\"width\":6.3}]}");
+		} catch (ViewManagerNotInstantiatedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		System.err.println("GearsApplet: start() - end");
 	}

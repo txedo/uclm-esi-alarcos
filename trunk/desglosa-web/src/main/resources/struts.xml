@@ -133,23 +133,24 @@
 	</package>
 	
 	<package name="json" extends="json-default">
-		<action name="getFactoriesJSON" class="visualizationAction" method="getFactoriesJSON">
+		<action name="getFactoryByIdJSON" class="visualizationAction" method="getFactoryById">
 			<result type="json">
 				<param name="excludeProperties">
 					companies,
 					projects,
+					subprojects
 				</param>
 				<!-- <param name="excludeNullProperties">true</param> -->
 			</result>
 		</action>
-		<action name="getFactoriesFromCompanyJSON" class="visualizationAction" method="getFactoriesFromCompanyJSON">
+		<action name="getFactoriesByCompanyIdJSON" class="visualizationAction" method="getFactoriesByCompanyId">
 			<result type="json">
 				<param name="excludeProperties">
 					projects
 				</param>
 			</result>
 		</action>
-		<action name="getCompaniesJSON" class="visualizationAction" method="getCompaniesJSON">
+		<action name="getCompanyByIdJSON" class="visualizationAction" method="getCompanyById">
 			<result type="json">
 				<param name="excludeProperties">
 					factories,
@@ -157,7 +158,7 @@
 				</param>
 			</result>
 		</action>
-		<action name="getProjectsJSON" class="visualizationAction" method="getProjectsJSON">
+		<action name="getProjectByIdJSON" class="visualizationAction" method="getProjectById">
 			<result type="json">
 				<param name="excludeProperties">
 					companies,
@@ -165,7 +166,7 @@
 				</param>
 			</result>
 		</action>
-		<action name="getProjectsByCompanyIdJSON" class="visualizationAction" method="getProjectsByCompanyIdJSON">
+		<action name="getProjectsByCompanyIdJSON" class="visualizationAction" method="getProjectsByCompanyId">
 			<result type="json">
 				<param name="excludeProperties">
 					companies,
@@ -173,7 +174,7 @@
 				</param>
 			</result>
 		</action>
-		<action name="getProjectsByFactoryIdJSON" class="visualizationAction" method="getProjectsByFactoryIdJSON">
+		<action name="getProjectsByFactoryIdJSON" class="visualizationAction" method="getProjectsByFactoryId">
 			<result type="json">
 				<param name="excludeProperties">
 					companies,
@@ -181,7 +182,7 @@
 				</param>
 			</result>
 		</action>
-		<action name="getSubprojectByIdJSON" class="visualizationAction" method="getSubprojectByIdJSON">
+		<action name="getSubprojectByIdJSON" class="visualizationAction" method="getSubprojectById">
 			<result type="json">
 				<param name="excludeProperties">
 					companies,
