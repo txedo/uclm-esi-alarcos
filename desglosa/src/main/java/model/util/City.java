@@ -71,6 +71,7 @@ public class City {
 					// Continue configuring pavement
 					pavement.setWidth(dimensions.getX()+2*this.X_GAP/3);
 					pavement.setDepth((float)maxDepth+2*this.Y_GAP/3);
+					pavement.setTitle(neighborhoods.get(index).getName());
 					pavements.add(pavement);
 				}
 			}

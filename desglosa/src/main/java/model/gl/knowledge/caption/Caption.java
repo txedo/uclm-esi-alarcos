@@ -1,11 +1,9 @@
 package model.gl.knowledge.caption;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
-
-import javax.media.opengl.GL2;
 
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
@@ -18,7 +16,7 @@ import exceptions.GLSingletonNotInitializedException;
 public class Caption extends GLObject {
 	
 	private final int pxGAP = 10; // px
-	private Vector<Line> lines;
+	private List<Line> lines;
 	private Frame frame;
 	private float width;
 	private float height;
@@ -30,7 +28,7 @@ public class Caption extends GLObject {
 	public Caption(float pos_x, float pos_y) {
 		this.positionX = pos_x;
 		this.positionY = pos_y;
-		this.lines = new Vector<Line>();
+		this.lines = new ArrayList<Line>();
 		this.width = 0.0f;
 		this.height = 0.0f;
 	}
@@ -65,10 +63,9 @@ public class Caption extends GLObject {
 
 		if (num_lines > 0) {
 			width = this.pxGAP * 2 + max_length;
+			frame = new Frame ((int)Math.ceil(width), (int)Math.ceil((num_lines+1) * this.pxGAP + num_lines * lines.get(0).getHeightPX()));
 		}
 		
-		frame = new Frame ((int)Math.ceil(width), (int)Math.ceil((num_lines+1) * this.pxGAP + num_lines * lines.firstElement().getHeightPX()));
-		//System.out.println("frame width: " + f.getWidth() + "\nframe height: " + f.getHeight());
 		GLSingleton.getGL().glPushMatrix();
 			GLSingleton.getGL().glTranslatef(this.positionX, this.positionY, 0.0f);
 			frame.draw();
@@ -89,14 +86,13 @@ public class Caption extends GLObject {
 		GLSingleton.getGL().glPopMatrix();
 	}
 
-	public List getLines() {
+	public List<Line> getLines() {
 		return lines;
 	}
 	
 	public float getHeight() {
-		float height;
 		try {
-			int aux = (int)Math.ceil((lines.size()+1) * this.pxGAP + lines.size() * lines.firstElement().getHeightPX());
+			int aux = (int)Math.ceil((lines.size()+1) * this.pxGAP + lines.size() * lines.get(0).getHeightPX());
 			Vector3f v = GLUtils.getScreen2World(0, aux, true);
 			height = v.getY();
 		} catch (GLSingletonNotInitializedException e) {

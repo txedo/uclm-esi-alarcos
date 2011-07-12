@@ -69,7 +69,7 @@ public class IGLFacadeImpl implements IGLFacade {
 				factories.add(factory);
 			}
 			// Build the neighborhood
-			nbh.add(new Neighborhood(factories));
+			nbh.add(new Neighborhood(jsonFlatsObject.getString("name"), factories));
 		}
 		// Build the city
 		city = new City(nbh);
@@ -119,7 +119,7 @@ public class IGLFacadeImpl implements IGLFacade {
 				projects.add(project);
 			}
 			// Build the neighborhood
-			nbh.add(new Neighborhood(projects));
+			nbh.add(new Neighborhood(jsonFlatsObject.getString("name"), projects));
 		}
 		// Normalize project size
 		for (Neighborhood n : nbh) {
@@ -174,7 +174,7 @@ public class IGLFacadeImpl implements IGLFacade {
 				towers.add(tower);
 			}
 			// Build the neighborhood
-			nbh.add(new Neighborhood(towers));
+			nbh.add(new Neighborhood(jsonFlatsObject.getString("name"), towers));
 		}
 		
 		// Build the city
