@@ -10,6 +10,7 @@ public class GLPavement extends GLObject3D {
 	private int texture;
 	private float width;
 	private float depth;
+	private String title;
 	
 	public GLPavement () {
 		this.positionX = 0.0f;
@@ -17,6 +18,7 @@ public class GLPavement extends GLObject3D {
 		this.width = 0.0f;
 		this.depth = 0.0f;
 		this.texture = -1;
+		this.title = "";
 	}
 		
 	@Override
@@ -26,21 +28,25 @@ public class GLPavement extends GLObject3D {
 		GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D);
 		GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE);
 		GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, texture);
-		GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
-		GLSingleton.getGL().glBegin(GL2.GL_QUADS);
+		GLSingleton.getGL().glPushMatrix();
+			GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
 			GLSingleton.getGL().glColor3f(1.0f, 1.0f, 1.0f);
-			GLSingleton.getGL().glTexCoord2f( 0.0f, depth);	GLSingleton.getGL().glVertex3f(this.positionX, 0.001f,  this.positionY+depth);
-			GLSingleton.getGL().glTexCoord2f( 0.0f, 0.0f);	GLSingleton.getGL().glVertex3f(this.positionX, 0.001f, this.positionY);
-			GLSingleton.getGL().glTexCoord2f(width, 0.0f);	GLSingleton.getGL().glVertex3f(this.positionX+width, 0.001f,  this.positionY);
-			GLSingleton.getGL().glTexCoord2f(width, depth);	GLSingleton.getGL().glVertex3f(this.positionX+width, 0.001f, this.positionY+depth);
-		GLSingleton.getGL().glEnd();
+			GLSingleton.getGL().glTranslatef(this.positionX, 0.001f, this.positionY);
+			GLSingleton.getGL().glBegin(GL2.GL_QUADS);
+				GLSingleton.getGL().glTexCoord2f(0.0f, depth);	GLSingleton.getGL().glVertex3f(      0.0f, 0.0f, this.depth);
+				GLSingleton.getGL().glTexCoord2f(0.0f, 0.0f);	GLSingleton.getGL().glVertex3f(      0.0f, 0.0f, 0.0f);
+				GLSingleton.getGL().glTexCoord2f(width, 0.0f);	GLSingleton.getGL().glVertex3f(this.width, 0.0f, 0.0f);
+				GLSingleton.getGL().glTexCoord2f(width, depth);	GLSingleton.getGL().glVertex3f(this.width, 0.0f, this.depth);
+			GLSingleton.getGL().glEnd();
+			GLUtils.renderBitmapString(this.width/2, 4.2f, this.depth/2, 1, this.title, "ffffff");
+		GLSingleton.getGL().glPopMatrix();
 		GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);
 		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
 		GLUtils.disableMultisample();
 	}
 
-	public void setTexture(int texture) {
-		this.texture = texture;
+	public int getTexture() {
+		return texture;
 	}
 
 	public float getWidth() {
@@ -51,6 +57,14 @@ public class GLPavement extends GLObject3D {
 		return depth;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTexture(int texture) {
+		this.texture = texture;
+	}
+
 	public void setWidth(float width) {
 		this.width = width;
 	}
@@ -59,9 +73,9 @@ public class GLPavement extends GLObject3D {
 		this.depth = depth;
 	}
 
-	public int getTexture() {
-		return texture;
+	public void setTitle(String title) {
+		this.title = title;
 	}
-	
-	
+
+
 }

@@ -134,7 +134,7 @@
 	
 	<package name="json" extends="json-default">
 		<action name="getFactoryByIdJSON" class="visualizationAction" method="getFactoryById">
-			<result type="json">
+			<result name="success" type="json">
 				<param name="excludeProperties">
 					companies,
 					projects,
@@ -144,49 +144,56 @@
 			</result>
 		</action>
 		<action name="getFactoriesByCompanyIdJSON" class="visualizationAction" method="getFactoriesByCompanyId">
-			<result type="json">
+			<result name="success" type="json">
 				<param name="excludeProperties">
-					projects
+					companies,
+					projects,
+					subprojects
 				</param>
 			</result>
 		</action>
 		<action name="getCompanyByIdJSON" class="visualizationAction" method="getCompanyById">
-			<result type="json">
+			<result name="success" type="json">
 				<param name="excludeProperties">
 					factories,
-					projects
+					projects,
+					subprojects
 				</param>
 			</result>
 		</action>
 		<action name="getProjectByIdJSON" class="visualizationAction" method="getProjectById">
-			<result type="json">
+			<result name="success" type="json">
 				<param name="excludeProperties">
 					companies,
-					factories
+					factories,
+					subprojects
 				</param>
 			</result>
 		</action>
 		<action name="getProjectsByCompanyIdJSON" class="visualizationAction" method="getProjectsByCompanyId">
-			<result type="json">
+			<result name="success" type="json">
 				<param name="excludeProperties">
 					companies,
-					factories
+					factories,
+					subprojects
 				</param>
 			</result>
 		</action>
 		<action name="getProjectsByFactoryIdJSON" class="visualizationAction" method="getProjectsByFactoryId">
-			<result type="json">
+			<result name="success" type="json">
 				<param name="excludeProperties">
 					companies,
-					factories
+					factories,
+					subprojects
 				</param>
 			</result>
 		</action>
 		<action name="getSubprojectByIdJSON" class="visualizationAction" method="getSubprojectById">
-			<result type="json">
+			<result name="success" type="json">
 				<param name="excludeProperties">
 					companies,
-					factories
+					factories,
+					projects
 				</param>
 			</result>
 		</action>

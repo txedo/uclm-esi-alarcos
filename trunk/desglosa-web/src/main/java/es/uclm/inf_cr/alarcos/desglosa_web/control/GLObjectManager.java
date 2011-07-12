@@ -12,6 +12,7 @@ import model.gl.knowledge.GLObject;
 import model.gl.knowledge.caption.Caption;
 import model.util.City;
 import model.util.Neighborhood;
+import model.util.Color;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.MarketDAO;
@@ -29,13 +30,13 @@ public class GLObjectManager {
 	private MarketDAO marketDao;
 	
 	public City createGLProjects(List<Project> projects, String groupBy) {
-		Caption caption = new Caption();
-		Map<String, String> captionLines = new HashMap<String, String>();
-		float maxSize = 0.0f;
 		City c = new City();
 		List<GLAntennaBall> glProjects = new ArrayList<GLAntennaBall>();
 		
 		if (projects != null && projects.size() > 0) {
+			float maxSize = 0.0f;
+			Map<String, String> captionLines = new HashMap<String, String>();
+			
 			for (Project p : projects) {
 				GLAntennaBall glp = new GLAntennaBall();
 				// Set project id -> id
@@ -52,14 +53,19 @@ public class GLObjectManager {
 				captionLines.put(p.getMarket().getName(), p.getMarket().getColor());
 				glProjects.add(glp);
 			}
+			
 			// Normalize project size
 			for (GLAntennaBall gla : glProjects) {
 				gla.setParentBallRadius(gla.getParentBallRadius()*GLAntennaBall.MAX_SIZE/maxSize);
 			}
+			
 			// Configure caption
-			caption = new Caption();
-			caption.addLines(captionLines);
-			if (caption.getLines().size() > 0) c.setCaption(caption);
+			if (captionLines.size() > 0) {
+				Caption caption = new Caption();
+				caption.addLines(captionLines);
+				c.setCaption(caption);
+			}
+			
 			// Configure neighborhoods
 			// projects and glProjects lists are correlative
 			List <GLObject> flats;
@@ -89,7 +95,7 @@ public class GLObjectManager {
 					flats = new ArrayList<GLObject>();
 					for (Project p : projects) {
 						GLAntennaBall gla = glProjects.get(projectIndex++);
-						if (gla.getColor().equals(m.getColor())) {
+						if (gla.getColor().equals(new Color(m.getColor()))) {
 							flats.add(gla);
 						}
 					}
@@ -145,10 +151,9 @@ public class GLObjectManager {
 				}
 				else glf.setSmokestackColor("000000");
 				// Set number of employees -> scale
-				int employees = f.getEmployees();
 				float scale = GLFactory.SMALL;
-				if (employees < 150) scale = GLFactory.MEDIUM;
-				else if (employees > 500) scale = GLFactory.BIG;
+				if (f.getEmployees() >= 50 && f.getEmployees() <= 150) scale = GLFactory.MEDIUM;
+				else if (f.getEmployees() > 150) scale = GLFactory.BIG;
 				glf.setScale(scale);
 				// Add the glFactory to the glFactories list
 				glFactories.add(glf);
@@ -163,8 +168,9 @@ public class GLObjectManager {
 					flats = new ArrayList<GLObject>();
 					for (Factory f : factories) {
 						if (f.getCompany().getId() == comp.getId()) {
-							flats.add(glFactories.get(factoryIndex++));
+							flats.add(glFactories.get(factoryIndex));
 						}
+						factoryIndex++;
 					}
 					if (flats.size() > 0) c.getNeighborhoods().add(new Neighborhood(comp.getName(), flats));
 				}
@@ -174,10 +180,11 @@ public class GLObjectManager {
 					int factoryIndex = 0;
 					flats = new ArrayList<GLObject>();
 					for (Factory f : factories) {
-						GLFactory glfaux = glFactories.get(factoryIndex++);
-						if (glfaux.getSmokestackColor().equals(m.getColor())) {
+						GLFactory glfaux = glFactories.get(factoryIndex);
+						if (glfaux.getSmokestackColor().equals(new Color(m.getColor()))) {
 							flats.add(glfaux);
 						}
+						factoryIndex++;
 					}
 					if (flats.size() > 0) c.getNeighborhoods().add(new Neighborhood(m.getName(), flats));
 				}
