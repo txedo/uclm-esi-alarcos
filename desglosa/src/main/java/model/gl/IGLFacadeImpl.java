@@ -1,7 +1,6 @@
 package model.gl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import model.gl.control.EViewLevels;
 import model.gl.control.GLFactoryViewManager;
 import model.gl.control.GLProjectViewManager;
 import model.gl.control.GLTowerViewManager;
+import model.gl.control.GLViewManager;
 import model.gl.knowledge.GLAntennaBall;
 import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
@@ -38,6 +38,19 @@ public class IGLFacadeImpl implements IGLFacade {
 			_instance = new IGLFacadeImpl();
 		}
 		return _instance;
+	}
+	
+	private void configureCaption (GLViewManager glvm, JSONObject jsonCaptionLines) {
+		Caption caption;
+		if (jsonCaptionLines != null) {
+			caption = new Caption();
+			Iterator it = jsonCaptionLines.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, String> pairs = (Map.Entry<String, String>)it.next();
+				caption.addLine(new Color((String)pairs.getValue()), (String)pairs.getKey());
+			}
+		    if (caption.getLines().size() > 0) glvm.setCaption(caption);
+		}
 	}
 	
 	@Override
@@ -71,6 +84,9 @@ public class IGLFacadeImpl implements IGLFacade {
 			// Build the neighborhood
 			nbh.add(new Neighborhood(jsonFlatsObject.getString("name"), factories));
 		}
+		// Configure caption lines
+		configureCaption(GLProjectViewManager.getInstance(), json.getJSONObject("captionLines"));
+		
 		// Build the city
 		city = new City(nbh);
 		city.placeNeighborhoods();
@@ -87,8 +103,6 @@ public class IGLFacadeImpl implements IGLFacade {
 
 	@Override
 	public void visualizeProjects(String JSONtext) throws ViewManagerNotInstantiatedException {
-		Caption caption = new Caption();
-		Map<String, String> captionLines = new HashMap<String, String>();
 		JSONObject json = (JSONObject)JSONSerializer.toJSON(JSONtext);
 		List<GLObject> projects = new ArrayList<GLObject>();
 		GLAntennaBall project;
@@ -105,17 +119,20 @@ public class IGLFacadeImpl implements IGLFacade {
 				JSONObject jobj = jsonFlats.getJSONObject(j);
 				project = new GLAntennaBall();
 				project.setId(jobj.getInt("id"));
-				project.setLabel(jobj.getString("name"));
-				project.setProgression(jobj.getBoolean("audited"));
-				int incidences = jobj.getInt("totalIncidences");
-				int repairedIncidences = jobj.getInt("repairedIncidences");
-				project.setLeftChildBallValue(repairedIncidences);
-				project.setRightChildBallValue(incidences - repairedIncidences);
-				project.setColor(new Color(jobj.getJSONObject("market").getString("color")));
-				float size = (float)jobj.getDouble("size");
+				project.setLabel(jobj.getString("label"));
+				project.setProgression(jobj.getBoolean("progression"));
+				project.setLeftChildBallValue(jobj.getInt("rightChildBallValue"));
+				project.setRightChildBallValue(jobj.getInt("leftChildBallValue"));
+				float r = (float)(jobj.getJSONObject("color")).getDouble("r");
+				float g = (float)(jobj.getJSONObject("color")).getDouble("g");
+				float b = (float)(jobj.getJSONObject("color")).getDouble("b");
+				float alpha = (float)(jobj.getJSONObject("color")).getDouble("alpha");
+				Color color = new Color(r,g,b);
+				color.setAlpha(alpha);
+				project.setColor(color);
+				float size = (float)jobj.getDouble("parentBallRadius");
 				project.setParentBallRadius(size);
 				if (maxSize < size) maxSize = size;
-				captionLines.put(jobj.getJSONObject("market").getString("name"), jobj.getJSONObject("market").getString("color"));
 				projects.add(project);
 			}
 			// Build the neighborhood
@@ -128,13 +145,8 @@ public class IGLFacadeImpl implements IGLFacade {
 			}
 		}
 		// Configure caption lines
-	    Iterator it = captionLines.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry pairs = (Map.Entry)it.next();
-	        caption.addLine(new Color((String)pairs.getValue()), (String)pairs.getKey());
-	    }
-	    if (caption.getLines().size() > 0) GLProjectViewManager.getInstance().setCaption(caption);
-
+		configureCaption(GLProjectViewManager.getInstance(), json.getJSONObject("captionLines"));
+	 
 		// Build the city
 		city = new City(nbh);
 		city.placeNeighborhoods();
@@ -176,6 +188,8 @@ public class IGLFacadeImpl implements IGLFacade {
 			// Build the neighborhood
 			nbh.add(new Neighborhood(jsonFlatsObject.getString("name"), towers));
 		}
+		// Configure caption lines
+		configureCaption(GLProjectViewManager.getInstance(), json.getJSONObject("captionLines"));
 		
 		// Build the city
 		city = new City(nbh);

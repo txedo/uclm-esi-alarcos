@@ -9,7 +9,6 @@ import java.util.Map;
 import model.gl.knowledge.GLAntennaBall;
 import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
-import model.gl.knowledge.caption.Caption;
 import model.util.City;
 import model.util.Neighborhood;
 import model.util.Color;
@@ -61,9 +60,7 @@ public class GLObjectManager {
 			
 			// Configure caption
 			if (captionLines.size() > 0) {
-				Caption caption = new Caption();
-				caption.addLines(captionLines);
-				c.setCaption(caption);
+				c.setCaptionLines(captionLines);
 			}
 			
 			// Configure neighborhoods

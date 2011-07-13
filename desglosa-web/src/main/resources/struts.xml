@@ -6,7 +6,7 @@
 
 <struts>
 	<!-- When adding an action in struts.xml, edit applicationContext.xml to instantiate it by Spring -->
-	<package name="default" extends="struts-default">
+	<package name="struts" extends="struts-default">    
 		<!-- Interceptors -->
 	    <interceptors>
 	    	<!-- Interceptor to pass messages between actions -->
@@ -15,7 +15,7 @@
             	<interceptor-ref name="redirectMessage"/>
             	<interceptor-ref name="paramsPrepareParamsStack"/>
             </interceptor-stack>
-            <!-- Interceptor to handle allowing only certains roles to certain actions -->
+            <!-- Interceptor to handle roles and actions -->
             <interceptor name="adminOnly" class="adminInterceptor"/>
             <interceptor name="executiveOnly" class="executiveInterceptor"/>
             <interceptor name="managerOnly" class="managerInterceptor"/>
@@ -33,7 +33,10 @@
 		</action>
 		<action name="visualization" class="visualizationAction">
 			<!-- <interceptor-ref name="allButUsers"/> -->
-			<result>/jsp/visualization.jsp</result>
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="success">/jsp/visualization.jsp</result>
+			<result name="input">/jsp/visualization.jsp</result>
+			<result name="error">/jsp/visualization.jsp</result>
 		</action>
 		<action name="showAdminPanel" class="showAdminPanelAction">
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
@@ -132,7 +135,7 @@
 		<!-- End of Factory related actions -->
 	</package>
 	
-	<package name="json" extends="json-default">
+	<package name="json" extends="json-default">      
 		<action name="getFactoryByIdJSON" class="visualizationAction" method="getFactoryById">
 			<result name="success" type="json">
 				<param name="excludeProperties">

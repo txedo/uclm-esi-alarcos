@@ -591,6 +591,10 @@ function desglosa_showProjectsById(id) {
 	</script>
 </head>
 <body>
+	<div id="messagesAndErrors">
+		<s:actionerror />
+	</div>
+	
 	<div id="filter">
 		<fieldset>
 			<legend><s:text name="label.filter.corporative"/>:</legend>
