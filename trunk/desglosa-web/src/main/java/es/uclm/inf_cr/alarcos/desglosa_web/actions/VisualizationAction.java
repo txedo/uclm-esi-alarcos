@@ -3,16 +3,12 @@ package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
-import model.gl.knowledge.GLFactory;
-import model.gl.knowledge.GLObject;
 import model.util.City;
-import model.util.Neighborhood;
 
 import org.springframework.web.context.ContextLoader;
 
@@ -275,6 +271,7 @@ public class VisualizationAction extends ActionSupport {
 				projects = new ArrayList<Project>();
 				projects.add(projectDao.getProject(id));
 			} catch (ProjectNotFoundException e) {
+				addActionError("project not found");
 				return ERROR;
 			}
 		}

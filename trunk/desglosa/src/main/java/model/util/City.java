@@ -1,11 +1,12 @@
 package model.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLPavement;
-import model.gl.knowledge.caption.Caption;
 
 public class City {
 	private final float X_GAP = 1.5f;
@@ -13,7 +14,7 @@ public class City {
 	
 	private List<Neighborhood> neighborhoods;
 	private List<GLObject> pavements;
-	private Caption caption;
+	private Map<String, String> captionLines;
 	
 	protected int cols;
 	protected int rows;
@@ -23,6 +24,7 @@ public class City {
 		this.neighborhoods = new ArrayList<Neighborhood>();
 		this.cols = 0;
 		this.rows = 0;
+		this.captionLines = new HashMap<String, String>();
 		placePoint = new Vector2f(0.0f, 0.0f);
 		pavements = new ArrayList<GLObject>();
 	}
@@ -88,12 +90,12 @@ public class City {
 		return pavements;
 	}
 
-	public Caption getCaption() {
-		return caption;
+	public Map<String, String> getCaptionLines() {
+		return captionLines;
 	}
 
-	public void setCaption(Caption caption) {
-		this.caption = caption;
+	public void setCaptionLines(Map<String, String> captionLines) {
+		this.captionLines = captionLines;
 	}
 	
 	

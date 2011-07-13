@@ -11,6 +11,7 @@ public class GLPavement extends GLObject3D {
 	private float width;
 	private float depth;
 	private String title;
+	private float titleHeight;
 	
 	public GLPavement () {
 		this.positionX = 0.0f;
@@ -19,6 +20,7 @@ public class GLPavement extends GLObject3D {
 		this.depth = 0.0f;
 		this.texture = -1;
 		this.title = "";
+		this.titleHeight = 5.0f;
 	}
 		
 	@Override
@@ -38,7 +40,7 @@ public class GLPavement extends GLObject3D {
 				GLSingleton.getGL().glTexCoord2f(width, 0.0f);	GLSingleton.getGL().glVertex3f(this.width, 0.0f, 0.0f);
 				GLSingleton.getGL().glTexCoord2f(width, depth);	GLSingleton.getGL().glVertex3f(this.width, 0.0f, this.depth);
 			GLSingleton.getGL().glEnd();
-			GLUtils.renderBitmapString(this.width/2, 4.2f, this.depth/2, 1, this.title, "ffffff");
+			GLUtils.renderBitmapString(this.width/2, this.titleHeight, this.depth/2, 1, this.title, "ffffff");
 		GLSingleton.getGL().glPopMatrix();
 		GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);
 		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
@@ -75,6 +77,10 @@ public class GLPavement extends GLObject3D {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	public void setTitleHeight(float titleHeight) {
+		this.titleHeight = titleHeight;
 	}
 
 
