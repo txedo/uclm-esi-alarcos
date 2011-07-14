@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<%@page import="java.io.ByteArrayInputStream"%>
-<%@page import="java.io.InputStream"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
 
@@ -598,6 +596,24 @@ function desglosa_showProjectsById(id) {
 	<div id="filter">
 		<fieldset>
 			<legend><s:text name="label.filter.corporative"/>:</legend>
+			
+			<s:url id="remoteurl" action="fooAction"></s:url>
+			<sj:select id="companies" 
+						href="%{remoteurl}" 
+						list="companies" 
+						listKey="id" 
+						listValue="name" 
+						emptyOption="false" 
+						headerKey="-1" 
+						headerValue="Please Select a Language"/>
+			<s:select id="factories"
+						href="%{remoteurl}"
+						list="factories"
+						listKey="id"
+						listValue="name"
+						emptyOption="false"
+						headerKey="-1"
+						headerValue=""/>
 			
 			<div id="companyFilter" style="float:left;">
 				<s:label for="companySelect" value="%{getText('label.select.company')}:"/>

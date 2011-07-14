@@ -323,4 +323,9 @@ public class VisualizationAction extends ActionSupport {
 		completeSubprojectData();
 		return SUCCESS;
 	}
+	
+	public String fooAction(){
+		companies = companyDao.getAll();
+		return SUCCESS;
+	}
 }
