@@ -201,4 +201,10 @@
 			</result>
 		</action>
 	</package>
+	
+	<package name="ui-ajax-controls" extends="struts-default,json-default">
+		<action name="fooAction" class="visualizationAction" method="fooAction">
+			<result name="success" type="json"/>
+		</action>
+	</package>
 </struts>
