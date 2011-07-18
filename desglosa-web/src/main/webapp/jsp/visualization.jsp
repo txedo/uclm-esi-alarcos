@@ -98,7 +98,7 @@
 		showLoadingIndicator(true);
 		if (!idFactory) var idFactory = "0";
 		else var idFactory = idFactory+"";
-		$.getJSON("/desglosa-web/getFactoriesJSON.action",
+		$.getJSON("/desglosa-web/getFactoryByIdJSON.action",
 				{ id: idFactory	},
 				function (data, status) {
 					if (status == "success") {
@@ -119,7 +119,7 @@
 		showLoadingIndicator(true);
 		if (!idCompany) var idCompany = "0";
 		else var idCompany = idCompany+"";
-		$.getJSON("/desglosa-web/getFactoriesFromCompanyJSON.action",
+		$.getJSON("/desglosa-web/getFactoriesByCompanyIdJSON.action",
 				{ id: idCompany },
 				function (data, status) {
 					if (status == "success") {
@@ -149,7 +149,7 @@
 		showLoadingIndicator(true);
 		if (!idCompany) var idCompany = "0";
 		else var idCompany = idCompany+"";
-		$.getJSON("/desglosa-web/getCompaniesJSON.action",
+		$.getJSON("/desglosa-web/getCompanyByIdJSON.action",
 				{ id: idCompany	},
 				function (data, status) {
 					if (status == "success") {
@@ -204,7 +204,7 @@
 		showLoadingIndicator(true);
 		if (!idProject) var idProject = "0";
 		else var idProject = idProject+"";
-		$.getJSON("/desglosa-web/getProjectsJSON.action",
+		$.getJSON("/desglosa-web/getProjectByIdJSON.action",
 				{ id: idProject	},
 				function (data, status) {
 					if (status == "success") {
@@ -509,11 +509,11 @@ function Neighborhood () {
 }
 
 function desglosa_showFactoriesByCompanyId(id) {
-	desglosa_showFactories("/desglosa-web/getFactoriesFromCompanyJSON.action", id);
+	desglosa_showFactories("/desglosa-web/getFactoriesByCompanyIdJSON.action", id);
 }
 
 function desglosa_showFactoriesById(id) {
-	desglosa_showFactories("/desglosa-web/getFactoriesJSON.action", id);
+	desglosa_showFactories("/desglosa-web/getFactoryByIdJSON.action", id);
 }
 
 function desglosa_showFactories(action, id) {
@@ -552,7 +552,7 @@ function desglosa_showProjectsById(id) {
 	queriedProjects = new Array();
 	queriedSubprojects = new Array();
 	showLoadingIndicator(true);
-	$.getJSON("/desglosa-web/getProjectsJSON.action",
+	$.getJSON("/desglosa-web/getProjectByIdJSON.action",
 			{id: id},
 			function (data, status) {
 				if (status == "success") {
@@ -596,24 +596,6 @@ function desglosa_showProjectsById(id) {
 	<div id="filter">
 		<fieldset>
 			<legend><s:text name="label.filter.corporative"/>:</legend>
-			
-			<s:url id="remoteurl" action="fooAction"></s:url>
-			<sj:select id="companies" 
-						href="%{remoteurl}" 
-						list="companies" 
-						listKey="id" 
-						listValue="name" 
-						emptyOption="false" 
-						headerKey="-1" 
-						headerValue="Please Select a Language"/>
-			<s:select id="factories"
-						href="%{remoteurl}"
-						list="factories"
-						listKey="id"
-						listValue="name"
-						emptyOption="false"
-						headerKey="-1"
-						headerValue=""/>
 			
 			<div id="companyFilter" style="float:left;">
 				<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
