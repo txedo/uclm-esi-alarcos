@@ -62,14 +62,18 @@ public class VisualizationAction extends ActionSupport {
 		return id;
 	}
 
-	public String getGroupBy(){
-		return this.groupBy;
+	public boolean isGenerateGLObjects() {
+		return generateGLObjects;
 	}
-	
-	public City getCity () {
-		return this.city;
+
+	public String getGroupBy() {
+		return groupBy;
 	}
-	
+
+	public City getCity() {
+		return city;
+	}
+
 	public List<Factory> getFactories() {
 		return factories;
 	}
@@ -77,19 +81,31 @@ public class VisualizationAction extends ActionSupport {
 	public List<Company> getCompanies() {
 		return companies;
 	}
-	
+
 	public List<Project> getProjects() {
 		return projects;
 	}
-	
+
 	public List<Subproject> getSubprojects() {
 		return subprojects;
 	}
-	
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public void setGenerateGLObjects(boolean generateGLObjects) {
 		this.generateGLObjects = generateGLObjects;
 	}
-	
+
+	public void setGroupBy(String groupBy) {
+		this.groupBy = groupBy;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
+	}
+
 	public void setGlObjectManager(GLObjectManager glObjectManager) {
 		this.glObjectManager = glObjectManager;
 	}
@@ -101,33 +117,41 @@ public class VisualizationAction extends ActionSupport {
 	public void setCompanyDao(CompanyDAO companyDao) {
 		this.companyDao = companyDao;
 	}
-	
+
 	public void setProjectDao(ProjectDAO projectDao) {
 		this.projectDao = projectDao;
 	}
-	
+
 	public void setSubprojectDao(SubprojectDAO subprojectDao) {
 		this.subprojectDao = subprojectDao;
 	}
-	
-	public void setMeasureDao(MeasureDAO measureDao) {
-		this.measureDao = measureDao;
-	}
-	
-	public void setMarketDao(MarketDAO marketDao) {
-		this.marketDao = marketDao;
-	}
-	
+
 	public void setChartDao(ChartDAO chartDao) {
 		this.chartDao = chartDao;
 	}
-	
-	public void setId(int id) {
-		this.id = id;
+
+	public void setMeasureDao(MeasureDAO measureDao) {
+		this.measureDao = measureDao;
 	}
-	
-	public void setGroupBy(String groupBy){
-		this.groupBy = groupBy;
+
+	public void setMarketDao(MarketDAO marketDao) {
+		this.marketDao = marketDao;
+	}
+
+	public void setFactories(List<Factory> factories) {
+		this.factories = factories;
+	}
+
+	public void setCompanies(List<Company> companies) {
+		this.companies = companies;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+
+	public void setSubprojects(List<Subproject> subprojects) {
+		this.subprojects = subprojects;
 	}
 
 	@Override
@@ -138,7 +162,7 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String getFactoryById() {
+	public String factoryById() {
 		if (id == 0) {
 			factories = factoryDao.getFactories();
 		}
@@ -154,7 +178,7 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String getFactoriesByCompanyId() {
+	public String factoriesByCompanyId() {
 		if (id == 0) {
 			factories = factoryDao.getFactories();
 		}
@@ -167,7 +191,7 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String getCompanyById() {
+	public String companyById() {
 		if (id == 0) {
 			companies = companyDao.getCompanies();
 		}
@@ -262,7 +286,7 @@ public class VisualizationAction extends ActionSupport {
 		}
 	}
 	
-	public String getProjectById() {
+	public String projectById() {
 		if (id == 0) {
 			projects = projectDao.getProjects();
 		}
@@ -271,7 +295,6 @@ public class VisualizationAction extends ActionSupport {
 				projects = new ArrayList<Project>();
 				projects.add(projectDao.getProject(id));
 			} catch (ProjectNotFoundException e) {
-				addActionError("project not found");
 				return ERROR;
 			}
 		}
@@ -280,7 +303,7 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String getProjectsByCompanyId() {
+	public String projectsByCompanyId() {
 		if (id == 0) {
 			projects = projectDao.getProjects();
 		}
@@ -294,7 +317,7 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String getProjectsByFactoryId() {
+	public String projectsByFactoryId() {
 		if (id == 0) {
 			projects = projectDao.getProjects();
 		}
@@ -308,7 +331,7 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String getSubprojectById() {
+	public String subprojectById() {
 		if (id == 0) {
 			subprojects = subprojectDao.getSubprojects();
 		}
@@ -321,11 +344,6 @@ public class VisualizationAction extends ActionSupport {
 			}
 		}
 		completeSubprojectData();
-		return SUCCESS;
-	}
-	
-	public String fooAction(){
-		companies = companyDao.getAll();
 		return SUCCESS;
 	}
 }
