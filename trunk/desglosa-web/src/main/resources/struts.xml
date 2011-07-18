@@ -135,76 +135,14 @@
 		<!-- End of Factory related actions -->
 	</package>
 	
-	<package name="json" extends="json-default">      
-		<action name="getFactoryByIdJSON" class="visualizationAction" method="getFactoryById">
+	<package name="json" extends="json-default">
+		<action name="json_*" class="visualizationAction" method="{1}">
 			<result name="success" type="json">
-				<param name="excludeProperties">
-					companies,
-					projects,
-					subprojects
-				</param>
+				<param name="noCache">true</param>
+				<!-- <param name="excludeProperties">companies, projects</param> -->
 				<!-- <param name="excludeNullProperties">true</param> -->
-			</result>
-		</action>
-		<action name="getFactoriesByCompanyIdJSON" class="visualizationAction" method="getFactoriesByCompanyId">
-			<result name="success" type="json">
-				<param name="excludeProperties">
-					companies,
-					projects,
-					subprojects
-				</param>
-			</result>
-		</action>
-		<action name="getCompanyByIdJSON" class="visualizationAction" method="getCompanyById">
-			<result name="success" type="json">
-				<param name="excludeProperties">
-					factories,
-					projects,
-					subprojects
-				</param>
-			</result>
-		</action>
-		<action name="getProjectByIdJSON" class="visualizationAction" method="getProjectById">
-			<result name="success" type="json">
-				<param name="excludeProperties">
-					companies,
-					factories,
-					subprojects
-				</param>
-			</result>
-		</action>
-		<action name="getProjectsByCompanyIdJSON" class="visualizationAction" method="getProjectsByCompanyId">
-			<result name="success" type="json">
-				<param name="excludeProperties">
-					companies,
-					factories,
-					subprojects
-				</param>
-			</result>
-		</action>
-		<action name="getProjectsByFactoryIdJSON" class="visualizationAction" method="getProjectsByFactoryId">
-			<result name="success" type="json">
-				<param name="excludeProperties">
-					companies,
-					factories,
-					subprojects
-				</param>
-			</result>
-		</action>
-		<action name="getSubprojectByIdJSON" class="visualizationAction" method="getSubprojectById">
-			<result name="success" type="json">
-				<param name="excludeProperties">
-					companies,
-					factories,
-					projects
-				</param>
 			</result>
 		</action>
 	</package>
 	
-	<package name="ui-ajax-controls" extends="struts-default,json-default">
-		<action name="fooAction" class="visualizationAction" method="fooAction">
-			<result name="success" type="json"/>
-		</action>
-	</package>
 </struts>

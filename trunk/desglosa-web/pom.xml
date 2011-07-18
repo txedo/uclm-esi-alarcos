@@ -240,9 +240,24 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>es.uclm.inf-cr.alarcos</groupId>
+			<artifactId>desglosa</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>jar</type>
+			<classifier>jar-without-jni-libraries</classifier>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.jgeppert.struts2.jquery</groupId>
 			<artifactId>struts2-jquery-plugin</artifactId>
-			<version>3.0.2</version>
+			<version>3.1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.2.4</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -251,20 +266,6 @@
 			<artifactId>struts2-json-plugin</artifactId>
 			<version>2.2.3</version>
 			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.1</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>es.uclm.inf-cr.alarcos</groupId>
-			<artifactId>desglosa</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<type>jar</type>
-			<classifier>jar-without-jni-libraries</classifier>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

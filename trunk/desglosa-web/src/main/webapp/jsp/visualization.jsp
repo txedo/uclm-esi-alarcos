@@ -98,7 +98,7 @@
 		showLoadingIndicator(true);
 		if (!idFactory) var idFactory = "0";
 		else var idFactory = idFactory+"";
-		$.getJSON("/desglosa-web/getFactoryByIdJSON.action",
+		$.getJSON("/desglosa-web/json_factoryById.action",
 				{ id: idFactory	},
 				function (data, status) {
 					if (status == "success") {
@@ -119,7 +119,7 @@
 		showLoadingIndicator(true);
 		if (!idCompany) var idCompany = "0";
 		else var idCompany = idCompany+"";
-		$.getJSON("/desglosa-web/getFactoriesByCompanyIdJSON.action",
+		$.getJSON("/desglosa-web/json_factoriesByCompanyId.action",
 				{ id: idCompany },
 				function (data, status) {
 					if (status == "success") {
@@ -149,10 +149,11 @@
 		showLoadingIndicator(true);
 		if (!idCompany) var idCompany = "0";
 		else var idCompany = idCompany+"";
-		$.getJSON("/desglosa-web/getCompanyByIdJSON.action",
+		$.getJSON("/desglosa-web/json_companyById.action",
 				{ id: idCompany	},
 				function (data, status) {
 					if (status == "success") {
+						$("#companyInformation").text("");
 						$.each(data.companies, function (i, item) {
 							$("#companyInformation").append(formatCompanyInformation(item));
 						});
@@ -165,7 +166,7 @@
 	function configureProjectsByCompanyId(idCompany){
 		showLoadingIndicator(true);
 		var idCompany = idCompany+"";
-		$.getJSON("/desglosa-web/getProjectsByCompanyIdJSON.action",
+		$.getJSON("/desglosa-web/json_projectsByCompanyId.action",
 				{ id: idCompany },
 				function (data, status) {
 					if (status == "success") {
@@ -184,7 +185,7 @@
 	function getProjectsByFactoryId(idFactory){
 		showLoadingIndicator(true);
 		var idFactory = idFactory+"";
-		$.getJSON("/desglosa-web/getProjectsByFactoryIdJSON.action",
+		$.getJSON("/desglosa-web/json_projectsByFactoryId.action",
 				{ id: idFactory },
 				function (data, status) {
 					if (status == "success") {
@@ -204,7 +205,7 @@
 		showLoadingIndicator(true);
 		if (!idProject) var idProject = "0";
 		else var idProject = idProject+"";
-		$.getJSON("/desglosa-web/getProjectByIdJSON.action",
+		$.getJSON("/desglosa-web/json_projectById.action",
 				{ id: idProject	},
 				function (data, status) {
 					if (status == "success") {
@@ -254,7 +255,7 @@
 	function formatDirectorInformation(directorJSON) {
 		var result = directorJSON.lastName + ", " + directorJSON.name + "<br />";
 		if (directorJSON.imagePath != null)
-			result += "<img src='" + directorJSON.imagePath + "' width='128' height='128'/><br />";
+			result += "<img src='" + directorJSON.imagePath + "' width='64' height='64'/><br />";
 		return result;
 	}
 	
@@ -318,7 +319,6 @@
 			}
 			else {
 				// show info in company info div
-				$("#companyInformation").text("");
 				getCompany($("#companySelect").val());
 				// Indicator will be hidden inside getCompany() when the action finishes.
 			}
@@ -391,7 +391,7 @@ function selectTower(id, clickCount) {
 			showLoadingIndicator(true);
 			if (typeof(queriedSubprojects) == 'undefined' || queriedSubprojects == null || queriedSubprojects.length == 0) {
 				queriedSubprojects = new Array();
-				$.getJSON("/desglosa-web/getSubprojectByIdJSON.action",
+				$.getJSON("/desglosa-web/json_subprojectById.action",
 						{id: id},
 						function (data, status) {
 							if (status == "success") {
@@ -509,72 +509,56 @@ function Neighborhood () {
 }
 
 function desglosa_showFactoriesByCompanyId(id) {
-	desglosa_showFactories("/desglosa-web/getFactoriesByCompanyIdJSON.action", id);
+	desglosa_showFactories("/desglosa-web/json_factoriesByCompanyId.action", id);
 }
 
 function desglosa_showFactoriesById(id) {
-	desglosa_showFactories("/desglosa-web/getFactoryByIdJSON.action", id);
+	desglosa_showFactories("/desglosa-web/json_factoryById.action", id);
 }
 
-function desglosa_showFactories(action, id) {
+function desglosa_showFactories(action, id, groupBy) {
 	queriedFactories = new Array();
 	showLoadingIndicator(true);
 	$.getJSON(action,
-			{id: id},
+			{
+				id: id,
+				generateGLObjects: true,
+				groupBy: groupBy
+			},
 			function (data, status) {
 				if (status == "success") {
 					// Hide map canvas
 					$('#map_canvas').css('display','none');
 					// Show jogl canvas
 					$('#jogl_canvas').css('display','');
-					// Configure items
-					var neighborhood = new Neighborhood();
-					$.each(data.factories, function (i, item) {
-						var factory = new Object();
-						factory = item;
-						factory.projects = 1;
-						neighborhood.flats.push(factory);
-						queriedFactories.push(factory);
-					});
-					var city = new City();
-					city.neighborhoods.push(neighborhood);
-					// Convert factory array to JSON format
-					var JSONtext = JSON.stringify(city);
 					// Change active view
-					document.DesglosaApplet.visualizeFactories(JSONtext);
+					var city = JSON.stringify(data.city);
+					document.DesglosaApplet.visualizeFactories(city);
 				}
 				else alert('An error has occurred while trying to retrieve factory information: ' + status);
 				showLoadingIndicator(false);
 	});
 }
 
-function desglosa_showProjectsById(id) {
+function desglosa_showProjectsById(id, groupBy) {
 	queriedProjects = new Array();
 	queriedSubprojects = new Array();
 	showLoadingIndicator(true);
-	$.getJSON("/desglosa-web/getProjectByIdJSON.action",
-			{id: id},
+	$.getJSON("/desglosa-web/json_projectById.action",
+			{
+				id: id,
+				generateGLObjects: true,
+				groupBy: groupBy
+			},
 			function (data, status) {
 				if (status == "success") {
 					// Hide map canvas
 					$('#map_canvas').css('display','none');
 					// Show jogl canvas
 					$('#jogl_canvas').css('display','');
-					// Configure items
-					var neighborhood = new Neighborhood();
-					$.each(data.projects, function (i, item) {
-						var project = new Object();
-						project = item;
-						project.id = id;
-						neighborhood.flats.push(project);
-						queriedProjects.push(project);
-					});
-					var city = new City();
-					city.neighborhoods.push(neighborhood);
-					// Convert project array to JSON format
-					var JSONtext = JSON.stringify(city);
 					// Change active view
-					document.DesglosaApplet.visualizeProjects(JSONtext);
+					var city = JSON.stringify(data.city);
+					document.DesglosaApplet.visualizeProjects(city);
 				}
 				else alert('An error has occurred while trying to retrieve factory information: ' + status);
 				showLoadingIndicator(false);
@@ -610,6 +594,7 @@ function desglosa_showProjectsById(id) {
 				<s:label for="companyProjectSelect" value="%{getText('label.select.project')}:"/>
 				<s:select id="companyProjectSelect" name="companyProjectSelect" listKey="id" list="projects" size="5"></s:select>
 			</div>
+			
 			<div id="factoryFilter" style="float:left;">
 				<s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
 				<select id="factorySelect" disabled="disabled"></select>
@@ -617,10 +602,22 @@ function desglosa_showProjectsById(id) {
 				<s:label for="factoryProjectSelect" value="%{getText('label.select.project')}:"/>
 				<s:select id="factoryProjectSelect" name="factoryProjectSelect" listKey="id" list="projects" size="5"></s:select>
 			</div>
+			
+			<div id="legend" style="clear:left; float:right;">
+				<s:text name="label.mark.global_project"></s:text>
+			</div>
 		</fieldset>
 	</div>
 	
 	<div style="clear:both;"/>
+	
+	<div id="groupByDiv">
+		<s:text name="label.group_by"/><br />
+		<input type="radio" name="groupByRB" value="company"/><s:text name="label.company"/><br />
+		<input type="radio" name="groupByRB" value="factory"/><s:text name="label.factory"/><br />
+		<input type="radio" name="groupByRB" value="market"/><s:text name="label.market"/><br />
+		<input type="radio" name="groupByRB" value="project"/><s:text name="label.project"/><br />
+	</div>
 	
 	<div id="workingArea" style="position:relative; height:450px">
 		<div id="map_canvas" style="position:relative; top:0; left:0; width: 600px; height: 400px; display: ;"></div>
