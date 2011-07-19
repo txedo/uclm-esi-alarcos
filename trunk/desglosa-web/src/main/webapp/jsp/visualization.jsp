@@ -12,7 +12,10 @@
 	<sj:head jqueryui="true"/>
 	
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
 	<!-- <script type="text/javascript" src="js/desglosa-facade.js"></script> -->
+
+  
 	<script type="text/javascript">
 	var map;
 	var geocoder;
@@ -154,6 +157,10 @@
 				function (data, status) {
 					if (status == "success") {
 						$("#companyInformation").text("");
+						if (data.companies.length > 1) {
+							$("#companyInformation").append("<s:text name='label.generic_info_about_companies'/><br />");
+							$("#companyInformation").append(createRadioButtonGroup("companyRBG", 0, true, false, true, true));
+						}
 						$.each(data.companies, function (i, item) {
 							$("#companyInformation").append(formatCompanyInformation(item));
 						});
@@ -233,12 +240,27 @@
 		});
 	}
 	
+	function createRadioButtonGroup(name, id, company, factory, project, market) {
+		result = "<s:text name='label.show_more'/><br />";
+		if (company)
+			result += "<input type='radio' name='" + name + "' onclick='javascript:desglosa_showFactoriesByCompanyId(" + id + ", \"company\")'/><s:text name='label.company'/><br />";
+		if (factory)
+			result += "<input type='radio' name='" + name + "' onclick='javascript:desglosa_showFactoriesByCompanyId(" + id + ", \"factory\")'/><s:text name='label.factory'/><br />";
+		if (project)
+			result += "<input type='radio' name='" + name + "' onclick='javascript:desglosa_showFactoriesByCompanyId(" + id + ", \"project\")'/><s:text name='label.project'/><br />";
+		if (market)
+			result += "<input type='radio' name='" + name + "' onclick='javascript:desglosa_showFactoriesByCompanyId(" + id + ", \"market\")'/><s:text name='label.market'/><br />";
+		result += "<input type='radio' name='" + name + "' onclick='javascript:desglosa_showFactoriesByCompanyId(" + id + ", \"\")'/><s:text name='label.no_group_by'/><br />";
+		return result;
+	}
+	
 	function formatCompanyInformation(companyJSON) {
-		var result = "<b>" + companyJSON.name + "</b><br />";
+		var result = "";
+		result += "<b>" + companyJSON.name + "</b><br />";
 		result += "<i>" + companyJSON.information + "</i><br />";
 		result += "<br />";
 		result += formatDirectorInformation(companyJSON.director);
-		result += "<br /><a href='#' onclick='javascript:desglosa_showFactoriesByCompanyId(" + companyJSON.id + ")'><s:text name='label.show_more'/></a>";
+		result += createRadioButtonGroup("companyRBG", 0, true, false, true, true);
 		return result;
 	}
 	
@@ -313,15 +335,15 @@
 			// concurrent functions
 			configureFactoriesByCompanyId($("#companySelect").val(), true), // Place map locations and fill factorySelect in
 			configureProjectsByCompanyId($("#companySelect").val()); // fill projectSelect in
-			if ($("#companySelect").val() == 0) {
-				// reset company info div
-				initializeCompanyTab();
-			}
-			else {
+			//if ($("#companySelect").val() == 0) {
+			//	// reset company info div
+			//	initializeCompanyTab();
+			//}
+			//else {
 				// show info in company info div
 				getCompany($("#companySelect").val());
 				// Indicator will be hidden inside getCompany() when the action finishes.
-			}
+			//}
 		});
 		
 		$("#factorySelect").change( function() {
@@ -508,17 +530,21 @@ function Neighborhood () {
 	this.flats = new Array();
 }
 
-function desglosa_showFactoriesByCompanyId(id) {
-	desglosa_showFactories("/desglosa-web/json_factoriesByCompanyId.action", id);
+function desglosa_showFactoriesByCompanyId(id, groupBy) {
+	desglosa_showFactories("/desglosa-web/json_factoriesByCompanyId.action", id, groupBy);
 }
 
-function desglosa_showFactoriesById(id) {
-	desglosa_showFactories("/desglosa-web/json_factoryById.action", id);
+function desglosa_showFactoriesById(id, groupBy) {
+	desglosa_showFactories("/desglosa-web/json_factoryById.action", id, groupBy);
 }
 
 function desglosa_showFactories(action, id, groupBy) {
 	queriedFactories = new Array();
 	showLoadingIndicator(true);
+	// Hide map canvas
+	if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
+	// Hide jogl canvas if it is shown
+	if (document.getElementById("jogl_canvas").style.display == '') $('#jogl_canvas').css('display','none');
 	$.getJSON(action,
 			{
 				id: id,
@@ -527,15 +553,16 @@ function desglosa_showFactories(action, id, groupBy) {
 			},
 			function (data, status) {
 				if (status == "success") {
-					// Hide map canvas
-					$('#map_canvas').css('display','none');
 					// Show jogl canvas
 					$('#jogl_canvas').css('display','');
 					// Change active view
 					var city = JSON.stringify(data.city);
 					document.DesglosaApplet.visualizeFactories(city);
+				} else {
+					$('#jogl_canvas').css('display','none');
+					$('#map_canvas').css('display','');
+					alert('An error has occurred while trying to retrieve factory information: ' + status);
 				}
-				else alert('An error has occurred while trying to retrieve factory information: ' + status);
 				showLoadingIndicator(false);
 	});
 }
@@ -544,6 +571,10 @@ function desglosa_showProjectsById(id, groupBy) {
 	queriedProjects = new Array();
 	queriedSubprojects = new Array();
 	showLoadingIndicator(true);
+	// Hide map canvas
+	if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
+	// Hide jogl canvas if it is shown
+	if (document.getElementById("jogl_canvas").style.display == '') $('#jogl_canvas').css('display','none');
 	$.getJSON("/desglosa-web/json_projectById.action",
 			{
 				id: id,
@@ -552,15 +583,16 @@ function desglosa_showProjectsById(id, groupBy) {
 			},
 			function (data, status) {
 				if (status == "success") {
-					// Hide map canvas
-					$('#map_canvas').css('display','none');
 					// Show jogl canvas
 					$('#jogl_canvas').css('display','');
 					// Change active view
 					var city = JSON.stringify(data.city);
 					document.DesglosaApplet.visualizeProjects(city);
+				} else {
+					$('#jogl_canvas').css('display','none');
+					$('#map_canvas').css('display','');
+					alert('An error has occurred while trying to retrieve factory information: ' + status);
 				}
-				else alert('An error has occurred while trying to retrieve factory information: ' + status);
 				showLoadingIndicator(false);
 	});
 }
@@ -609,15 +641,15 @@ function desglosa_showProjectsById(id, groupBy) {
 		</fieldset>
 	</div>
 	
-	<div style="clear:both;"/>
+	<!-- 
+	<sj:accordion active="0" animated="true" autoHeight="true" collapsible="false">
+		<sj:accordionItem title="foo title" label="foo label">aaaa</sj:accordionItem>
+		<sj:accordionItem title="bar title" label="bar label">bbbb</sj:accordionItem>
+		<sj:accordionItem title="baz title" label="baz label">cccc</sj:accordionItem>
+	</sj:accordion>
+	 -->
 	
-	<div id="groupByDiv">
-		<s:text name="label.group_by"/><br />
-		<input type="radio" name="groupByRB" value="company"/><s:text name="label.company"/><br />
-		<input type="radio" name="groupByRB" value="factory"/><s:text name="label.factory"/><br />
-		<input type="radio" name="groupByRB" value="market"/><s:text name="label.market"/><br />
-		<input type="radio" name="groupByRB" value="project"/><s:text name="label.project"/><br />
-	</div>
+	<div style="clear:both;"/>
 	
 	<div id="workingArea" style="position:relative; height:450px">
 		<div id="map_canvas" style="position:relative; top:0; left:0; width: 600px; height: 400px; display: ;"></div>
