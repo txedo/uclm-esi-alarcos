@@ -7,3 +7,4 @@ function swapDivVisibility (toHide, toShow) {
 	document.getElementById(toShow).style.display='';
 }
 
+
