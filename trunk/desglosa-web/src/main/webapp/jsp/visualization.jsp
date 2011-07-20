@@ -97,14 +97,13 @@
 	    });
 	}
 	
-	function getFactoryLocation(idFactory) {
+	function configureFactoryById(idFactory) {
 		showLoadingIndicator(true);
-		if (!idFactory) var idFactory = "0";
-		else var idFactory = idFactory+"";
 		$.getJSON("/desglosa-web/json_factoryById.action",
 				{ id: idFactory	},
 				function (data, status) {
 					if (status == "success") {
+						$("#factoryInformation").text("");
 						$.each(data.factories, function (i, item) {
 							var marker = placeMarker(item.location.latitude, item.location.longitude);
 							marker.setTitle(item.name);
@@ -120,12 +119,17 @@
 	
 	function configureFactoriesByCompanyId(idCompany, fillFactorySelect) {
 		showLoadingIndicator(true);
-		if (!idCompany) var idCompany = "0";
-		else var idCompany = idCompany+"";
 		$.getJSON("/desglosa-web/json_factoriesByCompanyId.action",
 				{ id: idCompany },
 				function (data, status) {
 					if (status == "success") {
+						$("#factoryInformation").text("");
+						$("#factoryInformation").append("<s:text name='label.generic_info_about_factories'/><br />");
+						$("#factoryInformation").append("<s:text name='label.show_more_about_factories'/>:<br />");
+						// The user has selected all factories of a given company (this company must have already been selected)
+						$("#factoryInformation").append(createRadioButtonGroup("factoryRBG", $("#companySelect").val(), "desglosa_showFactoriesByCompanyId", true, false, true, true));
+						$("#factoryInformation").append("<s:text name='label.show_more_about_projects'/>:<br />");
+						$("#factoryInformation").append(createRadioButtonGroup("projectRBG", $("#companySelect").val(), "desglosa_showProjectsByCompanyId", true, true, false, true));
 						if (fillFactorySelect) {
 							$("#factorySelect").attr("disabled", "");
 							$("#factorySelect").empty();
@@ -148,22 +152,25 @@
 		});
 	}
 	
-	function getCompany(idCompany) {
+	function configureCompanyById(idCompany) {
 		showLoadingIndicator(true);
-		if (!idCompany) var idCompany = "0";
-		else var idCompany = idCompany+"";
 		$.getJSON("/desglosa-web/json_companyById.action",
 				{ id: idCompany	},
 				function (data, status) {
 					if (status == "success") {
 						$("#companyInformation").text("");
-						if (data.companies.length > 1) {
+						if (idCompany == 0) {
 							$("#companyInformation").append("<s:text name='label.generic_info_about_companies'/><br />");
-							$("#companyInformation").append(createRadioButtonGroup("companyRBG", 0, true, false, true, true));
+							$("#companyInformation").append("<s:text name='label.show_more_about_factories'/>:<br />");
+							$("#companyInformation").append(createRadioButtonGroup("factoryRBG", 0, "desglosa_showFactoriesByCompanyId", true, false, true, true));
+							$("#factoryInformation").append("<s:text name='label.show_more_about_projects'/>:<br />");
+							$("#factoryInformation").append(createRadioButtonGroup("projectRBG", 0, "desglosa_showProjectsByCompanyId", true, true, false, true));
+						} else {
+							// This bucle only iterates once
+							$.each(data.companies, function (i, item) {
+								$("#companyInformation").append(formatCompanyInformation(item));
+							});
 						}
-						$.each(data.companies, function (i, item) {
-							$("#companyInformation").append(formatCompanyInformation(item));
-						});
 					}
 					else alert('An error has occurred while trying to retrieve company information: ' + status);
 					showLoadingIndicator(false);
@@ -171,17 +178,31 @@
 	}
 	
 	function configureProjectsByCompanyId(idCompany){
+		configureProjectSelect("/desglosa-web/json_projectsByCompanyId.action", idCompany, "#companyProjectSelect");
+	}
+	
+	function configureProjectsByFactoryId(idFactory){
+		// First, the user must choose a company, then a factory
+		// if the user select all factories, it means all factories of a given company
+		// so we show "company projects" as "all factory projects"
+		if (idFactory == 0) {
+			configureProjectSelect("/desglosa-web/json_projectsByCompanyId.action", $("#companySelect").val(), "#factoryProjectSelect");
+		} else {
+			configureProjectSelect("/desglosa-web/json_projectsByFactoryId.action", idFactory, "#factoryProjectSelect");
+		}
+	}
+	
+	function configureProjectSelect(action, id, selectElement) {
 		showLoadingIndicator(true);
-		var idCompany = idCompany+"";
-		$.getJSON("/desglosa-web/json_projectsByCompanyId.action",
-				{ id: idCompany },
+		$.getJSON(action,
+				{ id: id },
 				function (data, status) {
 					if (status == "success") {
-						$("#companyProjectSelect").html("");
+						$(selectElement).html("");
 						$.each(data.projects, function (i, project) {
 							var foo = "";
 							if (project.subprojects.length > 1) foo = " *";
-							$("<option value='"+project.id+"'>"+project.name+foo+"</option>").appendTo("#companyProjectSelect");
+							$("<option value='"+project.id+"'>"+project.name+foo+"</option>").appendTo(selectElement);
 						});
 					}
 					else alert('An error has occurred while trying to retrieve company information: ' + status);
@@ -189,29 +210,8 @@
 		});
 	}
 	
-	function getProjectsByFactoryId(idFactory){
+	function configureProjectById(idProject) {
 		showLoadingIndicator(true);
-		var idFactory = idFactory+"";
-		$.getJSON("/desglosa-web/json_projectsByFactoryId.action",
-				{ id: idFactory },
-				function (data, status) {
-					if (status == "success") {
-						$("#factoryProjectSelect").html("");
-						$.each(data.projects, function (i, project) {
-							var foo = "";
-							if (project.subprojects.length > 1) foo = " *";
-							$("<option value='"+project.id+"'>"+project.name+foo+"</option>").appendTo("#factoryProjectSelect");
-						});
-					}
-					else alert('An error has occurred while trying to retrieve company information: ' + status);
-					showLoadingIndicator(false);
-		});
-	}
-	
-	function getProject(idProject) {
-		showLoadingIndicator(true);
-		if (!idProject) var idProject = "0";
-		else var idProject = idProject+"";
 		$.getJSON("/desglosa-web/json_projectById.action",
 				{ id: idProject	},
 				function (data, status) {
@@ -240,17 +240,17 @@
 		});
 	}
 	
-	function createRadioButtonGroup(name, id, company, factory, project, market) {
-		result = "<s:text name='label.show_more'/><br />";
+	function createRadioButtonGroup(name, id, callback, company, factory, project, market) {
+		var result = "";
 		if (company)
-			result += "<input type='radio' name='" + name + "' onclick='javascript:desglosa_showFactoriesByCompanyId(" + id + ", \"company\")'/><s:text name='label.company'/><br />";
+			result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"company\")'/><s:text name='label.company'/><br />";
 		if (factory)
-			result += "<input type='radio' name='" + name + "' onclick='javascript:desglosa_showFactoriesByCompanyId(" + id + ", \"factory\")'/><s:text name='label.factory'/><br />";
+			result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"factory\")'/><s:text name='label.factory'/><br />";
 		if (project)
-			result += "<input type='radio' name='" + name + "' onclick='javascript:desglosa_showFactoriesByCompanyId(" + id + ", \"project\")'/><s:text name='label.project'/><br />";
+			result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"project\")'/><s:text name='label.project'/><br />";
 		if (market)
-			result += "<input type='radio' name='" + name + "' onclick='javascript:desglosa_showFactoriesByCompanyId(" + id + ", \"market\")'/><s:text name='label.market'/><br />";
-		result += "<input type='radio' name='" + name + "' onclick='javascript:desglosa_showFactoriesByCompanyId(" + id + ", \"\")'/><s:text name='label.no_group_by'/><br />";
+			result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"market\")'/><s:text name='label.market'/><br />";
+		result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"\")'/><s:text name='label.no_group_by'/><br />";
 		return result;
 	}
 	
@@ -260,7 +260,10 @@
 		result += "<i>" + companyJSON.information + "</i><br />";
 		result += "<br />";
 		result += formatDirectorInformation(companyJSON.director);
-		result += createRadioButtonGroup("companyRBG", 0, true, false, true, true);
+		result += "<s:text name='label.show_more_about_factories'/>:<br />";
+		result += createRadioButtonGroup("companyRBG", companyJSON.id, "desglosa_showFactoriesByCompanyId", true, false, true, true);
+		result += "<s:text name='label.show_more_about_projects'/>:<br />";
+		result += createRadioButtonGroup("projectRBG", companyJSON.id, "desglosa_showProjectsByCompanyId", true, true, false, true);
 		return result;
 	}
 	
@@ -270,7 +273,10 @@
 		result += "Número de empleados: " + factoryJSON.employees + "<br />"
 		result += "<br />";
 		result += formatDirectorInformation(factoryJSON.director);
-		result += "<br /><a href='#' onclick='javascript:desglosa_showFactoriesById(" + factoryJSON.id + ")'><s:text name='label.show_more'/></a>";
+		result += "<s:text name='label.show_more_about_factories'/>:<br />";
+		result += createRadioButtonGroup("factoryRBG", factoryJSON.id, "desglosa_showFactoriesById", true, false, true, true);
+		result += "<s:text name='label.show_more_about_projects'/>:<br />";
+		result += createRadioButtonGroup("projectRBG", factoryJSON.id, "desglosa_showProjectsByCompanyId", true, true, false, true);
 		return result;
 	}
 	
@@ -334,16 +340,10 @@
 			$("#factoryProjectSelect").val(-1); // unselect any selected factory
 			// concurrent functions
 			configureFactoriesByCompanyId($("#companySelect").val(), true), // Place map locations and fill factorySelect in
-			configureProjectsByCompanyId($("#companySelect").val()); // fill projectSelect in
-			//if ($("#companySelect").val() == 0) {
-			//	// reset company info div
-			//	initializeCompanyTab();
-			//}
-			//else {
-				// show info in company info div
-				getCompany($("#companySelect").val());
-				// Indicator will be hidden inside getCompany() when the action finishes.
-			//}
+			configureProjectsByCompanyId($("#companySelect").val()), // fill projectSelect in
+			// show info in company info div
+			configureCompanyById($("#companySelect").val());
+			// Indicator will be hidden inside configureCompanyById() when the action finishes.
 		});
 		
 		$("#factorySelect").change( function() {
@@ -351,18 +351,18 @@
 			$("#factoryProjectSelect").attr('disabled','');
 			$("#factoryProjectSelect").val(-1);
 			if ($("#factorySelect").val() == 0) {
-				// reset factory info div
-				initializeFactoryTab();
+				// concurrent functions
 				// If "all factories" is selected, place company factories location
-				configureFactoriesByCompanyId($("#companySelect").val(), false); // Place map locations and fill factorySelect in
-			}
-			else {
+				configureFactoriesByCompanyId($("#companySelect").val(), false), // Place map locations and fill factorySelect in
+				configureProjectsByFactoryId($("#factorySelect").val());
+				// Indicator will be hidden inside configureFactoryById() when the action finishes.
+			} else {
+				// concurrent functions
 				// show info in factory info div
-				$("#factoryInformation").text("");
-				getFactoryLocation($("#factorySelect").val());
-				// Indicator will be hidden inside getFactoryLocation() when the action finishes.
+				configureFactoryById($("#factorySelect").val()),
+				configureProjectsByFactoryId($("#factorySelect").val());
+				// Indicator will be hidden inside configureFactoryById() when the action finishes.
 			}
-			getProjectsByFactoryId($("#factorySelect").val());
 		});
 		
 		$("#companyProjectSelect").change( function() {
@@ -374,8 +374,8 @@
 			} else {
 				// show info in project info div
 				$("#projectInformation").text("");
-				getProject($("#companyProjectSelect").val());
-				// Indicator will be hidden inside getFactoryLocation() when the action finishes.
+				configureProjectById($("#companyProjectSelect").val());
+				// Indicator will be hidden inside configureFactoryById() when the action finishes.
 			}
 		});
 		
@@ -390,8 +390,8 @@
 			} else {
 				// show info in project info div
 				$("#projectInformation").text("");
-				getProject($("#factoryProjectSelect").val());
-				// Indicator will be hidden inside getFactoryLocation() when the action finishes.
+				configureProjectById($("#factoryProjectSelect").val());
+				// Indicator will be hidden inside configureFactoryById() when the action finishes.
 			}
 		});
 		
@@ -640,14 +640,6 @@ function desglosa_showProjectsById(id, groupBy) {
 			</div>
 		</fieldset>
 	</div>
-	
-	<!-- 
-	<sj:accordion active="0" animated="true" autoHeight="true" collapsible="false">
-		<sj:accordionItem title="foo title" label="foo label">aaaa</sj:accordionItem>
-		<sj:accordionItem title="bar title" label="bar label">bbbb</sj:accordionItem>
-		<sj:accordionItem title="baz title" label="baz label">cccc</sj:accordionItem>
-	</sj:accordion>
-	 -->
 	
 	<div style="clear:both;"/>
 	
