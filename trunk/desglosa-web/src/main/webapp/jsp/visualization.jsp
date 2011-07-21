@@ -123,19 +123,19 @@
 				{ id: idCompany },
 				function (data, status) {
 					if (status == "success") {
-						$("#factoryInformation").text("");
-						$("#factoryInformation").append("<s:text name='label.generic_info_about_factories'/><br />");
-						$("#factoryInformation").append("<s:text name='label.show_more_about_factories'/>:<br />");
+						var infoSelector = "#factoryInformation";
+						var selector = "#factorySelect";
+						$(infoSelector).text("");
+						$(infoSelector).append("<s:text name='label.generic_info_about_factories'/><br />");
 						// The user has selected all factories of a given company (this company must have already been selected)
-						$("#factoryInformation").append(createRadioButtonGroup("factoryRBG", $("#companySelect").val(), "desglosa_showFactoriesByCompanyId", true, false, true, true));
-						$("#factoryInformation").append("<s:text name='label.show_more_about_projects'/>:<br />");
-						$("#factoryInformation").append(createRadioButtonGroup("projectRBG", $("#companySelect").val(), "desglosa_showProjectsByCompanyId", true, true, false, true));
+						$(infoSelector).append("<s:text name='label.show_more_about_projects'/>:<br />");
+						$(infoSelector).append(createRadioButtonGroup("projectRBG", $("#companySelect").val(), "desglosa_showProjectsByCompanyId", true, true, false, true));
 						if (fillFactorySelect) {
-							$("#factorySelect").attr("disabled", "");
-							$("#factorySelect").empty();
-							$('#factorySelect').append($("<option></option>").attr("value", 0).text("Todas"));
-							$("#factorySelect option:first").attr('selected','selected');
-							$("#factorySelect").trigger('change');
+							$(selector).attr("disabled", "");
+							$(selector).empty();
+							$(selector).append($("<option></option>").attr("value", 0).text("Todas"));
+							$(selector + " option:first").attr('selected','selected');
+							$(selector).trigger('change');
 						}
 						$.each(data.factories, function (i, item) {
 							var marker = placeMarker(item.location.latitude, item.location.longitude);
@@ -143,7 +143,7 @@
 							var infoWindow = createInfoWindow(item);
 							addMarkerEvents(marker, infoWindow);
 							if (fillFactorySelect) {
-								$('#factorySelect').append($("<option></option>").attr("value", item.id).text(item.name));
+								$(selector).append($("<option></option>").attr("value", item.id).text(item.name));
 							}
 						});
 					}
@@ -158,17 +158,18 @@
 				{ id: idCompany	},
 				function (data, status) {
 					if (status == "success") {
-						$("#companyInformation").text("");
+						var infoSelector = "#companyInformation";
+						$(infoSelector).text("");
 						if (idCompany == 0) {
-							$("#companyInformation").append("<s:text name='label.generic_info_about_companies'/><br />");
-							$("#companyInformation").append("<s:text name='label.show_more_about_factories'/>:<br />");
-							$("#companyInformation").append(createRadioButtonGroup("factoryRBG", 0, "desglosa_showFactoriesByCompanyId", true, false, true, true));
-							$("#factoryInformation").append("<s:text name='label.show_more_about_projects'/>:<br />");
-							$("#factoryInformation").append(createRadioButtonGroup("projectRBG", 0, "desglosa_showProjectsByCompanyId", true, true, false, true));
+							$(infoSelector).append("<s:text name='label.generic_info_about_companies'/><br />");
+							$(infoSelector).append("<s:text name='label.show_more_about_factories'/>:<br />");
+							$(infoSelector).append(createRadioButtonGroup("factoryRBG", 0, "desglosa_showFactoriesByCompanyId", true, false, true, true));
+							$(infoSelector).append("<s:text name='label.show_more_about_projects'/>:<br />");
+							$(infoSelector).append(createRadioButtonGroup("projectRBG", 0, "desglosa_showProjectsByCompanyId", true, true, false, true));
 						} else {
 							// This bucle only iterates once
 							$.each(data.companies, function (i, item) {
-								$("#companyInformation").append(formatCompanyInformation(item));
+								$(infoSelector).append(formatCompanyInformation(item));
 							});
 						}
 					}
@@ -273,10 +274,8 @@
 		result += "Número de empleados: " + factoryJSON.employees + "<br />"
 		result += "<br />";
 		result += formatDirectorInformation(factoryJSON.director);
-		result += "<s:text name='label.show_more_about_factories'/>:<br />";
-		result += createRadioButtonGroup("factoryRBG", factoryJSON.id, "desglosa_showFactoriesById", true, false, true, true);
 		result += "<s:text name='label.show_more_about_projects'/>:<br />";
-		result += createRadioButtonGroup("projectRBG", factoryJSON.id, "desglosa_showProjectsByCompanyId", true, true, false, true);
+		result += createRadioButtonGroup("projectRBG", factoryJSON.id, "desglosa_showProjectsByFactoryId", true, true, false, true);
 		return result;
 	}
 	
@@ -522,6 +521,9 @@ function configureTower(color, dimensions) {
 	return tower;
 }
 
+///////////////////////////
+// esto sera para borrar //
+///////////////////////////
 function City () {
 	this.neighborhoods = new Array();
 }
@@ -529,6 +531,9 @@ function City () {
 function Neighborhood () {
 	this.flats = new Array();
 }
+////////////////////////////
+////////////////////////////
+////////////////////////////
 
 function desglosa_showFactoriesByCompanyId(id, groupBy) {
 	desglosa_showFactories("/desglosa-web/json_factoriesByCompanyId.action", id, groupBy);
@@ -567,15 +572,25 @@ function desglosa_showFactories(action, id, groupBy) {
 	});
 }
 
-function desglosa_showProjectsById(id, groupBy) {
-	queriedProjects = new Array();
-	queriedSubprojects = new Array();
+function desglosa_showProjectsByCompanyId(id, groupBy) {
+	desglosa_showProjects("/desglosa-web/json_projectsByCompanyId.action", id, groupBy);
+}
+
+function desglosa_showProjectsByFactoryId(id, groupBy) {
+	desglosa_showProjects("/desglosa-web/json_projectsByFactoryId.action", id, groupBy);
+}
+
+function desglosa_showProjectById(id, groupBy) {
+	desglosa_showProjects("/desglosa-web/json_projectById.action", id, groupBy);
+}
+
+function desglosa_showProjects (action, id, groupBy) {
 	showLoadingIndicator(true);
 	// Hide map canvas
 	if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
 	// Hide jogl canvas if it is shown
 	if (document.getElementById("jogl_canvas").style.display == '') $('#jogl_canvas').css('display','none');
-	$.getJSON("/desglosa-web/json_projectById.action",
+	$.getJSON(action,
 			{
 				id: id,
 				generateGLObjects: true,
