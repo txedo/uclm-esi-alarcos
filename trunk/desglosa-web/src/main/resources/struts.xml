@@ -49,6 +49,13 @@
 		<action name="contactUs" class="contactUsAction">
 			<result>/jsp/contactUs.jsp</result>
 		</action>
+		<action name="showProfileForm" class="profileAction">
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/admin/viewProfiles.jsp</result>
+			<result name="input">/jsp/admin/viewProfiles.jsp</result>
+			<result name="success">/jsp/admin/viewProfiles.jsp</result>
+		</action>
 		
 		<!-- Company related actions -->
 		<action name="listCompanies" class="companyAction">
