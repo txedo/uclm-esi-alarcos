@@ -49,12 +49,19 @@
 		<action name="contactUs" class="contactUsAction">
 			<result>/jsp/contactUs.jsp</result>
 		</action>
-		<action name="showProfileForm" class="profileAction">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+		<action name="listProfiles" class="profileAction">
+			<!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/admin/viewProfiles.jsp</result>
 			<result name="input">/jsp/admin/viewProfiles.jsp</result>
 			<result name="success">/jsp/admin/viewProfiles.jsp</result>
+		</action>
+		<action name="showProfileForm" class="profileAction" method="showForm">
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/admin/viewProfiles.jsp</result>
+			<result name="input">/jsp/admin/formProfile.jsp</result>
+			<result name="success">/jsp/admin/formProfile.jsp</result>
 		</action>
 		
 		<!-- Company related actions -->
@@ -143,6 +150,13 @@
 	</package>
 	
 	<package name="json" extends="json-default">
+		<action name="json_p_*" class="profileAction" method="updateProfileForm">
+			<result name="success" type="json">
+				<param name="noCache">true</param>
+				<!-- <param name="excludeProperties">companies, projects</param> -->
+				<!-- <param name="excludeNullProperties">true</param> -->
+			</result>
+		</action>
 		<action name="json_*" class="visualizationAction" method="{1}">
 			<result name="success" type="json">
 				<param name="noCache">true</param>
@@ -151,5 +165,4 @@
 			</result>
 		</action>
 	</package>
-	
 </struts>

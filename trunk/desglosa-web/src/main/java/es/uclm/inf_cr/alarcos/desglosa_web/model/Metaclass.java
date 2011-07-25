@@ -1,5 +1,6 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Metaclass {
@@ -10,6 +11,16 @@ public class Metaclass {
 	private String className;
 	private Map<String,String> classTypes;	// <var_name, var_type>
 	private Map<String,Object> classValues;	// <var_name, var_value>
+	
+	public Metaclass() {
+		tableName = new String();
+		tableTypes = new HashMap<String, String>();
+		tableValues = new HashMap<String, Object>();
+		
+		className = new String();
+		classTypes = new HashMap<String, String>();
+		classValues = new HashMap<String, Object>();
+	}
 	
 	public String getTableName() {
 		return tableName;
