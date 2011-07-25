@@ -11,35 +11,46 @@ public class Metaclass {
 	private Map<String,String> classTypes;	// <var_name, var_type>
 	private Map<String,Object> classValues;	// <var_name, var_value>
 	
-//	public String getTableVarType(String varName) {
-//		
-//	}
-//	
-//	public Object getTableVarValue(String varName) {
-//		
-//	}
-//	
-//	public String getClassVarType(String varName) {
-//		
-//	}
-//	
-//	public Object getClassVarValue(String varName) {
-//		
-//	}
-//
-//	public void setTableVarType(String varName, String varType) {
-//		
-//	}
-//	
-//	public void setTableVarValue(String varName, Object varValue) {
-//		
-//	}
-//	
-//	public void setClassVarType(String varName, String varType) {
-//		
-//	}
-//	
-//	public void setClassVarValue(String varName, Object varValue) {
-//		
-//	}
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	public String getTableColumnType(String colname) {
+		return null;
+	}
+	
+	public Object getTableColumnValue(String colname) {
+		return null;
+	}
+	
+	public String getClassAttributeType(String attrname) {
+		return null;
+	}
+	
+	public Object getClassAttributeValue(String attrname) {
+		return null;
+	}
+
+	public void addTableColumn(String colname, String coltype, Object colvalue) {
+		tableTypes.put(colname, coltype);
+		tableValues.put(colname, colvalue);
+	}
+	
+	public void addClassAttribute(String attrname, String attrtype, Object attrvalue) {
+		classTypes.put(attrname, attrtype);
+		classValues.put(attrname, attrvalue);
+	}
+	
 }
