@@ -16,10 +16,10 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 	private String model;
 	private Metaclass metaclass;
 	private Map<String, String> entities = new HashMap<String,String>() {{
-		put("company", getText("label.company"));
-		put("factory", getText("label.factory"));
-		put("project", getText("label.project"));
-		put("subproject", getText("label.subproject"));
+		put("companies", getText("label.company"));
+		put("factories", getText("label.factory"));
+		put("projects", getText("label.project"));
+		put("subprojects", getText("label.subproject"));
 	}};
 	private Map<String, String> models = new HashMap<String,String>() {{
 		put("towers", getText("label.towers"));
@@ -78,6 +78,8 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 			if (tableList.size() > 0) {
 				metaclass = (Metaclass)tableList.get(0);
 				metaclass.setTableName(entity);
+			} else if (tableList.size() == 0) {
+				// TODO error -> tabla no encontrada
 			}
 		}
 		return SUCCESS;

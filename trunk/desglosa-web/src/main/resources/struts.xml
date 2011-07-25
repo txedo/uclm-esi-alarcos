@@ -150,7 +150,7 @@
 	</package>
 	
 	<package name="json" extends="json-default">
-		<action name="json_p_*" class="profileAction" method="updateProfileForm">
+		<action name="json_p_*" class="profileAction" method="{1}">
 			<result name="success" type="json">
 				<param name="noCache">true</param>
 				<!-- <param name="excludeProperties">companies, projects</param> -->

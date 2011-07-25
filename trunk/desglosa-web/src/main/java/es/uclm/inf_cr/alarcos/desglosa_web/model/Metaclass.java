@@ -39,19 +39,19 @@ public class Metaclass {
 	}
 
 	public String getTableColumnType(String colname) {
-		return null;
+		return tableTypes.get(colname);
 	}
 	
 	public Object getTableColumnValue(String colname) {
-		return null;
+		return tableValues.get(colname);
 	}
 	
 	public String getClassAttributeType(String attrname) {
-		return null;
+		return classTypes.get(attrname);
 	}
 	
 	public Object getClassAttributeValue(String attrname) {
-		return null;
+		return classValues.get(attrname);
 	}
 
 	public void addTableColumn(String colname, String coltype, Object colvalue) {
@@ -62,6 +62,38 @@ public class Metaclass {
 	public void addClassAttribute(String attrname, String attrtype, Object attrvalue) {
 		classTypes.put(attrname, attrtype);
 		classValues.put(attrname, attrvalue);
+	}
+
+	public Map<String, String> getTableTypes() {
+		return tableTypes;
+	}
+
+	public void setTableTypes(Map<String, String> tableTypes) {
+		this.tableTypes = tableTypes;
+	}
+
+	public Map<String, Object> getTableValues() {
+		return tableValues;
+	}
+
+	public void setTableValues(Map<String, Object> tableValues) {
+		this.tableValues = tableValues;
+	}
+
+	public Map<String, String> getClassTypes() {
+		return classTypes;
+	}
+
+	public void setClassTypes(Map<String, String> classTypes) {
+		this.classTypes = classTypes;
+	}
+
+	public Map<String, Object> getClassValues() {
+		return classValues;
+	}
+
+	public void setClassValues(Map<String, Object> classValues) {
+		this.classValues = classValues;
 	}
 	
 }
