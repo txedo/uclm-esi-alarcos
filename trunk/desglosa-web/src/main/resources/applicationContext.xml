@@ -105,4 +105,8 @@
     	<property name="projectDao" ref="projectDao"/>
     	<property name="marketDao" ref="marketDao"/>
 	</bean>
+	
+	<bean id="dataSourceUtil" class="es.uclm.inf_cr.alarcos.desglosa_web.util.DataSourceUtil">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 </beans>
