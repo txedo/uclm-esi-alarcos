@@ -36,7 +36,7 @@ public class DataSourceUtil extends JdbcDaoSupport {
      * Executes the <tt>tablesByTablenameQuery</tt> and returns a list of Metaclass objects (there should normally 
      * only be one matching table). 
      */
-    protected List loadTablesByTablename (String tablename) {
+    public List loadTablesByTablename (String tablename) {
     	return tablesByTablenameQueryMapping.execute(tablename);
     }
 

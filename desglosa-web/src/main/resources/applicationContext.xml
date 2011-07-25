@@ -9,7 +9,9 @@
     <bean id="showAdminPanelAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ShowAdminPanelAction" singleton="false" />
     <bean id="showMyAccountAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ShowMyAccountAction" singleton="false" />
     <bean id="contactUsAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ContactUsAction" singleton="false" />
-    <bean id="profileAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ProfileAction" singleton="false"/>
+    <bean id="profileAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ProfileAction" singleton="false">
+    	<property name="dataSourceUtil" ref="dataSourceUtil"/>
+    </bean>
     <bean id="companyAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.CompanyAction" singleton="false">
     	<property name="companyDao" ref="companyDao"/>
     </bean>
