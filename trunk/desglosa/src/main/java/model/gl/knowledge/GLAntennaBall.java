@@ -3,6 +3,8 @@ package model.gl.knowledge;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLUquadric;
 
+import util.GLDimension;
+
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.util.Color;
@@ -13,19 +15,23 @@ public class GLAntennaBall extends GLObject3D {
 	private int[] textures;
 	
 	private int subdivisions;
+	@GLDimension(name="label",type="string")
+	private String label;
+	@GLDimension(name="parentBallRadius",type="float")
 	private float parentBallRadius;
-	private boolean progression;
+	@GLDimension(name="progressionMark",type="boolean")
+	private boolean progressionMark;
 	private float childBallRadius;
 	private Color leftChildBallColor;
 	private Color rightChildBallColor;
+	@GLDimension(name="leftChildBallValue",type="int")
 	private int leftChildBallValue;
+	@GLDimension(name="rightChildBallValue",type="int")
 	private int rightChildBallValue;
 	private final float ANTENNA_WIDTH = 3.0f;
 	private final float ANTENNA_ANGLE = 45.0f;
 	private final float ANTENNA_LENGTH = 0.5f;
 
-	private String label;
-	
 	private GLUquadric quadric;
 	
 	public GLAntennaBall() {
@@ -39,7 +45,7 @@ public class GLAntennaBall extends GLObject3D {
 
 		this.subdivisions = 32;
 		this.parentBallRadius = 1.0f;
-		this.progression = true;
+		this.progressionMark = true;
 		this.childBallRadius = 0.5f;
 		this.leftChildBallColor = new Color (0.0f, 1.0f, 0.0f);
 		this.rightChildBallColor = new Color (1.0f, 0.0f, 0.0f);
@@ -49,14 +55,6 @@ public class GLAntennaBall extends GLObject3D {
 		
 		this.maxWidth = GLAntennaBall.MAX_SIZE*2.0f;
 		this.maxDepth = GLAntennaBall.MAX_SIZE*2.0f;
-	}
-
-	public boolean isProgression() {
-		return progression;
-	}
-
-	public void setProgression(boolean progression) {
-		this.progression = progression;
 	}
 
 	@Override
@@ -87,7 +85,7 @@ public class GLAntennaBall extends GLObject3D {
 				GLSingleton.getGL().glTexGeni(GL2.GL_T, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_SPHERE_MAP);
 	            // Bind the APPLY(0) or CANCEL(1) texture
 				int texture = this.textures[0];
-				if (!this.progression) texture = this.textures[1];
+				if (!this.progressionMark) texture = this.textures[1];
 				GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, texture);
 				GLSingleton.getGL().glColor4fv(this.color.getColorFB());
 			} else {
@@ -172,6 +170,14 @@ public class GLAntennaBall extends GLObject3D {
 
 	public void setRightChildBallValue(int rightChildBallValue) {
 		this.rightChildBallValue = rightChildBallValue;
+	}
+	
+	public boolean isProgressionMark() {
+		return progressionMark;
+	}
+
+	public void setProgressionMark(boolean progression) {
+		this.progressionMark = progression;
 	}
 	
 }

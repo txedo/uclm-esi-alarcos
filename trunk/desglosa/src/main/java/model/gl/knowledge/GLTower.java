@@ -2,6 +2,8 @@ package model.gl.knowledge;
 
 import javax.media.opengl.GL2;
 
+import util.GLDimension;
+
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.util.Color;
@@ -17,11 +19,15 @@ public class GLTower extends GLObject3D {
 	 * La base se encuentra en el plano ZX, será cuadrada y tendrá de lado el valor de la variable width.
 	 * La altura se extiende a lo largo del eje Y y viene dada por la variable height
 	 */
+	@GLDimension(name="width",type="float")
 	private float width;
+	@GLDimension(name="depth",type="float")
 	private float depth;
-	private float fill_height;
-	private float edge_height;
-	private float edge_width;
+	@GLDimension(name="height",type="float")
+	private float height;
+	@GLDimension(name="innerHeight",type="float")
+	private float innerHeight;
+	private float edgeWidth;
 	private final float ALPHA = 0.25f;
 	
 	public GLTower () {
@@ -36,9 +42,9 @@ public class GLTower extends GLObject3D {
 		// Base rectangular
 		this.width = width;
 		this.depth = depth;
-		this.fill_height = height;
-		this.edge_height = this.fill_height;
-		this.edge_width = 1.0f;
+		this.height = height;
+		this.innerHeight = this.height;
+		this.edgeWidth = 1.0f;
 		
 		this.maxWidth = GLTower.MAX_WIDTH;
 		this.maxDepth = GLTower.MAX_DEPTH;
@@ -50,16 +56,16 @@ public class GLTower extends GLObject3D {
 			// Pintamos las aristas de la torre
 			// Si se especifica el grosor de la arista, la pintaremos de negro
 			// Si no se especifica el grosor de la arista, la pintaremos del mismo color de la torre para tener antialiasing
-			if (this.edge_width > 0.0f)
+			if (this.edgeWidth > 0.0f)
 				GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);			// Configuramos el color NEGRO para todas las líneas
 			// Configuración y pintado de aristas
 			GLSingleton.getGL().glDisable(GL2.GL_POLYGON_OFFSET_FILL);	// Deshabilitamos el modo relleno
 			super.disableLight();
-			GLSingleton.getGL().glLineWidth(edge_width > 0.0f? edge_width : 1.0f);	// Configuramos el grosor de la arista
+			GLSingleton.getGL().glLineWidth(edgeWidth > 0.0f? edgeWidth : 1.0f);	// Configuramos el grosor de la arista
 			GLSingleton.getGL().glEnable(GL2.GL_POLYGON_OFFSET_LINE);	// Habilitamos el modo línea
 			GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f);		// Desfasamos un poco para no dejar huecos en blanco sin rellenar entre la línea y el polígono
 			GLSingleton.getGL().glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_LINE);	// Renderizamos únicamente la parte frontal de la cara por razones de rendimiento
-			this.drawTower(0.0f, this.edge_height, true);						// Dibujamos la torre (sólo los bordes)
+			this.drawTower(0.0f, this.innerHeight, true);						// Dibujamos la torre (sólo los bordes)
 			GLSingleton.getGL().glDisable(GL2.GL_POLYGON_OFFSET_LINE);	// Restauramos todo
 			GLSingleton.getGL().glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
 			GLSingleton.getGL().glPolygonOffset(0.0f, 0.0f);// Configuramos el offset del polígono sin desfase
@@ -70,11 +76,11 @@ public class GLTower extends GLObject3D {
 			GLSingleton.getGL().glColor4fv(color.getColorFB());
 			// Dibujamos la torre con relleno with multisample enabled to get polygons antialiased
 			GLUtils.enableMultisample();
-				this.drawTower(0.0f, this.fill_height, false);
+				this.drawTower(0.0f, this.height, false);
 				float oldAlpha = color.getAlpha();
 				this.color.setAlpha(this.ALPHA);
 				GLSingleton.getGL().glColor4fv(color.getColorFB());
-				this.drawTower(this.fill_height, this.edge_height, false);
+				this.drawTower(this.height, this.innerHeight, false);
 				// Restore old values
 				this.color.setAlpha(oldAlpha);
 				GLSingleton.getGL().glColor4fv(color.getColorFB());
@@ -82,7 +88,7 @@ public class GLTower extends GLObject3D {
 		} else {
 			GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
 			GLUtils.enableMultisample();
-				this.drawTower(0.0f, this.edge_height, false);
+				this.drawTower(0.0f, this.innerHeight, false);
 			GLUtils.disableMultisample();
 		}
 
@@ -138,32 +144,37 @@ public class GLTower extends GLObject3D {
 			GLSingleton.getGL().glEnd();
 		GLSingleton.getGL().glPopMatrix();
 	}
-	
-	public void setRealMeasure (float em) {
-		this.edge_height = em;
+
+	public float getWidth() {
+		return width;
+	}
+
+	public float getDepth() {
+		return depth;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public float getInnerHeight() {
+		return innerHeight;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+	public void setDepth(float depth) {
+		this.depth = depth;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
+
+	public void setInnerHeight(float innerHeight) {
+		this.innerHeight = innerHeight;
 	}
 	
-	public void setEstimatedMeasure (float rm) {
-		this.fill_height = rm;
-	}
-	
-	public float getEstimatedMeasure () {
-		return this.fill_height;
-	}
-	
-	public void setWidth(float w) {
-		this.width = w;
-	}
-	
-	public void setHeight(float h) {
-		this.edge_height = h;
-	}
-	
-	public void setDepth(float d) {
-		this.depth = d;
-	}
-	
-	public void setFill(float f) {
-		this.fill_height = f;
-	}
 }

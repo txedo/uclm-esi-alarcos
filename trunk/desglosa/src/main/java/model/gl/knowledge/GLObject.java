@@ -2,6 +2,8 @@ package model.gl.knowledge;
 
 import javax.media.opengl.GL2;
 
+import util.GLDimension;
+
 import model.gl.GLSingleton;
 import model.util.Color;
 
@@ -9,12 +11,15 @@ import model.util.Color;
 import exceptions.GLSingletonNotInitializedException;
 
 public abstract class GLObject {
+	@GLDimension(name="id",type="int")
 	protected int id;
 	protected float maxWidth;
 	protected float maxDepth;
 	protected float positionX;
 	protected float positionY;
+	@GLDimension(name="color",type="color")
 	protected Color color;
+	@GLDimension(name="scale",type="range")
 	protected float scale;
 	
 	public GLObject () {
