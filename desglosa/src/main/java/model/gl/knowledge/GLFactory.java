@@ -3,6 +3,8 @@ package model.gl.knowledge;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLUquadric;
 
+import util.GLDimension;
+
 import model.gl.GLSingleton;
 import model.gl.GLUtils;
 import model.util.Color;
@@ -27,8 +29,10 @@ public class GLFactory extends GLObject3D {
 	private float baseWidth;
 	private float baseHeight;
 	// Smokestack radius and building length will depend on base dimensions
+	@GLDimension(name="smokestackHeight",type="int")
 	private int smokestackHeight;	// The number of projects assigned to this factory
 	private float smokestackRadius;
+	@GLDimension(name="smokestackColor",type="color")
 	private Color smokestackColor;
 	// Building dimensions
 	private float buildingLength;

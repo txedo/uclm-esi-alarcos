@@ -1,9 +1,10 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import util.AnnotationParser;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -22,7 +23,9 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		put("subprojects", getText("label.subproject"));
 	}};
 	private Map<String, String> models = new HashMap<String,String>() {{
-		put("towers", getText("label.towers"));
+		put("model.gl.knowledge.GLTower", getText("label.model.towers"));
+		put("model.gl.knowledge.GLAntennaBall", getText("label.model.projects"));
+		put("model.gl.knowledge.GLFactory", getText("label.model.factories"));
 	}};	
 	
 	public void setDataSourceUtil(DataSourceUtil dataSourceUtil) {
@@ -80,6 +83,25 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 				metaclass.setTableName(entity);
 			} else if (tableList.size() == 0) {
 				// TODO error -> tabla no encontrada
+			}
+		}
+		return SUCCESS;
+	}
+	
+	public String loadClassAttributes() {
+		metaclass = new Metaclass();
+		if (model != null) {
+			try {
+				Class c = Class.forName(model);
+				AnnotationParser ap = new AnnotationParser();
+				metaclass.setClassTypes(ap.parse(c));
+				metaclass.setClassName(model);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		return SUCCESS;

@@ -41,7 +41,7 @@ public class GLObjectManager {
 				// Set project id -> id
 				glp.setId(p.getId());
 				glp.setLabel(p.getName());
-				glp.setProgression(p.isAudited());
+				glp.setProgressionMark(p.isAudited());
 				glp.setLeftChildBallValue(p.getRepairedIncidences());
 				glp.setRightChildBallValue(p.getTotalIncidences() - p.getRepairedIncidences());
 				glp.setColor(p.getMarket().getColor());

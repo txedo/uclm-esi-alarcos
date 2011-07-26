@@ -25,9 +25,26 @@
 						var htmlText = "";
 						$("#entityColumnsDiv").html("");
 						$.each(data.metaclass.tableTypes, function (key, value) {
-							htmlText += "<a href='#' id='col_" + key + "' class='myButton' onclick='javascript:selectColumn(this)'>" + key + " (" + value + ")</a><br />";
+							htmlText += "<a id='col_" + key + "' class='myButton' onclick='javascript:selectColumn(this)'>" + key + " (" + value + ")</a><br />";
 						});
 						$("#entityColumnsDiv").html(htmlText);
+					}
+					else alert('An error has occurred while trying to retrieve factory information: ' + status);
+		});
+	});
+	
+	$.subscribe('reloadClassAttributes', function() {
+		var model =  $("#modelSelect").val();
+		$.getJSON("/desglosa-web/json_p_loadClassAttributes.action",
+				{ model: model },
+				function (data, status) {
+					if (status == "success") {
+						var htmlText = "";
+						$("#classAttributesDiv").html("");
+						$.each(data.metaclass.classTypes, function (key, value) {
+							htmlText += "<a id='attr_" + key + "' class='myButton' onclick='javascript:selectAttribute(this)'>" + key + " (" + value + ")</a><br />";
+						});
+						$("#classAttributesDiv").html(htmlText);
 					}
 					else alert('An error has occurred while trying to retrieve factory information: ' + status);
 		});
@@ -36,18 +53,26 @@
 	var selectedColumn = null;
 	var selectedAttribute = null;
 	
-	function selectColumn(element) {
-		if (selectedColumn != element) {
-			if (selectedColumn != null) {
-				selectedColumn.className = "myButton"
-				selectedColumn = null;
+	function selectElement (oldz, newz) {
+		if (oldz != newz) {
+			if (oldz != null) {
+				oldz.className = "myButton"
+					oldz = null;
 			}
-			selectedColumn = element;
-			element.className = "myPressedButton";
+			oldz = newz;
+			newz.className = "myPressedButton";
 		} else {
-			selectedColumn = null;
-			element.className = "myButton";
+			oldz = null;
+			newz.className = "myButton";
 		}
+	}
+	
+	function selectColumn(element) {
+		selectElement(selectedColumn, element);
+	}
+	
+	function selectAttribute(element) {
+		selectElement(selectedAttribute, element);
 	}
 	
 	$(document).ready(function() {
@@ -83,6 +108,9 @@
 					formIds="configureForm"
 					onAlwaysTopics="disableHeader"
 					onChangeTopics="reloadClassAttributes"/>
+					
+		<sj:div id="classAttributesDiv"/>
+		
 	</s:form>
 </body>
 </html>
