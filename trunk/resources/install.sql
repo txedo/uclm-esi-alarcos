@@ -145,6 +145,17 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`projects` (
   `size` INT NULL ,
   `delayed` TINYINT(1)  NULL ,
   `profile` VARCHAR(45) NULL ,
+  `fiabilidad` FLOAT NULL ,
+  `usabilidad` FLOAT NULL ,
+  `eficiencia` FLOAT NULL ,
+  `mantenibilidad` FLOAT NULL ,
+  `portabilidad` FLOAT NULL ,
+  `lineas_de_codigo` FLOAT NULL ,
+  `comentarios` FLOAT NULL ,
+  `puntos_funcion` FLOAT NULL ,
+  `fichaje_codigo` FLOAT NULL ,
+  `fichaje_total` FLOAT NULL ,
+  `actividad` FLOAT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_projects_factories` (`mainFactory_id` ASC) ,
   INDEX `fk_projects_markets` (`market_id` ASC) ,
@@ -171,8 +182,18 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`subprojects` (
   `factory_id` INT NOT NULL ,
   `project_id` INT NOT NULL ,
   `name` VARCHAR(45) NULL ,
-  `csv_data` VARCHAR(4095) NULL ,
   `profile` VARCHAR(45) NULL ,
+  `fiabilidad` FLOAT NULL ,
+  `usabilidad` FLOAT NULL ,
+  `eficiencia` FLOAT NULL ,
+  `mantenibilidad` FLOAT NULL ,
+  `portabilidad` FLOAT NULL ,
+  `lineas_de_codigo` FLOAT NULL ,
+  `comentarios` FLOAT NULL ,
+  `puntos_funcion` FLOAT NULL ,
+  `fichaje_codigo` FLOAT NULL ,
+  `fichaje_total` FLOAT NULL ,
+  `actividad` FLOAT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_subprojects_factories` (`factory_id` ASC) ,
   INDEX `fk_subprojects_projects` (`project_id` ASC) ,
@@ -285,25 +306,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `desglosadb`.`measures`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`measures` ;
-
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`measures` (
-  `id` INT NOT NULL ,
-  `name` VARCHAR(45) NULL ,
-  `description` VARCHAR(45) NULL ,
-  `key` VARCHAR(45) NULL ,
-  `high` FLOAT NULL ,
-  `medium` FLOAT NULL ,
-  `low` FLOAT NULL ,
-  `high_offset` FLOAT NULL ,
-  `low_offset` FLOAT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `desglosadb`.`charts`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `desglosadb`.`charts` ;
@@ -331,7 +333,6 @@ grant ALL on TABLE `desglosadb`.`groups_roles` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`roles` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`users_groups` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`markets` to desglosaadmin;
-grant ALL on TABLE `desglosadb`.`measures` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`charts` to desglosaadmin;
 
 SET SQL_MODE=@OLD_SQL_MODE;
@@ -414,10 +415,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`) VALUES (1, 'desglosa', 'DGL', 'DESGLOSA', 1, 1, 1, 500, 100, 7, 0, 'default-project-profile.xml');
-INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`) VALUES (2, 'vilma', 'VLM', 'VILMA', 2, 2, 0, 10, 2, 3, 1, 'default-project-profile.xml');
-INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`) VALUES (3, 'w2p', 'W2P', 'Where2Publish', 3, 3, 1, 60, 21, 4, 0, 'default-project-profile.xml');
-INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`) VALUES (4, 'asdf', 'asdf', 'asdf', 1, 1, 1, 23, 32, 3, 1, 'default-project-profile.xml');
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (1, 'desglosa', 'DGL', 'DESGLOSA', 1, 1, 1, 500, 100, 7, 0, 'default-project-profile.xml', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (2, 'vilma', 'VLM', 'VILMA', 2, 2, 0, 10, 2, 3, 1, 'default-project-profile.xml', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (3, 'w2p', 'W2P', 'Where2Publish', 3, 3, 1, 60, 21, 4, 0, 'default-project-profile.xml', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `profile`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (4, 'asdf', 'asdf', 'asdf', 1, 1, 1, 23, 32, 3, 1, 'default-project-profile.xml', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 COMMIT;
 
@@ -426,13 +427,13 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (1, 1, 1, 'fase 1', '89.75;99.73;84.3;76.17;87.44;305789;4125987;547;89;5997;13425', 'default-subproject-profile.xml');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (2, 2, 2, 'mod 1', '4.13;100;54.51;95.22;84.89;10254;1254784;123;74;1233;7844', 'default-subproject-profile.xml');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (3, 4, 2, 'mod 2', '55.61;62.15;89.03;45.52;78.21;23423;14512431;3145;23;5233;52134', 'default-subproject-profile.xml');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (4, 3, 1, 'fase 2', '74.54;97.45;78.35;43.1;41.21;1234;124123;5123;85;1234;14134', 'default-subproject-profile.xml');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (6, 3, 3, 'fase 2', '89.57;99.55;59;97;85;52355;525252234;4124;53;53344;52452', 'default-subproject-profile.xml');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (7, 1, 4, 'fase 1', '89.57;99.55;59;97;85;52355;525252234;4124;53;53344;52452', 'default-subproject-profile.xml');
-INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `csv_data`, `profile`) VALUES (8, 3, 4, 'fase 2', '74.54;97.45;78.35;43.1;41.21;1234;124123;5123;85;1234;14134', 'default-subproject-profile.xml');
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `profile`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (1, 1, 1, 'fase 1', 'default-subproject-profile.xml', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `profile`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (2, 2, 2, 'mod 1', 'default-subproject-profile.xml', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `profile`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (3, 4, 2, 'mod 2', 'default-subproject-profile.xml', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `profile`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (4, 3, 1, 'fase 2', 'default-subproject-profile.xml', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `profile`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (6, 3, 3, 'fase 2', 'default-subproject-profile.xml', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `profile`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (7, 1, 4, 'fase 1', 'default-subproject-profile.xml', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`subprojects` (`id`, `factory_id`, `project_id`, `name`, `profile`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (8, 3, 4, 'fase 2', 'default-subproject-profile.xml', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 COMMIT;
 
@@ -499,25 +500,6 @@ INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (2, 4);
 INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (3, 3);
 INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (3, 4);
 INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (4, 4);
-
-COMMIT;
-
--- -----------------------------------------------------
--- Data for table `desglosadb`.`measures`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `desglosadb`;
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (1, 'Fiabilidad', 'Descripción de fiabilidad', 'fia', 100, 50, 0, 0.1, 0.1);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (2, 'Usabiildad', 'Descripción de usabilidad', 'usa', 100, 50, 0, 0.1, 0.1);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (3, 'Eficiencia', 'Descripción de eficiencia', 'efi', 100, 50, 0, 0.1, 0.1);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (4, 'Mantenibilidad', 'Descripción de mantenibilidad', 'mant', 100, 50, 0, 0.1, 0.1);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (5, 'Portabilidad', 'Descripción de portabilidad', 'port', 100, 50, 0, 0.1, 0.1);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (6, 'Lineas de codigo', 'Descripción de lcd', 'lcd', 100, 50, 0, 0.1, 0.1);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (7, 'Comentarios', 'Descripción de comentarios', 'comm', 100, 50, 0, 0.1, 0.1);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (8, 'Puntos funcion', 'Descripción de puntos función', 'pfunc', 100, 50, 0, 0.1, 0.1);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (9, 'Fich. codigo', 'Descripción de fich. código', 'fcod', 100, 50, 0, 0.1, 0.1);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (11, 'Actividad', 'Descripción de actividad', 'act', 100, 50, 0, 0.1, 0.1);
-INSERT INTO `desglosadb`.`measures` (`id`, `name`, `description`, `key`, `high`, `medium`, `low`, `high_offset`, `low_offset`) VALUES (10, 'Fich. total', 'Descripción de fich. total', 'ftot', 100, 50, 0, 0.1, 0.1);
 
 COMMIT;
 

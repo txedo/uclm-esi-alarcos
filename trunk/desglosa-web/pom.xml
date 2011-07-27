@@ -6,9 +6,7 @@
 	<artifactId>desglosa-web</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Struts 2 Starter</name>
-	<url>http://www.myComp.com</url>
-	<description>Struts 2 Starter</description>
+	<name>Desglosa: GSD Visualization System</name>
 	
 	<dependencies>
 		<!-- Junit -->
@@ -270,7 +268,8 @@
 		</dependency>
 	</dependencies>
 	
-    <build>
+	<description>Web application and Desglosa Graphics Engine integration that aims for supporting Global Software Development.</description>
+	<build>
       <finalName>desglosa-web</finalName>
     	<plugins>
     		<plugin>
