@@ -3,8 +3,8 @@
   <groupId>es.uclm.inf-cr.alarcos</groupId>
   <artifactId>desglosa</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>desglosa</name>
-  <description>OpenGL-based application to support geographically distributed software teams.</description>
+  <name>Desglosa: Graphics Engine</name>
+  <description>OpenGL-based graphics engine capable to build interactive 3D models by providing a well-formed JSON text.</description>
   <developers>
   	<developer>
   		<id>lopez.josedomingo</id>

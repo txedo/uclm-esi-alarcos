@@ -14,14 +14,17 @@ import org.springframework.jdbc.object.MappingSqlQuery;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 
 public class DataSourceUtil extends JdbcDaoSupport {
+	public final static String COLUMN_NAME = "COLUMN_NAME";
+	public final static String DATA_TYPE = "DATA_TYPE";
+	
 	private MappingSqlQuery tablesByTablenameQueryMapping;
 	private String tablesByTablenameQuery;
-	public static final String DEF_TABLES_BY_TABLENAME_QUERY = "SELECT COLUMN_NAME, DATA_TYPE " +
-			"FROM INFORMATION_SCHEMA.COLUMNS " +
-			"WHERE TABLE_SCHEMA = 'desglosadb' " +
-			"AND TABLE_NAME = ? " +
-			"AND COLUMN_KEY <> 'MUL' " +
-			"ORDER BY ORDINAL_POSITION;";
+	public static final String DEF_TABLES_BY_TABLENAME_QUERY = "SELECT COLUMN_NAME, DATA_TYPE" +
+			" FROM INFORMATION_SCHEMA.COLUMNS" +
+			" WHERE TABLE_SCHEMA = 'desglosadb'" +
+			" AND TABLE_NAME = ?" +
+			" AND COLUMN_KEY <> 'MUL'" +
+			" ORDER BY ORDINAL_POSITION;";
 	
 	public DataSourceUtil() {
 		tablesByTablenameQuery = DEF_TABLES_BY_TABLENAME_QUERY;
@@ -49,13 +52,13 @@ public class DataSourceUtil extends JdbcDaoSupport {
 
         protected Object mapRow(ResultSet rs, int rownum) throws SQLException {
         	Metaclass mc = new Metaclass();
-        	while (rs.next()) {
-        		String columnName = rs.getString(1);
-        		String columnType = rs.getString(2);
-        		if (columnType.equals("varchar")) columnType = "string";
+        	do {
+        		String columnName = rs.getString(COLUMN_NAME);
+        		String columnType = rs.getString(DATA_TYPE);
+        		if (columnType.equals("varchar") || columnType.equals("tinytext")) columnType = "string";
         		if (columnType.equals("tinyint")) columnType = "boolean";
         		mc.addTableColumn(columnName, columnType, null);
-        	}
+        	} while (rs.next());
         	return mc;
         }
     }
