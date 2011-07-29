@@ -61,7 +61,7 @@
 	var selectedColumn = null;
 	var columnArray = new Array();
 	var selectedAttribute = null;
-	var attributeArray = new Array();	
+	var attributeArray = new Array();
 	
 	function selectColumn(element) {
 		// if already-selected element is not the newly-selected
@@ -114,15 +114,30 @@
 				$("#mapping_messages").html("<s:text name='warning.type_compatibility'/>");
 			} else { // compatible types
 				$("#mapping_messages").html("");
+				$("#mapping_cfg").html("");
 				if (attributeType == "range") {
-					// asdfasdf
+					addRangeConfigurationLine();
 				} else if (attributeType == "color") {
-					$("#mapping_cfg").html("");
-				} else {
-					// asdfasdf
+					addColorConfigurationLine();
 				}
+				// asociacion directa
 			}
 		}
+	}
+	
+	var lineCounter = 0;
+	function addRangeConfigurationLine() {
+		
+	}
+	
+	function addColorConfigurationLine() {
+		lineCounter++;
+		var lineId = "cfg_line" + lineCounter;
+		var lineSelector = "#" + lineId;
+		$("#mapping_cfg").append("<div id='" + lineId + "'>");
+		createColorPicker(lineSelector);
+		$(lineSelector).append("<a href='javascript:addColorConfigurationLine()'>+</a>");
+		$("#mapping_cfg").append("</div>");
 	}
 	
 	function checkTypeCompatibility(type1, type2) {
@@ -149,10 +164,18 @@
 		}
 		return compatible;
 	}
-
-	$(document).ready(function() {		
-		$('#colorSelector').ColorPicker({
-			color: '#0000ff',
+	
+	var colorPickerCounter = 0;
+	function createColorPicker(divSelector) {
+		colorPickerCounter++;
+		var id = "colorPicker" + colorPickerCounter;
+		var selector = "#" + id;
+		var divId = selector + " div";
+		var initialColor = "#0000ff";
+		$(divSelector).append("<div id='" + id + "' class='colorSelector'><div style='background-color: " + initialColor + ";'></div></div>");
+		
+		$(selector).ColorPicker({
+			color: initialColor,
 			onShow: function (colpkr) {
 				$(colpkr).fadeIn(500);
 				return false;
@@ -162,9 +185,16 @@
 				return false;
 			},
 			onChange: function (hsb, hex, rgb) {
-				$('#colorSelector div').css('backgroundColor', '#' + hex);
+				$(divId).css('backgroundColor', '#' + hex);
+			},
+			onSubmit: function(hsb, hex, rgb, el) {
+				$(el).val(hex);
+				$(el).ColorPickerHide();
 			}
 		});
+	}
+	
+	$(document).ready(function() {
 	});
 	</script>
 </head>
@@ -203,16 +233,12 @@
 		</div>
 		
 		<div style="clear:both;"></div>
-		</form>
+		
 		<div id="mapping">
 			<div id="mapping_messages"></div>
-			<div id="mapping_cfg">
-				<div id="mapping_cfg_color">
-					<div id="colorSelector"><div style="background-color: #0000ff;"></div></div>
-				</div>
-			</div>
+			<div id="mapping_cfg"></div>
 			<div id="mapping_added"></div>
 		</div>
-
+	</form>
 </body>
 </html>
