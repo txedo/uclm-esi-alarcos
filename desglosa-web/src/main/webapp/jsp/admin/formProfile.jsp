@@ -31,7 +31,7 @@
 						$("#entityColumnsDiv").html("");
 						$.each(data.metaclass.tableTypes, function (key, value) {
 							columnArray[key] = value;
-							htmlText += "<a id='col_" + key + "' class='myButton' onclick='javascript:selectColumn(this)'>" + key + " (" + value + ")</a><br />";
+							htmlText += "<a id='col_" + key + "' class='myButton' onclick='javascript:selectColumn(this)' style='display: block;'>" + key + " (" + value + ")</a>";
 						});
 						$("#entityColumnsDiv").html(htmlText);
 					}
@@ -50,7 +50,7 @@
 						$("#classAttributesDiv").html("");
 						$.each(data.metaclass.classTypes, function (key, value) {
 							attributeArray[key] = value;
-							htmlText += "<a id='attr_" + key + "' class='myButton' onclick='javascript:selectAttribute(this)'>" + key + " (" + value + ")</a><br />";
+							htmlText += "<a id='attr_" + key + "' class='myButton' onclick='javascript:selectAttribute(this)' style='display: block;'>" + key + " (" + value + ")</a>";
 						});
 						$("#classAttributesDiv").html(htmlText);
 					}
@@ -115,13 +115,47 @@
 			} else { // compatible types
 				$("#mapping_messages").html("");
 				$("#mapping_cfg").html("");
+				$("#mapping_control").html("");
 				if (attributeType == "range") {
 					addRangeConfigurationLine();
 				} else if (attributeType == "color") {
 					addColorConfigurationLine();
+					$("#mapping_control").append("<a href='javascript:addColorConfigurationLine()'>+</a>");
 				}
-				// asociacion directa
+				// Si es mapeo directo no hay que ahcer nada más
+				$("#mapping_control").append("<a href='javascript:saveMapping()'><s:text name='label.save_mapping'/></a>");
 			}
+		}
+	}
+	
+	function saveMapping() {
+		if (selectedColumn != null && selectedAttribute != null) {
+			var columnName = (selectedColumn.id).replace("col_", "");
+			var columnType = columnArray[columnName];
+			var attributeName = (selectedAttribute.id).replace("attr_", "");
+			var attributeType = attributeArray[attributeName];
+			// Recorrer todas las lineas para comprobar que estan bien configuradas
+			// Si es asociacion directa no habrá ninguna línea que comprobar, si es range o color, puede haber varias
+			// El valor de los textboxes será del tipo de la columna de la tabla
+			if (attributeType == "range" || attributeType == "color") {
+				$("#mapping_cfg").children().each(function(index, element) {
+					// element es cfg_line1
+					var low = $(element).children('#low');
+					var high = $(element).children('#high');
+					var color = $(element).children('.colorSelector').css('backgroundColor');
+					alert (low + " " + high + " " + color);
+				});
+			}
+			// Guardar algun tipo de referencia para construir luego el fichero xml
+			
+			// Ocultar los botones correspondientes a la columna de la tabla y el atributo de la clase
+			$("#"+selectedColumn.id).css('display','none');
+			$("#"+selectedAttribute.id).css('display','none');
+			// Resetear el contador de lineas
+			lineCounter = 0;
+			// Feedback en mapping_added
+			$("#mapping_added").append(columnName);
+			$("#mapping_added").append(attributeName);
 		}
 	}
 	
@@ -135,9 +169,15 @@
 		var lineId = "cfg_line" + lineCounter;
 		var lineSelector = "#" + lineId;
 		$("#mapping_cfg").append("<div id='" + lineId + "'>");
+		$(lineSelector).append("<input type='text' id='low' name='low'/>");
+		$(lineSelector).append("<input type='text' id='high' name='high'/>");
 		createColorPicker(lineSelector);
-		$(lineSelector).append("<a href='javascript:addColorConfigurationLine()'>+</a>");
+		$(lineSelector).append("<a href=\"javascript:removeConfigurationLine('" + lineId + "')\">-</a>");
 		$("#mapping_cfg").append("</div>");
+	}
+	
+	function removeConfigurationLine(id) {
+		$("#"+id).remove();
 	}
 	
 	function checkTypeCompatibility(type1, type2) {
@@ -237,6 +277,7 @@
 		<div id="mapping">
 			<div id="mapping_messages"></div>
 			<div id="mapping_cfg"></div>
+			<div id="mapping_control"></div>
 			<div id="mapping_added"></div>
 		</div>
 	</form>
