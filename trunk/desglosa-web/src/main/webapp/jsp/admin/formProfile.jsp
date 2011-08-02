@@ -16,12 +16,29 @@
 	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/layout.css'/>" />
 	
 	<script type="text/javascript">
+	var associations = new Array();
+	
+	function Association (colName, colType, attrName, attrType, rules) {
+		this.columnName = colName;
+		this.columnType = colType;
+		this.attributeName = attrName;
+		this.attributeType = attrType;
+		this.rules = rules;
+	}
+	
+	function Rule (low, high, value) {
+		this.low = low;
+		this.high = high;
+		this.value = value;
+	}
+	
 	$.subscribe('disableHeader', function(event, element) {
 		$("option:first", element).attr('disabled','disabled');
 	});
 	
 	$.subscribe('reloadTableColumns', function() {
 		var entity =  $("#entitySelect").val();
+		associations = new Array();
 		$.getJSON("/desglosa-web/json_p_loadTableColumns.action",
 				{ entity: entity },
 				function (data, status) {
@@ -41,6 +58,7 @@
 	
 	$.subscribe('reloadClassAttributes', function() {
 		var model =  $("#modelSelect").val();
+		associations = new Array();
 		$.getJSON("/desglosa-web/json_p_loadClassAttributes.action",
 				{ model: model },
 				function (data, status) {
@@ -117,10 +135,15 @@
 				$("#mapping_cfg").html("");
 				$("#mapping_control").html("");
 				if (attributeType == "range") {
-					addRangeConfigurationLine();
+					var range = true;
+					if (columnType == "string") range = false;
+					addRangeConfigurationLine(range);
+					$("#mapping_control").append("<a href='javascript:addRangeConfigurationLine(" + range + ")'>+</a>");
 				} else if (attributeType == "color") {
-					addColorConfigurationLine();
-					$("#mapping_control").append("<a href='javascript:addColorConfigurationLine()'>+</a>");
+					var range = true;
+					if (columnType == "string") range = false;
+					addColorConfigurationLine(range);
+					$("#mapping_control").append("<a href='javascript:addColorConfigurationLine(" + range + ")'>+</a>");
 				}
 				// Si es mapeo directo no hay que ahcer nada más
 				$("#mapping_control").append("<a href='javascript:saveMapping()'><s:text name='label.save_mapping'/></a>");
@@ -137,40 +160,111 @@
 			// Recorrer todas las lineas para comprobar que estan bien configuradas
 			// Si es asociacion directa no habrá ninguna línea que comprobar, si es range o color, puede haber varias
 			// El valor de los textboxes será del tipo de la columna de la tabla
+			var error = false;
+			var rules = new Array();
 			if (attributeType == "range" || attributeType == "color") {
 				$("#mapping_cfg").children().each(function(index, element) {
 					// element es cfg_line1
-					var low = $(element).children('#low');
-					var high = $(element).children('#high');
-					var color = $(element).children('.colorSelector').css('backgroundColor');
-					alert (low + " " + high + " " + color);
+					var low = $(element).children('#low').val();
+					var high = $(element).children('#high').val();
+					var color = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
+					if (columnType == "int") {
+						low = parseInt(low, 10);
+						high = parseInt(high, 10);
+					} else if (columnType == "float") {
+						low = parseFloat(low, 10);
+						high = parseFloat(high, 10);
+					} else if (columnType == "string") {
+						high = low;
+					}
+					if ((columnType == "int" || columnType == "float") && (isNaN(low) || isNaN(high))) {
+						$("#mapping_messages").html("");
+						$("#mapping_messages").html("<s:text name='error.field_isNaN'/>");
+						error = true;
+						// Resetear tablas de valores
+						rules = new Array();
+					} else {
+						// Actualizar tablas de valores para construir el fichero XML
+						rule = new Rule(low, high, color);
+						rules.push(rule);
+					}
 				});
 			}
-			// Guardar algun tipo de referencia para construir luego el fichero xml
-			
-			// Ocultar los botones correspondientes a la columna de la tabla y el atributo de la clase
-			$("#"+selectedColumn.id).css('display','none');
-			$("#"+selectedAttribute.id).css('display','none');
-			// Resetear el contador de lineas
-			lineCounter = 0;
-			// Feedback en mapping_added
-			$("#mapping_added").append(columnName);
-			$("#mapping_added").append(attributeName);
+			if (!error) {
+				$("#mapping_messages").html("");
+				// Si no hay error, establecemos al asociacion con sus reglas
+				var association = new Association(columnName, columnType, attributeName, attributeType, rules);
+				associations.push(association);
+				// Ocultar los botones correspondientes a la columna de la tabla y el atributo de la clase
+				$("#"+selectedColumn.id).css('display','none');
+				$("#"+selectedAttribute.id).css('display','none');
+				// Resetear selectedColumn y selectedAttribute
+				selectedColumn = null;
+				selectedAttribute = null;
+				// Resetear el contador de lineas
+				lineCounter = 0;
+				// Resetear mapping_cfg y mapping_control
+				$("#mapping_cfg").html("");
+				$("#mapping_control").html("");
+				// Feedback en mapping_added
+				$("#mapping_added").append("<div id='association_line' style='display: block;'>");
+				$("#association_line").append("<div id='col_field' style='display: inline;'>" + columnName + "</div>");
+				$("#association_line").append("<div id='attr_field' style='display: inline;'>" + attributeName + "</div>");
+				if (rules.length > 0) {
+					$("#association_line").append("<div id='association_rules' style='display: inline;'>");
+					$.each(rules, function(index, element) {
+						$("#association_rules").append("<div id='association_rule' style='display: block;'>");
+						$("#association_rule").append("<div id='rule_low' style='display: inline;'>" + element.low + "</div>");
+						$("#association_rule").append("<div id='rule_high' style='display: inline;'>" + element.high + "</div>");
+						$("#association_rule").append("<div id='rule_value' style='display: inline;'>" + element.value + "</div>");
+					});
+					$("#association_rules").append("</div>");
+				}
+
+				$("#association_line").append("<div id='remove_association' style='display: inline;'>removeIcon</div>");
+				$("#mapping_added").append("</div>");
+				// Feedback en mapping_messages
+				$("#mapping_messages").html("<s:text name='message.association_successful'/>");
+			}
 		}
 	}
 	
-	var lineCounter = 0;
-	function addRangeConfigurationLine() {
-		
+	function rgb2hex (rgbString) {
+		// http://stackoverflow.com/questions/638948/background-color-hex-to-javascript-variable-jquery
+		// x must be in "rgb(0, 70, 255)" format
+		var parts = rgbString.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+		// parts now should be ["rgb(0, 70, 255", "0", "70", "255"]
+		delete (parts[0]);
+		for (var i = 1; i <= 3; ++i) {
+		    parts[i] = ("0" + parseInt(parts[i]).toString(16)).slice(-2);
+		}
+		var hexString = parts.join(''); // "0070ff"
+		return hexString;
 	}
 	
-	function addColorConfigurationLine() {
+	var lineCounter = 0;
+	
+	function addRangeConfigurationLine(range) {
 		lineCounter++;
 		var lineId = "cfg_line" + lineCounter;
 		var lineSelector = "#" + lineId;
 		$("#mapping_cfg").append("<div id='" + lineId + "'>");
 		$(lineSelector).append("<input type='text' id='low' name='low'/>");
-		$(lineSelector).append("<input type='text' id='high' name='high'/>");
+		if (!range) $(lineSelector).append("<input type='text' id='high' name='high' style='display: none;'/>");
+		else $(lineSelector).append("<input type='text' id='high' name='high'/>");
+		$(lineSelector).append("<input type='text' id='value' name='value'/>");
+		$(lineSelector).append("<a href=\"javascript:removeConfigurationLine('" + lineId + "')\">-</a>");
+		$("#mapping_cfg").append("</div>");
+	}
+	
+	function addColorConfigurationLine(range) {
+		lineCounter++;
+		var lineId = "cfg_line" + lineCounter;
+		var lineSelector = "#" + lineId;
+		$("#mapping_cfg").append("<div id='" + lineId + "'>");
+		$(lineSelector).append("<input type='text' id='low' name='low'/>");
+		if (!range) $(lineSelector).append("<input type='text' id='high' name='high' style='display: none;'/>");
+		else $(lineSelector).append("<input type='text' id='high' name='high'/>");
 		createColorPicker(lineSelector);
 		$(lineSelector).append("<a href=\"javascript:removeConfigurationLine('" + lineId + "')\">-</a>");
 		$("#mapping_cfg").append("</div>");
