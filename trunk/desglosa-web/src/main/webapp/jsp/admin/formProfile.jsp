@@ -11,12 +11,16 @@
 	
 	<sj:head jqueryui="true"/>
 	
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/json2.js"></script>
+	
 	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/colorpicker.css'/>" />
 	<script type="text/javascript" src="<s:url value='/js/colorpicker/js/colorpicker.js'/>"></script>
 	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/layout.css'/>" />
 	
 	<script type="text/javascript">
 	var associations = new Array();
+	var captionLines = new Array();
 	
 	function Association (colName, colType, attrName, attrType, rules) {
 		this.columnName = colName;
@@ -30,6 +34,11 @@
 		this.low = low;
 		this.high = high;
 		this.value = value;
+	}
+	
+	function CaptionLine (label, hexColor) {
+		this.label = label;
+		this.color = hexColor;
 	}
 	
 	$.subscribe('disableHeader', function(event, element) {
@@ -46,7 +55,7 @@
 						var htmlText = "";
 						columnArray = new Array();
 						$("#entityColumnsDiv").html("");
-						$.each(data.metaclass.tableTypes, function (key, value) {
+						$.each(data.tableColumns, function (key, value) {
 							columnArray[key] = value;
 							htmlText += "<a id='col_" + key + "' class='myButton' onclick='javascript:selectColumn(this)' style='display: block;'>" + key + " (" + value + ")</a>";
 						});
@@ -66,7 +75,7 @@
 						var htmlText = "";
 						attributeArray = new Array();
 						$("#classAttributesDiv").html("");
-						$.each(data.metaclass.classTypes, function (key, value) {
+						$.each(data.classAttributes, function (key, value) {
 							attributeArray[key] = value;
 							htmlText += "<a id='attr_" + key + "' class='myButton' onclick='javascript:selectAttribute(this)' style='display: block;'>" + key + " (" + value + ")</a>";
 						});
@@ -120,6 +129,9 @@
 	}
 	
 	function checkMapping() {
+		$("#mapping_messages").html("");
+		$("#mapping_cfg").html("");
+		$("#mapping_control").html("");
 		if (selectedColumn != null && selectedAttribute != null) {
 			var column = (selectedColumn.id).replace("col_", "");
 			var columnType = columnArray[column];
@@ -131,17 +143,14 @@
 			} else if (compatibility == 0) {
 				$("#mapping_messages").html("<s:text name='warning.type_compatibility'/>");
 			} else { // compatible types
-				$("#mapping_messages").html("");
-				$("#mapping_cfg").html("");
-				$("#mapping_control").html("");
 				if (attributeType == "range") {
 					var range = true;
-					if (columnType == "string") range = false;
+					if (columnType == "string" || columnType == "boolean") range = false;
 					addRangeConfigurationLine(range);
 					$("#mapping_control").append("<a href='javascript:addRangeConfigurationLine(" + range + ")'>+</a>");
 				} else if (attributeType == "color") {
 					var range = true;
-					if (columnType == "string") range = false;
+					if (columnType == "string" || columnType == "boolean") range = false;
 					addColorConfigurationLine(range);
 					$("#mapping_control").append("<a href='javascript:addColorConfigurationLine(" + range + ")'>+</a>");
 				}
@@ -167,17 +176,25 @@
 					// element es cfg_line1
 					var low = $(element).children('#low').val();
 					var high = $(element).children('#high').val();
-					var color = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
+					var value = null;
+					if (attributeType == "color") {
+						value = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
+					} else if (attributeType == "range") {
+						value = $(element).children('#value').val();
+					}
 					if (columnType == "int") {
 						low = parseInt(low, 10);
 						high = parseInt(high, 10);
+						if (attributeType == "range") value = parseInt(value, 10);
 					} else if (columnType == "float") {
 						low = parseFloat(low, 10);
 						high = parseFloat(high, 10);
+						if (attributeType == "range") value = parseFloat(value, 10);
 					} else if (columnType == "string") {
 						high = low;
 					}
-					if ((columnType == "int" || columnType == "float") && (isNaN(low) || isNaN(high))) {
+					if ((((columnType == "int" || columnType == "float") && attributeType == "color") && (isNaN(low) || isNaN(high)))
+							|| (((columnType == "int" || columnType == "float") && attributeType == "range") && (isNaN(low) || isNaN(high) || isNaN(value)))) {
 						$("#mapping_messages").html("");
 						$("#mapping_messages").html("<s:text name='error.field_isNaN'/>");
 						error = true;
@@ -185,7 +202,7 @@
 						rules = new Array();
 					} else {
 						// Actualizar tablas de valores para construir el fichero XML
-						rule = new Rule(low, high, color);
+						rule = new Rule(low, high, value);
 						rules.push(rule);
 					}
 				});
@@ -207,22 +224,22 @@
 				$("#mapping_cfg").html("");
 				$("#mapping_control").html("");
 				// Feedback en mapping_added
-				$("#mapping_added").append("<div id='association_line' style='display: block;'>");
-				$("#association_line").append("<div id='col_field' style='display: inline;'>" + columnName + "</div>");
-				$("#association_line").append("<div id='attr_field' style='display: inline;'>" + attributeName + "</div>");
+				$("#mapping_added").append("<div class='association_line' style='display: block;'>");
+				$(".association_line:last").append("<div class='col_field' style='float: left;'>" + columnName + "</div>");
+				$(".association_line:last").append("<div class='attr_field' style='float: left;'>" + attributeName + "</div>");
 				if (rules.length > 0) {
-					$("#association_line").append("<div id='association_rules' style='display: inline;'>");
+					$(".association_line:last").append("<div class='association_rules' style='float: left;'>");
 					$.each(rules, function(index, element) {
-						$("#association_rules").append("<div id='association_rule' style='display: block;'>");
-						$("#association_rule").append("<div id='rule_low' style='display: inline;'>" + element.low + "</div>");
-						$("#association_rule").append("<div id='rule_high' style='display: inline;'>" + element.high + "</div>");
-						$("#association_rule").append("<div id='rule_value' style='display: inline;'>" + element.value + "</div>");
+						$(".association_rules:last").append("<div class='association_rule' style='display: block;'>");
+						$(".association_rule:last").append("<div class='rule_low' style='display: inline;'>" + element.low + "</div>");
+						$(".association_rule:last").append("<div class='rule_high' style='display: inline;'>" + element.high + "</div>");
+						$(".association_rule:last").append("<div class='rule_value' style='display: inline;'>" + element.value + "</div>");
 					});
-					$("#association_rules").append("</div>");
+					$(".association_rules:last").append("</div>");
 				}
-
-				$("#association_line").append("<div id='remove_association' style='display: inline;'>removeIcon</div>");
+				$(".association_line:last").append("<div class='remove_association' style='float: left;'>removeIcon</div>");
 				$("#mapping_added").append("</div>");
+				$("#mapping_added").append("<div style='clear:both;'></div>");
 				// Feedback en mapping_messages
 				$("#mapping_messages").html("<s:text name='message.association_successful'/>");
 			}
@@ -246,31 +263,35 @@
 	
 	function addRangeConfigurationLine(range) {
 		lineCounter++;
-		var lineId = "cfg_line" + lineCounter;
+		var clazz = "cfg_line";
+		var lineId = clazz + lineCounter;
 		var lineSelector = "#" + lineId;
-		$("#mapping_cfg").append("<div id='" + lineId + "'>");
-		$(lineSelector).append("<input type='text' id='low' name='low'/>");
+		$("#mapping_cfg").append("<div id='" + lineId + "' class='" + clazz + "'>");
+		$(lineSelector).append("<input type='text' id='low' name='low' style='float: left;'/>");
 		if (!range) $(lineSelector).append("<input type='text' id='high' name='high' style='display: none;'/>");
-		else $(lineSelector).append("<input type='text' id='high' name='high'/>");
-		$(lineSelector).append("<input type='text' id='value' name='value'/>");
-		$(lineSelector).append("<a href=\"javascript:removeConfigurationLine('" + lineId + "')\">-</a>");
+		else $(lineSelector).append("<input type='text' id='high' name='high' style='float: left;'/>");
+		$(lineSelector).append("<input type='text' id='value' name='value' style='float: left;'/>");
+		$(lineSelector).append("<a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'>-</a>");
+		$(lineSelector).append("<div style='clear:both;'></div>");
 		$("#mapping_cfg").append("</div>");
 	}
 	
 	function addColorConfigurationLine(range) {
 		lineCounter++;
-		var lineId = "cfg_line" + lineCounter;
+		var clazz = "cfg_line";
+		var lineId = clazz + lineCounter;
 		var lineSelector = "#" + lineId;
-		$("#mapping_cfg").append("<div id='" + lineId + "'>");
-		$(lineSelector).append("<input type='text' id='low' name='low'/>");
+		$("#mapping_cfg").append("<div id='" + lineId + "' class='" + clazz + "'>");
+		$(lineSelector).append("<input type='text' id='low' name='low' style='float: left;'/>");
 		if (!range) $(lineSelector).append("<input type='text' id='high' name='high' style='display: none;'/>");
-		else $(lineSelector).append("<input type='text' id='high' name='high'/>");
+		else $(lineSelector).append("<input type='text' id='high' name='high' style='float: left;'/>");
 		createColorPicker(lineSelector);
-		$(lineSelector).append("<a href=\"javascript:removeConfigurationLine('" + lineId + "')\">-</a>");
+		$(lineSelector).append("<a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'>-</a>");
+		$(lineSelector).append("<div style='clear:both;'></div>");
 		$("#mapping_cfg").append("</div>");
 	}
 	
-	function removeConfigurationLine(id) {
+	function removeInputLine(id) {
 		$("#"+id).remove();
 	}
 	
@@ -306,7 +327,7 @@
 		var selector = "#" + id;
 		var divId = selector + " div";
 		var initialColor = "#0000ff";
-		$(divSelector).append("<div id='" + id + "' class='colorSelector'><div style='background-color: " + initialColor + ";'></div></div>");
+		$(divSelector).append("<div id='" + id + "' class='colorSelector' style='float: left;'><div style='background-color: " + initialColor + ";'></div></div>");
 		
 		$(selector).ColorPicker({
 			color: initialColor,
@@ -328,52 +349,136 @@
 		});
 	}
 	
-	$(document).ready(function() {
-	});
+	function addCaptionLine(){
+		lineCounter++;
+		var clazz = "caption_line";
+		var lineId = clazz + lineCounter;
+		var lineSelector = "#" + lineId;
+		$("#added_captionLines").append("<div id='" + lineId + "' class='" + clazz + "'>");
+		createColorPicker(lineSelector);
+		$(lineSelector).append("<input type='text' id='text' name='text' style='float: left;'/>");
+		$(lineSelector).append("<a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'>-</a>");
+		$(lineSelector).append("<div style='clear:both;'></div>");
+		$("#added_captionLines").append("</div>");
+	}
+	
+	function resetProfileForm() {
+		captionLines = new Array();
+		$("#added_captionLines > .caption_line").each(function(index, element) {
+			var label = $(element).children("#text").val();
+			if (label != "") {
+				// reset css class
+			}
+		});
+	}
+	
+	function checkProfile() {
+		var noError = true;
+		resetProfileForm();
+		// Comprobar que hay asociaciones hechas
+		if (associations.length < 1) {
+			$("#mapping_messages").html("<s:text name='error.empty_associations'/>");
+			swapDivVisibility('second_step','first_step');
+			noError = false;
+		} else {
+			// Comprobar que no hay caption lines sin texto
+			$("#added_captionLines > .caption_line").each(function(index, element) {
+				var label = $(element).children("#text").val();
+				var hexColor = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
+				if (label == "") {
+					// change css class
+					alert("change css class");
+					noError = false;
+				} else {
+					var cl = new CaptionLine(label, hexColor);
+					captionLines.push(cl);
+				}
+			});
+		}
+		return noError;
+	}
+	
+	function saveProfile() {
+		if (checkProfile() == true) {
+			var jsonCaptionLines = JSON.stringify(captionLines);
+			var jsonAssociations = JSON.stringify(associations);
+			$.post ("/desglosa-web/saveProfile.action",
+				{ model: $("#modelSelect").val(),
+				  entity: $("#entitySelect").val(),
+				  jsonCaptionLines: jsonCaptionLines,
+				  jsonAssociations: jsonAssociations },
+				function(data, status) {
+					if (status == "success") {
+						alert("success");
+					} else {
+						alert("error");
+					}
+			});
+		} else {
+			
+		}
+	}
+
 	</script>
 </head>
 
 <body>
-	<form id="configureForm" action="json_p_updateProfileForm">
+	<div id="first_step" style="display:;">
 		<s:url id="updateProfileURL" action="json_p_updateProfileForm"/>
 		<s:url id="refreshTableColumns" action="json_p_loadTableColumns"/>
 		
-		<div id="leftPane" style="float:left;">
-			<sj:select 	href="%{updateProfileURL}"
-						emptyOption="false"
-						headerKey="-1"
-						headerValue="-- Please select an entity --"
-						disabled="option:first"
-						id="entitySelect"
-						name="entity"
-						list="entities"
-						onAlwaysTopics="disableHeader"
-						onChangeTopics="reloadTableColumns"/>
-			<div id="entityColumnsDiv"></div>
+		<div id="panes" style="float:left;">
+			<div id="leftPane" style="float:left;">
+				<sj:select 	href="%{updateProfileURL}"
+							emptyOption="false"
+							headerKey="-1"
+							headerValue="-- Please select an entity --"
+							disabled="option:first"
+							id="entitySelect"
+							name="entity"
+							list="entities"
+							onAlwaysTopics="disableHeader"
+							onChangeTopics="reloadTableColumns"/>
+				<div id="entityColumnsDiv"></div>
+			</div>
+			
+			<div id="rightPane" style="float:left;">
+				<sj:select 	href="%{updateProfileURL}"
+							emptyOption="false"
+							headerKey="-1"
+							headerValue="-- Please select a model --"
+							id="modelSelect"
+							name="model"
+							list="models"
+							onAlwaysTopics="disableHeader"
+							onChangeTopics="reloadClassAttributes"/>
+				<div id="classAttributesDiv"></div>
+			</div>
+		
+			<div style="clear:both;"></div>
 		</div>
 		
-		<div id="rightPane" style="float:left;">
-			<sj:select 	href="%{updateProfileURL}"
-						emptyOption="false"
-						headerKey="-1"
-						headerValue="-- Please select a model --"
-						id="modelSelect"
-						name="model"
-						list="models"
-						formIds="configureForm"
-						onAlwaysTopics="disableHeader"
-						onChangeTopics="reloadClassAttributes"/>
-			<div id="classAttributesDiv"></div>
-		</div>
-		
-		<div style="clear:both;"></div>
-		
-		<div id="mapping">
+		<div id="mapping" style="float:left;">
+			<div id="mapping_added"></div>
 			<div id="mapping_messages"></div>
 			<div id="mapping_cfg"></div>
 			<div id="mapping_control"></div>
-			<div id="mapping_added"></div>
 		</div>
-	</form>
+		
+		<div style="clear:both;"></div>
+		<a href="javascript:swapDivVisibility('first_step','second_step')">Next &gt;</a>
+	</div>
+	
+	<div id="second_step" style="display: none;">
+		<s:text name="label.configure_caption_lines"/>
+		<div id="added_captionLines"></div>
+		<a href="javascript:addCaptionLine()"><s:text name="label.add_caption_line"/></a>
+		<label for="profileName"><s:text name="label.profile_name"/></label>
+		<input id="profileName" name="profileName" type="text"/>
+		<label for="profileDescription"><s:text name="label.profile_description"/></label>
+		<textarea id="profileDescription" name="profileDescription" rows="3" cols="15"></textarea>
+		<a href="javascript:swapDivVisibility('second_step','first_step')">&lt; Back</a>
+		<a href="javascript:saveProfile()">Save profile</a>
+	</div>
 </body>
 </html>

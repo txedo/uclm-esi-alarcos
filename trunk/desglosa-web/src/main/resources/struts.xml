@@ -63,6 +63,13 @@
 			<result name="input">/jsp/admin/formProfile.jsp</result>
 			<result name="success">/jsp/admin/formProfile.jsp</result>
 		</action>
+		<action name="saveProfile" class="profileAction" method="save">
+			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/admin/formProfile.jsp</result>
+			<result name="input">/jsp/admin/formProfile.jsp</result>
+			<result name="success" type="redirectAction">listProfiles.action</result>
+		</action>
 		
 		<!-- Company related actions -->
 		<action name="listCompanies" class="companyAction">

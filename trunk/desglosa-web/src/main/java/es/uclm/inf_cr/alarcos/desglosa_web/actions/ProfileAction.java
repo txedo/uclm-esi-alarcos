@@ -15,7 +15,8 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 	private DataSourceUtil dataSourceUtil;
 	private String entity;
 	private String model;
-	private Metaclass metaclass;
+	private Map<String, String> tableColumns;
+	private Map<String, String> classAttributes;
 	private Map<String, String> entities = new HashMap<String,String>() {{
 		put("companies", getText("label.company"));
 		put("factories", getText("label.factory"));
@@ -26,10 +27,22 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		put("model.gl.knowledge.GLTower", getText("label.model.towers"));
 		put("model.gl.knowledge.GLAntennaBall", getText("label.model.projects"));
 		put("model.gl.knowledge.GLFactory", getText("label.model.factories"));
-	}};	
+	}};
+	private Map<String,String> associations;
+	private String jsonAssociations;
+	private Map<String,String> captionLines;
+	private String jsonCaptionLines;
 	
 	public void setDataSourceUtil(DataSourceUtil dataSourceUtil) {
 		this.dataSourceUtil = dataSourceUtil;
+	}
+
+	public void setJsonAssociations(String jsonAssociations) {
+		this.jsonAssociations = jsonAssociations;
+	}
+
+	public void setJsonCaptionLines(String jsonCaptionLines) {
+		this.jsonCaptionLines = jsonCaptionLines;
 	}
 
 	public String getEntity() {
@@ -48,8 +61,12 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		this.model = model;
 	}
 
-	public Metaclass getMetaclass() {
-		return metaclass;
+	public Map<String, String> getTableColumns() {
+		return tableColumns;
+	}
+
+	public Map<String, String> getClassAttributes() {
+		return classAttributes;
 	}
 
 	public Map<String, String> getEntities() {
@@ -74,13 +91,11 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 	}
 	
 	public String loadTableColumns() {
-		metaclass = new Metaclass();
 		if (entity != null) {
 			// Load all tables named by given name. It will return a list with 0 or 1 metaclass object
 			List tableList = dataSourceUtil.loadTablesByTablename(entity);
 			if (tableList.size() > 0) {
-				metaclass = (Metaclass)tableList.get(0);
-				metaclass.setTableName(entity);
+				tableColumns = (HashMap<String, String>)tableList.get(0);
 			} else if (tableList.size() == 0) {
 				// TODO error -> tabla no encontrada
 			}
@@ -89,13 +104,11 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 	}
 	
 	public String loadClassAttributes() {
-		metaclass = new Metaclass();
 		if (model != null) {
 			try {
 				Class c = Class.forName(model);
 				AnnotationParser ap = new AnnotationParser();
-				metaclass.setClassTypes(ap.parse(c));
-				metaclass.setClassName(model);
+				classAttributes = ap.parse(c);
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -108,7 +121,7 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 	}
 	
 	public String save() throws Exception {
-		// TODO Auto-generated method stub
+		// TODO Build metaclass
 		return null;
 	}
 
