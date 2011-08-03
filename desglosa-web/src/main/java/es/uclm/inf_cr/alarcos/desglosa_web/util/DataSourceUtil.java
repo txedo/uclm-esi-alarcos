@@ -3,6 +3,8 @@ package es.uclm.inf_cr.alarcos.desglosa_web.util;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -10,8 +12,6 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.MappingSqlQuery;
-
-import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 
 public class DataSourceUtil extends JdbcDaoSupport {
 	public final static String COLUMN_NAME = "COLUMN_NAME";
@@ -51,15 +51,15 @@ public class DataSourceUtil extends JdbcDaoSupport {
         }
 
         protected Object mapRow(ResultSet rs, int rownum) throws SQLException {
-        	Metaclass mc = new Metaclass();
+        	Map<String,String> tableColumns = new HashMap<String, String>();
         	do {
         		String columnName = rs.getString(COLUMN_NAME);
         		String columnType = rs.getString(DATA_TYPE);
         		if (columnType.equals("varchar") || columnType.equals("tinytext")) columnType = "string";
         		if (columnType.equals("tinyint")) columnType = "boolean";
-        		mc.addTableColumn(columnName, columnType, null);
+        		tableColumns.put(columnName, columnType);
         	} while (rs.next());
-        	return mc;
+        	return tableColumns;
         }
     }
 }
