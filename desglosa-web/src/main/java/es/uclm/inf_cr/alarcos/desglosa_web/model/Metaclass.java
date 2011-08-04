@@ -1,99 +1,94 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="profile")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Metaclass {
-	private String tableName;
-	private Map<String,String> tableTypes;	// <var_name, var_type>
-	private Map<String,Object> tableValues;	// <var_name, var_value>
-	
+	@XmlElement(name="name")
+	private String name;
+	@XmlElement(name="description")
+	private String description;
+	@XmlAttribute(name="table")
+	private String tableName;	
+	@XmlAttribute(name="class")
 	private String className;
-	private Map<String,String> classTypes;	// <var_name, var_type>
-	private Map<String,Object> classValues;	// <var_name, var_value>
+	@XmlElement(name="mapping")
+	private List<Mapping> mappings;
+	@XmlElement(name="caption")
+	private HashMap<String,String> captionLines;
 	
-	public Metaclass() {
-		tableName = new String();
-		tableTypes = new HashMap<String, String>();
-		tableValues = new HashMap<String, Object>();
-		
-		className = new String();
-		classTypes = new HashMap<String, String>();
-		classValues = new HashMap<String, Object>();
-	}
-	
-	public String getTableName() {
-		return tableName;
+	public Metaclass() {}
+
+	public Metaclass(String name, String description, String tableName,
+			String className, List<Mapping> mappings,
+			HashMap<String, String> captionLines) {
+		this.name = name;
+		this.description = description;
+		this.tableName = tableName;
+		this.className = className;
+		this.mappings = mappings;
+		this.captionLines = captionLines;
 	}
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
+	public void addCaptionLine(String label, String hexColor) {
+		captionLines.put(label, hexColor);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getTableName() {
+		return tableName;
 	}
 
 	public String getClassName() {
 		return className;
 	}
 
+	public List<Mapping> getMappings() {
+		return mappings;
+	}
+
+	public Map<String, String> getCaptionLines() {
+		return captionLines;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+
 	public void setClassName(String className) {
 		this.className = className;
 	}
 
-	public String getTableColumnType(String colname) {
-		return tableTypes.get(colname);
-	}
-	
-	public Object getTableColumnValue(String colname) {
-		return tableValues.get(colname);
-	}
-	
-	public String getClassAttributeType(String attrname) {
-		return classTypes.get(attrname);
-	}
-	
-	public Object getClassAttributeValue(String attrname) {
-		return classValues.get(attrname);
+	public void setMappings(List<Mapping> mappings) {
+		this.mappings = mappings;
 	}
 
-	public void addTableColumn(String colname, String coltype, Object colvalue) {
-		tableTypes.put(colname, coltype);
-		tableValues.put(colname, colvalue);
-	}
-	
-	public void addClassAttribute(String attrname, String attrtype, Object attrvalue) {
-		classTypes.put(attrname, attrtype);
-		classValues.put(attrname, attrvalue);
-	}
-
-	public Map<String, String> getTableTypes() {
-		return tableTypes;
-	}
-
-	public void setTableTypes(Map<String, String> tableTypes) {
-		this.tableTypes = tableTypes;
-	}
-
-	public Map<String, Object> getTableValues() {
-		return tableValues;
-	}
-
-	public void setTableValues(Map<String, Object> tableValues) {
-		this.tableValues = tableValues;
-	}
-
-	public Map<String, String> getClassTypes() {
-		return classTypes;
-	}
-
-	public void setClassTypes(Map<String, String> classTypes) {
-		this.classTypes = classTypes;
-	}
-
-	public Map<String, Object> getClassValues() {
-		return classValues;
-	}
-
-	public void setClassValues(Map<String, Object> classValues) {
-		this.classValues = classValues;
+	public void setCaptionLines(HashMap<String, String> captionLines) {
+		this.captionLines = captionLines;
 	}
 	
 }
