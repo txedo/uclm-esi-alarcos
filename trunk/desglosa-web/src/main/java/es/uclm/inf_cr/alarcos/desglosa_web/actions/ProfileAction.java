@@ -1,20 +1,37 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.web.context.ContextLoader;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+import net.sf.json.JsonConfig;
 
 import util.AnnotationParser;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Field;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.DataSourceUtil;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
 
 public class ProfileAction extends ActionSupport implements GenericActionInterface {
 	private DataSourceUtil dataSourceUtil;
 	private String entity;
 	private String model;
+	private String profileName;
+	private String profileDescription;
+	private String jsonMappings;
+	private String jsonCaptionLines;
 	private Map<String, String> tableColumns;
 	private Map<String, String> classAttributes;
 	private Map<String, String> entities = new HashMap<String,String>() {{
@@ -28,17 +45,21 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		put("model.gl.knowledge.GLAntennaBall", getText("label.model.projects"));
 		put("model.gl.knowledge.GLFactory", getText("label.model.factories"));
 	}};
-	private Map<String,String> associations;
-	private String jsonAssociations;
-	private Map<String,String> captionLines;
-	private String jsonCaptionLines;
 	
 	public void setDataSourceUtil(DataSourceUtil dataSourceUtil) {
 		this.dataSourceUtil = dataSourceUtil;
 	}
 
-	public void setJsonAssociations(String jsonAssociations) {
-		this.jsonAssociations = jsonAssociations;
+	public void setProfileName(String profileName) {
+		this.profileName = profileName;
+	}
+
+	public void setProfileDescription(String profileDescription) {
+		this.profileDescription = profileDescription;
+	}
+
+	public void setJsonMappings(String jsonMappings) {
+		this.jsonMappings = jsonMappings;
 	}
 
 	public void setJsonCaptionLines(String jsonCaptionLines) {
@@ -120,9 +141,59 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		return SUCCESS;
 	}
 	
+	public void validateDoSave() {
+		if (profileName == null || profileName.equals("")) {
+			
+		}
+		if (profileDescription == null || profileDescription.equals("")) {
+			
+		}
+		if (entity == null || entity.equals("")) {
+			
+		}
+		if (model == null || model.equals("")) {
+			
+		}
+	}
+	
 	public String save() throws Exception {
-		// TODO Build metaclass
-		return null;
+		Metaclass metaclass = new Metaclass();
+		// Add profile name and description
+		metaclass.setName(profileName);
+		metaclass.setDescription(profileDescription);
+		// Add table and class name
+		metaclass.setTableName(entity);
+		metaclass.setClassName(model);
+		// Add mapping data to metaclass
+		List<Mapping> mappings = new ArrayList<Mapping>();
+		JSONArray mappingArray = (JSONArray) JSONSerializer.toJSON(jsonMappings);
+		for (int i = 0; i < mappingArray.size(); i++) {
+			JSONObject mappingObject = mappingArray.getJSONObject(i);
+			Field column = new Field(mappingObject.getString("columnName"), mappingObject.getString("columnType"));
+			Field attribute = new Field(mappingObject.getString("attributeName"), mappingObject.getString("attributeType"));
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.setRootClass(Rule.class);
+			JSONArray jsonRules = mappingObject.getJSONArray("rules");
+			List<Rule> rules = (List)JSONSerializer.toJava(jsonRules, jsonConfig);
+			Mapping mapping = new Mapping(column, attribute, null, rules);
+			mappings.add(mapping);
+		}
+		metaclass.setMappings(mappings);
+		// Add caption data to metaclass
+		Map<String,String> captionLines = new HashMap<String,String>();
+		JSONArray captionArray = (JSONArray) JSONSerializer.toJSON(jsonCaptionLines);
+		for (int i = 0; i < captionArray.size(); i++) {
+			JSONObject captionObject = captionArray.getJSONObject(i);
+			String label = captionObject.getString("label");
+			String color = captionObject.getString("color");
+			captionLines.put(label, color);
+		}
+		metaclass.setCaptionLines((HashMap<String, String>)captionLines);
+		// Create XML from metaclass and place it in server
+		String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + profileName + "-" + Calendar.getInstance().getTimeInMillis() + ".xml";
+		XMLAgent.marshal(path, Metaclass.class, metaclass);
+		
+		return SUCCESS;
 	}
 
 	public String edit() throws Exception {

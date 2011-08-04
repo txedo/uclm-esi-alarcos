@@ -19,10 +19,10 @@
 	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/layout.css'/>" />
 	
 	<script type="text/javascript">
-	var associations = new Array();
+	var mappings = new Array();
 	var captionLines = new Array();
 	
-	function Association (colName, colType, attrName, attrType, rules) {
+	function Mapping (colName, colType, attrName, attrType, rules) {
 		this.columnName = colName;
 		this.columnType = colType;
 		this.attributeName = attrName;
@@ -47,7 +47,7 @@
 	
 	$.subscribe('reloadTableColumns', function() {
 		var entity =  $("#entitySelect").val();
-		associations = new Array();
+		mappings = new Array();
 		$.getJSON("/desglosa-web/json_p_loadTableColumns.action",
 				{ entity: entity },
 				function (data, status) {
@@ -67,7 +67,7 @@
 	
 	$.subscribe('reloadClassAttributes', function() {
 		var model =  $("#modelSelect").val();
-		associations = new Array();
+		mappings = new Array();
 		$.getJSON("/desglosa-web/json_p_loadClassAttributes.action",
 				{ model: model },
 				function (data, status) {
@@ -210,8 +210,8 @@
 			if (!error) {
 				$("#mapping_messages").html("");
 				// Si no hay error, establecemos al asociacion con sus reglas
-				var association = new Association(columnName, columnType, attributeName, attributeType, rules);
-				associations.push(association);
+				var mapping = new Mapping(columnName, columnType, attributeName, attributeType, rules);
+				mappings.push(mapping);
 				// Ocultar los botones correspondientes a la columna de la tabla y el atributo de la clase
 				$("#"+selectedColumn.id).css('display','none');
 				$("#"+selectedAttribute.id).css('display','none');
@@ -224,24 +224,24 @@
 				$("#mapping_cfg").html("");
 				$("#mapping_control").html("");
 				// Feedback en mapping_added
-				$("#mapping_added").append("<div class='association_line' style='display: block;'>");
-				$(".association_line:last").append("<div class='col_field' style='float: left;'>" + columnName + "</div>");
-				$(".association_line:last").append("<div class='attr_field' style='float: left;'>" + attributeName + "</div>");
+				$("#mapping_added").append("<div class='mapping_line' style='display: block;'>");
+				$(".mapping_line:last").append("<div class='col_field' style='float: left;'>" + columnName + "</div>");
+				$(".mapping_line:last").append("<div class='attr_field' style='float: left;'>" + attributeName + "</div>");
 				if (rules.length > 0) {
-					$(".association_line:last").append("<div class='association_rules' style='float: left;'>");
+					$(".mapping_line:last").append("<div class='mapping_rules' style='float: left;'>");
 					$.each(rules, function(index, element) {
-						$(".association_rules:last").append("<div class='association_rule' style='display: block;'>");
-						$(".association_rule:last").append("<div class='rule_low' style='display: inline;'>" + element.low + "</div>");
-						$(".association_rule:last").append("<div class='rule_high' style='display: inline;'>" + element.high + "</div>");
-						$(".association_rule:last").append("<div class='rule_value' style='display: inline;'>" + element.value + "</div>");
+						$(".mapping_rules:last").append("<div class='mapping_rule' style='display: block;'>");
+						$(".mapping_rule:last").append("<div class='rule_low' style='display: inline;'>" + element.low + "</div>");
+						$(".mapping_rule:last").append("<div class='rule_high' style='display: inline;'>" + element.high + "</div>");
+						$(".mapping_rule:last").append("<div class='rule_value' style='display: inline;'>" + element.value + "</div>");
 					});
-					$(".association_rules:last").append("</div>");
+					$(".mapping_rules:last").append("</div>");
 				}
-				$(".association_line:last").append("<div class='remove_association' style='float: left;'>removeIcon</div>");
+				$(".mapping_line:last").append("<div class='remove_mapping' style='float: left;'>removeIcon</div>");
 				$("#mapping_added").append("</div>");
 				$("#mapping_added").append("<div style='clear:both;'></div>");
 				// Feedback en mapping_messages
-				$("#mapping_messages").html("<s:text name='message.association_successful'/>");
+				$("#mapping_messages").html("<s:text name='message.mapping_successful'/>");
 			}
 		}
 	}
@@ -376,8 +376,8 @@
 		var noError = true;
 		resetProfileForm();
 		// Comprobar que hay asociaciones hechas
-		if (associations.length < 1) {
-			$("#mapping_messages").html("<s:text name='error.empty_associations'/>");
+		if (mappings.length < 1) {
+			$("#mapping_messages").html("<s:text name='error.empty_mapping'/>");
 			swapDivVisibility('second_step','first_step');
 			noError = false;
 		} else {
@@ -394,6 +394,15 @@
 					captionLines.push(cl);
 				}
 			});
+			// Comprobar que profileName y profileDescription no están vacíos
+			if ($("#profileName").val() == "") {
+				alert("profile name vacio");
+				noError = false;
+			}
+			if ($("#profileDescription").val() == "") {
+				alert("profile description vacio");
+				noError = false;
+			}
 		}
 		return noError;
 	}
@@ -401,12 +410,15 @@
 	function saveProfile() {
 		if (checkProfile() == true) {
 			var jsonCaptionLines = JSON.stringify(captionLines);
-			var jsonAssociations = JSON.stringify(associations);
+			var jsonMappings = JSON.stringify(mappings);
 			$.post ("/desglosa-web/saveProfile.action",
-				{ model: $("#modelSelect").val(),
+				{ profileName: $("#profileName").val(),
+				  profileDescription: $("#profileDescription").val(),
+				  model: $("#modelSelect").val(),
 				  entity: $("#entitySelect").val(),
 				  jsonCaptionLines: jsonCaptionLines,
-				  jsonAssociations: jsonAssociations },
+				  jsonMappings: jsonMappings
+				},
 				function(data, status) {
 					if (status == "success") {
 						alert("success");
