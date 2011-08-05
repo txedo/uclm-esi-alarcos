@@ -22,6 +22,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.DataSourceUtil;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.MyHashMapType;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
 
 public class ProfileAction extends ActionSupport implements GenericActionInterface {
@@ -154,6 +155,7 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		if (model == null || model.equals("")) {
 			
 		}
+		// check type compatibility server side
 	}
 	
 	public String save() throws Exception {
@@ -188,7 +190,7 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 			String color = captionObject.getString("color");
 			captionLines.put(label, color);
 		}
-		metaclass.setCaptionLines((HashMap<String, String>)captionLines);
+		metaclass.setCaptionLines(new MyHashMapType(captionLines));
 		// Create XML from metaclass and place it in server
 		String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + profileName + "-" + Calendar.getInstance().getTimeInMillis() + ".xml";
 		XMLAgent.marshal(path, Metaclass.class, metaclass);

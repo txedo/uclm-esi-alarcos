@@ -1,14 +1,16 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
-import java.util.HashMap;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import es.uclm.inf_cr.alarcos.desglosa_web.util.MyHashMapType;
 
 @XmlRootElement(name="profile")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -22,25 +24,21 @@ public class Metaclass {
 	@XmlAttribute(name="class")
 	private String className;
 	@XmlElement(name="mapping")
-	private List<Mapping> mappings;
+	private List<Mapping> mappings = new ArrayList<Mapping>();
 	@XmlElement(name="caption")
-	private HashMap<String,String> captionLines;
+	private MyHashMapType captionLines = new MyHashMapType();
 	
 	public Metaclass() {}
 
 	public Metaclass(String name, String description, String tableName,
 			String className, List<Mapping> mappings,
-			HashMap<String, String> captionLines) {
+			MyHashMapType captionLines) {
 		this.name = name;
 		this.description = description;
 		this.tableName = tableName;
 		this.className = className;
 		this.mappings = mappings;
 		this.captionLines = captionLines;
-	}
-
-	public void addCaptionLine(String label, String hexColor) {
-		captionLines.put(label, hexColor);
 	}
 
 	public String getName() {
@@ -58,12 +56,12 @@ public class Metaclass {
 	public String getClassName() {
 		return className;
 	}
-
+	
 	public List<Mapping> getMappings() {
 		return mappings;
 	}
-
-	public Map<String, String> getCaptionLines() {
+	
+	public MyHashMapType getCaptionLines() {
 		return captionLines;
 	}
 	
@@ -82,12 +80,12 @@ public class Metaclass {
 	public void setClassName(String className) {
 		this.className = className;
 	}
-
+	
 	public void setMappings(List<Mapping> mappings) {
 		this.mappings = mappings;
 	}
-
-	public void setCaptionLines(HashMap<String, String> captionLines) {
+	
+	public void setCaptionLines(MyHashMapType captionLines) {
 		this.captionLines = captionLines;
 	}
 	

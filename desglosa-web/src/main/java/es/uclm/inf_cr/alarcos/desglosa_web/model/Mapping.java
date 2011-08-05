@@ -1,10 +1,11 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -13,10 +14,10 @@ public class Mapping {
 	private Field column;
 	@XmlElement
 	private Field attribute;
-	@XmlAttribute
+	@XmlElement
 	private Object value;
 	@XmlElement(name="rule")
-	private List<Rule> rules;
+	private List<Rule> rules = new ArrayList<Rule>();
 	
 	public Mapping () {}
 	
@@ -30,28 +31,33 @@ public class Mapping {
 	public Field getColumn() {
 		return column;
 	}
+	
 	public Field getAttribute() {
 		return attribute;
 	}
+	
 	public Object getValue() {
 		return value;
 	}
+	
 	public List<Rule> getRules() {
 		return rules;
 	}
+	
 	public void setColumn(Field column) {
 		this.column = column;
 	}
+	
 	public void setAttribute(Field attribute) {
 		this.attribute = attribute;
 	}
+	
 	public void setValue(Object value) {
 		this.value = value;
 	}
+	
 	public void setRules(List<Rule> rules) {
 		this.rules = rules;
 	}
-	
-	
 	
 }
