@@ -1,10 +1,17 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.control;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javassist.bytecode.stackmap.TypeData.ClassName;
+
+import javax.xml.bind.JAXBException;
+
+import org.springframework.web.context.ContextLoader;
 
 import model.gl.knowledge.GLAntennaBall;
 import model.gl.knowledge.GLFactory;
@@ -19,14 +26,38 @@ import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Market;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
+
 
 public class GLObjectManager {
+	
 	private CompanyDAO companyDao;
 	private FactoryDAO factoryDao;
 	private ProjectDAO projectDao;
 	private MarketDAO marketDao;
+	
+	public City createGLObjects(List entities, String groupBy, String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		City c = new City();
+		
+		// Load selected profile
+		String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + profileName + ".xml";
+		Metaclass metaclass = XMLAgent.unmarshal(path, Metaclass.class);
+		// Create a list of metaclass model objects
+		Class classModel = Class.forName(metaclass.getClassName());
+		List<Class<?>> objects = new ArrayList<Class<?>>();
+		// Create a entity map where <key,value> is <column,value>. We have to access database
+		
+		return c;
+	}
+	
+	public City createGLTowers(List<Project> projects, String groupBy, String profile) {
+		City c = new City();
+		
+		return c;
+	}
 	
 	public City createGLProjects(List<Project> projects, String groupBy) {
 		City c = new City();
