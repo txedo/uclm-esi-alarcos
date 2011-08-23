@@ -143,7 +143,7 @@
 			} else if (compatibility == 0) {
 				$("#mapping_messages").html("<s:text name='warning.type_compatibility'/>");
 			} else { // compatible types
-				if (attributeType == "range") {
+				if (attributeType == "float_range") {
 					var range = true;
 					if (columnType == "string" || columnType == "boolean") range = false;
 					addRangeConfigurationLine(range);
@@ -171,7 +171,7 @@
 			// El valor de los textboxes será del tipo de la columna de la tabla
 			var error = false;
 			var rules = new Array();
-			if (attributeType == "range" || attributeType == "color") {
+			if (attributeType == "float_range" || attributeType == "color") {
 				$("#mapping_cfg").children().each(function(index, element) {
 					// element es cfg_line1
 					var low = $(element).children('#low').val();
@@ -179,22 +179,22 @@
 					var value = null;
 					if (attributeType == "color") {
 						value = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
-					} else if (attributeType == "range") {
+					} else if (attributeType == "float_range") {
 						value = $(element).children('#value').val();
 					}
 					if (columnType == "int") {
 						low = parseInt(low, 10);
 						high = parseInt(high, 10);
-						if (attributeType == "range") value = parseInt(value, 10);
+						if (attributeType == "float_range") value = parseInt(value, 10);
 					} else if (columnType == "float") {
 						low = parseFloat(low, 10);
 						high = parseFloat(high, 10);
-						if (attributeType == "range") value = parseFloat(value, 10);
+						if (attributeType == "float_range") value = parseFloat(value, 10);
 					} else if (columnType == "string") {
 						high = low;
 					}
 					if ((((columnType == "int" || columnType == "float") && attributeType == "color") && (isNaN(low) || isNaN(high)))
-							|| (((columnType == "int" || columnType == "float") && attributeType == "range") && (isNaN(low) || isNaN(high) || isNaN(value)))) {
+							|| (((columnType == "int" || columnType == "float") && attributeType == "float_range") && (isNaN(low) || isNaN(high) || isNaN(value)))) {
 						$("#mapping_messages").html("");
 						$("#mapping_messages").html("<s:text name='error.field_isNaN'/>");
 						error = true;
@@ -304,17 +304,17 @@
 			compatible = 1;
 		} else {
 			if (type1 == "int") {
-				if (type2 == "float" || type2 == "double" || type2 == "range" || type2 == "color") compatible = 1;
+				if (type2 == "float" || type2 == "double" || type2 == "float_range" || type2 == "color") compatible = 1;
 			} else if (type1 == "float") {
-				if (type2 == "double" || type2 == "range" || type2 == "color") compatible = 1;
+				if (type2 == "double" || type2 == "float_range" || type2 == "color") compatible = 1;
 				else if (type2 == "int") compatible = 0;
 			} else if (type1 == "double") {
-				if (type2 == "range" || type2 == "color") compatible = 1;
+				if (type2 == "float_range" || type2 == "color") compatible = 1;
 				else if (type2 == "int" || type1 == "float") compatible = 0;
 			} else if (type1 == "string") {
-				if (type2 == "range" || type2 == "color") compatible = 1;
+				if (type2 == "float_range" || type2 == "color") compatible = 1;
 			} else if (type1 == "boolean") {
-				if (type2 == "range" || type2 == "color") compatible = 1;
+				if (type2 == "float_range" || type2 == "color") compatible = 1;
 			}
 		}
 		return compatible;

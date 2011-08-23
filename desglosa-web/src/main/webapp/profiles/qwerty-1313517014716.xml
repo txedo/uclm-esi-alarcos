@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile class="model.gl.knowledge.GLTower" table="projects">
+    <name>qwerty</name>
+    <description>qwertysadfg</description>
+    <mapping>
+        <column name="id" type="int"/>
+        <attribute name="id" type="int"/>
+    </mapping>
+    <mapping>
+        <column name="fichaje_total" type="float"/>
+        <attribute name="height" type="float"/>
+    </mapping>
+    <mapping>
+        <column name="comentarios" type="float"/>
+        <attribute name="width" type="float"/>
+    </mapping>
+    <mapping>
+        <column name="usabilidad" type="float"/>
+        <attribute name="innerHeight" type="float"/>
+    </mapping>
+    <mapping>
+        <column name="actividad" type="float"/>
+        <attribute name="depth" type="float"/>
+    </mapping>
+    <mapping>
+        <column name="puntos_funcion" type="float"/>
+        <attribute name="color" type="color"/>
+        <rule>
+            <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1</low>
+            <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">2</high>
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">0000ff</value>
+        </rule>
+        <rule>
+            <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">3</low>
+            <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">4</high>
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">00ff66</value>
+        </rule>
+    </mapping>
+    <mapping>
+        <column name="fiabilidad" type="float"/>
+        <attribute name="scale" type="float_range"/>
+        <rule>
+            <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1</low>
+            <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1</high>
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1</value>
+        </rule>
+    </mapping>
+    <caption>
+        <entry color="b9b9eb" label="qwer"/>
+        <entry color="0000ff" label="asdf"/>
+    </caption>
+</profile>

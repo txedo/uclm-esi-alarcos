@@ -171,8 +171,8 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		JSONArray mappingArray = (JSONArray) JSONSerializer.toJSON(jsonMappings);
 		for (int i = 0; i < mappingArray.size(); i++) {
 			JSONObject mappingObject = mappingArray.getJSONObject(i);
-			Field column = new Field(mappingObject.getString("columnName"), mappingObject.getString("columnType"));
-			Field attribute = new Field(mappingObject.getString("attributeName"), mappingObject.getString("attributeType"));
+			Field column = new Field(mappingObject.getString("columnType"), mappingObject.getString("columnName"));
+			Field attribute = new Field(mappingObject.getString("attributeType"), mappingObject.getString("attributeName"));
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.setRootClass(Rule.class);
 			JSONArray jsonRules = mappingObject.getJSONArray("rules");
