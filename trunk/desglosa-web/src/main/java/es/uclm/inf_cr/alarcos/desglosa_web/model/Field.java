@@ -19,6 +19,17 @@ public class Field {
 		this.name = name;
 	}
 	
+	public Class getParameterType() {
+		Class parameterType = null;
+		if (this.type.equals("int")) parameterType = Integer.TYPE;
+		else if (this.type.equals("float")) parameterType = Float.TYPE;
+		else if (this.type.equals("string")) parameterType = String.class;
+		else if (this.type.equals("boolean")) parameterType = Boolean.TYPE;
+		else if (this.type.equals("color")) parameterType = String.class; // hexCode
+		else if (this.type.equals("float_range")) parameterType = Float.TYPE;
+		return parameterType;
+	}
+	
 	public String getType() {
 		return type;
 	}

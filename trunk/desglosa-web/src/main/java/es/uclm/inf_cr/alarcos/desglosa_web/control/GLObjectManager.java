@@ -1,16 +1,17 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.control;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javassist.bytecode.stackmap.TypeData.ClassName;
-
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.lang.WordUtils;
 import org.springframework.web.context.ContextLoader;
 
 import model.gl.knowledge.GLAntennaBall;
@@ -25,10 +26,12 @@ import es.uclm.inf_cr.alarcos.desglosa_web.dao.MarketDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Market;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.MyHashMapEntryType;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
 
 
@@ -39,7 +42,7 @@ public class GLObjectManager {
 	private ProjectDAO projectDao;
 	private MarketDAO marketDao;
 	
-	public City createGLObjects(List entities, String groupBy, String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+	public City createGLObjects(List entities, String groupBy, String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
 		City c = new City();
 		
 		// Load selected profile
@@ -49,14 +52,64 @@ public class GLObjectManager {
 		Class classModel = Class.forName(metaclass.getClassName());
 		List<Class<?>> objects = new ArrayList<Class<?>>();
 		// Create a entity map where <key,value> is <column,value>. We have to access database
+		String entityTable = metaclass.getTableName();
+		
+		if (entities != null && entities.size() > 0) {		
+			for (Object e : entities) {
+				Object glObj = classModel.newInstance();
+				// Do mappings using java reflection
+				for (Mapping mapping : metaclass.getMappings()) {
+					// Build setter method using Java Reflective API
+					String setterName = "set" + WordUtils.capitalize(mapping.getAttribute().getName());
+					// Look for the setter method through all the object hierarchy
+					Class superClass = classModel;
+					Method setterMethod = superClass.getMethod(setterName, mapping.getAttribute().getParameterType());
+					
+					// Build getter method using Java Reflective API
+					String getterPrefix = "get";
+					if (mapping.getAttribute().getType().equals("boolean")) getterPrefix = "is";
+					// Parses one_word_other_word to OneWordOtherWord and adds "get"/"is" prefix
+					String getterSuffix = mapping.getColumn().getName();
+					getterSuffix = getterSuffix.replace("_", " ");
+					getterSuffix = WordUtils.capitalize(getterSuffix);
+					getterSuffix = getterSuffix.replace(" ", "");
+					String getterName = getterPrefix + getterSuffix;
+					Method getterMethod = e.getClass().getMethod(getterName, null);
+					
+					// Call setter using getter's value as parameter
+					Object value = getterMethod.invoke(e, null);
+					if (value != null) {
+						setterMethod.invoke(classModel.cast(glObj), value);
+					} else {
+						// El valor en la base de datos es null y va a lanzar IllegalArgumentException
+					}
+				}
+			}
+			
+			// Normalize
+			
+			// Configure caption
+			if (metaclass.getCaptionLines().getEntry().size() > 0) {
+				Map<String,String> captionLines = new HashMap<String,String>();
+				for (MyHashMapEntryType mhmet : metaclass.getCaptionLines().getEntry()) {
+					captionLines.put(mhmet.getKey(), mhmet.getValue());
+				}
+				c.setCaptionLines(captionLines);
+			}
+			
+			// Configure neighborhoods
+			configureNeighborhoods(c, entities, objects, groupBy);
+			
+			// Finally, neighborhoods positions are calculated
+			c.placeNeighborhoods();
+		}
 		
 		return c;
 	}
 	
-	public City createGLTowers(List<Project> projects, String groupBy, String profile) {
-		City c = new City();
-		
-		return c;
+	private void configureNeighborhoods (City city, List entities, List glObjects, String groupBy) {
+		List<GLObject> flats;
+		// entities and objects lists are correlative
 	}
 	
 	public City createGLProjects(List<Project> projects, String groupBy) {

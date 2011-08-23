@@ -44,6 +44,17 @@ public class Project {
 	private boolean delayed;
 	private String profileName;
 	private Profile profile;
+	private Float fiabilidad;
+	private Float usabilidad;
+	private Float eficiencia;
+	private Float mantenibilidad;
+	private Float portabilidad;
+	private Float lineasDeCodigo;
+	private Float comentarios;
+	private Float puntosFuncion;
+	private Float fichajeCodigo;
+	private Float fichajeTotal;
+	private Float actividad;
 	
 	public Project(){}
 
@@ -118,6 +129,61 @@ public class Project {
 	public Profile getProfile() {
 		return profile;
 	}
+	
+	@Column(name="fiabilidad", nullable=true)
+	public Float getFiabilidad() {
+		return fiabilidad;
+	}
+
+	@Column(name="usabilidad", nullable=true)
+	public Float getUsabilidad() {
+		return usabilidad;
+	}
+
+	@Column(name="eficiencia", nullable=true)
+	public Float getEficiencia() {
+		return eficiencia;
+	}
+
+	@Column(name="mantenibilidad", nullable=true)
+	public Float getMantenibilidad() {
+		return mantenibilidad;
+	}
+
+	@Column(name="portabilidad", nullable=true)
+	public Float getPortabilidad() {
+		return portabilidad;
+	}
+
+	@Column(name="lineas_de_codigo", nullable=true)
+	public Float getLineasDeCodigo() {
+		return lineasDeCodigo;
+	}
+
+	@Column(name="comentarios", nullable=true)
+	public Float getComentarios() {
+		return comentarios;
+	}
+
+	@Column(name="puntos_funcion", nullable=true)
+	public Float getPuntosFuncion() {
+		return puntosFuncion;
+	}
+
+	@Column(name="fichaje_codigo", nullable=true)
+	public Float getFichajeCodigo() {
+		return fichajeCodigo;
+	}
+
+	@Column(name="fichaje_total", nullable=true)
+	public Float getFichajeTotal() {
+		return fichajeTotal;
+	}
+
+	@Column(name="actividad", nullable=true)
+	public Float getActividad() {
+		return actividad;
+	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -173,6 +239,50 @@ public class Project {
 
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+	}
+
+	public void setFiabilidad(Float fiabilidad) {
+		this.fiabilidad = fiabilidad;
+	}
+
+	public void setUsabilidad(Float usabilidad) {
+		this.usabilidad = usabilidad;
+	}
+
+	public void setEficiencia(Float eficiencia) {
+		this.eficiencia = eficiencia;
+	}
+
+	public void setMantenibilidad(Float mantenibilidad) {
+		this.mantenibilidad = mantenibilidad;
+	}
+
+	public void setPortabilidad(Float portabilidad) {
+		this.portabilidad = portabilidad;
+	}
+
+	public void setLineasDeCodigo(Float lineasDeCodigo) {
+		this.lineasDeCodigo = lineasDeCodigo;
+	}
+
+	public void setComentarios(Float comentarios) {
+		this.comentarios = comentarios;
+	}
+
+	public void setPuntosFuncion(Float puntosFuncion) {
+		this.puntosFuncion = puntosFuncion;
+	}
+
+	public void setFichajeCodigo(Float fichajeCodigo) {
+		this.fichajeCodigo = fichajeCodigo;
+	}
+
+	public void setFichajeTotal(Float fichajeTotal) {
+		this.fichajeTotal = fichajeTotal;
+	}
+
+	public void setActividad(Float actividad) {
+		this.actividad = actividad;
 	}
 
 	@Override

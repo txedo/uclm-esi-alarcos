@@ -1,6 +1,7 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -298,8 +299,40 @@ public class VisualizationAction extends ActionSupport {
 				return ERROR;
 			}
 		}
-		completeProjectData();
-		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
+//		completeProjectData();
+//		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
+		if (generateGLObjects) {
+			try {
+				city = glObjectManager.createGLObjects(projects, groupBy, "fff-1312531767462");
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return SUCCESS;
 	}
 	
@@ -312,8 +345,40 @@ public class VisualizationAction extends ActionSupport {
 			queryParams.put("id", id);
 			projects = projectDao.findByNamedQuery("findProjectsByCompanyId", queryParams);
 		}
-		completeProjectData();
-		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
+//		completeProjectData();
+//		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
+		if (generateGLObjects) {
+			try {
+				city = glObjectManager.createGLObjects(projects, groupBy, "qwerty-1313517014716");
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return SUCCESS;
 	}
 	
@@ -326,8 +391,40 @@ public class VisualizationAction extends ActionSupport {
 			queryParams.put("id", id);
 			projects = projectDao.findByNamedQuery("findProjectsByFactoryId", queryParams);
 		}
-		completeProjectData();
-		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
+//		completeProjectData();
+//		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
+		if (generateGLObjects) {
+			try {
+				city = glObjectManager.createGLObjects(projects, groupBy, "fff-1312531767462");
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return SUCCESS;
 	}
 	
