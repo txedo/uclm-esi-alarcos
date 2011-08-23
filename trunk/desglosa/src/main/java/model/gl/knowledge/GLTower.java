@@ -19,13 +19,13 @@ public class GLTower extends GLObject3D {
 	 * La base se encuentra en el plano ZX, será cuadrada y tendrá de lado el valor de la variable width.
 	 * La altura se extiende a lo largo del eje Y y viene dada por la variable height
 	 */
-	@GLDimension(name="width",type="float")
+	@GLDimension
 	private float width;
-	@GLDimension(name="depth",type="float")
+	@GLDimension
 	private float depth;
-	@GLDimension(name="height",type="float")
+	@GLDimension
 	private float height;
-	@GLDimension(name="innerHeight",type="float")
+	@GLDimension
 	private float innerHeight;
 	private float edgeWidth;
 	private final float ALPHA = 0.25f;

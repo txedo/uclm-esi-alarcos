@@ -31,7 +31,9 @@ public class AnnotationParser {
 			if (field.isAnnotationPresent(GLDimension.class)) {
 				GLDimension dimension = field.getAnnotation(GLDimension.class);
 				String name = dimension.name();
+				if (name.equals("")) name = field.getName();
 				String type = dimension.type();
+				if (type.equals("")) type = field.getType().getName();
 				attributes.put(name, type);
 			}
 		}

@@ -19,7 +19,7 @@ public abstract class GLObject {
 	protected float positionY;
 	@GLDimension(name="color",type="color")
 	protected Color color;
-	@GLDimension(name="scale",type="range")
+	@GLDimension(name="scale",type="float_range")
 	protected float scale;
 	
 	public GLObject () {

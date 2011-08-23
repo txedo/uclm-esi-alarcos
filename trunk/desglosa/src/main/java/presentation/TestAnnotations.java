@@ -10,10 +10,10 @@ import util.AnnotationParser;
 
 public class TestAnnotations {
 	public static void main (String[] args) {
-//		processClass(GLAntennaBall.class);
-//		processClass(GLTower.class);
+		processClass(GLAntennaBall.class);
+		processClass(GLTower.class);
 //		processClass(GLFactory.class);
-		processClass("model.gl.knowledge.GLAntennaBall");
+//		processClass("model.gl.knowledge.GLAntennaBall");
 //		processClass(GLTower.class);
 //		processClass(GLFactory.class);
 	}
