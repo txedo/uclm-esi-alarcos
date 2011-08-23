@@ -50,7 +50,15 @@ public class Market {
 	public void setColor(String color) {
 		this.color = color;
 	}
-	
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		boolean equals = false;
+		if (obj instanceof Market) {
+			Market m = (Market)obj;
+			if (this.id == m.getId() && this.name.equals(m.getName()) && this.color.equals(m.getColor())) equals = true;
+		}
+		return equals;
+	}
 	
 }

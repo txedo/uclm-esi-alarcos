@@ -40,7 +40,7 @@ public class Neighborhood extends City {
 	}
 	
 	protected Vector2f doLayout(Vector2f point) {
-		// Once we know how many cols and rows it will have, we can calculate a position for each flatç
+		// Once we know how many cols and rows it will have, we can calculate a position for each flat
 		float x = point.getX();
 		float y = point.getY();
 		GLObject obj = null;

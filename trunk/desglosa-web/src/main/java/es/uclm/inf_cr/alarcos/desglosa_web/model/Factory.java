@@ -14,6 +14,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
+
 @Entity
 @Table(name="factories")
 @NamedQueries ({
@@ -32,6 +34,7 @@ public class Factory {
 	private int employees;
 	private Address address;
 	private Location location;
+	private int numberOfProjects;
 	
 	public Factory() {}
 
@@ -83,6 +86,11 @@ public class Factory {
 	public Location getLocation() {
 		return location;
 	}
+	
+	@Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f where p.id = sp.project_id and sp.factory_id = id)")
+	public int getNumberOfProjects() {
+		return numberOfProjects;
+	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -118,6 +126,10 @@ public class Factory {
 	
 	public void setLocation(Location location){
 		this.location = location;
+	}
+
+	public void setNumberOfProjects(int numberOfProjects) {
+		this.numberOfProjects = numberOfProjects;
 	}
 
 	@Override
