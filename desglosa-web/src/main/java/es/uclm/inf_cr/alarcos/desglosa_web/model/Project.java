@@ -17,6 +17,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
+
 @Entity
 @Table(name="projects")
 @NamedQueries ({
@@ -51,9 +53,11 @@ public class Project {
 	private Float portabilidad;
 	private Float lineasDeCodigo;
 	private Float comentarios;
+	private Float ratioComentariosLineasDeCodigo;
 	private Float puntosFuncion;
 	private Float fichajeCodigo;
 	private Float fichajeTotal;
+	private Float ratioFichaje;
 	private Float actividad;
 	
 	public Project(){}
@@ -62,7 +66,7 @@ public class Project {
 	public int getId() {
 		return id;
 	}
-
+	
 	@Column(name="name")
 	public String getName() {
 		return name;
@@ -164,6 +168,11 @@ public class Project {
 	public Float getComentarios() {
 		return comentarios;
 	}
+	
+	@Formula("comentarios / lineas_de_codigo")
+	public Float getRatioComentariosLineasDeCodigo() {
+		return ratioComentariosLineasDeCodigo;
+	}
 
 	@Column(name="puntos_funcion", nullable=true)
 	public Float getPuntosFuncion() {
@@ -179,7 +188,12 @@ public class Project {
 	public Float getFichajeTotal() {
 		return fichajeTotal;
 	}
-
+	
+	@Formula("fichaje_codigo / fichaje_total")
+	public Float getRatioFichaje() {
+		return ratioFichaje;
+	}
+	
 	@Column(name="actividad", nullable=true)
 	public Float getActividad() {
 		return actividad;
@@ -269,6 +283,11 @@ public class Project {
 		this.comentarios = comentarios;
 	}
 
+	public void setRatioComentariosLineasDeCodigo(
+			Float ratioComentariosLineasDeCodigo) {
+		this.ratioComentariosLineasDeCodigo = ratioComentariosLineasDeCodigo;
+	}
+
 	public void setPuntosFuncion(Float puntosFuncion) {
 		this.puntosFuncion = puntosFuncion;
 	}
@@ -279,6 +298,10 @@ public class Project {
 
 	public void setFichajeTotal(Float fichajeTotal) {
 		this.fichajeTotal = fichajeTotal;
+	}
+	
+	public void setRatioFichaje(Float ratioFichaje) {
+		this.ratioFichaje = ratioFichaje;
 	}
 
 	public void setActividad(Float actividad) {

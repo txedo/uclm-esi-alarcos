@@ -24,6 +24,8 @@ import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.MarketDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.EntityNotSupportedException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.GroupByOperationNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
@@ -42,7 +44,7 @@ public class GLObjectManager {
 	private ProjectDAO projectDao;
 	private MarketDAO marketDao;
 	
-	public City createGLObjects(List entities, String groupBy, String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
+	public City createGLObjects(List entities, String groupBy, String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, EntityNotSupportedException, GroupByOperationNotSupportedException {
 		City c = new City();
 		
 		// Load selected profile
@@ -54,7 +56,10 @@ public class GLObjectManager {
 		// Create a entity map where <key,value> is <column,value>. We have to access database
 		String entityTable = metaclass.getTableName();
 		
-		if (entities != null && entities.size() > 0) {		
+		if (entities != null && entities.size() > 0) {
+			// Create a list (city) of lists (neighborhoods) from entities
+			List neighborhoods = groupEntitiesBy(entities.get(0).getClass(), entities, groupBy);
+			// Iterate over each list creating GLObjects while creating GLNeighborhoods and GLCity aswell
 			for (Object e : entities) {
 				Object glObj = classModel.newInstance();
 				// Do mappings using java reflection
@@ -98,7 +103,6 @@ public class GLObjectManager {
 			}
 			
 			// Configure neighborhoods
-			configureNeighborhoods(c, entities, objects, groupBy);
 			
 			// Finally, neighborhoods positions are calculated
 			c.placeNeighborhoods();
@@ -107,11 +111,35 @@ public class GLObjectManager {
 		return c;
 	}
 	
-	private void configureNeighborhoods (City city, List entities, List glObjects, String groupBy) {
-		List<GLObject> flats;
-		// entities and objects lists are correlative
+	private List<?> groupEntitiesBy(Class<?> clazz, List entities, String groupBy) throws EntityNotSupportedException, GroupByOperationNotSupportedException {
+		String className = clazz.getSimpleName();
+		List<?> neighborhoods = new ArrayList();
+		if (className.equals("Company")) {
+			
+		} else if (className.equals("Factory")) {
+			
+		} else if (className.equals("Project")) {
+			neighborhoods = groupProjectsBy(entities, groupBy);
+		} else if (className.equals("Subproject")) {
+			
+		} else {
+			throw new EntityNotSupportedException();
+		}
+		return neighborhoods;
 	}
 	
+	private List<?> groupProjectsBy(List entities, String groupBy) throws GroupByOperationNotSupportedException {
+		List<?> neighborhoods = new ArrayList();
+		if (groupBy.equals("company")) {
+
+		} else if (groupBy.equals("market")) {
+			
+		} else if (groupBy.equals("factory")) {
+			
+		} else throw new GroupByOperationNotSupportedException();
+		return neighborhoods;
+	}
+
 	public City createGLProjects(List<Project> projects, String groupBy) {
 		City c = new City();
 		List<GLAntennaBall> glProjects = new ArrayList<GLAntennaBall>();
@@ -175,8 +203,8 @@ public class GLObjectManager {
 					int projectIndex = 0;
 					flats = new ArrayList<GLObject>();
 					for (Project p : projects) {
-						GLAntennaBall gla = glProjects.get(projectIndex++);
-						if (gla.getColor().equals(new Color(m.getColor()))) {
+						if (p.getMarket().equals(m)) {
+							GLAntennaBall gla = glProjects.get(projectIndex++);
 							flats.add(gla);
 						}
 					}

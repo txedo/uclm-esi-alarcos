@@ -305,21 +305,6 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`groups_roles` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `desglosadb`.`charts`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `desglosadb`.`charts` ;
-
-CREATE  TABLE IF NOT EXISTS `desglosadb`.`charts` (
-  `id` INT NOT NULL ,
-  `name` VARCHAR(45) NULL ,
-  `description` VARCHAR(255) NULL ,
-  `type` VARCHAR(45) NULL ,
-  `max_cols` INT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
 grant ALL on TABLE `desglosadb`.`companies` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`factories` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`addresses` to desglosaadmin;
@@ -333,7 +318,6 @@ grant ALL on TABLE `desglosadb`.`groups_roles` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`roles` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`users_groups` to desglosaadmin;
 grant ALL on TABLE `desglosadb`.`markets` to desglosaadmin;
-grant ALL on TABLE `desglosadb`.`charts` to desglosaadmin;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -500,14 +484,5 @@ INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (2, 4);
 INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (3, 3);
 INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (3, 4);
 INSERT INTO `desglosadb`.`groups_roles` (`group_id`, `role_id`) VALUES (4, 4);
-
-COMMIT;
-
--- -----------------------------------------------------
--- Data for table `desglosadb`.`charts`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `desglosadb`;
-INSERT INTO `desglosadb`.`charts` (`id`, `name`, `description`, `type`, `max_cols`) VALUES (1, 'towers', NULL, '3D', 5);
 
 COMMIT;

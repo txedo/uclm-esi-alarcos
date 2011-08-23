@@ -25,7 +25,9 @@ import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.SubprojectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ChartNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.EntityNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.GroupByOperationNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.MeasureNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException;
@@ -331,6 +333,12 @@ public class VisualizationAction extends ActionSupport {
 			} catch (InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (EntityNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (GroupByOperationNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		return SUCCESS;
@@ -377,6 +385,12 @@ public class VisualizationAction extends ActionSupport {
 			} catch (InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (EntityNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (GroupByOperationNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		return SUCCESS;
@@ -421,6 +435,12 @@ public class VisualizationAction extends ActionSupport {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (EntityNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (GroupByOperationNotSupportedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
