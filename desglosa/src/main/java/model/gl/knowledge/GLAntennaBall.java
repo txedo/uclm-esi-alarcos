@@ -15,18 +15,18 @@ public class GLAntennaBall extends GLObject3D {
 	private int[] textures;
 	
 	private int subdivisions;
-	@GLDimension(name="label",type="string")
+	@GLDimension(type="string")
 	private String label;
-	@GLDimension(name="parentBallRadius",type="float")
+	@GLDimension
 	private float parentBallRadius;
-	@GLDimension(name="progressionMark",type="boolean")
+	@GLDimension
 	private boolean progressionMark;
 	private float childBallRadius;
 	private Color leftChildBallColor;
 	private Color rightChildBallColor;
-	@GLDimension(name="leftChildBallValue",type="int")
+	@GLDimension
 	private int leftChildBallValue;
-	@GLDimension(name="rightChildBallValue",type="int")
+	@GLDimension
 	private int rightChildBallValue;
 	private final float ANTENNA_WIDTH = 3.0f;
 	private final float ANTENNA_ANGLE = 45.0f;
