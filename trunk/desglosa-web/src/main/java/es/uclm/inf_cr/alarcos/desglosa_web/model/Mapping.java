@@ -11,9 +11,9 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Mapping {
 	@XmlElement
-	private Field column;
+	private Field entityAttr;
 	@XmlElement
-	private Field attribute;
+	private Field modelAttr;
 	@XmlElement
 	private Object value;
 	@XmlElement(name="rule")
@@ -21,19 +21,19 @@ public class Mapping {
 	
 	public Mapping () {}
 	
-	public Mapping(Field column, Field attribute, Object value, List<Rule> rules) {
-		this.column = column;
-		this.attribute = attribute;
+	public Mapping(Field entityAttr, Field modelAttr, Object value, List<Rule> rules) {
+		this.entityAttr = entityAttr;
+		this.modelAttr = modelAttr;
 		this.value = value;
 		this.rules = rules;
 	}
 
-	public Field getColumn() {
-		return column;
+	public Field getEntityAttr() {
+		return entityAttr;
 	}
 	
-	public Field getAttribute() {
-		return attribute;
+	public Field getModelAttr() {
+		return modelAttr;
 	}
 	
 	public Object getValue() {
@@ -44,12 +44,12 @@ public class Mapping {
 		return rules;
 	}
 	
-	public void setColumn(Field column) {
-		this.column = column;
+	public void setEntityAttr(Field entityAttr) {
+		this.entityAttr = entityAttr;
 	}
 	
-	public void setAttribute(Field attribute) {
-		this.attribute = attribute;
+	public void setModelAttr(Field modelAttr) {
+		this.modelAttr = modelAttr;
 	}
 	
 	public void setValue(Object value) {

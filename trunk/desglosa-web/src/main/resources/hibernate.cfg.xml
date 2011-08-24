@@ -14,7 +14,5 @@
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Project"/>
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Market"/>
         <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject"/>
-        <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Measure"/>
-        <mapping class="es.uclm.inf_cr.alarcos.desglosa_web.model.Chart"/>
     </session-factory>
 </hibernate-configuration>

@@ -22,11 +22,11 @@
 	var mappings = new Array();
 	var captionLines = new Array();
 	
-	function Mapping (colName, colType, attrName, attrType, rules) {
-		this.columnName = colName;
-		this.columnType = colType;
-		this.attributeName = attrName;
-		this.attributeType = attrType;
+	function Mapping (entityAttrName, entityAttrType, modelAttrName, modelAttrType, rules) {
+		this.entityAttrName = entityAttrName;
+		this.entityAttrType = entityAttrType;
+		this.modelAttrName = modelAttrName;
+		this.modelAttrType = modelAttrType;
 		this.rules = rules;
 	}
 	
@@ -45,86 +45,86 @@
 		$("option:first", element).attr('disabled','disabled');
 	});
 	
-	$.subscribe('reloadTableColumns', function() {
+	$.subscribe('reloadEntityAttributes', function() {
 		var entity =  $("#entitySelect").val();
 		mappings = new Array();
-		$.getJSON("/desglosa-web/json_p_loadTableColumns.action",
+		$.getJSON("/desglosa-web/json_p_loadEntityAttributes.action",
 				{ entity: entity },
 				function (data, status) {
 					if (status == "success") {
 						var htmlText = "";
-						columnArray = new Array();
-						$("#entityColumnsDiv").html("");
-						$.each(data.tableColumns, function (key, value) {
-							columnArray[key] = value;
-							htmlText += "<a id='col_" + key + "' class='myButton' onclick='javascript:selectColumn(this)' style='display: block;'>" + key + " (" + value + ")</a>";
+						entityAttributesArray = new Array();
+						$("#entityAttributesDiv").html("");
+						$.each(data.entityAttributes, function (key, value) {
+							entityAttributesArray[value.name] = value.type;
+							htmlText += "<a id='entityAttr_" + value.name + "' class='myButton' onclick='javascript:selectEntityAttribute(this)' style='display: block;' title='" + value.description + "'>" + value.name + " (" + value.type + ")</a>";
 						});
-						$("#entityColumnsDiv").html(htmlText);
+						$("#entityAttributesDiv").html(htmlText);
 					}
-					else alert('An error has occurred while trying to retrieve factory information: ' + status);
+					else alert('An error has occurred while trying to retrieve entity information: ' + status);
 		});
 	});
 	
-	$.subscribe('reloadClassAttributes', function() {
+	$.subscribe('reloadModelAttributes', function() {
 		var model =  $("#modelSelect").val();
 		mappings = new Array();
-		$.getJSON("/desglosa-web/json_p_loadClassAttributes.action",
+		$.getJSON("/desglosa-web/json_p_loadModelAttributes.action",
 				{ model: model },
 				function (data, status) {
 					if (status == "success") {
 						var htmlText = "";
-						attributeArray = new Array();
-						$("#classAttributesDiv").html("");
-						$.each(data.classAttributes, function (key, value) {
-							attributeArray[key] = value;
-							htmlText += "<a id='attr_" + key + "' class='myButton' onclick='javascript:selectAttribute(this)' style='display: block;'>" + key + " (" + value + ")</a>";
+						modelAttributesArray = new Array();
+						$("#modelAttributesDiv").html("");
+						$.each(data.modelAttributes, function (key, value) {
+							modelAttributesArray[key] = value;
+							htmlText += "<a id='modelAttr_" + key + "' class='myButton' onclick='javascript:selectModelAttribute(this)' style='display: block;'>" + key + " (" + value + ")</a>";
 						});
-						$("#classAttributesDiv").html(htmlText);
+						$("#modelAttributesDiv").html(htmlText);
 					}
-					else alert('An error has occurred while trying to retrieve factory information: ' + status);
+					else alert('An error has occurred while trying to retrieve model information: ' + status);
 		});
 	});
 	
-	var selectedColumn = null;
-	var columnArray = new Array();
-	var selectedAttribute = null;
-	var attributeArray = new Array();
+	var selectedEntityAttribute = null;
+	var entityAttributesArray = new Array();
+	var selectedModelAttribute = null;
+	var modelAttributesArray = new Array();
 	
-	function selectColumn(element) {
+	function selectEntityAttribute(element) {
 		// if already-selected element is not the newly-selected
-		if (selectedColumn != element) {
+		if (selectedEntityAttribute != element) {
 			// check if there was a selected element and pop it
-			if (selectedColumn != null) {
-				selectedColumn.className = "myButton"
-				selectedColumn = null;
+			if (selectedEntityAttribute != null) {
+				selectedEntityAttribute.className = "myButton"
+				selectedEntityAttribute = null;
 			}
 			// push the new element
-			selectedColumn = element;
+			selectedEntityAttribute = element;
 			element.className = "myPressedButton";
 			checkMapping();
 		} else {
 			// if already-selected element and newly-selected are the same button, pop it
-			selectedColumn.className = "myButton";
-			selectedColumn = null;
+			selectedEntityAttribute.className = "myButton";
+			selectedEntityAttribute = null;
 		}
 	}
 	
-	function selectAttribute(element) {
+	function selectModelAttribute(element) {
 		// if already-selected element is not the newly-selected
-		if (selectedAttribute != element) {
+		if (selectedModelAttribute != element) {
 			// check if there was a selected element and pop it
-			if (selectedAttribute != null) {
-				selectedAttribute.className = "myButton"
-				selectedAttribute = null;
+			if (selectedModelAttribute != null) {
+				selectedModelAttribute.className = "myButton"
+				selectedModelAttribute = null;
 			}
 			// push the new element
-			selectedAttribute = element;
+			selectedModelAttribute = element;
 			element.className = "myPressedButton";
 			checkMapping();
 		} else {
 			// if already-selected element and newly-selected are the same button, pop it
-			selectedAttribute.className = "myButton";
-			selectedAttribute = null;
+			selectedModelAttribute.className = "myButton";
+			selectedModelAttribute = null;
 		}
 	}
 	
@@ -132,27 +132,30 @@
 		$("#mapping_messages").html("");
 		$("#mapping_cfg").html("");
 		$("#mapping_control").html("");
-		if (selectedColumn != null && selectedAttribute != null) {
-			var column = (selectedColumn.id).replace("col_", "");
-			var columnType = columnArray[column];
-			var attribute = (selectedAttribute.id).replace("attr_", "");
-			var attributeType = attributeArray[attribute];
-			var compatibility = checkTypeCompatibility(columnType, attributeType);
+		if (selectedEntityAttribute != null && selectedModelAttribute != null) {
+			var entityAttrName = (selectedEntityAttribute.id).replace("entityAttr_", "");
+			var entityAttrType = entityAttributesArray[entityAttrName];
+			var modelAttrName = (selectedModelAttribute.id).replace("modelAttr_", "");
+			var modelAttrType = modelAttributesArray[modelAttrName];
+			var compatibility = checkTypeCompatibility(entityAttrType, modelAttrType);
 			if (compatibility == -1) {
 				$("#mapping_messages").html("<s:text name='error.type_compatibility'/>");
 			} else if (compatibility == 0) {
 				$("#mapping_messages").html("<s:text name='warning.type_compatibility'/>");
 			} else { // compatible types
-				if (attributeType == "float_range") {
+				if (modelAttrType == "float_range") {
 					var range = true;
-					if (columnType == "string" || columnType == "boolean") range = false;
+					if (entityAttrType == "string" || entityAttrType == "boolean") range = false;
 					addRangeConfigurationLine(range);
 					$("#mapping_control").append("<a href='javascript:addRangeConfigurationLine(" + range + ")'>+</a>");
-				} else if (attributeType == "color") {
-					var range = true;
-					if (columnType == "string" || columnType == "boolean") range = false;
-					addColorConfigurationLine(range);
-					$("#mapping_control").append("<a href='javascript:addColorConfigurationLine(" + range + ")'>+</a>");
+				} else if (modelAttrType == "color") {
+					// if entity attr type is color in hex format, it is a direct mapping
+					if (entityAttrType != "hexcolor") {
+						var range = true;
+						if (entityAttrType == "string" || entityAttrType == "boolean") range = false;
+						addColorConfigurationLine(range);
+						$("#mapping_control").append("<a href='javascript:addColorConfigurationLine(" + range + ")'>+</a>");	
+					}
 				}
 				// Si es mapeo directo no hay que ahcer nada más
 				$("#mapping_control").append("<a href='javascript:saveMapping()'><s:text name='label.save_mapping'/></a>");
@@ -161,40 +164,41 @@
 	}
 	
 	function saveMapping() {
-		if (selectedColumn != null && selectedAttribute != null) {
-			var columnName = (selectedColumn.id).replace("col_", "");
-			var columnType = columnArray[columnName];
-			var attributeName = (selectedAttribute.id).replace("attr_", "");
-			var attributeType = attributeArray[attributeName];
+		if (selectedEntityAttribute != null && selectedModelAttribute != null) {
+			var entityAttrName = (selectedEntityAttribute.id).replace("entityAttr_", "");
+			var entityAttrType = entityAttributesArray[entityAttrName];
+			var modelAttrName = (selectedModelAttribute.id).replace("modelAttr_", "");
+			var modelAttrType = modelAttributesArray[modelAttrName];
 			// Recorrer todas las lineas para comprobar que estan bien configuradas
 			// Si es asociacion directa no habrá ninguna línea que comprobar, si es range o color, puede haber varias
 			// El valor de los textboxes será del tipo de la columna de la tabla
 			var error = false;
 			var rules = new Array();
-			if (attributeType == "float_range" || attributeType == "color") {
+			// if entityAttrType == "hexcolor" then direct mapping because it is in hex format
+			if (entityAttrType != "hexcolor" && (modelAttrType == "float_range" || modelAttrType == "color")) {
 				$("#mapping_cfg").children().each(function(index, element) {
 					// element es cfg_line1
 					var low = $(element).children('#low').val();
 					var high = $(element).children('#high').val();
 					var value = null;
-					if (attributeType == "color") {
+					if (modelAttrType == "color") {
 						value = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
-					} else if (attributeType == "float_range") {
+					} else if (modelAttrType == "float_range") {
 						value = $(element).children('#value').val();
 					}
-					if (columnType == "int") {
+					if (entityAttrType == "int") {
 						low = parseInt(low, 10);
 						high = parseInt(high, 10);
-						if (attributeType == "float_range") value = parseInt(value, 10);
-					} else if (columnType == "float") {
+						if (modelAttrType == "float_range") value = parseInt(value, 10);
+					} else if (entityAttrType == "float") {
 						low = parseFloat(low, 10);
 						high = parseFloat(high, 10);
-						if (attributeType == "float_range") value = parseFloat(value, 10);
-					} else if (columnType == "string") {
+						if (modelAttrType == "float_range") value = parseFloat(value, 10);
+					} else if (entityAttrType == "string") {
 						high = low;
 					}
-					if ((((columnType == "int" || columnType == "float") && attributeType == "color") && (isNaN(low) || isNaN(high)))
-							|| (((columnType == "int" || columnType == "float") && attributeType == "float_range") && (isNaN(low) || isNaN(high) || isNaN(value)))) {
+					if ((((entityAttrType == "int" || entityAttrType == "float") && modelAttrType == "color") && (isNaN(low) || isNaN(high)))
+							|| (((entityAttrType == "int" || entityAttrType == "float") && modelAttrType == "float_range") && (isNaN(low) || isNaN(high) || isNaN(value)))) {
 						$("#mapping_messages").html("");
 						$("#mapping_messages").html("<s:text name='error.field_isNaN'/>");
 						error = true;
@@ -210,14 +214,14 @@
 			if (!error) {
 				$("#mapping_messages").html("");
 				// Si no hay error, establecemos al asociacion con sus reglas
-				var mapping = new Mapping(columnName, columnType, attributeName, attributeType, rules);
+				var mapping = new Mapping(entityAttrName, entityAttrType, modelAttrName, modelAttrType, rules);
 				mappings.push(mapping);
 				// Ocultar los botones correspondientes a la columna de la tabla y el atributo de la clase
-				$("#"+selectedColumn.id).css('display','none');
-				$("#"+selectedAttribute.id).css('display','none');
+				$("#"+selectedEntityAttribute.id).css('display','none');
+				$("#"+selectedModelAttribute.id).css('display','none');
 				// Resetear selectedColumn y selectedAttribute
-				selectedColumn = null;
-				selectedAttribute = null;
+				selectedEntityAttribute = null;
+				selectedModelAttribute = null;
 				// Resetear el contador de lineas
 				lineCounter = 0;
 				// Resetear mapping_cfg y mapping_control
@@ -225,8 +229,8 @@
 				$("#mapping_control").html("");
 				// Feedback en mapping_added
 				$("#mapping_added").append("<div class='mapping_line' style='display: block;'>");
-				$(".mapping_line:last").append("<div class='col_field' style='float: left;'>" + columnName + "</div>");
-				$(".mapping_line:last").append("<div class='attr_field' style='float: left;'>" + attributeName + "</div>");
+				$(".mapping_line:last").append("<div class='entityAttr_field' style='float: left;'>" + entityAttrName + "</div>");
+				$(".mapping_line:last").append("<div class='modelAttr_field' style='float: left;'>" + modelAttrName + "</div>");
 				if (rules.length > 0) {
 					$(".mapping_line:last").append("<div class='mapping_rules' style='float: left;'>");
 					$.each(rules, function(index, element) {
@@ -303,7 +307,8 @@
 		if (type1 == type2) {
 			compatible = 1;
 		} else {
-			if (type1 == "int") {
+			if (type1 == "hexcolor" && type2 == "color") compatible = 1;
+			else if (type1 == "int") {
 				if (type2 == "float" || type2 == "double" || type2 == "float_range" || type2 == "color") compatible = 1;
 			} else if (type1 == "float") {
 				if (type2 == "double" || type2 == "float_range" || type2 == "color") compatible = 1;
@@ -450,8 +455,8 @@
 							name="entity"
 							list="entities"
 							onAlwaysTopics="disableHeader"
-							onChangeTopics="reloadTableColumns"/>
-				<div id="entityColumnsDiv"></div>
+							onChangeTopics="reloadEntityAttributes"/>
+				<div id="entityAttributesDiv"></div>
 			</div>
 			
 			<div id="rightPane" style="float:left;">
@@ -463,8 +468,8 @@
 							name="model"
 							list="models"
 							onAlwaysTopics="disableHeader"
-							onChangeTopics="reloadClassAttributes"/>
-				<div id="classAttributesDiv"></div>
+							onChangeTopics="reloadModelAttributes"/>
+				<div id="modelAttributesDiv"></div>
 			</div>
 		
 			<div style="clear:both;"></div>

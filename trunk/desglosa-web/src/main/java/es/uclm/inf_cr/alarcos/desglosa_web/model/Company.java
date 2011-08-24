@@ -11,11 +11,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
+
 @Entity
 @Table(name="companies")
 public class Company {
+	@Property
 	private int id;
+	@Property(type="string")
 	private String name;
+	@Property(type="string")
 	private String information;
 	private Director director;
 	

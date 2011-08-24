@@ -21,35 +21,31 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Field;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
-import es.uclm.inf_cr.alarcos.desglosa_web.util.DataSourceUtil;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.MyHashMapType;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.PropertyAnnotationParser;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
 
 public class ProfileAction extends ActionSupport implements GenericActionInterface {
-	private DataSourceUtil dataSourceUtil;
 	private String entity;
 	private String model;
 	private String profileName;
 	private String profileDescription;
 	private String jsonMappings;
 	private String jsonCaptionLines;
-	private Map<String, String> tableColumns;
-	private Map<String, String> classAttributes;
+	private List<PropertyWrapper> entityAttributes;
+	private Map<String, String> modelAttributes;
 	private Map<String, String> entities = new HashMap<String,String>() {{
-		put("companies", getText("label.company"));
-		put("factories", getText("label.factory"));
-		put("projects", getText("label.project"));
-		put("subprojects", getText("label.subproject"));
+		put("es.uclm.inf_cr.alarcos.desglosa_web.model.Company", getText("label.company"));
+		put("es.uclm.inf_cr.alarcos.desglosa_web.model.Factory", getText("label.factory"));
+		put("es.uclm.inf_cr.alarcos.desglosa_web.model.Project", getText("label.project"));
+		put("es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject", getText("label.subproject"));
 	}};
 	private Map<String, String> models = new HashMap<String,String>() {{
 		put("model.gl.knowledge.GLTower", getText("label.model.towers"));
 		put("model.gl.knowledge.GLAntennaBall", getText("label.model.projects"));
 		put("model.gl.knowledge.GLFactory", getText("label.model.factories"));
 	}};
-	
-	public void setDataSourceUtil(DataSourceUtil dataSourceUtil) {
-		this.dataSourceUtil = dataSourceUtil;
-	}
 
 	public void setProfileName(String profileName) {
 		this.profileName = profileName;
@@ -83,12 +79,12 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		this.model = model;
 	}
 
-	public Map<String, String> getTableColumns() {
-		return tableColumns;
+	public List<PropertyWrapper> getEntityAttributes() {
+		return entityAttributes;
 	}
 
-	public Map<String, String> getClassAttributes() {
-		return classAttributes;
+	public Map<String, String> getModelAttributes() {
+		return modelAttributes;
 	}
 
 	public Map<String, String> getEntities() {
@@ -112,25 +108,29 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		return SUCCESS;
 	}
 	
-	public String loadTableColumns() {
+	public String loadEntityAttributes() {
 		if (entity != null) {
-			// Load all tables named by given name. It will return a list with 0 or 1 metaclass object
-			List tableList = dataSourceUtil.loadTablesByTablename(entity);
-			if (tableList.size() > 0) {
-				tableColumns = (HashMap<String, String>)tableList.get(0);
-			} else if (tableList.size() == 0) {
-				// TODO error -> tabla no encontrada
+			try {
+				Class c = Class.forName(entity);
+				PropertyAnnotationParser pap = new PropertyAnnotationParser();
+				entityAttributes = pap.parse(c);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		return SUCCESS;
 	}
 	
-	public String loadClassAttributes() {
+	public String loadModelAttributes() {
 		if (model != null) {
 			try {
 				Class c = Class.forName(model);
 				AnnotationParser ap = new AnnotationParser();
-				classAttributes = ap.parse(c);
+				modelAttributes = ap.parse(c);
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -164,15 +164,15 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		metaclass.setName(profileName);
 		metaclass.setDescription(profileDescription);
 		// Add table and class name
-		metaclass.setTableName(entity);
-		metaclass.setClassName(model);
+		metaclass.setEntityName(entity);
+		metaclass.setModelName(model);
 		// Add mapping data to metaclass
 		List<Mapping> mappings = new ArrayList<Mapping>();
 		JSONArray mappingArray = (JSONArray) JSONSerializer.toJSON(jsonMappings);
 		for (int i = 0; i < mappingArray.size(); i++) {
 			JSONObject mappingObject = mappingArray.getJSONObject(i);
-			Field column = new Field(mappingObject.getString("columnType"), mappingObject.getString("columnName"));
-			Field attribute = new Field(mappingObject.getString("attributeType"), mappingObject.getString("attributeName"));
+			Field column = new Field(mappingObject.getString("entityAttrType"), mappingObject.getString("entityAttrName"));
+			Field attribute = new Field(mappingObject.getString("modelAttrType"), mappingObject.getString("modelAttrName"));
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.setRootClass(Rule.class);
 			JSONArray jsonRules = mappingObject.getJSONArray("rules");

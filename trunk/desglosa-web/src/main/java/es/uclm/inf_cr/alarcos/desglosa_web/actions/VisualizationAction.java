@@ -11,35 +11,25 @@ import javax.xml.bind.JAXBException;
 
 import model.util.City;
 
-import org.springframework.web.context.ContextLoader;
-
 import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.control.GLObjectManager;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.ChartDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.MarketDAO;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.MeasureDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.SubprojectDAO;
-import es.uclm.inf_cr.alarcos.desglosa_web.exception.ChartNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.EntityNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.GroupByOperationNotSupportedException;
-import es.uclm.inf_cr.alarcos.desglosa_web.exception.MeasureNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
-import es.uclm.inf_cr.alarcos.desglosa_web.model.Dimension;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Market;
-import es.uclm.inf_cr.alarcos.desglosa_web.model.Profile;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
-import es.uclm.inf_cr.alarcos.desglosa_web.model.View;
-import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
 
 public class VisualizationAction extends ActionSupport {
 	private int id;
@@ -52,8 +42,6 @@ public class VisualizationAction extends ActionSupport {
 	private CompanyDAO companyDao;
 	private ProjectDAO projectDao;
 	private SubprojectDAO subprojectDao;
-	private ChartDAO chartDao;
-	private MeasureDAO measureDao;
 	private MarketDAO marketDao;
 	
 	private List<Factory> factories;
@@ -129,14 +117,6 @@ public class VisualizationAction extends ActionSupport {
 		this.subprojectDao = subprojectDao;
 	}
 
-	public void setChartDao(ChartDAO chartDao) {
-		this.chartDao = chartDao;
-	}
-
-	public void setMeasureDao(MeasureDAO measureDao) {
-		this.measureDao = measureDao;
-	}
-
 	public void setMarketDao(MarketDAO marketDao) {
 		this.marketDao = marketDao;
 	}
@@ -209,86 +189,6 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	private void completeProjectData () {
-		if (projects != null && projects.size() > 0) {
-			for (Project p : projects) {
-				try {
-					p.setProfile((Profile)XMLAgent.unmarshal(ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + p.getProfileName(), Profile.class));
-					if (p.getProfile().getViews().size() > 0) {
-						View v = (View) p.getProfile().getViews().get(0).clone();
-						for (Dimension d : v.getDimensions()) {
-							d.setMeasure(measureDao.getMeasure(d.getMeasureKey()));
-						}
-						v.setChart(chartDao.getChart(v.getChartName()));
-						// A continuación se hace un pequeño tweak en el que haremos una vista por cada subprojecto
-						// manteniendo la misma configuración de dimensiones entre vistas y actualizando únicamente sus valores
-						// correspondiendo cada conjunto de valores con un subprojecto.
-						List<View> tweakedViews = new ArrayList<View>();
-						for (Subproject sp : p.getSubprojects()) {
-							View aux = (View) v.clone();
-							aux.obtainDimensionValues(sp.getCsvData());
-							tweakedViews.add(aux);
-						}
-						p.getProfile().setViews(tweakedViews);
-					}
-				} catch (JAXBException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (MeasureNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ChartNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	private void completeSubprojectData () {
-		if (subprojects != null && subprojects.size() > 0) {
-			for (Subproject sp : subprojects) {
-				try {
-					sp.setProfile((Profile)XMLAgent.unmarshal(ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + sp.getProfileName(), Profile.class));
-					for (View v : sp.getProfile().getViews()) {
-						v.obtainDimensionValues(sp.getCsvData());
-						for (Dimension d : v.getDimensions()) {
-							d.setMeasure(measureDao.getMeasure(d.getMeasureKey()));
-						}
-						v.setChart(chartDao.getChart(v.getChartName()));
-					}
-				} catch (JAXBException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (MeasureNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ChartNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
 	public String projectById() {
 		if (id == 0) {
 			projects = projectDao.getProjects();
@@ -301,11 +201,10 @@ public class VisualizationAction extends ActionSupport {
 				return ERROR;
 			}
 		}
-//		completeProjectData();
 //		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
 		if (generateGLObjects) {
 			try {
-				city = glObjectManager.createGLObjects(projects, groupBy, "fff-1312531767462");
+				city = glObjectManager.createGLObjects(projects, groupBy, "asdf-1314183992774");
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -337,6 +236,9 @@ public class VisualizationAction extends ActionSupport {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (GroupByOperationNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -353,11 +255,10 @@ public class VisualizationAction extends ActionSupport {
 			queryParams.put("id", id);
 			projects = projectDao.findByNamedQuery("findProjectsByCompanyId", queryParams);
 		}
-//		completeProjectData();
 //		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
 		if (generateGLObjects) {
 			try {
-				city = glObjectManager.createGLObjects(projects, groupBy, "qwerty-1313517014716");
+				city = glObjectManager.createGLObjects(projects, groupBy, "asdf-1314183992774");
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -389,6 +290,9 @@ public class VisualizationAction extends ActionSupport {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (GroupByOperationNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -405,11 +309,10 @@ public class VisualizationAction extends ActionSupport {
 			queryParams.put("id", id);
 			projects = projectDao.findByNamedQuery("findProjectsByFactoryId", queryParams);
 		}
-//		completeProjectData();
 //		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
 		if (generateGLObjects) {
 			try {
-				city = glObjectManager.createGLObjects(projects, groupBy, "fff-1312531767462");
+				city = glObjectManager.createGLObjects(projects, groupBy, "asdf-1314183992774");
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -441,6 +344,9 @@ public class VisualizationAction extends ActionSupport {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (GroupByOperationNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -460,7 +366,6 @@ public class VisualizationAction extends ActionSupport {
 				return ERROR;
 			}
 		}
-		completeSubprojectData();
 		return SUCCESS;
 	}
 }
