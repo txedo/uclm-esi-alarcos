@@ -15,9 +15,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Formula;
+
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 
 @Entity
 @Table(name="projects")
@@ -32,32 +33,55 @@ import org.hibernate.annotations.Formula;
         )
 })
 public class Project {
+	@Property
 	private int id;
+	@Property(type="string")
 	private String name;
+	@Property(type="string")
 	private String code;
+	@Property(type="string")
 	private String plan;
 	private Factory mainFactory;
 	private Set<Subproject> subprojects;
+	@Property(embedded=true)
 	private Market market;
+	@Property
 	private boolean audited;
+	@Property
 	private int totalIncidences;
+	@Property
 	private int repairedIncidences;
+	@Property
+	private int nonRepairedIncidences;
+	@Property
 	private int size;
+	@Property
 	private boolean delayed;
-	private String profileName;
-	private Profile profile;
+	@Property(type="float")
 	private Float fiabilidad;
+	@Property(type="float")
 	private Float usabilidad;
+	@Property(type="float")
 	private Float eficiencia;
+	@Property(type="float")
 	private Float mantenibilidad;
+	@Property(type="float")
 	private Float portabilidad;
+	@Property(type="float")
 	private Float lineasDeCodigo;
+	@Property(type="float")
 	private Float comentarios;
+	@Property(type="float")
 	private Float ratioComentariosLineasDeCodigo;
+	@Property(type="float")
 	private Float puntosFuncion;
+	@Property(type="float")
 	private Float fichajeCodigo;
+	@Property(type="float")
 	private Float fichajeTotal;
+	@Property(type="float")
 	private Float ratioFichaje;
+	@Property(type="float")
 	private Float actividad;
 	
 	public Project(){}
@@ -113,6 +137,11 @@ public class Project {
 	public int getRepairedIncidences() {
 		return repairedIncidences;
 	}
+	
+	@Formula("total_incidences - repaired_incidences")
+	public int getNonRepairedIncidences() {
+		return nonRepairedIncidences;
+	}
 
 	@Column(name="size")
 	public int getSize() {
@@ -122,16 +151,6 @@ public class Project {
 	@Column(name="delayed")
 	public boolean isDelayed() {
 		return delayed;
-	}
-	
-	@Column(name="profile")
-	public String getProfileName() {
-		return profileName;
-	}
-	
-	@Transient
-	public Profile getProfile() {
-		return profile;
 	}
 	
 	@Column(name="fiabilidad", nullable=true)
@@ -238,6 +257,10 @@ public class Project {
 	public void setRepairedIncidences(int repairedIncidences) {
 		this.repairedIncidences = repairedIncidences;
 	}
+	
+	public void setNonRepairedIncidences(int nonRepairedIncidences) {
+		this.nonRepairedIncidences = nonRepairedIncidences;
+	}
 
 	public void setSize(int size) {
 		this.size = size;
@@ -245,14 +268,6 @@ public class Project {
 
 	public void setDelayed(boolean delayed) {
 		this.delayed = delayed;
-	}
-	
-	public void setProfileName(String profileName) {
-		this.profileName = profileName;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
 	}
 
 	public void setFiabilidad(Float fiabilidad) {

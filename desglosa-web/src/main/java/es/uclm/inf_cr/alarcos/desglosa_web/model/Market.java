@@ -9,6 +9,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
+
 @Entity
 @Table(name="markets")
 @NamedQueries ({
@@ -19,7 +21,9 @@ import javax.persistence.Table;
 })
 public class Market {
 	private int id;
+	@Property(type="string")
 	private String name;
+	@Property(type="hexcolor")
 	private String color;
 	
 	public Market() {}

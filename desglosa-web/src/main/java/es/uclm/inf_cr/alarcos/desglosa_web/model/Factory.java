@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Formula;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
+
 @Entity
 @Table(name="factories")
 @NamedQueries ({
@@ -25,15 +27,21 @@ import org.hibernate.annotations.Formula;
         )
 })
 public class Factory {
+	@Property
 	private int id;
+	@Property(embedded=true)
 	private Company company;
+	@Property(type="string")
 	private String name;
+	@Property(type="string")
 	private String information;
 	private Director director;
 	private String email;
+	@Property
 	private int employees;
 	private Address address;
 	private Location location;
+	@Property
 	private int numberOfProjects;
 	
 	public Factory() {}

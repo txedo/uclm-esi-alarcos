@@ -9,9 +9,7 @@
     <bean id="showAdminPanelAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ShowAdminPanelAction" singleton="false" />
     <bean id="showMyAccountAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ShowMyAccountAction" singleton="false" />
     <bean id="contactUsAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ContactUsAction" singleton="false" />
-    <bean id="profileAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ProfileAction" singleton="false">
-    	<property name="dataSourceUtil" ref="dataSourceUtil"/>
-    </bean>
+    <bean id="profileAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ProfileAction" singleton="false" />
     <bean id="companyAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.CompanyAction" singleton="false">
     	<property name="companyDao" ref="companyDao"/>
     </bean>
@@ -25,8 +23,6 @@
     	<property name="companyDao" ref="companyDao"/>
     	<property name="projectDao" ref="projectDao"/>
     	<property name="subprojectDao" ref="subprojectDao"/>
-    	<property name="measureDao" ref="measureDao"/>
-    	<property name="chartDao" ref="chartDao"/>
     	<property name="marketDao" ref="marketDao"/>
     </bean>
     
@@ -85,16 +81,6 @@
         <property name="hibernateTemplate" ref="hibernateTemplate" />  
 	</bean>
 	
-	<bean id="measureDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MeasureDAOHibernate">
-    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Measure"/>
-        <property name="hibernateTemplate" ref="hibernateTemplate" />  
-	</bean>
-	
-	<bean id="chartDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.ChartDAOHibernate">
-    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Chart"/>
-        <property name="hibernateTemplate" ref="hibernateTemplate" />  
-	</bean>
-	
 	<bean id="marketDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MarketDAOHibernate">
     	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Market"/>
         <property name="hibernateTemplate" ref="hibernateTemplate" />  
@@ -108,7 +94,4 @@
     	<property name="marketDao" ref="marketDao"/>
 	</bean>
 	
-	<bean id="dataSourceUtil" class="es.uclm.inf_cr.alarcos.desglosa_web.util.DataSourceUtil">
-		<property name="dataSource" ref="dataSource"></property>
-	</bean>
 </beans>

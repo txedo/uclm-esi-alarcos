@@ -13,7 +13,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import org.hibernate.annotations.Formula;
+
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 
 @Entity
 @Table(name="subprojects")
@@ -28,23 +31,38 @@ import javax.persistence.Transient;
         )
 })
 public class Subproject {
+	@Property
 	private int id;
 	private Project project;
+	@Property(embedded=true)
 	private Factory factory;
+	@Property(type="string")
 	private String name;
-	private String csvData;
-	private String profileName;
-	private Profile profile;
+	@Property(type="float")
 	private Float fiabilidad;
+	@Property(type="float")
 	private Float usabilidad;
+	@Property(type="float")
 	private Float eficiencia;
+	@Property(type="float")
 	private Float mantenibilidad;
+	@Property(type="float")
 	private Float portabilidad;
+	@Property(type="float")
 	private Float lineasDeCodigo;
+	@Property(type="float")
 	private Float comentarios;
+	@Property(type="float")
+	private Float ratioComentariosLineasDeCodigo;
+	@Property(type="float")
 	private Float puntosFuncion;
+	@Property(type="float")
 	private Float fichajeCodigo;
+	@Property(type="float")
 	private Float fichajeTotal;
+	@Property(type="float")
+	private Float ratioFichaje;
+	@Property(type="float")
 	private Float actividad;
 	
 	public Subproject() {}
@@ -69,21 +87,6 @@ public class Subproject {
 	@Column(name="name")
 	public String getName() {
 		return name;
-	}
-	
-	@Column(name="csv_data")
-	public String getCsvData() {
-		return csvData;
-	}
-
-	@Column(name="profile")
-	public String getProfileName() {
-		return profileName;
-	}
-	
-	@Transient
-	public Profile getProfile() {
-		return profile;
 	}
 	
 	@Column(name="fiabilidad", nullable=true)
@@ -120,6 +123,11 @@ public class Subproject {
 	public Float getComentarios() {
 		return comentarios;
 	}
+	
+	@Formula("comentarios / lineas_de_codigo")
+	public Float getRatioComentariosLineasDeCodigo() {
+		return ratioComentariosLineasDeCodigo;
+	}
 
 	@Column(name="puntos_funcion", nullable=true)
 	public Float getPuntosFuncion() {
@@ -135,7 +143,12 @@ public class Subproject {
 	public Float getFichajeTotal() {
 		return fichajeTotal;
 	}
-
+	
+	@Formula("fichaje_codigo / fichaje_total")
+	public Float getRatioFichaje() {
+		return ratioFichaje;
+	}
+	
 	@Column(name="actividad", nullable=true)
 	public Float getActividad() {
 		return actividad;
@@ -156,20 +169,7 @@ public class Subproject {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public void setCsvData(String csvData) {
-		this.csvData = csvData;
-	}
-
-	public void setProfileName(String profileName) {
-		this.profileName = profileName;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
 	
-
 	public void setFiabilidad(Float fiabilidad) {
 		this.fiabilidad = fiabilidad;
 	}
@@ -198,6 +198,11 @@ public class Subproject {
 		this.comentarios = comentarios;
 	}
 
+	public void setRatioComentariosLineasDeCodigo(
+			Float ratioComentariosLineasDeCodigo) {
+		this.ratioComentariosLineasDeCodigo = ratioComentariosLineasDeCodigo;
+	}
+
 	public void setPuntosFuncion(Float puntosFuncion) {
 		this.puntosFuncion = puntosFuncion;
 	}
@@ -208,6 +213,10 @@ public class Subproject {
 
 	public void setFichajeTotal(Float fichajeTotal) {
 		this.fichajeTotal = fichajeTotal;
+	}
+	
+	public void setRatioFichaje(Float ratioFichaje) {
+		this.ratioFichaje = ratioFichaje;
 	}
 
 	public void setActividad(Float actividad) {

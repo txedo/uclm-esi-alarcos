@@ -19,10 +19,10 @@ public class Metaclass {
 	private String name;
 	@XmlElement(name="description")
 	private String description;
-	@XmlAttribute(name="table")
-	private String tableName;	
-	@XmlAttribute(name="class")
-	private String className;
+	@XmlAttribute(name="entity")
+	private String entityName;	
+	@XmlAttribute(name="model")
+	private String modelName;
 	@XmlElement(name="mapping")
 	private List<Mapping> mappings = new ArrayList<Mapping>();
 	@XmlElement(name="caption")
@@ -30,13 +30,13 @@ public class Metaclass {
 	
 	public Metaclass() {}
 
-	public Metaclass(String name, String description, String tableName,
-			String className, List<Mapping> mappings,
+	public Metaclass(String name, String description, String entityName,
+			String modelName, List<Mapping> mappings,
 			MyHashMapType captionLines) {
 		this.name = name;
 		this.description = description;
-		this.tableName = tableName;
-		this.className = className;
+		this.entityName = entityName;
+		this.modelName = modelName;
 		this.mappings = mappings;
 		this.captionLines = captionLines;
 	}
@@ -49,12 +49,12 @@ public class Metaclass {
 		return description;
 	}
 
-	public String getTableName() {
-		return tableName;
+	public String getEntityName() {
+		return entityName;
 	}
 
-	public String getClassName() {
-		return className;
+	public String getModelName() {
+		return modelName;
 	}
 	
 	public List<Mapping> getMappings() {
@@ -73,12 +73,12 @@ public class Metaclass {
 		this.description = description;
 	}
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
 	}
 
-	public void setClassName(String className) {
-		this.className = className;
+	public void setModelName(String modelName) {
+		this.modelName = modelName;
 	}
 	
 	public void setMappings(List<Mapping> mappings) {

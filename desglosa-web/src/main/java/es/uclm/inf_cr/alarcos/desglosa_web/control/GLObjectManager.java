@@ -44,17 +44,17 @@ public class GLObjectManager {
 	private ProjectDAO projectDao;
 	private MarketDAO marketDao;
 	
-	public City createGLObjects(List entities, String groupBy, String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, EntityNotSupportedException, GroupByOperationNotSupportedException {
+	public City createGLObjects(List entities, String groupBy, String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, EntityNotSupportedException, GroupByOperationNotSupportedException, NoSuchFieldException {
 		City c = new City();
 		
 		// Load selected profile
 		String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + profileName + ".xml";
 		Metaclass metaclass = XMLAgent.unmarshal(path, Metaclass.class);
 		// Create a list of metaclass model objects
-		Class classModel = Class.forName(metaclass.getClassName());
+		Class classModel = Class.forName(metaclass.getModelName());
 		List<Class<?>> objects = new ArrayList<Class<?>>();
 		// Create a entity map where <key,value> is <column,value>. We have to access database
-		String entityTable = metaclass.getTableName();
+		String entityTable = metaclass.getEntityName();
 		
 		if (entities != null && entities.size() > 0) {
 			// Create a list (city) of lists (neighborhoods) from entities
@@ -65,30 +65,33 @@ public class GLObjectManager {
 				// Do mappings using java reflection
 				for (Mapping mapping : metaclass.getMappings()) {
 					// Build setter method using Java Reflective API
-					String setterName = "set" + WordUtils.capitalize(mapping.getAttribute().getName());
+					String setterName = "set" + WordUtils.capitalize(mapping.getModelAttr().getName());
 					// Look for the setter method through all the object hierarchy
 					Class superClass = classModel;
-					Method setterMethod = superClass.getMethod(setterName, mapping.getAttribute().getParameterType());
+					Method setterMethod = superClass.getMethod(setterName, mapping.getModelAttr().getParameterType());
 					
 					// Build getter method using Java Reflective API
-					String getterPrefix = "get";
-					if (mapping.getAttribute().getType().equals("boolean")) getterPrefix = "is";
-					// Parses one_word_other_word to OneWordOtherWord and adds "get"/"is" prefix
-					String getterSuffix = mapping.getColumn().getName();
-					getterSuffix = getterSuffix.replace("_", " ");
-					getterSuffix = WordUtils.capitalize(getterSuffix);
-					getterSuffix = getterSuffix.replace(" ", "");
-					String getterName = getterPrefix + getterSuffix;
-					Method getterMethod = e.getClass().getMethod(getterName, null);
-					
-					// Call setter using getter's value as parameter
-					Object value = getterMethod.invoke(e, null);
+					// oneWord_otherWord_anotherWord must be parsed to invoke getOneWord().getOtherWord().getAnotherWord()
+					String[] chainOfGetters = mapping.getEntityAttr().getName().split("_");
+					Class subClass = e.getClass();
+					Object value = e;
+					for (int i = 0; i < chainOfGetters.length && value != null; i++) {
+						String getterPrefix = "get";
+						if (i == chainOfGetters.length-1) {
+							if (mapping.getModelAttr().getType().equals("boolean")) getterPrefix = "is";
+						}
+						String parentGetterName = getterPrefix + WordUtils.capitalize(chainOfGetters[i]);
+						Method parentGetterMethod = subClass.getMethod(parentGetterName, null);
+						subClass = subClass.getDeclaredField(chainOfGetters[i]).getType();
+						value = parentGetterMethod.invoke(value, null);
+					}
 					if (value != null) {
 						setterMethod.invoke(classModel.cast(glObj), value);
 					} else {
 						// El valor en la base de datos es null y va a lanzar IllegalArgumentException
 					}
 				}
+				//Guardar glObj en algun sitio
 			}
 			
 			// Normalize
