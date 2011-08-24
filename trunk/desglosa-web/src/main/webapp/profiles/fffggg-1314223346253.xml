@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile model="model.gl.knowledge.GLFactory" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Factory">
+    <name>fffggg</name>
+    <description>sdfgs</description>
+    <mapping>
+        <entityAttr name="mostRepresentativeMarket_color" type="hexcolor"/>
+        <modelAttr name="smokestackColor" type="color"/>
+    </mapping>
+    <caption/>
+</profile>
