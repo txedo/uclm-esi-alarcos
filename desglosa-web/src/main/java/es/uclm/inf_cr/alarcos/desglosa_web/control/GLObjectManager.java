@@ -82,8 +82,8 @@ public class GLObjectManager {
 						}
 						String parentGetterName = getterPrefix + WordUtils.capitalize(chainOfGetters[i]);
 						Method parentGetterMethod = subClass.getMethod(parentGetterName, null);
-						subClass = subClass.getDeclaredField(chainOfGetters[i]).getType();
 						value = parentGetterMethod.invoke(value, null);
+						subClass = subClass.getDeclaredField(chainOfGetters[i]).getType();
 					}
 					if (value != null) {
 						setterMethod.invoke(classModel.cast(glObj), value);

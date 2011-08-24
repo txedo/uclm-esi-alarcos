@@ -1,5 +1,9 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +17,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Formula;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MarketDAOHibernate;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
 
 @Entity
 @Table(name="factories")
@@ -43,6 +50,8 @@ public class Factory {
 	private Location location;
 	@Property
 	private int numberOfProjects;
+	@Property(embedded=true)
+	private Market mostRepresentativeMarket;
 	
 	public Factory() {}
 
@@ -99,6 +108,17 @@ public class Factory {
 	public int getNumberOfProjects() {
 		return numberOfProjects;
 	}
+	
+	@Transient
+	public Market getMostRepresentativeMarket() {
+		MarketDAOHibernate marketDao = (MarketDAOHibernate) ApplicationContextProvider.getBean("marketDao");
+		Map<String, Object> queryParams = new HashMap<String, Object>();
+		queryParams.put("id", id);
+		List<Market> markets = marketDao.findByNamedQuery("findMostRepresentativeMarketByFactoryId", queryParams);
+		if (markets.size() > 0) mostRepresentativeMarket = markets.get(0);
+		else mostRepresentativeMarket = null;
+		return mostRepresentativeMarket;
+	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -138,6 +158,10 @@ public class Factory {
 
 	public void setNumberOfProjects(int numberOfProjects) {
 		this.numberOfProjects = numberOfProjects;
+	}
+	
+	public void setMostRepresentativeMarket(Market mostRepresentativeMarket) {
+		this.mostRepresentativeMarket = mostRepresentativeMarket;
 	}
 
 	@Override

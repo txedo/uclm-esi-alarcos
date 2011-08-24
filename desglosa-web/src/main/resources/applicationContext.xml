@@ -94,4 +94,6 @@
     	<property name="marketDao" ref="marketDao"/>
 	</bean>
 	
+	<bean id="applicationContextProvider" class="es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider"/>
+	
 </beans>

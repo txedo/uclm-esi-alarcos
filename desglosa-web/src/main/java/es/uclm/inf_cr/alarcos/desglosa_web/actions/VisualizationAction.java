@@ -157,7 +157,48 @@ public class VisualizationAction extends ActionSupport {
 				return ERROR;
 			}
 		}
-		if (generateGLObjects) city = glObjectManager.createGLFactories(factories, groupBy);
+//		if (generateGLObjects) city = glObjectManager.createGLFactories(factories, groupBy);
+		if (generateGLObjects) {
+			try {
+				city = glObjectManager.createGLObjects(factories, groupBy, "fffggg-1314223346253");
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (EntityNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (GroupByOperationNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return SUCCESS;
 	}
 	
@@ -170,7 +211,48 @@ public class VisualizationAction extends ActionSupport {
 			queryParams.put("id", id);
 			factories = factoryDao.findByNamedQuery("findFactoriesByCompanyId", queryParams);
 		}
-		if (generateGLObjects) city = glObjectManager.createGLFactories(factories, groupBy);
+//		if (generateGLObjects) city = glObjectManager.createGLFactories(factories, groupBy);
+		if (generateGLObjects) {
+			try {
+				city = glObjectManager.createGLObjects(factories, groupBy, "fffggg-1314223346253");
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (EntityNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (GroupByOperationNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return SUCCESS;
 	}
 	
