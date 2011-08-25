@@ -54,10 +54,10 @@ public class IGLFacadeImpl implements IGLFacade {
 	}
 	
 	@Override
-	public void visualizeFactories(String JSONcity) throws ViewManagerNotInstantiatedException {
+	public void visualizeBuildings(String JSONcity) throws ViewManagerNotInstantiatedException {
 		JSONObject json = (JSONObject)JSONSerializer.toJSON(JSONcity);
-		List<GLObject> factories = new ArrayList<GLObject>();
-		GLFactory factory;
+		List<GLObject> buildings = new ArrayList<GLObject>();
+		GLFactory building;
 		List<Neighborhood> nbh = new ArrayList<Neighborhood>();
 		City city;
 
@@ -65,24 +65,24 @@ public class IGLFacadeImpl implements IGLFacade {
 		for (int i = 0; i < jsonNeighborhoods.size(); i++) {
 			JSONObject jsonFlatsObject = jsonNeighborhoods.getJSONObject(i);
 			JSONArray jsonFlats = jsonFlatsObject.getJSONArray("flats");
-			factories = new ArrayList<GLObject>();
+			buildings = new ArrayList<GLObject>();
 			for (int j = 0; j < jsonFlats.size(); j++) {
 				JSONObject jobj = jsonFlats.getJSONObject(j);
-				factory = new GLFactory();
-				factory.setId(jobj.getInt("id"));
-				factory.setSmokestackHeight(jobj.getInt("smokestackHeight"));
+				building = new GLFactory();
+				building.setId(jobj.getInt("id"));
+				building.setSmokestackHeight(jobj.getInt("smokestackHeight"));
 				float r = (float)(jobj.getJSONObject("smokestackColor")).getDouble("r");
 				float g = (float)(jobj.getJSONObject("smokestackColor")).getDouble("g");
 				float b = (float)(jobj.getJSONObject("smokestackColor")).getDouble("b");
 				float alpha = (float)(jobj.getJSONObject("smokestackColor")).getDouble("alpha");
 				Color color = new Color(r,g,b);
 				color.setAlpha(alpha);
-				factory.setSmokestackColor(color);
-				factory.setScale((float)jobj.getDouble("scale"));
-				factories.add(factory);
+				building.setSmokestackColor(color);
+				building.setScale((float)jobj.getDouble("scale"));
+				buildings.add(building);
 			}
 			// Build the neighborhood
-			nbh.add(new Neighborhood(jsonFlatsObject.getString("name"), factories));
+			nbh.add(new Neighborhood(jsonFlatsObject.getString("name"), buildings));
 		}
 		// Configure caption lines
 		configureCaption(GLProjectViewManager.getInstance(), json.getJSONObject("captionLines"));
@@ -91,21 +91,21 @@ public class IGLFacadeImpl implements IGLFacade {
 		city = new City(nbh);
 		city.placeNeighborhoods();
 		
-		factories = new ArrayList<GLObject>();
+		buildings = new ArrayList<GLObject>();
 		for (Neighborhood n : nbh) {
-			factories.addAll(n.getFlats());
+			buildings.addAll(n.getFlats());
 		}
 		// Change the active view to FactoryLevel
 		GLFactoryViewManager.getInstance().setPavements(city.getPavements());
-		GLFactoryViewManager.getInstance().setItems(factories);
+		GLFactoryViewManager.getInstance().setItems(buildings);
 		GLFactoryViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.FactoryLevel);
 	}
 
 	@Override
-	public void visualizeProjects(String JSONtext) throws ViewManagerNotInstantiatedException {
+	public void visualizeAntennaBalls(String JSONtext) throws ViewManagerNotInstantiatedException {
 		JSONObject json = (JSONObject)JSONSerializer.toJSON(JSONtext);
-		List<GLObject> projects = new ArrayList<GLObject>();
-		GLAntennaBall project;
+		List<GLObject> antennaBalls = new ArrayList<GLObject>();
+		GLAntennaBall antennaBall;
 		List<Neighborhood> nbh = new ArrayList<Neighborhood>();
 		City city;
 		float maxSize = 0.0f;
@@ -114,29 +114,29 @@ public class IGLFacadeImpl implements IGLFacade {
 		for (int i = 0; i < jsonNeighborhoods.size(); i++) {
 			JSONObject jsonFlatsObject = jsonNeighborhoods.getJSONObject(i);
 			JSONArray jsonFlats = jsonFlatsObject.getJSONArray("flats");
-			projects = new ArrayList<GLObject>();
+			antennaBalls = new ArrayList<GLObject>();
 			for (int j = 0; j < jsonFlats.size(); j++) {
 				JSONObject jobj = jsonFlats.getJSONObject(j);
-				project = new GLAntennaBall();
-				project.setId(jobj.getInt("id"));
-				project.setLabel(jobj.getString("label"));
-				project.setProgressionMark(jobj.getBoolean("progression"));
-				project.setLeftChildBallValue(jobj.getInt("rightChildBallValue"));
-				project.setRightChildBallValue(jobj.getInt("leftChildBallValue"));
+				antennaBall = new GLAntennaBall();
+				antennaBall.setId(jobj.getInt("id"));
+				antennaBall.setLabel(jobj.getString("label"));
+				antennaBall.setProgressionMark(jobj.getBoolean("progressionMark"));
+				antennaBall.setLeftChildBallValue(jobj.getInt("rightChildBallValue"));
+				antennaBall.setRightChildBallValue(jobj.getInt("leftChildBallValue"));
 				float r = (float)(jobj.getJSONObject("color")).getDouble("r");
 				float g = (float)(jobj.getJSONObject("color")).getDouble("g");
 				float b = (float)(jobj.getJSONObject("color")).getDouble("b");
 				float alpha = (float)(jobj.getJSONObject("color")).getDouble("alpha");
 				Color color = new Color(r,g,b);
 				color.setAlpha(alpha);
-				project.setColor(color);
+				antennaBall.setColor(color);
 				float size = (float)jobj.getDouble("parentBallRadius");
-				project.setParentBallRadius(size);
+				antennaBall.setParentBallRadius(size);
 				if (maxSize < size) maxSize = size;
-				projects.add(project);
+				antennaBalls.add(antennaBall);
 			}
 			// Build the neighborhood
-			nbh.add(new Neighborhood(jsonFlatsObject.getString("name"), projects));
+			nbh.add(new Neighborhood(jsonFlatsObject.getString("name"), antennaBalls));
 		}
 		// Normalize project size
 		for (Neighborhood n : nbh) {
@@ -151,13 +151,13 @@ public class IGLFacadeImpl implements IGLFacade {
 		city = new City(nbh);
 		city.placeNeighborhoods();
 		
-		projects = new ArrayList<GLObject>();
+		antennaBalls = new ArrayList<GLObject>();
 		for (Neighborhood n : nbh) {
-			projects.addAll(n.getFlats());
+			antennaBalls.addAll(n.getFlats());
 		}
 		// Change the active view to ProjectLevel
 		GLProjectViewManager.getInstance().setPavements(city.getPavements());
-		GLProjectViewManager.getInstance().setItems(projects);
+		GLProjectViewManager.getInstance().setItems(antennaBalls);
 		GLProjectViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.ProjectLevel);
 	}
 

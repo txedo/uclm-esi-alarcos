@@ -562,7 +562,7 @@ function desglosa_showFactories(action, id, groupBy) {
 					$('#jogl_canvas').css('display','');
 					// Change active view
 					var city = JSON.stringify(data.city);
-					document.DesglosaApplet.visualizeFactories(city);
+					document.DesglosaApplet.visualizeBuildings(city);
 				} else {
 					$('#jogl_canvas').css('display','none');
 					$('#map_canvas').css('display','');
@@ -602,7 +602,7 @@ function desglosa_showProjects (action, id, groupBy) {
 					$('#jogl_canvas').css('display','');
 					// Change active view
 					var city = JSON.stringify(data.city);
-					document.DesglosaApplet.visualizeProjects(city);
+					document.DesglosaApplet.visualizeAntennaBalls(city);
 				} else {
 					$('#jogl_canvas').css('display','none');
 					$('#map_canvas').css('display','');
