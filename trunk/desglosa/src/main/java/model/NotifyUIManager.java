@@ -11,13 +11,13 @@ public class NotifyUIManager {
 	
 	public static void notifySelectedProject (int idProject, int clickCount) {
 		for (IObserverUI iob : observers) {
-			iob.selectProject(idProject, clickCount);
+			iob.selectAntennaBall(idProject, clickCount);
 		}
 	}
 	
 	public static void notifySelectedFactory (int idFactory, int clickCount) {
 		for (IObserverUI iob : observers) {
-			iob.selectFactory(idFactory, clickCount);
+			iob.selectBuilding(idFactory, clickCount);
 		}
 	}
 	

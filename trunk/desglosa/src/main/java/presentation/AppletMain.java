@@ -113,12 +113,12 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 	}
 
 	@Override
-	public void selectProject(int id, int clickCount){
+	public void selectAntennaBall(int id, int clickCount){
 		this.handleEvent(EOperationCodes.ProjectSelection, id, clickCount);
 	}
 
 	@Override
-	public void selectFactory(int id, int clickCount){
+	public void selectBuilding(int id, int clickCount){
 		this.handleEvent(EOperationCodes.FactorySelection, id, clickCount);
 	}
 
@@ -139,22 +139,22 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 			case FactorySelection:
 				if (ob instanceof Integer) {
 					int id = (Integer)ob;
-					getAppletContext().showDocument(new URL("javascript:selectFactory(" + id + "," + clickCount +")"));
+					getAppletContext().showDocument(new URL("javascript:selectBuilding(" + id + "," + clickCount +")"));
 				}
 				break;
 			case ProjectSelection:
 				if (ob instanceof Integer) {
 					int id = (Integer)ob;
-					getAppletContext().showDocument(new URL("javascript:selectProject(" + id + "," + clickCount +")"));
+					getAppletContext().showDocument(new URL("javascript:selectAntennaBall(" + id + "," + clickCount +")"));
 				}
 				break;
 			default:
-				getAppletContext().showDocument(new URL("javascript:alert(\'Undefined operation\')"));
+				getAppletContext().showDocument(new URL("javascript:selectionError(\'Undefined operation\')"));
 				break;
 			}
 		} catch (MalformedURLException e) {
 			try {
-				getAppletContext().showDocument(new URL("javascript:alert(\'" + e.toString() + "\')"));
+				getAppletContext().showDocument(new URL("javascript:selectionError(\'" + e.toString() + "\')"));
 			} catch (MalformedURLException e1) {}
 		}
 	}

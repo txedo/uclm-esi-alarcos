@@ -327,6 +327,10 @@
 		initializeProjectTab();
 	}
 	
+	function chooseProfile() {
+		alert('OK Button pressed!');
+	};
+
 	$(document).ready(function() {
 		// Initialize Google Maps canvas
 		initializeMap();
@@ -401,139 +405,25 @@
 ////////// BEGINING OF DESGLOSA-FACADE.JS /////////////
 ///////////////////////////////////////////////////////
 
-var depth_level; // Global variable to control in which tower level the user is surfing around
-var queriedProjects = new Array();
-var queriedSubprojects = new Array();
-var queriedFactories = new Array();
-
 function selectTower(id, clickCount) {
-	switch (depth_level) {
-		case 1:
-			showLoadingIndicator(true);
-			if (typeof(queriedSubprojects) == 'undefined' || queriedSubprojects == null || queriedSubprojects.length == 0) {
-				queriedSubprojects = new Array();
-				$.getJSON("/desglosa-web/json_subprojectById.action",
-						{id: id},
-						function (data, status) {
-							if (status == "success") {
-								queriedSubprojects = data.subprojects;
-								handleTowerEvent(clickCount);
-							}
-							else alert('An error has occurred while trying to retrieve factory information: ' + status);
-							showLoadingIndicator(false);
-				});
-			} else {
-				handleTowerEvent(clickCount);
-				showLoadingIndicator(false);
-			}
-			break;
-		default:
-			break;
-	}
+	handleSelectionEvent(id, clickCount);
 }
 
-function handleTowerEvent(clickCount) {
-	if (typeof(queriedSubprojects) != 'undefined' && queriedSubprojects != null && queriedSubprojects.length > 0) {
-		$.each(queriedSubprojects, function (i, subproject) {
-			switch (clickCount) {
-				case 1:
-					// set div innerHTML with subproject info
-					var fmtSp = formatSubprojectInformation(subproject);
-					$("#projectInformation").append("<br />" + fmtSp);
-					break;
-				case 2:
-					// draw subproject profile views
-					
-					// Increment depth level view
-					depth_level++;
-					break;
-				default:
-					break;
-			}
-		});
-	}
+function selectBuilding(id, clickCount) {
+	handleSelectionEvent(id, clickCount);
 }
 
-function selectFactory(id, clickCount) {
-	alert('Selected factory: ' + id + ' - clicks: ' + clickCount);
+function selectAntennaBall(id, clickCount) {
+	handleSelectionEvent(id, clickCount);
 }
 
-function selectProject(id, clickCount) {
-	depth_level = 1;
-	showLoadingIndicator(true);
-	queriedSubprojects = new Array();
-	// TODO aqui ya no vamos a volver a llamar a la acción.
-	// Vamos a utilizar el array queriedProjects que tiene toda la información que necesitamos
-	// one project -> one neighborhood
-	var chart;
-	var city = new City();
-	var neighborhood;
-	// Buscamos el proyecto en el array queriedProjects
-	$.each(queriedProjects, function (i, project) {
-		neighborhood = new Neighborhood();
-		// one project -> one neighborhood
-		// one subproject -> one flat in a neighborhood
-		// In first versions, only one project chart is permitted. So, XML profile must have only one view
-		chart = new Object();
-		chart.name = project.profile.views[0].chart.name;
-		chart.type = project.profile.views[0].chart.type;
-		// set innerHTML for view.name
-		if (project.profile.views[0].chart.maxCols < project.profile.views[0].dimensions.length) {
-			alert ('Hay mas atributos que columnas, se ignoraran los sobrantes.');
-		}
-		if (chart.name == "towers") {
-			$.each(project.subprojects, function(j, subproject) {
-				var tower = new Object();
-				tower = configureTower(project.profile.color, project.profile.views[j].dimensions);
-				tower.id = subproject.id;
-				neighborhood.flats.push(tower);
-			});
-		}
-		city.neighborhoods.push(neighborhood);
-	});
-	// Convert project array to JSON format
-	var JSONtext = JSON.stringify(city);
-	// Una vez configurado el diagrama, lo mostramos
-	if (chart.name == "towers") {
-		// Change active view
-		document.DesglosaApplet.visualizeTowers(JSONtext);
-	}
-	showLoadingIndicator(false);
+function selectionError(message) {
+	alert(message);
 }
 
-function configureTower(color, dimensions) {
-	var MAX_DEPTH = 3.0;
-	var MAX_WIDTH = 3.0;
-	var MAX_HEIGHT = 12.0;
-	var tower = new Object();
-	$.each(dimensions, function (i, item) {
-		if (item.attr == "width") tower.width = item.value*MAX_WIDTH/item.measure.high;
-		else if (item.attr == "height") tower.height = item.value*MAX_HEIGHT/item.measure.high;
-		else if (item.attr == "depth") tower.depth = item.value*MAX_DEPTH/item.measure.high;
-		else if (item.attr == "color") {
-			if (item.value <= item.measure.medium * item.measure.lowOffset) tower.color = color.nonAcceptable;
-			else if (item.value < item.measure.medium * item.measure.lowOffset && item.value > item.measure.medium * item.measure.highOffset) tower.color = color.peripheral;
-			else tower.color = color.acceptable;
-		}
-		else if (item.attr == "fill") tower.fill = item.value*MAX_HEIGHT/item.measure.high;
-		else ;
-	});
-	return tower;
+function handleSelectionEvent(id, clickCount) {
+	// This function will handle the selection event on any 3D model, so it will handle navigation too
 }
-
-///////////////////////////
-// esto sera para borrar //
-///////////////////////////
-function City () {
-	this.neighborhoods = new Array();
-}
-
-function Neighborhood () {
-	this.flats = new Array();
-}
-////////////////////////////
-////////////////////////////
-////////////////////////////
 
 function desglosa_showFactoriesByCompanyId(id, groupBy) {
 	desglosa_showFactories("/desglosa-web/json_factoriesByCompanyId.action", id, groupBy);
@@ -620,6 +510,19 @@ function desglosa_showProjects (action, id, groupBy) {
 	</script>
 </head>
 <body>
+	<!-- This div will be hidden by default and will appear in the middle of the screen
+	in order to allow the user to choose a profile
+	-->	
+	<sj:dialog id="profileChooser"
+		       buttons="{'OK':function() { chooseProfile(); }}"
+        	    autoOpen="false"
+        	    modal="true"
+        	    closeOnEscape="true"
+        	    showEffect="fold"
+        	    hideEffect="scale"
+        	    title="Elige un perfil"/>
+    <sj:a openDialog="profileChooser">Open Dialog</sj:a>
+    
 	<div id="messagesAndErrors">
 		<s:actionerror />
 	</div>
@@ -707,6 +610,7 @@ function desglosa_showProjects (action, id, groupBy) {
 				<img id="indicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none"/>
 			</div>
 		</div>
+		<div style="clear:both;"></div>
 	</div>
 	
 </body>

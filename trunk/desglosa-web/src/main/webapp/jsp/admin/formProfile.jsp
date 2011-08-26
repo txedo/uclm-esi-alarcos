@@ -19,6 +19,13 @@
 	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/layout.css'/>" />
 	
 	<script type="text/javascript">
+	$.subscribe('onstop', function(event,data) {
+        var result = $("#selectresult").empty();
+        $(".ui-selected").each(function(){
+            result.append($(this).html()+' ');
+        });
+	});
+	
 	var mappings = new Array();
 	var captionLines = new Array();
 	
@@ -52,14 +59,14 @@
 				{ entity: entity },
 				function (data, status) {
 					if (status == "success") {
-						var htmlText = "";
 						entityAttributesArray = new Array();
 						$("#entityAttributesDiv").html("");
+						$("#entityAttributesDiv").append("<ul>");
 						$.each(data.entityAttributes, function (key, value) {
 							entityAttributesArray[value.name] = value.type;
-							htmlText += "<a id='entityAttr_" + value.name + "' class='myButton' onclick='javascript:selectEntityAttribute(this)' style='display: block;' title='" + value.description + "'>" + value.name + " (" + value.type + ")</a>";
+							$("#entityAttributesDiv ul").append("<li id='entityAttr_" + value.name + "' class='selectablelist ui-corner-all' title='" + value.description + "'>" + value.name + " (" + value.type + ")</li>");
 						});
-						$("#entityAttributesDiv").html(htmlText);
+						$("#entityAttributesDiv").append("</ul>");
 					}
 					else alert('An error has occurred while trying to retrieve entity information: ' + status);
 		});
@@ -72,14 +79,14 @@
 				{ model: model },
 				function (data, status) {
 					if (status == "success") {
-						var htmlText = "";
 						modelAttributesArray = new Array();
 						$("#modelAttributesDiv").html("");
+						$("#modelAttributesDiv").append("<ul>");
 						$.each(data.modelAttributes, function (key, value) {
 							modelAttributesArray[key] = value;
-							htmlText += "<a id='modelAttr_" + key + "' class='myButton' onclick='javascript:selectModelAttribute(this)' style='display: block;'>" + key + " (" + value + ")</a>";
+							$("#modelAttributesDiv ul").append("<li id='modelAttr_" + key + "' class='selectablelist ui-corner-all'>" + key + " (" + value + ")</li>");
 						});
-						$("#modelAttributesDiv").html(htmlText);
+						$("#modelAttributesDiv").append("</ul>");
 					}
 					else alert('An error has occurred while trying to retrieve model information: ' + status);
 		});
@@ -456,7 +463,7 @@
 							list="entities"
 							onAlwaysTopics="disableHeader"
 							onChangeTopics="reloadEntityAttributes"/>
-				<div id="entityAttributesDiv"></div>
+				<sj:div id="entityAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
 			</div>
 			
 			<div id="rightPane" style="float:left;">
@@ -469,7 +476,7 @@
 							list="models"
 							onAlwaysTopics="disableHeader"
 							onChangeTopics="reloadModelAttributes"/>
-				<div id="modelAttributesDiv"></div>
+				<sj:div id="modelAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
 			</div>
 		
 			<div style="clear:both;"></div>
