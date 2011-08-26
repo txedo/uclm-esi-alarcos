@@ -52,3 +52,29 @@
 	position:relative;
 	top:1px;
 }
+
+.selectable {
+border:1px solid #000;
+float:left;
+height:80px;
+margin:5px;
+padding:20px;
+width:80px;
+}
+
+.selectablelist {
+border:1px solid #000;
+height:25px;
+margin:5px;
+padding:10px;
+list-style-type: none;
+}
+
+.ui-selected {
+background:#F39814;
+color:#FFF;
+}
+
+.ui-selecting {
+background:#FECA40;
+}

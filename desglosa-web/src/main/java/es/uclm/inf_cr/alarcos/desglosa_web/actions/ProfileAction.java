@@ -22,11 +22,14 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.FileUtil;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.MyHashMapType;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.PropertyAnnotationParser;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
 
 public class ProfileAction extends ActionSupport implements GenericActionInterface {
+	private Map<String,String> profileNames;
+	private Metaclass profile;
 	private String entity;
 	private String model;
 	private String profileName;
@@ -61,6 +64,14 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 
 	public void setJsonCaptionLines(String jsonCaptionLines) {
 		this.jsonCaptionLines = jsonCaptionLines;
+	}
+
+	public Map<String, String> getProfileNames() {
+		return profileNames;
+	}
+
+	public Metaclass getProfile() {
+		return profile;
 	}
 
 	public String getEntity() {
@@ -209,8 +220,13 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 	}
 
 	public String get() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		// entity o profileName
+		if (entity != null) {
+			profileNames = FileUtil.getProfiles(entity);
+		} else if (profileName != null) {
+			profile = FileUtil.getProfile(profileName);
+		}
+		return SUCCESS;
 	}
 
 }
