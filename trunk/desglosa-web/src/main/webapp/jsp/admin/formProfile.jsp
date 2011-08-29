@@ -19,21 +19,18 @@
 	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/layout.css'/>" />
 	
 	<script type="text/javascript">
-	$.subscribe('onstop', function(event,data) {
-        var result = $("#selectresult").empty();
-        $(".ui-selected").each(function(){
-            result.append($(this).html()+' ');
-        });
-	});
-	
 	var mappings = new Array();
 	var captionLines = new Array();
 	
-	function Mapping (entityAttrName, entityAttrType, modelAttrName, modelAttrType, rules) {
-		this.entityAttrName = entityAttrName;
-		this.entityAttrType = entityAttrType;
-		this.modelAttrName = modelAttrName;
-		this.modelAttrType = modelAttrType;
+	function Attribute (name, type, value) {
+		this.name = name;
+		this.type = type;
+		this.vaule = value;
+	}
+	
+	function Mapping (entityAttr, modelAttr, rules) {
+		this.entityAttr = entityAttr;
+		this.modelAttr = modelAttr;
 		this.rules = rules;
 	}
 	
@@ -96,53 +93,22 @@
 	var entityAttributesArray = new Array();
 	var selectedModelAttribute = null;
 	var modelAttributesArray = new Array();
+	var nonMappedModelAttributesArray = new Array();
 	
-	function selectEntityAttribute(element) {
-		// if already-selected element is not the newly-selected
-		if (selectedEntityAttribute != element) {
-			// check if there was a selected element and pop it
-			if (selectedEntityAttribute != null) {
-				selectedEntityAttribute.className = "myButton"
-				selectedEntityAttribute = null;
-			}
-			// push the new element
-			selectedEntityAttribute = element;
-			element.className = "myPressedButton";
-			checkMapping();
-		} else {
-			// if already-selected element and newly-selected are the same button, pop it
-			selectedEntityAttribute.className = "myButton";
-			selectedEntityAttribute = null;
-		}
-	}
-	
-	function selectModelAttribute(element) {
-		// if already-selected element is not the newly-selected
-		if (selectedModelAttribute != element) {
-			// check if there was a selected element and pop it
-			if (selectedModelAttribute != null) {
-				selectedModelAttribute.className = "myButton"
-				selectedModelAttribute = null;
-			}
-			// push the new element
-			selectedModelAttribute = element;
-			element.className = "myPressedButton";
-			checkMapping();
-		} else {
-			// if already-selected element and newly-selected are the same button, pop it
-			selectedModelAttribute.className = "myButton";
-			selectedModelAttribute = null;
-		}
-	}
+	$.subscribe('onstop', function(event,data) {
+		checkMapping();
+	});
 	
 	function checkMapping() {
 		$("#mapping_messages").html("");
 		$("#mapping_cfg").html("");
 		$("#mapping_control").html("");
+		selectedEntityAttribute = $("#entityAttributesDiv").children('ul').children('li.ui-selected');
+		selectedModelAttribute = $("#modelAttributesDiv").children('ul').children('li.ui-selected');
 		if (selectedEntityAttribute != null && selectedModelAttribute != null) {
-			var entityAttrName = (selectedEntityAttribute.id).replace("entityAttr_", "");
+			var entityAttrName = $(selectedEntityAttribute).attr('id').replace("entityAttr_", "");
 			var entityAttrType = entityAttributesArray[entityAttrName];
-			var modelAttrName = (selectedModelAttribute.id).replace("modelAttr_", "");
+			var modelAttrName = (selectedModelAttribute).attr('id').replace("modelAttr_", "");
 			var modelAttrType = modelAttributesArray[modelAttrName];
 			var compatibility = checkTypeCompatibility(entityAttrType, modelAttrType);
 			if (compatibility == -1) {
@@ -172,9 +138,9 @@
 	
 	function saveMapping() {
 		if (selectedEntityAttribute != null && selectedModelAttribute != null) {
-			var entityAttrName = (selectedEntityAttribute.id).replace("entityAttr_", "");
+			var entityAttrName = $(selectedEntityAttribute).attr('id').replace("entityAttr_", "");
 			var entityAttrType = entityAttributesArray[entityAttrName];
-			var modelAttrName = (selectedModelAttribute.id).replace("modelAttr_", "");
+			var modelAttrName = (selectedModelAttribute).attr('id').replace("modelAttr_", "");
 			var modelAttrType = modelAttributesArray[modelAttrName];
 			// Recorrer todas las lineas para comprobar que estan bien configuradas
 			// Si es asociacion directa no habrá ninguna línea que comprobar, si es range o color, puede haber varias
@@ -221,11 +187,13 @@
 			if (!error) {
 				$("#mapping_messages").html("");
 				// Si no hay error, establecemos al asociacion con sus reglas
-				var mapping = new Mapping(entityAttrName, entityAttrType, modelAttrName, modelAttrType, rules);
+				var entityAttribute = new Attribute(entityAttrName, entityAttrType, new Object());
+				var modelAttribute = new Attribute(modelAttrName, modelAttrType, new Object())
+				var mapping = new Mapping(entityAttribute, modelAttribute, rules);
 				mappings.push(mapping);
 				// Ocultar los botones correspondientes a la columna de la tabla y el atributo de la clase
-				$("#"+selectedEntityAttribute.id).css('display','none');
-				$("#"+selectedModelAttribute.id).css('display','none');
+				$(selectedEntityAttribute).css('display','none');
+				$(selectedModelAttribute).css('display','none');
 				// Resetear selectedColumn y selectedAttribute
 				selectedEntityAttribute = null;
 				selectedModelAttribute = null;
@@ -374,6 +342,23 @@
 		$("#added_captionLines").append("</div>");
 	}
 	
+	function configureNonMappedModelAttributes() {
+		nonMappedModelAttributesArray = new Array();
+		$("#modelAttributesDiv").children('ul').children('li').each(function(){
+			if ($(this).css('display') != 'none') {
+				nonMappedModelAttributesArray.push($(this).attr('id').replace("modelAttr_", ""));	
+			}
+		});
+		$("#nonMappedModelAttributesDiv").html("<ul>");
+		$.each(nonMappedModelAttributesArray, function() {
+			$("#nonMappedModelAttributesDiv > ul").append("<li>");
+			$("#nonMappedModelAttributesDiv > ul > li:last").append("<label for='modelAttr_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label>");
+			$("#nonMappedModelAttributesDiv > ul > li:last").append("<input id='modelAttr_" + this + "' type='text' value='' />");
+			$("#nonMappedModelAttributesDiv > ul").append("</li>");
+		});
+		$("#nonMappedModelAttributesDiv").append("</ul>");
+	}
+	
 	function resetProfileForm() {
 		captionLines = new Array();
 		$("#added_captionLines > .caption_line").each(function(index, element) {
@@ -393,6 +378,13 @@
 			swapDivVisibility('second_step','first_step');
 			noError = false;
 		} else {
+			// Comprobar que no quedan nonMappedModelAttributes sin valor por defecto y que el valor corresponde al tipo
+			$("#nonMappedModelAttributesDiv > ul > li > input").each(function() {
+				var attrName = this;
+				var attrType = modelAttributesArray[attrName];
+				var attrValue = $(this).val();
+				// TODO
+			});
 			// Comprobar que no hay caption lines sin texto
 			$("#added_captionLines > .caption_line").each(function(index, element) {
 				var label = $(element).children("#text").val();
@@ -421,6 +413,14 @@
 	
 	function saveProfile() {
 		if (checkProfile() == true) {
+			// Configure nonMappedAttributes to mappings
+			$.each(nonMappedModelAttributesArray, function(i, item) {
+				var attrName = item;
+				var attrType = modelAttributesArray[attrName];
+				var attrValue = $(this).val();
+				var modelAttr = new Attribute(attrName, attrType, attrValue);
+				mappings.push(new Mapping(null, modelAttr, new Array()));
+			});
 			var jsonCaptionLines = JSON.stringify(captionLines);
 			var jsonMappings = JSON.stringify(mappings);
 			$.post ("/desglosa-web/saveProfile.action",
@@ -490,11 +490,12 @@
 		</div>
 		
 		<div style="clear:both;"></div>
-		<a href="javascript:swapDivVisibility('first_step','second_step')">Next &gt;</a>
+		<a href="javascript:configureNonMappedModelAttributes();swapDivVisibility('first_step','second_step');">Next &gt;</a>
 	</div>
 	
 	<div id="second_step" style="display: none;">
 		<s:text name="label.configure_caption_lines"/>
+		<div id="nonMappedModelAttributesDiv"></div>
 		<div id="added_captionLines"></div>
 		<a href="javascript:addCaptionLine()"><s:text name="label.add_caption_line"/></a>
 		<label for="profileName"><s:text name="label.profile_name"/></label>
