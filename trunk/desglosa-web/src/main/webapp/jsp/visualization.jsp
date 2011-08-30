@@ -452,6 +452,7 @@ function desglosa_showFactories(action, id, groupBy) {
 					$('#jogl_canvas').css('display','');
 					// Change active view
 					var city = JSON.stringify(data.city);
+					alert(city);
 					document.DesglosaApplet.visualizeBuildings(city);
 				} else {
 					$('#jogl_canvas').css('display','none');
