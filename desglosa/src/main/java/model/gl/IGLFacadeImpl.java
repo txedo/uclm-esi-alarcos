@@ -181,7 +181,7 @@ public class IGLFacadeImpl implements IGLFacade {
 				tower.setDepth((float)jobj.getDouble("depth"));
 				tower.setHeight((float)jobj.getDouble("height"));
 				tower.setWidth((float)jobj.getDouble("width"));
-				tower.setInnerHeight((float)jobj.getDouble("fill"));
+				tower.setInnerHeight((float)jobj.getDouble("innerHeight"));
 				tower.setColor(new Color(jobj.getString("color")));
 				towers.add(tower);
 			}

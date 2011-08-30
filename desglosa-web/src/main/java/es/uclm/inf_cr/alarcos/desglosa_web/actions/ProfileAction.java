@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.WordUtils;
 import org.springframework.web.context.ContextLoader;
 
 import net.sf.json.JSONArray;
@@ -35,6 +36,7 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 	private String profileName;
 	private String profileDescription;
 	private String jsonMappings;
+	private String jsonConstants;
 	private String jsonCaptionLines;
 	private List<PropertyWrapper> entityAttributes;
 	private Map<String, String> modelAttributes;
@@ -60,6 +62,10 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 
 	public void setJsonMappings(String jsonMappings) {
 		this.jsonMappings = jsonMappings;
+	}
+
+	public void setJsonConstants(String jsonConstants) {
+		this.jsonConstants = jsonConstants;
 	}
 
 	public void setJsonCaptionLines(String jsonCaptionLines) {
@@ -182,8 +188,10 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		JSONArray mappingArray = (JSONArray) JSONSerializer.toJSON(jsonMappings);
 		for (int i = 0; i < mappingArray.size(); i++) {
 			JSONObject mappingObject = mappingArray.getJSONObject(i);
-			Field column = new Field(mappingObject.getString("entityAttrType"), mappingObject.getString("entityAttrName"));
-			Field attribute = new Field(mappingObject.getString("modelAttrType"), mappingObject.getString("modelAttrName"));
+			JSONObject entityAttribute = mappingObject.getJSONObject("entityAttribute");
+			Field column = new Field(entityAttribute.getString("type"), entityAttribute.getString("name"));
+			JSONObject modelAttribute = mappingObject.getJSONObject("modelAttribute");
+			Field attribute = new Field(modelAttribute.getString("type"), modelAttribute.getString("name"));
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.setRootClass(Rule.class);
 			JSONArray jsonRules = mappingObject.getJSONArray("rules");
@@ -192,6 +200,17 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 			mappings.add(mapping);
 		}
 		metaclass.setMappings(mappings);
+		// Add constants data to metaclass
+		List<Field> constants = new ArrayList<Field>();
+		JSONArray constantArray = (JSONArray) JSONSerializer.toJSON(jsonConstants);
+		for (int i = 0; i < constantArray.size(); i++) {
+			JSONObject constantObject = constantArray.getJSONObject(i);
+			String name = constantObject.getString("name");
+			String type = constantObject.getString("type");			
+			Object value = constantObject.get("value");
+			constants.add(new Field(type, name, value));
+		}
+		metaclass.setConstants(constants);
 		// Add caption data to metaclass
 		Map<String,String> captionLines = new HashMap<String,String>();
 		JSONArray captionArray = (JSONArray) JSONSerializer.toJSON(jsonCaptionLines);
@@ -203,7 +222,9 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 		}
 		metaclass.setCaptionLines(new MyHashMapType(captionLines));
 		// Create XML from metaclass and place it in server
-		String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + profileName + "-" + Calendar.getInstance().getTimeInMillis() + ".xml";
+		String[] entityParts = entity.split("\\.");
+		String filename = WordUtils.uncapitalize(entityParts[entityParts.length-1]) + "-" + profileName + "-" + Calendar.getInstance().getTimeInMillis() + ".xml";
+		String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + filename;
 		XMLAgent.marshal(path, Metaclass.class, metaclass);
 		
 		return SUCCESS;

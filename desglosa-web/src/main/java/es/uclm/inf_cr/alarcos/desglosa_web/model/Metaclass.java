@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.util.MyHashMapType;
@@ -23,21 +24,26 @@ public class Metaclass {
 	private String entityName;	
 	@XmlAttribute(name="model")
 	private String modelName;
+	@XmlElementWrapper(name="mappings")
 	@XmlElement(name="mapping")
 	private List<Mapping> mappings = new ArrayList<Mapping>();
+	@XmlElementWrapper(name="constants")
+	@XmlElement(name="constant")
+	private List<Field> constants = new ArrayList<Field>();
 	@XmlElement(name="caption")
 	private MyHashMapType captionLines = new MyHashMapType();
 	
 	public Metaclass() {}
 
 	public Metaclass(String name, String description, String entityName,
-			String modelName, List<Mapping> mappings,
+			String modelName, List<Mapping> mappings, List<Field> constants,
 			MyHashMapType captionLines) {
 		this.name = name;
 		this.description = description;
 		this.entityName = entityName;
 		this.modelName = modelName;
 		this.mappings = mappings;
+		this.constants = constants;
 		this.captionLines = captionLines;
 	}
 
@@ -61,6 +67,10 @@ public class Metaclass {
 		return mappings;
 	}
 	
+	public List<Field> getConstants() {
+		return constants;
+	}
+
 	public MyHashMapType getCaptionLines() {
 		return captionLines;
 	}
@@ -85,8 +95,13 @@ public class Metaclass {
 		this.mappings = mappings;
 	}
 	
+	public void setConstants(List<Field> constants) {
+		this.constants = constants;
+	}
+
 	public void setCaptionLines(MyHashMapType captionLines) {
 		this.captionLines = captionLines;
 	}
+
 	
 }

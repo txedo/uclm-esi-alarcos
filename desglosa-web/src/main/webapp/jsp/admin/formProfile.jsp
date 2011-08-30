@@ -22,15 +22,14 @@
 	var mappings = new Array();
 	var captionLines = new Array();
 	
-	function Attribute (name, type, value) {
+	function Attribute (name, type) {
 		this.name = name;
 		this.type = type;
-		this.vaule = value;
 	}
 	
 	function Mapping (entityAttr, modelAttr, rules) {
-		this.entityAttr = entityAttr;
-		this.modelAttr = modelAttr;
+		this.entityAttribute = entityAttr;
+		this.modelAttribute = modelAttr;
 		this.rules = rules;
 	}
 	
@@ -187,8 +186,8 @@
 			if (!error) {
 				$("#mapping_messages").html("");
 				// Si no hay error, establecemos al asociacion con sus reglas
-				var entityAttribute = new Attribute(entityAttrName, entityAttrType, new Object());
-				var modelAttribute = new Attribute(modelAttrName, modelAttrType, new Object())
+				var entityAttribute = new Attribute(entityAttrName, entityAttrType);
+				var modelAttribute = new Attribute(modelAttrName, modelAttrType)
 				var mapping = new Mapping(entityAttribute, modelAttribute, rules);
 				mappings.push(mapping);
 				// Ocultar los botones correspondientes a la columna de la tabla y el atributo de la clase
@@ -352,8 +351,8 @@
 		$("#nonMappedModelAttributesDiv").html("<ul>");
 		$.each(nonMappedModelAttributesArray, function() {
 			$("#nonMappedModelAttributesDiv > ul").append("<li>");
-			$("#nonMappedModelAttributesDiv > ul > li:last").append("<label for='modelAttr_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label>");
-			$("#nonMappedModelAttributesDiv > ul > li:last").append("<input id='modelAttr_" + this + "' type='text' value='' />");
+			$("#nonMappedModelAttributesDiv > ul > li:last").append("<label for='constant_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label>");
+			$("#nonMappedModelAttributesDiv > ul > li:last").append("<input id='constant_" + this + "' type='text' value='' />");
 			$("#nonMappedModelAttributesDiv > ul").append("</li>");
 		});
 		$("#nonMappedModelAttributesDiv").append("</ul>");
@@ -414,22 +413,29 @@
 	function saveProfile() {
 		if (checkProfile() == true) {
 			// Configure nonMappedAttributes to mappings
+			var constants = new Array(); // hashmap-like
 			$.each(nonMappedModelAttributesArray, function(i, item) {
-				var attrName = item;
-				var attrType = modelAttributesArray[attrName];
-				var attrValue = $(this).val();
-				var modelAttr = new Attribute(attrName, attrType, attrValue);
-				mappings.push(new Mapping(null, modelAttr, new Array()));
+				var attr = new Object();
+				attr.name = item;
+				attr.type = modelAttributesArray[item];
+				attr.value = $("#constant_"+item).val();
+				if (attr.type == "int_range") attr.type = "int";
+				else if (attr.type == "float_range") attr.type = "float";
+				if (attr.type == "int") attr.value = parseInt(attr.value, 10);
+				else if (attr.type == "float") attr.value = parseFloat(attr.value, 10);
+				constants.push(attr);
 			});
 			var jsonCaptionLines = JSON.stringify(captionLines);
 			var jsonMappings = JSON.stringify(mappings);
+			var jsonConstants = JSON.stringify(constants);
 			$.post ("/desglosa-web/saveProfile.action",
 				{ profileName: $("#profileName").val(),
 				  profileDescription: $("#profileDescription").val(),
 				  model: $("#modelSelect").val(),
 				  entity: $("#entitySelect").val(),
 				  jsonCaptionLines: jsonCaptionLines,
-				  jsonMappings: jsonMappings
+				  jsonMappings: jsonMappings,
+				  jsonConstants: jsonConstants
 				},
 				function(data, status) {
 					if (status == "success") {

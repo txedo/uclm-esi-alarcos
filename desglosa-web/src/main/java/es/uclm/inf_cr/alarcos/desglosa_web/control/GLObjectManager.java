@@ -28,6 +28,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.EntityNotSupportedException
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.GroupByOperationNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Field;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Market;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
@@ -94,6 +95,13 @@ public class GLObjectManager {
 						} else {
 							// TODO El valor en la base de datos es null y va a lanzar IllegalArgumentException
 						}
+					}
+					// Apply constant values using java reflection too
+					for (Field field : metaclass.getConstants()) {
+						// Build setter method using Java Reflective API
+						String setterName = "set" + WordUtils.capitalize(field.getName());
+						Method setterMethod = classModel.getMethod(setterName, field.getParameterType());
+						setterMethod.invoke(classModel.cast(glObj), field.getValue());
 					}
 					glObjects.add((GLObject)glObj);
 				}

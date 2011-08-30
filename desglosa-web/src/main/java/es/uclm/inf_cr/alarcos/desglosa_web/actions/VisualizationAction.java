@@ -157,10 +157,9 @@ public class VisualizationAction extends ActionSupport {
 				return ERROR;
 			}
 		}
-//		if (generateGLObjects) city = glObjectManager.createGLFactories(factories, groupBy);
 		if (generateGLObjects) {
 			try {
-				city = glObjectManager.createGLObjects(factories, groupBy, "fffggg-1314223346253");
+				city = glObjectManager.createGLObjects(factories, groupBy, "factory-weeeeeee-1314706385058");
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -211,10 +210,9 @@ public class VisualizationAction extends ActionSupport {
 			queryParams.put("id", id);
 			factories = factoryDao.findByNamedQuery("findFactoriesByCompanyId", queryParams);
 		}
-//		if (generateGLObjects) city = glObjectManager.createGLFactories(factories, groupBy);
 		if (generateGLObjects) {
 			try {
-				city = glObjectManager.createGLObjects(factories, groupBy, "fffggg-1314223346253");
+				city = glObjectManager.createGLObjects(factories, groupBy, "factory-weeeeeee-1314706385058");
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -283,7 +281,6 @@ public class VisualizationAction extends ActionSupport {
 				return ERROR;
 			}
 		}
-//		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
 		if (generateGLObjects) {
 			try {
 				city = glObjectManager.createGLObjects(projects, groupBy, "asdf-1314183992774");
@@ -337,7 +334,6 @@ public class VisualizationAction extends ActionSupport {
 			queryParams.put("id", id);
 			projects = projectDao.findByNamedQuery("findProjectsByCompanyId", queryParams);
 		}
-//		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
 		if (generateGLObjects) {
 			try {
 				city = glObjectManager.createGLObjects(projects, groupBy, "asdf-1314183992774");
@@ -391,7 +387,6 @@ public class VisualizationAction extends ActionSupport {
 			queryParams.put("id", id);
 			projects = projectDao.findByNamedQuery("findProjectsByFactoryId", queryParams);
 		}
-//		if (generateGLObjects) city = glObjectManager.createGLProjects(projects, groupBy);
 		if (generateGLObjects) {
 			try {
 				city = glObjectManager.createGLObjects(projects, groupBy, "asdf-1314183992774");
