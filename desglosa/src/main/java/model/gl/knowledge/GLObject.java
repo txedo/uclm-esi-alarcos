@@ -13,8 +13,8 @@ import exceptions.GLSingletonNotInitializedException;
 public abstract class GLObject {
 	@GLDimension(name="id",type="int")
 	protected int id;
-	protected float maxWidth;
-	protected float maxDepth;
+	protected float maxWidth = 0.0f;
+	protected float maxDepth = 0.0f;
 	protected float positionX;
 	protected float positionY;
 	@GLDimension(name="color",type="color")

@@ -5,6 +5,7 @@ import exceptions.GLSingletonNotInitializedException;
 
 public abstract class GLObject3D extends GLObject {
 	protected final Color SHADOW_COLOR = new Color(0.0f, 0.0f, 0.0f, 0.4f);
+	protected float maxHeight = 0.0f;
 	
 	public GLObject3D () {
 		super();
@@ -24,5 +25,13 @@ public abstract class GLObject3D extends GLObject {
 	}
 	
 	protected abstract void draw(boolean shadow) throws GLSingletonNotInitializedException;
+
+	public float getMaxHeight() {
+		return maxHeight;
+	}
+
+	public void setMaxHeight(float maxHeight) {
+		this.maxHeight = maxHeight;
+	}
 
 }
