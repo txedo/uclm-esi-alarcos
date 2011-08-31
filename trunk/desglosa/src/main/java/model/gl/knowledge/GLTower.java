@@ -48,6 +48,7 @@ public class GLTower extends GLObject3D {
 		
 		this.maxWidth = GLTower.MAX_WIDTH;
 		this.maxDepth = GLTower.MAX_DEPTH;
+		this.maxHeight = GLTower.MAX_HEIGHT;
 	}
 	
 	@Override

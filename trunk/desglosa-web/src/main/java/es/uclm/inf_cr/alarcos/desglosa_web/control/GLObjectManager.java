@@ -51,9 +51,8 @@ public class GLObjectManager {
 		// Load selected profile
 		String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + profileName + ".xml";
 		Metaclass metaclass = XMLAgent.unmarshal(path, Metaclass.class);
-		// Create a list of metaclass model objects
+
 		Class classModel = Class.forName(metaclass.getModelName());
-		List<Class<?>> objects = new ArrayList<Class<?>>();
 		// Create a entity map where <key,value> is <column,value>. We have to access database
 		String entityTable = metaclass.getEntityName();
 		
@@ -108,8 +107,6 @@ public class GLObjectManager {
 				if (glObjects.size() > 0) c.getNeighborhoods().add(new Neighborhood(pairs.getKey(), glObjects));
 			}
 			
-			// Normalize
-			
 			// Configure caption
 			if (metaclass.getCaptionLines().getEntry().size() > 0) {
 				Map<String,String> captionLines = new HashMap<String,String>();
@@ -118,9 +115,7 @@ public class GLObjectManager {
 				}
 				c.setCaptionLines(captionLines);
 			}
-			
-			// Finally, neighborhoods positions are calculated
-			c.placeNeighborhoods();
+
 		}
 		
 		return c;
