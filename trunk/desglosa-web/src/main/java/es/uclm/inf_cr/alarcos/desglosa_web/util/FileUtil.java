@@ -3,12 +3,14 @@ package es.uclm.inf_cr.alarcos.desglosa_web.util;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.WordUtils;
 import org.springframework.web.context.ContextLoader;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
@@ -44,7 +46,8 @@ public class FileUtil {
 		for (String fileName : children) {
 			Metaclass mc = XMLAgent.unmarshal(fullFileName  + "\\" + fileName, Metaclass.class);
 			// Check that entity is ok
-			if (mc.getEntityName().equals(entity)) profileNames.put(mc.getName(), mc.getDescription());
+			String[] entityParts = mc.getEntityName().split("\\.");
+			if (WordUtils.uncapitalize(entityParts[entityParts.length-1]).equals(entity)) profileNames.put(fileName, mc.getDescription());
 		}
 		return profileNames;
 	}

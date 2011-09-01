@@ -178,6 +178,9 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 	public String save() throws Exception {
 		Metaclass metaclass = new Metaclass();
 		// Add profile name and description
+		profileName = profileName.replace("-", " ");
+		profileName = WordUtils.capitalize(profileName);
+		profileName = profileName.replace(" ", "");
 		metaclass.setName(profileName);
 		metaclass.setDescription(profileDescription);
 		// Add table and class name

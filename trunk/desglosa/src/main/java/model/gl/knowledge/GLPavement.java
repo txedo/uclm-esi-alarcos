@@ -7,6 +7,7 @@ import model.gl.GLUtils;
 import exceptions.GLSingletonNotInitializedException;
 
 public class GLPavement extends GLObject3D {
+	public static final float TITLE_GAP = 1.0f;
 	private int texture;
 	private float width;
 	private float depth;

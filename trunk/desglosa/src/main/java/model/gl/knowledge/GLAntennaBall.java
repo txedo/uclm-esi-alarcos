@@ -11,7 +11,6 @@ import model.util.Color;
 import exceptions.GLSingletonNotInitializedException;
 
 public class GLAntennaBall extends GLObject3D {
-	public static final float MAX_SIZE = 1.5f;
 	private int[] textures;
 	
 	private int subdivisions;
@@ -31,6 +30,9 @@ public class GLAntennaBall extends GLObject3D {
 	private final float ANTENNA_WIDTH = 3.0f;
 	private final float ANTENNA_ANGLE = 45.0f;
 	private final float ANTENNA_LENGTH = 0.5f;
+	
+	public static final float MAX_SIZE = 1.5f;
+	public static final float MAX_HEIGHT = MAX_SIZE*2 + 3.0f * (float)Math.sin(45.0f);
 
 	private GLUquadric quadric;
 	
