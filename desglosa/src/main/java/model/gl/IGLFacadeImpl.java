@@ -71,7 +71,7 @@ public class IGLFacadeImpl implements IGLFacade {
 		configureCaption(GLProjectViewManager.getInstance(), json.getJSONObject("captionLines"));
 		
 		// Change the active view to FactoryLevel
-		GLFactoryViewManager.getInstance().setPavements(configurePavements(json.getJSONArray("pavements")));
+		GLFactoryViewManager.getInstance().setPavements(configurePavements(json.getJSONArray("pavements"), GLFactory.MAX_HEIGHT));
 		GLFactoryViewManager.getInstance().setItems(buildings);
 		GLFactoryViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.FactoryLevel);
 	}
@@ -121,7 +121,7 @@ public class IGLFacadeImpl implements IGLFacade {
 		configureCaption(GLProjectViewManager.getInstance(), json.getJSONObject("captionLines"));
 
 		// Change the active view to ProjectLevel
-		GLProjectViewManager.getInstance().setPavements(configurePavements(json.getJSONArray("pavements")));
+		GLProjectViewManager.getInstance().setPavements(configurePavements(json.getJSONArray("pavements"), GLAntennaBall.MAX_SIZE*2));
 		GLProjectViewManager.getInstance().setItems(antennaBalls);
 		GLProjectViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.ProjectLevel);
 	}
@@ -176,7 +176,7 @@ public class IGLFacadeImpl implements IGLFacade {
 		configureCaption(GLProjectViewManager.getInstance(), json.getJSONObject("captionLines"));
 		
 		// Change the active view to TowerLevel		
-		GLTowerViewManager.getInstance().setPavements(configurePavements(json.getJSONArray("pavements")));
+		GLTowerViewManager.getInstance().setPavements(configurePavements(json.getJSONArray("pavements"), GLTower.MAX_HEIGHT));
 		GLTowerViewManager.getInstance().setItems(towers);
 		GLTowerViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.TowerLevel);
 	}
@@ -194,7 +194,7 @@ public class IGLFacadeImpl implements IGLFacade {
 		}
 	}
 	
-	private List<GLObject> configurePavements(JSONArray jsonPavements) {
+	private List<GLObject> configurePavements(JSONArray jsonPavements, float height) {
 		List<GLObject> pavements = new ArrayList<GLObject>();
 		for (int i = 0; i< jsonPavements.size(); i++) {
 			JSONObject jsonPavementObject = jsonPavements.getJSONObject(i);
@@ -203,6 +203,7 @@ public class IGLFacadeImpl implements IGLFacade {
 			glPav.setDepth((float)jsonPavementObject.getDouble("depth"));
 			glPav.setWidth((float)jsonPavementObject.getDouble("width"));
 			glPav.setTitle(jsonPavementObject.getString("title"));
+			glPav.setTitleHeight(height + GLPavement.TITLE_GAP);
 			// Add the new pavement to the list
 			pavements.add(glPav);
 		}

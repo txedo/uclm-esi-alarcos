@@ -11,6 +11,8 @@ import model.util.Color;
 import exceptions.GLSingletonNotInitializedException;
 
 public class GLFactory extends GLObject3D {
+	public static final float MAX_HEIGHT = 2.5f;
+	
 	// Constants to define object dimensions
 	private final float BASE_LENGTH = 2.0f;
 	private final float BASE_WIDTH = 1.0f;

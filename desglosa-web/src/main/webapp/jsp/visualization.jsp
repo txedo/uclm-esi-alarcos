@@ -163,7 +163,8 @@
 						if (idCompany == 0) {
 							$(infoSelector).append("<s:text name='label.generic_info_about_companies'/><br />");
 							$(infoSelector).append("<s:text name='label.show_more_about_factories'/>:<br />");
-							$(infoSelector).append(createRadioButtonGroup("factoryRBG", 0, "desglosa_showFactoriesByCompanyId", true, false, true, true));
+							createOptionGroup(infoSelector, 0, "desglosa_showFactoriesByCompanyId", true, false, true, true);
+// 							$(infoSelector).append(createRadioButtonGroup("factoryRBG", 0, "desglosa_showFactoriesByCompanyId", true, false, true, true));
 							$(infoSelector).append("<s:text name='label.show_more_about_projects'/>:<br />");
 							$(infoSelector).append(createRadioButtonGroup("projectRBG", 0, "desglosa_showProjectsByCompanyId", true, true, false, true));
 						} else {
@@ -253,6 +254,42 @@
 			result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"market\")'/><s:text name='label.market'/><br />";
 		result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"\")'/><s:text name='label.no_group_by'/><br />";
 		return result;
+	}
+	
+	function openDialog(callback, entity, id) {
+		showLoadingIndicator(true);
+		// read entity profiles
+		$.getJSON('/desglosa-web/json_p_get',
+				{
+					entity: entity
+				},
+				function (data, status) {
+					if (status == "success") {
+						$.each(data.profileNames, function(i, item) {
+							$("#profileChooser").append(item);
+						});
+						$("#profileChooser").dialog('open');
+					} else {
+						alert('An error has occurred while trying to retrieve visualization profiles: ' + status);
+					}
+					showLoadingIndicator(false);
+		});
+	}
+	
+	function createOptionGroup(parentSelector, id, callback, company, factory, project, market) {
+		$(parentSelector).append("<div id='option_group'>");
+		$("#option_group:last").append("<ul>");
+		if (company)
+			$("#option_group:last > ul").append("<li><a href='javascript:openDialog(" + callback + ",\"company\"," + id + ")'><s:text name='label.company'/></a></li>");
+		if (factory)
+			$("#option_group:last > ul").append("<li><a href='javascript:openDialog(" + callback + ",\"factory\"," + id + ")'><s:text name='label.factory'/></a></li>");
+		if (project)
+			$("#option_group:last > ul").append("<li><a href='javascript:openDialog(" + callback + ",\"project\"," + id + ")'><s:text name='label.project'/></a></li>");
+		if (market)
+			$("#option_group:last > ul").append("<li><a href='javascript:openDialog(" + callback + ",\"market\"," + id + ")'><s:text name='label.market'/></a></li>");
+		$("#option_group:last > ul").append("<li><a href='javascript:openDialog(" + callback + ",\"\"," + id + ")'><s:text name='label.no_group_by'/></a></li>");
+		$("#option_group:last").append("</ul>");
+		$(parentSelector).append("</div>");
 	}
 	
 	function formatCompanyInformation(companyJSON) {
@@ -514,15 +551,16 @@ function desglosa_showProjects (action, id, groupBy) {
 	<!-- This div will be hidden by default and will appear in the middle of the screen
 	in order to allow the user to choose a profile
 	-->	
-	<sj:dialog id="profileChooser"
+	<sj:dialog id="profileChooser" 
 		       buttons="{'OK':function() { chooseProfile(); }}"
         	    autoOpen="false"
         	    modal="true"
         	    closeOnEscape="true"
         	    showEffect="fold"
         	    hideEffect="scale"
-        	    title="Elige un perfil"/>
-    <sj:a openDialog="profileChooser">Open Dialog</sj:a>
+        	    draggable="false"
+        	    title="Elige un perfil"
+        	    onOpenTopics="loadProfiles"/>
     
 	<div id="messagesAndErrors">
 		<s:actionerror />
