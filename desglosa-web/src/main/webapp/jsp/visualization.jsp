@@ -8,6 +8,7 @@
 <head>
 	<meta name="menu" content="Visualization"/>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<link href="<s:url value='/styles/buttons.css'/>" rel="stylesheet" type="text/css" />
 	
 	<sj:head jqueryui="true"/>
 	
@@ -256,6 +257,23 @@
 		return result;
 	}
 	
+	function chooseProfile() {
+		showLoadingIndicator(true);
+		var filename = $("#profileChooserDiv").children('ul').children('li.ui-selected').attr('id');
+		$.getJSON('/desglosa-web/json_p_get',
+				{
+					profileName: filename
+				},
+				function (data, status) {
+					if (status == "success") {
+						desglosa_handleVisualization(data.profile);
+					} else {
+						alert('An error has occurred while trying to retrieve visualization profiles: ' + status);
+					}
+					showLoadingIndicator(false);
+		});
+	};
+	
 	function openDialog(callback, entity, id) {
 		showLoadingIndicator(true);
 		// read entity profiles
@@ -265,9 +283,17 @@
 				},
 				function (data, status) {
 					if (status == "success") {
-						$.each(data.profileNames, function(i, item) {
-							$("#profileChooser").append(item);
-						});
+						var mapSize = Object.keys(data.profileNames).length;
+						if (mapSize > 0) {
+							$("#profileChooserDiv").html("<ul>");
+							$.each(data.profileNames, function(filename, description) {
+								var parts = filename.split('-');
+								$("#profileChooserDiv ul").append("<li id='" + filename + "' class='selectablelist ui-corner-all' title='" + description + "'>" + parts[1] + "</li>");
+							});
+							$("#profileChooserDiv").append("</ul>");
+						} else {
+							// TODO empty array
+						}
 						$("#profileChooser").dialog('open');
 					} else {
 						alert('An error has occurred while trying to retrieve visualization profiles: ' + status);
@@ -363,10 +389,6 @@
 		initializeFactoryTab();
 		initializeProjectTab();
 	}
-	
-	function chooseProfile() {
-		alert('OK Button pressed!');
-	};
 
 	$(document).ready(function() {
 		// Initialize Google Maps canvas
@@ -462,6 +484,15 @@ function handleSelectionEvent(id, clickCount) {
 	// This function will handle the selection event on any 3D model, so it will handle navigation too
 }
 
+function desglosa_handleVisualization(JSONProfile) {
+	alert(data);
+	// data.profile.captionLines (tiene un hashmap "entry" con sus "key" y "value"s)
+	// data.profile.constants
+	// data.profile.mappings
+	// data.profile.entityName
+	// data.profile.modelName
+}
+
 function desglosa_showFactoriesByCompanyId(id, groupBy) {
 	desglosa_showFactories("/desglosa-web/json_factoriesByCompanyId.action", id, groupBy);
 }
@@ -553,14 +584,16 @@ function desglosa_showProjects (action, id, groupBy) {
 	-->	
 	<sj:dialog id="profileChooser" 
 		       buttons="{'OK':function() { chooseProfile(); }}"
-        	    autoOpen="false"
-        	    modal="true"
-        	    closeOnEscape="true"
-        	    showEffect="fold"
-        	    hideEffect="scale"
-        	    draggable="false"
-        	    title="Elige un perfil"
-        	    onOpenTopics="loadProfiles"/>
+        	   autoOpen="false"
+        	   modal="true"
+        	   closeOnEscape="true"
+        	   showEffect="fold"
+        	   hideEffect="scale"
+        	   draggable="false"
+        	   title="Elige un perfil"
+        	   onOpenTopics="loadProfiles">
+    	<sj:div id='profileChooserDiv' selectable='true' selectableFilter='li'></sj:div>
+    </sj:dialog>
     
 	<div id="messagesAndErrors">
 		<s:actionerror />
