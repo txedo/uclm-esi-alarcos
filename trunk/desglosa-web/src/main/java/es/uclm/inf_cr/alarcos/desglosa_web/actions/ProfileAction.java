@@ -195,11 +195,12 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 			Field column = new Field(entityAttribute.getString("type"), entityAttribute.getString("name"));
 			JSONObject modelAttribute = mappingObject.getJSONObject("modelAttribute");
 			Field attribute = new Field(modelAttribute.getString("type"), modelAttribute.getString("name"));
+			Object ratio = mappingObject.get("ratio");
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.setRootClass(Rule.class);
 			JSONArray jsonRules = mappingObject.getJSONArray("rules");
 			List<Rule> rules = (List)JSONSerializer.toJava(jsonRules, jsonConfig);
-			Mapping mapping = new Mapping(column, attribute, null, rules);
+			Mapping mapping = new Mapping(column, attribute, null, ratio, rules);
 			mappings.add(mapping);
 		}
 		metaclass.setMappings(mappings);

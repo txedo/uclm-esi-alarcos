@@ -27,9 +27,10 @@
 		this.type = type;
 	}
 	
-	function Mapping (entityAttr, modelAttr, rules) {
+	function Mapping (entityAttr, modelAttr, ratio, rules) {
 		this.entityAttribute = entityAttr;
 		this.modelAttribute = modelAttr;
+		this.ratio = ratio;
 		this.rules = rules;
 	}
 	
@@ -128,6 +129,8 @@
 						addColorConfigurationLine(range);
 						$("#mapping_control").append("<a href='javascript:addColorConfigurationLine(" + range + ")'>+</a>");	
 					}
+				} else if (modelAttrType == "float") {
+					$("#mapping_cfg").append("<ul><li><input id='ratio' type='text' value=''/></li></ul>");
 				}
 				// Si es mapeo directo no hay que ahcer nada más
 				$("#mapping_control").append("<a href='javascript:saveMapping()'><s:text name='label.save_mapping'/></a>");
@@ -146,6 +149,7 @@
 			// El valor de los textboxes será del tipo de la columna de la tabla
 			var error = false;
 			var rules = new Array();
+			var ratio = null;
 			// if entityAttrType == "hexcolor" then direct mapping because it is in hex format
 			if (entityAttrType != "hexcolor" && (modelAttrType == "float_range" || modelAttrType == "color")) {
 				$("#mapping_cfg").children().each(function(index, element) {
@@ -182,13 +186,22 @@
 						rules.push(rule);
 					}
 				});
+			} else if (modelAttrType == "float") {
+				if ($("#ratio").val() != "") {
+					ratio = parseFloat($("#ratio").val(), 10);
+					if (isNaN(ratio)) {
+						$("#mapping_messages").html("");
+						$("#mapping_messages").html("<s:text name='error.field_isNaN'/>");
+						error = true;
+					}
+				} else ratio = null;
 			}
 			if (!error) {
 				$("#mapping_messages").html("");
 				// Si no hay error, establecemos al asociacion con sus reglas
 				var entityAttribute = new Attribute(entityAttrName, entityAttrType);
 				var modelAttribute = new Attribute(modelAttrName, modelAttrType)
-				var mapping = new Mapping(entityAttribute, modelAttribute, rules);
+				var mapping = new Mapping(entityAttribute, modelAttribute, ratio, rules);
 				mappings.push(mapping);
 				// Ocultar los botones correspondientes a la columna de la tabla y el atributo de la clase
 				$(selectedEntityAttribute).css('display','none');
@@ -205,6 +218,9 @@
 				$("#mapping_added").append("<div class='mapping_line' style='display: block;'>");
 				$(".mapping_line:last").append("<div class='entityAttr_field' style='float: left;'>" + entityAttrName + "</div>");
 				$(".mapping_line:last").append("<div class='modelAttr_field' style='float: left;'>" + modelAttrName + "</div>");
+				if (ratio != null) {
+					$(".mapping_line:last").append("<div class='ratio' style='float: left;'>" + ratio + "</div>");
+				}
 				if (rules.length > 0) {
 					$(".mapping_line:last").append("<div class='mapping_rules' style='float: left;'>");
 					$.each(rules, function(index, element) {
