@@ -103,6 +103,7 @@
 		$("#mapping_messages").html("");
 		$("#mapping_cfg").html("");
 		$("#mapping_control").html("");
+		// TODO esto genera un pequeño bug en la interfaz. Comprobar que el elemento sea visible
 		selectedEntityAttribute = $("#entityAttributesDiv").children('ul').children('li.ui-selected');
 		selectedModelAttribute = $("#modelAttributesDiv").children('ul').children('li.ui-selected');
 		if (selectedEntityAttribute != null && selectedModelAttribute != null) {
