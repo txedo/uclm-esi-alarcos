@@ -10,6 +10,7 @@ import org.apache.commons.lang.WordUtils;
 import org.springframework.web.context.ContextLoader;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
@@ -196,6 +197,7 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 			JSONObject modelAttribute = mappingObject.getJSONObject("modelAttribute");
 			Field attribute = new Field(modelAttribute.getString("type"), modelAttribute.getString("name"));
 			Object ratio = mappingObject.get("ratio");
+			if (ratio instanceof JSONNull) ratio = null;
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.setRootClass(Rule.class);
 			JSONArray jsonRules = mappingObject.getJSONArray("rules");

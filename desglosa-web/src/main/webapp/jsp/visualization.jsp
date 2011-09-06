@@ -164,10 +164,9 @@
 						if (idCompany == 0) {
 							$(infoSelector).append("<s:text name='label.generic_info_about_companies'/><br />");
 							$(infoSelector).append("<s:text name='label.show_more_about_factories'/>:<br />");
-							createOptionGroup(infoSelector, 0, "desglosa_showFactoriesByCompanyId", true, false, true, true);
-// 							$(infoSelector).append(createRadioButtonGroup("factoryRBG", 0, "desglosa_showFactoriesByCompanyId", true, false, true, true));
+							createOptionGroup(infoSelector, 0, "desglosa_showFactoriesByCompanyId", "factory", true, false, true, true);
 							$(infoSelector).append("<s:text name='label.show_more_about_projects'/>:<br />");
-							$(infoSelector).append(createRadioButtonGroup("projectRBG", 0, "desglosa_showProjectsByCompanyId", true, true, false, true));
+							createOptionGroup(infoSelector, 0, "desglosa_showProjectsByCompanyId", "project", true, true, false, true);
 						} else {
 							// This bucle only iterates once
 							$.each(data.companies, function (i, item) {
@@ -243,38 +242,24 @@
 		});
 	}
 	
-	function createRadioButtonGroup(name, id, callback, company, factory, project, market) {
-		var result = "";
-		if (company)
-			result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"company\")'/><s:text name='label.company'/><br />";
-		if (factory)
-			result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"factory\")'/><s:text name='label.factory'/><br />";
-		if (project)
-			result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"project\")'/><s:text name='label.project'/><br />";
-		if (market)
-			result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"market\")'/><s:text name='label.market'/><br />";
-		result += "<input type='radio' name='" + name + "' onclick='javascript:" + callback + "(" + id + ", \"\")'/><s:text name='label.no_group_by'/><br />";
-		return result;
-	}
+	var visualizationCallback = null;
+	var visualizationGroupBy = null;
+	var visualizationEntityId = null;
 	
 	function chooseProfile() {
+		// http://viralpatel.net/blogs/2009/01/calling-javascript-function-from-string.html
 		showLoadingIndicator(true);
 		var filename = $("#profileChooserDiv").children('ul').children('li.ui-selected').attr('id');
-		$.getJSON('/desglosa-web/json_p_get',
-				{
-					profileName: filename
-				},
-				function (data, status) {
-					if (status == "success") {
-						desglosa_handleVisualization(data.profile);
-					} else {
-						alert('An error has occurred while trying to retrieve visualization profiles: ' + status);
-					}
-					showLoadingIndicator(false);
-		});
+		var funcCall = visualizationCallback + "(" + visualizationEntityId + ",\"" + visualizationGroupBy + "\",\"" + filename + "\")";
+		$("#profileChooser").dialog('close');
+		showLoadingIndicator(false);
+		eval(funcCall);
 	};
 	
-	function openDialog(callback, entity, id) {
+	function openDialog(callback, entity, groupBy, id) {
+		visualizationCallback = callback;
+		visualizationGroupBy = groupBy;
+		visualizationEntityId = id;
 		showLoadingIndicator(true);
 		// read entity profiles
 		$.getJSON('/desglosa-web/json_p_get',
@@ -296,25 +281,26 @@
 						}
 						$("#profileChooser").dialog('open');
 					} else {
+						$("#profileChooserDiv").html("");
 						alert('An error has occurred while trying to retrieve visualization profiles: ' + status);
 					}
 					showLoadingIndicator(false);
 		});
 	}
 	
-	function createOptionGroup(parentSelector, id, callback, company, factory, project, market) {
+	function createOptionGroup(parentSelector, id, callback, entity, company, factory, project, market) {
 		$(parentSelector).append("<div id='option_group'>");
-		$("#option_group:last").append("<ul>");
+		$(parentSelector + " > #option_group:last").append("<ul>");
 		if (company)
-			$("#option_group:last > ul").append("<li><a href='javascript:openDialog(" + callback + ",\"company\"," + id + ")'><s:text name='label.company'/></a></li>");
+			$(parentSelector + " > #option_group:last > ul").append("<li><a href='javascript:openDialog(\"" + callback + "\",\"" + entity + "\",\"company\"," + id + ")'><s:text name='label.company'/></a></li>");
 		if (factory)
-			$("#option_group:last > ul").append("<li><a href='javascript:openDialog(" + callback + ",\"factory\"," + id + ")'><s:text name='label.factory'/></a></li>");
+			$(parentSelector + " > #option_group:last > ul").append("<li><a href='javascript:openDialog(\"" + callback + "\",\"" + entity + "\",\"factory\"," + id + ")'><s:text name='label.factory'/></a></li>");
 		if (project)
-			$("#option_group:last > ul").append("<li><a href='javascript:openDialog(" + callback + ",\"project\"," + id + ")'><s:text name='label.project'/></a></li>");
+			$(parentSelector + " > #option_group:last > ul").append("<li><a href='javascript:openDialog(\"" + callback + "\",\"" + entity + "\",\"project\"," + id + ")'><s:text name='label.project'/></a></li>");
 		if (market)
-			$("#option_group:last > ul").append("<li><a href='javascript:openDialog(" + callback + ",\"market\"," + id + ")'><s:text name='label.market'/></a></li>");
-		$("#option_group:last > ul").append("<li><a href='javascript:openDialog(" + callback + ",\"\"," + id + ")'><s:text name='label.no_group_by'/></a></li>");
-		$("#option_group:last").append("</ul>");
+			$(parentSelector + " > #option_group:last > ul").append("<li><a href='javascript:openDialog(\"" + callback + "\",\"" + entity + "\",\"market\"," + id + ")'><s:text name='label.market'/></a></li>");
+		$(parentSelector + " > #option_group:last > ul").append("<li><a href='javascript:openDialog(\"" + callback + "\",\"" + entity + "\",\"\"," + id + ")'><s:text name='label.no_group_by'/></a></li>");
+		$(parentSelector + " > #option_group:last").append("</ul>");
 		$(parentSelector).append("</div>");
 	}
 	
@@ -484,25 +470,27 @@ function handleSelectionEvent(id, clickCount) {
 	// This function will handle the selection event on any 3D model, so it will handle navigation too
 }
 
-function desglosa_handleVisualization(JSONProfile) {
-	alert(data);
-	// data.profile.captionLines (tiene un hashmap "entry" con sus "key" y "value"s)
-	// data.profile.constants
-	// data.profile.mappings
-	// data.profile.entityName
-	// data.profile.modelName
+function desglosa_showFactoriesByCompanyId(id, groupBy, profileFilename) {
+	desglosa_launchDesglosaEngine("/desglosa-web/json_factoriesByCompanyId.action", id, groupBy, profileFilename);
 }
 
-function desglosa_showFactoriesByCompanyId(id, groupBy) {
-	desglosa_showFactories("/desglosa-web/json_factoriesByCompanyId.action", id, groupBy);
+function desglosa_showFactoriesById(id, groupBy, profileFilename) {
+	desglosa_launchDesglosaEngine("/desglosa-web/json_factoryById.action", id, groupBy, profileFilename);
 }
 
-function desglosa_showFactoriesById(id, groupBy) {
-	desglosa_showFactories("/desglosa-web/json_factoryById.action", id, groupBy);
+function desglosa_showProjectsByCompanyId(id, groupBy, profileFilename) {
+	desglosa_launchDesglosaEngine("/desglosa-web/json_projectsByCompanyId.action", id, groupBy, profileFilename);
 }
 
-function desglosa_showFactories(action, id, groupBy) {
-	queriedFactories = new Array();
+function desglosa_showProjectsByFactoryId(id, groupBy, profileFilename) {
+	desglosa_launchDesglosaEngine("/desglosa-web/json_projectsByFactoryId.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showProjectById(id, groupBy, profileFilename) {
+	desglosa_launchDesglosaEngine("/desglosa-web/json_projectById.action", id, groupBy, profileFilename);
+}
+
+function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 	showLoadingIndicator(true);
 	// Hide map canvas
 	if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
@@ -512,7 +500,8 @@ function desglosa_showFactories(action, id, groupBy) {
 			{
 				id: id,
 				generateGLObjects: true,
-				groupBy: groupBy
+				groupBy: groupBy,
+				profileFileName: filename
 			},
 			function (data, status) {
 				if (status == "success") {
@@ -520,8 +509,7 @@ function desglosa_showFactories(action, id, groupBy) {
 					$('#jogl_canvas').css('display','');
 					// Change active view
 					var city = JSON.stringify(data.city);
-					alert(city);
-					document.DesglosaApplet.visualizeBuildings(city);
+					desglosa_handleVisualization(data.city.model, city);
 				} else {
 					$('#jogl_canvas').css('display','none');
 					$('#map_canvas').css('display','');
@@ -531,44 +519,14 @@ function desglosa_showFactories(action, id, groupBy) {
 	});
 }
 
-function desglosa_showProjectsByCompanyId(id, groupBy) {
-	desglosa_showProjects("/desglosa-web/json_projectsByCompanyId.action", id, groupBy);
-}
-
-function desglosa_showProjectsByFactoryId(id, groupBy) {
-	desglosa_showProjects("/desglosa-web/json_projectsByFactoryId.action", id, groupBy);
-}
-
-function desglosa_showProjectById(id, groupBy) {
-	desglosa_showProjects("/desglosa-web/json_projectById.action", id, groupBy);
-}
-
-function desglosa_showProjects (action, id, groupBy) {
-	showLoadingIndicator(true);
-	// Hide map canvas
-	if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
-	// Hide jogl canvas if it is shown
-	if (document.getElementById("jogl_canvas").style.display == '') $('#jogl_canvas').css('display','none');
-	$.getJSON(action,
-			{
-				id: id,
-				generateGLObjects: true,
-				groupBy: groupBy
-			},
-			function (data, status) {
-				if (status == "success") {
-					// Show jogl canvas
-					$('#jogl_canvas').css('display','');
-					// Change active view
-					var city = JSON.stringify(data.city);
-					document.DesglosaApplet.visualizeAntennaBalls(city);
-				} else {
-					$('#jogl_canvas').css('display','none');
-					$('#map_canvas').css('display','');
-					alert('An error has occurred while trying to retrieve factory information: ' + status);
-				}
-				showLoadingIndicator(false);
-	});
+function desglosa_handleVisualization(model, city) {
+	if (model == "model.gl.knowledge.GLTower") {
+		document.DesglosaApplet.visualizeTowers(city);
+	} else if (model == "model.gl.knowledge.GLAntennaBall") {
+		document.DesglosaApplet.visualizeAntennaBalls(city);
+	} else if (model == "model.gl.knowledge.GLFactory") {
+		document.DesglosaApplet.visualizeBuildings(city);
+	}
 }
 
 

@@ -12,6 +12,7 @@ public class City {
 	private final float X_GAP = 1.5f;
 	private final float Y_GAP = 2.0f;
 	
+	private String model;
 	private List<Neighborhood> neighborhoods;
 	private List<GLObject> pavements;
 	private Map<String, String> captionLines;
@@ -21,6 +22,7 @@ public class City {
 	protected Vector2f placePoint;
 
 	public City() {
+		this.model = "";
 		this.neighborhoods = new ArrayList<Neighborhood>();
 		this.cols = 0;
 		this.rows = 0;
@@ -80,6 +82,14 @@ public class City {
 			placePoint.setX(x);
 			if (dimensions != null) placePoint.setY((float)maxDepth + this.Y_GAP);
 		}
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
 	}
 
 	public List<Neighborhood> getNeighborhoods() {

@@ -35,6 +35,7 @@ public class VisualizationAction extends ActionSupport {
 	private int id;
 	private boolean generateGLObjects;
 	private String groupBy = ""; //company, market, factory, project
+	private String profileFileName;
 	private City city;
 	private GLObjectManager glObjectManager;
 	
@@ -91,6 +92,10 @@ public class VisualizationAction extends ActionSupport {
 
 	public void setGroupBy(String groupBy) {
 		this.groupBy = groupBy;
+	}
+
+	public void setProfileFileName(String profileFileName) {
+		this.profileFileName = profileFileName;
 	}
 
 	public void setCity(City city) {
@@ -158,45 +163,7 @@ public class VisualizationAction extends ActionSupport {
 			}
 		}
 		if (generateGLObjects) {
-			try {
-				city = glObjectManager.createGLObjects(factories, groupBy, "factory-weeeeeee-1314706385058");
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JAXBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (EntityNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (GroupByOperationNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			entity2model(factories);
 		}
 		return SUCCESS;
 	}
@@ -211,45 +178,7 @@ public class VisualizationAction extends ActionSupport {
 			factories = factoryDao.findByNamedQuery("findFactoriesByCompanyId", queryParams);
 		}
 		if (generateGLObjects) {
-			try {
-				city = glObjectManager.createGLObjects(factories, groupBy, "factory-weeeeeee-1314706385058");
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JAXBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (EntityNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (GroupByOperationNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			entity2model(factories);
 		}
 		return SUCCESS;
 	}
@@ -282,45 +211,7 @@ public class VisualizationAction extends ActionSupport {
 			}
 		}
 		if (generateGLObjects) {
-			try {
-				city = glObjectManager.createGLObjects(projects, groupBy, "asdf-1314183992774");
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JAXBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (EntityNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (GroupByOperationNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			entity2model(projects);
 		}
 		return SUCCESS;
 	}
@@ -335,45 +226,7 @@ public class VisualizationAction extends ActionSupport {
 			projects = projectDao.findByNamedQuery("findProjectsByCompanyId", queryParams);
 		}
 		if (generateGLObjects) {
-			try {
-				city = glObjectManager.createGLObjects(projects, groupBy, "asdf-1314183992774");
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JAXBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (EntityNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (GroupByOperationNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			entity2model(projects);
 		}
 		return SUCCESS;
 	}
@@ -388,45 +241,7 @@ public class VisualizationAction extends ActionSupport {
 			projects = projectDao.findByNamedQuery("findProjectsByFactoryId", queryParams);
 		}
 		if (generateGLObjects) {
-			try {
-				city = glObjectManager.createGLObjects(projects, groupBy, "asdf-1314183992774");
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JAXBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (EntityNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (GroupByOperationNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			entity2model(projects);
 		}
 		return SUCCESS;
 	}
@@ -444,5 +259,47 @@ public class VisualizationAction extends ActionSupport {
 			}
 		}
 		return SUCCESS;
+	}
+	
+	private void entity2model (List entities) {
+		try {
+			city = glObjectManager.createGLObjects(entities, groupBy, profileFileName);
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EntityNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (GroupByOperationNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
