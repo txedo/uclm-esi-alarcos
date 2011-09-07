@@ -300,13 +300,9 @@
 		} else {
 			if (type1 == "hexcolor" && type2 == "color") compatible = 1;
 			else if (type1 == "int") {
-				if (type2 == "float" || type2 == "double" || type2 == "float_range" || type2 == "color") compatible = 1;
+				if (type2 == "float_range" || type2 == "color" || type2 == "string") compatible = 1;
 			} else if (type1 == "float") {
-				if (type2 == "double" || type2 == "float_range" || type2 == "color") compatible = 1;
-				else if (type2 == "int") compatible = 0;
-			} else if (type1 == "double") {
-				if (type2 == "float_range" || type2 == "color") compatible = 1;
-				else if (type2 == "int" || type1 == "float") compatible = 0;
+				if (type2 == "float_range" || type2 == "color" || type2 == "string") compatible = 1;
 			} else if (type1 == "string") {
 				if (type2 == "float_range" || type2 == "color") compatible = 1;
 			} else if (type1 == "boolean") {
@@ -436,10 +432,10 @@
 				attr.name = item;
 				attr.type = modelAttributesArray[item];
 				attr.value = $("#constant_"+item).val();
-				if (attr.type == "int_range") attr.type = "int";
-				else if (attr.type == "float_range") attr.type = "float";
+				if (attr.type == "float_range") attr.type = "float";
 				if (attr.type == "int") attr.value = parseInt(attr.value, 10);
 				else if (attr.type == "float") attr.value = parseFloat(attr.value, 10);
+				// TODO Comprobar que cuando es un float, guarda los decimales y no solo la parte entera
 				constants.push(attr);
 			});
 			var jsonCaptionLines = JSON.stringify(captionLines);

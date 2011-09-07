@@ -68,7 +68,7 @@ public class IGLFacadeImpl implements IGLFacade {
 		city.placeNeighborhoods();
 		
 		// Configure caption lines
-		configureCaption(GLProjectViewManager.getInstance(), json.getJSONObject("captionLines"));
+		configureCaption(GLFactoryViewManager.getInstance(), json.getJSONObject("captionLines"));
 		
 		// Change the active view to FactoryLevel
 		GLFactoryViewManager.getInstance().setPavements(configurePavements(json.getJSONArray("pavements"), GLFactory.MAX_HEIGHT));
@@ -173,7 +173,7 @@ public class IGLFacadeImpl implements IGLFacade {
 		city.placeNeighborhoods();
 		
 		// Configure caption lines
-		configureCaption(GLProjectViewManager.getInstance(), json.getJSONObject("captionLines"));
+		configureCaption(GLTowerViewManager.getInstance(), json.getJSONObject("captionLines"));
 		
 		// Change the active view to TowerLevel		
 		GLTowerViewManager.getInstance().setPavements(configurePavements(json.getJSONArray("pavements"), GLTower.MAX_HEIGHT));
