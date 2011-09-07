@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javassist.bytecode.stackmap.TypeData.ClassName;
+
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.WordUtils;
@@ -30,6 +32,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Market;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.MyHashMapEntryType;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
@@ -75,19 +78,63 @@ public class GLObjectManager {
 						// oneWord_otherWord_anotherWord must be parsed to invoke getOneWord().getOtherWord().getAnotherWord()
 						String[] chainOfGetters = mapping.getEntityAttr().getName().split("_");
 						Class subClass = e.getClass();
-						Object value = e;
-						for (int i = 0; i < chainOfGetters.length && value != null; i++) {
+						Object entityAttrValue = e;
+						for (int i = 0; i < chainOfGetters.length && entityAttrValue != null; i++) {
 							String getterPrefix = "get";
 							if (i == chainOfGetters.length-1) {
 								if (mapping.getModelAttr().getType().equals("boolean")) getterPrefix = "is";
 							}
 							String parentGetterName = getterPrefix + WordUtils.capitalize(chainOfGetters[i]);
 							Method parentGetterMethod = subClass.getMethod(parentGetterName, null);
-							value = parentGetterMethod.invoke(value, null);
+							entityAttrValue = parentGetterMethod.invoke(entityAttrValue, null);
 							subClass = subClass.getDeclaredField(chainOfGetters[i]).getType();
 						}
-						if (value != null) {
-							setterMethod.invoke(classModel.cast(glObj), value);
+						if (entityAttrValue != null) {
+							// Check model attribute type and handle it in a special manner if its range or color
+							Object finalValue = null;
+							String entityAttrType = mapping.getEntityAttr().getType();
+							String modelAttrType = mapping.getModelAttr().getType();
+							if (modelAttrType.equals("float_range")) {
+								// leer las reglas y aplicarlas
+								// entityAttrType puede ser int (low-high-value), float (low-high-value), string (low-value), boolean (low-value)
+								for (Rule r : mapping.getRules()) {
+									if (entityAttrType.equals("int") || entityAttrType.equals("float") || (modelAttrType.equals("color") && !entityAttrType.equals("hexcolor"))) {
+										String entityAttrValueType = entityAttrValue.getClass().getName();
+										String ruleLowValueType = r.getLow().getClass().getName();
+										String ruleHighValueType = r.getHigh().getClass().getName();
+										if (entityAttrValueType.equals(ruleLowValueType) && ruleLowValueType.equals(ruleHighValueType)) {
+											if (entityAttrValueType.equals("java.lang.Integer")) {
+												if ((Integer)entityAttrValue >= (Integer)r.getLow() && (Integer)entityAttrValue <= (Integer)r.getHigh()) {
+													if (modelAttrType.equals("float_range")) finalValue = (Float)r.getValue();
+													if (modelAttrType.equals("color")) finalValue = (String)r.getValue();
+												}
+											} else if (entityAttrValueType.equals("java.lang.Float")) {
+												if ((Float)entityAttrValue >= (Float)r.getLow() && (Float)entityAttrValue <= (Float)r.getHigh()) {
+													if (modelAttrType.equals("float_range")) finalValue = (Float)r.getValue();
+													if (modelAttrType.equals("color")) finalValue = (String)r.getValue();
+												}
+											}
+										} else {
+											// TODO lanzar excepcion de tipos incompatibles
+										}
+									} else if (entityAttrType.equals("string")) {
+										if (((String)entityAttrValue).equals((String)r.getLow())) {
+											finalValue = (String)r.getValue();
+										}
+									} else if (entityAttrType.equals("boolean")) {
+										if (Boolean.valueOf((String)entityAttrValue).equals(Boolean.valueOf((String)r.getLow()))) {
+											finalValue = Boolean.valueOf((String)r.getValue());
+										}
+									}
+								}
+							} else if (entityAttrType.equals("int") && modelAttrType.equals("string")) {
+								finalValue = ((Integer)entityAttrValue).toString();
+							} else if (entityAttrType.equals("float") && modelAttrType.equals("string")) {
+								finalValue = ((Float)entityAttrValue).toString();
+							} else {
+								finalValue = entityAttrValue;
+							}
+							setterMethod.invoke(classModel.cast(glObj), finalValue);
 						} else {
 							// TODO El valor en la base de datos es null y va a lanzar IllegalArgumentException
 						}
