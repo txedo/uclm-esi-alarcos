@@ -86,4 +86,6 @@ public class GLEdge extends GLObject implements IGLEdge {
 	public void setDestination(GLMetricIndicator destination) {
 		this.destination = destination;
 	}
+
+
 }

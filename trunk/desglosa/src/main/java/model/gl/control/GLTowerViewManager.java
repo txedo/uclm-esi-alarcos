@@ -56,6 +56,7 @@ public class GLTowerViewManager extends GLViewManager {
 		super.drawFloor();
 		super.drawPavements();
 		this.drawItems();
+		super.drawCaption();
 	}
 
 	@Override
@@ -94,5 +95,6 @@ public class GLTowerViewManager extends GLViewManager {
 		System.err.println("Selected tower: " + GLObjectId + "\tNumber of clicks: " + clickCount);
 		NotifyUIManager.notifySelectedTower(GLObjectId, clickCount);
 	}
+
 
 }

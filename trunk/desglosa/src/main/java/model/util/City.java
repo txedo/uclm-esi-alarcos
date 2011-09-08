@@ -53,7 +53,7 @@ public class City {
 		return (Math.sqrt(d) > (double)((int)(Math.sqrt(d))) ? (int)(Math.sqrt(d))+1 : (int)(Math.sqrt(d)));
 	}
 	
-	public void placeNeighborhoods() {
+	public void placeNeighborhoods(float maxHeight) {
 		calculateRowsAndCols();
 		// Once we know how many columns and rows it will have, we can calculate a position for each flat
 		float x = placePoint.getX();
@@ -76,6 +76,7 @@ public class City {
 					pavement.setWidth(dimensions.getX()+2*this.X_GAP/3);
 					pavement.setDepth((float)maxDepth+2*this.Y_GAP/3);
 					pavement.setTitle(neighborhoods.get(index).getName());
+					pavement.setTitleHeight(maxHeight + GLPavement.TITLE_GAP);
 					pavements.add(pavement);
 				}
 			}
@@ -106,6 +107,10 @@ public class City {
 
 	public void setCaptionLines(Map<String, String> captionLines) {
 		this.captionLines = captionLines;
+	}
+
+	public void setPavements(List<GLObject> pavements) {
+		this.pavements = pavements;
 	}
 	
 	

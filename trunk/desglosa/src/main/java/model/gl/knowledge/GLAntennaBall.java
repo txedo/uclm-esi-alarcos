@@ -181,5 +181,6 @@ public class GLAntennaBall extends GLObject3D {
 	public void setProgressionMark(boolean progression) {
 		this.progressionMark = progression;
 	}
+
 	
 }

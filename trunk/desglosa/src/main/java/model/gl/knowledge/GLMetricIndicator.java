@@ -55,5 +55,6 @@ public class GLMetricIndicator extends GLNode {
 		float y = this.positionY + this.width/2;
 		return new Vector2f (x, y);
 	}
+
 	
 }

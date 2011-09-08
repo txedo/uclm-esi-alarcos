@@ -132,4 +132,5 @@ public class GLProjectViewManager extends GLViewManager {
 		NotifyUIManager.notifySelectedProject(GLObjectId, clickCount);
 	}
 
+
 }
