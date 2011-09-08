@@ -11,7 +11,6 @@ import model.gl.control.EViewLevels;
 import model.gl.control.GLFactoryViewManager;
 import model.gl.control.GLProjectViewManager;
 import model.gl.control.GLTowerViewManager;
-import model.gl.control.GLViewManager;
 import model.gl.knowledge.GLAntennaBall;
 import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
@@ -51,27 +50,27 @@ public class IGLFacadeImpl implements IGLFacade {
 			List<GLObject> tmpBuildings = new ArrayList<GLObject>();
 			JSONObject jsonFlatsObject = jsonNeighborhoods.getJSONObject(i);
 			JSONArray jsonFlats = jsonFlatsObject.getJSONArray("flats");
-			buildings = new ArrayList<GLObject>();
 			for (int j = 0; j < jsonFlats.size(); j++) {
 				JSONObject jobj = jsonFlats.getJSONObject(j);
 				GLFactory building = new GLFactory();
 				readJSONGLObjectProperties(jobj, building);
 				building.setSmokestackHeight(jobj.getInt("smokestackHeight"));
-				building.setSmokestackColor(readJSONColor(jobj));
+				building.setSmokestackColor(readJSONColor(jobj, "smokestackColor"));
 				buildings.add(building);
 				tmpBuildings.add(building);
 			}
-			city.getNeighborhoods().add(new Neighborhood(tmpBuildings));
+			city.getNeighborhoods().add(new Neighborhood(jsonFlatsObject.getString("name"), tmpBuildings));
 		}
 		
 		// Place flats and neighborhoods once normalized
-		city.placeNeighborhoods();
+		city.placeNeighborhoods(GLFactory.MAX_HEIGHT);
 		
 		// Configure caption lines
-		configureCaption(GLFactoryViewManager.getInstance(), json.getJSONObject("captionLines"));
+		Caption caption = configureCaption(json.getJSONObject("captionLines"));
+		if (caption != null) GLFactoryViewManager.getInstance().setCaption(caption);
 		
 		// Change the active view to FactoryLevel
-		GLFactoryViewManager.getInstance().setPavements(configurePavements(json.getJSONArray("pavements"), GLFactory.MAX_HEIGHT));
+		GLFactoryViewManager.getInstance().setPavements(city.getPavements());
 		GLFactoryViewManager.getInstance().setItems(buildings);
 		GLFactoryViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.FactoryLevel);
 	}
@@ -97,7 +96,7 @@ public class IGLFacadeImpl implements IGLFacade {
 				antennaBall.setProgressionMark(jobj.getBoolean("progressionMark"));
 				antennaBall.setLeftChildBallValue(jobj.getInt("rightChildBallValue"));
 				antennaBall.setRightChildBallValue(jobj.getInt("leftChildBallValue"));
-				antennaBall.setColor(readJSONColor(jobj));
+				antennaBall.setColor(readJSONColor(jobj, "color"));
 				float size = (float)jobj.getDouble("parentBallRadius");
 				antennaBall.setParentBallRadius(size);
 				if (maxSize < size) maxSize = size;
@@ -106,7 +105,7 @@ public class IGLFacadeImpl implements IGLFacade {
 				// Get some dimension values for later normalization
 				if (antennaBall.getParentBallRadius() > maxSize) maxSize = antennaBall.getParentBallRadius();
 			}
-			city.getNeighborhoods().add(new Neighborhood(tmpAntennaBalls));
+			city.getNeighborhoods().add(new Neighborhood(jsonFlatsObject.getString("name"), tmpAntennaBalls));
 		}
 		
 		// Normalize
@@ -115,13 +114,14 @@ public class IGLFacadeImpl implements IGLFacade {
 		}
 		
 		// Place flats and neighborhoods once normalized
-		city.placeNeighborhoods();
+		city.placeNeighborhoods(GLAntennaBall.MAX_SIZE*2);
 		
 		// Configure caption lines
-		configureCaption(GLProjectViewManager.getInstance(), json.getJSONObject("captionLines"));
+		Caption caption = configureCaption(json.getJSONObject("captionLines"));
+		if (caption != null) GLProjectViewManager.getInstance().setCaption(caption);
 
 		// Change the active view to ProjectLevel
-		GLProjectViewManager.getInstance().setPavements(configurePavements(json.getJSONArray("pavements"), GLAntennaBall.MAX_SIZE*2));
+		GLProjectViewManager.getInstance().setPavements(city.getPavements());
 		GLProjectViewManager.getInstance().setItems(antennaBalls);
 		GLProjectViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.ProjectLevel);
 	}
@@ -149,7 +149,7 @@ public class IGLFacadeImpl implements IGLFacade {
 				tower.setHeight((float)jobj.getDouble("height"));
 				tower.setWidth((float)jobj.getDouble("width"));
 				tower.setInnerHeight((float)jobj.getDouble("innerHeight"));
-				tower.setColor(readJSONColor(jobj));
+				tower.setColor(readJSONColor(jobj, "color"));
 				towers.add(tower);
 				tmpTowers.add(tower);
 				// Get some dimension values for later normalization
@@ -158,7 +158,7 @@ public class IGLFacadeImpl implements IGLFacade {
 				if (tower.getHeight() > maxHeight) maxHeight = tower.getHeight();
 				if (tower.getInnerHeight() > maxInnerHeight) maxInnerHeight = tower.getInnerHeight();
 			}
-			city.getNeighborhoods().add(new Neighborhood(tmpTowers));
+			city.getNeighborhoods().add(new Neighborhood(jsonFlatsObject.getString("name"), tmpTowers));
 		}
 		
 		// Normalize
@@ -170,19 +170,20 @@ public class IGLFacadeImpl implements IGLFacade {
 		}
 		
 		// Place flats and neighborhoods once normalized
-		city.placeNeighborhoods();
+		city.placeNeighborhoods(GLTower.MAX_HEIGHT);
 		
 		// Configure caption lines
-		configureCaption(GLTowerViewManager.getInstance(), json.getJSONObject("captionLines"));
+		Caption caption = configureCaption(json.getJSONObject("captionLines"));
+		if (caption != null) GLTowerViewManager.getInstance().setCaption(caption);
 		
-		// Change the active view to TowerLevel		
-		GLTowerViewManager.getInstance().setPavements(configurePavements(json.getJSONArray("pavements"), GLTower.MAX_HEIGHT));
+		// Change the active view to TowerLevel	
+		GLTowerViewManager.getInstance().setPavements(city.getPavements());
 		GLTowerViewManager.getInstance().setItems(towers);
 		GLTowerViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.TowerLevel);
 	}
 	
-	private void configureCaption (GLViewManager glvm, JSONObject jsonCaptionLines) {
-		Caption caption;
+	private Caption configureCaption (JSONObject jsonCaptionLines) {
+		Caption caption = null;
 		if (jsonCaptionLines != null) {
 			caption = new Caption();
 			Iterator it = jsonCaptionLines.entrySet().iterator();
@@ -190,24 +191,8 @@ public class IGLFacadeImpl implements IGLFacade {
 				Map.Entry<String, String> pairs = (Map.Entry<String, String>)it.next();
 				caption.addLine(new Color((String)pairs.getValue()), (String)pairs.getKey());
 			}
-		    if (caption.getLines().size() > 0) glvm.setCaption(caption);
 		}
-	}
-	
-	private List<GLObject> configurePavements(JSONArray jsonPavements, float height) {
-		List<GLObject> pavements = new ArrayList<GLObject>();
-		for (int i = 0; i< jsonPavements.size(); i++) {
-			JSONObject jsonPavementObject = jsonPavements.getJSONObject(i);
-			GLPavement glPav = new GLPavement();
-			readJSONGLObjectProperties(jsonPavementObject, glPav);
-			glPav.setDepth((float)jsonPavementObject.getDouble("depth"));
-			glPav.setWidth((float)jsonPavementObject.getDouble("width"));
-			glPav.setTitle(jsonPavementObject.getString("title"));
-			glPav.setTitleHeight(height + GLPavement.TITLE_GAP);
-			// Add the new pavement to the list
-			pavements.add(glPav);
-		}
-		return pavements;
+		return caption;
 	}
 	
 	private void readJSONGLObjectProperties (JSONObject jsonObj, GLObject glObj) {
@@ -217,11 +202,11 @@ public class IGLFacadeImpl implements IGLFacade {
 		glObj.setScale((float)jsonObj.getDouble("scale"));
 	}
 	
-	private Color readJSONColor (JSONObject jsonObj) {
-		float r = (float)(jsonObj.getJSONObject("color")).getDouble("r");
-		float g = (float)(jsonObj.getJSONObject("color")).getDouble("g");
-		float b = (float)(jsonObj.getJSONObject("color")).getDouble("b");
-		float alpha = (float)(jsonObj.getJSONObject("color")).getDouble("alpha");
+	private Color readJSONColor (JSONObject jsonObj, String tag) {
+		float r = (float)(jsonObj.getJSONObject(tag)).getDouble("r");
+		float g = (float)(jsonObj.getJSONObject(tag)).getDouble("g");
+		float b = (float)(jsonObj.getJSONObject(tag)).getDouble("b");
+		float alpha = (float)(jsonObj.getJSONObject(tag)).getDouble("alpha");
 		Color color = new Color(r,g,b);
 		color.setAlpha(alpha);
 		return color;

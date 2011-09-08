@@ -78,5 +78,6 @@ public class GLMapLocation extends GLNode {
 		this.frequency += 0.005;
 		GLSingleton.getGL().glColor3fv(this.highlightColor.getColorFB());
 	}
+	
 
 }

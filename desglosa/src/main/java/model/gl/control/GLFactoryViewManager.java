@@ -82,6 +82,7 @@ public class GLFactoryViewManager extends GLViewManager {
 		super.drawFloor();
 		super.drawPavements();
 		this.drawItems();
+		super.drawCaption();
 	}
 	
 	@Override
@@ -113,5 +114,6 @@ public class GLFactoryViewManager extends GLViewManager {
 		System.err.println("Selected factory: " + GLObjectId + "\tNumber of clicks: " + clickCount);
 		NotifyUIManager.notifySelectedFactory(GLObjectId, clickCount);
 	}
+
 
 }

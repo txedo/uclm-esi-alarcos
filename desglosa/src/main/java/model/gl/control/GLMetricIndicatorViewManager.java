@@ -134,4 +134,5 @@ public class GLMetricIndicatorViewManager extends GLViewManager {
 		this.drawer.setViewLevel(EViewLevels.TowerLevel);
 	}
 
+
 }
