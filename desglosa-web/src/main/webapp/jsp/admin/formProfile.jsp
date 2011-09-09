@@ -300,7 +300,7 @@
 		} else {
 			if (type1 == "hexcolor" && type2 == "color") compatible = 1;
 			else if (type1 == "int") {
-				if (type2 == "float_range" || type2 == "color" || type2 == "string") compatible = 1;
+				if (type2 == "float" || type2 == "float_range" || type2 == "color" || type2 == "string") compatible = 1;
 			} else if (type1 == "float") {
 				if (type2 == "float_range" || type2 == "color" || type2 == "string") compatible = 1;
 			} else if (type1 == "string") {
