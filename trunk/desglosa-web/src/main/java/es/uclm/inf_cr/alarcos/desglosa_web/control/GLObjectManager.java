@@ -9,8 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javassist.bytecode.stackmap.TypeData.ClassName;
-
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.WordUtils;
@@ -51,9 +49,7 @@ public class GLObjectManager {
 		String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + profileName;
 		Metaclass metaclass = XMLAgent.unmarshal(path, Metaclass.class);
 
-		Class classModel = Class.forName(metaclass.getModelName());
-		// Create a entity map where <key,value> is <column,value>. We have to access database
-		String entityTable = metaclass.getEntityName();
+		Class<?> classModel = Class.forName(metaclass.getModelName());
 		c.setModel(metaclass.getModelName());
 		
 		if (entities != null && entities.size() > 0) {
@@ -77,13 +73,11 @@ public class GLObjectManager {
 						// Build getter method using Java Reflective API
 						// oneWord_otherWord_anotherWord must be parsed to invoke getOneWord().getOtherWord().getAnotherWord()
 						String[] chainOfGetters = mapping.getEntityAttr().getName().split("_");
-						Class subClass = e.getClass();
+						Class<?> subClass = e.getClass();
 						Object entityAttrValue = e;
 						for (int i = 0; i < chainOfGetters.length && entityAttrValue != null; i++) {
 							String getterPrefix = "get";
-							if (i == chainOfGetters.length-1) {
-								if (mapping.getModelAttr().getType().equals("boolean")) getterPrefix = "is";
-							}
+							if (mapping.getEntityAttr().getType().equals("boolean")) getterPrefix = "is";
 							String parentGetterName = getterPrefix + WordUtils.capitalize(chainOfGetters[i]);
 							Method parentGetterMethod = subClass.getMethod(parentGetterName, null);
 							entityAttrValue = parentGetterMethod.invoke(entityAttrValue, null);
@@ -98,20 +92,18 @@ public class GLObjectManager {
 								// leer las reglas y aplicarlas
 								// entityAttrType puede ser int (low-high-value), float (low-high-value), string (low-value), boolean (low-value)
 								for (Rule r : mapping.getRules()) {
-									if (entityAttrType.equals("int") || entityAttrType.equals("float") || (modelAttrType.equals("color") && !entityAttrType.equals("hexcolor"))) {
+									if (entityAttrType.equals("int") || entityAttrType.equals("float")) {
 										String entityAttrValueType = entityAttrValue.getClass().getName();
 										String ruleLowValueType = r.getLow().getClass().getName();
 										String ruleHighValueType = r.getHigh().getClass().getName();
 										if (entityAttrValueType.equals(ruleLowValueType) && ruleLowValueType.equals(ruleHighValueType)) {
 											if (entityAttrValueType.equals("java.lang.Integer")) {
 												if ((Integer)entityAttrValue >= (Integer)r.getLow() && (Integer)entityAttrValue <= (Integer)r.getHigh()) {
-													if (modelAttrType.equals("float_range")) finalValue = (Float)r.getValue();
-													if (modelAttrType.equals("color")) finalValue = (String)r.getValue();
+													finalValue = (Float)r.getValue();
 												}
 											} else if (entityAttrValueType.equals("java.lang.Float")) {
 												if ((Float)entityAttrValue >= (Float)r.getLow() && (Float)entityAttrValue <= (Float)r.getHigh()) {
-													if (modelAttrType.equals("float_range")) finalValue = (Float)r.getValue();
-													if (modelAttrType.equals("color")) finalValue = (String)r.getValue();
+													finalValue = (Float)r.getValue();
 												}
 											}
 										} else {
@@ -123,10 +115,43 @@ public class GLObjectManager {
 										}
 									} else if (entityAttrType.equals("boolean")) {
 										if (Boolean.valueOf((String)entityAttrValue).equals(Boolean.valueOf((String)r.getLow()))) {
-											finalValue = Boolean.valueOf((String)r.getValue());
+											finalValue = (String)r.getValue();
 										}
 									}
 								}
+							} else if (!entityAttrType.equals("hexcolor") && modelAttrType.equals("color")) {
+								for (Rule r : mapping.getRules()) {
+									if (entityAttrType.equals("int") || entityAttrType.equals("float")) {
+										String entityAttrValueType = entityAttrValue.getClass().getName();
+										String ruleLowValueType = r.getLow().getClass().getName();
+										String ruleHighValueType = r.getHigh().getClass().getName();
+										if (ruleLowValueType.equals(ruleHighValueType)) {
+											if (entityAttrValueType.equals("java.lang.Integer")) {
+												if ((Integer)entityAttrValue >= (Integer)r.getLow() && (Integer)entityAttrValue <= (Integer)r.getHigh()) {
+													finalValue = (String)r.getValue();
+												}
+											} else if (entityAttrValueType.equals("java.lang.Float")) {
+												if ((Float)entityAttrValue >= (Float)r.getLow() && (Float)entityAttrValue <= (Float)r.getHigh()) {
+													finalValue = (String)r.getValue();
+												}
+											}
+										} else {
+											// TODO lanzar excepcion de tipos incompatibles
+										}
+									} else if (entityAttrType.equals("hexcolor")) {
+										
+									} else if (entityAttrType.equals("string")) {
+										if (((String)entityAttrValue).equals((String)r.getLow())) {
+											finalValue = (String)r.getValue();
+										}
+									} else if (entityAttrType.equals("boolean")) {
+										if (entityAttrValue.equals(Boolean.valueOf((String)r.getLow()))) {
+											finalValue = (String)r.getValue();
+										}
+									}
+								}
+							} else if (entityAttrType.equals("int") && modelAttrType.equals("float")) {
+								finalValue = ((Integer)entityAttrValue).floatValue();
 							} else if (entityAttrType.equals("int") && modelAttrType.equals("string")) {
 								finalValue = ((Integer)entityAttrValue).toString();
 							} else if (entityAttrType.equals("float") && modelAttrType.equals("string")) {
