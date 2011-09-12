@@ -1,5 +1,11 @@
 package model.listeners;
 
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
 import com.jogamp.newt.event.MouseAdapter;
 import com.jogamp.newt.event.MouseEvent;
 
@@ -11,6 +17,7 @@ public class MyMouseAdapter extends MouseAdapter {
 	private final float MAX_DIFF = 5;
 	private final int NO_BUTTON = -1;
 	private int button;
+	private boolean wasDoubleClick = false;
 	private GLDrawer drawer;
 	private Vector2f currentMousePosition;
 	private Vector2f lastMousePosition;
@@ -22,16 +29,26 @@ public class MyMouseAdapter extends MouseAdapter {
 		this.lastMousePosition = new Vector2f();
 	}
 	
-	public void mouseClicked(MouseEvent e) {
-		switch (e.getButton()) {
-			case 1:
-				this.drawer.getPickPoint().setX((float)e.getX());
-				this.drawer.getPickPoint().setY((float)e.getY());
-				this.drawer.setSelectionMode(true, e.getClickCount());
-				break;
-			default:
-				break;
-		}
+	public void mouseClicked(final MouseEvent e) {
+		this.drawer.getPickPoint().setX((float)e.getX());
+		this.drawer.getPickPoint().setY((float)e.getY());
+		
+		// http://stackoverflow.com/questions/548180/java-ignore-single-click-on-double-click
+        if (e.getClickCount() == 2) {  
+        	this.drawer.setSelectionMode(true, e.getButton(), 2);
+        	wasDoubleClick = true;
+        } else {
+        	Integer timerinterval = (Integer) 
+        	Toolkit.getDefaultToolkit().getDesktopProperty("awt.multiClickInterval");
+        	Timer timer = new Timer(timerinterval.intValue(), new ActionListener() {
+        		public void actionPerformed(ActionEvent evt) {
+        			if (wasDoubleClick) wasDoubleClick = false;
+        			else drawer.setSelectionMode(true, e.getButton(), 1);
+        		}    
+        	});
+        	timer.setRepeats(false);
+        	timer.start();
+        }
 	}
 
 	public void mouseEntered(MouseEvent e) {
