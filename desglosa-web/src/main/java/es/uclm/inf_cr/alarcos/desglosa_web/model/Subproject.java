@@ -26,6 +26,10 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
         query = "select sp from Subproject sp, Factory f where sp.factory.id = f.id and f.company.id = :id group by sp.name"
         ),
     @NamedQuery(
+        name = "findSubprojectsByFactoryId",
+        query = "select sp from Subproject sp where sp.factory.id = :id "
+        ),
+    @NamedQuery(
         name = "findSubprojectsByProjectId",
         query = "select sp from Subproject sp where sp.project.id = :id "
         )
