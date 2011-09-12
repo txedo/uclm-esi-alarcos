@@ -23,7 +23,6 @@
     	<property name="companyDao" ref="companyDao"/>
     	<property name="projectDao" ref="projectDao"/>
     	<property name="subprojectDao" ref="subprojectDao"/>
-    	<property name="marketDao" ref="marketDao"/>
     </bean>
     
     <!-- Struts2 interceptors instantiated by Spring -->

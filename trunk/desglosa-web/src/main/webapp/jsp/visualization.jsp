@@ -129,8 +129,7 @@
 						$(infoSelector).text("");
 						$(infoSelector).append("<s:text name='label.generic_info_about_factories'/><br />");
 						// The user has selected all factories of a given company (this company must have already been selected)
-						$(infoSelector).append("<s:text name='label.show_more_about_projects'/>:<br />");
-						$(infoSelector).append(createRadioButtonGroup("projectRBG", $("#companySelect").val(), "desglosa_showProjectsByCompanyId", true, true, false, true));
+						$(infoSelector).append("<ul><li><a href='javascript:openDialog(\"desglosa_showProjectsByCompanyId\",\"project\"," + $("#companySelect").val() + ", true, true, false, true, true)'><s:text name='label.show_more_about_projects'/></a></li></ul>");
 						if (fillFactorySelect) {
 							$(selector).attr("disabled", "");
 							$(selector).empty();
@@ -163,10 +162,10 @@
 						$(infoSelector).text("");
 						if (idCompany == 0) {
 							$(infoSelector).append("<s:text name='label.generic_info_about_companies'/><br />");
-							$(infoSelector).append("<s:text name='label.show_more_about_factories'/>:<br />");
-							createOptionGroup(infoSelector, 0, "desglosa_showFactoriesByCompanyId", "factory", true, false, true, true);
-							$(infoSelector).append("<s:text name='label.show_more_about_projects'/>:<br />");
-							createOptionGroup(infoSelector, 0, "desglosa_showProjectsByCompanyId", "project", true, true, false, true);
+							$(infoSelector).append("<ul>");
+							$(infoSelector + " ul").append("<li><a href='javascript:openDialog(\"desglosa_showFactoriesByCompanyId\",\"factory\"," + idCompany + ", true, false, true, true, true)'><s:text name='label.show_more_about_factories'/></a></li>");
+							$(infoSelector + " ul").append("<li><a href='javascript:openDialog(\"desglosa_showProjectsByCompanyId\",\"project\"," + idCompany + ", true, true, false, true, true)'><s:text name='label.show_more_about_projects'/></a></li>");
+							$(infoSelector).append("</ul>");
 						} else {
 							// This bucle only iterates once
 							$.each(data.companies, function (i, item) {
@@ -245,20 +244,30 @@
 	var visualizationCallback = null;
 	var visualizationGroupBy = null;
 	var visualizationEntityId = null;
+	var noProfilesConfigured = false;
 	
 	function chooseProfile() {
-		// http://viralpatel.net/blogs/2009/01/calling-javascript-function-from-string.html
-		showLoadingIndicator(true);
+		visualizationGroupBy = $("input:radio[name=showGroupBy]:checked").val();
 		var filename = $("#profileChooserDiv").children('ul').children('li.ui-selected').attr('id');
-		var funcCall = visualizationCallback + "(" + visualizationEntityId + ",\"" + visualizationGroupBy + "\",\"" + filename + "\")";
-		$("#profileChooser").dialog('close');
-		showLoadingIndicator(false);
-		eval(funcCall);
+		if (visualizationGroupBy != null && filename != undefined) {
+			showLoadingIndicator(true);
+			// http://viralpatel.net/blogs/2009/01/calling-javascript-function-from-string.html
+			var funcCall = visualizationCallback + "(" + visualizationEntityId + ",\"" + visualizationGroupBy + "\",\"" + filename + "\")";
+			$("#profileChooser").dialog('close');
+			showLoadingIndicator(false);
+			eval(funcCall);
+		} else {
+			if (noProfilesConfigured) {
+				$("#profileChooser").dialog('close');
+			} else {
+				// TODO show warning. The user must select a group by option and a profile
+			}
+		}
 	};
 	
-	function openDialog(callback, entity, groupBy, id) {
+	function openDialog(callback, entity, id, groupByCompany, groupByFactory, groupByProject, groupByMarket, noGroupBy) {
 		visualizationCallback = callback;
-		visualizationGroupBy = groupBy;
+		visualizationGroupBy = null;
 		visualizationEntityId = id;
 		showLoadingIndicator(true);
 		// read entity profiles
@@ -270,14 +279,30 @@
 					if (status == "success") {
 						var mapSize = Object.keys(data.profileNames).length;
 						if (mapSize > 0) {
-							$("#profileChooserDiv").html("<ul>");
+							noProfilesConfigured = false;
+							$("#profileChooserDiv").html("");
+							$("#profileChooserDiv").append("<ul>");
+							if (groupByCompany)
+								$("#profileChooserDiv ul").append("<li class='option_group'><input type='radio' name='showGroupBy' value='company'/>label.company</li>");
+							if (groupByFactory)
+								$("#profileChooserDiv ul").append("<li class='option_group'><input type='radio' name='showGroupBy' value='factory'/>label.factory </li>");
+							if (groupByProject)
+								$("#profileChooserDiv ul").append("<li class='option_group'><input type='radio' name='showGroupBy' value='project'/>label.project</li>");
+							if (groupByMarket)
+								$("#profileChooserDiv ul").append("<li class='option_group'><input type='radio' name='showGroupBy' value='market'/>label.market</li>");
+							if (noGroupBy)
+								$("#profileChooserDiv ul").append("<li class='option_group'><input type='radio' name='showGroupBy' value=''/>label.no_group_by</li>");
+							$("#profileChooserDiv").append("</ul>");
+							$("#profileChooserDiv").append("<ul>");
 							$.each(data.profileNames, function(filename, description) {
 								var parts = filename.split('-');
-								$("#profileChooserDiv ul").append("<li id='" + filename + "' class='selectablelist ui-corner-all' title='" + description + "'>" + parts[1] + "</li>");
+								$("#profileChooserDiv ul:last").append("<li id='" + filename + "' class='selectablelist ui-corner-all' title='" + description + "'>" + parts[1] + "</li>");
 							});
 							$("#profileChooserDiv").append("</ul>");
 						} else {
 							// TODO empty array
+							noProfilesConfigured = true;
+							$("#profileChooserDiv").html("empty array");
 						}
 						$("#profileChooser").dialog('open');
 					} else {
@@ -288,32 +313,12 @@
 		});
 	}
 	
-	function createOptionGroup(parentSelector, id, callback, entity, company, factory, project, market) {
-		$(parentSelector).append("<div id='option_group'>");
-		$(parentSelector + " > #option_group:last").append("<ul>");
-		if (company)
-			$(parentSelector + " > #option_group:last > ul").append("<li><a href='javascript:openDialog(\"" + callback + "\",\"" + entity + "\",\"company\"," + id + ")'><s:text name='label.company'/></a></li>");
-		if (factory)
-			$(parentSelector + " > #option_group:last > ul").append("<li><a href='javascript:openDialog(\"" + callback + "\",\"" + entity + "\",\"factory\"," + id + ")'><s:text name='label.factory'/></a></li>");
-		if (project)
-			$(parentSelector + " > #option_group:last > ul").append("<li><a href='javascript:openDialog(\"" + callback + "\",\"" + entity + "\",\"project\"," + id + ")'><s:text name='label.project'/></a></li>");
-		if (market)
-			$(parentSelector + " > #option_group:last > ul").append("<li><a href='javascript:openDialog(\"" + callback + "\",\"" + entity + "\",\"market\"," + id + ")'><s:text name='label.market'/></a></li>");
-		$(parentSelector + " > #option_group:last > ul").append("<li><a href='javascript:openDialog(\"" + callback + "\",\"" + entity + "\",\"\"," + id + ")'><s:text name='label.no_group_by'/></a></li>");
-		$(parentSelector + " > #option_group:last").append("</ul>");
-		$(parentSelector).append("</div>");
-	}
-	
 	function formatCompanyInformation(companyJSON) {
 		var result = "";
 		result += "<b>" + companyJSON.name + "</b><br />";
 		result += "<i>" + companyJSON.information + "</i><br />";
-		result += "<br />";
-		result += formatDirectorInformation(companyJSON.director);
-		result += "<s:text name='label.show_more_about_factories'/>:<br />";
-		result += createRadioButtonGroup("companyRBG", companyJSON.id, "desglosa_showFactoriesByCompanyId", true, false, true, true);
-		result += "<s:text name='label.show_more_about_projects'/>:<br />";
-		result += createRadioButtonGroup("projectRBG", companyJSON.id, "desglosa_showProjectsByCompanyId", true, true, false, true);
+// 		result += "<br />";
+// 		result += formatDirectorInformation(companyJSON.director);
 		return result;
 	}
 	
@@ -321,10 +326,8 @@
 		var result = "<b>" + factoryJSON.name + "</b> (" + factoryJSON.company.name + ")<br />";
 		result += "<i>" + factoryJSON.information + "</i><br />";
 		result += "Número de empleados: " + factoryJSON.employees + "<br />"
-		result += "<br />";
-		result += formatDirectorInformation(factoryJSON.director);
-		result += "<s:text name='label.show_more_about_projects'/>:<br />";
-		result += createRadioButtonGroup("projectRBG", factoryJSON.id, "desglosa_showProjectsByFactoryId", true, true, false, true);
+// 		result += "<br />";
+// 		result += formatDirectorInformation(factoryJSON.director);
 		return result;
 	}
 	
@@ -337,7 +340,7 @@
 	
 	function formatProjectInformation(projectJSON) {
 		var result = "";
-		result += "<br /><a href='#' onclick='javascript:desglosa_showProjectsById(" + projectJSON.id + ")'><s:text name='label.show_more'/></a>";
+		result += "<br />";
 		return result;
 	}
 	
@@ -450,44 +453,122 @@
 ////////// BEGINING OF DESGLOSA-FACADE.JS /////////////
 ///////////////////////////////////////////////////////
 
-function selectTower(id, clickCount) {
-	handleSelectionEvent(id, clickCount);
+var currentEntity = null;
+var currentEntityId;
+
+function getNextLevel () {
+	var nextLevel = null;
+	if (currentEntity == null) nextLevel = "company";
+	else if (currentEntity == "company") nextLevel = "factory";
+	else if (currentEntity == "factory") nextLevel = "project";
+	else if (currentEntity == "project") nextLevel = "subproject";
+	else if (currentEntity == "subproject") nextLevel = null;
+	return nextLevel;
 }
 
-function selectBuilding(id, clickCount) {
-	handleSelectionEvent(id, clickCount);
+function selectTower(id, clickButton, clickCount) {
+	handleSelectionEvent(id, clickButton, clickCount);
 }
 
-function selectAntennaBall(id, clickCount) {
-	handleSelectionEvent(id, clickCount);
+function selectBuilding(id, clickButton, clickCount) {
+	handleSelectionEvent(id, clickButton, clickCount);
+}
+
+function selectAntennaBall(id, clickButton, clickCount) {
+	handleSelectionEvent(id, clickButton, clickCount);
 }
 
 function selectionError(message) {
 	alert(message);
 }
 
-function handleSelectionEvent(id, clickCount) {
+function handleSelectionEvent(id, clickButton, clickCount) {
 	// This function will handle the selection event on any 3D model, so it will handle navigation too
+	currentEntityId = id;
+	// Show popup to allow groupBy and next level profile selection
+	switch (clickButton) {
+		case 1:		// Left button
+			switch (clickCount) {
+				case 1:		// Click
+					alert ("Load " + currentEntity + " (" + currentEntityId + ") information.");
+					break;
+				case 2:		// Double click
+					alert ("Navigate to " + getNextLevel() + " from " + currentEntity + " (" + currentEntityId + ") information.");
+					var nextLevel = getNextLevel();
+					if (currentEntity == "company" && nextLevel == "factory") {
+						// load factory profiles
+						openDialog("desglosa_showFactoriesByCompanyId", nextLevel, id, true, false, true, true, true);
+					} else if (currentEntity == "factory" && nextLevel == "project") {
+						// load project profiles
+						openDialog("desglosa_showProjectsByFactoryId", nextLevel, id, true, true, false, true, true);
+					} else if (currentEntity == "project" && nextLevel == "subproject") {
+						// load subproject profiles
+						openDialog("desglosa_showSubprojectsByProjectId", nextLevel, id, true, true, true, false, true);
+					} else {
+						// No further navigation
+					}
+					break;
+				default:	// Ignore multiple clicks but double click
+					break;
+			}
+			break;
+		case 2:		// Middle button
+			break;
+		case 3:		// Right button
+			break;
+		default:	// Any other button
+			break;
+	}
+}
+
+function desglosa_showCompaniesById(id, groupBy, profileFilename){
+	currentEntity = "company";
+	desglosa_launchDesglosaEngine("/desglosa-web/json_companyById.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showFactoriesByCompanyId(id, groupBy, profileFilename) {
+	currentEntity = "factory";
 	desglosa_launchDesglosaEngine("/desglosa-web/json_factoriesByCompanyId.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showFactoriesById(id, groupBy, profileFilename) {
+	currentEntity = "factory";
 	desglosa_launchDesglosaEngine("/desglosa-web/json_factoryById.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showProjectsByCompanyId(id, groupBy, profileFilename) {
+	currentEntity = "project";
 	desglosa_launchDesglosaEngine("/desglosa-web/json_projectsByCompanyId.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showProjectsByFactoryId(id, groupBy, profileFilename) {
+	currentEntity = "project";
 	desglosa_launchDesglosaEngine("/desglosa-web/json_projectsByFactoryId.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showProjectById(id, groupBy, profileFilename) {
+	currentEntity = "project";
 	desglosa_launchDesglosaEngine("/desglosa-web/json_projectById.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showSubprojectsByCompanyId(id, groupBy, profileFilename) {
+	currentEntity = "subproject";
+	desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByCompanyId.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showSubprojectsByFactoryId(id, groupBy, profileFilename) {
+	currentEntity = "subproject";
+	desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByFactoryId.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showSubprojectsByProjectId(id, groupBy, profileFilename) {
+	currentEntity = "subproject";
+	desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByFactoryId.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showSubprojectById(id, groupBy, profileFilename) {
+	currentEntity = "subproject";
+	desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectById.action", id, groupBy, profileFilename);
 }
 
 function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
@@ -629,9 +710,11 @@ function desglosa_handleVisualization(model, city) {
 		<div id="tabs" style="position:absolute; top:0; right:0; width:350px">
 			<s:label value="%{getText('label.detailed_info')}:"/>
 			<sj:tabbedpanel id="infoTabs" animate="true">
+				<sj:tab id="generalInfoTab" target="generalInformation" label="%{getText('label.general')}"/>
 				<sj:tab id="companyInfoTab" target="companyInformation" label="%{getText('label.company')}"/>
 				<sj:tab id="factoryInfoTab" target="factoryInformation" label="%{getText('label.factory')}"/>
 				<sj:tab id="projectInfoTab" target="projectInformation" label="%{getText('label.project')}"/>
+				<div id="generalInformation"></div>
 				<div id="companyInformation"></div>
 				<div id="factoryInformation"></div>
 				<div id="projectInformation"></div>

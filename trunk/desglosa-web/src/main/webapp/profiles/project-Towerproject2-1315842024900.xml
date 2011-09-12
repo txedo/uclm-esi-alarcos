@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile model="model.gl.knowledge.GLTower" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Project">
+    <name>Towerproject2</name>
+    <description>tower project 2</description>
+    <mappings>
+        <mapping>
+            <entityAttr name="id" type="int"/>
+            <modelAttr name="id" type="int"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="fiabilidad" type="float"/>
+            <modelAttr name="height" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="usabilidad" type="float"/>
+            <modelAttr name="width" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="mantenibilidad" type="float"/>
+            <modelAttr name="innerHeight" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="portabilidad" type="float"/>
+            <modelAttr name="depth" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="delayed" type="boolean"/>
+            <modelAttr name="color" type="color"/>
+            <rule>
+                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">true</low>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string"></high>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ff0000</value>
+            </rule>
+            <rule>
+                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">false</low>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string"></high>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">10b316</value>
+            </rule>
+        </mapping>
+    </mappings>
+    <constants>
+        <constant name="scale" type="float">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1</value>
+        </constant>
+    </constants>
+    <caption/>
+</profile>

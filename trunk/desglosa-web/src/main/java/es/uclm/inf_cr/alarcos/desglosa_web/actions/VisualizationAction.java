@@ -16,7 +16,6 @@ import com.opensymphony.xwork2.ActionSupport;
 import es.uclm.inf_cr.alarcos.desglosa_web.control.GLObjectManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.MarketDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.SubprojectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
@@ -27,7 +26,6 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
-import es.uclm.inf_cr.alarcos.desglosa_web.model.Market;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
 
@@ -43,7 +41,6 @@ public class VisualizationAction extends ActionSupport {
 	private CompanyDAO companyDao;
 	private ProjectDAO projectDao;
 	private SubprojectDAO subprojectDao;
-	private MarketDAO marketDao;
 	
 	private List<Factory> factories;
 	private List<Company> companies;
@@ -122,10 +119,6 @@ public class VisualizationAction extends ActionSupport {
 		this.subprojectDao = subprojectDao;
 	}
 
-	public void setMarketDao(MarketDAO marketDao) {
-		this.marketDao = marketDao;
-	}
-
 	public void setFactories(List<Factory> factories) {
 		this.factories = factories;
 	}
@@ -198,24 +191,6 @@ public class VisualizationAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String projectById() {
-		if (id == 0) {
-			projects = projectDao.getProjects();
-		}
-		else {
-			try {
-				projects = new ArrayList<Project>();
-				projects.add(projectDao.getProject(id));
-			} catch (ProjectNotFoundException e) {
-				return ERROR;
-			}
-		}
-		if (generateGLObjects) {
-			entity2model(projects);
-		}
-		return SUCCESS;
-	}
-	
 	public String projectsByCompanyId() {
 		if (id == 0) {
 			projects = projectDao.getProjects();
@@ -242,6 +217,69 @@ public class VisualizationAction extends ActionSupport {
 		}
 		if (generateGLObjects) {
 			entity2model(projects);
+		}
+		return SUCCESS;
+	}
+	
+	public String projectById() {
+		if (id == 0) {
+			projects = projectDao.getProjects();
+		}
+		else {
+			try {
+				projects = new ArrayList<Project>();
+				projects.add(projectDao.getProject(id));
+			} catch (ProjectNotFoundException e) {
+				return ERROR;
+			}
+		}
+		if (generateGLObjects) {
+			entity2model(projects);
+		}
+		return SUCCESS;
+	}
+	
+	public String subprojectsByCompanyId() {
+		if (id == 0) {
+			subprojects = subprojectDao.getSubprojects();
+		}
+		else {
+			Map<String, Object> queryParams = new HashMap<String, Object>();
+			queryParams.put("id", id);
+			subprojects = subprojectDao.findByNamedQuery("findSubprojectsByCompanyId", queryParams);
+		}
+		if (generateGLObjects) {
+			entity2model(subprojects);
+		}
+		return SUCCESS;
+	}
+	
+	public String subprojectsByFactoryId() {
+		if (id == 0) {
+			subprojects = subprojectDao.getSubprojects();
+		}
+		else {
+			Map<String, Object> queryParams = new HashMap<String, Object>();
+			queryParams.put("id", id);
+			subprojects = subprojectDao.findByNamedQuery("findSubprojectsByFactoryId", queryParams);
+		}
+		if (generateGLObjects) {
+			entity2model(subprojects);
+		}
+		return SUCCESS;
+	}
+	
+	public String projectsByProjectId() {
+		if (id == 0) {
+			subprojects = subprojectDao.getSubprojects();
+		}
+		else {
+			Map<String, Object> queryParams = new HashMap<String, Object>();
+			queryParams.put("id", id);
+			subprojects = subprojectDao.findByNamedQuery("findSubprojectsByProjectId", queryParams);
+		}
+		if (generateGLObjects) {
+			entity2model(subprojects);
 		}
 		return SUCCESS;
 	}
