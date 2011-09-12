@@ -9,21 +9,21 @@ public class NotifyUIManager {
 		observers.add(ob);
 	}
 	
-	public static void notifySelectedProject (int idProject, int clickCount) {
+	public static void notifySelectedProject (int idProject, int clickButton, int clickCount) {
 		for (IObserverUI iob : observers) {
-			iob.selectAntennaBall(idProject, clickCount);
+			iob.selectAntennaBall(idProject, clickButton, clickCount);
 		}
 	}
 	
-	public static void notifySelectedFactory (int idFactory, int clickCount) {
+	public static void notifySelectedFactory (int idFactory, int clickButton, int clickCount) {
 		for (IObserverUI iob : observers) {
-			iob.selectBuilding(idFactory, clickCount);
+			iob.selectBuilding(idFactory, clickButton, clickCount);
 		}
 	}
 	
-	public static void notifySelectedTower (int idTower, int clickCount) {
+	public static void notifySelectedTower (int idTower, int clickButton, int clickCount) {
 		for (IObserverUI iob : observers) {
-			iob.selectTower(idTower, clickCount);
+			iob.selectTower(idTower, clickButton, clickCount);
 		}
 	}
 

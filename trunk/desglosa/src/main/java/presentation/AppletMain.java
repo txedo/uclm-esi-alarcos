@@ -61,12 +61,12 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 		
 //		try {
 //			Synchronizer.getInstance().solicitar();
-//			IGLFacadeImpl.getInstance().visualizeTowers("{\"neighborhoods\":[{\"flats\":[{\"width\":2.2362,\"height\":11.694,\"depth\":2.3505,\"color\":\"00ff00\",\"fill\":4.9452,\"id\":1},{\"width\":2.2362,\"height\":11.694,\"depth\":2.3505,\"color\":\"00ff00\",\"fill\":4.9452,\"id\":4}]}]}");
+//			IGLFacadeImpl.getInstance().visualizeTowers("{\"captionLines\":{},\"model\":\"model.gl.knowledge.GLTower\",\"neighborhoods\":[{\"captionLines\":{},\"depth\":0,\"flats\":[{\"color\":{\"alpha\":1,\"b\":0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0,\"r\":1},\"depth\":12.1,\"height\":45.5,\"id\":4,\"innerHeight\":23.1,\"maxDepth\":3,\"maxHeight\":12,\"maxWidth\":3,\"positionX\":0,\"positionZ\":0,\"scale\":1,\"width\":32.1},{\"color\":{\"alpha\":1,\"b\":0.08627451,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.7019608,\"r\":0.0627451},\"depth\":87.4,\"height\":89.9,\"id\":1,\"innerHeight\":71.4,\"maxDepth\":3,\"maxHeight\":12,\"maxWidth\":3,\"positionX\":0,\"positionZ\":0,\"scale\":1,\"width\":78.2}],\"model\":\"\",\"name\":\"Arquitectura\",\"neighborhoods\":[],\"pavements\":[],\"width\":0},{\"captionLines\":{},\"depth\":0,\"flats\":[{\"color\":{\"alpha\":1,\"b\":0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0,\"r\":1},\"depth\":92.4,\"height\":79.4,\"id\":2,\"innerHeight\":85.9,\"maxDepth\":3,\"maxHeight\":12,\"maxWidth\":3,\"positionX\":0,\"positionZ\":0,\"scale\":1,\"width\":87.1}],\"model\":\"\",\"name\":\"Defensa\",\"neighborhoods\":[],\"pavements\":[],\"width\":0},{\"captionLines\":{},\"depth\":0,\"flats\":[{\"color\":{\"alpha\":1,\"b\":0.08627451,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.7019608,\"r\":0.0627451},\"depth\":98.1,\"height\":97.4,\"id\":3,\"innerHeight\":71.01,\"maxDepth\":3,\"maxHeight\":12,\"maxWidth\":3,\"positionX\":0,\"positionZ\":0,\"scale\":1,\"width\":78.69}],\"model\":\"\",\"name\":\"Sanitario\",\"neighborhoods\":[],\"pavements\":[],\"width\":0}],\"pavements\":[]}");
 //		} catch (ViewManagerNotInstantiatedException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		
+//		
 //		try {
 //			Synchronizer.getInstance().solicitar();
 //			IGLFacadeImpl.getInstance().visualizeBuildings("{\"captionLines\":{\"Arquitectura\":\"00649a\",\"Defensa\":\"ff8c00\",\"Sanidad\":\"2a8400\"},\"model\":\"model.gl.knowledge.GLFactory\",\"neighborhoods\":[{\"captionLines\":{},\"depth\":0,\"flats\":[{\"color\":{\"alpha\":1,\"b\":1,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":1,\"r\":1},\"id\":3,\"maxDepth\":1.25,\"maxHeight\":0,\"maxWidth\":2.5,\"positionX\":0,\"positionZ\":0,\"scale\":1,\"smokestackColor\":{\"alpha\":1,\"b\":0.6039216,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.39215687,\"r\":0},\"smokestackHeight\":3},{\"color\":{\"alpha\":1,\"b\":1,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":1,\"r\":1},\"id\":4,\"maxDepth\":1.25,\"maxHeight\":0,\"maxWidth\":2.5,\"positionX\":0,\"positionZ\":0,\"scale\":1.25,\"smokestackColor\":{\"alpha\":1,\"b\":0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.5176471,\"r\":0.16078432},\"smokestackHeight\":1}],\"model\":\"\",\"name\":\"IECISA\",\"neighborhoods\":[],\"pavements\":[],\"width\":0},{\"captionLines\":{},\"depth\":0,\"flats\":[{\"color\":{\"alpha\":1,\"b\":1,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":1,\"r\":1},\"id\":1,\"maxDepth\":1.25,\"maxHeight\":0,\"maxWidth\":2.5,\"positionX\":0,\"positionZ\":0,\"scale\":1.25,\"smokestackColor\":{\"alpha\":1,\"b\":0.6039216,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.39215687,\"r\":0},\"smokestackHeight\":2},{\"color\":{\"alpha\":1,\"b\":1,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":1,\"r\":1},\"id\":2,\"maxDepth\":1.25,\"maxHeight\":0,\"maxWidth\":2.5,\"positionX\":0,\"positionZ\":0,\"scale\":1.50,\"smokestackColor\":{\"alpha\":1,\"b\":0,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.5176471,\"r\":0.16078432},\"smokestackHeight\":1}],\"model\":\"\",\"name\":\"Indra\",\"neighborhoods\":[],\"pavements\":[],\"width\":0}],\"pavements\":[]}");
@@ -121,39 +121,39 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 	}
 
 	@Override
-	public void selectAntennaBall(int id, int clickCount){
-		this.handleEvent(EOperationCodes.ProjectSelection, id, clickCount);
+	public void selectAntennaBall(int id, int clickButton, int clickCount){
+		this.handleEvent(EOperationCodes.ProjectSelection, id, clickButton, clickCount);
 	}
 
 	@Override
-	public void selectBuilding(int id, int clickCount){
-		this.handleEvent(EOperationCodes.FactorySelection, id, clickCount);
+	public void selectBuilding(int id, int clickButton, int clickCount){
+		this.handleEvent(EOperationCodes.FactorySelection, id, clickButton, clickCount);
 	}
 
 	@Override
-	public void selectTower(int id, int clickCount){
-		this.handleEvent(EOperationCodes.TowerSelection, id, clickCount);
+	public void selectTower(int id, int clickButton, int clickCount){
+		this.handleEvent(EOperationCodes.TowerSelection, id, clickButton, clickCount);
 	}
 	
-	private void handleEvent (EOperationCodes opCode, Object ob, int clickCount) {
+	private void handleEvent (EOperationCodes opCode, Object ob, int clickButton, int clickCount) {
 		try {
 			switch (opCode) {
 			case TowerSelection:
 				if (ob instanceof Integer) {
 					int id = (Integer)ob;
-					getAppletContext().showDocument(new URL("javascript:selectTower(" + id + "," + clickCount +")"));
+					getAppletContext().showDocument(new URL("javascript:selectTower(" + id + "," + clickButton + "," + clickCount +")"));
 				}
 				break;
 			case FactorySelection:
 				if (ob instanceof Integer) {
 					int id = (Integer)ob;
-					getAppletContext().showDocument(new URL("javascript:selectBuilding(" + id + "," + clickCount +")"));
+					getAppletContext().showDocument(new URL("javascript:selectBuilding(" + id + "," + clickButton + "," + clickCount +")"));
 				}
 				break;
 			case ProjectSelection:
 				if (ob instanceof Integer) {
 					int id = (Integer)ob;
-					getAppletContext().showDocument(new URL("javascript:selectAntennaBall(" + id + "," + clickCount +")"));
+					getAppletContext().showDocument(new URL("javascript:selectAntennaBall(" + id + "," + clickButton + "," + clickCount +")"));
 				}
 				break;
 			default:

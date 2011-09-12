@@ -92,8 +92,8 @@ public class GLTowerViewManager extends GLViewManager {
 	@Override
 	protected void selectedObjectHandler(int selectedObject) {
 		int GLObjectId = towers.get(selectedObject-1).getId();
-		System.err.println("Selected tower: " + GLObjectId + "\tNumber of clicks: " + clickCount);
-		NotifyUIManager.notifySelectedTower(GLObjectId, clickCount);
+		System.err.println("Selected tower: " + GLObjectId + "\tButton: " + clickButton + "\tNumber of clicks: " + clickCount);
+		NotifyUIManager.notifySelectedTower(GLObjectId, clickButton, clickCount);
 	}
 
 

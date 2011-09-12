@@ -35,6 +35,7 @@ public abstract class GLViewManager {
 	protected GLDrawer drawer;
 	protected boolean threeDimensional;
 	protected boolean selectionMode;
+	protected int clickButton;
 	protected int clickCount;
 	protected static double pickingRegion;
 	private List<GLObject> pavements;
@@ -176,7 +177,7 @@ public abstract class GLViewManager {
 	}
 	
 	protected void drawCaption () throws GLSingletonNotInitializedException {
-		if (caption != null) {
+		if (caption != null && caption.getLines().size() > 0) {
 			GLSingleton.getGL().glPushMatrix();
 			GLUtils.beginOrtho(drawer.getScreenHeight(), drawer.getScreenWidth(), drawer.DIM);
 				GLSingleton.getGL().glPushMatrix();
@@ -283,9 +284,10 @@ public abstract class GLViewManager {
 		return selectionMode;
 	}
 
-	public void setSelectionMode(boolean selectionMode, int clickCount) {
+	public void setSelectionMode(boolean selectionMode, int clickButton, int clickCount) {
 		this.selectionMode = selectionMode;
 		this.clickCount = clickCount;
+		this.clickButton = clickButton;
 	}
 	
 	public static void setPickingRegion(double pickRegion) {
