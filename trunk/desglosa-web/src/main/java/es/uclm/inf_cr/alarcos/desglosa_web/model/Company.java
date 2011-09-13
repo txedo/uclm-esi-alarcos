@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
+
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 
 @Entity
@@ -23,6 +25,12 @@ public class Company {
 	@Property(type="string")
 	private String information;
 	private Director director;
+	@Property
+	private int numberOfFactories;
+	@Property
+	private int numberOfProjects;
+	@Property
+	private int numberOfEmployees;
 	
 	public Company(){}
 	
@@ -52,6 +60,21 @@ public class Company {
 		return director;
 	}
 
+	@Formula("(select count(*) from companies c, factories f where c.id = id and c.id = f.company_id)")
+	public int getNumberOfFactories() {
+		return numberOfFactories;
+	}
+
+	@Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f, companies c where p.id = sp.project_id and sp.factory_id = f.id and f.company_id = c.id and c.id = id)")
+	public int getNumberOfProjects() {
+		return numberOfProjects;
+	}
+
+	@Formula("(select sum(f.employees) from companies c, factories f where c.id = id and c.id = f.company_id)")
+	public int getNumberOfEmployees() {
+		return numberOfEmployees;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -66,6 +89,18 @@ public class Company {
 
 	public void setDirector(Director director) {
 		this.director = director;
+	}
+	
+	public void setNumberOfFactories(int numberOfFactories) {
+		this.numberOfFactories = numberOfFactories;
+	}
+
+	public void setNumberOfProjects(int numberOfProjects) {
+		this.numberOfProjects = numberOfProjects;
+	}
+
+	public void setNumberOfEmployees(int numberOfEmployees) {
+		this.numberOfEmployees = numberOfEmployees;
 	}
 
 	@Override

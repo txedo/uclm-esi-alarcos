@@ -168,9 +168,9 @@
 						high = parseInt(high, 10);
 						if (modelAttrType == "float_range") value = parseInt(value, 10);
 					} else if (entityAttrType == "float") {
-						low = parseFloat(low, 10);
-						high = parseFloat(high, 10);
-						if (modelAttrType == "float_range") value = parseFloat(value, 10);
+						low = parseFloat(low);
+						high = parseFloat(high);
+						if (modelAttrType == "float_range") value = parseFloat(value);
 					} else if (entityAttrType == "string") {
 						high = low;
 					}
@@ -189,7 +189,7 @@
 				});
 			} else if (modelAttrType == "float") {
 				if ($("#ratio").val() != "") {
-					ratio = parseFloat($("#ratio").val(), 10);
+					ratio = parseFloat($("#ratio").val());
 					if (isNaN(ratio)) {
 						$("#mapping_messages").html("");
 						$("#mapping_messages").html("<s:text name='error.field_isNaN'/>");
@@ -232,13 +232,21 @@
 					});
 					$(".mapping_rules:last").append("</div>");
 				}
-				$(".mapping_line:last").append("<div class='remove_mapping' style='float: left;'>removeIcon</div>");
+				$(".mapping_line:last").append("<div class='remove_mapping' style='float: left;'><a href='javascript:removeMapping($(\".mapping_line:last\"))'>-</a></div>");
 				$("#mapping_added").append("</div>");
 				$("#mapping_added").append("<div style='clear:both;'></div>");
 				// Feedback en mapping_messages
 				$("#mapping_messages").html("<s:text name='message.mapping_successful'/>");
 			}
 		}
+	}
+	
+	function removeMapping(mappingLineSelector) {
+		// TODO quitar del array de mappings
+		// TODO mostrar los botoncitos clickables del interfaz
+// 		$(mappingLineSelector + " .entityAttr_field").css('display','');
+// 		$(mappingLineSelector + " .modelAttr_field").css('display','');
+		$(mappingLineSelector).remove();
 	}
 	
 	function rgb2hex (rgbString) {
@@ -280,7 +288,7 @@
 		$(lineSelector).append("<input type='text' id='low' name='low' style='float: left;'/>");
 		if (!range) $(lineSelector).append("<input type='text' id='high' name='high' style='display: none;'/>");
 		else $(lineSelector).append("<input type='text' id='high' name='high' style='float: left;'/>");
-		createColorPicker(lineSelector);
+		createSequentialColorPicker(lineSelector);
 		$(lineSelector).append("<a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'>-</a>");
 		$(lineSelector).append("<div style='clear:both;'></div>");
 		$("#mapping_cfg").append("</div>");
@@ -313,12 +321,24 @@
 	}
 	
 	var colorPickerCounter = 0;
-	function createColorPicker(divSelector) {
+	function createSequentialColorPicker(divSelector) {
 		colorPickerCounter++;
 		var id = "colorPicker" + colorPickerCounter;
 		var selector = "#" + id;
+		
+		buildColorPicker(divSelector, selector, id);
+	}
+	
+	function createColorPicker(divSelector, id) {
+		var selector = "#" + id;
+		
+		buildColorPicker(divSelector, selector, id);
+	}
+	
+	function buildColorPicker(divSelector, selector, id) {
 		var divId = selector + " div";
 		var initialColor = "#0000ff";
+		
 		$(divSelector).append("<div id='" + id + "' class='colorSelector' style='float: left;'><div style='background-color: " + initialColor + ";'></div></div>");
 		
 		$(selector).ColorPicker({
@@ -347,7 +367,7 @@
 		var lineId = clazz + lineCounter;
 		var lineSelector = "#" + lineId;
 		$("#added_captionLines").append("<div id='" + lineId + "' class='" + clazz + "'>");
-		createColorPicker(lineSelector);
+		createSequentialColorPicker(lineSelector);
 		$(lineSelector).append("<input type='text' id='text' name='text' style='float: left;'/>");
 		$(lineSelector).append("<a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'>-</a>");
 		$(lineSelector).append("<div style='clear:both;'></div>");
@@ -365,7 +385,11 @@
 		$.each(nonMappedModelAttributesArray, function() {
 			$("#nonMappedModelAttributesDiv > ul").append("<li>");
 			$("#nonMappedModelAttributesDiv > ul > li:last").append("<label for='constant_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label>");
-			$("#nonMappedModelAttributesDiv > ul > li:last").append("<input id='constant_" + this + "' type='text' value='' />");
+			if (modelAttributesArray[this] == "color") {
+				createColorPicker("#nonMappedModelAttributesDiv > ul > li:last", "constant_" + this);
+			} else {
+				$("#nonMappedModelAttributesDiv > ul > li:last").append("<input id='constant_" + this + "' type='text' value='' />");
+			}
 			$("#nonMappedModelAttributesDiv > ul").append("</li>");
 		});
 		$("#nonMappedModelAttributesDiv").append("</ul>");
@@ -431,11 +455,16 @@
 				var attr = new Object();
 				attr.name = item;
 				attr.type = modelAttributesArray[item];
-				attr.value = $("#constant_"+item).val();
-				if (attr.type == "float_range") attr.type = "float";
-				if (attr.type == "int") attr.value = parseInt(attr.value, 10);
-				else if (attr.type == "float") attr.value = parseFloat(attr.value, 10);
-				// TODO Comprobar que cuando es un float, guarda los decimales y no solo la parte entera
+				if (attr.type == "color") {
+// 					$("#added_captionLines > .caption_line").each(function(index, element) {
+// 						var label = $(element).children("#text").val();
+// 						var hexColor = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
+				} else {
+					attr.value = $("#constant_"+item).val();
+					if (attr.type == "float_range") attr.type = "float";
+					if (attr.type == "int") attr.value = parseInt(attr.value, 10);
+					else if (attr.type == "float") attr.value = parseFloat(attr.value);
+				}
 				constants.push(attr);
 			});
 			var jsonCaptionLines = JSON.stringify(captionLines);
