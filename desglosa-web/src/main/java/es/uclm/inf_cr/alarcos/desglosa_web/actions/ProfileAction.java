@@ -198,10 +198,30 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 			Field attribute = new Field(modelAttribute.getString("type"), modelAttribute.getString("name"));
 			Object ratio = mappingObject.get("ratio");
 			if (ratio instanceof JSONNull) ratio = null;
-			JsonConfig jsonConfig = new JsonConfig();
-			jsonConfig.setRootClass(Rule.class);
+			else if (ratio instanceof Integer && attribute.getType().equals("float")) ratio = ((Integer)ratio).floatValue();
+			else if (ratio instanceof Double && attribute.getType().equals("float")) ratio = ((Double)ratio).floatValue();
+//			JsonConfig jsonConfig = new JsonConfig();
+//			jsonConfig.setRootClass(Rule.class);
+//			JSONArray jsonRules = mappingObject.getJSONArray("rules");
+//			List<Rule> rules = (List)JSONSerializer.toJava(jsonRules, jsonConfig);
 			JSONArray jsonRules = mappingObject.getJSONArray("rules");
-			List<Rule> rules = (List)JSONSerializer.toJava(jsonRules, jsonConfig);
+			List<Rule> rules = new ArrayList<Rule>();
+			for (int j = 0; j < jsonRules.size(); j++) {
+				JSONObject ruleJSONObject = jsonRules.getJSONObject(j);
+				Object low = ruleJSONObject.get("low");
+				if (low instanceof JSONNull) low = null;
+				else if (low instanceof Integer && column.getType().equals("float")) low = ((Integer)low).floatValue();
+				else if (low instanceof Double && column.getType().equals("float")) low = ((Double)low).floatValue();
+				Object high = ruleJSONObject.get("high");
+				if (high instanceof JSONNull) high = null;
+				else if (high instanceof Integer && column.getType().equals("float")) high = ((Integer)high).floatValue();
+				else if (high instanceof Double && column.getType().equals("float")) high = ((Double)high).floatValue();
+				Object value = ruleJSONObject.get("value");
+				if (value instanceof JSONNull) value = null;
+				else if (value instanceof Integer && attribute.getType().equals("float_range")) value = ((Integer)value).floatValue();
+				else if (value instanceof Double && attribute.getType().equals("float_range")) value = ((Double)value).floatValue();
+				rules.add(new Rule(low, high, value));
+			}
 			Mapping mapping = new Mapping(column, attribute, null, ratio, rules);
 			mappings.add(mapping);
 		}
@@ -214,6 +234,8 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 			String name = constantObject.getString("name");
 			String type = constantObject.getString("type");			
 			Object value = constantObject.get("value");
+			if (value instanceof Integer && type.equals("float")) value = ((Integer)value).floatValue();
+			else if (value instanceof Double && type.equals("float")) value = ((Double)value).floatValue();
 			constants.add(new Field(type, name, value));
 		}
 		metaclass.setConstants(constants);

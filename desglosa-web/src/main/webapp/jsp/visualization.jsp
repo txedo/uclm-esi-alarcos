@@ -361,6 +361,15 @@
 		}
 	}
 	
+	function initializeGeneralTab() {
+		$("#generalInformation").html("<ul>");
+		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showCompaniesById\",\"company\", 0, false, true, true, true, true)'><s:text name='message.show_general_company_info'/></a></li>");
+		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showFactoriesById\",\"factory\", 0, true, false, true, true, true)'><s:text name='message.show_general_factory_info'/></a></li>");
+		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showProjectsById\",\"project\", 0, true, true, false, true, true)'><s:text name='message.show_general_project_info'/></a></li>");
+		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showSubprojectsById\",\"subproject\", 0, true, true, true, false, true)'><s:text name='message.show_general_subproject_info'/></a></li>");
+		$("#generalInformation").append("</ul>");
+	}
+	
 	function initializeCompanyTab() {
 		$("#companyInformation").html("<i><s:text name='message.select_company'/></i>");
 	}
@@ -374,6 +383,7 @@
 	}
 	
 	function initializeTabs(){
+		initializeGeneralTab();
 		initializeCompanyTab();
 		initializeFactoryTab();
 		initializeProjectTab();
@@ -546,7 +556,7 @@ function desglosa_showProjectsByFactoryId(id, groupBy, profileFilename) {
 	desglosa_launchDesglosaEngine("/desglosa-web/json_projectsByFactoryId.action", id, groupBy, profileFilename);
 }
 
-function desglosa_showProjectById(id, groupBy, profileFilename) {
+function desglosa_showProjectsById(id, groupBy, profileFilename) {
 	currentEntity = "project";
 	desglosa_launchDesglosaEngine("/desglosa-web/json_projectById.action", id, groupBy, profileFilename);
 }
@@ -566,7 +576,7 @@ function desglosa_showSubprojectsByProjectId(id, groupBy, profileFilename) {
 	desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByFactoryId.action", id, groupBy, profileFilename);
 }
 
-function desglosa_showSubprojectById(id, groupBy, profileFilename) {
+function desglosa_showSubprojectsById(id, groupBy, profileFilename) {
 	currentEntity = "subproject";
 	desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectById.action", id, groupBy, profileFilename);
 }
