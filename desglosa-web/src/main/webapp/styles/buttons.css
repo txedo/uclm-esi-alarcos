@@ -64,17 +64,22 @@ width:80px;
 
 .selectablelist {
 border:1px solid #000;
-height:25px;
+height:15px;
 margin:5px;
-padding:10px;
+padding:5px;
 list-style-type: none;
 }
 
+.selectablelist:hover {
+background:#9da9b1;
+color:#FFF;
+}
+
 .ui-selected {
-background:#F39814;
+background:#1e557a;
 color:#FFF;
 }
 
 .ui-selecting {
-background:#FECA40;
+background:#4988b1;
 }

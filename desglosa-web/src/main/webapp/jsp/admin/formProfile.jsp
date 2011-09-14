@@ -205,8 +205,11 @@
 				var mapping = new Mapping(entityAttribute, modelAttribute, ratio, rules);
 				mappings.push(mapping);
 				// Ocultar los botones correspondientes a la columna de la tabla y el atributo de la clase
-				$(selectedEntityAttribute).css('display','none');
-				$(selectedModelAttribute).css('display','none');
+				$(selectedEntityAttribute).slideUp('slow');
+				$(selectedModelAttribute).slideUp('slow');
+				// Deseleccionar los botones
+				$(selectedEntityAttribute).removeClass('ui-selected');
+				$(selectedModelAttribute).removeClass('ui-selected');
 				// Resetear selectedColumn y selectedAttribute
 				selectedEntityAttribute = null;
 				selectedModelAttribute = null;
@@ -232,7 +235,11 @@
 					});
 					$(".mapping_rules:last").append("</div>");
 				}
-				$(".mapping_line:last").append("<div class='remove_mapping' style='float: left;'><a href='javascript:removeMapping($(\".mapping_line:last\"))'>-</a></div>");
+				$(".mapping_line:last").append("<div class='remove_mapping' style='float: left;'><a href='javascript:void(0)' class='remove_mapping'>-</a></div>");
+				$("a.remove_mapping").click(function() {
+					$(this).parent().parent().slideUp('slow');
+					removeMapping($(this).parent().parent());
+				});
 				$("#mapping_added").append("</div>");
 				$("#mapping_added").append("<div style='clear:both;'></div>");
 				// Feedback en mapping_messages
@@ -242,11 +249,22 @@
 	}
 	
 	function removeMapping(mappingLineSelector) {
-		// TODO quitar del array de mappings
-		// TODO mostrar los botoncitos clickables del interfaz
-// 		$(mappingLineSelector + " .entityAttr_field").css('display','');
-// 		$(mappingLineSelector + " .modelAttr_field").css('display','');
+		// Show selectable divs
+		var entityAttributeName = $(mappingLineSelector).children("div.entityAttr_field").html();
+		var entityAttrSelector = "#entityAttr_" + entityAttributeName;
+		$(entityAttrSelector).slideDown('slow');
+		var modelAttributeName = $(mappingLineSelector).children("div.modelAttr_field").html();
+		var modelAttrSelector = "#modelAttr_" + modelAttributeName;
+		$(modelAttrSelector).slideDown('slow');
+		// Remove mapping line
 		$(mappingLineSelector).remove();
+		// Remove from mappings array
+		$.each(mappings, function(i, item) {
+			if (item.entityAttribute.name == entityAttributeName && item.modelAttribute.name == modelAttributeName) {
+				mappings.splice(i, 1); // This removes one element from position i
+			}
+		});
+		$("#mapping_messages").html("<s:text name='message.mapping_deleted'/>");
 	}
 	
 	function rgb2hex (rgbString) {
@@ -500,6 +518,9 @@
 		<s:url id="refreshTableColumns" action="json_p_loadTableColumns"/>
 		
 		<div id="panes" style="float:left;">
+			<div id="paneInfo">
+				<s:text name="label.general_information_about_mappings"></s:text>
+			</div>
 			<div id="leftPane" style="float:left;">
 				<sj:select 	href="%{updateProfileURL}"
 							emptyOption="false"
