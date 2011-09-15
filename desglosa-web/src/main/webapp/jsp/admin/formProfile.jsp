@@ -7,16 +7,15 @@
 <html lang="en">
 <head>
 	<meta name="menu" content="ManageProfiles"/>
+	
 	<link href="<s:url value='/styles/buttons.css'/>" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/colorpicker.css'/>" />
+	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/layout.css'/>" />
 	
 	<sj:head jqueryui="true"/>
 	
-	<script type="text/javascript" src="js/utils.js"></script>
-	<script type="text/javascript" src="js/json2.js"></script>
-	
-	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/colorpicker.css'/>" />
 	<script type="text/javascript" src="<s:url value='/js/colorpicker/js/colorpicker.js'/>"></script>
-	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/layout.css'/>" />
+	<script type="text/javascript" src="js/json2.js"></script>
 	
 	<script type="text/javascript">
 	var mappings = new Array();
@@ -508,6 +507,14 @@
 			
 		}
 	}
+	
+	function toggleSteps(forward) {
+		if (forward) {
+			configureNonMappedModelAttributes()
+		}
+		$("#first_step").toggle();
+		$("#second_step").toggle();
+	}
 
 	</script>
 </head>
@@ -517,9 +524,10 @@
 		<s:url id="updateProfileURL" action="json_p_updateProfileForm"/>
 		<s:url id="refreshTableColumns" action="json_p_loadTableColumns"/>
 		
-		<div id="panes" style="float:left;">
+		<div id="panes" style="float:left;text-align:justify;">
 			<div id="paneInfo">
-				<s:text name="label.general_information_about_mappings"></s:text>
+				<p><s:text name="label.general_information_about_mappings1"/></p>
+				<p><s:text name="label.general_information_about_mappings2"/></p>
 			</div>
 			<div id="leftPane" style="float:left;">
 				<sj:select 	href="%{updateProfileURL}"
@@ -534,7 +542,6 @@
 							onChangeTopics="reloadEntityAttributes"/>
 				<sj:div id="entityAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
 			</div>
-			
 			<div id="rightPane" style="float:left;">
 				<sj:select 	href="%{updateProfileURL}"
 							emptyOption="false"
@@ -547,8 +554,6 @@
 							onChangeTopics="reloadModelAttributes"/>
 				<sj:div id="modelAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
 			</div>
-		
-			<div style="clear:both;"></div>
 		</div>
 		
 		<div id="mapping" style="float:left;">
@@ -559,7 +564,7 @@
 		</div>
 		
 		<div style="clear:both;"></div>
-		<a href="javascript:configureNonMappedModelAttributes();swapDivVisibility('first_step','second_step');">Next &gt;</a>
+		<a href="javascript:toggleSteps(true)"><s:text name="label.next"/> &gt;</a>
 	</div>
 	
 	<div id="second_step" style="display: none;">
@@ -571,7 +576,7 @@
 		<input id="profileName" name="profileName" type="text"/>
 		<label for="profileDescription"><s:text name="label.profile_description"/></label>
 		<textarea id="profileDescription" name="profileDescription" rows="3" cols="15"></textarea>
-		<a href="javascript:swapDivVisibility('second_step','first_step')">&lt; Back</a>
+		<a href="javascript:toggleSteps(false)">&lt; <s:text name="label.back"/></a>
 		<a href="javascript:saveProfile()">Save profile</a>
 	</div>
 </body>
