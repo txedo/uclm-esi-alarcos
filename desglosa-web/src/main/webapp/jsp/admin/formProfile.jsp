@@ -8,11 +8,12 @@
 <head>
 	<meta name="menu" content="ManageProfiles"/>
 	
+	<link href="<s:url value='/styles/profile.css'/>" rel="stylesheet" type="text/css" />
 	<link href="<s:url value='/styles/buttons.css'/>" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/colorpicker.css'/>" />
 	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/layout.css'/>" />
 	
-	<sj:head jqueryui="true"/>
+	<sj:head jqueryui="true" jquerytheme="cupertino"/>
 	
 	<script type="text/javascript" src="<s:url value='/js/colorpicker/js/colorpicker.js'/>"></script>
 	<script type="text/javascript" src="js/json2.js"></script>
@@ -120,14 +121,14 @@
 					var range = true;
 					if (entityAttrType == "string" || entityAttrType == "boolean") range = false;
 					addRangeConfigurationLine(range);
-					$("#mapping_control").append("<a href='javascript:addRangeConfigurationLine(" + range + ")'>+</a>");
+					$("#mapping_control").append("<a href='javascript:addRangeConfigurationLine(" + range + ")'><s:text name='label.add_configuration_line'/></a>");
 				} else if (modelAttrType == "color") {
 					// if entity attr type is color in hex format, it is a direct mapping
 					if (entityAttrType != "hexcolor") {
 						var range = true;
 						if (entityAttrType == "string" || entityAttrType == "boolean") range = false;
 						addColorConfigurationLine(range);
-						$("#mapping_control").append("<a href='javascript:addColorConfigurationLine(" + range + ")'>+</a>");	
+						$("#mapping_control").append("<a href='javascript:addColorConfigurationLine(" + range + ")'><s:text name='label.add_configuration_line'/></a>");	
 					}
 				} else if (modelAttrType == "float") {
 					$("#mapping_cfg").append("<ul><li><input id='ratio' type='text' value=''/></li></ul>");
@@ -217,30 +218,30 @@
 				// Resetear mapping_cfg y mapping_control
 				$("#mapping_cfg").html("");
 				$("#mapping_control").html("");
-				// Feedback en mapping_added
-				$("#mapping_added").append("<div class='mapping_line' style='display: block;'>");
-				$(".mapping_line:last").append("<div class='entityAttr_field' style='float: left;'>" + entityAttrName + "</div>");
-				$(".mapping_line:last").append("<div class='modelAttr_field' style='float: left;'>" + modelAttrName + "</div>");
+				// Feedback en mapping_added_body
+				$("#mapping_added_body").append("<div class='mapping_line' style='display: block;'>");
+				$(".mapping_line:last").append("<span id='entityAttr_field' class='column'>" + entityAttrName + "</span>");
+				$(".mapping_line:last").append("<span id='modelAttr_field' class='column'>" + modelAttrName + "</span>");
 				if (ratio != null) {
-					$(".mapping_line:last").append("<div class='ratio' style='float: left;'>" + ratio + "</div>");
+					$(".mapping_line:last").append("<span class='ratio' style='float: left;'>" + ratio + "</span>");
 				}
 				if (rules.length > 0) {
 					$(".mapping_line:last").append("<div class='mapping_rules' style='float: left;'>");
 					$.each(rules, function(index, element) {
 						$(".mapping_rules:last").append("<div class='mapping_rule' style='display: block;'>");
-						$(".mapping_rule:last").append("<div class='rule_low' style='display: inline;'>" + element.low + "</div>");
-						$(".mapping_rule:last").append("<div class='rule_high' style='display: inline;'>" + element.high + "</div>");
-						$(".mapping_rule:last").append("<div class='rule_value' style='display: inline;'>" + element.value + "</div>");
+						$(".mapping_rule:last").append("<span class='rule' id='rule_low'>" + element.low + "</span>");
+						$(".mapping_rule:last").append("<span class='rule' id='rule_high'>" + element.high + "</span>");
+						$(".mapping_rule:last").append("<span class='rule' id='rule_value'>" + element.value + "</span>");
 					});
 					$(".mapping_rules:last").append("</div>");
 				}
-				$(".mapping_line:last").append("<div class='remove_mapping' style='float: left;'><a href='javascript:void(0)' class='remove_mapping'>-</a></div>");
+				$(".mapping_line:last").append("<span class='column'><a href='javascript:void(0)' class='remove_mapping'><s:text name='label.remove_mapping'/></a></span>");
 				$("a.remove_mapping").click(function() {
 					$(this).parent().parent().slideUp('slow');
 					removeMapping($(this).parent().parent());
 				});
-				$("#mapping_added").append("</div>");
-				$("#mapping_added").append("<div style='clear:both;'></div>");
+				$("#mapping_added_body").append("</div>");
+				$("#mapping_added_body").append("<div style='clear:both;'></div>");
 				// Feedback en mapping_messages
 				$("#mapping_messages").html("<s:text name='message.mapping_successful'/>");
 			}
@@ -249,10 +250,10 @@
 	
 	function removeMapping(mappingLineSelector) {
 		// Show selectable divs
-		var entityAttributeName = $(mappingLineSelector).children("div.entityAttr_field").html();
+		var entityAttributeName = $(mappingLineSelector).children("span#entityAttr_field").html();
 		var entityAttrSelector = "#entityAttr_" + entityAttributeName;
 		$(entityAttrSelector).slideDown('slow');
-		var modelAttributeName = $(mappingLineSelector).children("div.modelAttr_field").html();
+		var modelAttributeName = $(mappingLineSelector).children("span#modelAttr_field").html();
 		var modelAttrSelector = "#modelAttr_" + modelAttributeName;
 		$(modelAttrSelector).slideDown('slow');
 		// Remove mapping line
@@ -291,8 +292,8 @@
 		if (!range) $(lineSelector).append("<input type='text' id='high' name='high' style='display: none;'/>");
 		else $(lineSelector).append("<input type='text' id='high' name='high' style='float: left;'/>");
 		$(lineSelector).append("<input type='text' id='value' name='value' style='float: left;'/>");
-		$(lineSelector).append("<a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'>-</a>");
-		$(lineSelector).append("<div style='clear:both;'></div>");
+		$(lineSelector).append("<span><a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'><s:text name='label.remove_configuration_line'/></a></span>");
+		$(lineSelector).append("<div style='clear:both;' />");
 		$("#mapping_cfg").append("</div>");
 	}
 	
@@ -306,8 +307,8 @@
 		if (!range) $(lineSelector).append("<input type='text' id='high' name='high' style='display: none;'/>");
 		else $(lineSelector).append("<input type='text' id='high' name='high' style='float: left;'/>");
 		createSequentialColorPicker(lineSelector);
-		$(lineSelector).append("<a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'>-</a>");
-		$(lineSelector).append("<div style='clear:both;'></div>");
+		$(lineSelector).append("<span><a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'><s:text name='label.remove_configuration_line'/></a></span>");
+		$(lineSelector).append("<div style='clear:both;' />");
 		$("#mapping_cfg").append("</div>");
 	}
 	
@@ -385,9 +386,9 @@
 		var lineSelector = "#" + lineId;
 		$("#added_captionLines").append("<div id='" + lineId + "' class='" + clazz + "'>");
 		createSequentialColorPicker(lineSelector);
-		$(lineSelector).append("<input type='text' id='text' name='text' style='float: left;'/>");
-		$(lineSelector).append("<a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'>-</a>");
-		$(lineSelector).append("<div style='clear:both;'></div>");
+		$(lineSelector).append("<span><input type='text' id='text' name='text' style='float: left;'/></span>");
+		$(lineSelector).append("<span><a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'>-</a></span>");
+		$(lineSelector).append("<div style='clear:both;' />");
 		$("#added_captionLines").append("</div>");
 	}
 	
@@ -401,11 +402,11 @@
 		$("#nonMappedModelAttributesDiv").html("<ul>");
 		$.each(nonMappedModelAttributesArray, function() {
 			$("#nonMappedModelAttributesDiv > ul").append("<li>");
-			$("#nonMappedModelAttributesDiv > ul > li:last").append("<label for='constant_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label>");
+			$("#nonMappedModelAttributesDiv > ul > li:last").append("<span><label for='constant_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label></span>");
 			if (modelAttributesArray[this] == "color") {
 				createColorPicker("#nonMappedModelAttributesDiv > ul > li:last", "constant_" + this);
 			} else {
-				$("#nonMappedModelAttributesDiv > ul > li:last").append("<input id='constant_" + this + "' type='text' value='' />");
+				$("#nonMappedModelAttributesDiv > ul > li:last").append("<span><input id='constant_" + this + "' type='text' value='' /></span>");
 			}
 			$("#nonMappedModelAttributesDiv > ul").append("</li>");
 		});
@@ -473,6 +474,7 @@
 				attr.name = item;
 				attr.type = modelAttributesArray[item];
 				if (attr.type == "color") {
+					// TODO
 // 					$("#added_captionLines > .caption_line").each(function(index, element) {
 // 						var label = $(element).children("#text").val();
 // 						var hexColor = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
@@ -524,16 +526,17 @@
 		<s:url id="updateProfileURL" action="json_p_updateProfileForm"/>
 		<s:url id="refreshTableColumns" action="json_p_loadTableColumns"/>
 		
-		<div id="panes" style="float:left;text-align:justify;">
-			<div id="paneInfo">
-				<p><s:text name="label.general_information_about_mappings1"/></p>
-				<p><s:text name="label.general_information_about_mappings2"/></p>
-			</div>
+		<div id="info" style="text-align:justify;">
+			<p><s:text name="label.general_information_about_mappings1"/></p>
+			<p><s:text name="label.general_information_about_mappings2"/></p>
+		</div>
+		
+		<div id="panes" style="float: left; text-align: justify; margin-left: auto; margin-right: auto;">
 			<div id="leftPane" style="float:left;">
 				<sj:select 	href="%{updateProfileURL}"
 							emptyOption="false"
 							headerKey="-1"
-							headerValue="-- Please select an entity --"
+							headerValue="-- %{getText('label.entity_selection')} --"
 							disabled="option:first"
 							id="entitySelect"
 							name="entity"
@@ -542,11 +545,11 @@
 							onChangeTopics="reloadEntityAttributes"/>
 				<sj:div id="entityAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
 			</div>
-			<div id="rightPane" style="float:left;">
+			<div id="rightPane" style="float: left; margin-left: 5px;">
 				<sj:select 	href="%{updateProfileURL}"
 							emptyOption="false"
 							headerKey="-1"
-							headerValue="-- Please select a model --"
+							headerValue="-- %{getText('label.model_selection')} --"
 							id="modelSelect"
 							name="model"
 							list="models"
@@ -556,8 +559,15 @@
 			</div>
 		</div>
 		
-		<div id="mapping" style="float:left;">
-			<div id="mapping_added"></div>
+		<div id="mapping" style="float: left; margin-left: 15px;">
+			<div id="mapping_added">
+				<div id="mapping_added_header" style="padding-top: 5px; padding-bottom: 5px; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(0, 0, 0); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; -moz-border-image: none;"><s:text name="label.configured_mappings"/></div>
+				<div id="mapping_added_body">
+					<span class="column3"><s:text name="label.entity_attribute"/></span>
+					<span class="column3"><s:text name="label.model_attribute"/></span>
+					<span class="column3"></span>
+				</div>
+			</div>
 			<div id="mapping_messages"></div>
 			<div id="mapping_cfg"></div>
 			<div id="mapping_control"></div>
