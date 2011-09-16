@@ -49,8 +49,8 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 	}};
 	private Map<String, String> models = new HashMap<String,String>() {{
 		put("model.gl.knowledge.GLTower", getText("label.model.towers"));
-		put("model.gl.knowledge.GLAntennaBall", getText("label.model.projects"));
-		put("model.gl.knowledge.GLFactory", getText("label.model.factories"));
+		put("model.gl.knowledge.GLAntennaBall", getText("label.model.antennaballs"));
+		put("model.gl.knowledge.GLFactory", getText("label.model.buildings"));
 	}};
 
 	public void setProfileName(String profileName) {

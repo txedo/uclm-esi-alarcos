@@ -1,0 +1,12 @@
+.column {
+	float: left;
+}
+
+.rule {
+	display: inline;	
+}
+
+span .column3 {
+	float: left;
+	width: 33%;
+}
