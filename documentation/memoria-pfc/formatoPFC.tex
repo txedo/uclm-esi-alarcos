@@ -18,7 +18,7 @@
 %====================================
 % PAQUETES PARA AJUSTE DE MÁRGENES, ESPACIOS
 \usepackage[top=2.5cm,bottom=2.5cm,inner=3.5cm,outer=2cm]{geometry}
-\usepackage{setspace}         % Interlineado
+%\usepackage{setspace}         % Interlineado
 \usepackage{fancyhdr}         % Cabeceras y pies personalizados
 %\usepackage[% Utiliza el tema requerido eliminando la marca %
 %Sonny%
@@ -82,6 +82,19 @@ format=hang]{caption} % Personalización de títulos de figuras y tablas
 %====================================
 % COMANDOS DEFINIDOS POR EL USUARIO
 %====================================
+
+% ------------------ Macro para cambiar el interlineado ---------------------
+%       Uso: \interlineado{tamaño en puntos: 1.0 es normal, 2.0 doble...}
+% -----------------------------------------------------------------------------
+\newcommand{\interlineado}[1]{
+    \renewcommand{\baselinestretch}{#1}  % -- Cambiamos interlineado
+	 \large\normalsize % ---------------------- Para que cambie de verdad
+}
+
+% ------- Definimos el interlineado Base para todo el documento ------
+\newcommand{\interlineadoBase}{1.5}
+\interlineado{1.0}
+
 \newcommand{\autor}{Jose Domingo López López} % Aquí tu nombre
 \newcommand{\director}{M\textordfeminine{} Ángeles Moraga de la Rubia}
 %\newcommand{\tutor}{M\textordfeminine{} Ángeles Moraga de la Rubia}

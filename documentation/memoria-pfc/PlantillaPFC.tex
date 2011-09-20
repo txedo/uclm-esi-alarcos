@@ -22,11 +22,13 @@
 \frontmatter
 % Cambia la numeración de páginas a números romanos y las secciones no están numeradas aunque si aparecen en el índice de contenidos.
 \pagestyle{empty}  % Páginas sin cabecera ni pies
-\singlespacing     % Espaciado simple (facilitado por setspace)
+\interlineado{1}
+%\singlespacing     % Espaciado simple (facilitado por setspace)
 \include{Portadas} % Páginas de portada
 
 \pagestyle{plain} % Páginas sólo con numeración inferior en pie
-\onehalfspacing   % Espaciado 1,5 líneas (facilitado por setspace)
+\interlineado{1.5}
+%\onehalfspacing   % Espaciado 1,5 líneas (facilitado por setspace)
 \include{Previos} % Resumen y Agradecimientos etc.
 
 \pagestyle{fancy} % Estilo de página ajustado por fancyhdr
@@ -49,7 +51,6 @@
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}}
 
-\onehalfspacing   % Espaciado 1,5 líneas (facilitado por setspace)
 % Capítulos que conforman el libro
 \include{Introduccion}
 \include{MotivacionYObjetivos}
