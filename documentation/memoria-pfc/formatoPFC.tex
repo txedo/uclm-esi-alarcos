@@ -83,6 +83,31 @@ format=hang]{caption} % Personalización de títulos de figuras y tablas
 % COMANDOS DEFINIDOS POR EL USUARIO
 %====================================
 
+% Macro para insertar una imagen
+%       Uso: \imagen{nombreFichero}{Factor escala}{Caption (leyenda)}{Label (identificador para referenciarla)}
+\def\imagen#1#2#3#4{
+ \begin{figure}[h]
+ \begin{center}
+   \includegraphics[keepaspectratio,scale=#2]{#1}
+ \caption {#3}
+ \label{#4}
+ \end{center}
+ \end{figure}
+}
+
+% Macro para insertar una imagen con borde en el marco
+%       Uso: \imagenBorde{nombreFichero}{Factor escala}{Caption (leyenda)}{Label (identificador para referenciarla)}
+\def\imagenBorde#1#2#3#4{
+\setlength\fboxsep{0pt}
+\setlength\fboxrule{0.5pt}
+ \begin{figure}[h]
+ \begin{center}
+  \fbox{\includegraphics[keepaspectratio,scale=#2]{#1}}
+ \caption{#3}
+ \label{#4}
+ \end{center}
+\end{figure}}
+
 % ------------------ Macro para cambiar el interlineado ---------------------
 %       Uso: \interlineado{tamaño en puntos: 1.0 es normal, 2.0 doble...}
 % -----------------------------------------------------------------------------

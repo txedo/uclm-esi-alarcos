@@ -5,6 +5,57 @@
 
 % Concretar y exponer el problema a resolver describiendo el entorno de trabajo, la situación y detalladamente qué se pretende obtener. Limitaciones y condicionantes a considerar para la resolución del problema (lenguaje de construcción, equipo físico, equipo lógico de base o de apoyo, etc.).
 
-%\section{Motivación del proyecto}
-%\section{Objetivos del proyecto}
-%\section{Entorno y requisitos}
+\section{Motivación}
+
+A medida que la globalización ha ido afectando a la industria del software, las empresas han tenido que ir adaptando sus metodologías y procesos de gestión de productos software\footnote{Se habla de productos software ya que éstos pueden ser fragmentados en diferentes proyectos o descomponerse en un conjunto de fases o etapas en función de la metodología utilizada en su ciclo de vida.} para adaptarse a las nuevas tendencias. Inicialmente, estas metodologías estaban adecuadas para gestionar proyectos o productos tradicionales que se desarrollaban en una única ubicación (Fig. \ref{fig:typology-projects-locations}) \cite{evaristo1999tpm}, pero hoy en día estos trabajos se realizan de forma distribuida, en la que los equipos de trabajo no se encuentran co-localizados. Esta descentralización complica la gestión del software en general y de la calidad del software en particular, ya que es necesario controlar medidas e indicadores de calidad de las organizaciones participantes, sus factorías involucradas y los proyectos o partes de proyectos que se están llevando a cabo en cada una.
+
+\imagenBorde{Cap2//typology-projects-locations}{0.7}{Clasificación de proyectos según localizaciones.}{fig:typology-projects-locations}
+
+Según ha explicado uno de los responsables del proyecto en \textbf{Indra Software Labs S.L.}, los responsables a cargo de proyectos disponen de un conjunto de hojas de cálculo en las cuales anotan, manipulan y consultan los datos e información que consideran útil y oportuna. Estas hojas de cálculo no siguen ningún modelo o estándar, por lo que no existe compatibilidad alguna entre ellas. Aunque rudimentario, este método es factible si no es necesario coordinarse con otros jefes de proyecto, pero pueden surgir numerosos problemas de comprensión y entendimiento si se comparte con múltiples personas a cargo de proyectos que conforman el mismo producto final (Fig. \ref{fig:desorden}).
+
+\imagenBorde{Cap2//desorden}{0.5}{Datos desordenados relacionados con software global y medidas de calidad del software.}{fig:desorden}
+
+La motivación de este PFC viene dada por la necesidad de una herramienta que establezca un modelo de representación para las entidades que intervienen en el desarrollo global. En este caso de estudio, las principales entidades son compañías, factorías, proyectos y subproyectos (Fig. \ref{fig:hierarchy}). Así, los usuarios de la herramienta podrán aportar, modificar y consultar datos relativos a medidas e indicadores de las entidades en base a dicho modelo. Acto seguido, será posible definir y realizar las representaciones visuales que se consideren oportunas, evitando los problemas que se han descrito anteriormente.
+
+\imagenBorde{Cap2//hierarchy}{0.5}{Resumen de la jerarquía de entidades que intervienen en el desarrollo global.}{fig:hierarchy}
+
+
+\section{Objetivos}
+
+El objetivo principal del PFC consiste en elaborar una \textbf{herramienta} que permita la visualización de medidas e indicadores software utilizados en el contexto empresarial bajo el paradigma del \textbf{Desarrollo Global de Software}.
+
+Dichas medidas e indicadores representarán la información que se considere importante como -por ejemplo- la productividad de las fábricas de software, las incidencias que han surgido a lo largo del ciclo de vida de un proyecto, o la \textit{portabilidad} de un subproyecto determinado. Los datos relevantes y susceptibles de representación visual de cada entidad pueden variar a lo largo del tiempo, es decir, puede producirse la adición de un conjunto de características para una o varias entidades. Además, puede suceder que en un futuro se deseen añadir más entidades para modelar un entorno más complejo. Por esta razón, es requisito indispensable que la interfaz de usuario se adapte automáticamente, en la medida de lo posible, a los cambios realizados en la lógica de negocio de la herramienta.
+
+Por otro lado, se desarrollará un \textbf{motor de gráficos 3D} que deberá ser integrado en la herramienta para proporcionar un conjunto de modelos gráficos capaces de escenificar las medidas e indicadores definidos previamente. Esta escenificación se realizará sobre las \textit{dimensiones} de un modelo gráfico, entendiéndose por dimensión a aquella propiedad del modelo susceptible de asignarle un valor. Del mismo modo que en el caso de las entidades, los modelos gráficos también pueden experimentar variaciones si la empresa lo requiere, así como puede ser necesario que se extienda el número de dimensiones de un modelo existente. Por ello, y una vez más, es necesario que la interfaz gráfica de usuario vuelva a adaptarse a dichos cambios.
+
+Dada la situación en la que tanto los atributos de las entidades como las dimensiones de los modelos pueden variar a lo largo del tiempo, es necesario que la herramienta permita crear \textbf{perfiles de visualización}. Un perfil de visualización definirá qué modelo gráfico será utilizado para representar una entidad determinada, permitiendo así que el usuario interactúe con el modelo para desglosar información cada vez más específica (\textit{niveles de visualización}). Además, deberá contener información relativa a las asociaciones que se desean establecer entre los atributos de la entidad y las dimensiones del modelo seleccionado (Fig. \ref{fig:mapeo}). Por otro lado, el perfil podrá contener información complementaria que será mostrada dentro del modelo gráfico a modo de \textit{leyenda}. Por último, cabe destacar que para una misma entidad se pueden configurar múltiples perfiles de visualización independientes entre sí -asociando diferentes modelos gráficos y dimensiones- a fin de definir distintas vistas que muestren información más específica o de la misma familia. Esta característica es útil cuando se quiere definir un perfil para cada característica de un modelo de calidad, representando sus subcaracterísticas sobre las dimensiones del modelo gráfico.
+
+\imagenBorde{Cap2//mapeo}{0.65}{Esquema que representa las asociaciones entre los atributos de una entidad y las dimensiones de un modelo gráfico.}{fig:mapeo}
+
+Los \textbf{niveles de visualización} son un aspecto importante, ya que establecen la navegabilidad del usuario en el sistema para ir desglosando información cada vez más específica. Por ejemplo, a \textit{nivel de fábrica} puede ser interesante conocer en qué proyectos está colaborando una determinada factoría; a \textit{nivel de proyecto} se podría conocer si las fábricas que colaboran están especializadas en el mercado del proyecto; y, a \textit{nivel de subproyecto} se podría comprobar qué valores toman un conjunto de medidas de calidad.
+
+Para permitir que las distintas organizaciones y fábricas involucradas en un conjunto común de proyectos puedan utilizar el sistema de visualización y manejar la información globalizada, la herramienta será diseñada como una \textbf{aplicación web} con \textit{internacionalización}. Estas dos características son muy importantes ya que permiten que sea accesible desde cualquier navegador web convencional y que sea mostrada en el idioma configurado en dicho navegador.
+
+El grado de internacionalización depende de que previamente se haya traducido el fichero de \textit{localización} correspondiente. Se trata de un fichero en texto plano que contiene un conjunto de etiquetas cuyos valores deberán ser traducidos al idioma deseado. Por defecto, se ofrecerán los ficheros correspondientes a los idiomas Inglés (Reino Unido) y Español (España).
+
+Es importante destacar que este PFC se centra en la visualización y personalización de la visualización. Por lo tanto, no proporcionará medios para calcular los valores de las medidas e indicadores, aunque sí incorporará una interfaz gráfica a modo de formulario en la que los usuarios podrán aportar dichos datos.
+
+
+\section{Entorno y requisitos}
+
+% Para poder obtener una interfaz gráfica de usuario de estas características será necesario crear dos anotaciones personalizadas de Java
+
+% anotaciones
+% parser de anotaciones
+% generación de ficheros xml con jaxb para los perfiles , que será persistente en formato XML (\textit{Extensible Markup Language}), 
+% introspección o reflection
+% motor gráfico con JOGL
+% JSON para la entrada del motor gráfico
+% applet y comunicación bidireccional mediante javascript
+% seguridad y acceso a páginas moderado con spring security
+% instanciación de acciones y dao mediante spring
+% acciones mediante struts
+% menús mediante struts-menu
+% jquery
+% json para ajax
+% google maps
