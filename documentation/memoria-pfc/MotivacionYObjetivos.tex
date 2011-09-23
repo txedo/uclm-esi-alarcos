@@ -28,7 +28,7 @@ Dichas medidas e indicadores representarán la información que se considere impor
 
 Por otro lado, se desarrollará un \textbf{motor de gráficos 3D} que deberá ser integrado en la herramienta para proporcionar un conjunto de modelos gráficos capaces de escenificar las medidas e indicadores definidos previamente. Esta escenificación, que permitirá que el usuario navegue a través del entorno como si de un mundo virtual se tratase, se realizará sobre las \textit{dimensiones} de un modelo gráfico. Una \textbf{dimensión} es aquella propiedad del modelo gráfico susceptible de asignarle un valor. Del mismo modo que en el caso de las entidades, los modelos gráficos también pueden experimentar variaciones si la empresa lo requiere, así como puede ser necesario que se extienda el número de dimensiones de un modelo existente. Por ello, y una vez más, es necesario que la interfaz gráfica de usuario vuelva a adaptarse a dichos cambios.
 
-Dada la situación en la que tanto los atributos de las entidades como las dimensiones de los modelos pueden variar a lo largo del tiempo, es necesario que la herramienta permita crear \textit{perfiles de visualización}. Un \textbf{perfil de visualización} definirá qué modelo gráfico será utilizado para representar una entidad determinada, permitiendo así que el usuario interactúe con el modelo para desglosar información cada vez más específica (\textit{niveles de visualización}). Además, deberá contener información relativa a las \textbf{asociaciones} que se desean establecer entre los atributos de la entidad y las dimensiones del modelo seleccionado (Fig. \ref{fig:mapeo}). Por otro lado, el perfil podrá contener información complementaria que será mostrada dentro del modelo gráfico a modo de \textit{leyenda informativa}. Por último, cabe destacar que para una misma entidad se pueden configurar múltiples perfiles de visualización independientes entre sí -asociando diferentes modelos gráficos y dimensiones- a fin de definir distintas vistas que muestren información más específica o de la misma familia. Esta característica es útil cuando se quiere definir un perfil para cada característica de un modelo de calidad, representando sus subcaracterísticas sobre las dimensiones del modelo gráfico.
+Dada la situación en la que tanto los atributos de las entidades como las dimensiones de los modelos pueden variar a lo largo del tiempo, es necesario que la herramienta permita crear \textit{perfiles de visualización}. Un \textbf{perfil de visualización} definirá qué modelo gráfico será utilizado para representar una entidad determinada, permitiendo así que el usuario interactúe con el modelo para desglosar información cada vez más específica (\textit{niveles de visualización}). Además, deberá contener información relativa a las \textbf{asociaciones} que se desean establecer entre los atributos de la entidad y las dimensiones del modelo seleccionado (Fig. \ref{fig:mapeo}). Por otro lado, el perfil podrá contener información complementaria que será mostrada dentro del modelo gráfico a modo de \textit{leyenda informativa}. Por último, cabe destacar que para una misma entidad se pueden configurar múltiples perfiles de visualización para lograr configurar distintas vistas que muestren información más específica o relativa a una misma familia. Esta característica es útil cuando se quiere definir un perfil para cada característica de un modelo de calidad, representando sus subcaracterísticas sobre las dimensiones del modelo gráfico.
 
 \imagenBorde{Cap2//mapeo}{0.65}{Esquema que representa las asociaciones entre los atributos de una entidad y las dimensiones de un modelo gráfico.}{fig:mapeo}
 
@@ -102,43 +102,35 @@ La mayor dificultad para generar una escena visual se establece dada la gran cap
 
 A continuación, y a modo de síntesis, se listarán las herramientas y tecnologías empleadas a lo largo del ciclo de vida de este proyecto:
 \begin{itemize}
-	\item \textbf{Eclipse} EE Helios: se trata del Entorno de Desarrollo Integrado (en inglés, IDE o \textit{Integrated Development Environment}) que se ha utilizado para implementar los dos proyectos.
+	\item \textbf{Eclipse} EE Helios: se trata del Entorno de Desarrollo Integrado (en inglés, IDE o \textit{Integrated Development Environment}) que se ha utilizado para la implementación de los proyectos \textit{Desglosa Graphics Engine} y \textit{Desglosa Web}.
 	\item \textbf{Maven} 2.2.1: esta herramienta sirve para gestionar las dependencias y el ciclo de vida de proyectos Java. Se ha utilizado por medio de un \textit{plugin} de Eclipse denominado \textbf{m2eclipse}.
 	\item \textbf{Subversion}: constituye el sistema de control de versiones que se ha empleado a lo largo del desarrollo del software.
 	\item \textbf{MySQL Community Server} 5.1.11: es el sistema gestor de bases de datos que se utilizará para hacer persistentes los datos que corresponda.
 	\item \textbf{Apache Tomcat} 7.0.2 y \textbf{Jetty} 6.1.5: son los dos servidores web y contenedores de \textit{servlets} y páginas JSP (\textit{Java Server Pages}) que han sido utilizados tanto en el desarrollo como en el despliegue de la herramienta.
-	\item \textbf{Spring} 2.5.6:
-	\item \textbf{Spring Security} 2.0.4:
-	\item \textbf{Struts} 2.2.3:
-	\item \textbf{Struts-Menu} 2.4.3:
-	\item \textbf{JSON-Lib} 2.4:
-	\item \textbf{Struts2-JQuery} 3.1.0: \textbf{jQuery} 1.5.2  y \textbf{jQuery UI} 1.8.14 
-	\item \textbf{Google Maps API} v2:
-	\item \textbf{Displaytag} 1.2:
-	\item \textbf{Sitemesh} 2.4.2:
-	\item \textbf{CSS3}:
-	\item \textbf{HTML5}:
-	\item \textbf{JSP} 2.0:
-	\item \textbf{JavaScript}:
+	\item \textbf{Spring} 2.5.6: es un popular \textit{framework} de desarrollo de aplicaciones basadas en Java que proporciona mecanismos muy bien documentados y fáciles de usar para prácticas comunes.
+	\item \textbf{Spring Security} 2.0.4: es un \textit{framework} que proporciona mecanismos de autenticación y permite implementar políticas de control de acceso a recursos.
+	\item \textbf{Struts} 2.2.3: es un \textit{framework} basado en Java que permite desarrollar aplicaciones web mediante el patrón MVC (Modelo-Vista-Controlador), permitiendo así reducir el acoplamiento entre las tres capas que forman un sistema software.
+	\item \textbf{Struts-Menu} 2.4.3: se trata de una biblioteca de etiquetas que permite crear menús dinámicos a partir de sus definiciones en formato XML. Además, está totalmente integrado con el sistema de autenticación del contenedor web, que en este caso es \textit{Spring Security}.
+	\item \textbf{JSON-Lib} 2.4: es una librería basada en Java que permite transformar distintos tipos de estructuras de datos a formato JSON y viceversa.
+	\item \textbf{Struts2-JQuery} 3.1.0: es un \textit{plugin} para el \textit{framework} Struts2 que proporciona de un modo sencillo las funcionalidades de \textbf{Ajax} y \textit{widgets} basados en el popular \textit{framework} de javascript \textbf{jQuery} 1.5.2  y \textbf{jQuery UI} 1.8.14.
+	\item \textbf{Google Maps API} v2: proporciona un API que permite incorporar Google Maps en un página web y dotarlo de las funcionalidades necesarias.
+	\item \textbf{Displaytag} 1.2: se trata de una librería de etiquetas mostrar y manipular tablas siguiendo el patrón MVC. Soporta operaciones tales como paginación, agrupación, ordenación, exportación, etcétera.
+	\item \textbf{Sitemesh} 2.4.2: es un \textit{framework} para desarrollo de aplicaciones web basadas en Java, que se utiliza para aspectos de decoración y posicionamiento y proporcionar un \textit{look\&feel} entre las distintas páginas de un mismo sitio web. Su funcionamiento se basa en definir una página modelo en la que se define en qué lugares se insertarán los distintos contenidos.
+	\item \textbf{JSP} 2.0: \textit{JavaServer Pages} es una tecnología que proporciona los medios necesarios para crear páginas con contenido web dinámico.
+	\item \textbf{JSTL} 1.2: \textit{JavaServer Pages Standard Tag Library} es una librería que encapsula funcionalidades comunes que son utilizadas en el desarrollo de aplicaciones web, tales como estructuras condicionales, iteraciones, etcétera.
+	\item \textbf{HTML}: \textit{HyperText Markup Language} es un lenguaje de marcas empleado en la elaboración de páginas web.
+	\item \textbf{CSS}: \textit{Cascading Style Sheets} es un lenguaje que describe las características visuales de un documento escrito en un lenguaje de marcas.
+	\item \textbf{JavaScript}: es un lenguaje de programación interpretado que, ejecutado en el lado del cliente, permite desarrollar contenidos web dinámicos evitando recargas innecesarias de la página. De este modo se puede lograr
 	
-	\item \textbf{Java Annotations}:
-	\item \textbf{Java Reflection API}: (parsers y generar objetos en tiempo de ejecucion)
-	\item \textbf{JAXB API} 2.2.4:
-	\item \textbf{Hibernate} 3.5.4:
-	\item \textbf{JPA} 2.0:
-	\item \textbf{Java OpenGL} 2.0:
-	
-	\item \textbf{Inkscape} 0.48:
-	\item \textbf{GIMP} 2.6.11:
-	\item \textbf{MySQL Workbench} 5.2 CE:
-	\item \textbf{Visual Paradigm} 8.0:
-	\item \textbf{\LaTeX{}}:
-	\item \textbf{BibTeX}:
-\end{itemize}
-
-\begin{itemize}
-	\item la persistencia se lleva a cabo mediante \textbf{Hibernate} y anotaciones \textbf{JPA}.
-	\item la seguridad de acceso a páginas y la política de Control de Acceso Basado en Grupos (en inglés, \textit{Group-Based Access Control} o \textit{GBAC}) se implementa mediante \textbf{Spring Security}.
-	\item la instanciación de acciones de Struts2 y los DAO (Data Access Object) se realiza mediante Spring.
-	\item La configuración de menús dinámicos en base al rol del usuario se realiza mediante Struts-menu.
+	\item \textbf{Java Annotations}: es un método para añadir metadatos a código fuente Java. Estos metadatos podrán ser analizados en tiempo de compilación o tiempo de ejecución para proporcionar la información que se considere oportuna.
+	\item \textbf{Java Reflection API}: la \textit{reflexión} es una técnica mediante la cual un programa informático puede observar y modificar su estructura y comportamiento en tiempo de ejecución. Esta técnica suele utilizarse junto con la \textbf{introspección}, que es la capacidad que poseen algunos lenguajes de programación orientados a objetos para determinar el tipo de un objeto en tiempo de ejecución.
+	\item \textbf{JAXB API} 2.2.4: \textit{Java Architecture for XML Binding} es una tecnología integrada dentro de Java que permite obtener una representación XML a partir de una jerarquía de objetos Java. Este proceso de \textit{serialización} recibe los nombres de \textit{marshalling}, \textit{deflating} o \textit{serializing}. El proceso inverso, también soportado por JAX, recibe los nombres de \textit{unmarshalling}, \textit{inflating} o \textit{deserialization}.
+	\item \textbf{Hibernate} 3.5.4: es un \textit{framework} de tipo ORM (Object-Relational Mapping) que permite establecer asociaciones entre clases Java y tablas de una base de datos relacional. También proporciona mecanismos para realizar consultas sobre la base de datos de un modo más abstracto que si se utilizase el lenguaje específico del sistema gestor de base de datos en cuestión.
+	\item \textbf{JPA} 2.0: \textit{Java Persistence API} es un \textit{framework} de tipo ORM e integrado dentro de la plataforma de Java que nos permite interactuar con una base de datos por medio de objetos de la capa de dominio.
+	\item \textbf{Java OpenGL} 2.0: es una biblioteca que hace de puente entre el lenguaje de programación Java y OpenGL. De este modo, es posible generar gráficos OpenGL a partir de una aplicación escrita en Java.
+	\item \textbf{Inkscape} 0.48 y \textbf{GIMP} 2.6.11: son herramientas multiplataforma de dibujo que han sido utilizadas para generar las imágenes de este documento.
+	\item \textbf{MySQL Workbench} 5.2 CE: es una herramienta CASE (\textit{Computer Aided Software Engineering} o \textit{Ingeniería de Software Asistida por Computadora}) que proporciona un entorno visual para modelar bases de datos de un modo sencillo y rápido.
+	\item \textbf{Visual Paradigm} 8.0: herramienta CASE utilizada en las etapas de análisis y diseño con el fin de elaborar los diagramas UML necesarios, como por ejemplo los diagramas de casos de uso, clases, secuencia, interacción, etcétera.
+	\item \textbf{\LaTeX{}}: lenguaje de marcas y sistema de composición de documentos utilizado en la creación de documentos científicos y técnicos de gran calidad.
+	\item \textbf{\BibTeX}: herramienta que se utiliza para gestionar la bibliografía y referencias de documentos generados con \LaTeX{}.
 \end{itemize}
