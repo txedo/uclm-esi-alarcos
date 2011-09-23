@@ -5,9 +5,38 @@ Version=2
 [SessionInfo]
 ActiveTab=2
 FrameCount=10
-ActiveFrame=4
+ActiveFrame=5
 
 [Frame0]
+Columns=1
+Rows=1
+Flags=0
+ShowCmd=1
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-8
+MaxPos.y=-30
+NormalPos.left=100
+NormalPos.top=100
+NormalPos.right=1399
+NormalPos.bottom=503
+Class=CLatexEdit
+Document=MotivacionYObjetivos.tex
+
+[Frame0_Row0]
+cyCur=344
+cyMin=10
+
+[Frame0_Col0]
+cxCur=1262
+cxMin=10
+
+[Frame0_View0,0]
+Cursor.row=134
+Cursor.column=22
+TopSubLine=385
+
+[Frame1]
 Columns=1
 Rows=1
 Flags=0
@@ -23,20 +52,20 @@ NormalPos.bottom=428
 Class=CLatexEdit
 Document=Previos.tex
 
-[Frame0_Row0]
+[Frame1_Row0]
 cyCur=344
 cyMin=10
 
-[Frame0_Col0]
+[Frame1_Col0]
 cxCur=1262
 cxMin=10
 
-[Frame0_View0,0]
-Cursor.row=20
-Cursor.column=57
-TopSubLine=10
+[Frame1_View0,0]
+Cursor.row=0
+Cursor.column=0
+TopSubLine=0
 
-[Frame1]
+[Frame2]
 Columns=1
 Rows=1
 Flags=0
@@ -52,20 +81,20 @@ NormalPos.bottom=453
 Class=CLatexEdit
 Document=Introduccion.tex
 
-[Frame1_Row0]
+[Frame2_Row0]
 cyCur=344
 cyMin=10
 
-[Frame1_Col0]
+[Frame2_Col0]
 cxCur=1262
 cxMin=10
 
-[Frame1_View0,0]
+[Frame2_View0,0]
 Cursor.row=43
 Cursor.column=27
 TopSubLine=153
 
-[Frame2]
+[Frame3]
 Columns=1
 Rows=1
 Flags=0
@@ -81,20 +110,20 @@ NormalPos.bottom=214
 Class=CLatexEdit
 Document=PlantillaPFC.tex
 
-[Frame2_Row0]
+[Frame3_Row0]
 cyCur=155
 cyMin=10
 
-[Frame2_Col0]
+[Frame3_Col0]
 cxCur=922
 cxMin=10
 
-[Frame2_View0,0]
+[Frame3_View0,0]
 Cursor.row=47
 Cursor.column=123
 TopSubLine=56
 
-[Frame3]
+[Frame4]
 Columns=1
 Rows=1
 Flags=0
@@ -110,53 +139,24 @@ NormalPos.bottom=478
 Class=CLatexEdit
 Document=Listas.tex
 
-[Frame3_Row0]
+[Frame4_Row0]
 cyCur=344
 cyMin=10
 
-[Frame3_Col0]
+[Frame4_Col0]
 cxCur=1262
 cxMin=10
 
-[Frame3_View0,0]
+[Frame4_View0,0]
 Cursor.row=6
 Cursor.column=40
 TopSubLine=0
 
-[Frame4]
+[Frame5]
 Columns=1
 Rows=1
 Flags=2
 ShowCmd=3
-MinPos.x=-1
-MinPos.y=-1
-MaxPos.x=-8
-MaxPos.y=-30
-NormalPos.left=100
-NormalPos.top=100
-NormalPos.right=1399
-NormalPos.bottom=503
-Class=CLatexEdit
-Document=MotivacionYObjetivos.tex
-
-[Frame4_Row0]
-cyCur=557
-cyMin=10
-
-[Frame4_Col0]
-cxCur=1453
-cxMin=10
-
-[Frame4_View0,0]
-Cursor.row=58
-Cursor.column=220
-TopSubLine=162
-
-[Frame5]
-Columns=1
-Rows=1
-Flags=0
-ShowCmd=1
 MinPos.x=-1
 MinPos.y=-1
 MaxPos.x=-8
@@ -169,16 +169,16 @@ Class=CLatexEdit
 Document=EstadoDelArte.tex
 
 [Frame5_Row0]
-cyCur=344
+cyCur=557
 cyMin=10
 
 [Frame5_Col0]
-cxCur=1262
+cxCur=1453
 cxMin=10
 
 [Frame5_View0,0]
-Cursor.row=0
-Cursor.column=0
+Cursor.row=18
+Cursor.column=89
 TopSubLine=0
 
 [Frame6]
@@ -264,9 +264,9 @@ cxCur=1262
 cxMin=10
 
 [Frame8_View0,0]
-Cursor.row=3
-Cursor.column=42
-TopSubLine=3
+Cursor.row=78
+Cursor.column=47
+TopSubLine=54
 
 [Frame9]
 Columns=1
