@@ -11,9 +11,50 @@
 % Librerías de visualización
 % Perspectiva de en qué consiste y qué hay en la literatura ¡CUIDADO REFERENCIAS!
 
-
+\section{Desarrollo Global de Software}
 
 %Ventajas: 
 %* Obtener la mano de obra, en ocasiones escasa, necesaria para el proyecto en países donde se está avanzando notablemente en I+D.
 %* Disminuir las dificultades para construir los métodos necesarios para gestionar el conocimiento y coordinar los distintos grupos de trabajo, abstrayéndose de la distancia geográfica \cite{kobitzsch01}.
 %* Recortar costes y gastos derivados de los viajes a los países con los que se colabora.
+
+\section{Calidad y medidas software}
+
+\section{Visualización de medidas software}
+
+\section{Gráficos por computador y Librerías de gráficos 3D}
+
+% http://www.comphist.org/computing_history/new_page_6.htm
+Los \textbf{gráficos por computador} es un término muy amplio que, de un modo sencillo, puede definirse como \textit{imágenes generadas o modificadas mediante el uso de un ordenador}. Estas imágenes pueden representaciones visuales de entidades del mundo real o abstracciones de las mismas \cite{govil2004principles}. Se dice de \textit{un modo simple} porque no hay que olvidar que esta disciplina también se encarga de la generación de modelos que varían su geometría y comportamiento a lo largo del tiempo \cite{foley1996computer}.
+
+Cuando se trata de pensar en el uso que se le pueden dar a los gráficos por computador, es fácil pensar en los videojuegos o en películas de animación como Avatar y Shrek, pero su uso va más allá y son una herramienta crucial en numerosas áreas. Por ejemplo, en medicina se utilizan para proporcionar métodos no invasivos que permitan probar e investigar características del cuerpo humano; en educación son una excelente herramienta para representar conceptos; en entornos empresariales se utilizan para crear diagramas y gráficas que permiten en análisis de datos; en aviación sirven para la generación de simuladores de vuelo, etcétera. \cite{govil2004principles}.
+
+Todos los usos listados anteriormente y muchos más, son razones más que suficientes para que las empresas y las comunidades de desarrolladores empleen recursos, tiempo y esfuerzo en elaborar soluciones eficientes para la generación y manipulación de gráficos por computador. Por ello, a lo largo de los últimos años han ido surgiendo estándares y librerías de gráficos que satisfagan las necesidades de hoy en día.
+
+Una \textbf{librería de gráficos 3D} es una \textit{interfaz} software que proporciona un medio para \textit{renderizar}\footnote{Generar imágenes a partir de un modelo.} gráficos en una pantalla, estableciendo un medio de comunicación entre las aplicaciones y los controladores de la tarjeta gráfica (Fig. \ref{fig:graphics-stack}). Su principal cometido es ofrecer un nivel mayor de abstracción y otorgar independencia tanto a nivel de hardware -de entrada y de salida- como a nivel de aplicación ya que la librería es accedida a través de un interfaz único.
+% http://lemnik.wordpress.com/2007/05/29/what-are-directx-and-opengl/
+
+\imagenBorde{Cap3//graphics-stack}{0.6}{Pila de recursos que intervienen en la generación de gráficos.}{fig:graphics-stack}
+
+Existen numerosas librerías destinadas a generar gráficos tanto 2D como 3D. En este PFC se han analizado cuatro de las más conocidas y potentes: Direct3D, OpenGL, WebGL y Java3D.
+
+
+
+
+
+\subsection{Direct3D}
+
+Direct3D es un componente que forma parte de la colección de librerías multimedia llamada DirectX (Fig. \ref{fig:directx-api-collection}). Esta colección de librerías, propiedad de Microsoft, está diseñada específicamente para trabajar con tareas de contenido multimedia, especialmente videojuegos. Proporciona al programador un medio de acceso los dispositivos de entrada y salida, como la pantalla y la tarjeta de sonido, para lograr generar gráficos en tres dimensiones realistas, música y efectos de sonido envolventes. Oficialmente sólo se encuentra disponible para plataformas basadas en Microsoft Windows y Xbox, aunque existe proyectos de código abierto que se han encargado de llevar a cabo proyectos de emulación y compatibilidad, como Wine, y hacer posible la portabilidad a plataformas basadas en Unix.
+
+\imagenBorde{Cap3//directx-api-collection}{0.6}{Colección de API de DirectX.}{fig:directx-api-collection}
+
+DirectX contiene, entre otros, librerías para manejar dispositivos de entrada y salida (DirectInput), para comunicaciones en red (DirectPlay), para reproducción y grabación de sonidos (DirectSound), etcétera. En este proyecto se ha analizado Direct3D, que es la librería que proporciona un interfaz de programación para generar gráficos en tres dimensiones.
+
+Inicialmente, Direct3D implementaba un API denominado \textit{modo retenido}. El \textbf{modo retenido} se basaba en una estructura de datos predefinida con pocas posibilidades de personalización. La industria del videojuego lanzó numerosas peticiones para poder obtener un mayor control sobre el hardware y surgió el modo \textbf{modo inmediato}, que da soporte a todas las primitivas de procesamiento 3D que permiten las tarjetas gráficas: iluminación, materiales, \textit{z-buffering}\footnote{El \textit{z-buffering} es un término utilizado en el contexto de gráficos en tres dimensiones. Este concepto también se conoce como \textit{buffer de profundidad} ya que los gráficos en dos dimensiones se basan en coordenadas \textit{(x, y)} y la coordenada \textit{z} es introducida como una tercera dimensión.}, etcétera.
+
+ %Estas características hacen posible que este tipo de librerías sean capaces de determinar el potencial del hardware del dipositivo para configurar un conjunto de parámetros que permitan obtener el mayor rendimiento posible tanto del software como del hardware.
+
+
+\subsection{OpenGL}
+\subsection{WebGL}
+\subsection{Java3D}
