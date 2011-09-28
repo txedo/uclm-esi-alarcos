@@ -13,10 +13,28 @@
 
 \section{Desarrollo Global de Software}
 
-%Ventajas: 
-%* Obtener la mano de obra, en ocasiones escasa, necesaria para el proyecto en países donde se está avanzando notablemente en I+D.
-%* Disminuir las dificultades para construir los métodos necesarios para gestionar el conocimiento y coordinar los distintos grupos de trabajo, abstrayéndose de la distancia geográfica \cite{kobitzsch01}.
-%* Recortar costes y gastos derivados de los viajes a los países con los que se colabora.
+La globalización económica ha hecho que la industria y el comercio se adapte a nuevos modelos de negocio. En el capítulo 1 de este documento se ha hecho mención a los diez acontecimientos que, según Thomas Friedman \cite{Friedman:2005}, dieron lugar a este fenómeno. Estos acontecimientos también afectaron a la industria del software que a día de hoy ha roto con cualquier frontera física que se le pudiera imponer gracias a su fuerte relación con las innovaciones tecnológicas y en telecomunicaciones. Como prueba de ello, el desarrollo de software se está llevando a cabo en todo momento y en cualquier parte del mundo, lo que introduce el concepto de \textit{Desarrollo Global de Software} (en inglés \textit{Global Software Development} o GSD). Para llegar a este modelo ha sido necesario evolucionar a través de dos predecesores: el \textit{modelo tradicional}, en el que los equipos de trabajo encargados de desarrollar un software se encontraban co-localizados en un mismo edificio; y el \textit{Desarrollo Distribuido de Software}, en el que esos equipos de trabajo se encontraban dispersos en una misma ciudad o incluso en distintas ciudades de un mismo país \cite{herb-moitra-2001}.
+
+Otro factor a tener en cuenta en el GSD, a parte de la dispersión geográfica de los \textit{stakeholders}\footnote{Se define el término \textit{stakeholder} como \textit{aquellos que pueden afectar o son afectados por las actividades de una empresa} \cite{freeman2010strategic}.}, es el número de compañías que colaboran en un mismo proyecto. Puede darse el caso de que el proyecto se esté llevando a cabo por una sola compañía o, por el contrario, que exista un conjunto de compañías subcontratadas (compañías subsidiarias) que colaboran entre sí y con la compañía contratante. \cite{gsd:handbook}. Gracias a este factor, surgen nuevos modelos y variantes dentro del GSD: outsourcing, offshoring y el nearshoring.
+
+Hablar de outsourcing
+
+Hablar de offshoring
+
+Hablar de nearshoring
+
+Todas estas modalidades de GSD introducen una serie de ventajas e inconvenientes que afectan al desarrollo y gestión de este tipo proyectos.
+
+Ventajas:
+* Obtener la mano de obra, en ocasiones escasa, necesaria para el proyecto en países donde se está avanzando notablemente en I+D.
+* Disminuir las dificultades para construir los métodos necesarios para gestionar el conocimiento y coordinar los distintos grupos de trabajo, abstrayéndose de la distancia geográfica \cite{kobitzsch01}.
+* Recortar costes y gastos derivados de los viajes a los países con los que se colabora.
+
+Inconvenientes:
+*
+*
+*
+
 
 \section{Calidad y medidas software}
 
@@ -25,36 +43,50 @@
 \section{Gráficos por computador y Librerías de gráficos 3D}
 
 % http://www.comphist.org/computing_history/new_page_6.htm
-Los \textbf{gráficos por computador} es un término muy amplio que, de un modo sencillo, puede definirse como \textit{imágenes generadas o modificadas mediante el uso de un ordenador}. Estas imágenes pueden representaciones visuales de entidades del mundo real o abstracciones de las mismas \cite{govil2004principles}. Se dice de \textit{un modo simple} porque no hay que olvidar que esta disciplina también se encarga de la generación de modelos que varían su geometría y comportamiento a lo largo del tiempo \cite{foley1996computer}.
+Los \textbf{gráficos por computador} es un término cuya definición ha evolucionado en las últimas décadas. De un modo sencillo, puede definirse como \textit{imágenes generadas o modificadas mediante el uso de un ordenador}. Estas imágenes pueden representaciones visuales de entidades del mundo real o abstracciones de las mismas \cite{govil2004principles}. Pero este concepto ha progresado desde imágenes simples en dos dimensiones hasta entornos complejos tridimensionales de alta calidad. Por tanto, en su definición habría que incorporar el aspecto de la generación de modelos de objetos que varían su geometría y comportamiento a lo largo del tiempo \cite{foley1996computer}.
 
 Cuando se trata de pensar en el uso que se le pueden dar a los gráficos por computador, es fácil pensar en los videojuegos o en películas de animación como Avatar y Shrek, pero su uso va más allá y son una herramienta crucial en numerosas áreas. Por ejemplo, en medicina se utilizan para proporcionar métodos no invasivos que permitan probar e investigar características del cuerpo humano; en educación son una excelente herramienta para representar conceptos; en entornos empresariales se utilizan para crear diagramas y gráficas que permiten en análisis de datos; en aviación sirven para la generación de simuladores de vuelo, etcétera. \cite{govil2004principles}.
 
-Todos los usos listados anteriormente y muchos más, son razones más que suficientes para que las empresas y las comunidades de desarrolladores empleen recursos, tiempo y esfuerzo en elaborar soluciones eficientes para la generación y manipulación de gráficos por computador. Por ello, a lo largo de los últimos años han ido surgiendo estándares y librerías de gráficos que satisfagan las necesidades de hoy en día.
+Todos los usos listados anteriormente y muchos más, son razones más que suficientes para que las empresas y las comunidades de desarrolladores empleen recursos, tiempo y esfuerzo en elaborar soluciones eficientes para la generación y manipulación de gráficos por computador. Por ello, a lo largo de los últimos años han ido surgiendo estándares y librerías de gráficos que satisfagan las necesidades de hoy en día. Sin estos estándares y librerías, los desarrolladores de software debían implementar distintas versiones de sus aplicaciones para soportar las múltiples plataformas hardware en las que fuese a ser ejecutado dicho software.
 
 Una \textbf{librería de gráficos 3D} es una \textit{interfaz} software que proporciona un medio para \textit{renderizar}\footnote{Generar imágenes a partir de un modelo.} gráficos en una pantalla, estableciendo un medio de comunicación entre las aplicaciones y los controladores de la tarjeta gráfica (Fig. \ref{fig:graphics-stack}). Su principal cometido es ofrecer un nivel mayor de abstracción y otorgar independencia tanto a nivel de hardware -de entrada y de salida- como a nivel de aplicación ya que la librería es accedida a través de un interfaz único.
 % http://lemnik.wordpress.com/2007/05/29/what-are-directx-and-opengl/
 
 \imagenBorde{Cap3//graphics-stack}{0.6}{Pila de recursos que intervienen en la generación de gráficos.}{fig:graphics-stack}
 
-Existen numerosas librerías destinadas a generar gráficos tanto 2D como 3D. En este PFC se han analizado cuatro de las más conocidas y potentes: Direct3D, OpenGL, WebGL y Java3D.
-
-
+Existen numerosas librerías destinadas a generar gráficos tanto 2D como 3D. En este PFC se han analizado las dos más conocidas y potentes hoy en día: Direct3D y OpenGL.
 
 
 
 \subsection{Direct3D}
 
-Direct3D es un componente que forma parte de la colección de librerías multimedia llamada DirectX (Fig. \ref{fig:directx-api-collection}). Esta colección de librerías, propiedad de Microsoft, está diseñada específicamente para trabajar con tareas de contenido multimedia, especialmente videojuegos. Proporciona al programador un medio de acceso los dispositivos de entrada y salida, como la pantalla y la tarjeta de sonido, para lograr generar gráficos en tres dimensiones realistas, música y efectos de sonido envolventes. Oficialmente sólo se encuentra disponible para plataformas basadas en Microsoft Windows y Xbox, aunque existe proyectos de código abierto que se han encargado de llevar a cabo proyectos de emulación y compatibilidad, como Wine, y hacer posible la portabilidad a plataformas basadas en Unix.
+Direct3D un API (\textit{Application Programming Interface}) que forma parte de la colección de librerías multimedia llamada DirectX (Fig. \ref{fig:directx-api-collection}). Esta colección de librerías, propiedad de Microsoft, está diseñada específicamente para desarrollar aplicaciones interactivas, especialmente videojuegos  \cite{luna2003introduction}. Proporciona al programador un medio de acceso los dispositivos de entrada y salida, como la pantalla y la tarjeta de sonido, para lograr generar gráficos en tres dimensiones realistas, música y efectos de sonido envolventes. Oficialmente sólo se encuentra disponible para plataformas basadas en Microsoft Windows y Xbox, aunque existe proyectos de código abierto que se han encargado de llevar a cabo proyectos de emulación y compatibilidad, como Wine, y hacer posible la portabilidad a plataformas basadas en Unix.
 
 \imagenBorde{Cap3//directx-api-collection}{0.6}{Colección de API de DirectX.}{fig:directx-api-collection}
 
-DirectX contiene, entre otros, librerías para manejar dispositivos de entrada y salida (DirectInput), para comunicaciones en red (DirectPlay), para reproducción y grabación de sonidos (DirectSound), etcétera. En este proyecto se ha analizado Direct3D, que es la librería que proporciona un interfaz de programación para generar gráficos en tres dimensiones.
+DirectX contiene, entre otros, librerías para manejar dispositivos de entrada y salida (DirectInput), para comunicaciones en red (DirectPlay), para reproducción y grabación de sonidos (DirectSound), etcétera. \textbf{Direct3D}, en concreto, es la librería que proporciona un interfaz de programación para generar gráficos en tres dimensiones \cite{walnum2003microsoft}.
 
-Inicialmente, Direct3D implementaba un API denominado \textit{modo retenido}. El \textbf{modo retenido} se basaba en una estructura de datos predefinida con pocas posibilidades de personalización. La industria del videojuego lanzó numerosas peticiones para poder obtener un mayor control sobre el hardware y surgió el modo \textbf{modo inmediato}, que da soporte a todas las primitivas de procesamiento 3D que permiten las tarjetas gráficas: iluminación, materiales, \textit{z-buffering}\footnote{El \textit{z-buffering} es un término utilizado en el contexto de gráficos en tres dimensiones. Este concepto también se conoce como \textit{buffer de profundidad} ya que los gráficos en dos dimensiones se basan en coordenadas \textit{(x, y)} y la coordenada \textit{z} es introducida como una tercera dimensión.}, etcétera.
+En las versiones 6 y 7 de DirectX, Direct3D implementaba dos API denominadas \textit{modo retenido} y \textit{modo inmediato}. El \textit{modo inmediato} era un API flexible pero difícil de utilizar ya que estaba diseñada para trabajar a bajo nivel. Este modo daba soporte a todas las primitivas de procesamiento 3D que permiten las tarjetas gráficas: iluminación, materiales, \textit{z-buffering}\footnote{El \textit{z-buffering} es un término utilizado en el contexto de gráficos en tres dimensiones. Este concepto también se conoce como \textit{buffer de profundidad} ya que los gráficos en dos dimensiones se basan en coordenadas \textit{(x, y)} y la coordenada \textit{z} es introducida como una tercera dimensión.}, entre otros. El \textbf{modo retenido} era una capa de abstracción que envolvía al \textit{modo inmediato} y se basaba en una estructura de datos predefinida con pocas posibilidades de personalización, pero su uso y aprendizaje era más sencillo que el modo inmediato. Por tanto, los programadores necesitaban un API con la facilidad de uso del \textit{modo retenido} pero que ofreciese la potencia y flexibilidad del \textit{modo inmediato}. Esto hizo que Microsoft abandonase el mantenimiento del \textit{modo retenido} y se centrase en extender y mejorar el \textit{modo inmediato} \cite{engel2003beginning}.
 
- %Estas características hacen posible que este tipo de librerías sean capaces de determinar el potencial del hardware del dipositivo para configurar un conjunto de parámetros que permitan obtener el mayor rendimiento posible tanto del software como del hardware.
+En las sucesivas versiones, Microsoft ha incorporado numerosas características a Direct3D así como optimizado las existentes para estar a la altura de su competidor más directo: OpenGL.
+
 
 
 \subsection{OpenGL}
-\subsection{WebGL}
-\subsection{Java3D}
+
+OpenGL (\textit{Open Graphics Library}) es una \textbf{especificación estándar} que define un API independiente de la plataforma y del sistema operativo, que permite generar gráficos en dos y tres dimensiones. También goza de independencia en cuanto al sistema de ventanas y el protocolo de red empleados \cite{shreiner2006opengl}.
+
+Las aplicaciones basadas en OpenGL pueden hacer uso de una gran variedad de librerías que extienden sus funcionalidades. Las más importantes son \textit{OpenGL Utility Library (GLU)} y \textit{OpenGL Utility Toolkit (GLUT)}. \textbf{GLU} proporciona rutinas de más alto nivel que las que proporciona OpenGL inicialmente. Destacan aquellas encargadas de generar texturas, NURBS (en inglés \textit{Non Uniform Rational B-splines})\footnote{Modelo matemático utilizado en computación gráfica para generar y representar curvas y superficies.}, dibujar superficies cuádricas como esferas, conos y cilindros, entre otros \cite{shreiner2006opengl}. Por otro lado, \textbf{GLUT} proporciona métodos sencillos para manejar las ventajas de la interfaz gráfica de usuario y los dispositivos de entrada como el teclado y el ratón \cite{govil2004principles}.
+
+Según él sitio web de OpenGL (\textit{http://www.opengl.org/}), las ventajas de este API son las siguientes:
+\begin{enumerate}
+	\item \textbf{Estándar}. La especificación de OpenGL es mantenida por un grupo independiente sin ánimo de lucro (Khronos Group) con el apoyo de numerosas empresas como IBM, Sun Microsystems y Hewlett-Packard. Se trata de un estándar abierto, independiente de la plataforma y del sistema operativo.
+	\item \textbf{Estable}. Las implementaciones de OpenGL han estado disponibles durante más de siete años para una gran variedad de plataformas. Los cambios que han surgido a lo largo del tiempo han sido controlados y se han anunciado con antelación para que los programadores puedan adaptarse a ellos. No obstante, la \textit{retrocompatibilidad} ha sido un compromiso para asegurar que las aplicaciones existentes no se vuelvan obsoletas.
+	\item \textbf{Fiable} y \textbf{Portátil}. Todas las aplicaciones de OpenGL producen contenido visual sin importar el hardware, el sistema operativo o el sistema de ventanas sobre el que se ejecuten.
+	\item \textbf{Evolución}. OpenGL incorpora un mecanismo de extensibilidad para permitir a los programadores y fabricantes de hardware la posibilidad de incorporar nuevas funcionalidades.
+	\item \textbf{Escalable}. Las aplicaciones basada en OpenGL pueden ejecutarse en una gran variedad de dispositivos. Esto incluye dispositivos móviles, ordenadores personales, \textit{workstations} e incluso súper ordenadores.
+	\item \textbf{Facilidad de uso}. La convención de nombres utilizada así como el diseño estructurado del que goza OpenGL, permite escribir aplicaciones empleando menos líneas de código que con otras librerías. Además, OpenGL abstrae al programador de las características específicas del hardware.
+	\item \textbf{Documentación}. Existe una extensa bibliografía publicada que cubre numerosos aspectos de OpenGL, así como una gran variedad de \textit{snippets}\footnote{Un \textit{snippet} es un pequeño ejemplo funcional de código ejecutable.} a modo de ejemplo.
+\end{enumerate}
+
+Por último, destacar que aunque OpenGL inicialmente fue concebido para desarrollar aplicaciones escritas en C y C++, existe una gran cantidad de \textit{bindings}\footnote{En este contexto, un \textit{binding} se refiere a una envoltura del API.} que permiten desarrollar aplicaciones este tipo de aplicaciones empleando numerosos lenguajes de programación como Fortran, Java, Perl, Pike, Python, Delphi, Ada y Visual Basic.
