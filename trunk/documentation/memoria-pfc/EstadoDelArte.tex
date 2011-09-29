@@ -13,32 +13,77 @@
 
 \section{Desarrollo Global de Software}
 
-La globalización económica ha hecho que la industria y el comercio se adapte a nuevos modelos de negocio. En el capítulo 1 de este documento se ha hecho mención a los diez acontecimientos que, según Thomas Friedman \cite{Friedman:2005}, dieron lugar a este fenómeno. Estos acontecimientos también afectaron a la industria del software que a día de hoy ha roto con cualquier frontera física que se le pudiera imponer gracias a su fuerte relación con las innovaciones tecnológicas y en telecomunicaciones. Como prueba de ello, el desarrollo de software se está llevando a cabo en todo momento y en cualquier parte del mundo, lo que introduce el concepto de \textit{Desarrollo Global de Software} (en inglés \textit{Global Software Development} o GSD). Para llegar a este modelo ha sido necesario evolucionar a través de dos predecesores: el \textit{modelo tradicional}, en el que los equipos de trabajo encargados de desarrollar un software se encontraban co-localizados en un mismo edificio; y el \textit{Desarrollo Distribuido de Software}, en el que esos equipos de trabajo se encontraban dispersos en una misma ciudad o incluso en distintas ciudades de un mismo país \cite{herb-moitra-2001}.
+La globalización económica ha hecho que la industria y el comercio se adapte a nuevos modelos de negocio. En el capítulo 1 de este documento se ha hecho mención a los diez acontecimientos que, según Thomas Friedman \cite{Friedman:2005}, dieron lugar a este fenómeno. Estos acontecimientos también afectaron a la industria del software que a día de hoy ha roto con cualquier frontera física que se le pudiera imponer gracias a su fuerte relación con las innovaciones tecnológicas y en telecomunicaciones. Como prueba de ello, el desarrollo de software se está llevando a cabo en todo momento y en cualquier parte del mundo, lo que introduce el concepto de \textit{Desarrollo Global de Software} (en inglés \textit{Global Software Development} o GSD). Para llegar a este modelo ha sido necesario evolucionar a través de dos predecesores: el \textit{modelo tradicional}, en el que los equipos de trabajo encargados de desarrollar un software se encontraban co-localizados en un mismo edificio; y el \textit{Desarrollo Distribuido de Software} (Fig. \ref{fig:typology-projects-locations}), en el que esos equipos de trabajo se encontraban dispersos en una misma ciudad o incluso en distintas ciudades de un mismo país \cite{herb-moitra-2001}.
 
-Otro factor a tener en cuenta en el GSD, a parte de la dispersión geográfica de los \textit{stakeholders}\footnote{Se define el término \textit{stakeholder} como \textit{aquellos que pueden afectar o son afectados por las actividades de una empresa} \cite{freeman2010strategic}.}, es el número de compañías que colaboran en un mismo proyecto. Puede darse el caso de que el proyecto se esté llevando a cabo por una sola compañía o, por el contrario, que exista un conjunto de compañías subcontratadas (compañías subsidiarias) que colaboran entre sí y con la compañía contratante. \cite{gsd:handbook}. Gracias a este factor, surgen nuevos modelos y variantes dentro del GSD: outsourcing, offshoring y el nearshoring.
+Otro factor a tener en cuenta en el GSD, a parte de la dispersión geográfica de los \textit{stakeholders}\footnote{Se define el término \textit{stakeholder} como \textit{aquellos que pueden afectar o son afectados por las actividades de una empresa} \cite{freeman2010strategic}.}, es el número de compañías que colaboran en un mismo proyecto. Se puede dar el caso de que el proyecto esté siendo llevado a cabo por una sola compañía o, por el contrario, que exista un conjunto de compañías subcontratadas (compañías subsidiarias) que colaboren entre sí junto con la compañía contratante \cite{gsd:handbook}. De esta característica surgen nuevos modelos y variantes dentro del GSD: outsourcing, offshoring y el nearshoring.
 
-Hablar de outsourcing
+El término \textbf{outsourcing} se utiliza cuando una compañía realiza una externalización de uno o varios de los servicios que proporciona. Estos servicios son delegados sobre una compañía subcontratada. En el contexto del GSD, se asume que la compañía contratante y compañía subcontratada se encuentran sitas en distintos países. Si ambas compañías se encuentran localizadas en el mismo país, se habla de \textbf{inshoring}. Las principales ventajas del outsourcing se basan en una reducción de costes debido a que la mano de obra en el país de la compañía subcontratada puede ser más barata que en el país de la compañía contratante, y poder llegar a un mayor grupo de clientes adaptando los productos a sus necesidades. Estas dos características permiten ofrecer productos especializados y precios más competitivos \cite{sahay:globalit}.
 
-Hablar de offshoring
+De la idea del \textit{outsourcing} surge el \textbf{offshoring}. Este concepto va más allá que su predecesor y no se limita a externalizar servicios, si no que trasladan fábricas enteras a otros países. Si los países implicados en este proceso son relativamente cercanos al país de origen de la compañía, se habla de \textbf{nearshoring} \cite{sahay:globalit}. Estos modelos introducen una serie de ventajas sobre el outsourcing tales como la obtención de mano de obra, en ocasiones escasa, necesaria para el proyecto en países donde se está avanzando notablemente en I+D; disminución de las dificultades para construir los métodos necesarios para gestionar el conocimiento y coordinar los distintos grupos de trabajo, abstrayéndose de la distancia geográfica \cite{kobitzsch01}; y reducción de costes y gastos derivados de los viajes a los países con los que se colabora.
 
-Hablar de nearshoring
+Como se puede apreciar, todas estas modalidades de GSD introducen una serie de ventajas o beneficios, pero también surgen un conjunto de inconvenientes o desafíos que afectan al desarrollo y gestión de este tipo proyectos. A continuación se desarrollan los más importantes.
 
-Todas estas modalidades de GSD introducen una serie de ventajas e inconvenientes que afectan al desarrollo y gestión de este tipo proyectos.
+\subsection{Motivaciones del Desarrollo Global de Software}
 
-Ventajas:
-* Obtener la mano de obra, en ocasiones escasa, necesaria para el proyecto en países donde se está avanzando notablemente en I+D.
-* Disminuir las dificultades para construir los métodos necesarios para gestionar el conocimiento y coordinar los distintos grupos de trabajo, abstrayéndose de la distancia geográfica \cite{kobitzsch01}.
-* Recortar costes y gastos derivados de los viajes a los países con los que se colabora.
+A pesar de los desafíos que introduce el GSD, que serán abordados en la siguiente subsección de este documento, existen varios motivos por los que este concepto de desarrollo de software resulta muy atractivo. A continuación se citan los más importantes \cite{cho:2007}\cite{herb-moitra-2001}:
 
-Inconvenientes:
-*
-*
-*
+\begin{itemize}
+	\item Reducción de costes en salarios. 
+	\item Acceso a personal y recursos más cualificado.
+	\item Facilidad para formar equipos de trabajo.
+	\item Mejoras en la productividad.
+	\item Avances en infraestructura.
+	\item Proximidad al mercado y al cliente.
+	\item Conocimiento de las leyes y política de la región.
+\end{itemize}
+
+
+\subsection{Desafíos del Desarrollo Global de Software}
+\cite{krishna:managing}\cite{layman06}\cite{herb-moitra-2001}
+
+\begin{itemize}
+	\item Problemas estratégicos. 
+	\item Diferencias culturales.
+	\item Comunicación inadecuada.
+	\item Problemas de gestión del conocimiento.
+	\item Dificultades de gestión del proyecto y de los procesos.
+	\item Problemas técnicos.
+\end{itemize}
+
+
+
 
 
 \section{Calidad y medidas software}
 
+\textit{La medición es una disciplina fundamental en cualquier ingeniería, y la ingeniería del software no es una excepción} \cite{piattini:medicion}. Además, la ingeniería del software presenta el problema de que los objetos o entidades que se desean medir no son tangibles, es decir, no se pueden palpar y medir con herramientas convencionales. Esto hace aún más importante la medición del software, ya que es un mecanismo que permite comprobar y asegurar la calidad del mismo. 
+
+Cuando se habla de \textit{medidas software}, es frecuente encontrar en la literatura el término \textit{métrica software} en su lugar. Sin embargo, en este PFC se utilizará el concepto de \textit{medida}, ya que de acuerdo a la \textbf{Ontología de la Medición del Software} (\textit{Software Measurement Ontology} o SMO) es más adecuado \cite{garcia:ontology}.
+
+En la SMO se afirma que el objetivo de una medición es \textit{satisfacer ciertas necesidades de información}. Para ello, es necesario identificar las entidades que se quieren medir y sus atributos, siendo un atributo una propiedad, física o abstracta, que se puede medir. Por ejemplo, en el contexto del software orientado a objetos, una \textit{clase} podría ser una entidad y, las \textit{líneas de código}, un atributo de dicha entidad.
+
+Según \cite{pfleeger:measurement} y \cite{fenton:measurement}, el uso de medidas en el software es una buena práctica para conocer qué ocurre durante el proceso de desarrollo y mantenimiento del software. Gracias a ello, es posible predecir lo que puede ocurrir y, por consiguiente, tomar las mejores decisiones cuando se considere oportuno.
+
+
+
+
+
+
 \section{Visualización de medidas software}
+
+Los sistemas de visualización deben proporcionar vistas intuitivas, efectivas y eficaces que hagan del análisis de datos una tarea rápida y precisa. Para lograrlo, se hace uso de una cualidad del sistema visual humano denominado \textbf{\textit{proceso pre-atentivo}} \cite{hea92}. Los procesos pre-atentivos son procesos que ``saltan a la vista'', siendo detectados inmediatamente y evitando que el usuario deba centrar su atención en una determinada región de una imagen para captar la presencia o ausencia de una característica determinada \cite{ducasse10}.
+
+Existen cuatro categorías básicas de características que se procesan de forma pre-atentiva \cite{ware99}: color, forma, movimiento y localización espacial. De cada una de estas características se puede obtener un gran conjunto de subcaracterísticas como curvatura, tamaño, orientación, longitud, etcétera.
+
+Para representar una \textbf{medida software} visualmente es necesario identificar qué entidad se quiere escenificar por medio de un modelo gráfico y cuáles son sus atributos más relevantes. De este modo, es posible establecer un conjunto de asociaciones entre los atributos de la entidad y las subcaracterísticas del modelo gráfico. Este concepto recibe el nombre de \textit{vista polimétrica} \cite{lanza03} y permite que los modelos gráficos adopten una determinada forma, orientación o color en función de los resultados de las mediciones, beneficiándose así de los procesos pre-atentivos.
+
+
+
+
+
+
+
+
 
 \section{Gráficos por computador y Librerías de gráficos 3D}
 
