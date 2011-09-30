@@ -13,7 +13,32 @@
 
 \section{Desarrollo Global de Software}
 
-La globalización económica ha hecho que la industria y el comercio se adapte a nuevos modelos de negocio. En el capítulo 1 de este documento se ha hecho mención a los diez acontecimientos que, según Thomas Friedman \cite{Friedman:2005}, dieron lugar a este fenómeno. Estos acontecimientos también afectaron a la industria del software que a día de hoy ha roto con cualquier frontera física que se le pudiera imponer gracias a su fuerte relación con las innovaciones tecnológicas y en telecomunicaciones. Como prueba de ello, el desarrollo de software se está llevando a cabo en todo momento y en cualquier parte del mundo, lo que introduce el concepto de \textit{Desarrollo Global de Software} (en inglés \textit{Global Software Development} o GSD). Para llegar a este modelo ha sido necesario evolucionar a través de dos predecesores: el \textit{modelo tradicional}, en el que los equipos de trabajo encargados de desarrollar un software se encontraban co-localizados en un mismo edificio; y el \textit{Desarrollo Distribuido de Software} (Fig. \ref{fig:typology-projects-locations}), en el que esos equipos de trabajo se encontraban dispersos en una misma ciudad o incluso en distintas ciudades de un mismo país \cite{herb-moitra-2001}.
+La globalización económica ha hecho que la industria y el comercio se adapte a nuevos modelos de negocio. En el capítulo 1 de este documento se ha hecho mención a los diez acontecimientos que, según Thomas Friedman \cite{Friedman:2005}, dieron lugar a este fenómeno. Estos acontecimientos también afectaron a la industria del software que a día de hoy ha roto con cualquier frontera física que se le pudiera imponer gracias a su fuerte relación con las innovaciones tecnológicas y en telecomunicaciones.
+
+Como prueba de ello, el desarrollo de software se está llevando a cabo en todo momento y en cualquier parte del mundo (Fig. \ref{fig:advantech-gsd}), lo que introduce el concepto de \textit{Desarrollo Global de Software} (en inglés \textit{Global Software Development} o GSD). Para llegar a este modelo ha sido necesario evolucionar a través de dos predecesores: el \textit{modelo tradicional}, en el que los equipos de trabajo encargados de desarrollar un software se encontraban co-localizados en un mismo edificio; y el \textit{Desarrollo Distribuido de Software}, en el que esos equipos de trabajo se encontraban dispersos en una misma ciudad o incluso en distintas ciudades de un mismo país \cite{herb-moitra-2001}. A modo de síntesis, en la Tabla \ref{table:sd-scenarios} se muestra una clasificación de los distintos tipos de desarrollo de software en base a la dispersión geográfica.
+
+\imagenBorde{Cap3//advantech-gsd}{0.60}{Mapa del mundo que refleja la dispersión geográfica de factorías involucradas en desarrollo global \cite{advantech-gsd}}{fig:advantech-gsd}
+
+\begin{table}[h]%
+\centering
+\begin{tabular}{| p{3.5cm} | p{8cm} |}
+	\hline
+		\multicolumn{1}{|c|}{\textbf{Localización}} &
+		\multicolumn{1}{|c|}{\textbf{Tipo de desarrollo}} \\
+	\hline
+		Mismo lugar &
+		Desarrollo tradicional \\
+	\hline
+		Mismo país &
+		Desarrollo Distribuido de Software (DSD) \\
+	\hline
+		Distintos países &
+		Desarrollo Global de Software (GSD) \\
+	\hline
+\end{tabular}
+\caption{Clasificación de desarrollo de software según dispersión geográfica}
+\label{table:sd-scenarios}
+\end{table}
 
 Otro factor a tener en cuenta en el GSD, a parte de la dispersión geográfica de los \textit{stakeholders}\footnote{Se define el término \textit{stakeholder} como \textit{aquellos que pueden afectar o son afectados por las actividades de una empresa} \cite{freeman2010strategic}.}, es el número de compañías que colaboran en un mismo proyecto. Se puede dar el caso de que el proyecto esté siendo llevado a cabo por una sola compañía o, por el contrario, que exista un conjunto de compañías subcontratadas (compañías subsidiarias) que colaboren entre sí junto con la compañía contratante \cite{gsd:handbook}. De esta característica surgen nuevos modelos y variantes dentro del GSD: outsourcing, offshoring y el nearshoring.
 
@@ -21,25 +46,51 @@ El término \textbf{outsourcing} se utiliza cuando una compañía realiza una exter
 
 De la idea del \textit{outsourcing} surge el \textbf{offshoring}. Este concepto va más allá que su predecesor y no se limita a externalizar servicios, si no que trasladan fábricas enteras a otros países. Si los países implicados en este proceso son relativamente cercanos al país de origen de la compañía, se habla de \textbf{nearshoring} \cite{sahay:globalit}. Estos modelos introducen una serie de ventajas sobre el outsourcing tales como la obtención de mano de obra, en ocasiones escasa, necesaria para el proyecto en países donde se está avanzando notablemente en I+D; disminución de las dificultades para construir los métodos necesarios para gestionar el conocimiento y coordinar los distintos grupos de trabajo, abstrayéndose de la distancia geográfica \cite{kobitzsch01}; y reducción de costes y gastos derivados de los viajes a los países con los que se colabora.
 
+Estos conceptos se muestran sintetizados en la Tabla \ref{table:gsd-types}.
+
+\begin{table}[h]%
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{| p{5cm} | p{3.5cm} | p{3.5cm} |}
+	\hline
+		\raisebox{-3,0 ex}[0ex][0ex]{Externalización de servicios} &
+		Mismo país &
+		Inshoring \\
+	\cline{2-3}
+		& Distintos países &
+		Outsourcing \\
+	\hline
+		\raisebox{-3,0 ex}[0ex][0ex]{Traslación de fábricas} &
+		Países vecinos &
+		Nearshoring \\
+	\cline{2-3}
+		& Países distantes &
+		Offshoring \\
+	\hline
+\end{tabular}
+\caption{Modelos y variantes de Desarrollo Global de Software}
+\label{table:gsd-types}
+\end{table}
+
 Como se puede apreciar, todas estas modalidades de GSD introducen una serie de ventajas o beneficios, pero también surgen un conjunto de inconvenientes o desafíos que afectan al desarrollo y gestión de este tipo proyectos. A continuación se desarrollan los más importantes.
 
 \subsection{Motivaciones del Desarrollo Global de Software}
 
-A pesar de los desafíos que introduce el GSD, que serán abordados en la siguiente subsección de este documento, existen varios motivos por los que este concepto de desarrollo de software resulta muy atractivo. A continuación se citan los más importantes \cite{cho:2007}\cite{herb-moitra-2001}:
+A pesar de los desafíos que introduce el GSD, que serán abordados en la siguiente subsección de este documento, existen varios motivos por los que este concepto de desarrollo de software resulta muy atractivo. Los más destacables según \cite{cho:2007} y \cite{herb-moitra-2001} son los siguientes:
 
 \begin{itemize}
-	\item Reducción de costes en salarios. 
-	\item Acceso a personal y recursos más cualificado.
-	\item Facilidad para formar equipos de trabajo.
-	\item Mejoras en la productividad.
-	\item Avances en infraestructura.
-	\item Proximidad al mercado y al cliente.
-	\item Conocimiento de las leyes y política de la región.
+	\item \textbf{Reducción de costes en salarios.} Dado que el objetivo de las empresas es optimizar la relación beneficios/costes, esta es una de las principales motivaciones del GSD. Se debe a la posibilidad de contratar la mano de obra necesaria en aquellos países donde los salarios son más bajos. Esta situación se da en muchos países asiáticos e India en comparación con países de Europa o los Estados Unidos.
+	\item \textbf{Acceso a personal y recursos más cualificado.} Existen países en los que el número de ingenieros que se forman cada año es insuficiente para la demanda que se requiere. Por tanto, es posible contratar personal de aquellos países en los que la oferta de ingenieros sea más atractiva.
+	\item \textbf{Facilidad para formar equipos de trabajo.} Dado que la compañía dispone de una cantidad de recursos dispersos por todo el mundo, es posible reasignar estos recursos con el objetivo de formar un equipo de trabajo virtual, no siendo necesario que los componentes del equipo se encuentren co-localizados.
+	\item \textbf{Mejoras en la productividad.} Existe la posibilidad de establecer un flujo de trabajo mediante el cual se pueden establecer jornadas de trabajo más largas. Un ejemplo sería el método \textit{follow-the-sun} (en español, \textit{seguir el sol}) que permite que se esté desarrollando durante las 24 horas del día gracias a la disposición de distintos equipos de trabajo en diferentes husos horarios.
+	\item \textbf{Avances tecnológicos y en infraestructura.} Los avances en telecomunicaciones así como en herramientas y entornos que facilitan la gestión del desarrollo global, son un aspecto muy importante que está permitiendo que este paradigma se lleve a cabo.
+	\item \textbf{Proximidad al mercado y al cliente.} Esta característica resulta realmente atractiva ya que se dispone de personal cercando al cliente. Esta situación abre la posibilidad de conocer las necesidades reales del mismo y adaptar el producto a sus necesidades. Además, permite un conocimiento de las leyes y políticas locales, lo cual puede repercutir en cómo se fabrica y distribuye un mismo producto en distintos países.
+	\item \textbf{Innovación.} Disponer de equipos de trabajo formados por personas con diferentes experiencias y culturas permite que se compartan las mejores prácticas y hábitos.
 \end{itemize}
 
 
 \subsection{Desafíos del Desarrollo Global de Software}
-\cite{krishna:managing}\cite{layman06}\cite{herb-moitra-2001}
+Como ya se ha comentado anteriormente, este paradigma de desarrollo de software es vulnerable a determinados factores que pueden afectar a un incremento del presupuesto del producto final, así como retrasos en su entrega. Según \cite{krishna:managing}, \cite{layman06} y \cite{herb-moitra-2001} estos problemas se pueden clasificar de la siguienet manera:
 
 \begin{itemize}
 	\item Problemas estratégicos. 
@@ -97,7 +148,7 @@ Todos los usos listados anteriormente y muchos más, son razones más que suficien
 Una \textbf{librería de gráficos 3D} es una \textit{interfaz} software que proporciona un medio para \textit{renderizar}\footnote{Generar imágenes a partir de un modelo.} gráficos en una pantalla, estableciendo un medio de comunicación entre las aplicaciones y los controladores de la tarjeta gráfica (Fig. \ref{fig:graphics-stack}). Su principal cometido es ofrecer un nivel mayor de abstracción y otorgar independencia tanto a nivel de hardware -de entrada y de salida- como a nivel de aplicación ya que la librería es accedida a través de un interfaz único.
 % http://lemnik.wordpress.com/2007/05/29/what-are-directx-and-opengl/
 
-\imagenBorde{Cap3//graphics-stack}{0.6}{Pila de recursos que intervienen en la generación de gráficos.}{fig:graphics-stack}
+\imagenBorde{Cap3//graphics-stack}{0.6}{Pila de recursos que intervienen en la generación de gráficos}{fig:graphics-stack}
 
 Existen numerosas librerías destinadas a generar gráficos tanto 2D como 3D. En este PFC se han analizado las dos más conocidas y potentes hoy en día: Direct3D y OpenGL.
 
@@ -107,7 +158,7 @@ Existen numerosas librerías destinadas a generar gráficos tanto 2D como 3D. En e
 
 Direct3D un API (\textit{Application Programming Interface}) que forma parte de la colección de librerías multimedia llamada DirectX (Fig. \ref{fig:directx-api-collection}). Esta colección de librerías, propiedad de Microsoft, está diseñada específicamente para desarrollar aplicaciones interactivas, especialmente videojuegos  \cite{luna2003introduction}. Proporciona al programador un medio de acceso los dispositivos de entrada y salida, como la pantalla y la tarjeta de sonido, para lograr generar gráficos en tres dimensiones realistas, música y efectos de sonido envolventes. Oficialmente sólo se encuentra disponible para plataformas basadas en Microsoft Windows y Xbox, aunque existe proyectos de código abierto que se han encargado de llevar a cabo proyectos de emulación y compatibilidad, como Wine, y hacer posible la portabilidad a plataformas basadas en Unix.
 
-\imagenBorde{Cap3//directx-api-collection}{0.6}{Colección de API de DirectX.}{fig:directx-api-collection}
+\imagenBorde{Cap3//directx-api-collection}{0.6}{Colección de API de DirectX}{fig:directx-api-collection}
 
 DirectX contiene, entre otros, librerías para manejar dispositivos de entrada y salida (DirectInput), para comunicaciones en red (DirectPlay), para reproducción y grabación de sonidos (DirectSound), etcétera. \textbf{Direct3D}, en concreto, es la librería que proporciona un interfaz de programación para generar gráficos en tres dimensiones \cite{walnum2003microsoft}.
 
@@ -119,7 +170,9 @@ En las sucesivas versiones, Microsoft ha incorporado numerosas características a
 
 \subsection{OpenGL}
 
-OpenGL (\textit{Open Graphics Library}) es una \textbf{especificación estándar} que define un API independiente de la plataforma y del sistema operativo, que permite generar gráficos en dos y tres dimensiones. También goza de independencia en cuanto al sistema de ventanas y el protocolo de red empleados \cite{shreiner2006opengl}.
+OpenGL (\textit{Open Graphics Library}) es una \textbf{especificación estándar} que define un API independiente de la plataforma y del sistema operativo, que permite generar gráficos en dos y tres dimensiones (Fig. \ref{fig:opengl-tex-shadow-reflect-example}). También goza de independencia en cuanto al sistema de ventanas y el protocolo de red empleados \cite{shreiner2006opengl}.
+
+\imagenBorde{Cap3//opengl-tex-shadow-reflect-example}{0.7}{Ejemplo renderizado con OpenGL que muestra texturas, sombras y reflejos}{fig:opengl-tex-shadow-reflect-example}
 
 Las aplicaciones basadas en OpenGL pueden hacer uso de una gran variedad de librerías que extienden sus funcionalidades. Las más importantes son \textit{OpenGL Utility Library (GLU)} y \textit{OpenGL Utility Toolkit (GLUT)}. \textbf{GLU} proporciona rutinas de más alto nivel que las que proporciona OpenGL inicialmente. Destacan aquellas encargadas de generar texturas, NURBS (en inglés \textit{Non Uniform Rational B-splines})\footnote{Modelo matemático utilizado en computación gráfica para generar y representar curvas y superficies.}, dibujar superficies cuádricas como esferas, conos y cilindros, entre otros \cite{shreiner2006opengl}. Por otro lado, \textbf{GLUT} proporciona métodos sencillos para manejar las ventajas de la interfaz gráfica de usuario y los dispositivos de entrada como el teclado y el ratón \cite{govil2004principles}.
 
