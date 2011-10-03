@@ -15,7 +15,7 @@
 
 La globalización económica ha hecho que la industria y el comercio se adapte a nuevos modelos de negocio. En el capítulo 1 de este documento se ha hecho mención a los diez acontecimientos que, según Thomas Friedman \cite{Friedman:2005}, dieron lugar a este fenómeno. Estos acontecimientos también afectaron a la industria del software que a día de hoy ha roto con cualquier frontera física que se le pudiera imponer gracias a su fuerte relación con las innovaciones tecnológicas y en telecomunicaciones.
 
-Como prueba de ello, el desarrollo de software se está llevando a cabo en todo momento y en cualquier parte del mundo (Fig. \ref{fig:advantech-gsd}), lo que introduce el concepto de \textit{Desarrollo Global de Software} (en inglés \textit{Global Software Development} o GSD). Para llegar a este modelo ha sido necesario evolucionar a través de dos predecesores: el \textit{modelo tradicional}, en el que los equipos de trabajo encargados de desarrollar un software se encontraban co-localizados en un mismo edificio; y el \textit{Desarrollo Distribuido de Software}, en el que esos equipos de trabajo se encontraban dispersos en una misma ciudad o incluso en distintas ciudades de un mismo país \cite{herb-moitra-2001}. A modo de síntesis, en la Tabla \ref{table:sd-scenarios} se muestra una clasificación de los distintos tipos de desarrollo de software en base a la dispersión geográfica.
+Como prueba de ello, y en búsqueda de aumentar su competitividad y minimizar costes, el desarrollo de software se está llevando a cabo en todo momento y en cualquier parte del mundo (Fig. \ref{fig:advantech-gsd}), lo que introduce el concepto de \textit{Desarrollo Global de Software} (en inglés \textit{Global Software Development} o GSD). Para llegar a este modelo ha sido necesario evolucionar a través de dos predecesores: el \textit{modelo tradicional}, en el que los equipos de trabajo encargados de desarrollar un software se encontraban co-localizados en un mismo edificio; y el \textit{Desarrollo Distribuido de Software}, en el que esos equipos de trabajo se encontraban dispersos en una misma ciudad o incluso en distintas ciudades de un mismo país \cite{herb-moitra-2001}. A modo de síntesis, en la Tabla \ref{table:sd-scenarios} se muestra una clasificación de los distintos tipos de desarrollo de software en base a la dispersión geográfica.
 
 \imagenBorde{Cap3//advantech-gsd}{0.60}{Mapa del mundo que refleja la dispersión geográfica de factorías involucradas en desarrollo global \cite{advantech-gsd}}{fig:advantech-gsd}
 
@@ -80,41 +80,76 @@ A pesar de los desafíos que introduce el GSD, que serán abordados en la siguient
 
 \begin{itemize}
 	\item \textbf{Reducción de costes en salarios.} Dado que el objetivo de las empresas es optimizar la relación beneficios/costes, esta es una de las principales motivaciones del GSD. Se debe a la posibilidad de contratar la mano de obra necesaria en aquellos países donde los salarios son más bajos. Esta situación se da en muchos países asiáticos e India en comparación con países de Europa o los Estados Unidos.
+	
 	\item \textbf{Acceso a personal y recursos más cualificado.} Existen países en los que el número de ingenieros que se forman cada año es insuficiente para la demanda que se requiere. Por tanto, es posible contratar personal de aquellos países en los que la oferta de ingenieros sea más atractiva.
+	
 	\item \textbf{Facilidad para formar equipos de trabajo.} Dado que la compañía dispone de una cantidad de recursos dispersos por todo el mundo, es posible reasignar estos recursos con el objetivo de formar un equipo de trabajo virtual, no siendo necesario que los componentes del equipo se encuentren co-localizados.
+	
 	\item \textbf{Mejoras en la productividad.} Existe la posibilidad de establecer un flujo de trabajo mediante el cual se pueden establecer jornadas de trabajo más largas. Un ejemplo sería el método \textit{follow-the-sun} (en español, \textit{seguir el sol}) que permite que se esté desarrollando durante las 24 horas del día gracias a la disposición de distintos equipos de trabajo en diferentes husos horarios.
+	
 	\item \textbf{Avances tecnológicos y en infraestructura.} Los avances en telecomunicaciones así como en herramientas y entornos que facilitan la gestión del desarrollo global, son un aspecto muy importante que está permitiendo que este paradigma se lleve a cabo.
+	
 	\item \textbf{Proximidad al mercado y al cliente.} Esta característica resulta realmente atractiva ya que se dispone de personal cercando al cliente. Esta situación abre la posibilidad de conocer las necesidades reales del mismo y adaptar el producto a sus necesidades. Además, permite un conocimiento de las leyes y políticas locales, lo cual puede repercutir en cómo se fabrica y distribuye un mismo producto en distintos países.
+	
 	\item \textbf{Innovación.} Disponer de equipos de trabajo formados por personas con diferentes experiencias y culturas permite que se compartan las mejores prácticas y hábitos.
 \end{itemize}
 
 
 \subsection{Desafíos del Desarrollo Global de Software}
-Como ya se ha comentado anteriormente, este paradigma de desarrollo de software es vulnerable a determinados factores que pueden afectar a un incremento del presupuesto del producto final, así como retrasos en su entrega. Según \cite{krishna:managing}, \cite{layman06} y \cite{herb-moitra-2001} estos problemas se pueden clasificar de la siguienet manera:
+Como ya se ha comentado anteriormente, este paradigma de desarrollo de software es vulnerable a determinados factores que pueden afectar a un incremento del presupuesto del producto final, así como retrasos en su entrega del mismo. Según \cite{krishna:managing}, \cite{layman06} y \cite{herb-moitra-2001} estos problemas se pueden clasificar de la siguiente forma:
 
 \begin{itemize}
-	\item Problemas estratégicos. 
-	\item Diferencias culturales.
-	\item Comunicación inadecuada.
-	\item Problemas de gestión del conocimiento.
-	\item Dificultades de gestión del proyecto y de los procesos.
-	\item Problemas técnicos.
+	\item \textbf{Problemas estratégicos.} Este tipo de problemas surgen a la hora de dividir un proyecto en partes (fases, subproyectos, etcétera) y decidir a qué factoría se asigna cada una de éstas. Para hacer esta asignación, es necesario tener en cuenta los recursos disponibles de cada factoría, así como el grado de experiencia en cada tecnología, la infraestructura, y otros factores que pueden ser determinantes. El objetivo es tratar de lograr una situación en la que las factorías puedan trabajar del modo más independiente posible y que dispongan de un mecanismo de comunicación efectivo, fácil y flexible. Otros problemas pueden surgir debido a la actitud de las personas si experiencia sensaciones de pérdida de control, posible pérdida del puesto de trabajo, viajes o traslado del puesto de trabajo.
+	
+	\item \textbf{Diferencias culturales.} Las diferencias culturales pueden proporcionar un conjunto de beneficios, tales como la compartición de experiencias y buenas prácticas de trabajo, pero también pueden originar una serie de problemas relacionados con las malas interpretaciones debido a los estilos de comunicación, la necesidad de una estructura, o la actitud ante los superiores \cite{hofstede2005cultures}.
+	
+	\item \textbf{Comunicación inadecuada.} Las personas que llevan a cabo un proyecto de desarrollo global trabajan en diferentes partes del producto, pero que son dependientes unas de otras. Esta dependencia hace necesario que se establezca una buena comunicación entre las partes involucradas para que sea posible establecer una buena coordinación y evitar que surjan problemas relacionados con el incumplimiento de plazos y el incremento del presupuesto.
+	
+	En el desarrollo de software suelen darse dos tipos de comunicación. La primera y más formal se rige en base a determinados criterios y métodos impuestos por la organización. Estos métodos suelen realizarse mediante el uso de herramientas de gestión que permitan guardar trazas y registros de las operaciones llevadas a cabo. En esta categoría pueden destacarse tareas como la de actualizar el estado del proyecto o asignar recursos para la resolución de errores. El segundo tipo se da en un contexto más informal. El principal método se basa en la comunicación directa cara a cara, es decir, una conversación espontánea que puede producirse en el área de trabajo o incluso en el tiempo de descanso. Esta situación no se produce cuando las personas se encuentran localizadas en distintas ubicaciones, pero puede darse en forma de videoconferencias y llamadas telefónicas. No obstante, es susceptible a problemas de comunicación debido a las diferencias culturales e idiomáticas, o incluso a diferencias temporales debido a los husos horarios.
+	
+	Este problema adquiere más agravantes si se introducen factores de propiedad intelectual e información de productos, mercados y clientes.
+	
+	\item \textbf{Problemas de gestión del conocimiento.} La gestión del conocimiento y de la información es un factor determinante en cualquier contexto, no sólo en el GSD. Si esta tarea no se aborda de un modo eficiente, pueden darse casos en los que los equipos pierdan oportunidades de reutilizar trabajo que fue completado previamente, dando lugar a pérdidas de tiempo y dinero.	Además, pueden surgir situaciones en las que no se haya determinado de un modo correcto qué tareas se encuentran en el camino crítico de un flujo de trabajo, o que la información de los clientes no se haya distribuido eficientemente a todos los equipos de trabajo afectados.
+	
+	Por otro lado, una documentación vaga puede ocasionar que el desarrollo colaborativo no se lleve a cabo de un modo eficiente. Por tanto, es muy importante que la documentación se encuentre actualizada para prevenir errores y facilitar la mantenibilidad.
+	\item \textbf{Dificultades de gestión del proyecto y de los procesos.} En este aspecto destacan los problemas de sincronización que se da entre los procesos que son llevados a cabo en distintas localizaciones. Para facilitar esta sincronización es crucial establecer un conjunto de hitos así como los entregables de entrada y salida de cada proceso. Pero esta tarea no es fácil si no se dispone de un entorno y herramientas que permitan una comunicación formal y el trabajo colaborativo en tiempo y espacio.
+	
+	\item \textbf{Problemas técnicos.} En esta categoría destacan problemas relacionados con intercambio de datos con formatos incompatibles, incompatibilidad entre las versiones de las herramientas o librerías utilizadas, control de versiones del producto y la importancia de que todos los equipos de desarrollo sean conscientes de los cambios, o infraestructuras de red que en ocasiones son lentas y dificultan el trabajo colaborativo.
 \end{itemize}
-
 
 
 
 
 \section{Calidad y medidas software}
 
-\textit{La medición es una disciplina fundamental en cualquier ingeniería, y la ingeniería del software no es una excepción} \cite{piattini:medicion}. Además, la ingeniería del software presenta el problema de que los objetos o entidades que se desean medir no son tangibles, es decir, no se pueden palpar y medir con herramientas convencionales. Esto hace aún más importante la medición del software, ya que es un mecanismo que permite comprobar y asegurar la calidad del mismo. 
+La calidad es uno de los factores más importantes que hacen que los usuarios y clientes se decanten por un producto u otro. Por tanto, las organizaciones deben asegurar de algún modo la calidad de los productos y servicios que ofrecen, ya que de ello depende su supervivencia y competitividad en el mercado \cite{otros2003calidad}.
+
+Según el Diccionario de la Rea Academia Española de la Lengua (DRAE), y en el contexto que interesa tratar en este libro, se define el término \textbf{calidad} como:
+\begin{enumerate}
+	\item Propiedad o conjunto de propiedades inherentes a algo, que permiten juzgar su valor. \textit{Esta tela es de buena calidad.}
+	\item Buena calidad, superioridad o excelencia. \textit{La calidad del vino de Jerez ha conquistado los mercados.}
+	\item Condición o requisito que se pone en un contrato.
+\end{enumerate}
+
+A lo largo de los años, distintos gurús expertos en el tema han tratado de definir el concepto de \textit{calidad}. A continuación se citarán las afirmaciones que se consideran más representativas para este caso de estudio \cite{hoyer:quality}:
+\begin{itemize}
+	\item ``\textit{El primer supuesto erróneo es que calidad significa bueno, lujoso, brillo o peso... Definimos calidad como \flqq conformidad con los requisitos \frqq ... La no conformidad detectada es una ausencia de calidad.}''. Philip B. Crosby, \textit{``Quality is Free''}, Mc Ggraw Hill, New York, 1979.
+	\item ``\textit{La dificultad de definir calidad es traudcir las necesidades futuras del usuario en características medibles. Sólo así un producto puede ser diseñado y fabricado para dar satisfacción al cliente al precio que está dispuesto a pagar.}''. W. Edwards Deming, \textit{Fuera de la crisis}, MIT, 1988.
+	\item ``\textit{Debemos enfatizar en la orientación hacia el cliente... Cuando desarrollen un nuevo producto, el fabricante deberá anticipar los requisitos y necesidades del cliente... Cómo uno interprete el término \flqq calidad \frqq es importante... De un modo sencillo, calidad significa calidad del producto. De un modo más amplio, calidad significa calidad de trabajo, calidad del servicio, calidad de información, calidad de proceso, calidad del personal, calidad del sistema, calidad de la empresa, calidad de objetivos, etc.}''. Kaoru Ishikawa, \textit{¿Qué es Control Total de la Calidad? El modelo japonés}, Prentice Hall, 1985.
+	\item ``\textit{La palabra calidad tiene múltiples significados. Dos de ellos son los más representativos: 1. La calidad consiste en aquellas características del producto que satisfacen las necesidades del cliente y que por eso brindan satisfacción con el producto. 2. La calidad consiste en la ausencia de deficiencias.}''. Joseph M. Juran, \textit{Manual de Control de Calidad, 4\textordfeminine edición}, McGraw Hill, 1988.
+\end{itemize}
+
+Tras analizar estas definiciones y la primera acepción de calidad propuesta por la DRAE, y encuadrarlas en el contexto del desarrollo de software, se entiende que es necesario determinar un conjunto de propiedades que permita determinar la calidad de un producto software y que permita conseguir que sea mejor que otro \cite{otros2011calidad}. Pero esto es relativo y depende del punto de vista utilizado, ya que los clientes y las organizaciones no tienen los mismos criterios y no conciben la calidad del mismo modo (Fig. \ref{fig:what-the-customer-wanted}). Para los primeros, un producto de calidad es aquel que satisface sus necesidades en cuanto a uso o consumo. Para los segundos, un producto de calidad es aquel sobre el que se han medido determinadas características que satisfacen un conjunto de especificaciones numéricamente definidas \cite{hoyer:quality}. Esta es la razón por la que surge la necesidad de medir la calidad de un producto software.
+
+\imagen{Cap3//What-the-customer-wanted-and-what-he-ended-up-with}{0.73}{Tira de cómic que refleja las necesidades de un producto desde el punto de vista de distintos \textit{stakeholders}. De izquierda a derecha y de arriba a abajo representa: cómo lo explicó el cliente, cómo lo entendió el jefe de proyecto, cómo lo diseñó el analista, cómo lo desarrolló el programador, cómo lo describió el consultor, cómo fue documentado el proyecto, lo que fue instalado, por lo que pagó el cliente, cómo fue el soporte, y lo que el cliente realmente necesitaba}{fig:what-the-customer-wanted}
+
+La \textbf{medición} es una disciplina fundamental en cualquier ingeniería, y la ingeniería del software no es una excepción \cite{piattini:medicion}. Este aspecto está demostrando ser muy eficaz en grandes proyectos de bases de datos, en el desarrollo y mantenimiento del software y la evaluación y garantía de la calidad de sistemas \cite{otros2010calidad}. Además, la ingeniería del software presenta el problema de que los objetos o entidades que se desean medir no son tangibles, es decir, no se pueden palpar y medir con herramientas convencionales. Esto hace aún más importante la medición del software, ya que es un mecanismo que permite comprobar y asegurar la calidad del mismo.
 
 Cuando se habla de \textit{medidas software}, es frecuente encontrar en la literatura el término \textit{métrica software} en su lugar. Sin embargo, en este PFC se utilizará el concepto de \textit{medida}, ya que de acuerdo a la \textbf{Ontología de la Medición del Software} (\textit{Software Measurement Ontology} o SMO) es más adecuado \cite{garcia:ontology}.
 
 En la SMO se afirma que el objetivo de una medición es \textit{satisfacer ciertas necesidades de información}. Para ello, es necesario identificar las entidades que se quieren medir y sus atributos, siendo un atributo una propiedad, física o abstracta, que se puede medir. Por ejemplo, en el contexto del software orientado a objetos, una \textit{clase} podría ser una entidad y, las \textit{líneas de código}, un atributo de dicha entidad.
 
 Según \cite{pfleeger:measurement} y \cite{fenton:measurement}, el uso de medidas en el software es una buena práctica para conocer qué ocurre durante el proceso de desarrollo y mantenimiento del software. Gracias a ello, es posible predecir lo que puede ocurrir y, por consiguiente, tomar las mejores decisiones cuando se considere oportuno.
-
 
 
 
@@ -141,7 +176,7 @@ Para representar una \textbf{medida software} visualmente es necesario identific
 % http://www.comphist.org/computing_history/new_page_6.htm
 Los \textbf{gráficos por computador} es un término cuya definición ha evolucionado en las últimas décadas. De un modo sencillo, puede definirse como \textit{imágenes generadas o modificadas mediante el uso de un ordenador}. Estas imágenes pueden representaciones visuales de entidades del mundo real o abstracciones de las mismas \cite{govil2004principles}. Pero este concepto ha progresado desde imágenes simples en dos dimensiones hasta entornos complejos tridimensionales de alta calidad. Por tanto, en su definición habría que incorporar el aspecto de la generación de modelos de objetos que varían su geometría y comportamiento a lo largo del tiempo \cite{foley1996computer}.
 
-Cuando se trata de pensar en el uso que se le pueden dar a los gráficos por computador, es fácil pensar en los videojuegos o en películas de animación como Avatar y Shrek, pero su uso va más allá y son una herramienta crucial en numerosas áreas. Por ejemplo, en medicina se utilizan para proporcionar métodos no invasivos que permitan probar e investigar características del cuerpo humano; en educación son una excelente herramienta para representar conceptos; en entornos empresariales se utilizan para crear diagramas y gráficas que permiten en análisis de datos; en aviación sirven para la generación de simuladores de vuelo, etcétera. \cite{govil2004principles}.
+Cuando se trata de pensar en el uso que se le pueden dar a los gráficos por computador, es fácil pensar en los videojuegos o en películas de animación como Avatar y Shrek, pero su uso va más allá y son una herramienta crucial en numerosas áreas. Por ejemplo, en medicina se utilizan para proporcionar métodos no invasivos que permitan probar e investigar características del cuerpo humano; en educación son una excelente herramienta para representar conceptos; en entornos empresariales se utilizan para crear diagramas y gráficas que permiten en análisis de datos; en aviación sirven para la generación de simuladores de vuelo, etcétera \cite{govil2004principles}.
 
 Todos los usos listados anteriormente y muchos más, son razones más que suficientes para que las empresas y las comunidades de desarrolladores empleen recursos, tiempo y esfuerzo en elaborar soluciones eficientes para la generación y manipulación de gráficos por computador. Por ello, a lo largo de los últimos años han ido surgiendo estándares y librerías de gráficos que satisfagan las necesidades de hoy en día. Sin estos estándares y librerías, los desarrolladores de software debían implementar distintas versiones de sus aplicaciones para soportar las múltiples plataformas hardware en las que fuese a ser ejecutado dicho software.
 
@@ -172,7 +207,7 @@ En las sucesivas versiones, Microsoft ha incorporado numerosas características a
 
 OpenGL (\textit{Open Graphics Library}) es una \textbf{especificación estándar} que define un API independiente de la plataforma y del sistema operativo, que permite generar gráficos en dos y tres dimensiones (Fig. \ref{fig:opengl-tex-shadow-reflect-example}). También goza de independencia en cuanto al sistema de ventanas y el protocolo de red empleados \cite{shreiner2006opengl}.
 
-\imagenBorde{Cap3//opengl-tex-shadow-reflect-example}{0.7}{Ejemplo renderizado con OpenGL que muestra texturas, sombras y reflejos}{fig:opengl-tex-shadow-reflect-example}
+\imagenBorde{Cap3//opengl-tex-shadow-reflect-example}{0.7}{Ejemplo renderizado con OpenGL que muestra texturas, sombras y reflejos \cite{opengl:dino-example}}{fig:opengl-tex-shadow-reflect-example}
 
 Las aplicaciones basadas en OpenGL pueden hacer uso de una gran variedad de librerías que extienden sus funcionalidades. Las más importantes son \textit{OpenGL Utility Library (GLU)} y \textit{OpenGL Utility Toolkit (GLUT)}. \textbf{GLU} proporciona rutinas de más alto nivel que las que proporciona OpenGL inicialmente. Destacan aquellas encargadas de generar texturas, NURBS (en inglés \textit{Non Uniform Rational B-splines})\footnote{Modelo matemático utilizado en computación gráfica para generar y representar curvas y superficies.}, dibujar superficies cuádricas como esferas, conos y cilindros, entre otros \cite{shreiner2006opengl}. Por otro lado, \textbf{GLUT} proporciona métodos sencillos para manejar las ventajas de la interfaz gráfica de usuario y los dispositivos de entrada como el teclado y el ratón \cite{govil2004principles}.
 
