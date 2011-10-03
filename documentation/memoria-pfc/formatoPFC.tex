@@ -90,6 +90,8 @@ format=hang]{caption} % Personalización de títulos de figuras y tablas
 % Macro para insertar una imagen
 %       Uso: \imagen{nombreFichero}{Factor escala}{Caption (leyenda)}{Label (identificador para referenciarla)}
 \def\imagen#1#2#3#4{
+ \floatstyle{plain} % plain, boxed,ruled
+ \restylefloat{figure}
  \begin{figure}[h]
  \begin{center}
    \includegraphics[keepaspectratio,scale=#2]{#1}
@@ -102,7 +104,7 @@ format=hang]{caption} % Personalización de títulos de figuras y tablas
 % Macro para insertar una imagen con borde en el marco
 %       Uso: \imagenBorde{nombreFichero}{Factor escala}{Caption (leyenda)}{Label (identificador para referenciarla)}
 \def\imagenBorde#1#2#3#4{
- \floatstyle{boxed} 
+ \floatstyle{boxed} % plain, boxed,ruled
  \restylefloat{figure}
  \begin{figure}[h]
  \centering
