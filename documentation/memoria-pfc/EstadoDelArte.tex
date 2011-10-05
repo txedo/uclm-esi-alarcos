@@ -23,16 +23,16 @@ Como prueba de ello, y en búsqueda de aumentar su competitividad y minimizar cos
 \centering
 \begin{tabular}{| p{3.5cm} | p{8cm} |}
 	\hline
-		\multicolumn{1}{|c|}{\textbf{Localización}} &
-		\multicolumn{1}{|c|}{\textbf{Tipo de desarrollo}} \\
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.7}\textbf{Localización}} &
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.7}\textbf{Tipo de desarrollo}} \\
 	\hline
-		Mismo lugar &
+		\cellcolor[gray]{0.9}Mismo lugar &
 		Desarrollo tradicional \\
 	\hline
-		Mismo país &
+		\cellcolor[gray]{0.9}Mismo país &
 		Desarrollo Distribuido de Software (DSD) \\
 	\hline
-		Distintos países &
+		\cellcolor[gray]{0.9}Distintos países &
 		Desarrollo Global de Software (GSD) \\
 	\hline
 \end{tabular}
@@ -53,18 +53,20 @@ Estos conceptos se muestran sintetizados en la Tabla \ref{table:gsd-types}.
 \renewcommand{\arraystretch}{1.5}
 \begin{tabular}{| p{5cm} | p{3.5cm} | p{3.5cm} |}
 	\hline
-		\raisebox{-3,0 ex}[0ex][0ex]{Externalización de servicios} &
-		Mismo país &
+		\cellcolor[gray]{0.7} &
+		\cellcolor[gray]{0.9}Mismo país &
 		Inshoring \\
 	\cline{2-3}
-		& Distintos países &
+		\raisebox{3,0 ex}[0ex][0ex]{\cellcolor[gray]{0.7}Externalización de servicios} &
+		\cellcolor[gray]{0.9}Distintos países &
 		Outsourcing \\
 	\hline
-		\raisebox{-3,0 ex}[0ex][0ex]{Traslación de fábricas} &
-		Países vecinos &
+		\cellcolor[gray]{0.7} &
+		\cellcolor[gray]{0.9}Países vecinos &
 		Nearshoring \\
 	\cline{2-3}
-		& Países distantes &
+		\raisebox{3,0 ex}[0ex][0ex]{\cellcolor[gray]{0.7}Traslación de fábricas} &
+		\cellcolor[gray]{0.9}Países distantes &
 		Offshoring \\
 	\hline
 \end{tabular}
@@ -121,6 +123,7 @@ Como ya se ha comentado anteriormente, este paradigma de desarrollo de software 
 
 
 \section{Calidad y medidas software}
+\label{sec:calidad}
 
 La calidad es uno de los factores más importantes que hacen que los usuarios y clientes se decanten por un producto u otro. Por tanto, las organizaciones deben asegurar de algún modo la calidad de los productos y servicios que ofrecen, ya que de ello depende su supervivencia y competitividad en el mercado \cite{otros2003calidad}.
 
@@ -157,17 +160,40 @@ Según \cite{pfleeger:measurement} y \cite{fenton:measurement}, el uso de medidas
 
 \section{Visualización de medidas software}
 
-Los sistemas de visualización deben proporcionar vistas intuitivas, efectivas y eficaces que hagan del análisis de datos una tarea rápida y precisa. Para lograrlo, se hace uso de una cualidad del sistema visual humano denominado \textbf{\textit{proceso pre-atentivo}} \cite{hea92}. Los procesos pre-atentivos son procesos que ``saltan a la vista'', siendo detectados inmediatamente y evitando que el usuario deba centrar su atención en una determinada región de una imagen para captar la presencia o ausencia de una característica determinada \cite{ducasse10}.
 
-Existen cuatro categorías básicas de características que se procesan de forma pre-atentiva \cite{ware99}: color, forma, movimiento y localización espacial. De cada una de estas características se puede obtener un gran conjunto de subcaracterísticas como curvatura, tamaño, orientación, longitud, etcétera.+
+Como se ha explicado en la sección \ref{sec:calidad}, realizar mediciones sobre el software es un desafío. Cuando se completa un proceso de medición, es conveniente generar un informe que muestre los resultados que se consideren de interés. Para que el estudio de estos resultados sea una tarea fácil, rápida y eficiente, se propone presentar dichos resultados con una representación visual. Pero toda la información obtenida durante el proceso de medición no es igualmente representativa para todos los usuarios, por tanto, es necesario filtrarla o permitir que diferentes tipos de audiencia puedan comprender información compleja.
 
-Para representar una \textbf{medida software} visualmente es necesario identificar qué entidad se quiere escenificar por medio de un modelo gráfico y cuáles son sus atributos más relevantes. De este modo, es posible establecer un conjunto de asociaciones entre los atributos de la entidad y las subcaracterísticas del modelo gráfico. Este concepto recibe el nombre de \textit{vista polimétrica} \cite{lanza03} y permite que los modelos gráficos adopten una determinada forma, orientación o color en función de los resultados de las mediciones, beneficiándose así de los procesos pre-atentivos.
+En la literatura se encuentran distintas técnicas que permiten representar visualmente determinados tipos de información. \cite{fj98} y \cite{hvvw05} utilizan modelos en tres dimensiones para mostrar información estadística. \cite{wl07} emplea la metáfora de una ciudad en tres dimensiones para representar medidas software (Fig. \ref{fig:city-metaphore}). \cite{lanza03} combina vistas polimétricas con medidas software de las entidades conceptuales que intervienen en programas software orientado a objetos (clases, atributos, métodos...). Pero hay que controlar determinadas características para evitar introducir altos niveles de ruido en la visualización (Fig. \ref{fig:edge-noise}).
 
+\imagenBorde{Cap3//city-metaphore}{0.55}{Metáfora de una ciudad para representar sistemas software}{fig:city-metaphore}
 
+Antes de diseñar una representación visual, es necesario estudiar si un modelo 2D satisface las necesidades de la abstracción del mundo que se quiere escenificar, o si es necesario una escena más compleja en 3D. Por un lado, las escenas 2D son sencillas de implementar pero hacen que el usuario tenga la sensación de ver el sistema desde fuera y no se sienta inmerso en el mismo. Por otro lado, las escenas 3D sí producen esta sensación de inmersión pero pueden provocar que el usuario se desoriente. Para evitar este problema, se propone realizar la visualización 3D en base a la metáfora de una ciudad que el usuario puede explorar de forma interactiva \cite{wl07}.
 
+No obstante, para llegar a la idea de la metáfora de una ciudad en 3D, los sistemas de visualización han pasado por un proceso de evolución que remonta a los gráficos en 2D. A lo largo de los años se han propuesto distintos diagramas y modelos que, según sus características, satisfacen mejor un tipo de datos u otro. A continuación, se muestra una síntesis de algunos de los modelos analizados en \cite{ducasse10}:
 
+\begin{itemize}
+	\item \textbf{Distribution Map}
+	\item \textbf{Tree Map}
+	\item \textbf{Tree Ring}
+	\item \textbf{ICicle Plot}
+	\item \textbf{File Dot}
+	\item \textbf{Diagrama de Kiviat}
+	\item \textbf{Dot Plot y Matrices de Correlación}
+	\item \textbf{Matrices de Evolución}
+	\item \textbf{Verso}
+\end{itemize}
 
+Para facilitar la comprensión de la información, los sistemas de visualización deben proporcionar vistas intuitivas, efectivas y eficaces que hagan del análisis de datos una tarea rápida y precisa. Un método para lograr esta característica consiste en explotar una cualidad del sistema visual humano denominado \textbf{\textit{proceso pre-atentivo}} \cite{hea92}. Los procesos pre-atentivos son procesos que ``saltan a la vista'' (Fig. \ref{fig:preattentive}), siendo detectados inmediatamente y evitando que el usuario deba centrar su atención en una determinada región de una imagen para captar la presencia o ausencia de una característica determinada \cite{ducasse10}.
 
+\imagen{Cap3//edge-noise}{0.55}{Ejemplo del nivel de ruido introducido por las aristas de un grafo}{fig:edge-noise}
+
+Existen cuatro categorías básicas de características que se procesan de forma pre-atentiva \cite{ware99}: color, forma, movimiento y localización espacial. De cada una de estas características se puede obtener un gran conjunto de subcaracterísticas como curvatura, tamaño, orientación, longitud, etcétera.
+
+\imagenBorde{Cap3//preattentive}{0.50}{Ejemplo que activa un proceso pre-atentivo. En la imagen de la izquierda el objetivo se encuentra fácilmente; en la de la derecha, el objetivo se camufla entre el resto de elementos}{fig:preattentive}
+
+Para representar una \textbf{medida software} visualmente es necesario identificar qué entidad se quiere escenificar por medio de un modelo gráfico y cuáles son sus atributos más relevantes. De este modo, es posible establecer un conjunto de asociaciones entre los atributos de la entidad y las dimensiones del modelo gráfico. Este concepto recibe el nombre de \textit{vista polimétrica} \cite{lanza03} y permite que los modelos gráficos adopten una determinada forma, orientación o color en función de los resultados de las mediciones. Esta característica se puede combinar con los procesos pre-atentivos, permitiendo que los sistemas de visualización adquieran un gran potencial y flexibilidad. Por ejemplo, un jefe de proyecto podría detectar a \textit{golpe de vista} el cumplimiento de plazos de cada una de las partes de un proyecto (Fig. \ref{fig:preattentive2}). Otro ejemplo podría consistir en asociar el número de líneas de código a la altura de un cubo, y el número de comentarios a la base del mismo. De este modo, si el cubo es muy alto y muy fino, significa que tiene poco comentarios para demasiadas líneas de código; si por el contrario, el cubo es muy bajo y muy ancho, significa que tiene demasiados comentarios.
+
+\imagenBorde{Cap3//preattentive2}{0.50}{Representación visual de medidas software de un sistema. Cada cubo representa una parte del sistema. El color verde significa que se está dentro del plazo de entrega establecido y se goza de holgura; el color azul indica que se encuentra dentro del plazo de entrega pero sin holgura; el color rojo indica que se encuentra fuerza de plazo}{fig:preattentive2}
 
 
 

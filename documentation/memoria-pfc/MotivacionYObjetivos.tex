@@ -41,6 +41,19 @@ El grado de internacionalización depende de que previamente se haya traducido el
 
 Es importante destacar que este PFC se centra en la visualización y personalización de la visualización. Por lo tanto, no proporcionará medios para calcular los valores de las medidas e indicadores, aunque sí incorporará una interfaz gráfica a modo de formulario en la que los usuarios podrán aportar dichos datos.
 
+A modo de síntesis, a continuación se listan algunos de los requisitos más importantes que debe satisfacer el sistema:
+\begin{itemize}
+	\item \textbf{Intuitivo}. Para permitir que el análisis de los datos sea una tarea rápida y precisa, el sistema de visualización debe permitir vistas intuitivas y de fácil comprensión. Esto no implica que los usuarios no requieran un ligero entrenamiento previo antes de utilizar la herramienta, ya que entonces habría que limitar algunas funcionalidades que podrían resultar de interés.
+	\item \textbf{Flexible}. Cabe la posibilidad de que las empresas que utilicen el sistema deseen añadir nuevas entidades para modelar determinados aspectos de su entorno. Por ello, es necesario que sistema disponga de algún mecanismo que permita esta adición de conocimiento de un modo sencillo.
+	\item \textbf{Adaptable}. Algunos sistemas de visualización son efectivos y eficientes pero tienen un diseño muy específico y resulta costoso adaptarlos para manejar nuevos datos. Dado que \textit{Desglosa} se centra en la visualización, debe disponer de algún mecanismo que permita la adición de nuevos datos de un modo sencillo. Una vez que se hayan configurado los nuevos datos, el sistema debe trabajar de un modo muy genérico para permitir configurar sus representaciones gráficas posteriormente.
+		\item \textbf{Aplicable}. Dado que el paradigma del desarrollo global de software se puede conceptualizar como una jerarquía de objetos, el sistema debe ser capaz de manejar cualquier tipo de métrica de dicha jerarquía.
+	\item \textbf{Extensible}. El sistema debe permitir al equipo encargado del mantenimiento la adición de nuevos modelos gráficos para generar distintos tipos de vistas que resulten de interés en un futuro.
+	\item \textbf{Navegabilidad}. El sistema debe proporcionar un mecanismo mediante el cual el usuario pueda realizar una navegación interactiva. De este modo, se evitará que determinada información quede oculta visualmente o se tolerará que el enfoque visual se centre en una región determinada. Además, debe permitir el paso a través de los distintos niveles de abstracción que representan el paradigma del desarrollo global de software. Por tanto, siguiendo en enfoque \textit{top-bottom}, el usuario deberá ser capaz de navegar desde entidades de un nivel superior y desglosar información más específica referente a las mismas.
+	\item \textbf{Filtros}. El usuario deber tener la capacidad de poder establecer una serie de filtros a fin de obtener la información que desea. Estos filtros serán en base a una jerarquía que modele el paradigma del desarrollo global de software.
+	\item \textbf{Requisitos hardware}. Aunque el sistema dispone de un motor gráfico 3D, sólo será necesario mover la cámara y dibujar figuras sencillas a partir de primitivas. Por tanto, el consumo de recursos será bajo y no será necesario un hardware potente para ejecutar la aplicación.
+\end{itemize}
+
+
 
 \section{Entorno y requisitos}
 
