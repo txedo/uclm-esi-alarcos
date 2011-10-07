@@ -4,14 +4,14 @@ Version=2
 
 [SessionInfo]
 ActiveTab=2
-FrameCount=10
-ActiveFrame=0
+FrameCount=11
+ActiveFrame=7
 
 [Frame0]
 Columns=1
 Rows=1
-Flags=2
-ShowCmd=3
+Flags=0
+ShowCmd=1
 MinPos.x=-1
 MinPos.y=-1
 MaxPos.x=-8
@@ -24,17 +24,17 @@ Class=CLatexEdit
 Document=EstadoDelArte.tex
 
 [Frame0_Row0]
-cyCur=470
+cyCur=344
 cyMin=10
 
 [Frame0_Col0]
-cxCur=1453
+cxCur=1262
 cxMin=10
 
 [Frame0_View0,0]
-Cursor.row=85
-Cursor.column=199
-TopSubLine=156
+Cursor.row=200
+Cursor.column=0
+TopSubLine=519
 
 [Frame1]
 Columns=1
@@ -61,9 +61,9 @@ cxCur=922
 cxMin=10
 
 [Frame1_View0,0]
-Cursor.row=82
-Cursor.column=0
-TopSubLine=85
+Cursor.row=13
+Cursor.column=210
+TopSubLine=7
 
 [Frame2]
 Columns=1
@@ -90,9 +90,9 @@ cxCur=1262
 cxMin=10
 
 [Frame2_View0,0]
-Cursor.row=65
-Cursor.column=15
-TopSubLine=396
+Cursor.row=50
+Cursor.column=255
+TopSubLine=174
 
 [Frame3]
 Columns=1
@@ -148,9 +148,9 @@ cxCur=1262
 cxMin=10
 
 [Frame4_View0,0]
-Cursor.row=45
-Cursor.column=352
-TopSubLine=152
+Cursor.row=11
+Cursor.column=173
+TopSubLine=0
 
 [Frame5]
 Columns=1
@@ -213,8 +213,8 @@ TopSubLine=0
 [Frame7]
 Columns=1
 Rows=1
-Flags=0
-ShowCmd=1
+Flags=2
+ShowCmd=3
 MinPos.x=-1
 MinPos.y=-1
 MaxPos.x=-8
@@ -227,17 +227,17 @@ Class=CLatexEdit
 Document=Resultados.tex
 
 [Frame7_Row0]
-cyCur=344
+cyCur=470
 cyMin=10
 
 [Frame7_Col0]
-cxCur=1262
+cxCur=1453
 cxMin=10
 
 [Frame7_View0,0]
-Cursor.row=1
-Cursor.column=20
-TopSubLine=0
+Cursor.row=39
+Cursor.column=48
+TopSubLine=70
 
 [Frame8]
 Columns=1
@@ -264,9 +264,9 @@ cxCur=1262
 cxMin=10
 
 [Frame8_View0,0]
-Cursor.row=0
-Cursor.column=0
-TopSubLine=54
+Cursor.row=71
+Cursor.column=17
+TopSubLine=59
 
 [Frame9]
 Columns=1
@@ -296,4 +296,33 @@ cxMin=10
 Cursor.row=32
 Cursor.column=29
 TopSubLine=24
+
+[Frame10]
+Columns=1
+Rows=1
+Flags=0
+ShowCmd=1
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-8
+MaxPos.y=-30
+NormalPos.left=75
+NormalPos.top=75
+NormalPos.right=1399
+NormalPos.bottom=416
+Class=CLatexEdit
+Document=PFCBib.bib
+
+[Frame10_Row0]
+cyCur=282
+cyMin=10
+
+[Frame10_Col0]
+cxCur=1287
+cxMin=10
+
+[Frame10_View0,0]
+Cursor.row=19
+Cursor.column=0
+TopSubLine=20
 

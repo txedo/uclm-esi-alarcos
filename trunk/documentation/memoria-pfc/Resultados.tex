@@ -11,3 +11,30 @@
 % Niveles (factoría y proyecto)
 % Seguridad con Spring Security
 % ...
+
+\section{Control de Acceso Basado en Grupos (GBAC) mediante Spring Security}
+
+Las funcionalidades relativas a autenticación, seguridad y control de acceso son muy comunes en aplicaciones web. Gracias a ellas es posible establecer políticas que indiquen quienes tienen la capacidad de acceder a un conjunto determinado de recursos o información. Por tanto, para no reinventar la rueda cada vez que se desea implementar características de esta índole, se recomienda hacer uso de frameworks especialmente diseñados para estos propósitos.
+
+Spring Security (\textit{http://static.springsource.org/spring-security/site/}) es un framework potente y configurable mediante ficheros XML, que proporciona métodos de autenticación y control de acceso en aplicaciones basadas en Spring. Su publicación bajo una licencia Apache 2.0 y su uso extendido por agencias gubernamentales, aplicaciones militares y bancos, hacen de él una alternativa muy competente y confiable.
+
+Antes de proceder con la configuración de Spring Security, es necesario tomar dos decisiones de diseño muy importantes: qué política de acceso se desea implementar y cuál será el método de conexión con la base de datos.
+
+Para la \textbf{política de acceso} se han contemplado las dos posibilidades más comunes en aplicaciones web: control de acceso basado en roles y control de acceso basado en grupos.
+\begin{itemize}
+	\item Control de Acceso basado en \textbf{roles} (en inglés, \textit{\textbf{Role}-based access control} o \textbf{R}BAC). Consiste en una política de seguridad en la que el sistema otorga privilegios al usuario en función de su rol. Un usuario puede tener uno o varios roles.
+	\item Control de Acceso basado en \textbf{grupos} (en inglés, \textit{\textbf{Group}-based access control} o \textbf{G}BAC). Este modelo extiende al RBAC y ofrece más flexibilidad para modelar políticas de acceso más complejas y exigentes. En este caso, los privilegios se otorgan al usuario en función de los grupos a los que pertenezca. Un usuario puede pertenecer a uno o varios grupos, y un grupo puede tener asignados uno o varios roles.
+\end{itemize}
+
+Se ha seleccionado la segunda opción dada la gran flexibilidad y opciones de extensibilidad y mantenibilidad que proporciona para futuros requisitos de usuario. En (Fig. \ref{fig:spring-security-gbac-schema}) se aprecia un esquema minimalista de la base de datos que es necesario diseñar para implementar un GBAC mediante Spring Security. Si se desea añadir información adicional, es posible añadir nuevas columnas a las tablas del esquema propuesto.
+\begin{itemize}
+	\item \textbf{Tabla \textit{users}}. Contiene la información relativa a los usuarios de la aplicación web. Spring Security exige que los usuarios tengan un nombre de usuario, una contraseña y una serie de atributos que indiquen si la cuenta está habilitada, caducada, bloqueada o si las credenciales han caducado. Esto es debido porque la clase Java perteneciente a la entidad \textit{Usuario} deberá implementar un interfaz de Spring denominado \textit{UserDetails} (Fig. \ref{fig:spring-security-class-diagram}).
+	\item \textbf{Tabla \textit{groups}}. Contiene el nombre y la descripción de los grupos de usuarios que se desean crear. Se establecerá una relación \textit{muchos-a-muchos} entre los usuarios y los grupos gracias a la tabla \textit{users\_groups}.
+	\item \textbf{Tabla \textit{roles}}. Contiene el nombre y la descripción de los roles disponibles en el sistema. En Spring Security, por defecto aunque configurable, el nombre de los roles debe comenzar con el prefijo ``\textit{ROLE\_}''. Se establecerá una relación \textit{muchos-a-muchos} entre los grupos y los roles gracias a la tabla \textit{groups\_roles}.
+\end{itemize}
+
+\imagen{Cap5//spring-security-gbac-schema}{0.48}{Esquema minimalista de base de datos para configurar un GBAC mediante Spring Security}{fig:spring-security-gbac-schema}
+
+En cuanto al modo de conexión con la base de datos se han contemplado dos posibilidades: JDBC (Java Database Connectivity) e Hibernate. Para esta característica, al igual que para el resto de la persistencia de la aplicación web, se ha elegido emplear Hibernate dada su eficiencia y facilidad de configuración entre las tablas de una base de datos relacional y una jerarquía de objetos Java.
+
+\imagen{Cap5//spring-security-class-diagram}{0.6}{Diagrama de clases para implementar un GBAC mediante Hibernate, Spring Security y Spring}{fig:spring-security-class-diagram}
