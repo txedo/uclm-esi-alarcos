@@ -82,12 +82,10 @@ public class User implements UserDetails {
 
 	@Transient
 	public GrantedAuthority[] getAuthorities() {
-		//return authorities;
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		for (Group g : this.groups) {
 			authorities.addAll(g.getAuthorities());
 		}
-		//return new GrantedAuthority[]{new GrantedAuthorityImpl("ROLE_ADMIN")};
 		return authorities.toArray(new GrantedAuthority[0]);
 	}
 	

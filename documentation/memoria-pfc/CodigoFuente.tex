@@ -1,0 +1,38 @@
+\chapter{Codigo Fuente}
+\label{ch:codigofuente}
+
+\section{Clases necesarias para implementar GBCA mediante Spring Security}
+Explicar que implementa cada clase blablabla
+
+\subsection{Clase User.java}
+\label{subsec:user}
+Anotada con JPA (implementa UserDetails -Spring Security-)
+
+\lstinputlisting[language=Java,caption={Código fuente de la clase User.java},label=code:User.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//User.java}
+
+
+\subsection{Clase Group.java}
+\label{subsec:group}
+Anotada con JPA
+
+\lstinputlisting[language=Java,caption={Código fuente de la clase Group.java},label=code:Group.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//Group.java}
+
+
+\subsection{Clase Role.java}
+\label{subsec:role}
+Anotada con JPA (implementa GrantedAuthority -Spring Security-)
+
+\lstinputlisting[language=Java,caption={Código fuente de la clase Role.java},label=code:Role.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//Role.java}
+
+
+\subsection{Clase CustomUserDetailsService.java}
+\label{subsec:customuserdetailsservice}
+Implementa UserDetailsService -Spring Security- y extiende de HibernateDaoSupport -Spring-
+
+\lstinputlisting[language=Java,caption={Código fuente de la clase CustomUserDetailsService.java},label=code:CustomUserDetailsService.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//security//CustomUserDetailsService.java}
+
+
+\subsection{Configuración de Spring Security}
+\label{subsec:applicationcontext}
+
+\lstinputlisting[language=XML,caption={Fichero de configuración de Spring Security: applicationContext-security.xml},label=code:applicationcontext-security]{..//..//desglosa-web//src//main//resources//applicationContext-security.xml}

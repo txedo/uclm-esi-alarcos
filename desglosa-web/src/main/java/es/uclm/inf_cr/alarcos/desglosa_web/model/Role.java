@@ -52,18 +52,11 @@ public class Role implements GrantedAuthority {
 		this.description = description;
 	}
 	
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Role)) {
-            return false;
-        }
-
-        final Role role = (Role) o;
-
-        return !(name != null ? !name.equals(role.name) : role.name != null);
-
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Role)) return false;
+		final Role role = (Role) o;
+		return !(name != null ? !name.equals(role.name) : role.name != null);
     }
 
 	public int compareTo(Object o) {

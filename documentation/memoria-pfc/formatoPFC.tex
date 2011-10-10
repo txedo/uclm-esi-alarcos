@@ -224,8 +224,15 @@ tabsize=2,
 captionpos=b,            % ajusta la posición de títulos
 breaklines=true,         % ajusta la división automática de líneas
 breakatwhitespace=false,
-xleftmargin=1cm,xrightmargin=1cm
+xleftmargin=1cm,
+xrightmargin=1cm
 }
+
+\lstset{ %
+  language=XML,
+  morekeywords={encoding,beans:beans,xmlns,xmlns:beans,xmlns:xsi,xmlns:schemaLocation,global-method-security,secured-annotations,http,auto-config,intercept-url,pattern,filters,access,form-login,login-page,default-target-url,always-use-default-target,authetication-failure-url,anonymous,http-basic,logout,logout-url,logout-success-url,invalidate-session,remember-me,authentication-provider,user-service-ref,password-encoder,hash,beans:bean,id,class,beans:property,name,ref,value,beans:props,beans:prop,key}
+}
+
 
 % http://lenaherrmann.net/2010/05/20/javascript-syntax-highlighting-in-the-latex-listings-package
 \usepackage{color}

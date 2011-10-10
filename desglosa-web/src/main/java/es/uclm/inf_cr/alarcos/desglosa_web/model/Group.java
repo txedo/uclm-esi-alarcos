@@ -46,19 +46,18 @@ public class Group {
 		return description;
 	}
 
-    @ManyToMany(fetch = FetchType.EAGER) 
-    @JoinTable(
-            name="groups_roles",
-            joinColumns = { @JoinColumn( name="group_id") },
-            inverseJoinColumns = @JoinColumn( name="role_id")
-    )   
+	@ManyToMany(fetch = FetchType.EAGER) 
+	@JoinTable(
+			name="groups_roles",
+			joinColumns = { @JoinColumn( name="group_id") },
+			inverseJoinColumns = @JoinColumn( name="role_id")
+	)   
 	public Set<Role> getRoles() {
 		return roles;
 	}
     
 	@Transient
 	public List<GrantedAuthority> getAuthorities() {
-		//return authorities;
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		for (Role r : this.roles) {
 			authorities.add(new GrantedAuthorityImpl(r.getName()));
@@ -80,11 +79,6 @@ public class Group {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
-	}
-
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 	
 }
