@@ -16,6 +16,35 @@ MinPos.x=-1
 MinPos.y=-1
 MaxPos.x=-8
 MaxPos.y=-30
+NormalPos.left=125
+NormalPos.top=125
+NormalPos.right=1424
+NormalPos.bottom=528
+Class=CLatexEdit
+Document=EstadoDelArte.tex
+
+[Frame0_Row0]
+cyCur=344
+cyMin=10
+
+[Frame0_Col0]
+cxCur=1262
+cxMin=10
+
+[Frame0_View0,0]
+Cursor.row=200
+Cursor.column=38
+TopSubLine=529
+
+[Frame1]
+Columns=1
+Rows=1
+Flags=0
+ShowCmd=1
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-8
+MaxPos.y=-30
 NormalPos.left=0
 NormalPos.top=0
 NormalPos.right=959
@@ -23,24 +52,24 @@ NormalPos.bottom=214
 Class=CLatexEdit
 Document=PlantillaPFC.tex
 
-[Frame0_Row0]
+[Frame1_Row0]
 cyCur=155
 cyMin=10
 
-[Frame0_Col0]
+[Frame1_Col0]
 cxCur=922
 cxMin=10
 
-[Frame0_View0,0]
+[Frame1_View0,0]
 Cursor.row=0
 Cursor.column=0
 TopSubLine=0
 
-[Frame1]
+[Frame2]
 Columns=1
 Rows=1
-Flags=0
-ShowCmd=1
+Flags=2
+ShowCmd=3
 MinPos.x=-1
 MinPos.y=-1
 MaxPos.x=-8
@@ -52,35 +81,6 @@ NormalPos.bottom=578
 Class=CLatexEdit
 Document=Resultados.tex
 
-[Frame1_Row0]
-cyCur=344
-cyMin=10
-
-[Frame1_Col0]
-cxCur=1262
-cxMin=10
-
-[Frame1_View0,0]
-Cursor.row=53
-Cursor.column=15
-TopSubLine=131
-
-[Frame2]
-Columns=1
-Rows=1
-Flags=2
-ShowCmd=3
-MinPos.x=-1
-MinPos.y=-1
-MaxPos.x=-8
-MaxPos.y=-30
-NormalPos.left=125
-NormalPos.top=125
-NormalPos.right=1424
-NormalPos.bottom=528
-Class=CLatexEdit
-Document=EstadoDelArte.tex
-
 [Frame2_Row0]
 cyCur=470
 cyMin=10
@@ -90,9 +90,9 @@ cxCur=1453
 cxMin=10
 
 [Frame2_View0,0]
-Cursor.row=200
-Cursor.column=38
-TopSubLine=529
+Cursor.row=18
+Cursor.column=15
+TopSubLine=12
 
 [Frame3]
 Columns=1
@@ -121,7 +121,7 @@ cxMin=10
 [Frame3_View0,0]
 Cursor.row=33
 Cursor.column=0
-TopSubLine=28
+TopSubLine=34
 
 [Frame4]
 Columns=1
