@@ -600,8 +600,12 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 					$('#jogl_canvas').css('display','');
 					// Change active view
 					var city = JSON.stringify(data.city);
-					alert(city);
-					desglosa_handleVisualization(data.city.model, city);
+					if (city != "null") {
+						alert(city);
+						desglosa_handleVisualization(data.city.model, city);
+					} else {
+						alert("Error grave.");
+					}
 				} else {
 					$('#jogl_canvas').css('display','none');
 					$('#map_canvas').css('display','');
