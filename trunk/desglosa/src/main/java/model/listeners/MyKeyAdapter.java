@@ -4,7 +4,6 @@ import com.jogamp.newt.event.KeyAdapter;
 import com.jogamp.newt.event.KeyEvent;
 
 import model.gl.GLDrawer;
-import model.gl.control.EViewLevels;
 
 public class MyKeyAdapter extends KeyAdapter {
 	
@@ -28,15 +27,6 @@ public class MyKeyAdapter extends KeyAdapter {
 		 * RESTA					disminuir zoom
 		 */
 		switch (e.getKeyCode()) {
-			case KeyEvent.VK_2:
-				this.drawer.setViewLevel(EViewLevels.MetricIndicatorLevel);
-				break;
-			case KeyEvent.VK_3:
-				this.drawer.setViewLevel(EViewLevels.ProjectLevel);
-				break;
-			case KeyEvent.VK_4:
-				this.drawer.setViewLevel(EViewLevels.FactoryLevel);
-				break;
 			case KeyEvent.VK_F10:
 				this.drawer.setStencilShadow(!this.drawer.isStencilShadow());
 				System.err.println("Stencil shadow: " + this.drawer.isStencilShadow());
