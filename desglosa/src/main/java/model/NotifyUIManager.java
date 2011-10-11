@@ -9,6 +9,12 @@ public class NotifyUIManager {
 		observers.add(ob);
 	}
 	
+	public static void notifyMessage(String message) {
+		for (IObserverUI iob : observers) {
+			iob.showMessage(message);
+		}
+	}
+	
 	public static void notifySelectedProject (int idProject, int clickButton, int clickCount) {
 		for (IObserverUI iob : observers) {
 			iob.selectAntennaBall(idProject, clickButton, clickCount);

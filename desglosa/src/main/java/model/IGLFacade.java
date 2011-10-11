@@ -1,4 +1,4 @@
-package model.gl;
+package model;
 
 import exceptions.ViewManagerNotInstantiatedException;
 

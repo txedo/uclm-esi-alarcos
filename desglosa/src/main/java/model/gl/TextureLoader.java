@@ -63,8 +63,6 @@ public class TextureLoader {
 	            GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, textureNames[i]);
 	
 	            if (isSkyBox) {
-	            	//GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
-	            	//GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
 	            	GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR_MIPMAP_LINEAR);
 	            	GLSingleton.getGL().glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR_MIPMAP_LINEAR);
 	                makeRGBTexture(textures[i], GL2.GL_TEXTURE_2D, true);

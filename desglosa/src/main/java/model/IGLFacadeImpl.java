@@ -1,4 +1,4 @@
-package model.gl;
+package model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,7 +14,6 @@ import model.gl.control.GLTowerViewManager;
 import model.gl.knowledge.GLAntennaBall;
 import model.gl.knowledge.GLFactory;
 import model.gl.knowledge.GLObject;
-import model.gl.knowledge.GLPavement;
 import model.gl.knowledge.GLTower;
 import model.gl.knowledge.caption.Caption;
 import model.util.City;

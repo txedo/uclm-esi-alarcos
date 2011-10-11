@@ -1,7 +1,6 @@
 package model.gl;
 
 import model.gl.control.GLFactoryViewManager;
-import model.gl.control.GLMetricIndicatorViewManager;
 import model.gl.control.GLProjectViewManager;
 import model.gl.control.GLTowerViewManager;
 import model.gl.control.GLViewManager;
@@ -19,10 +18,6 @@ public class IViewManagerFactoryImpl implements IViewManagerFactory {
 			_instance = new IViewManagerFactoryImpl();
 		}
 		return _instance;
-	}
-
-	public GLViewManager createMetricIndicatorViewManager(GLDrawer drawer) {
-		return new GLMetricIndicatorViewManager(drawer, false);		// 2D View
 	}
 
 	public GLViewManager createProjectViewManager(GLDrawer drawer) {

@@ -145,10 +145,9 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 		this.renderShadow = true;
 		this.stencilShadow = true;
 		
-		this.oldViewLevel = EViewLevels.UnSetLevel;
-		this.viewLevel = EViewLevels.MetricIndicatorLevel;
+		this.oldViewLevel = null;
+		this.viewLevel = EViewLevels.UnSetLevel;
 		
-		this.metricIndicatorView = IViewManagerFactoryImpl.getInstance().createMetricIndicatorViewManager(this);
 		this.towerView = IViewManagerFactoryImpl.getInstance().createTowerViewManager(this);
 		this.projectView = IViewManagerFactoryImpl.getInstance().createProjectViewManager(this);
 		this.factoryView = IViewManagerFactoryImpl.getInstance().createFactoryViewManager(this);
@@ -263,9 +262,11 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 		this.oldViewLevel = this.viewLevel;
 		this.viewLevel = viewLevel;
 		// We reset the camera position in case that the view level is 3D
-		if (this.getViewManager(viewLevel).isThreeDimensional()) {
-			this.spotlight.reset();
-			this.camera.reset();
+		if (this.viewLevel != EViewLevels.UnSetLevel) {
+			if (this.getViewManager(viewLevel).isThreeDimensional()) {
+				this.spotlight.reset();
+				this.camera.reset();
+			}
 		}
 	}
 
@@ -306,9 +307,6 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 				break;
 			case FactoryLevel:
 				result = this.factoryView;
-				break;
-			case MetricIndicatorLevel:
-				result = this.metricIndicatorView;
 				break;
 			case TowerLevel:
 				result = this.towerView;
