@@ -169,7 +169,11 @@ public class GLObjectManager {
 						// Build setter method using Java Reflective API
 						String setterName = "set" + WordUtils.capitalize(field.getName());
 						Method setterMethod = classModel.getMethod(setterName, field.getParameterType());
-						setterMethod.invoke(classModel.cast(glObj), field.getValue());
+						if (field.getValue() != null) {
+							setterMethod.invoke(classModel.cast(glObj), field.getValue());
+						} else {
+							// TODO El valor de la constante es null y va a lanzar IllegalArgumentException
+						}
 					}
 					glObjects.add((GLObject)glObj);
 				}

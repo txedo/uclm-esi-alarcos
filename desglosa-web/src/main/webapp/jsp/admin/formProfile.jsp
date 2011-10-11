@@ -474,10 +474,7 @@
 				attr.name = item;
 				attr.type = modelAttributesArray[item];
 				if (attr.type == "color") {
-					// TODO
-// 					$("#added_captionLines > .caption_line").each(function(index, element) {
-// 						var label = $(element).children("#text").val();
-// 						var hexColor = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
+					attr.value = rgb2hex($("#constant_"+item).children('div').css('backgroundColor'));
 				} else {
 					attr.value = $("#constant_"+item).val();
 					if (attr.type == "float_range") attr.type = "float";
