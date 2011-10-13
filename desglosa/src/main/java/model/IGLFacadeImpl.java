@@ -68,10 +68,10 @@ public class IGLFacadeImpl implements IGLFacade {
 		Caption caption = configureCaption(json.getJSONObject("captionLines"));
 		if (caption != null) GLFactoryViewManager.getInstance().setCaption(caption);
 		
-		// Change the active view to FactoryLevel
+		// Change the active view to BuildingLevel
 		GLFactoryViewManager.getInstance().setPavements(city.getPavements());
 		GLFactoryViewManager.getInstance().setItems(buildings);
-		GLFactoryViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.FactoryLevel);
+		GLFactoryViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.BuildingLevel);
 	}
 
 	@Override
@@ -119,10 +119,10 @@ public class IGLFacadeImpl implements IGLFacade {
 		Caption caption = configureCaption(json.getJSONObject("captionLines"));
 		if (caption != null) GLProjectViewManager.getInstance().setCaption(caption);
 
-		// Change the active view to ProjectLevel
+		// Change the active view to AntennaBallLevel
 		GLProjectViewManager.getInstance().setPavements(city.getPavements());
 		GLProjectViewManager.getInstance().setItems(antennaBalls);
-		GLProjectViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.ProjectLevel);
+		GLProjectViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.AntennaBallLevel);
 	}
 
 	@Override

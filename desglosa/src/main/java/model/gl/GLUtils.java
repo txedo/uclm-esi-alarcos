@@ -15,7 +15,6 @@ import com.jogamp.opengl.util.gl2.GLUT;
 
 import model.gl.control.GLViewManager;
 import model.gl.knowledge.GLObject;
-import model.gl.knowledge.IGLConstants;
 import model.util.Color;
 import model.util.Vector3f;
 
