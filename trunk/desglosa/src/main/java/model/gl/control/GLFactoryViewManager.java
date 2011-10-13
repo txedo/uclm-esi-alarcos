@@ -112,7 +112,7 @@ public class GLFactoryViewManager extends GLViewManager {
 	protected void selectedObjectHandler(int selectedObject) {
 		int GLObjectId = glFactories.get(selectedObject-1).getId();
 		System.err.println("Selected factory: " + GLObjectId + "\tButton: " + clickButton + "\tNumber of clicks: " + clickCount);
-		NotifyUIManager.notifySelectedFactory(GLObjectId, clickButton, clickCount);
+		NotifyUIManager.notifySelectedBuilding(GLObjectId, clickButton, clickCount);
 	}
 
 

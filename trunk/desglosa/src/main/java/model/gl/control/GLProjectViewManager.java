@@ -129,7 +129,7 @@ public class GLProjectViewManager extends GLViewManager {
 	protected void selectedObjectHandler(int selectedObject) {
 		int GLObjectId = antennaBalls.get(selectedObject-1).getId();
 		System.err.println("Selected project: " + GLObjectId + "\tButton: " + clickButton + "\tNumber of clicks: " + clickCount);
-		NotifyUIManager.notifySelectedProject(GLObjectId, clickButton, clickCount);
+		NotifyUIManager.notifySelectedAntennaBall(GLObjectId, clickButton, clickCount);
 	}
 
 

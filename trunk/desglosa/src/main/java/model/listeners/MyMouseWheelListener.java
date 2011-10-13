@@ -3,7 +3,7 @@ package model.listeners;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import model.gl.knowledge.GLCamera;
+import model.gl.GLCamera;
 
 
 public class MyMouseWheelListener implements MouseWheelListener {

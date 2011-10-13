@@ -18,9 +18,7 @@ import com.jogamp.newt.event.awt.AWTMouseAdapter;
 import model.gl.control.EViewLevels;
 import model.gl.control.GLFontBuilder;
 import model.gl.control.GLViewManager;
-import model.gl.knowledge.GLCamera;
-import model.gl.knowledge.IGLConstants;
-import model.gl.knowledge.GLSpotlight;
+import model.gl.control.IViewManagerFactoryImpl;
 import model.listeners.MyKeyAdapter;
 import model.listeners.MyMouseAdapter;
 import model.util.Synchronizer;
@@ -40,10 +38,9 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 	 * * setSelectionMode() function, in case that the view implements a selection mechanism.
 	 * * getGLViewManager() function.
 	 */
-	private GLViewManager metricIndicatorView;
 	private GLViewManager towerView;
-	private GLViewManager projectView;
-	private GLViewManager factoryView;
+	private GLViewManager antennaBallView;
+	private GLViewManager buildingView;
 	
 	private EViewLevels oldViewLevel;
 	private EViewLevels viewLevel;
@@ -149,8 +146,8 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 		this.viewLevel = EViewLevels.UnSetLevel;
 		
 		this.towerView = IViewManagerFactoryImpl.getInstance().createTowerViewManager(this);
-		this.projectView = IViewManagerFactoryImpl.getInstance().createProjectViewManager(this);
-		this.factoryView = IViewManagerFactoryImpl.getInstance().createFactoryViewManager(this);
+		this.antennaBallView = IViewManagerFactoryImpl.getInstance().createProjectViewManager(this);
+		this.buildingView = IViewManagerFactoryImpl.getInstance().createFactoryViewManager(this);
 		
 		try {
 			GLSingleton.getGL().glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);		// Really Nice Perspective Calculations
@@ -238,7 +235,7 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 	}
 	
 	@Override
-	public void dispose(GLAutoDrawable arg0) {
+	public void dispose(GLAutoDrawable glDrawable) {
 		System.err.println("Desglosa: Dispose");
 	}
 	
@@ -269,6 +266,22 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 			}
 		}
 	}
+	
+	public GLViewManager getViewManager (EViewLevels viewLevel) {
+		GLViewManager result = null;
+		switch (viewLevel) {
+			case AntennaBallLevel:
+				result = this.antennaBallView;
+				break;
+			case BuildingLevel:
+				result = this.buildingView;
+				break;
+			case TowerLevel:
+				result = this.towerView;
+				break;
+		}
+		return result;
+	}
 
 	public Vector2f getPickPoint() {
 		return pickPoint;
@@ -297,22 +310,6 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 
 	public float getDim() {
 		return DIM;
-	}
-	
-	public GLViewManager getViewManager (EViewLevels viewLevel) {
-		GLViewManager result = null;
-		switch (viewLevel) {
-			case ProjectLevel:
-				result = this.projectView;
-				break;
-			case FactoryLevel:
-				result = this.factoryView;
-				break;
-			case TowerLevel:
-				result = this.towerView;
-				break;
-		}
-		return result;
 	}
 
 	public boolean isDebugMode() {

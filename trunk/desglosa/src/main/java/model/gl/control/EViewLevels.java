@@ -2,7 +2,7 @@ package model.gl.control;
 
 public enum EViewLevels {
 	UnSetLevel,
-	ProjectLevel,
-	FactoryLevel,
+	AntennaBallLevel,
+	BuildingLevel,
 	TowerLevel
 }
