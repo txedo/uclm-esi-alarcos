@@ -83,12 +83,12 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 
 	@Override
 	public void selectAntennaBall(int id, int clickButton, int clickCount){
-		this.handleEvent(EOperationCodes.ProjectSelection, id, clickButton, clickCount);
+		this.handleEvent(EOperationCodes.AntennaBallSelection, id, clickButton, clickCount);
 	}
 
 	@Override
 	public void selectBuilding(int id, int clickButton, int clickCount){
-		this.handleEvent(EOperationCodes.FactorySelection, id, clickButton, clickCount);
+		this.handleEvent(EOperationCodes.BuildingSelection, id, clickButton, clickCount);
 	}
 
 	@Override
@@ -105,13 +105,13 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 					getAppletContext().showDocument(new URL("javascript:selectTower(" + id + "," + clickButton + "," + clickCount +")"));
 				}
 				break;
-			case FactorySelection:
+			case BuildingSelection:
 				if (ob instanceof Integer) {
 					int id = (Integer)ob;
 					getAppletContext().showDocument(new URL("javascript:selectBuilding(" + id + "," + clickButton + "," + clickCount +")"));
 				}
 				break;
-			case ProjectSelection:
+			case AntennaBallSelection:
 				if (ob instanceof Integer) {
 					int id = (Integer)ob;
 					getAppletContext().showDocument(new URL("javascript:selectAntennaBall(" + id + "," + clickButton + "," + clickCount +")"));

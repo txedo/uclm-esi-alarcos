@@ -51,7 +51,13 @@
 	
 	$.subscribe('reloadEntityAttributes', function() {
 		var entity =  $("#entitySelect").val();
-		mappings = new Array();
+		if (mappings.length > 0) {
+			resetMappings();
+			var model =  $("#modelSelect").val();
+			if (model != -1) {
+				$.publish('reloadModelAttributes');
+			}
+		}
 		$.getJSON("/desglosa-web/json_p_loadEntityAttributes.action",
 				{ entity: entity },
 				function (data, status) {
@@ -71,7 +77,13 @@
 	
 	$.subscribe('reloadModelAttributes', function() {
 		var model =  $("#modelSelect").val();
-		mappings = new Array();
+		if (mappings.length > 0) {
+			resetMappings();
+			var entity =  $("#entitySelect").val();
+			if (entity != -1) {
+				$.publish('reloadEntityAttributes');
+			}
+		}
 		$.getJSON("/desglosa-web/json_p_loadModelAttributes.action",
 				{ model: model },
 				function (data, status) {
@@ -88,6 +100,11 @@
 					else alert('An error has occurred while trying to retrieve model information: ' + status);
 		});
 	});
+	
+	function resetMappings() {
+		mappings = new Array();
+		
+	}
 	
 	var selectedEntityAttribute = null;
 	var entityAttributesArray = new Array();
@@ -402,7 +419,7 @@
 		$("#nonMappedModelAttributesDiv").html("<ul>");
 		$.each(nonMappedModelAttributesArray, function() {
 			$("#nonMappedModelAttributesDiv > ul").append("<li>");
-			$("#nonMappedModelAttributesDiv > ul > li:last").append("<span><label for='constant_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label></span>");
+			$("#nonMappedModelAttributesDiv > ul > li:last").append("<label for='constant_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label>");
 			if (modelAttributesArray[this] == "color") {
 				createColorPicker("#nonMappedModelAttributesDiv > ul > li:last", "constant_" + this);
 			} else {
@@ -575,14 +592,27 @@
 	</div>
 	
 	<div id="second_step" style="display: none;">
-		<s:text name="label.configure_caption_lines"/>
-		<div id="nonMappedModelAttributesDiv"></div>
-		<div id="added_captionLines"></div>
-		<a href="javascript:addCaptionLine()"><s:text name="label.add_caption_line"/></a>
-		<label for="profileName"><s:text name="label.profile_name"/></label>
-		<input id="profileName" name="profileName" type="text"/>
-		<label for="profileDescription"><s:text name="label.profile_description"/></label>
-		<textarea id="profileDescription" name="profileDescription" rows="3" cols="15"></textarea>
+		<div id="nonMappedPane">
+			<s:text name="label.configure_nonMapped_Attributes"/>
+			<div id="nonMappedModelAttributesDiv"></div>
+		</div>
+		<div id="captionPanel">
+			<s:text name="label.configure_caption_lines"/>
+			<div id="added_captionLines"></div>
+			<a href="javascript:addCaptionLine()"><s:text name="label.add_caption_line"/></a>
+		</div>
+		<div id="profilePane">
+			<ul>
+				<li>
+					<label for="profileName"><s:text name="label.profile_name"/></label>
+					<input id="profileName" name="profileName" type="text"/>
+				</li>
+				<li>
+					<label for="profileDescription"><s:text name="label.profile_description"/></label>
+					<textarea id="profileDescription" name="profileDescription" rows="3" cols="15"></textarea>
+				</li>
+			</ul>
+		</div>
 		<a href="javascript:toggleSteps(false)">&lt; <s:text name="label.back"/></a>
 		<a href="javascript:saveProfile()">Save profile</a>
 	</div>
