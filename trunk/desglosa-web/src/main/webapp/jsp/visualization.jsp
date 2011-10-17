@@ -690,6 +690,10 @@ function desglosa_handleVisualization(model, city) {
 	<div id="workingArea" style="position:relative; height:450px">
 		<div id="map_canvas" style="position:relative; top:0; left:0; width: 600px; height: 400px; display: ;"></div>
 		
+		<!-- Using fixed JOGL, Gluegen, Applet Lanucher and JNLP versions from webapp directory.
+		If you want to use current development versions, add the following prefix to the url paths:
+		http://jogamp.org/deployment/jogamp-current/
+		 -->
 		<div id="jogl_canvas" style="position:relative; top:0; left:0; width: 600px; height: 400px; display: none;">
 			<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
 				codebase="./" 
@@ -697,11 +701,9 @@ function desglosa_handleVisualization(model, city) {
 				alt="Check your browser configuration to allow java applets." 
 			    width=600
 			    height=400
-			    archive="http://jogamp.org/deployment/util/applet-launcher.jar,
-			             http://jogamp.org/deployment/webstart/newt.all.jar,
-			             http://jogamp.org/deployment/webstart/nativewindow.all.jar,
-			             http://jogamp.org/deployment/webstart/jogl.all.jar,
-			             http://jogamp.org/deployment/webstart/gluegen-rt.jar,
+			    archive="jar/applet-launcher.jar,
+			             jar/jogl.all.jar,
+			             jar/gluegen-rt.jar,
 			             applet/desglosa.jar">
 			   <param name="codebase_lookup" value="false"/>
 			   <param name="subapplet.classname" value="presentation.AppletMain"/>
@@ -710,7 +712,7 @@ function desglosa_handleVisualization(model, city) {
 				   <param name="progressbar" value="true"/>
 				   <param name="jnlpNumExtensions" value="1"/>
 				   <param name="jnlpExtension1"
-				          value="http://jogamp.org/deployment/webstart/jogl-core.jnlp"/>
+				          value="jogl-all-awt.jnlp"/>
 				   <param name="java_arguments" value="-Dsun.java2d.noddraw=true"/>
 				   <param name="jnlp_href" value="applet/applet-desglosa.jnlp"/>
 				   <img src="images/gtk-cancel.png" alt="<s:text name="label.error"/>" title="<s:text name="label.error"/>" width="32" height="32"/><br />
