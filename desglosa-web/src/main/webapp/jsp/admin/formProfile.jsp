@@ -458,7 +458,7 @@
 			});
 			// Comprobar que no hay caption lines sin texto
 			$("#added_captionLines > .caption_line").each(function(index, element) {
-				var label = $(element).children("#text").val();
+				var label = $(element).children("span").children("#text").val();
 				var hexColor = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
 				if (label == "") {
 					// change css class
