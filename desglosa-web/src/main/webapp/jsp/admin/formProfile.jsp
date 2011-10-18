@@ -50,6 +50,9 @@
 	});
 	
 	$.subscribe('reloadEntityAttributes', function() {
+		selectedEntityAttribute = null;
+		$("#mapping_cfg").html("");
+		$("#mapping_control").html("");
 		var entity =  $("#entitySelect").val();
 		if (mappings.length > 0) {
 			resetMappings();
@@ -76,6 +79,9 @@
 	});
 	
 	$.subscribe('reloadModelAttributes', function() {
+		selectedModelAttribute = null;
+		$("#mapping_cfg").html("");
+		$("#mapping_control").html("");
 		var model =  $("#modelSelect").val();
 		if (mappings.length > 0) {
 			resetMappings();
@@ -102,8 +108,12 @@
 	});
 	
 	function resetMappings() {
+		// reset mappings array
 		mappings = new Array();
-		
+		// clean mappings table
+		$(".mapping_line").remove();
+		// clean mappings messages
+		$("#mapping_messages").html("");
 	}
 	
 	var selectedEntityAttribute = null;
@@ -235,30 +245,42 @@
 				// Resetear mapping_cfg y mapping_control
 				$("#mapping_cfg").html("");
 				$("#mapping_control").html("");
-				// Feedback en mapping_added_body
-				$("#mapping_added_body").append("<div class='mapping_line' style='display: block;'>");
-				$(".mapping_line:last").append("<span id='entityAttr_field' class='column'>" + entityAttrName + "</span>");
-				$(".mapping_line:last").append("<span id='modelAttr_field' class='column'>" + modelAttrName + "</span>");
-				if (ratio != null) {
-					$(".mapping_line:last").append("<span class='ratio' style='float: left;'>" + ratio + "</span>");
+				// Feedback en mapping_added
+				var rowspan = rules.length;
+				if (rowspan == 0) rowspan = 1;
+				$("#mapping_added").append("<tr class='mapping_line' />");
+				$(".mapping_line:last").append("<td class='entityAttr_field' rowspan='" + rowspan + "'>" + entityAttrName + "</td>");
+				$(".mapping_line:last").append("<td class='modelAttr_field' rowspan='" + rowspan + "'>" + modelAttrName + "</td>");
+				if (ratio == null && rules.length == 0) {
+					$(".mapping_line:last").append("<td colspan='4' />");
+				} else {
+					if (ratio != null) {
+						$(".mapping_line:last").append("<td colspan='3' rowspan='" + rowspan + "' />");
+						$(".mapping_line:last").append("<td class='ratio' rowspan='" + rowspan + "'>" + ratio + "</td>");
+					}
+					if (rules.length > 0) {
+						// Only first rule in this tr
+						var element = rules[0];
+						$(".mapping_line:last").append("<td class='rule_low'>" + element.low + "</td>");
+						$(".mapping_line:last").append("<td class='rule_high'>" + element.high + "</td>");
+						$(".mapping_line:last").append("<td class='rule_value'>" + element.value + "</td>");
+						$(".mapping_line:last").append("<td />"); // empty ratio column
+					}
 				}
-				if (rules.length > 0) {
-					$(".mapping_line:last").append("<div class='mapping_rules' style='float: left;'>");
-					$.each(rules, function(index, element) {
-						$(".mapping_rules:last").append("<div class='mapping_rule' style='display: block;'>");
-						$(".mapping_rule:last").append("<span class='rule' id='rule_low'>" + element.low + "</span>");
-						$(".mapping_rule:last").append("<span class='rule' id='rule_high'>" + element.high + "</span>");
-						$(".mapping_rule:last").append("<span class='rule' id='rule_value'>" + element.value + "</span>");
-					});
-					$(".mapping_rules:last").append("</div>");
-				}
-				$(".mapping_line:last").append("<span class='column'><a href='javascript:void(0)' class='remove_mapping'><s:text name='label.remove_mapping'/></a></span>");
+				$(".mapping_line:last").append("<td rowspan='" + rowspan + "'><a href='javascript:void(0)' class='remove_mapping'><s:text name='label.remove_mapping'/></a></td>");
 				$("a.remove_mapping").click(function() {
 					$(this).parent().parent().slideUp('slow');
 					removeMapping($(this).parent().parent());
 				});
-				$("#mapping_added_body").append("</div>");
-				$("#mapping_added_body").append("<div style='clear:both;'></div>");
+				if (rules.length > 1) {
+					var rulesButFirstElement = rules.slice(1);
+					$.each(rulesButFirstElement, function(index, element) {
+						$("#mapping_added").append("<tr class='mapping_rule' />");
+						$(".mapping_rule:last").append("<td class='rule_low'>" + element.low + "</td>");
+						$(".mapping_rule:last").append("<td class='rule_high'>" + element.high + "</td>");
+						$(".mapping_rule:last").append("<td class='rule_value'>" + element.value + "</td>");
+					});
+				}
 				// Feedback en mapping_messages
 				$("#mapping_messages").html("<s:text name='message.mapping_successful'/>");
 			}
@@ -267,12 +289,17 @@
 	
 	function removeMapping(mappingLineSelector) {
 		// Show selectable divs
-		var entityAttributeName = $(mappingLineSelector).children("span#entityAttr_field").html();
+		var entityAttributeName = $(mappingLineSelector).children("td.entityAttr_field").html();
 		var entityAttrSelector = "#entityAttr_" + entityAttributeName;
 		$(entityAttrSelector).slideDown('slow');
-		var modelAttributeName = $(mappingLineSelector).children("span#modelAttr_field").html();
+		var modelAttributeName = $(mappingLineSelector).children("td.modelAttr_field").html();
 		var modelAttrSelector = "#modelAttr_" + modelAttributeName;
 		$(modelAttrSelector).slideDown('slow');
+		var next = $(mappingLineSelector).next();
+		while (next.attr('class') == "mapping_rule") {
+			next.remove();
+			next = $(mappingLineSelector).next();
+		}
 		// Remove mapping line
 		$(mappingLineSelector).remove();
 		// Remove from mappings array
@@ -574,14 +601,20 @@
 		</div>
 		
 		<div id="mapping" style="float: left; margin-left: 15px;">
-			<div id="mapping_added">
-				<div id="mapping_added_header" style="padding-top: 5px; padding-bottom: 5px; border-width: 0px 0px 1px; border-style: solid; border-color: rgb(0, 0, 0); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; -moz-border-image: none;"><s:text name="label.configured_mappings"/></div>
-				<div id="mapping_added_body">
-					<span class="column3"><s:text name="label.entity_attribute"/></span>
-					<span class="column3"><s:text name="label.model_attribute"/></span>
-					<span class="column3"></span>
-				</div>
-			</div>
+			<table id="mapping_added">
+				<tr id="mapping_added_header">
+					<th colspan="7"><s:text name="label.configured_mappings"/></th>
+				</tr>
+				<tr id="mapping_added_header">
+					<td><s:text name="label.entity_attribute"/></td>
+					<td><s:text name="label.model_attribute"/></td>
+					<td><s:text name="label.range_low"/></td>
+					<td><s:text name="label.range_high"/></td>
+					<td><s:text name="label.range_value"/></td>
+					<td><s:text name="label.ratio"/></td>
+					<td><s:text name="label.delete_mapping"/></td>
+				</tr>
+			</table>
 			<div id="mapping_messages"></div>
 			<div id="mapping_cfg"></div>
 			<div id="mapping_control"></div>

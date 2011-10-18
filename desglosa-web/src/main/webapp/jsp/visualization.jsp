@@ -712,7 +712,7 @@ function desglosa_handleVisualization(model, city) {
 				   <param name="progressbar" value="true"/>
 				   <param name="jnlpNumExtensions" value="1"/>
 				   <param name="jnlpExtension1"
-				          value="jogl-all-awt.jnlp"/>
+				          value="applet/jogl-all-awt.jnlp"/>
 				   <param name="java_arguments" value="-Dsun.java2d.noddraw=true"/>
 				   <param name="jnlp_href" value="applet/applet-desglosa.jnlp"/>
 				   <img src="images/gtk-cancel.png" alt="<s:text name="label.error"/>" title="<s:text name="label.error"/>" width="32" height="32"/><br />
