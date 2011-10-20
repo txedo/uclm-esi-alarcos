@@ -8,8 +8,8 @@
 <head>
 	<meta name="menu" content="ManageProfiles"/>
 	
-	<link href="<s:url value='/styles/profile.css'/>" rel="stylesheet" type="text/css" />
-	<link href="<s:url value='/styles/buttons.css'/>" rel="stylesheet" type="text/css" />
+	<link href="<s:url value='/styles/profile.css?version=1'/>" rel="stylesheet" type="text/css" />
+	<link href="<s:url value='/styles/buttons.css?version=1'/>" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/colorpicker.css'/>" />
 	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/layout.css'/>" />
 	
@@ -248,7 +248,7 @@
 				// Feedback en mapping_added
 				var rowspan = rules.length;
 				if (rowspan == 0) rowspan = 1;
-				$("#mapping_added").append("<tr class='mapping_line' />");
+				$("#mapping_added_body").append("<tr class='mapping_line' />");
 				$(".mapping_line:last").append("<td class='entityAttr_field' rowspan='" + rowspan + "'>" + entityAttrName + "</td>");
 				$(".mapping_line:last").append("<td class='modelAttr_field' rowspan='" + rowspan + "'>" + modelAttrName + "</td>");
 				if (ratio == null && rules.length == 0) {
@@ -275,7 +275,7 @@
 				if (rules.length > 1) {
 					var rulesButFirstElement = rules.slice(1);
 					$.each(rulesButFirstElement, function(index, element) {
-						$("#mapping_added").append("<tr class='mapping_rule' />");
+						$("#mapping_added_body").append("<tr class='mapping_rule' />");
 						$(".mapping_rule:last").append("<td class='rule_low'>" + element.low + "</td>");
 						$(".mapping_rule:last").append("<td class='rule_high'>" + element.high + "</td>");
 						$(".mapping_rule:last").append("<td class='rule_value'>" + element.value + "</td>");
@@ -309,6 +309,9 @@
 			}
 		});
 		$("#mapping_messages").html("<s:text name='message.mapping_deleted'/>");
+		if (mappings.length == 0) {
+			// TODO <s:text name='message.no_mappings'/>
+		}
 	}
 	
 	function rgb2hex (rgbString) {
@@ -563,17 +566,17 @@
 </head>
 
 <body>
-	<div id="first_step" style="display:;">
+	<div id="first_step">
 		<s:url id="updateProfileURL" action="json_p_updateProfileForm"/>
 		<s:url id="refreshTableColumns" action="json_p_loadTableColumns"/>
 		
-		<div id="info" style="text-align:justify;">
+		<div id="info">
 			<p><s:text name="label.general_information_about_mappings1"/></p>
 			<p><s:text name="label.general_information_about_mappings2"/></p>
 		</div>
 		
-		<div id="panes" style="float: left; text-align: justify; margin-left: auto; margin-right: auto;">
-			<div id="leftPane" style="float:left;">
+		<div id="panes">
+			<div id="leftPane">
 				<sj:select 	href="%{updateProfileURL}"
 							emptyOption="false"
 							headerKey="-1"
@@ -586,7 +589,7 @@
 							onChangeTopics="reloadEntityAttributes"/>
 				<sj:div id="entityAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
 			</div>
-			<div id="rightPane" style="float: left; margin-left: 5px;">
+			<div id="rightPane">
 				<sj:select 	href="%{updateProfileURL}"
 							emptyOption="false"
 							headerKey="-1"
@@ -600,31 +603,44 @@
 			</div>
 		</div>
 		
-		<div id="mapping" style="float: left; margin-left: 15px;">
+		<div id="mapping">
+		
+			<!-- Table markup-->
 			<table id="mapping_added">
-				<tr id="mapping_added_header">
-					<th colspan="7"><s:text name="label.configured_mappings"/></th>
-				</tr>
-				<tr id="mapping_added_header">
-					<td><s:text name="label.entity_attribute"/></td>
-					<td><s:text name="label.model_attribute"/></td>
-					<td><s:text name="label.range_low"/></td>
-					<td><s:text name="label.range_high"/></td>
-					<td><s:text name="label.range_value"/></td>
-					<td><s:text name="label.ratio"/></td>
-					<td><s:text name="label.delete_mapping"/></td>
-				</tr>
+			
+				<!-- Table header -->
+				<thead id="mapping_added_header">
+					<tr class="header">
+						<th colspan="7"><s:text name="label.configured_mappings"/></th>
+					</tr>
+					<tr class="subheader">
+						<th class="first"><s:text name="label.entity_attribute"/></th>
+						<th><s:text name="label.model_attribute"/></th>
+						<th><s:text name="label.range_low"/></th>
+						<th><s:text name="label.range_high"/></th>
+						<th><s:text name="label.range_value"/></th>
+						<th><s:text name="label.ratio"/></th>
+						<th class="last"><s:text name="label.delete_mapping"/></th>
+					</tr>
+				</thead>
+				
+				<!-- Table body --> 
+				<tbody id="mapping_added_body"></tbody>
+				
+				<!-- Table footer -->
+				<tfoot id="mapping_added_footer"></tfoot>
 			</table>
+			
 			<div id="mapping_messages"></div>
 			<div id="mapping_cfg"></div>
 			<div id="mapping_control"></div>
 		</div>
 		
-		<div style="clear:both;"></div>
+		<div class="clear"></div>
 		<a href="javascript:toggleSteps(true)"><s:text name="label.next"/> &gt;</a>
 	</div>
 	
-	<div id="second_step" style="display: none;">
+	<div id="second_step">
 		<div id="nonMappedPane">
 			<s:text name="label.configure_nonMapped_Attributes"/>
 			<div id="nonMappedModelAttributesDiv"></div>

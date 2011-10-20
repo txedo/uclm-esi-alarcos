@@ -1,12 +1,113 @@
-.column {
-	float: left;
+div #first_step {
+	display: ;
 }
 
-.rule {
-	display: inline;	
+div #second_step {
+	display: none;
 }
 
-span .column3 {
+div #info {
+	text-align: justify;
+	width: 100%;
+}
+
+div #panes {
 	float: left;
-	width: 33%;
+	text-align: justify;
+	margin-left: auto;
+	margin-right: auto;	
+	width: 49%;
+}
+
+div #panes #leftPane {
+	float:left;
+	width: 49%;
+}
+
+div #panes #rightPane {
+	float: left;
+	margin-left: 5px;
+	width: 49%;
+}
+
+div #mapping {
+	float: left;
+	margin-left: 15px;
+	margin-right: auto;
+	width: 49%;
+}
+
+#mapping_added {
+	width: 100%;
+	border-width: 0;
+}
+
+#mapping_added_header .header th {
+	padding: 10px 8px;
+	border-bottom: 1px solid black;
+}
+
+#mapping_added_header .subheader th {
+	padding: 5px;
+	border: 1px solid black;
+}
+
+#mapping_added_header .subheader th.first {
+	padding: 5px;
+	border-left: none;
+}
+
+#mapping_added_header .subheader th.last {
+	padding: 5px;
+	border-right: none;
+}
+
+tbody #mapping_added_body {
+
+}
+
+tfooter #mapping_added_footer {}
+
+div #mapping_messages {
+
+}
+
+div #mapping_cfg {
+
+}
+
+div #mapping_control {
+
+}
+
+div .clear {
+	clear: both;
+}
+
+#nonMappedPane {
+	
+}
+
+#nonMappedModelAttributesDiv {
+	
+}
+
+#captionPanel {
+	
+}
+
+#added_captionLines {
+	
+}
+
+#profilePane {
+	
+}
+
+#profilePane ul {
+	
+}
+
+#profilePane li {
+	
 }
