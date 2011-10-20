@@ -54,32 +54,32 @@
 }
 
 .selectable {
-border:1px solid #000;
-float:left;
-height:80px;
-margin:5px;
-padding:20px;
-width:80px;
+	border: 1px solid #000;
+	float: left;
+	height: 80px;
+	margin: 5px;
+	padding: 20px;
+	width: 80px;
 }
 
 .selectablelist {
-border:1px solid #000;
-height:15px;
-margin:5px;
-padding:5px;
-list-style-type: none;
+	border: 1px solid #000;
+	height: auto;
+	margin: 5px;
+	padding: 5px;
+	list-style-type: none;
 }
 
 .selectablelist:hover {
-background:#9da9b1;
-color:#FFF;
+	background:#9da9b1;
+	color:#FFF;
 }
 
 .ui-selected {
-background:#1e557a;
-color:#FFF;
+	background:#1e557a;
+	color:#FFF;
 }
 
 .ui-selecting {
-background:#4988b1;
+	background:#4988b1;
 }

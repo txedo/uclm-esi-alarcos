@@ -6,11 +6,32 @@
 
 <html lang="en">
 <head>
+	<sj:head jqueryui="true"/>
+	
+	<!-- These variables are defined in the head of the html document in order to localize JavaScript messages 
+	by using <c:out value='${varName}'/> -->
+	<fmt:message key="message.no_profiles" var="noProfiles"/>
+	<fmt:message key="label.company" var="labelCompany"/>
+	<fmt:message key="label.factory" var="labelFactory"/>
+	<fmt:message key="label.project" var="labelProject"/>
+	<fmt:message key="label.market" var="labelMarket"/>
+	<fmt:message key="label.no_group_by" var="labelNoGroupBy"/>
+	<fmt:message key="label.available_profiles" var="availableProfiles"/>
+	<fmt:message key="label.group_by_option" var="groupByOption"/>
+	<fmt:message key="error.profile_selection_error" var="profileSelectionError"/>
+	<fmt:message key="error.json_string_webapp_applet_malformed" var="malformedJSONStrnig"/>
+	<fmt:message key="error.general" var="generalError"/>
+	<fmt:message key="label.global_info" var="globalInformation"/>
+	<fmt:message key="label.show_global_info" var="showGlobalInformation"/>
+	<fmt:message key="label.companies" var="companyInformation"/>
+	<fmt:message key="label.factories" var="factoryInformation"/>
+	<fmt:message key="label.projects" var="projectInformation"/>
+	<fmt:message key="label.subprojects" var="subprojectInformation"/>
+	
 	<meta name="menu" content="Visualization"/>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<link href="<s:url value='/styles/buttons.css'/>" rel="stylesheet" type="text/css" />
-	
-	<sj:head jqueryui="true"/>
+	<link href="<s:url value='/styles/buttons.css?version=1'/>" rel="stylesheet" type="text/css" />
+	<link href="<s:url value='/styles/visualization.css?version=1'/>" rel="stylesheet" type="text/css" />
 	
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
 	<script type="text/javascript" src="js/utils.js"></script>
@@ -248,19 +269,20 @@
 	
 	function chooseProfile() {
 		visualizationGroupBy = $("input:radio[name=showGroupBy]:checked").val();
-		var filename = $("#profileChooserDiv").children('ul').children('li.ui-selected').attr('id');
+		var filename = $("#profileChooserDialogBody").children('ul').children('li.ui-selected').attr('id');
 		if (visualizationGroupBy != null && filename != undefined) {
 			showLoadingIndicator(true);
 			// http://viralpatel.net/blogs/2009/01/calling-javascript-function-from-string.html
 			var funcCall = visualizationCallback + "(" + visualizationEntityId + ",\"" + visualizationGroupBy + "\",\"" + filename + "\")";
-			$("#profileChooser").dialog('close');
+			$("#profileChooserDialog").dialog('close');
 			showLoadingIndicator(false);
 			eval(funcCall);
 		} else {
 			if (noProfilesConfigured) {
-				$("#profileChooser").dialog('close');
+				$("#profileChooserDialog").dialog('close');
 			} else {
-				// TODO show warning. The user must select a group by option and a profile
+				// Error: The user must select a group by option and a profile
+				$("#profileChooserDialogMessages").html("<p class='error'><c:out value='${profileSelectionError}'/></p>");
 			}
 		}
 	};
@@ -279,35 +301,45 @@
 					if (status == "success") {
 						var mapSize = Object.keys(data.profileNames).length;
 						if (mapSize > 0) {
+							// Reset Divs and control vars
 							noProfilesConfigured = false;
-							$("#profileChooserDiv").html("");
-							$("#profileChooserDiv").append("<ul>");
-							if (groupByCompany)
-								$("#profileChooserDiv ul").append("<li class='option_group'><input type='radio' name='showGroupBy' value='company'/>label.company</li>");
-							if (groupByFactory)
-								$("#profileChooserDiv ul").append("<li class='option_group'><input type='radio' name='showGroupBy' value='factory'/>label.factory </li>");
-							if (groupByProject)
-								$("#profileChooserDiv ul").append("<li class='option_group'><input type='radio' name='showGroupBy' value='project'/>label.project</li>");
-							if (groupByMarket)
-								$("#profileChooserDiv ul").append("<li class='option_group'><input type='radio' name='showGroupBy' value='market'/>label.market</li>");
-							if (noGroupBy)
-								$("#profileChooserDiv ul").append("<li class='option_group'><input type='radio' name='showGroupBy' value=''/>label.no_group_by</li>");
-							$("#profileChooserDiv").append("</ul>");
-							$("#profileChooserDiv").append("<ul>");
+							$("#profileChooserDialogMessages").html("");
+							$("#profileChooserDialogBody").html("");
+							$("#profibleChooserDialogGroupBy").html("");
+							// Available profiles for selected entity
+							$("#profileChooserDialogBody").append("<p><c:out value='${availableProfiles}'/>:</p>");
+							$("#profileChooserDialogBody").append("<ul>");
 							$.each(data.profileNames, function(filename, description) {
 								var parts = filename.split('-');
-								$("#profileChooserDiv ul:last").append("<li id='" + filename + "' class='selectablelist ui-corner-all' title='" + description + "'>" + parts[1] + "</li>");
+								$("#profileChooserDialogBody ul:last").append("<li id='" + filename + "' class='selectablelist ui-corner-all' title='" + description + "'>" + parts[1] + "</li>");
 							});
-							$("#profileChooserDiv").append("</ul>");
+							$("#profileChooserDialogBody").append("</ul>");
+							// Group by option (default is noGroupBy)
+							$("#profibleChooserDialogGroupBy").append("<p><c:out value='${groupByOption}'/>:</p>");
+							$("#profibleChooserDialogGroupBy").append("<ul class='groupBy'>");
+							if (groupByCompany)
+								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><input type='radio' name='showGroupBy' value='company'/><c:out value='${labelCompany}'/></li>");
+							if (groupByFactory)
+								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><input type='radio' name='showGroupBy' value='factory'/><c:out value='${labelFactory}'/></li>");
+							if (groupByProject)
+								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><input type='radio' name='showGroupBy' value='project'/><c:out value='${labelProject}'/></li>");
+							if (groupByMarket)
+								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><input type='radio' name='showGroupBy' value='market'/><c:out value='${labelMarket}'/></li>");
+							if (noGroupBy)
+								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><input type='radio' name='showGroupBy' value='' checked/><c:out value='${labelNoGroupBy}'/></li>");
+							$("#profibleChooserDialogGroupBy").append("</ul>");
+							$("#profileChooserDialog").dialog('open');
 						} else {
-							// TODO empty array
+							// Error: No profiles for selected entity
 							noProfilesConfigured = true;
-							$("#profileChooserDiv").html("empty array");
+							$("#profileChooserDialogMessages").html("<p class='error'><c:out value='${noProfiles}'/></p>");
+							$("#profileChooserDialogBody").html("");
+							$("#profibleChooserDialogGroupBy").html("");
+							$('#profileChooserDialog').dialog('open');
 						}
-						$("#profileChooser").dialog('open');
 					} else {
-						$("#profileChooserDiv").html("");
-						alert('An error has occurred while trying to retrieve visualization profiles: ' + status);
+						$('#errorDialogBody').html("<p class='error'><c:out value='${generalError}'/></p>");
+						$('#errorDialog').dialog('open');
 					}
 					showLoadingIndicator(false);
 		});
@@ -362,11 +394,12 @@
 	}
 	
 	function initializeGeneralTab() {
-		$("#generalInformation").html("<ul>");
-		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showCompaniesById\",\"company\", 0, false, true, true, true, true)'><s:text name='message.show_general_company_info'/></a></li>");
-		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showFactoriesById\",\"factory\", 0, true, false, true, true, true)'><s:text name='message.show_general_factory_info'/></a></li>");
-		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showProjectsById\",\"project\", 0, true, true, false, true, true)'><s:text name='message.show_general_project_info'/></a></li>");
-		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showSubprojectsById\",\"subproject\", 0, true, true, true, false, true)'><s:text name='message.show_general_subproject_info'/></a></li>");
+		$("#generalInformation").html("<p class='label'><c:out value='${showGlobalInformation}'/>:</p>");
+		$("#generalInformation").append("<ul>");
+		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showCompaniesById\",\"company\", 0, false, true, true, true, true)'><c:out value='${companyInformation}'/></a></li>");
+		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showFactoriesById\",\"factory\", 0, true, false, true, true, true)'><c:out value='${factoryInformation}'/></a></li>");
+		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showProjectsById\",\"project\", 0, true, true, false, true, true)'><c:out value='${projectInformation}'/></a></li>");
+		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showSubprojectsById\",\"subproject\", 0, true, true, true, false, true)'><c:out value='${subprojectInformation}'/></a></li>");
 		$("#generalInformation").append("</ul>");
 	}
 	
@@ -389,7 +422,7 @@
 		initializeProjectTab();
 	}
 
-	$(document).ready(function() {
+	$(document).ready(function() {    	
 		// Initialize Google Maps canvas
 		initializeMap();
 		
@@ -500,10 +533,12 @@ function handleSelectionEvent(id, clickButton, clickCount) {
 		case 1:		// Left button
 			switch (clickCount) {
 				case 1:		// Click
-					alert ("Load " + currentEntity + " (" + currentEntityId + ") information.");
+					$('#infoDialogBody').html("Load " + currentEntity + " (" + currentEntityId + ") information.");
+					$('#infoDialog').dialog('open');
 					break;
 				case 2:		// Double click
-					alert ("Navigate to " + getNextLevel() + " from " + currentEntity + " (" + currentEntityId + ") information.");
+					$('#profileChooserDialogMessages').html("Navigate to " + getNextLevel() + " from " + currentEntity + " (" + currentEntityId + ") information.");
+					$('#profileChooserDialog').dialog('open');
 					var nextLevel = getNextLevel();
 					if (currentEntity == "company" && nextLevel == "factory") {
 						// load factory profiles
@@ -601,15 +636,18 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 					// Change active view
 					var city = JSON.stringify(data.city);
 					if (city != "null") {
-						alert(city);
 						desglosa_handleVisualization(data.city.model, city);
 					} else {
-						alert("Error grave.");
+						$('#jogl_canvas').css('display','none');
+						$('#map_canvas').css('display','')
+						$('#errorDialogBody').html("<p class='error'><c:out value='${malformedJSONStrnig}'/></p>");
+						$('#errorDialog').dialog('open');
 					}
 				} else {
 					$('#jogl_canvas').css('display','none');
 					$('#map_canvas').css('display','');
-					alert('An error has occurred while trying to retrieve factory information: ' + status);
+					$('#errorDialogBody').html("<p class='error'><c:out value='${generalError}'/></p>");
+					$('#errorDialog').dialog('open');
 				}
 				showLoadingIndicator(false);
 	});
@@ -633,10 +671,47 @@ function desglosa_handleVisualization(model, city) {
 	</script>
 </head>
 <body>
+	<!-- These divs will be hidden by default and will appear in the middle of the screen
+	in order to show important error, information and warning messages
+	-->	
+	<sj:dialog id="errorDialog" 
+		       buttons="{'OK':function() { $('#errorDialog').dialog('close'); }}"
+        	   autoOpen="false"
+        	   modal="true"
+        	   closeOnEscape="true"
+        	   showEffect="fold"
+        	   hideEffect="scale"
+        	   draggable="false"
+        	   title="%{getText('label.dialog.title.error')}">
+       	<div id="errorDialogBody"></div>
+    </sj:dialog>
+    <sj:dialog id="infoDialog" 
+		       buttons="{'OK':function() { $('#infoDialog').dialog('close'); }}"
+        	   autoOpen="false"
+        	   modal="true"
+        	   closeOnEscape="true"
+        	   showEffect="fold"
+        	   hideEffect="scale"
+        	   draggable="false"
+        	   title="%{getText('label.dialog.title.info')}">
+       	<div id="infoDialogBody"></div>
+    </sj:dialog>
+    <sj:dialog id="warningDialog" 
+		       buttons="{'OK':function() { $('#warningDialog').dialog('close'); }}"
+        	   autoOpen="false"
+        	   modal="true"
+        	   closeOnEscape="true"
+        	   showEffect="fold"
+        	   hideEffect="scale"
+        	   draggable="false"
+        	   title="%{getText('label.dialog.title.warning')}">
+       	<div id="warningDialogBody"></div>
+    </sj:dialog>
+    
 	<!-- This div will be hidden by default and will appear in the middle of the screen
 	in order to allow the user to choose a profile
 	-->	
-	<sj:dialog id="profileChooser" 
+	<sj:dialog id="profileChooserDialog" 
 		       buttons="{'OK':function() { chooseProfile(); }}"
         	   autoOpen="false"
         	   modal="true"
@@ -644,9 +719,11 @@ function desglosa_handleVisualization(model, city) {
         	   showEffect="fold"
         	   hideEffect="scale"
         	   draggable="false"
-        	   title="Elige un perfil"
+        	   title="%{getText('label.dialog.title.chooseProfile')}"
         	   onOpenTopics="loadProfiles">
-    	<sj:div id='profileChooserDiv' selectable='true' selectableFilter='li'></sj:div>
+       	<div id="profileChooserDialogMessages"></div>
+    	<sj:div id='profileChooserDialogBody' selectable='true' selectableFilter='li'></sj:div>
+    	<div id='profibleChooserDialogGroupBy'></div>
     </sj:dialog>
     
 	<div id="messagesAndErrors">
@@ -680,7 +757,7 @@ function desglosa_handleVisualization(model, city) {
 			</div>
 			
 			<div id="legend" style="clear:left; float:right;">
-				<s:text name="label.mark.global_project"></s:text>
+				<p class="label"><s:text name="label.mark.global_project"/></p>
 			</div>
 		</fieldset>
 	</div>
@@ -726,22 +803,28 @@ function desglosa_handleVisualization(model, city) {
 		<div id="tabs" style="position:absolute; top:0; right:0; width:350px">
 			<s:label value="%{getText('label.detailed_info')}:"/>
 			<sj:tabbedpanel id="infoTabs" animate="true">
-				<sj:tab id="generalInfoTab" target="generalInformation" label="%{getText('label.general')}"/>
+				<sj:tab id="generalInfoTab" target="generalInformation" label="%{getText('label.global_info')}"/>
 				<sj:tab id="companyInfoTab" target="companyInformation" label="%{getText('label.company')}"/>
 				<sj:tab id="factoryInfoTab" target="factoryInformation" label="%{getText('label.factory')}"/>
 				<sj:tab id="projectInfoTab" target="projectInformation" label="%{getText('label.project')}"/>
-				<div id="generalInformation"></div>
-				<div id="companyInformation"></div>
-				<div id="factoryInformation"></div>
-				<div id="projectInformation"></div>
+				<sj:tab id="subprojectInfoTab" target="subprojectInformation" label="%{getText('label.subproject')}"/>
+				<div id="generalInformation" class="default"></div>
+				<div id="companyInformation" class="default"></div>
+				<div id="factoryInformation" class="default"></div>
+				<div id="projectInformation" class="default"></div>
+				<div id="subprojectInformation" class="default"></div>
 			</sj:tabbedpanel>
+			
+<!-- 			<div id="infoPanelDiv" class="ui-widget ui-widget-content ui-corner-all" style="padding: 0.6em;"> -->
+<!-- 				<div id="infoPanelDivHeader" class="ui-widget ui-corner-all ui-widget-header">header test</div> -->
+<!-- 				<div id="infoPanelDivContent" style="padding: 1em 1.4em;">content test</div> -->
+<!-- 			</div> -->
 			
 			<div id="indicatorDiv">
 				<img id="indicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none"/>
 			</div>
 		</div>
 		<div style="clear:both;"></div>
-	</div>
-	
+	</div>	
 </body>
 </html>

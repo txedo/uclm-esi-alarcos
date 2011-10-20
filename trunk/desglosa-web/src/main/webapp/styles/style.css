@@ -65,21 +65,70 @@ h2 {
 	margin:5px 0;
 	color:#595959;
 }
+
+label {
+	margin: 0;
+	padding: 0;
+	color: black;
+	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
+}
+
+legend {
+	margin: 0;
+	padding: 0;
+	color: black;
+	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
+}
+
 p {
 	margin:8px 0;
 	padding:0 0 8px 0;
 	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
 }
+
+p.label {
+	margin: 0;
+	padding: 0;
+	color: black;
+}
+
 p.spec {
-	text-align:right;
+	text-align: right;
 }
-a {
-	color:#78bbe6;
+
+p.error {
+	color: red;
+}
+
+.default {
+	font: normal 12px/1.8em Arial, Helvetica, sans-serif;
+	color: black;
+}
+
+.default ul {
+	list-style-position: inside; 	
+}
+
+.default a {
+	color:#008ae0;
 	text-decoration:none;
+	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
 }
+
+.default a:hover {
+	text-decoration:underline;
+}
+
+a {
+	color:#008ae0;
+	text-decoration:none;
+	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
+}
+
 a:hover {
 	text-decoration:underline;
 }
+
 a.rm, a.com {
 	margin-left:8px;
 	padding:9px 12px;
@@ -87,6 +136,17 @@ a.rm, a.com {
 	text-decoration:none;
 	color:#fff;
 }
+
+.ui-widget-content a {
+	color:#008ae0;
+	text-decoration:none;
+	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
+}
+
+.ui-widget-content a:hover {
+	text-decoration:underline;
+}
+
 .header, .content, .menu_nav, .fbg, .footer, form, ol, ol li, ul, .content .mainbar, .content .sidebar {
 	margin:0;
 	padding:0;

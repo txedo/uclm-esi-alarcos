@@ -7,13 +7,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+	<sj:head jqueryui="true" jquerytheme="cupertino"/>
+	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	
 	<title><decorator:title/> <fmt:message key="desglosa.title"/></title>
-	<link href="<s:url value='/styles/style.css'/>" rel="stylesheet" type="text/css" />
+	<link href="<s:url value='/styles/style.css?version=1'/>" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="js/cufon-yui.js"></script>
 	<script type="text/javascript" src="js/arial.js"></script>
 	<script type="text/javascript" src="js/cuf_run.js"></script>
+	
     <!-- <link href="<s:url value='/styles/main.css'/>" rel="stylesheet" type="text/css" media="all"/>  -->
     <link href="<s:url value='/struts/niftycorners/niftyCorners.css'/>" rel="stylesheet" type="text/css"/>
     <link href="<s:url value='/struts/niftycorners/niftyPrint.css'/>" rel="stylesheet" type="text/css" media="print"/>
