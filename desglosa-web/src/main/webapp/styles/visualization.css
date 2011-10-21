@@ -1,3 +1,45 @@
+#companyFilter {
+	float: left;
+}
+
+#factoryFilter {
+	float: left;
+	margin-left: 15px;
+}
+
+.filter {
+	width: 40%;
+}
+
+#legend {
+	clear:left;
+	float:right;
+}
+
+#workingArea {
+	position:relative;
+	height:450px
+}
+
+.canvas {
+	position: relative;
+	top: 0;
+	left:0;
+	width: 600px;
+	height: 400px;
+}
+
+#charts {
+	position: relative;	
+}
+
+#tabs {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 350px;
+}
+
 #profileChooserDialogBody p {
 	margin-bottom: 0;
 	margin-top: 8px;

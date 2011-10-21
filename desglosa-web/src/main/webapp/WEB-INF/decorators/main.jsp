@@ -17,20 +17,6 @@
 	<script type="text/javascript" src="js/arial.js"></script>
 	<script type="text/javascript" src="js/cuf_run.js"></script>
 	
-    <!-- <link href="<s:url value='/styles/main.css'/>" rel="stylesheet" type="text/css" media="all"/>  -->
-    <link href="<s:url value='/struts/niftycorners/niftyCorners.css'/>" rel="stylesheet" type="text/css"/>
-    <link href="<s:url value='/struts/niftycorners/niftyPrint.css'/>" rel="stylesheet" type="text/css" media="print"/>
-    <script language="JavaScript" type="text/javascript" src="<s:url value='/struts/niftycorners/nifty.js'/>"></script>
-	<script language="JavaScript" type="text/javascript">
-        window.onload = function(){
-            if(!NiftyCheck()) {
-                return;
-            }
-            // perform niftycorners rounding
-            // eg.
-            // Rounded("blockquote","tr bl","#ECF1F9","#CDFFAA","smooth border #88D84F");
-        }
-    </script>
     <decorator:head/>
 </head>
 <body id="page-home" onload="<decorator:getProperty property="body.onload" />">
@@ -84,7 +70,8 @@
 				<div class="clr"></div>
 			</div>
 			<div class="footer">
-				<p class="lf">&copy; Copyright <a href="#">Desglosa</a>.</p>
+				<s:url id="home" action=""/>
+				<p class="lf">&copy; Copyright <s:a href="%{home}">Desglosa</s:a>.</p>
 				
 				<p class="rf">Layout by Cool <a href="http://www.coolwebtemplates.net/">Website Templates</a></p>
 				<div class="clr"></div>
