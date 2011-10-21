@@ -19,6 +19,14 @@ html, .main {
 	font-size:0;
 	line-height:0;
 }
+
+.clear {
+	clear:both;
+	padding:0;
+	margin:0;
+	width:100%;
+}
+
 .logo {
 	padding:15px 0 20px 0;
 	margin:0 auto;
@@ -110,7 +118,7 @@ p.error {
 }
 
 .default a {
-	color:#008ae0;
+	color:#5190BB;
 	text-decoration:none;
 	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
 }
@@ -120,9 +128,8 @@ p.error {
 }
 
 a {
-	color:#008ae0;
+	color:#5190BB;
 	text-decoration:none;
-	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
 }
 
 a:hover {
@@ -137,14 +144,15 @@ a.rm, a.com {
 	color:#fff;
 }
 
-.ui-widget-content a {
-	color:#008ae0;
-	text-decoration:none;
-	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
+.container {
+	padding: 2.1px;
+	margin-top: 8px;
 }
-
-.ui-widget-content a:hover {
-	text-decoration:underline;
+.container-header {
+	padding: 0.5em 1em;
+}
+.container-content {
+	padding: 1em 1.4em;
 }
 
 .header, .content, .menu_nav, .fbg, .footer, form, ol, ol li, ul, .content .mainbar, .content .sidebar {

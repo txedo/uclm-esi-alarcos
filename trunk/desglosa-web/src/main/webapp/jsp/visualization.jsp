@@ -734,7 +734,7 @@ function desglosa_handleVisualization(model, city) {
 		<fieldset>
 			<legend><s:text name="label.filter.corporative"/>:</legend>
 			
-			<div id="companyFilter" style="float:left;">
+			<div id="companyFilter">
 				<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
 				<select id="companySelect" >
 					<option value="-1" disabled="disabled">-- <fmt:message key="label.select.choose_company"/> --</option>
@@ -748,7 +748,7 @@ function desglosa_handleVisualization(model, city) {
 				<s:select id="companyProjectSelect" name="companyProjectSelect" listKey="id" list="projects" size="5"></s:select>
 			</div>
 			
-			<div id="factoryFilter" style="float:left;">
+			<div id="factoryFilter">
 				<s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
 				<select id="factorySelect" disabled="disabled"></select>
 				<br />
@@ -756,22 +756,22 @@ function desglosa_handleVisualization(model, city) {
 				<s:select id="factoryProjectSelect" name="factoryProjectSelect" listKey="id" list="projects" size="5"></s:select>
 			</div>
 			
-			<div id="legend" style="clear:left; float:right;">
+			<div id="legend">
 				<p class="label"><s:text name="label.mark.global_project"/></p>
 			</div>
 		</fieldset>
 	</div>
 	
-	<div style="clear:both;"/>
+	<div class="clear"></div>
 	
-	<div id="workingArea" style="position:relative; height:450px">
-		<div id="map_canvas" style="position:relative; top:0; left:0; width: 600px; height: 400px; display: ;"></div>
+	<div id="workingArea">
+		<div id="map_canvas" class="canvas" style="display: ;"></div>
 		
 		<!-- Using fixed JOGL, Gluegen, Applet Lanucher and JNLP versions from webapp directory.
 		If you want to use current development versions, add the following prefix to the url paths:
 		http://jogamp.org/deployment/jogamp-current/
 		 -->
-		<div id="jogl_canvas" style="position:relative; top:0; left:0; width: 600px; height: 400px; display: none;">
+		<div id="jogl_canvas" class="canvas" style="display: none;">
 			<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
 				codebase="./" 
 				id="DesglosaApplet"
@@ -795,12 +795,12 @@ function desglosa_handleVisualization(model, city) {
 				   <img src="images/gtk-cancel.png" alt="<s:text name="label.error"/>" title="<s:text name="label.error"/>" width="32" height="32"/><br />
 				   <s:text name="error.no_JRE"/>
 			</applet>
-			<a href="#" onclick="$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');depth_level=0;"><s:text name="label.back_to_map"/></a>
+			<a href="javascript:void(0)" onclick="$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');"><s:text name="label.back_to_map"/></a>
 		</div>
 		
-		<div id="charts" style="position:relative"></div>
+		<div id="charts"></div>
 	
-		<div id="tabs" style="position:absolute; top:0; right:0; width:350px">
+		<div id="tabs">
 			<s:label value="%{getText('label.detailed_info')}:"/>
 			<sj:tabbedpanel id="infoTabs" animate="true">
 				<sj:tab id="generalInfoTab" target="generalInformation" label="%{getText('label.global_info')}"/>
@@ -815,16 +815,17 @@ function desglosa_handleVisualization(model, city) {
 				<div id="subprojectInformation" class="default"></div>
 			</sj:tabbedpanel>
 			
-<!-- 			<div id="infoPanelDiv" class="ui-widget ui-widget-content ui-corner-all" style="padding: 0.6em;"> -->
-<!-- 				<div id="infoPanelDivHeader" class="ui-widget ui-corner-all ui-widget-header">header test</div> -->
-<!-- 				<div id="infoPanelDivContent" style="padding: 1em 1.4em;">content test</div> -->
-<!-- 			</div> -->
+			<div id="infoPanelDiv" class="ui-widget ui-widget-content ui-corner-all container">
+				<div id="infoPanelDivHeader" class="ui-widget ui-corner-all ui-widget-header default container-header">header test</div>
+				<div id="infoPanelDivContent" class="default container-content">content test</div>
+			</div>
 			
 			<div id="indicatorDiv">
 				<img id="indicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none"/>
 			</div>
 		</div>
-		<div style="clear:both;"></div>
+		
+		<div class="clear"></div>
 	</div>	
 </body>
 </html>
