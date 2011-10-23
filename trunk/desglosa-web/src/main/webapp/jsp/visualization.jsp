@@ -801,7 +801,7 @@ function desglosa_handleVisualization(model, city) {
 		<div id="charts"></div>
 	
 		<div id="tabs">
-			<s:label value="%{getText('label.detailed_info')}:"/>
+			<s:text name='label.detailed_info'/>:
 			<sj:tabbedpanel id="infoTabs" animate="true">
 				<sj:tab id="generalInfoTab" target="generalInformation" label="%{getText('label.global_info')}"/>
 				<sj:tab id="companyInfoTab" target="companyInformation" label="%{getText('label.company')}"/>
