@@ -106,8 +106,60 @@ p.spec {
 	text-align: right;
 }
 
+p.ok {
+    background-color: #E5FFE5;
+    background-image: url("../images/icon_ok.png");
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    background-size: 15px auto;
+    border: 1px solid #008000;
+    border-radius: 6px 6px 6px 6px;
+    color: #008000;
+    margin: 10px 0;
+    padding: 5px 5px 5px 40px;
+    text-align: left;
+}
+
 p.error {
-	color: red;
+    background-color: #FFE5E5;
+    background-image: url("../images/icon_error.png");
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    background-size: 15px auto;
+    border: 1px solid #800000;
+    border-radius: 6px 6px 6px 6px;
+    color: #800000;
+    margin: 10px 0;
+    padding: 5px 5px 5px 40px;
+    text-align: left;
+}
+
+p.info {
+    background-color: #e5e5ff;
+    background-image: url("../images/icon_info.png");
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    background-size: 15px auto;
+    border: 1px solid #0000A0;
+    border-radius: 6px 6px 6px 6px;
+    color: #0000A0;
+    margin: 10px 0;
+    padding: 5px 5px 5px 40px;
+    text-align: left;
+}
+
+p.warning {
+    background-color: #ffe5b5;
+    background-image: url("../images/icon_warning.png");
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    background-size: 15px auto;
+    border: 1px solid #FFA500;
+    border-radius: 6px 6px 6px 6px;
+    color: #FFA500;
+    margin: 10px 0;
+    padding: 5px 5px 5px 40px;
+    text-align: left;
 }
 
 .default {
@@ -129,6 +181,32 @@ p.error {
 	text-decoration:underline;
 }
 
+table.default {
+	border-collapse: collapse;
+}
+
+table.default tr.odd {
+	background-color: #dbf1ff;
+}
+
+table.default th {
+	padding: 5px;	
+}
+
+table.default thead tr {
+	border-bottom: 2px solid #1e557a;
+}
+
+table.default thead tr th {
+	padding-bottom: 5px;
+	text-align: center;
+	font-weight: bold;
+}
+
+table.default td {
+	padding: 5px 10px;	
+}
+
 a {
 	color:#5190BB;
 	text-decoration:none;
@@ -146,6 +224,10 @@ a.rm, a.com {
 	color:#fff;
 }
 
+.text-centering {
+	text-align: center;
+}
+
 .container {
 	padding: 2.1px;
 	margin-top: 8px;
@@ -160,8 +242,6 @@ a.rm, a.com {
 .header, .content, .menu_nav, .fbg, .footer, form, ol, ol li, ul, .content .mainbar, .content .sidebar {
 	margin:0;
 	padding:0;
-}
-.header {
 }
 .header_resize {
 	margin:0 auto;
