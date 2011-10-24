@@ -113,7 +113,7 @@
 		// clean mappings table
 		$(".mapping_line").remove();
 		// clean mappings messages
-		$("#mapping_messages").html("");
+		$("#mapping_messages").html("<p class='info'><s:text name='message.no_mappings'/></p>");
 	}
 	
 	var selectedEntityAttribute = null;
@@ -140,9 +140,9 @@
 			var modelAttrType = modelAttributesArray[modelAttrName];
 			var compatibility = checkTypeCompatibility(entityAttrType, modelAttrType);
 			if (compatibility == -1) {
-				$("#mapping_messages").html("<s:text name='error.type_compatibility'/>");
+				$("#mapping_messages").html("<p class='error'><s:text name='error.type_compatibility'/></p>");
 			} else if (compatibility == 0) {
-				$("#mapping_messages").html("<s:text name='warning.type_compatibility'/>");
+				$("#mapping_messages").html("<p class='warning'><s:text name='warning.type_compatibility'/></p>");
 			} else { // compatible types
 				if (modelAttrType == "float_range") {
 					var range = true;
@@ -203,8 +203,7 @@
 					}
 					if ((((entityAttrType == "int" || entityAttrType == "float") && modelAttrType == "color") && (isNaN(low) || isNaN(high)))
 							|| (((entityAttrType == "int" || entityAttrType == "float") && modelAttrType == "float_range") && (isNaN(low) || isNaN(high) || isNaN(value)))) {
-						$("#mapping_messages").html("");
-						$("#mapping_messages").html("<s:text name='error.field_isNaN'/>");
+						$("#mapping_messages").html("<p class='error'><s:text name='error.field_isNaN'/></p>");
 						error = true;
 						// Resetear tablas de valores
 						rules = new Array();
@@ -218,8 +217,7 @@
 				if ($("#ratio").val() != "") {
 					ratio = parseFloat($("#ratio").val());
 					if (isNaN(ratio)) {
-						$("#mapping_messages").html("");
-						$("#mapping_messages").html("<s:text name='error.field_isNaN'/>");
+						$("#mapping_messages").html("<p class='error'><s:text name='error.field_isNaN'/></p>");
 						error = true;
 					}
 				} else ratio = null;
@@ -267,7 +265,7 @@
 						$(".mapping_line:last").append("<td />"); // empty ratio column
 					}
 				}
-				$(".mapping_line:last").append("<td rowspan='" + rowspan + "'><a href='javascript:void(0)' class='remove_mapping'><s:text name='label.remove_mapping'/></a></td>");
+				$(".mapping_line:last").append("<td rowspan='" + rowspan + "'><a href='javascript:void(0)' class='remove_mapping'><img class='removeIcon' src='images/gtk-cancel.png' alt=\"<s:text name='label.remove_mapping'/>\" title=\"<s:text name='label.remove_mapping'/>\" /></a></td>");
 				$("a.remove_mapping").click(function() {
 					$(this).parent().parent().slideUp('slow');
 					removeMapping($(this).parent().parent());
@@ -282,7 +280,7 @@
 					});
 				}
 				// Feedback en mapping_messages
-				$("#mapping_messages").html("<s:text name='message.mapping_successful'/>");
+				$("#mapping_messages").html("<p class='ok'><s:text name='message.mapping_successful'/></p>");
 			}
 		}
 	}
@@ -308,7 +306,7 @@
 				mappings.splice(i, 1); // This removes one element from position i
 			}
 		});
-		$("#mapping_messages").html("<s:text name='message.mapping_deleted'/>");
+		$("#mapping_messages").html("<p class='ok'><s:text name='message.mapping_deleted'/></p>");
 		if (mappings.length == 0) {
 			// TODO <s:text name='message.no_mappings'/>
 		}
@@ -475,7 +473,7 @@
 		resetProfileForm();
 		// Comprobar que hay asociaciones hechas
 		if (mappings.length < 1) {
-			$("#mapping_messages").html("<s:text name='error.empty_mapping'/>");
+			$("#mapping_messages").html("<p class='error'><s:text name='error.empty_mapping'/></p>");
 			swapDivVisibility('second_step','first_step');
 			noError = false;
 		} else {
@@ -561,6 +559,10 @@
 		$("#first_step").toggle();
 		$("#second_step").toggle();
 	}
+	
+	$(document).ready(function() {
+		resetMappings();
+	});
 
 	</script>
 </head>
@@ -606,8 +608,8 @@
 		<div id="mapping">
 		
 			<!-- Table markup-->
-			<table id="mapping_added">
-			
+			<table id="mapping_added" class="default">
+				
 				<!-- Table header -->
 				<thead id="mapping_added_header">
 					<tr class="header">

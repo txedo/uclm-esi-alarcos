@@ -1,3 +1,11 @@
+#filter {
+	margin-bottom: 15px;
+}
+
+fieldset {
+	padding-bottom: 0px;
+}
+
 #companyFilter {
 	float: left;
 }
@@ -9,6 +17,18 @@
 
 .filter {
 	width: 35%;
+}
+
+.filter select {
+	width: 215px;
+}
+
+.filter span {
+	display: block;
+}
+
+.disabled {
+	background-color: #f1f1f1;
 }
 
 #legend {
@@ -27,6 +47,10 @@
 	left:0;
 	width: 600px;
 	height: 400px;
+}
+
+#joglCanvasControls {
+	float: right;
 }
 
 #charts {
@@ -54,4 +78,8 @@
 
 ul.groupBy {
 	list-style: none;
+}
+
+.last {
+	border-left: 1px solid black; padding-left: 8px;
 }

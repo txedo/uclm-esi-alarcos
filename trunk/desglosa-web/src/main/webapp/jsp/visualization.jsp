@@ -34,10 +34,8 @@
 	<link href="<s:url value='/styles/visualization.css?version=1'/>" rel="stylesheet" type="text/css" />
 	
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
-	<script type="text/javascript" src="js/utils.js"></script>
-	<!-- <script type="text/javascript" src="js/desglosa-facade.js"></script> -->
+	<script type="text/javascript" src="js/desglosa-facade.js?version=1"></script>
 
-  
 	<script type="text/javascript">
 	var map;
 	var geocoder;
@@ -112,7 +110,7 @@
 			  infoWindow.close();
 		});
 		
-		// show graphic engine
+		// show graphics engine
 		google.maps.event.addListener(marker, 'dblclick', function(event) {
 			$("#map_canvas").css("display", "none");
 			$("#jogl_canvas").css("display", "");
@@ -292,6 +290,9 @@
 		visualizationGroupBy = null;
 		visualizationEntityId = id;
 		showLoadingIndicator(true);
+		$("#profileChooserDialogMessages").html("");
+		$("#profileChooserDialogBody").html("");
+		$("#profibleChooserDialogGroupBy").html("");
 		// read entity profiles
 		$.getJSON('/desglosa-web/json_p_get',
 				{
@@ -301,11 +302,7 @@
 					if (status == "success") {
 						var mapSize = Object.keys(data.profileNames).length;
 						if (mapSize > 0) {
-							// Reset Divs and control vars
 							noProfilesConfigured = false;
-							$("#profileChooserDialogMessages").html("");
-							$("#profileChooserDialogBody").html("");
-							$("#profibleChooserDialogGroupBy").html("");
 							// Available profiles for selected entity
 							$("#profileChooserDialogBody").append("<p><c:out value='${availableProfiles}'/>:</p>");
 							$("#profileChooserDialogBody").append("<ul>");
@@ -333,8 +330,6 @@
 							// Error: No profiles for selected entity
 							noProfilesConfigured = true;
 							$("#profileChooserDialogMessages").html("<p class='error'><c:out value='${noProfiles}'/></p>");
-							$("#profileChooserDialogBody").html("");
-							$("#profibleChooserDialogGroupBy").html("");
 							$('#profileChooserDialog').dialog('open');
 						}
 					} else {
@@ -442,7 +437,11 @@
 		
 		$("#factorySelect").change( function() {
 			clearAllMarkers();
-			$("#factoryProjectSelect").attr('disabled','');
+			if ($("#factorySelect").hasClass('disabled')) $("#factorySelect").removeClass('disabled');
+			if ($("#factoryProjectSelect").hasClass('disabled')) {
+				$("#factoryProjectSelect").attr('disabled','');
+				$("#factoryProjectSelect").removeClass('disabled');
+			}
 			$("#factoryProjectSelect").val(-1);
 			if ($("#factorySelect").val() == 0) {
 				// concurrent functions
@@ -491,182 +490,6 @@
 		
 		initializeTabs();
 	});
-
-///////////////////////////////////////////////////////
-////////// BEGINING OF DESGLOSA-FACADE.JS /////////////
-///////////////////////////////////////////////////////
-
-var currentEntity = null;
-var currentEntityId;
-
-function getNextLevel () {
-	var nextLevel = null;
-	if (currentEntity == null) nextLevel = "company";
-	else if (currentEntity == "company") nextLevel = "factory";
-	else if (currentEntity == "factory") nextLevel = "project";
-	else if (currentEntity == "project") nextLevel = "subproject";
-	else if (currentEntity == "subproject") nextLevel = null;
-	return nextLevel;
-}
-
-function selectTower(id, clickButton, clickCount) {
-	handleSelectionEvent(id, clickButton, clickCount);
-}
-
-function selectBuilding(id, clickButton, clickCount) {
-	handleSelectionEvent(id, clickButton, clickCount);
-}
-
-function selectAntennaBall(id, clickButton, clickCount) {
-	handleSelectionEvent(id, clickButton, clickCount);
-}
-
-function selectionError(message) {
-	alert(message);
-}
-
-function handleSelectionEvent(id, clickButton, clickCount) {
-	// This function will handle the selection event on any 3D model, so it will handle navigation too
-	currentEntityId = id;
-	// Show popup to allow groupBy and next level profile selection
-	switch (clickButton) {
-		case 1:		// Left button
-			switch (clickCount) {
-				case 1:		// Click
-					$('#infoDialogBody').html("Load " + currentEntity + " (" + currentEntityId + ") information.");
-					$('#infoDialog').dialog('open');
-					break;
-				case 2:		// Double click
-					$('#profileChooserDialogMessages').html("Navigate to " + getNextLevel() + " from " + currentEntity + " (" + currentEntityId + ") information.");
-					$('#profileChooserDialog').dialog('open');
-					var nextLevel = getNextLevel();
-					if (currentEntity == "company" && nextLevel == "factory") {
-						// load factory profiles
-						openDialog("desglosa_showFactoriesByCompanyId", nextLevel, id, true, false, true, true, true);
-					} else if (currentEntity == "factory" && nextLevel == "project") {
-						// load project profiles
-						openDialog("desglosa_showProjectsByFactoryId", nextLevel, id, true, true, false, true, true);
-					} else if (currentEntity == "project" && nextLevel == "subproject") {
-						// load subproject profiles
-						openDialog("desglosa_showSubprojectsByProjectId", nextLevel, id, true, true, true, false, true);
-					} else {
-						// No further navigation
-					}
-					break;
-				default:	// Ignore multiple clicks but double click
-					break;
-			}
-			break;
-		case 2:		// Middle button
-			break;
-		case 3:		// Right button
-			break;
-		default:	// Any other button
-			break;
-	}
-}
-
-function desglosa_showCompaniesById(id, groupBy, profileFilename){
-	currentEntity = "company";
-	desglosa_launchDesglosaEngine("/desglosa-web/json_companyById.action", id, groupBy, profileFilename);
-}
-
-function desglosa_showFactoriesByCompanyId(id, groupBy, profileFilename) {
-	currentEntity = "factory";
-	desglosa_launchDesglosaEngine("/desglosa-web/json_factoriesByCompanyId.action", id, groupBy, profileFilename);
-}
-
-function desglosa_showFactoriesById(id, groupBy, profileFilename) {
-	currentEntity = "factory";
-	desglosa_launchDesglosaEngine("/desglosa-web/json_factoryById.action", id, groupBy, profileFilename);
-}
-
-function desglosa_showProjectsByCompanyId(id, groupBy, profileFilename) {
-	currentEntity = "project";
-	desglosa_launchDesglosaEngine("/desglosa-web/json_projectsByCompanyId.action", id, groupBy, profileFilename);
-}
-
-function desglosa_showProjectsByFactoryId(id, groupBy, profileFilename) {
-	currentEntity = "project";
-	desglosa_launchDesglosaEngine("/desglosa-web/json_projectsByFactoryId.action", id, groupBy, profileFilename);
-}
-
-function desglosa_showProjectsById(id, groupBy, profileFilename) {
-	currentEntity = "project";
-	desglosa_launchDesglosaEngine("/desglosa-web/json_projectById.action", id, groupBy, profileFilename);
-}
-
-function desglosa_showSubprojectsByCompanyId(id, groupBy, profileFilename) {
-	currentEntity = "subproject";
-	desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByCompanyId.action", id, groupBy, profileFilename);
-}
-
-function desglosa_showSubprojectsByFactoryId(id, groupBy, profileFilename) {
-	currentEntity = "subproject";
-	desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByFactoryId.action", id, groupBy, profileFilename);
-}
-
-function desglosa_showSubprojectsByProjectId(id, groupBy, profileFilename) {
-	currentEntity = "subproject";
-	desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByFactoryId.action", id, groupBy, profileFilename);
-}
-
-function desglosa_showSubprojectsById(id, groupBy, profileFilename) {
-	currentEntity = "subproject";
-	desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectById.action", id, groupBy, profileFilename);
-}
-
-function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
-	showLoadingIndicator(true);
-	// Hide map canvas
-	if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
-	// Hide jogl canvas if it is shown
-	if (document.getElementById("jogl_canvas").style.display == '') $('#jogl_canvas').css('display','none');
-	$.getJSON(action,
-			{
-				id: id,
-				generateGLObjects: true,
-				groupBy: groupBy,
-				profileFileName: filename
-			},
-			function (data, status) {
-				if (status == "success") {
-					// Show jogl canvas
-					$('#jogl_canvas').css('display','');
-					// Change active view
-					var city = JSON.stringify(data.city);
-					if (city != "null") {
-						desglosa_handleVisualization(data.city.model, city);
-					} else {
-						$('#jogl_canvas').css('display','none');
-						$('#map_canvas').css('display','')
-						$('#errorDialogBody').html("<p class='error'><c:out value='${malformedJSONStrnig}'/></p>");
-						$('#errorDialog').dialog('open');
-					}
-				} else {
-					$('#jogl_canvas').css('display','none');
-					$('#map_canvas').css('display','');
-					$('#errorDialogBody').html("<p class='error'><c:out value='${generalError}'/></p>");
-					$('#errorDialog').dialog('open');
-				}
-				showLoadingIndicator(false);
-	});
-}
-
-function desglosa_handleVisualization(model, city) {
-	if (model == "model.gl.knowledge.GLTower") {
-		document.DesglosaApplet.visualizeTowers(city);
-	} else if (model == "model.gl.knowledge.GLAntennaBall") {
-		document.DesglosaApplet.visualizeAntennaBalls(city);
-	} else if (model == "model.gl.knowledge.GLFactory") {
-		document.DesglosaApplet.visualizeBuildings(city);
-	}
-}
-
-
-///////////////////////////////////////////////////////
-//////////// END OF DESGLOSA-FACADE.JS ////////////////
-///////////////////////////////////////////////////////
 
 	</script>
 </head>
@@ -734,26 +557,32 @@ function desglosa_handleVisualization(model, city) {
 		<fieldset>
 			<legend><s:text name="label.filter.corporative"/>:</legend>
 			
-			<div id="companyFilter">
+			<div id="companyFilter" class="filter">
+				<span>
 				<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
-				<select id="companySelect" >
+				<select id="companySelect">
 					<option value="-1" disabled="disabled">-- <fmt:message key="label.select.choose_company"/> --</option>
 					<option value="0"><fmt:message key="label.all_female"/></option>
 					<s:iterator var="company" value="companies">
 						<option value="<s:property value='id'/>"><s:property value="name"/></option>
 					</s:iterator>
 				</select>
-				<br />
+				</span>
+				<span>
 				<s:label for="companyProjectSelect" value="%{getText('label.select.project')}:"/>
 				<s:select id="companyProjectSelect" name="companyProjectSelect" listKey="id" list="projects" size="5"></s:select>
+				</span>
 			</div>
 			
-			<div id="factoryFilter">
+			<div id="factoryFilter" class="filter">
+				<span>
 				<s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
-				<select id="factorySelect" disabled="disabled"></select>
-				<br />
+				<select id="factorySelect" disabled="disabled" class="disabled"></select>
+				</span>
+				<span>
 				<s:label for="factoryProjectSelect" value="%{getText('label.select.project')}:"/>
-				<s:select id="factoryProjectSelect" name="factoryProjectSelect" listKey="id" list="projects" size="5"></s:select>
+				<s:select id="factoryProjectSelect" name="factoryProjectSelect" listKey="id" list="projects" size="5" cssClass="disabled"></s:select>
+				</span>
 			</div>
 			
 			<div id="legend">
@@ -795,7 +624,94 @@ function desglosa_handleVisualization(model, city) {
 				   <img src="images/gtk-cancel.png" alt="<s:text name="label.error"/>" title="<s:text name="label.error"/>" width="32" height="32"/><br />
 				   <s:text name="error.no_JRE"/>
 			</applet>
+			
 			<a href="javascript:void(0)" onclick="$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');"><s:text name="label.back_to_map"/></a>
+			
+			<sj:accordion id="joglCanvasControls" autoHeight="false" collapsible="true" active="false">
+				<sj:accordionItem title="%{getText('label.navigation_controls')}" >
+					<table class="default">
+						<thead>
+							<tr class="header">
+								<th><s:text name="label.keyboard"/></th>
+								<th class="header"><s:text name="label.mouse"/></th>
+								<th class="header"><s:text name="desglosa.action"/></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="odd">
+								<td class="text-centering"><s:text name="desglosa.keyboard.w"/></td>
+								<td><s:text name="desglosa.hold_left"/> <s:text name="desglosa.plus"/> <s:text name="desglosa.drag_up"/></td>
+								<td><s:text name="desglosa.move_forward"/></td>
+							</tr>
+							<tr>
+								<td class="text-centering"><s:text name="desglosa.keyboard.e"/></td>
+								<td><s:text name="desglosa.hold_left"/> <s:text name="desglosa.plus"/> <s:text name="desglosa.drag_right"/></td>
+								<td><s:text name="desglosa.move_right"/></td>
+							</tr>
+							<tr class="odd">
+								<td class="text-centering"><s:text name="desglosa.keyboard.s"/></td>
+								<td><s:text name="desglosa.hold_left"/> <s:text name="desglosa.plus"/> <s:text name="desglosa.drag_down"/></td>
+								<td><s:text name="desglosa.move_backward"/></td>
+							</tr>
+							<tr>
+								<td class="text-centering"><s:text name="desglosa.keyboard.q"/></td>
+								<td><s:text name="desglosa.hold_left"/> <s:text name="desglosa.plus"/> <s:text name="desglosa.drag_left"/></td>
+								<td><s:text name="desglosa.move_left"/></td>
+							</tr>
+							<tr class="odd">
+								<td class="text-centering"><s:text name="desglosa.keyboard.pageUp"/></td>
+								<td><s:text name="desglosa.hold_right"/> <s:text name="desglosa.plus"/> <s:text name="desglosa.drag_up"/></td>
+								<td><s:text name="desglosa.rotate_up"/></td>
+							</tr>
+							<tr>
+								<td class="text-centering"><s:text name="desglosa.keyboard.d"/></td>
+								<td><s:text name="desglosa.hold_right"/> <s:text name="desglosa.plus"/> <s:text name="desglosa.drag_right"/></td>
+								<td><s:text name="desglosa.rotate_right"/></td>
+							</tr>
+							<tr class="odd">
+								<td class="text-centering"><s:text name="desglosa.keyboard.pageDown"/></td>
+								<td><s:text name="desglosa.hold_right"/> <s:text name="desglosa.plus"/> <s:text name="desglosa.drag_down"/></td>
+								<td><s:text name="desglosa.rotate_down"/></td>
+							</tr>
+							<tr>
+								<td class="text-centering"><s:text name="desglosa.keyboard.a"/></td>
+								<td><s:text name="desglosa.hold_right"/> <s:text name="desglosa.plus"/> <s:text name="desglosa.drag_left"/></td>
+								<td><s:text name="desglosa.rotate_left"/></td>
+							</tr>
+							<tr class="odd">
+								<td class="text-centering"><s:text name="desglosa.keyboard.c"/></td>
+								<td></td>
+								<td><s:text name="desglosa.descend"/></td>
+							</tr>
+							<tr>
+								<td class="text-centering"><s:text name="desglosa.keyboard.space"/></td>
+								<td></td>
+								<td><s:text name="desglosa.raise"/></td>
+							</tr>
+							<tr class="odd">
+								<td class="text-centering"><s:text name="desglosa.keyboard.f11"/></td>
+								<td></td>
+								<td><s:text name="desglosa.switch_shadows"/></td>
+							</tr>
+							<tr>
+								<td class="text-centering"><s:text name="desglosa.keyboard.f12"/></td>
+								<td></td>
+								<td><s:text name="desglosa.debug"/></td>
+							</tr>
+							<tr class="odd">
+								<td></td>
+								<td><s:text name="desglosa.mouse.left.click"/></td>
+								<td><s:text name="desglosa.pick"/></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><s:text name="desglosa.mouse.left.doubleClick"/></td>
+								<td><s:text name="desglosa.goDeep"/></td>
+							</tr>
+						</tbody>
+					</table>
+				</sj:accordionItem>
+			</sj:accordion>
 		</div>
 		
 		<div id="charts"></div>
@@ -827,5 +743,6 @@ function desglosa_handleVisualization(model, city) {
 		
 		<div class="clear"></div>
 	</div>	
+	<div class="clear"></div>
 </body>
 </html>
