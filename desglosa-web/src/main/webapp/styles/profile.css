@@ -1,3 +1,17 @@
+.wizardSteps {
+	clear: both;
+	margin-top: 30px;
+	width: 100%;
+}
+
+.wizardSteps .left {
+	float: left;
+}
+
+.wizardSteps .right {
+	float: right;
+}
+
 .removeIcon {
 	width: 12px;
 }
@@ -13,32 +27,39 @@ div #second_step {
 div #info {
 	text-align: justify;
 	width: 100%;
+	margin-bottom: 15px;
+}
+
+.pane {
+	float: left;
+	width: 47%;
+	min-height: 220px;
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
+	padding: 10px;
 }
 
 div #panes {
-	float: left;
 	text-align: justify;
 	margin-left: auto;
 	margin-right: auto;	
-	width: 49%;
 }
 
 div #panes #leftPane {
-	float:left;
-	width: 49%;
+	float: left;
+	width: 47%;
 }
 
 div #panes #rightPane {
 	float: left;
-	margin-left: 5px;
-	width: 49%;
+	margin-left: 15px;
+	width: 45%;
 }
 
 div #mapping {
-	float: left;
 	margin-left: 15px;
 	margin-right: auto;
-	width: 49%;
 }
 
 #mapping_added {
@@ -73,19 +94,19 @@ tbody #mapping_added_body {
 tfooter #mapping_added_footer {}
 
 div #mapping_messages {
-
+	margin: 50px;
 }
 
-div #mapping_cfg {
+div#mapping_cfg {
+	
+}
 
+.cfg_line ul {
+	list-style: none;
 }
 
 div #mapping_control {
 
-}
-
-div .clear {
-	clear: both;
 }
 
 #nonMappedPane {
