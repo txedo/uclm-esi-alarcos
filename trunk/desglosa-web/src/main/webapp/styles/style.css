@@ -107,6 +107,9 @@ p.spec {
 }
 
 p.ok {
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
     background-color: #E5FFE5;
     background-image: url("../images/icon_ok.png");
     background-position: 10px center;
@@ -121,6 +124,9 @@ p.ok {
 }
 
 p.error {
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
     background-color: #FFE5E5;
     background-image: url("../images/icon_error.png");
     background-position: 10px center;
@@ -135,6 +141,9 @@ p.error {
 }
 
 p.info {
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
     background-color: #e5e5ff;
     background-image: url("../images/icon_info.png");
     background-position: 10px center;
@@ -149,6 +158,9 @@ p.info {
 }
 
 p.warning {
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
     background-color: #ffe5b5;
     background-image: url("../images/icon_warning.png");
     background-position: 10px center;

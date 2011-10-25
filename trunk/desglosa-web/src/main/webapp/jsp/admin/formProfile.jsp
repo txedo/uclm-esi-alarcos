@@ -6,6 +6,10 @@
 
 <html lang="en">
 <head>
+	<fmt:message key="label.range.low" var="rangeLow"/>
+	<fmt:message key="label.range.high" var="rangeHigh"/>
+	<fmt:message key="label.range.value" var="rangeValue"/>
+
 	<meta name="menu" content="ManageProfiles"/>
 	
 	<link href="<s:url value='/styles/profile.css?version=1'/>" rel="stylesheet" type="text/css" />
@@ -325,40 +329,51 @@
 		return hexString;
 	}
 	
-	var lineCounter = 0;
-	
 	function addRangeConfigurationLine(range) {
-		lineCounter++;
-		var clazz = "cfg_line";
-		var lineId = clazz + lineCounter;
-		var lineSelector = "#" + lineId;
-		$("#mapping_cfg").append("<div id='" + lineId + "' class='" + clazz + "'>");
-		$(lineSelector).append("<input type='text' id='low' name='low' style='float: left;'/>");
-		if (!range) $(lineSelector).append("<input type='text' id='high' name='high' style='display: none;'/>");
-		else $(lineSelector).append("<input type='text' id='high' name='high' style='float: left;'/>");
-		$(lineSelector).append("<input type='text' id='value' name='value' style='float: left;'/>");
-		$(lineSelector).append("<span><a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'><s:text name='label.remove_configuration_line'/></a></span>");
-		$(lineSelector).append("<div style='clear:both;' />");
-		$("#mapping_cfg").append("</div>");
+		$("#mapping_cfg").append("<div class='cfg_line'>");
+		$(".cfg_line:last").append("<ul>");
+		$(".cfg_line:last ul").append("<li>");
+		$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeLow}'/></label>");
+		$(".cfg_line:last ul li:last").append("<input type='text' id='low' name='low'/>");
+		$(".cfg_line:last ul").append("<li>");
+		if (!range) {
+			$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high' style='display: none;'/>");
+		} else {
+			$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeHigh}'/></label>");
+			$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high'/>");
+		}
+		$(".cfg_line:last ul").append("<li>");
+		$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeValue}'/></label>");
+		$(".cfg_line:last ul li:last").append("<input type='text' id='value' name='value'/>");
+		$(".cfg_line:last").append("<span><a href='javascript:void(0)' class='removeRangeConfigurationLine'><s:text name='label.remove_configuration_line'/></a></span>");
+		
+		$("a.removeRangeConfigurationLine").click(function() {
+			$(this).parent().parent().slideUp('slow');
+			$(this).parent().parent().remove();
+		});
 	}
 	
 	function addColorConfigurationLine(range) {
-		lineCounter++;
-		var clazz = "cfg_line";
-		var lineId = clazz + lineCounter;
-		var lineSelector = "#" + lineId;
-		$("#mapping_cfg").append("<div id='" + lineId + "' class='" + clazz + "'>");
-		$(lineSelector).append("<input type='text' id='low' name='low' style='float: left;'/>");
-		if (!range) $(lineSelector).append("<input type='text' id='high' name='high' style='display: none;'/>");
-		else $(lineSelector).append("<input type='text' id='high' name='high' style='float: left;'/>");
-		createSequentialColorPicker(lineSelector);
-		$(lineSelector).append("<span><a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'><s:text name='label.remove_configuration_line'/></a></span>");
-		$(lineSelector).append("<div style='clear:both;' />");
-		$("#mapping_cfg").append("</div>");
-	}
-	
-	function removeInputLine(id) {
-		$("#"+id).remove();
+		$("#mapping_cfg").append("<div class='cfg_line'>");
+		$(".cfg_line:last").append("<ul>");
+		$(".cfg_line:last ul").append("<li>");
+		$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeLow}'/></label>");
+		$(".cfg_line:last ul li:last").append("<input type='text' id='low' name='low' style='float: left;'/>");
+		$(".cfg_line:last ul").append("<li>");
+		if (!range) {
+			$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high' style='display: none;'/>");
+		} else {
+			$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeHigh}'/></label>");
+			$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high' style='float: left;'/>");
+		}
+		$(".cfg_line:last ul").append("<li>");
+		buildColorPicker(".cfg_line:last ul li:last", "");
+		$(".cfg_line:last").append("<span><a href='javascript:void(0)' class='removeColorConfigurationLine'><s:text name='label.remove_configuration_line'/></a></span>");
+		
+		$("a.removeColorConfigurationLine").click(function() {
+			$(this).parent().parent().slideUp('slow');
+			$(this).parent().parent().remove();
+		});
 	}
 	
 	function checkTypeCompatibility(type1, type2) {
@@ -384,27 +399,13 @@
 	}
 	
 	var colorPickerCounter = 0;
-	function createSequentialColorPicker(divSelector) {
-		colorPickerCounter++;
-		var id = "colorPicker" + colorPickerCounter;
-		var selector = "#" + id;
+	function buildColorPicker(selector, id) {
+		var initialColor = "#FFFFFF";
 		
-		buildColorPicker(divSelector, selector, id);
-	}
-	
-	function createColorPicker(divSelector, id) {
-		var selector = "#" + id;
+		if (id == "") id = "colorPicker" + ++colorPickerCounter;
+		$(selector).append("<div id='" + id + "' class='colorSelector' style='float: left;'><div style='background-color: " + initialColor + ";'></div></div>");
 		
-		buildColorPicker(divSelector, selector, id);
-	}
-	
-	function buildColorPicker(divSelector, selector, id) {
-		var divId = selector + " div";
-		var initialColor = "#0000ff";
-		
-		$(divSelector).append("<div id='" + id + "' class='colorSelector' style='float: left;'><div style='background-color: " + initialColor + ";'></div></div>");
-		
-		$(selector).ColorPicker({
+		$(".colorSelector:last").ColorPicker({
 			color: initialColor,
 			onShow: function (colpkr) {
 				$(colpkr).fadeIn(500);
@@ -415,7 +416,7 @@
 				return false;
 			},
 			onChange: function (hsb, hex, rgb) {
-				$(divId).css('backgroundColor', '#' + hex);
+				$("#" + id + " div").css('backgroundColor', '#' + hex);
 			},
 			onSubmit: function(hsb, hex, rgb, el) {
 				$(el).val(hex);
@@ -425,16 +426,18 @@
 	}
 	
 	function addCaptionLine(){
-		lineCounter++;
-		var clazz = "caption_line";
-		var lineId = clazz + lineCounter;
-		var lineSelector = "#" + lineId;
-		$("#added_captionLines").append("<div id='" + lineId + "' class='" + clazz + "'>");
-		createSequentialColorPicker(lineSelector);
-		$(lineSelector).append("<span><input type='text' id='text' name='text' style='float: left;'/></span>");
-		$(lineSelector).append("<span><a href=\"javascript:removeInputLine('" + lineId + "')\" style='float: left;'>-</a></span>");
-		$(lineSelector).append("<div style='clear:both;' />");
-		$("#added_captionLines").append("</div>");
+		$("#added_captionLines tbody").append("<tr class='cfg_line'>");
+		$("#added_captionLines tbody tr:last").append("<td>");
+		buildColorPicker("#added_captionLines tbody tr:last td:last", "");
+		$("#added_captionLines tbody tr:last").append("<td>");
+		$("#added_captionLines tbody tr:last td:last").append("<input type='text' id='text' name='text'/>");
+		$("#added_captionLines tbody tr:last").append("<td>");
+		$("#added_captionLines tbody tr:last td:last").append("<a href='javascript:void(0)' class='removeInputLine'>-</a>");
+		
+		$("a.removeInputLine").click(function() {
+			$(this).parent().parent().slideUp('slow');
+			$(this).parent().parent().remove();
+		});
 	}
 	
 	function configureNonMappedModelAttributes() {
@@ -449,7 +452,7 @@
 			$("#nonMappedModelAttributesDiv > ul").append("<li>");
 			$("#nonMappedModelAttributesDiv > ul > li:last").append("<label for='constant_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label>");
 			if (modelAttributesArray[this] == "color") {
-				createColorPicker("#nonMappedModelAttributesDiv > ul > li:last", "constant_" + this);
+				buildColorPicker("#nonMappedModelAttributesDiv > ul > li:last", "constant_" + this);
 			} else {
 				$("#nonMappedModelAttributesDiv > ul > li:last").append("<span><input id='constant_" + this + "' type='text' value='' /></span>");
 			}
@@ -460,7 +463,7 @@
 	
 	function resetProfileForm() {
 		captionLines = new Array();
-		$("#added_captionLines > .caption_line").each(function(index, element) {
+		$("#added_captionLines > .cfg_line").each(function(index, element) {
 			var label = $(element).children("#text").val();
 			if (label != "") {
 				// reset css class
@@ -485,9 +488,9 @@
 				// TODO
 			});
 			// Comprobar que no hay caption lines sin texto
-			$("#added_captionLines > .caption_line").each(function(index, element) {
-				var label = $(element).children("span").children("#text").val();
-				var hexColor = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
+			$("#added_captionLines > tbody > .cfg_line").each(function(index, element) {
+				var label = $(element).children("td").children("#text").val();
+				var hexColor = rgb2hex($(element).children("td").children('.colorSelector').children('div').css('backgroundColor'));
 				if (label == "") {
 					// change css class
 					alert("change css class");
@@ -577,7 +580,7 @@
 			<p><s:text name="label.general_information_about_mappings2"/></p>
 		</div>
 		
-		<div id="panes">
+		<div id="panes" class="pane">
 			<div id="leftPane">
 				<sj:select 	href="%{updateProfileURL}"
 							emptyOption="false"
@@ -605,7 +608,7 @@
 			</div>
 		</div>
 		
-		<div id="mapping">
+		<div id="mapping" class="pane">
 		
 			<!-- Table markup-->
 			<table id="mapping_added" class="default">
@@ -618,9 +621,9 @@
 					<tr class="subheader">
 						<th class="first"><s:text name="label.entity_attribute"/></th>
 						<th><s:text name="label.model_attribute"/></th>
-						<th><s:text name="label.range_low"/></th>
-						<th><s:text name="label.range_high"/></th>
-						<th><s:text name="label.range_value"/></th>
+						<th><s:text name="label.range.low.abbr"/></th>
+						<th><s:text name="label.range.high.abbr"/></th>
+						<th><s:text name="label.range.value.abbr"/></th>
 						<th><s:text name="label.ratio"/></th>
 						<th class="last"><s:text name="label.delete_mapping"/></th>
 					</tr>
@@ -637,9 +640,11 @@
 			<div id="mapping_cfg"></div>
 			<div id="mapping_control"></div>
 		</div>
-		
 		<div class="clear"></div>
-		<a href="javascript:toggleSteps(true)"><s:text name="label.next"/> &gt;</a>
+		<div class="wizardSteps">
+			<a href="javascript:toggleSteps(true)" class="right"><s:text name="label.next"/> &gt;</a>
+		</div>
+		<div class="clear"></div>
 	</div>
 	
 	<div id="second_step">
@@ -648,9 +653,23 @@
 			<div id="nonMappedModelAttributesDiv"></div>
 		</div>
 		<div id="captionPanel">
-			<s:text name="label.configure_caption_lines"/>
-			<div id="added_captionLines"></div>
-			<a href="javascript:addCaptionLine()"><s:text name="label.add_caption_line"/></a>
+			<table id="added_captionLines">
+				<thead>
+					<tr>
+						<th colspan="3"><s:text name="label.configure_caption_lines"/></th>
+					</tr>
+					<tr>
+						<th><s:text name="label.caption.color"/></th>
+						<th><s:text name="label.caption.text"/></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+				<tfoot>
+					<tr>
+						<td colspan="3"><a href="javascript:addCaptionLine()"><s:text name="label.add_caption_line"/></a></td>
+					</tr>
+				</tfoot>
+			</table>
 		</div>
 		<div id="profilePane">
 			<ul>
@@ -664,8 +683,12 @@
 				</li>
 			</ul>
 		</div>
-		<a href="javascript:toggleSteps(false)">&lt; <s:text name="label.back"/></a>
-		<a href="javascript:saveProfile()">Save profile</a>
+		<div class="clear"></div>
+		<div class="wizardSteps">
+			<a href="javascript:toggleSteps(false)" class="left">&lt; <s:text name="label.back"/></a>
+			<a href="javascript:saveProfile()" class="right">Save profile</a>
+		</div>
+		<div class="clear"></div>
 	</div>
 </body>
 </html>
