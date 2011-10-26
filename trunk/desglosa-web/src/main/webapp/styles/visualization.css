@@ -16,7 +16,7 @@ fieldset {
 }
 
 .filter {
-	width: 35%;
+	width: 40%;
 }
 
 .filter select {
@@ -32,8 +32,9 @@ fieldset {
 }
 
 #legend {
-	clear:left;
-	float:right;
+	clear: left;
+	float: right;
+	margin-top: -30px;
 }
 
 #workingArea {

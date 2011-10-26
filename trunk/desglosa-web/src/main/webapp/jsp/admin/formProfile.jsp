@@ -3,19 +3,22 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
+<%@ include file='/jsp/dialogs.jsp' %>
 
 <html lang="en">
 <head>
 	<fmt:message key="label.range.low" var="rangeLow"/>
 	<fmt:message key="label.range.high" var="rangeHigh"/>
 	<fmt:message key="label.range.value" var="rangeValue"/>
+	<fmt:message key="label.range.expectedValue" var="expectedValue"/>
+	<fmt:message key="label.range.color" var="color"/>
+	<fmt:message key="label.ratio" var="ratioValue"/>
 
 	<meta name="menu" content="ManageProfiles"/>
 	
 	<link href="<s:url value='/styles/profile.css?version=1'/>" rel="stylesheet" type="text/css" />
 	<link href="<s:url value='/styles/buttons.css?version=1'/>" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/colorpicker.css'/>" />
-	<link rel="stylesheet" media="screen" type="text/css" href="<s:url value='/js/colorpicker/css/layout.css'/>" />
+	<link href="<s:url value='/js/colorpicker/css/colorpicker.css?version=1'/>" rel="stylesheet" type="text/css" media="screen" />
 	
 	<sj:head jqueryui="true" jquerytheme="cupertino"/>
 	
@@ -117,7 +120,11 @@
 		// clean mappings table
 		$(".mapping_line").remove();
 		// clean mappings messages
-		$("#mapping_messages").html("<p class='info'><s:text name='message.no_mappings'/></p>");
+		$("#mapping_messages").html("");
+		// restablish no mappings info messag
+		$("#mapping_added tfoot").html("<tr>");
+		$("#mapping_added tfoot tr:last").append("<td colspan='7'>");
+		$("#mapping_added tfoot tr:last td:last").append("<span class='info'><s:text name='message.no_mappings'/></span>");
 	}
 	
 	var selectedEntityAttribute = null;
@@ -143,29 +150,35 @@
 			var modelAttrName = (selectedModelAttribute).attr('id').replace("modelAttr_", "");
 			var modelAttrType = modelAttributesArray[modelAttrName];
 			var compatibility = checkTypeCompatibility(entityAttrType, modelAttrType);
-			if (compatibility == -1) {
+			if (compatibility == -1) { // Incompatible types
 				$("#mapping_messages").html("<p class='error'><s:text name='error.type_compatibility'/></p>");
-			} else if (compatibility == 0) {
+			} else if (compatibility == 0) { // Not fully compatible types
 				$("#mapping_messages").html("<p class='warning'><s:text name='warning.type_compatibility'/></p>");
-			} else { // compatible types
+			} else { // Fully compatible types
 				if (modelAttrType == "float_range") {
 					var range = true;
 					if (entityAttrType == "string" || entityAttrType == "boolean") range = false;
 					addRangeConfigurationLine(range);
-					$("#mapping_control").append("<a href='javascript:addRangeConfigurationLine(" + range + ")'><s:text name='label.add_configuration_line'/></a>");
+					$("#mapping_control").append("<a href='javascript:addRangeConfigurationLine(" + range + ")' class='clrright'><s:text name='label.add_configuration_line'/></a>");
 				} else if (modelAttrType == "color") {
 					// if entity attr type is color in hex format, it is a direct mapping
 					if (entityAttrType != "hexcolor") {
 						var range = true;
 						if (entityAttrType == "string" || entityAttrType == "boolean") range = false;
 						addColorConfigurationLine(range);
-						$("#mapping_control").append("<a href='javascript:addColorConfigurationLine(" + range + ")'><s:text name='label.add_configuration_line'/></a>");	
+						$("#mapping_control").append("<a href='javascript:addColorConfigurationLine(" + range + ")' class='clrright'><s:text name='label.add_configuration_line'/></a>");	
 					}
 				} else if (modelAttrType == "float") {
-					$("#mapping_cfg").append("<ul><li><input id='ratio' type='text' value=''/></li></ul>");
+					// If we try to map to a float dimension, we must stablish a ratio value that specifies the maximum value the entity attribute could have (p.e. portability - 100.0)
+					$("#mapping_cfg").append("<fieldset class='cfg_line form'>");
+					$(".cfg_line:last").append("<legend><s:text name='label.ratio_configuration'/>:</legend>");
+					$(".cfg_line:last").append("<ul>");
+					$(".cfg_line:last ul").append("<li>");
+					$(".cfg_line:last ul li:last").append("<label><c:out value='${ratioValue}'/></label>");
+					$(".cfg_line:last ul li:last").append("<input id='ratio' type='text' value=''/>");
 				}
 				// Si es mapeo directo no hay que ahcer nada más
-				$("#mapping_control").append("<a href='javascript:saveMapping()'><s:text name='label.save_mapping'/></a>");
+				$("#mapping_control").append("<a href='javascript:saveMapping()' class='clrright'><s:text name='label.save_mapping'/></a>");
 			}
 		}
 	}
@@ -184,15 +197,14 @@
 			var ratio = null;
 			// if entityAttrType == "hexcolor" then direct mapping because it is in hex format
 			if (entityAttrType != "hexcolor" && (modelAttrType == "float_range" || modelAttrType == "color")) {
-				$("#mapping_cfg").children().each(function(index, element) {
-					// element es cfg_line1
-					var low = $(element).children('#low').val();
-					var high = $(element).children('#high').val();
+				$("#mapping_cfg").children(".cfg_line").each(function(index, element) {
+					var low = $(element).children('ul').children('li').children('#low').val();
+					var high = $(element).children('ul').children('li').children('#high').val();
 					var value = null;
 					if (modelAttrType == "color") {
-						value = rgb2hex($(element).children('.colorSelector').children('div').css('backgroundColor'));
+						value = rgb2hex($(element).children('ul').children('li').children('.colorSelector').children('div').css('backgroundColor'));
 					} else if (modelAttrType == "float_range") {
-						value = $(element).children('#value').val();
+						value = $(element).children('ul').children('li').children('#value').val();
 					}
 					if (entityAttrType == "int") {
 						low = parseInt(low, 10);
@@ -228,6 +240,7 @@
 			}
 			if (!error) {
 				$("#mapping_messages").html("");
+				$("#mapping_added tfoot").html("");
 				// Si no hay error, establecemos al asociacion con sus reglas
 				var entityAttribute = new Attribute(entityAttrName, entityAttrType);
 				var modelAttribute = new Attribute(modelAttrName, modelAttrType)
@@ -242,8 +255,6 @@
 				// Resetear selectedColumn y selectedAttribute
 				selectedEntityAttribute = null;
 				selectedModelAttribute = null;
-				// Resetear el contador de lineas
-				lineCounter = 0;
 				// Resetear mapping_cfg y mapping_control
 				$("#mapping_cfg").html("");
 				$("#mapping_control").html("");
@@ -311,8 +322,11 @@
 			}
 		});
 		$("#mapping_messages").html("<p class='ok'><s:text name='message.mapping_deleted'/></p>");
+		// If no mappings left, feedback it
 		if (mappings.length == 0) {
-			// TODO <s:text name='message.no_mappings'/>
+			$("#mapping_added tfoot").html("<tr>");
+			$("#mapping_added tfoot tr:last").append("<td colspan='7'>");
+			$("#mapping_added tfoot tr:last td:last").append("<span class='info'><s:text name='message.no_mappings'/></span>");
 		}
 	}
 	
@@ -330,10 +344,15 @@
 	}
 	
 	function addRangeConfigurationLine(range) {
-		$("#mapping_cfg").append("<div class='cfg_line'>");
+		$("#mapping_cfg").append("<fieldset class='cfg_line form'>");
+		$(".cfg_line:last").append("<legend><s:text name='label.rule_configuration'/>:</legend>");
 		$(".cfg_line:last").append("<ul>");
 		$(".cfg_line:last ul").append("<li>");
-		$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeLow}'/></label>");
+		if (!range) {
+			$(".cfg_line:last ul li:last").append("<label><c:out value='${expectedValue}'/></label>");
+		} else {
+			$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeLow}'/></label>");
+		}
 		$(".cfg_line:last ul li:last").append("<input type='text' id='low' name='low'/>");
 		$(".cfg_line:last ul").append("<li>");
 		if (!range) {
@@ -345,7 +364,8 @@
 		$(".cfg_line:last ul").append("<li>");
 		$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeValue}'/></label>");
 		$(".cfg_line:last ul li:last").append("<input type='text' id='value' name='value'/>");
-		$(".cfg_line:last").append("<span><a href='javascript:void(0)' class='removeRangeConfigurationLine'><s:text name='label.remove_configuration_line'/></a></span>");
+		$(".cfg_line:last").append("<span><a href='javascript:void(0)' class='removeRangeConfigurationLine rightclr'><s:text name='label.remove_configuration_line'/></a></span>");
+		$(".cfg_line:last").append("<div class='clear'></div>");
 		
 		$("a.removeRangeConfigurationLine").click(function() {
 			$(this).parent().parent().slideUp('slow');
@@ -354,21 +374,28 @@
 	}
 	
 	function addColorConfigurationLine(range) {
-		$("#mapping_cfg").append("<div class='cfg_line'>");
+		$("#mapping_cfg").append("<fieldset class='cfg_line form'>");
+		$(".cfg_line:last").append("<legend><s:text name='label.rule_configuration'/>:</legend>");
 		$(".cfg_line:last").append("<ul>");
 		$(".cfg_line:last ul").append("<li>");
-		$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeLow}'/></label>");
-		$(".cfg_line:last ul li:last").append("<input type='text' id='low' name='low' style='float: left;'/>");
+		if (!range) {
+			$(".cfg_line:last ul li:last").append("<label><c:out value='${expectedValue}'/></label>");
+		} else {
+			$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeLow}'/></label>");
+		}
+		$(".cfg_line:last ul li:last").append("<input type='text' id='low' name='low'/>");
 		$(".cfg_line:last ul").append("<li>");
 		if (!range) {
 			$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high' style='display: none;'/>");
 		} else {
 			$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeHigh}'/></label>");
-			$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high' style='float: left;'/>");
+			$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high'/>");
 		}
 		$(".cfg_line:last ul").append("<li>");
+		$(".cfg_line:last ul li:last").append("<label><c:out value='${color}'/></label>");
 		buildColorPicker(".cfg_line:last ul li:last", "");
-		$(".cfg_line:last").append("<span><a href='javascript:void(0)' class='removeColorConfigurationLine'><s:text name='label.remove_configuration_line'/></a></span>");
+		$(".cfg_line:last").append("<span><a href='javascript:void(0)' class='removeColorConfigurationLine rightclr'><s:text name='label.remove_configuration_line'/></a></span>");
+		$(".cfg_line:last").append("<div class='clear'></div>");
 		
 		$("a.removeColorConfigurationLine").click(function() {
 			$(this).parent().parent().slideUp('slow');
@@ -404,6 +431,7 @@
 		
 		if (id == "") id = "colorPicker" + ++colorPickerCounter;
 		$(selector).append("<div id='" + id + "' class='colorSelector' style='float: left;'><div style='background-color: " + initialColor + ";'></div></div>");
+		$(selector).append("<div class='clear'></div>");
 		
 		$(".colorSelector:last").ColorPicker({
 			color: initialColor,
@@ -432,7 +460,7 @@
 		$("#added_captionLines tbody tr:last").append("<td>");
 		$("#added_captionLines tbody tr:last td:last").append("<input type='text' id='text' name='text'/>");
 		$("#added_captionLines tbody tr:last").append("<td>");
-		$("#added_captionLines tbody tr:last td:last").append("<a href='javascript:void(0)' class='removeInputLine'>-</a>");
+		$("#added_captionLines tbody tr:last td:last").append("<a href='javascript:void(0)' class='removeInputLine'><img class='removeIcon' src='images/gtk-cancel.png' alt=\"<s:text name='label.remove_caption_line'/>\" title=\"<s:text name='label.remove_caption_line'/>\" /></a>");
 		
 		$("a.removeInputLine").click(function() {
 			$(this).parent().parent().slideUp('slow');
@@ -441,75 +469,78 @@
 	}
 	
 	function configureNonMappedModelAttributes() {
+		// Clean non mapped model attributes array
 		nonMappedModelAttributesArray = new Array();
+		// Navigate through all model attributes and pick visible ones up
 		$("#modelAttributesDiv").children('ul').children('li').each(function(){
 			if ($(this).css('display') != 'none') {
 				nonMappedModelAttributesArray.push($(this).attr('id').replace("modelAttr_", ""));	
 			}
 		});
-		$("#nonMappedModelAttributesDiv").html("<ul>");
-		$.each(nonMappedModelAttributesArray, function() {
-			$("#nonMappedModelAttributesDiv > ul").append("<li>");
-			$("#nonMappedModelAttributesDiv > ul > li:last").append("<label for='constant_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label>");
-			if (modelAttributesArray[this] == "color") {
-				buildColorPicker("#nonMappedModelAttributesDiv > ul > li:last", "constant_" + this);
-			} else {
-				$("#nonMappedModelAttributesDiv > ul > li:last").append("<span><input id='constant_" + this + "' type='text' value='' /></span>");
-			}
-			$("#nonMappedModelAttributesDiv > ul").append("</li>");
-		});
-		$("#nonMappedModelAttributesDiv").append("</ul>");
-	}
-	
-	function resetProfileForm() {
-		captionLines = new Array();
-		$("#added_captionLines > .cfg_line").each(function(index, element) {
-			var label = $(element).children("#text").val();
-			if (label != "") {
-				// reset css class
-			}
-		});
+		// Clean configuration table body and foot
+		$("#nonMapped_dimensions tfoot").html("");
+		$("#nonMapped_dimensions tbody").html("");
+		if (nonMappedModelAttributesArray.length > 0) {
+			// Fill configuration table in
+			$.each(nonMappedModelAttributesArray, function() {
+				$("#nonMapped_dimensions tbody").append("<tr>");
+				$("#nonMapped_dimensions tbody tr:last").append("<td class='attr'>");
+				$("#nonMapped_dimensions tbody tr:last td:last").append("<label for='constant_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label>");
+				$("#nonMapped_dimensions tbody tr:last").append("<td class='value'>");
+				if (modelAttributesArray[this] == "color") {
+					buildColorPicker("#nonMapped_dimensions tbody tr:last td:last", "constant_" + this);
+				} else {
+					$("#nonMapped_dimensions tbody tr:last td:last").append("<input id='constant_" + this + "' type='text' value='' />");
+				}
+			});
+		} else {
+			$("#nonMapped_dimensions tfoot").html("<tr>");
+			$("#nonMapped_dimensions tfoot tr:last").append("<td colspan='2'>");
+			$("#nonMapped_dimensions tfoot tr:last td:last").append("<span class='info'><s:text name='message.all_model_attributes_mapped'/></span>");
+		}
 	}
 	
 	function checkProfile() {
+		captionLines = new Array();
+		$("#mapping_messages").html("");
 		var noError = true;
-		resetProfileForm();
 		// Comprobar que hay asociaciones hechas
 		if (mappings.length < 1) {
-			$("#mapping_messages").html("<p class='error'><s:text name='error.empty_mapping'/></p>");
-			swapDivVisibility('second_step','first_step');
+			$("#mapping_messages").html("<span class='error'><s:text name='error.empty_mapping'/></span>");
+			toggleSteps(false);
 			noError = false;
-		} else {
-			// Comprobar que no quedan nonMappedModelAttributes sin valor por defecto y que el valor corresponde al tipo
-			$("#nonMappedModelAttributesDiv > ul > li > input").each(function() {
-				var attrName = this;
-				var attrType = modelAttributesArray[attrName];
-				var attrValue = $(this).val();
-				// TODO
-			});
-			// Comprobar que no hay caption lines sin texto
-			$("#added_captionLines > tbody > .cfg_line").each(function(index, element) {
-				var label = $(element).children("td").children("#text").val();
-				var hexColor = rgb2hex($(element).children("td").children('.colorSelector').children('div').css('backgroundColor'));
-				if (label == "") {
-					// change css class
-					alert("change css class");
-					noError = false;
-				} else {
-					var cl = new CaptionLine(label, hexColor);
-					captionLines.push(cl);
-				}
-			});
-			// Comprobar que profileName y profileDescription no están vacíos
-			if ($("#profileName").val() == "") {
-				alert("profile name vacio");
-				noError = false;
-			}
-			if ($("#profileDescription").val() == "") {
-				alert("profile description vacio");
-				noError = false;
-			}
 		}
+		// Comprobar que no quedan nonMappedModelAttributes sin valor por defecto y que el valor corresponde al tipo
+		$("#nonMapped_dimensions > tbody > tr").each(function() {
+			var attrName = $(this).children(".attr").replace("constant_", "");
+			var attrType = modelAttributesArray[attrName];
+			var attrValue = $(this).children(".value").val();
+			// TODO comprobar tipos
+		});
+		// Comprobar que no hay caption lines sin texto
+		$("#added_captionLines > tbody > .cfg_line").each(function(index, element) {
+			var label = $(element).children("td").children("#text").val();
+			var hexColor = rgb2hex($(element).children("td").children('.colorSelector').children('div').css('backgroundColor'));
+			if (label == "") {
+				$("#added_captionLines tfoot").html("<tr>");
+				$("#added_captionLines tfoot tr:last").append("<td colspan='2'>");
+				$("#added_captionLines tfoot tr:last td:last").append("<span class='error'><s:text name='message.all_model_attributes_mapped'/></span>");
+				noError = false;
+			} else {
+				var cl = new CaptionLine(label, hexColor);
+				captionLines.push(cl);
+			}
+		});
+		// Comprobar que profileName y profileDescription no están vacíos
+		if ($("#profileName").val() == "") {
+			$("#profileNameError").html("<span class='error'><s:text name='error.profileName.isMandatory'/></span>")
+			noError = false;
+		}
+		if ($("#profileDescription").val() == "") {
+			$("#profileDescriptionError").html("<span class='error'><s:text name='error.profileDescription.isMandatory'/></span>")
+			noError = false;
+		}
+
 		return noError;
 	}
 	
@@ -571,6 +602,7 @@
 </head>
 
 <body>
+	<div id="messageErrors"></div>
 	<div id="first_step">
 		<s:url id="updateProfileURL" action="json_p_updateProfileForm"/>
 		<s:url id="refreshTableColumns" action="json_p_loadTableColumns"/>
@@ -625,7 +657,7 @@
 						<th><s:text name="label.range.high.abbr"/></th>
 						<th><s:text name="label.range.value.abbr"/></th>
 						<th><s:text name="label.ratio"/></th>
-						<th class="last"><s:text name="label.delete_mapping"/></th>
+						<th class="last"></th>
 					</tr>
 				</thead>
 				
@@ -649,8 +681,22 @@
 	
 	<div id="second_step">
 		<div id="nonMappedPane">
-			<s:text name="label.configure_nonMapped_Attributes"/>
-			<div id="nonMappedModelAttributesDiv"></div>
+			<table id="nonMapped_dimensions">
+				<thead>
+					<tr><th colspan="2"><s:text name="label.configure_nonMapped_Attributes"/></th></tr>
+					<tr>
+						<th>
+							<s:text name="label.model_attribute"/>
+						</th>
+						<th>
+							<s:text name="label.value"/>
+						</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+				<tfoot></tfoot>
+			</table>
+			<h1></h1>
 		</div>
 		<div id="captionPanel">
 			<table id="added_captionLines">
@@ -671,15 +717,18 @@
 				</tfoot>
 			</table>
 		</div>
-		<div id="profilePane">
+		<div id="profilePane" class="form">
+			<h1><s:text name="label.profile_info"></s:text></h1>
 			<ul>
 				<li>
 					<label for="profileName"><s:text name="label.profile_name"/></label>
 					<input id="profileName" name="profileName" type="text"/>
+					<span id="profileNameError"></span>
 				</li>
 				<li>
 					<label for="profileDescription"><s:text name="label.profile_description"/></label>
 					<textarea id="profileDescription" name="profileDescription" rows="3" cols="15"></textarea>
+					<span id="profileDescriptionError"></span>
 				</li>
 			</ul>
 		</div>
