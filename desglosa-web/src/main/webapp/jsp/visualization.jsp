@@ -3,6 +3,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
+<%@ include file='/jsp/dialogs.jsp' %>
 
 <html lang="en">
 <head>
@@ -493,44 +494,7 @@
 
 	</script>
 </head>
-<body>
-	<!-- These divs will be hidden by default and will appear in the middle of the screen
-	in order to show important error, information and warning messages
-	-->	
-	<sj:dialog id="errorDialog" 
-		       buttons="{'OK':function() { $('#errorDialog').dialog('close'); }}"
-        	   autoOpen="false"
-        	   modal="true"
-        	   closeOnEscape="true"
-        	   showEffect="fold"
-        	   hideEffect="scale"
-        	   draggable="false"
-        	   title="%{getText('label.dialog.title.error')}">
-       	<div id="errorDialogBody"></div>
-    </sj:dialog>
-    <sj:dialog id="infoDialog" 
-		       buttons="{'OK':function() { $('#infoDialog').dialog('close'); }}"
-        	   autoOpen="false"
-        	   modal="true"
-        	   closeOnEscape="true"
-        	   showEffect="fold"
-        	   hideEffect="scale"
-        	   draggable="false"
-        	   title="%{getText('label.dialog.title.info')}">
-       	<div id="infoDialogBody"></div>
-    </sj:dialog>
-    <sj:dialog id="warningDialog" 
-		       buttons="{'OK':function() { $('#warningDialog').dialog('close'); }}"
-        	   autoOpen="false"
-        	   modal="true"
-        	   closeOnEscape="true"
-        	   showEffect="fold"
-        	   hideEffect="scale"
-        	   draggable="false"
-        	   title="%{getText('label.dialog.title.warning')}">
-       	<div id="warningDialogBody"></div>
-    </sj:dialog>
-    
+<body>    
 	<!-- This div will be hidden by default and will appear in the middle of the screen
 	in order to allow the user to choose a profile
 	-->	
@@ -557,7 +521,7 @@
 		<fieldset>
 			<legend><s:text name="label.filter.corporative"/>:</legend>
 			
-			<div id="companyFilter" class="filter">
+			<div id="companyFilter" class="filter form">
 				<span>
 				<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
 				<select id="companySelect">
@@ -574,7 +538,7 @@
 				</span>
 			</div>
 			
-			<div id="factoryFilter" class="filter">
+			<div id="factoryFilter" class="filter form">
 				<span>
 				<s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
 				<select id="factorySelect" disabled="disabled" class="disabled"></select>

@@ -1,4 +1,7 @@
 @charset "utf-8";
+
+@import url("messages.css");
+
 body {
 	margin:0;
 	padding:0;
@@ -25,6 +28,34 @@ html, .main {
 	padding:0;
 	margin:0;
 	width:100%;
+}
+
+.left {
+	float: left;
+}
+
+.clrleft {
+	clear: both;
+	float: left;
+}
+
+.leftclr {
+	float: left;
+	clear: both;
+}
+
+.right {
+	float: right;
+}
+
+.clrright {
+	clear: both;
+	float: right;
+}
+
+.rightclr {
+	float: right;
+	clear: both;
 }
 
 .logo {
@@ -74,13 +105,23 @@ h2 {
 	color:#595959;
 }
 
-label {
+.form p.label {
+	margin: 0;
+	padding: 0;
+	color: black;
+}
+
+.form ul {
+	list-style: none;	
+}
+
+.form label {
 	margin: 0;
 	padding: 0;
 	color: black;
 	font: normal 12px/1.8em Arial, Helvetica, sans-serif;
 	float: left;
-	width: 100px;
+	width: 130px;
 }
 
 legend {
@@ -96,82 +137,8 @@ p {
 	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
 }
 
-p.label {
-	margin: 0;
-	padding: 0;
-	color: black;
-}
-
 p.spec {
 	text-align: right;
-}
-
-p.ok {
-	-moz-box-shadow: 0 0 5px #888;
-	-webkit-box-shadow: 0 0 5px#888;
-	box-shadow: 0 0 5px #888;
-    background-color: #E5FFE5;
-    background-image: url("../images/icon_ok.png");
-    background-position: 10px center;
-    background-repeat: no-repeat;
-    background-size: 15px auto;
-    border: 1px solid #008000;
-    border-radius: 6px 6px 6px 6px;
-    color: #008000;
-    margin: 10px 0;
-    padding: 5px 5px 5px 40px;
-    text-align: left;
-}
-
-p.error {
-	-moz-box-shadow: 0 0 5px #888;
-	-webkit-box-shadow: 0 0 5px#888;
-	box-shadow: 0 0 5px #888;
-    background-color: #FFE5E5;
-    background-image: url("../images/icon_error.png");
-    background-position: 10px center;
-    background-repeat: no-repeat;
-    background-size: 15px auto;
-    border: 1px solid #800000;
-    border-radius: 6px 6px 6px 6px;
-    color: #800000;
-    margin: 10px 0;
-    padding: 5px 5px 5px 40px;
-    text-align: left;
-}
-
-p.info {
-	-moz-box-shadow: 0 0 5px #888;
-	-webkit-box-shadow: 0 0 5px#888;
-	box-shadow: 0 0 5px #888;
-    background-color: #e5e5ff;
-    background-image: url("../images/icon_info.png");
-    background-position: 10px center;
-    background-repeat: no-repeat;
-    background-size: 15px auto;
-    border: 1px solid #0000A0;
-    border-radius: 6px 6px 6px 6px;
-    color: #0000A0;
-    margin: 10px 0;
-    padding: 5px 5px 5px 40px;
-    text-align: left;
-}
-
-p.warning {
-	-moz-box-shadow: 0 0 5px #888;
-	-webkit-box-shadow: 0 0 5px#888;
-	box-shadow: 0 0 5px #888;
-    background-color: #ffe5b5;
-    background-image: url("../images/icon_warning.png");
-    background-position: 10px center;
-    background-repeat: no-repeat;
-    background-size: 15px auto;
-    border: 1px solid #FFA500;
-    border-radius: 6px 6px 6px 6px;
-    color: #FFA500;
-    margin: 10px 0;
-    padding: 5px 5px 5px 40px;
-    text-align: left;
 }
 
 .default {
@@ -217,6 +184,10 @@ table.default thead tr th {
 
 table.default td {
 	padding: 5px 10px;	
+}
+
+table.default tfoot tr td {
+	text-align: center;
 }
 
 a {

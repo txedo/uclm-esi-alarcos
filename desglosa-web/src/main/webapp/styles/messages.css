@@ -1,0 +1,42 @@
+.ok, .error, .info, .warning {
+	clear: both;
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
+	background-position: 10px center;
+    background-repeat: no-repeat;
+    background-size: 15px auto;
+    border-radius: 6px 6px 6px 6px;
+    margin: 10px 0;
+    padding: 5px 5px 5px 40px;
+    text-align: left;
+    font: normal 12px/1.8em Arial, Helvetica, sans-serif;
+}
+
+.ok {
+    background-color: #E5FFE5;
+    background-image: url("../images/icon_ok.png");
+    border: 1px solid #008000;
+    color: #008000;
+}
+
+.error {
+    background-color: #FFE5E5;
+    background-image: url("../images/icon_error.png");
+    border: 1px solid #800000;
+    color: #800000;
+}
+
+.info {
+    background-color: #e5e5ff;
+    background-image: url("../images/icon_info.png");
+    border: 1px solid #0000A0;
+    color: #0000A0;
+}
+
+.warning {
+    background-color: #ffe5b5;
+    background-image: url("../images/icon_warning.png");
+    border: 1px solid #FFA500;
+    color: #FFA500;
+}
