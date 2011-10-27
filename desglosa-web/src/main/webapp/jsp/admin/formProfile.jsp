@@ -13,6 +13,10 @@
 	<fmt:message key="label.range.expectedValue" var="expectedValue"/>
 	<fmt:message key="label.range.color" var="color"/>
 	<fmt:message key="label.ratio" var="ratioValue"/>
+	<fmt:message key="message.noExplanation" var="noExplanation"/>
+	<fmt:message key="message.ratio.explanation" var="ratioExplanation"/>
+	<fmt:message key="message.range.explanation" var="rangeExplanation"/>
+	<fmt:message key="message.range.expectedValueExplanation" var="expectedValueExplanation"/>
 
 	<meta name="menu" content="ManageProfiles"/>
 	
@@ -58,8 +62,7 @@
 	
 	$.subscribe('reloadEntityAttributes', function() {
 		selectedEntityAttribute = null;
-		$("#mapping_cfg").html("");
-		$("#mapping_control").html("");
+		resetMessageAndControlDivs();
 		var entity =  $("#entitySelect").val();
 		if (mappings.length > 0) {
 			resetMappings();
@@ -77,7 +80,7 @@
 						$("#entityAttributesDiv").append("<ul>");
 						$.each(data.entityAttributes, function (key, value) {
 							entityAttributesArray[value.name] = value.type;
-							$("#entityAttributesDiv ul").append("<li id='entityAttr_" + value.name + "' class='selectablelist ui-corner-all' title='" + value.description + "'>" + value.name + " (" + value.type + ")</li>");
+							$("#entityAttributesDiv ul").append("<li id='entityAttr_" + value.name + "' class='selectablelist ui-corner-all' title='" + value.description + "'>" + (value.name).split('_').join(' ') + " (" + value.type + ")</li>");
 						});
 						$("#entityAttributesDiv").append("</ul>");
 					}
@@ -87,8 +90,7 @@
 	
 	$.subscribe('reloadModelAttributes', function() {
 		selectedModelAttribute = null;
-		$("#mapping_cfg").html("");
-		$("#mapping_control").html("");
+		resetMessageAndControlDivs();
 		var model =  $("#modelSelect").val();
 		if (mappings.length > 0) {
 			resetMappings();
@@ -114,13 +116,23 @@
 		});
 	});
 	
+	function resetMessageAndControlDivs() {
+		$("#mapping_messages").html("");
+		$("#mapping_cfg").html("");
+		$("#mapping_control").html("");
+	}
+	
 	function resetMappings() {
+		selectedEntityAttribute = null;
+		$("#entityAttributesDiv").children('ul').children('li').removeClass('ui-selected');
+		selectedModelAttribute = null;
+		$("#modelAttributesDiv").children('ul').children('li').removeClass('ui-selected');
 		// reset mappings array
 		mappings = new Array();
 		// clean mappings table
 		$(".mapping_line").remove();
 		// clean mappings messages
-		$("#mapping_messages").html("");
+		resetMessageAndControlDivs();
 		// restablish no mappings info messag
 		$("#mapping_added tfoot").html("<tr>");
 		$("#mapping_added tfoot tr:last").append("<td colspan='7'>");
@@ -138,16 +150,13 @@
 	});
 	
 	function checkMapping() {
-		$("#mapping_messages").html("");
-		$("#mapping_cfg").html("");
-		$("#mapping_control").html("");
-		// TODO esto genera un pequeño bug en la interfaz. Comprobar que el elemento sea visible
+		resetMessageAndControlDivs();
 		selectedEntityAttribute = $("#entityAttributesDiv").children('ul').children('li.ui-selected');
 		selectedModelAttribute = $("#modelAttributesDiv").children('ul').children('li.ui-selected');
 		if (selectedEntityAttribute != null && selectedModelAttribute != null) {
 			var entityAttrName = $(selectedEntityAttribute).attr('id').replace("entityAttr_", "");
 			var entityAttrType = entityAttributesArray[entityAttrName];
-			var modelAttrName = (selectedModelAttribute).attr('id').replace("modelAttr_", "");
+			var modelAttrName = $(selectedModelAttribute).attr('id').replace("modelAttr_", "");
 			var modelAttrType = modelAttributesArray[modelAttrName];
 			var compatibility = checkTypeCompatibility(entityAttrType, modelAttrType);
 			if (compatibility == -1) { // Incompatible types
@@ -156,28 +165,46 @@
 				$("#mapping_messages").html("<p class='warning'><s:text name='warning.type_compatibility'/></p>");
 			} else { // Fully compatible types
 				if (modelAttrType == "float_range") {
-					var range = true;
-					if (entityAttrType == "string" || entityAttrType == "boolean") range = false;
+					var range = null;
+					if (entityAttrType == "string" || entityAttrType == "boolean") {
+						range = false;
+						$("#mapping_cfg").html("<p><c:out value='${expectedValueExplanation}'/></p>");
+					} else {
+						range = true;
+						$("#mapping_cfg").html("<p><c:out value='${rangeExplanation}'/></p>");
+					}
 					addRangeConfigurationLine(range);
 					$("#mapping_control").append("<a href='javascript:addRangeConfigurationLine(" + range + ")' class='clrright'><s:text name='label.add_configuration_line'/></a>");
 				} else if (modelAttrType == "color") {
 					// if entity attr type is color in hex format, it is a direct mapping
 					if (entityAttrType != "hexcolor") {
-						var range = true;
-						if (entityAttrType == "string" || entityAttrType == "boolean") range = false;
+						var range = null;
+						if (entityAttrType == "string" || entityAttrType == "boolean") {
+							range = false;
+							$("#mapping_cfg").html("<p><c:out value='${expectedValueExplanation}'/></p>");
+						} else {
+							range = true;
+							$("#mapping_cfg").html("<p><c:out value='${rangeExplanation}'/></p>");
+						}
 						addColorConfigurationLine(range);
 						$("#mapping_control").append("<a href='javascript:addColorConfigurationLine(" + range + ")' class='clrright'><s:text name='label.add_configuration_line'/></a>");	
+					} else {
+						// Si es mapeo directo no hay que hacer nada más
+						$("#mapping_cfg").html("<p><c:out value='${noExplanation}'/></p>");
 					}
 				} else if (modelAttrType == "float") {
 					// If we try to map to a float dimension, we must stablish a ratio value that specifies the maximum value the entity attribute could have (p.e. portability - 100.0)
+					$("#mapping_cfg").html("<p><c:out value='${ratioExplanation}'/></p>");
 					$("#mapping_cfg").append("<fieldset class='cfg_line form'>");
 					$(".cfg_line:last").append("<legend><s:text name='label.ratio_configuration'/>:</legend>");
 					$(".cfg_line:last").append("<ul>");
 					$(".cfg_line:last ul").append("<li>");
 					$(".cfg_line:last ul li:last").append("<label><c:out value='${ratioValue}'/></label>");
 					$(".cfg_line:last ul li:last").append("<input id='ratio' type='text' value=''/>");
+				} else {
+					// Si es mapeo directo no hay que hacer nada más
+					$("#mapping_cfg").html("<p><c:out value='${noExplanation}'/></p>");
 				}
-				// Si es mapeo directo no hay que ahcer nada más
 				$("#mapping_control").append("<a href='javascript:saveMapping()' class='clrright'><s:text name='label.save_mapping'/></a>");
 			}
 		}
@@ -187,7 +214,7 @@
 		if (selectedEntityAttribute != null && selectedModelAttribute != null) {
 			var entityAttrName = $(selectedEntityAttribute).attr('id').replace("entityAttr_", "");
 			var entityAttrType = entityAttributesArray[entityAttrName];
-			var modelAttrName = (selectedModelAttribute).attr('id').replace("modelAttr_", "");
+			var modelAttrName = $(selectedModelAttribute).attr('id').replace("modelAttr_", "");
 			var modelAttrType = modelAttributesArray[modelAttrName];
 			// Recorrer todas las lineas para comprobar que estan bien configuradas
 			// Si es asociacion directa no habrá ninguna línea que comprobar, si es range o color, puede haber varias
@@ -239,7 +266,6 @@
 				} else ratio = null;
 			}
 			if (!error) {
-				$("#mapping_messages").html("");
 				$("#mapping_added tfoot").html("");
 				// Si no hay error, establecemos al asociacion con sus reglas
 				var entityAttribute = new Attribute(entityAttrName, entityAttrType);
@@ -255,9 +281,8 @@
 				// Resetear selectedColumn y selectedAttribute
 				selectedEntityAttribute = null;
 				selectedModelAttribute = null;
-				// Resetear mapping_cfg y mapping_control
-				$("#mapping_cfg").html("");
-				$("#mapping_control").html("");
+				// Resetear mapping_messages, mapping_cfg y mapping_control
+				resetMessageAndControlDivs();
 				// Feedback en mapping_added
 				var rowspan = rules.length;
 				if (rowspan == 0) rowspan = 1;
@@ -496,7 +521,7 @@
 		} else {
 			$("#nonMapped_dimensions tfoot").html("<tr>");
 			$("#nonMapped_dimensions tfoot tr:last").append("<td colspan='2'>");
-			$("#nonMapped_dimensions tfoot tr:last td:last").append("<span class='info'><s:text name='message.all_model_attributes_mapped'/></span>");
+			$("#nonMapped_dimensions tfoot tr:last td:last").append("<p class='info'><s:text name='message.all_model_attributes_mapped'/></p>");
 		}
 	}
 	
@@ -507,18 +532,18 @@
 		// Comprobar que hay asociaciones hechas
 		if (mappings.length < 1) {
 			$("#mapping_messages").html("<span class='error'><s:text name='error.empty_mapping'/></span>");
-			toggleSteps(false);
+			toggleSteps(3,1);
 			noError = false;
 		}
 		// Comprobar que no quedan nonMappedModelAttributes sin valor por defecto y que el valor corresponde al tipo
-		$("#nonMapped_dimensions > tbody > tr").each(function() {
+		$("#nonMapped_dimensions").children("tbody").children("tr").each(function() {
 			var attrName = $(this).children(".attr").replace("constant_", "");
 			var attrType = modelAttributesArray[attrName];
 			var attrValue = $(this).children(".value").val();
 			// TODO comprobar tipos
 		});
 		// Comprobar que no hay caption lines sin texto
-		$("#added_captionLines > tbody > .cfg_line").each(function(index, element) {
+		$("#added_captionLines tbody .cfg_line").each(function(index, element) {
 			var label = $(element).children("td").children("#text").val();
 			var hexColor = rgb2hex($(element).children("td").children('.colorSelector').children('div').css('backgroundColor'));
 			if (label == "") {
@@ -586,12 +611,36 @@
 		}
 	}
 	
-	function toggleSteps(forward) {
-		if (forward) {
-			configureNonMappedModelAttributes()
+	function toggleSteps(from, to) {
+		var fromStep = null;
+		switch (from) {
+		case 1:
+			fromStep = "#first_step";
+			break;
+		case 2:
+			fromStep = "#second_step";
+			break;
+		case 3:
+			fromStep = "#third_step";
+			break;
 		}
-		$("#first_step").toggle();
-		$("#second_step").toggle();
+		var toStep = null;
+		switch (to) {
+		case 1:
+			toStep = "#first_step";
+			break;
+		case 2:
+			toStep = "#second_step";
+			break;
+		case 3:
+			toStep = "#third_step";
+			break;
+		}
+		if (from == 1 && to == 2) {
+			configureNonMappedModelAttributes();
+		}
+		$(fromStep).toggle();
+		$(toStep).toggle();
 	}
 	
 	$(document).ready(function() {
@@ -602,7 +651,6 @@
 </head>
 
 <body>
-	<div id="messageErrors"></div>
 	<div id="first_step">
 		<s:url id="updateProfileURL" action="json_p_updateProfileForm"/>
 		<s:url id="refreshTableColumns" action="json_p_loadTableColumns"/>
@@ -622,8 +670,10 @@
 							id="entitySelect"
 							name="entity"
 							list="entities"
+							indicator="indicator1"
 							onAlwaysTopics="disableHeader"
 							onChangeTopics="reloadEntityAttributes"/>
+				<div><img id="indicator1" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none"/></div>
 				<sj:div id="entityAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
 			</div>
 			<div id="rightPane">
@@ -634,8 +684,10 @@
 							id="modelSelect"
 							name="model"
 							list="models"
+							indicator="indicator2"
 							onAlwaysTopics="disableHeader"
 							onChangeTopics="reloadModelAttributes"/>
+				<div><img id="indicator2" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none"/></div>
 				<sj:div id="modelAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
 			</div>
 		</div>
@@ -674,14 +726,14 @@
 		</div>
 		<div class="clear"></div>
 		<div class="wizardSteps">
-			<a href="javascript:toggleSteps(true)" class="right"><s:text name="label.next"/> &gt;</a>
+			<a href="javascript:toggleSteps(1,2)" class="right"><s:text name="label.next"/> &gt;</a>
 		</div>
 		<div class="clear"></div>
 	</div>
 	
 	<div id="second_step">
-		<div id="nonMappedPane">
-			<table id="nonMapped_dimensions">
+		<div id="nonMappedPane" class="pane">
+			<table id="nonMapped_dimensions" class="default">
 				<thead>
 					<tr><th colspan="2"><s:text name="label.configure_nonMapped_Attributes"/></th></tr>
 					<tr>
@@ -698,8 +750,8 @@
 			</table>
 			<h1></h1>
 		</div>
-		<div id="captionPanel">
-			<table id="added_captionLines">
+		<div id="captionPane" class="pane">
+			<table id="added_captionLines" class="default">
 				<thead>
 					<tr>
 						<th colspan="3"><s:text name="label.configure_caption_lines"/></th>
@@ -717,8 +769,17 @@
 				</tfoot>
 			</table>
 		</div>
+		<div class="clear"></div>
+		<div class="wizardSteps">
+			<a href="javascript:toggleSteps(2,1)" class="left">&lt; <s:text name="label.back"/></a>
+			<a href="javascript:toggleSteps(2,3)" class="right"><s:text name="label.next"/> &gt;</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+	<div id="third_step">
 		<div id="profilePane" class="form">
-			<h1><s:text name="label.profile_info"></s:text></h1>
+			<span class="header"><s:text name="label.profile_info"></s:text></span>
 			<ul>
 				<li>
 					<label for="profileName"><s:text name="label.profile_name"/></label>
@@ -734,8 +795,8 @@
 		</div>
 		<div class="clear"></div>
 		<div class="wizardSteps">
-			<a href="javascript:toggleSteps(false)" class="left">&lt; <s:text name="label.back"/></a>
-			<a href="javascript:saveProfile()" class="right">Save profile</a>
+			<a href="javascript:toggleSteps(3,2)" class="left">&lt; <s:text name="label.back"/></a>
+			<a href="javascript:saveProfile()" class="right"><s:text name="label.saveProfile"/></a>
 		</div>
 		<div class="clear"></div>
 	</div>

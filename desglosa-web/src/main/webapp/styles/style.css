@@ -124,6 +124,13 @@ h2 {
 	width: 130px;
 }
 
+.form .header {
+	padding-bottom: 5px;
+	text-align: center;
+	font-weight: bold;
+	color: black;
+}
+
 legend {
 	margin: 0;
 	padding: 0;
@@ -135,6 +142,7 @@ p {
 	margin:8px 0;
 	padding:0 0 8px 0;
 	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
+	text-align: justify;
 }
 
 p.spec {
@@ -151,9 +159,9 @@ p.spec {
 }
 
 .default a {
-	color:#5190BB;
-	text-decoration:none;
-	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
+	color: #5190BB;
+	text-decoration: none;
+	font: normal 12px/1.8em Arial, Helvetica, sans-serif;
 }
 
 .default a:hover {
@@ -162,6 +170,7 @@ p.spec {
 
 table.default {
 	border-collapse: collapse;
+	margin: 0 auto;
 }
 
 table.default tr.odd {
