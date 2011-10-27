@@ -16,6 +16,10 @@ div #second_step {
 	display: none;
 }
 
+div #third_step {
+	display: none;
+}
+
 div #info {
 	text-align: justify;
 	width: 100%;
@@ -33,7 +37,7 @@ div #info {
 }
 
 div #panes {
-	text-align: justify;
+	text-align: left;
 	margin-left: auto;
 	margin-right: auto;	
 }
@@ -79,42 +83,18 @@ div #mapping {
 	border-right: none;
 }
 
-tbody #mapping_added_body {
-
-}
-
 tfooter #mapping_added_footer {}
 
 div #mapping_messages {
 	margin: 50px;
 }
 
-div#mapping_cfg {
-	
-}
-
 .cfg_line ul {
 	list-style: none;
 }
 
-div #mapping_control {
-
-}
-
 #nonMappedPane {
-	
-}
-
-#nonMappedModelAttributesDiv {
-	
-}
-
-#captionPanel {
-	
-}
-
-#added_captionLines {
-	
+	margin-right: 15px;
 }
 
 #profilePane {
