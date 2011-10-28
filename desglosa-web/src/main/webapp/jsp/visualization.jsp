@@ -281,7 +281,7 @@
 				$("#profileChooserDialog").dialog('close');
 			} else {
 				// Error: The user must select a group by option and a profile
-				$("#profileChooserDialogMessages").html("<p class='error'><c:out value='${profileSelectionError}'/></p>");
+				$("#profileChooserDialogMessages").html("<p class='messageBox error'><c:out value='${profileSelectionError}'/></p>");
 			}
 		}
 	};
@@ -330,11 +330,11 @@
 						} else {
 							// Error: No profiles for selected entity
 							noProfilesConfigured = true;
-							$("#profileChooserDialogMessages").html("<p class='error'><c:out value='${noProfiles}'/></p>");
+							$("#profileChooserDialogMessages").html("<p class='messageBox error'><c:out value='${noProfiles}'/></p>");
 							$('#profileChooserDialog').dialog('open');
 						}
 					} else {
-						$('#errorDialogBody').html("<p class='error'><c:out value='${generalError}'/></p>");
+						$('#errorDialogBody').html("<p class='messageBox error'><c:out value='${generalError}'/></p>");
 						$('#errorDialog').dialog('open');
 					}
 					showLoadingIndicator(false);

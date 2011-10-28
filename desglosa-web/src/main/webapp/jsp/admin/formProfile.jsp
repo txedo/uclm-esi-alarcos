@@ -17,6 +17,7 @@
 	<fmt:message key="message.ratio.explanation" var="ratioExplanation"/>
 	<fmt:message key="message.range.explanation" var="rangeExplanation"/>
 	<fmt:message key="message.range.expectedValueExplanation" var="expectedValueExplanation"/>
+	<fmt:message key="error.profileCreation" var="profileCreationErrors"/>
 
 	<meta name="menu" content="ManageProfiles"/>
 	
@@ -24,10 +25,11 @@
 	<link href="<s:url value='/styles/buttons.css?version=1'/>" rel="stylesheet" type="text/css" />
 	<link href="<s:url value='/js/colorpicker/css/colorpicker.css?version=1'/>" rel="stylesheet" type="text/css" media="screen" />
 	
-	<sj:head jqueryui="true" jquerytheme="cupertino"/>
+	<sj:head jqueryui="true"/>
 	
 	<script type="text/javascript" src="<s:url value='/js/colorpicker/js/colorpicker.js'/>"></script>
 	<script type="text/javascript" src="js/json2.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
 	
 	<script type="text/javascript">
 	var mappings = new Array();
@@ -136,7 +138,7 @@
 		// restablish no mappings info messag
 		$("#mapping_added tfoot").html("<tr>");
 		$("#mapping_added tfoot tr:last").append("<td colspan='7'>");
-		$("#mapping_added tfoot tr:last td:last").append("<span class='info'><s:text name='message.no_mappings'/></span>");
+		$("#mapping_added tfoot tr:last td:last").append("<span class='messageBox info'><s:text name='message.no_mappings'/></span>");
 	}
 	
 	var selectedEntityAttribute = null;
@@ -153,16 +155,17 @@
 		resetMessageAndControlDivs();
 		selectedEntityAttribute = $("#entityAttributesDiv").children('ul').children('li.ui-selected');
 		selectedModelAttribute = $("#modelAttributesDiv").children('ul').children('li.ui-selected');
-		if (selectedEntityAttribute != null && selectedModelAttribute != null) {
+		if ((selectedEntityAttribute != null && selectedEntityAttribute.length > 0)
+				&& (selectedModelAttribute != null && selectedModelAttribute.length > 0)) {
 			var entityAttrName = $(selectedEntityAttribute).attr('id').replace("entityAttr_", "");
 			var entityAttrType = entityAttributesArray[entityAttrName];
 			var modelAttrName = $(selectedModelAttribute).attr('id').replace("modelAttr_", "");
 			var modelAttrType = modelAttributesArray[modelAttrName];
 			var compatibility = checkTypeCompatibility(entityAttrType, modelAttrType);
 			if (compatibility == -1) { // Incompatible types
-				$("#mapping_messages").html("<p class='error'><s:text name='error.type_compatibility'/></p>");
+				$("#mapping_messages").html("<p class='messageBox error'><s:text name='error.type_compatibility'/></p>");
 			} else if (compatibility == 0) { // Not fully compatible types
-				$("#mapping_messages").html("<p class='warning'><s:text name='warning.type_compatibility'/></p>");
+				$("#mapping_messages").html("<p class='messageBox warning'><s:text name='warning.type_compatibility'/></p>");
 			} else { // Fully compatible types
 				if (modelAttrType == "float_range") {
 					var range = null;
@@ -196,11 +199,11 @@
 					// If we try to map to a float dimension, we must stablish a ratio value that specifies the maximum value the entity attribute could have (p.e. portability - 100.0)
 					$("#mapping_cfg").html("<p><c:out value='${ratioExplanation}'/></p>");
 					$("#mapping_cfg").append("<fieldset class='cfg_line form'>");
-					$(".cfg_line:last").append("<legend><s:text name='label.ratio_configuration'/>:</legend>");
-					$(".cfg_line:last").append("<ul>");
-					$(".cfg_line:last ul").append("<li>");
-					$(".cfg_line:last ul li:last").append("<label><c:out value='${ratioValue}'/></label>");
-					$(".cfg_line:last ul li:last").append("<input id='ratio' type='text' value=''/>");
+					$("#mapping_cfg .cfg_line:last").append("<legend><s:text name='label.ratio_configuration'/>:</legend>");
+					$("#mapping_cfg .cfg_line:last").append("<ul>");
+					$("#mapping_cfg .cfg_line:last ul").append("<li>");
+					$("#mapping_cfg .cfg_line:last ul li:last").append("<label><c:out value='${ratioValue}'/></label>");
+					$("#mapping_cfg .cfg_line:last ul li:last").append("<input id='ratio' type='text' value=''/>");
 				} else {
 					// Si es mapeo directo no hay que hacer nada más
 					$("#mapping_cfg").html("<p><c:out value='${noExplanation}'/></p>");
@@ -211,7 +214,8 @@
 	}
 	
 	function saveMapping() {
-		if (selectedEntityAttribute != null && selectedModelAttribute != null) {
+		if ((selectedEntityAttribute != null && selectedEntityAttribute.length > 0)
+				&& (selectedModelAttribute != null && selectedModelAttribute.length > 0)) {
 			var entityAttrName = $(selectedEntityAttribute).attr('id').replace("entityAttr_", "");
 			var entityAttrType = entityAttributesArray[entityAttrName];
 			var modelAttrName = $(selectedModelAttribute).attr('id').replace("modelAttr_", "");
@@ -246,7 +250,7 @@
 					}
 					if ((((entityAttrType == "int" || entityAttrType == "float") && modelAttrType == "color") && (isNaN(low) || isNaN(high)))
 							|| (((entityAttrType == "int" || entityAttrType == "float") && modelAttrType == "float_range") && (isNaN(low) || isNaN(high) || isNaN(value)))) {
-						$("#mapping_messages").html("<p class='error'><s:text name='error.field_isNaN'/></p>");
+						$("#mapping_messages").html("<p class='messageBox error'><s:text name='error.field_isNaN'/></p>");
 						error = true;
 						// Resetear tablas de valores
 						rules = new Array();
@@ -260,7 +264,7 @@
 				if ($("#ratio").val() != "") {
 					ratio = parseFloat($("#ratio").val());
 					if (isNaN(ratio)) {
-						$("#mapping_messages").html("<p class='error'><s:text name='error.field_isNaN'/></p>");
+						$("#mapping_messages").html("<p class='messageBox error'><s:text name='error.field_isNaN'/></p>");
 						error = true;
 					}
 				} else ratio = null;
@@ -320,8 +324,10 @@
 					});
 				}
 				// Feedback en mapping_messages
-				$("#mapping_messages").html("<p class='ok'><s:text name='message.mapping_successful'/></p>");
+				$("#mapping_messages").html("<p class='messageBox ok'><s:text name='message.mapping_successful'/></p>");
 			}
+		} else {
+			// TODO show message error no 2 side mappings
 		}
 	}
 	
@@ -346,12 +352,12 @@
 				mappings.splice(i, 1); // This removes one element from position i
 			}
 		});
-		$("#mapping_messages").html("<p class='ok'><s:text name='message.mapping_deleted'/></p>");
+		$("#mapping_messages").html("<p class='messageBox ok'><s:text name='message.mapping_deleted'/></p>");
 		// If no mappings left, feedback it
 		if (mappings.length == 0) {
 			$("#mapping_added tfoot").html("<tr>");
 			$("#mapping_added tfoot tr:last").append("<td colspan='7'>");
-			$("#mapping_added tfoot tr:last td:last").append("<span class='info'><s:text name='message.no_mappings'/></span>");
+			$("#mapping_added tfoot tr:last td:last").append("<span class='messageBox info'><s:text name='message.no_mappings'/></span>");
 		}
 	}
 	
@@ -509,9 +515,9 @@
 			// Fill configuration table in
 			$.each(nonMappedModelAttributesArray, function() {
 				$("#nonMapped_dimensions tbody").append("<tr>");
-				$("#nonMapped_dimensions tbody tr:last").append("<td class='attr'>");
+				$("#nonMapped_dimensions tbody tr:last").append("<td>");
 				$("#nonMapped_dimensions tbody tr:last td:last").append("<label for='constant_" + this + "'>" + this + " (" + modelAttributesArray[this] + ")</label>");
-				$("#nonMapped_dimensions tbody tr:last").append("<td class='value'>");
+				$("#nonMapped_dimensions tbody tr:last").append("<td class='attr'>");
 				if (modelAttributesArray[this] == "color") {
 					buildColorPicker("#nonMapped_dimensions tbody tr:last td:last", "constant_" + this);
 				} else {
@@ -521,7 +527,7 @@
 		} else {
 			$("#nonMapped_dimensions tfoot").html("<tr>");
 			$("#nonMapped_dimensions tfoot tr:last").append("<td colspan='2'>");
-			$("#nonMapped_dimensions tfoot tr:last td:last").append("<p class='info'><s:text name='message.all_model_attributes_mapped'/></p>");
+			$("#nonMapped_dimensions tfoot tr:last td:last").append("<p class='messageBox info'><s:text name='message.all_model_attributes_mapped'/></p>");
 		}
 	}
 	
@@ -531,38 +537,67 @@
 		var noError = true;
 		// Comprobar que hay asociaciones hechas
 		if (mappings.length < 1) {
-			$("#mapping_messages").html("<span class='error'><s:text name='error.empty_mapping'/></span>");
+			$("#mapping_messages").html("<p class='messageBox error'><s:text name='error.empty_mapping'/></p>");
 			toggleSteps(3,1);
 			noError = false;
 		}
 		// Comprobar que no quedan nonMappedModelAttributes sin valor por defecto y que el valor corresponde al tipo
-		$("#nonMapped_dimensions").children("tbody").children("tr").each(function() {
-			var attrName = $(this).children(".attr").replace("constant_", "");
+		var nonMappedAttributesError = false;
+		$("#nonMapped_dimensions tbody tr").each(function(index, element) {
+			var attrName = $(element).children(".attr").children().attr('id').replace("constant_", "");
 			var attrType = modelAttributesArray[attrName];
-			var attrValue = $(this).children(".value").val();
-			// TODO comprobar tipos
+			var attrValue = null;
+			if (attrType == "color") {
+				attrValue = rgb2hex($(element).children(".attr").children('div').children('div').css('backgroundColor'));
+			} else {
+				attrValue = $(element).children(".attr").children("input").val();
+			}
+			// Check types if no empty value (empty value means using default graphic model constants)
+			if (attrValue != "") {
+				if (((attrType == "float_range" || attrType == "float") && !isFloat(attrValue))
+						|| (attrType == "int" && !isInt(attrValue))) {
+					// Add class error if incorrect types
+					$(element).children(".attr").children().addClass("error");
+					nonMappedAttributesError = true;
+				} else {
+					// Remove class error if already added and types are correct
+					if ($(element).children(".attr").children().hasClass("error")) {
+						$(element).children(".attr").children().removeClass("error");
+					}
+				}
+			}
 		});
+		if (nonMappedAttributesError) {
+			$("#nonMapped_dimensions tfoot").html("<tr>");
+			$("#nonMapped_dimensions tfoot tr:last").html("<td colspan='2'>");
+			$("#nonMapped_dimensions tfoot tr td:last").html("<p class='messageBox error'><s:text name='error.constant_attributes'/></p>");
+		}
 		// Comprobar que no hay caption lines sin texto
-		$("#added_captionLines tbody .cfg_line").each(function(index, element) {
-			var label = $(element).children("td").children("#text").val();
+		$("#added_captionLines tbody tr.cfg_line").each(function(index, element) {
+			var labelElement = $(element).children("td").children("#text");
+			var label = $(labelElement).val();
 			var hexColor = rgb2hex($(element).children("td").children('.colorSelector').children('div').css('backgroundColor'));
 			if (label == "") {
+				$(labelElement).addClass("error");
 				$("#added_captionLines tfoot").html("<tr>");
-				$("#added_captionLines tfoot tr:last").append("<td colspan='2'>");
-				$("#added_captionLines tfoot tr:last td:last").append("<span class='error'><s:text name='message.all_model_attributes_mapped'/></span>");
+				$("#added_captionLines tfoot tr:last").append("<td colspan='3'>");
+				$("#added_captionLines tfoot tr:last td:last").append("<p class='messageBox error'><s:text name='error.empty_caption_lines'/></p>");
 				noError = false;
 			} else {
+				if ($(labelElement).hasClass("error")) {
+					$(labelElement).removeClass("error");
+				}
 				var cl = new CaptionLine(label, hexColor);
 				captionLines.push(cl);
 			}
 		});
 		// Comprobar que profileName y profileDescription no están vacíos
 		if ($("#profileName").val() == "") {
-			$("#profileNameError").html("<span class='error'><s:text name='error.profileName.isMandatory'/></span>")
+			$("#profileNameError").html("<span class='messageBox error'><s:text name='error.profileName.isMandatory'/></span>")
 			noError = false;
 		}
 		if ($("#profileDescription").val() == "") {
-			$("#profileDescriptionError").html("<span class='error'><s:text name='error.profileDescription.isMandatory'/></span>")
+			$("#profileDescriptionError").html("<span class='messageBox error'><s:text name='error.profileDescription.isMandatory'/></span>")
 			noError = false;
 		}
 
@@ -607,7 +642,8 @@
 					}
 			});
 		} else {
-			
+			$('#errorDialogBody').html("<p class='messageBox error'><c:out value='${profileCreationErrors}'/></p>");
+			$('#errorDialog').dialog('open');
 		}
 	}
 	
@@ -748,7 +784,6 @@
 				<tbody></tbody>
 				<tfoot></tfoot>
 			</table>
-			<h1></h1>
 		</div>
 		<div id="captionPane" class="pane">
 			<table id="added_captionLines" class="default">

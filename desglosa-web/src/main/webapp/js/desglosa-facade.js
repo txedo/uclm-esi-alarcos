@@ -146,13 +146,13 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 					} else {
 						$('#jogl_canvas').css('display','none');
 						$('#map_canvas').css('display','')
-						$('#errorDialogBody').html("<p class='error'><c:out value='${malformedJSONStrnig}'/></p>");
+						$('#errorDialogBody').html("<p class='messageBox error'><c:out value='${malformedJSONStrnig}'/></p>");
 						$('#errorDialog').dialog('open');
 					}
 				} else {
 					$('#jogl_canvas').css('display','none');
 					$('#map_canvas').css('display','');
-					$('#errorDialogBody').html("<p class='error'><c:out value='${generalError}'/></p>");
+					$('#errorDialogBody').html("<p class='messageBox error'><c:out value='${generalError}'/></p>");
 					$('#errorDialog').dialog('open');
 				}
 				showLoadingIndicator(false);
