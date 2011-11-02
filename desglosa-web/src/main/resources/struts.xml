@@ -28,11 +28,20 @@
         </interceptors>
         
         <!-- Actions -->
-        <action name="" class="indexAction">
-			<result>/jsp/index.jsp</result>
+        <action name="">
+			<result>/index.jsp</result>
 		</action>
-		<action name="index" class="indexAction">
-			<result>/jsp/index.jsp</result>
+		<action name="index">
+			<result>/index.jsp</result>
+		</action>
+		<action name="login">
+			<result>/login.jsp</result>
+		</action>
+		<action name="logout">
+			<result>/logout.jsp</result>
+		</action>
+		<action name="contactUs">
+			<result>/contactUs.jsp</result>
 		</action>
 		<action name="visualization" class="visualizationAction">
 			<!-- <interceptor-ref name="allButUsers"/> -->
@@ -48,9 +57,6 @@
 		<action name="showMyAccount" class="showMyAccountAction">
 			<!-- <interceptor-ref name="allUsers"/> -->
 			<result>/jsp/myAccount.jsp</result>
-		</action>
-		<action name="contactUs" class="contactUsAction">
-			<result>/jsp/contactUs.jsp</result>
 		</action>
 		<action name="listProfiles" class="profileAction">
 			<!-- <interceptor-ref name="allUsers"></interceptor-ref> -->

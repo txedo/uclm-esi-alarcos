@@ -16,10 +16,11 @@
 	<script type="text/javascript" src="js/cufon-yui.js"></script>
 	<script type="text/javascript" src="js/arial.js"></script>
 	<script type="text/javascript" src="js/cuf_run.js"></script>
+	<script type="text/javascript" src="js/global.js?version=1"></script>
 	
     <decorator:head/>
 </head>
-<body id="page-home" onload="<decorator:getProperty property="body.onload" />">
+<body id="<decorator:getProperty property="body.id" />" onload="<decorator:getProperty property="body.onload" />">
     <div id="page" class="main">
 		<div class="header">
 			<div class="header_resize">

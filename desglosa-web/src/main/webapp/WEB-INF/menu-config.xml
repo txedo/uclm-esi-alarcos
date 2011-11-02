@@ -12,8 +12,8 @@
     	</Menu>
     	<Menu name="UserMenu" title="menu.user" description="User Menu" page="/showMyAccount" roles="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER" />
     	<Menu name="Visualization" title="menu.visualization" description="Visualization Menu" page="/visualization" roles="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER" />
-    	<Menu name="Login" title="menu.login" page="/login.jsp" />
-        <Menu name="Logout" title="menu.logout" page="/logout.jsp" roles="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER" />
+    	<Menu name="Login" title="menu.login" page="/login" />
+        <Menu name="Logout" title="menu.logout" page="/logout" roles="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER" />
         <Menu name="Contact" title="menu.contact" description="Contact Menu" page="/contactUs" />
     </Menus>
 </MenuConfig>
