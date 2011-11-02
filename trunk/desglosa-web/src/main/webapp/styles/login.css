@@ -1,0 +1,10 @@
+#loginWrapper {
+	padding: 15px;
+	margin: 0 auto 50px;
+	float: left;
+}
+
+#submit {
+	float: right;
+    margin-top: 15px;
+}

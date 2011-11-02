@@ -117,11 +117,16 @@ h2 {
 
 .form label {
 	margin: 0;
+	margin-right: 15px;
 	padding: 0;
 	color: black;
 	font: normal 12px/1.8em Arial, Helvetica, sans-serif;
 	float: left;
 	width: 130px;
+}
+
+.form ul li span {
+	margin-left: 15px;
 }
 
 .form .header {
