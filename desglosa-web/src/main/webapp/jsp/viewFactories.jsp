@@ -6,10 +6,10 @@
 
 <html lang="en">
 <head>
-	<meta name="menu" content="ViewFactories"/>
+	<meta name="menu" content="ManageFactories"/>
 </head>
-<body>
-	<s:text name="menu.admin.factories"/>
+<body id="viewFactories">
+	<h1><s:text name="menu.admin.factories"/></h1>
 	<s:actionerror />
 	<s:actionmessage />
 	<s:set name="factories" value="factories" scope="request"/>  

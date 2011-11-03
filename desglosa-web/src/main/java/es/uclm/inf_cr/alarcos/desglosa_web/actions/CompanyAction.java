@@ -218,10 +218,34 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 
 		return SUCCESS;
 	}
+	
+	public void validateDoGet() {
+		// Get the company id attribute from URL
+		HttpServletRequest request = ServletActionContext.getRequest();
+		if (request.getParameter("id") != null) {
+			id = Integer.parseInt(request.getParameter("id"));
+			// If id <= 0, then ERROR
+			if (id <= 0) {
+				addActionError(getText("error.company.id"));
+			} else {
+				try {
+					// Check if the company id exists
+					companyDao.getCompany(id);
+				} catch (CompanyNotFoundException e) {
+					addActionError(getText("error.company.id"));
+				}
+			}
+		} else {
+			addActionError(getText("error.company.id"));
+		}
+		if (hasActionErrors()) companies = companyDao.getAll();
+	}
 
 	public String get() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		company = companyDao.getCompany(id);
+		addActionMessage(getText("message.company.found"));
+		
+		return SUCCESS;
 	}
 
 }

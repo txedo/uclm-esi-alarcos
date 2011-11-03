@@ -30,26 +30,30 @@
 		        this.ab = new Array("j_password", "<s:text name='error.required_field'><s:param><s:text name='label.password'/></s:param></s:text>", "#j_passwordError");
 		    }
 		</script>
+		
+		<fmt:message key="button.login" var="labelLogin"/>
 	</head>
 	<body id="login">
 		<h1><s:text name="menu.login"/></h1>
-		<fieldset id="loginWrapper">
-			<!--  Evaluate login operation -->
-			<c:choose>
-				<c:when test="${param.result == 'success'}">
-			    	<p><fmt:message key="message.login.sucess"/>
-			    	<br /><fmt:message key="message.redirect.index"/></p>
-			    	<c:url var="url" value="/"></c:url>
-			    	<script> setTimeout("window.location.href='<c:out value="${url}"/>'",5000); </script> 
-				</c:when>
-				<c:otherwise>
-					<c:if test="${param.result == 'failed'}">
-					    <div id="errorMessage" class='messageBox error'><fmt:message key="error.login"/></div>
-					    <!-- "Bad credentials" -->
-					    <!-- <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/> -->
-					</c:if>
-					
-					<form class="form" method="post" id="loginForm" action="<c:url value='/j_spring_security_check'/>" onsubmit="saveUsername(this);return validateForm(this)">
+		
+		<!--  Evaluate login operation -->
+		<c:choose>
+			<c:when test="${param.result == 'success'}">
+		    	<p><fmt:message key="message.login.sucess"/>
+		    	<br /><fmt:message key="message.redirect.index"/></p>
+		    	<c:url var="url" value="/"></c:url>
+		    	<script> setTimeout("window.location.href='<c:out value="${url}"/>'",5000); </script> 
+			</c:when>
+			<c:otherwise>
+				<c:if test="${param.result == 'failed'}">
+				    <div id="errorMessage" class='messageBox error' style="float:left;"><fmt:message key="error.login"/></div>
+				    <div class='clear'></div>
+				    <!-- "Bad credentials" -->
+				    <!-- <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/> -->
+				</c:if>
+				
+				<form class="form" method="post" id="loginForm" action="<c:url value='/j_spring_security_check'/>" onsubmit="saveUsername(this);return validateForm(this)">
+					<fieldset id="loginWrapper">
 						<ul>
 							<li>
 								<label for="j_username">
@@ -65,14 +69,13 @@
 								<s:password id="j_password" name="j_password" cssClass="input" value="" tabindex="2" />
 								<span id="j_passwordError"></span>
 							</li>
-							<li>
-								<input type="submit" id="submit" name="login" value="<fmt:message key='button.login'/>" tabindex="3" />
-							</li>
 						</ul>
-					</form>
-				</c:otherwise>
-			</c:choose>
-		</fieldset>
+						
+						<s:submit id="submit" name="login" value="%{getText(#attr.labelLogin)}" tabindex="3"></s:submit>
+					</fieldset>	
+				</form>
+			</c:otherwise>
+		</c:choose>
 		<div class='clear'></div>
 		
 		<script type="text/javascript">

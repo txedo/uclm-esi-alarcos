@@ -10,6 +10,5 @@
 	<security:authorize ifNotGranted="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER">
 		<menu:displayMenu name="Login"/>
 	</security:authorize>
-	<menu:displayMenu name="Logout"/>
 	<menu:displayMenu name="Contact"/>
 </menu:useMenuDisplayer>
