@@ -6,10 +6,10 @@
 
 <html lang="en">
 <head>
-	<meta name="menu" content="ViewCompanies"/>
+	<meta name="menu" content="ManageCompanies"/>
 </head>
-<body>
-	<s:text name="menu.admin.companies" />
+<body id="viewCompanies">
+	<h1><s:text name="menu.admin.companies" /></h1>
 	<s:actionerror />
 	<s:actionmessage />
 	<s:set name="companies" value="companies" scope="request"/>  
@@ -18,8 +18,9 @@
 	    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.company.name" sortable="true"/>
 	    <display:column property="information" escapeXml="true" style="width: 30%" titleKey="table.header.company.information" sortable="false"/>
 	    
-	    <display:column href="showCompanyForm.action" style="width: 5%" paramId="id" paramProperty="id">edit</display:column>
-	    <display:column href="deleteCompany.action" style="width: 5%" paramId="id" paramProperty="id">delete</display:column>
+	    <display:column href="viewCompany" style="width: 5%" paramId="id" paramProperty="id">view</display:column>
+	    <display:column href="showCompanyForm" style="width: 5%" paramId="id" paramProperty="id">edit</display:column>
+	    <display:column href="deleteCompany" style="width: 5%" paramId="id" paramProperty="id">delete</display:column>
 	    
 	    <display:setProperty name="paging.banner.placement" value="top"/>
 	    <display:setProperty name="paging.banner.item_name"><fmt:message key="message.company"/></display:setProperty>
