@@ -88,17 +88,21 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 		// Get the company id attribute from URL
 		HttpServletRequest request = ServletActionContext.getRequest();
 		if (request.getParameter("id") != null) {
-			id = Integer.parseInt(request.getParameter("id"));
-			// If id <= 0, then ERROR
-			if (id <= 0) {
-				addActionError(getText("error.company.id"));
-			} else {
-				try {
-					// Check if the company id exists and place it in value stack
-					company = companyDao.getCompany(id);
-				} catch (CompanyNotFoundException e) {
+			try {
+				id = Integer.parseInt(request.getParameter("id"));
+				// If id <= 0, then ERROR
+				if (id <= 0) {
 					addActionError(getText("error.company.id"));
+				} else {
+					try {
+						// Check if the company id exists and place it in value stack
+						company = companyDao.getCompany(id);
+					} catch (CompanyNotFoundException e) {
+						addActionError(getText("error.company.id"));
+					}
 				}
+			} catch (NumberFormatException nfe) {
+				addActionError(getText("error.company.id"));
 			}
 		} // Else, show a blank form
 		if (hasActionErrors()) {
@@ -173,6 +177,9 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 		} else {
 			addActionError(getText("error.general"));
 		}
+		if (hasFieldErrors()) {
+			addActionError(getText("error.required_fields"));
+		}
 	}
 
 	public String edit() throws Exception {
@@ -194,17 +201,21 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 		// Get the company id attribute from URL
 		HttpServletRequest request = ServletActionContext.getRequest();
 		if (request.getParameter("id") != null) {
-			id = Integer.parseInt(request.getParameter("id"));
-			// If id <= 0, then ERROR
-			if (id <= 0) {
-				addActionError(getText("error.company.id"));
-			} else {
-				try {
-					// Check if the company id exists
-					companyDao.getCompany(id);
-				} catch (CompanyNotFoundException e) {
+			try {
+				id = Integer.parseInt(request.getParameter("id"));
+				// If id <= 0, then ERROR
+				if (id <= 0) {
 					addActionError(getText("error.company.id"));
+				} else {
+					try {
+						// Check if the company id exists
+						companyDao.getCompany(id);
+					} catch (CompanyNotFoundException e) {
+						addActionError(getText("error.company.id"));
+					}
 				}
+			} catch (NumberFormatException nfe) {
+				addActionError(getText("error.company.id"));
 			}
 		} else {
 			addActionError(getText("error.company.id"));
@@ -223,17 +234,21 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
 		// Get the company id attribute from URL
 		HttpServletRequest request = ServletActionContext.getRequest();
 		if (request.getParameter("id") != null) {
-			id = Integer.parseInt(request.getParameter("id"));
-			// If id <= 0, then ERROR
-			if (id <= 0) {
-				addActionError(getText("error.company.id"));
-			} else {
-				try {
-					// Check if the company id exists
-					companyDao.getCompany(id);
-				} catch (CompanyNotFoundException e) {
+			try {
+				id = Integer.parseInt(request.getParameter("id"));
+				// If id <= 0, then ERROR
+				if (id <= 0) {
 					addActionError(getText("error.company.id"));
+				} else {
+					try {
+						// Check if the company id exists
+						companyDao.getCompany(id);
+					} catch (CompanyNotFoundException e) {
+						addActionError(getText("error.company.id"));
+					}
 				}
+			} catch (NumberFormatException nfe) {
+				addActionError(getText("error.company.id"));
 			}
 		} else {
 			addActionError(getText("error.company.id"));

@@ -90,7 +90,9 @@
 		<action name="viewCompany" class="companyAction" method="get">
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
 			<interceptor-ref name="redirectMessageAndParams"/>
-			<result>/jsp/viewCompany.jsp</result>
+			<result name="error">/jsp/viewCompany.jsp</result>
+			<result name="input">/jsp/viewCompany.jsp</result>
+			<result name="success">/jsp/viewCompany.jsp</result>
 		</action>
 		<action name="saveCompany" class="companyAction" method="save">
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
