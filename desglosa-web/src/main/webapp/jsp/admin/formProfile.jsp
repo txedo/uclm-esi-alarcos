@@ -625,7 +625,7 @@
 			var jsonCaptionLines = JSON.stringify(captionLines);
 			var jsonMappings = JSON.stringify(mappings);
 			var jsonConstants = JSON.stringify(constants);
-			$.post ("/desglosa-web/saveProfile.action",
+			$.post ("/desglosa-web/saveProfile",
 				{ profileName: $("#profileName").val(),
 				  profileDescription: $("#profileDescription").val(),
 				  model: $("#modelSelect").val(),

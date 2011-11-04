@@ -2,9 +2,6 @@
 <%@ page import="javax.servlet.http.Cookie" %>
 <%@ page import="org.springframework.security.ui.rememberme.TokenBasedRememberMeServices" %>
 
-<c:if test="${param.result == 'success' }">
-	<c:redirect url="/index.action"/>
-</c:if>
 <%
 if (request.getSession(false) != null) {
     session.invalidate();
@@ -16,3 +13,6 @@ terminate.setMaxAge(0);
 response.addCookie(terminate);
 %>
 
+<c:if test="${param.result == 'success' }">
+	<c:redirect url="/"/>
+</c:if>

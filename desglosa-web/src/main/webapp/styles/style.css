@@ -9,11 +9,23 @@ body {
 	color:black;
 	font:normal 12px/1.8em Arial, Helvetica, sans-serif;
 }
+
 html, .main {
 	padding:0;
 	margin:0;
 	background:#f1f1f1 url(../images/main_bg.gif) top repeat-x;
 }
+
+.centeredBodyContainer {
+	float: right;
+	position: relative;
+	left: -50%;
+}
+.centeredBodyContainer > div:first-child {
+	position: relative;
+	left: 50%;
+}
+
 .clr {
 	clear:both;
 	padding:0;
@@ -117,6 +129,8 @@ h2 {
 
 ul.errorMessage {
 	list-style: none;	
+	margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 ul.errorMessage li {
@@ -124,7 +138,21 @@ ul.errorMessage li {
 }
 
 ul.errorMessage li span {
-	color: #800000;
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
+	background-position: 10px center;
+    background-repeat: no-repeat;
+    background-size: 15px auto;
+    border-radius: 6px 6px 6px 6px;
+    margin: 10px 0;
+    padding: 5px 5px 5px 40px;
+    text-align: left;
+    font: normal 12px/1.8em Arial, Helvetica, sans-serif;
+    background-color: #FFE5E5;
+    background-image: url("../images/icon_error.png");
+    border: 1px solid #800000;
+    color: #800000;
 }
 
 .form p.label {

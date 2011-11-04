@@ -49,7 +49,10 @@
 
 		<div class="content">
 			<div class="content_resize">
-            	<decorator:body/>
+				<div class="<decorator:getProperty property="body.class" />">
+            		<decorator:body/>
+            	</div>
+            	<div class="clr"></div>
                 <hr />
 			</div>
 		</div>
