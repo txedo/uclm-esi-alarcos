@@ -41,7 +41,7 @@ public class GLPavement extends GLObject3D {
 				GLSingleton.getGL().glTexCoord2f(width, 0.0f);	GLSingleton.getGL().glVertex3f(this.width, 0.0f, 0.0f);
 				GLSingleton.getGL().glTexCoord2f(width, depth);	GLSingleton.getGL().glVertex3f(this.width, 0.0f, this.depth);
 			GLSingleton.getGL().glEnd();
-			GLUtils.renderBitmapString(this.width/2, this.titleHeight, this.depth/2, 1, this.title, "ffffff");
+			GLUtils.renderBitmapString(this.width/2, this.titleHeight, this.depth/2, 4, this.title, "000000");
 		GLSingleton.getGL().glPopMatrix();
 		GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);
 		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);

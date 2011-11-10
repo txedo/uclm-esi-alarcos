@@ -17,10 +17,10 @@ public class GLSpotlight {
 	private float direction[]  = {1.0f, 0.0f, 1.0f};
 	private final float initialDirection[] = direction.clone();
 	
-	private final float light_ambient[] = {0.1f, 0.1f, 0.1f, 1.0f};
+	private final float light_ambient[] = {0.7f, 0.7f, 0.7f, 1.0f};
 	private final float light_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
 	private final float light_diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
-	private float mat_ambient[] = {0.0f, 0.0f, 0.0f, 1.0f};
+	private float mat_ambient[] = {0.9f, 0.9f, 0.9f, 1.0f};
 	private float mat_specular[] = {0.8f, 0.8f, 0.8f, 1.0f};
 	private float mat_diffuse[] = {0.5f, 0.5f, 0.5f, 1.0f};
 	private float mat_shininess = 60.0f;

@@ -9,8 +9,8 @@ import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLPavement;
 
 public class City {
-	private final float X_GAP = 1.5f;
-	private final float Y_GAP = 2.0f;
+	private final float X_GAP = 2.5f;
+	private final float Y_GAP = 2.5f;
 	
 	private String model;
 	private List<Neighborhood> neighborhoods;

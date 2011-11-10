@@ -171,8 +171,8 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 			// Textures are enabled and its environment configured just before mapping them, not here
 			
 			// Creamos una cámara y un foco de luz
-			camera = new GLCamera(5.0f, 7.0f, 15.0f, 0.0f, -0.5f, -1.0f);
-			spotlight = new GLSpotlight(0.6f, 0.6f, 0.6f);
+			camera = new GLCamera(20.0f, 10.0f, 20.0f, -1.0f, -0.5f, -1.0f);
+			spotlight = new GLSpotlight(1.0f, 1.0f, 1.0f);
 	
 			// Habilitamos el color natural de los materiales
 			GLSingleton.getGL().glEnable(GL2.GL_COLOR_MATERIAL);
