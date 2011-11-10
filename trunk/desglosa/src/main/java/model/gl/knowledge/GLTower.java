@@ -66,7 +66,7 @@ public class GLTower extends GLObject3D {
 			GLSingleton.getGL().glEnable(GL2.GL_POLYGON_OFFSET_LINE);	// Habilitamos el modo línea
 			GLSingleton.getGL().glPolygonOffset(-1.0f, -1.0f);		// Desfasamos un poco para no dejar huecos en blanco sin rellenar entre la línea y el polígono
 			GLSingleton.getGL().glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_LINE);	// Renderizamos únicamente la parte frontal de la cara por razones de rendimiento
-			this.drawTower(0.0f, this.innerHeight, true);						// Dibujamos la torre (sólo los bordes)
+			this.drawTower(0.0f, this.height, true);						// Dibujamos la torre (sólo los bordes)
 			GLSingleton.getGL().glDisable(GL2.GL_POLYGON_OFFSET_LINE);	// Restauramos todo
 			GLSingleton.getGL().glPolygonMode(GL2.GL_FRONT_AND_BACK, GL2.GL_FILL);
 			GLSingleton.getGL().glPolygonOffset(0.0f, 0.0f);// Configuramos el offset del polígono sin desfase
@@ -77,11 +77,11 @@ public class GLTower extends GLObject3D {
 			GLSingleton.getGL().glColor4fv(color.getColorFB());
 			// Dibujamos la torre con relleno with multisample enabled to get polygons antialiased
 			GLUtils.enableMultisample();
-				this.drawTower(0.0f, this.height, false);
+				this.drawTower(0.0f, this.innerHeight, false);
 				float oldAlpha = color.getAlpha();
 				this.color.setAlpha(this.ALPHA);
 				GLSingleton.getGL().glColor4fv(color.getColorFB());
-				this.drawTower(this.height, this.innerHeight, false);
+				this.drawTower(0.0f, this.height, false);
 				// Restore old values
 				this.color.setAlpha(oldAlpha);
 				GLSingleton.getGL().glColor4fv(color.getColorFB());
@@ -89,7 +89,7 @@ public class GLTower extends GLObject3D {
 		} else {
 			GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
 			GLUtils.enableMultisample();
-				this.drawTower(0.0f, this.innerHeight, false);
+				this.drawTower(0.0f, this.height, false);
 			GLUtils.disableMultisample();
 		}
 

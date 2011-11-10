@@ -163,7 +163,7 @@ public class IGLFacadeImpl implements IGLFacade {
 		// Normalize
 		for (GLObject glTower : towers) {
 			((GLTower)glTower).setHeight(((GLTower)glTower).getHeight()*GLTower.MAX_HEIGHT/maxHeight);
-			((GLTower)glTower).setInnerHeight(((GLTower)glTower).getInnerHeight()*GLTower.MAX_HEIGHT/maxInnerHeight);
+			((GLTower)glTower).setInnerHeight(((GLTower)glTower).getInnerHeight()*GLTower.MAX_HEIGHT/maxHeight);
 			((GLTower)glTower).setWidth(((GLTower)glTower).getWidth()*GLTower.MAX_WIDTH/maxWidth);
 			((GLTower)glTower).setDepth(((GLTower)glTower).getDepth()*GLTower.MAX_DEPTH/maxDepth);
 		}

@@ -126,7 +126,7 @@ public abstract class GLViewManager {
 			GLSingleton.getGLU().gluPickMatrix(this.drawer.getPickPoint().getX(),viewport[3]-this.drawer.getPickPoint().getY(), pickingRegion, pickingRegion, viewport, 0);
 			if (threeDimensional) {
 				float h = (float) this.drawer.getScreenWidth() / this.drawer.getScreenHeight();
-				GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 1000.0f);
+				GLSingleton.getGLU().gluPerspective(60.0f, h, 0.1f, 50.0f);
 			}
 			else {
 				float h = (float) this.drawer.getScreenHeight()/ (float) this.drawer.getScreenWidth();

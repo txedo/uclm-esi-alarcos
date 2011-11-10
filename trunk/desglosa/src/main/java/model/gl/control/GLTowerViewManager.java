@@ -81,11 +81,18 @@ public class GLTowerViewManager extends GLViewManager {
 			sortedTowers.put(glo, distance);
 		}
 		sortedTowers = GLUtils.sortHashMap((HashMap<GLObject, Float>)sortedTowers, true);
-		for (GLObject glo : sortedTowers.keySet()) {
-			if (selectionMode)
+		if (selectionMode) {
+			// Load names and "draw" towers in their native order if it is selection mode
+			for (GLObject glo : towers) {
 				GLSingleton.getGL().glLoadName(cont++);
-			if (this.drawingShadows) ((GLObject3D)glo).drawShadow();
-			else ((GLObject3D)glo).draw();
+				((GLObject3D)glo).draw();
+			}
+		} else {
+			// Draw towers from far to close to get transparencies working fine
+			for (GLObject glo : sortedTowers.keySet()) {
+				if (this.drawingShadows) ((GLObject3D)glo).drawShadow();
+				else ((GLObject3D)glo).draw();
+			}
 		}
 	}
 
