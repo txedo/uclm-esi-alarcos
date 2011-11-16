@@ -6,7 +6,7 @@
 
 <struts>
 	<!-- When adding an action in struts.xml, edit applicationContext.xml to instantiate it by Spring -->
-	<package name="struts" namespace="/" extends="struts-default">    
+	<package name="struts" namespace="/" extends="struts-default">
 		<!-- Interceptors -->
 	    <interceptors>
 	    	<!-- Interceptor to pass messages between actions -->

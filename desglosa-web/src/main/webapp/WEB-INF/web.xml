@@ -77,16 +77,9 @@
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
-    <!--
-   - Loads the menu-config.xml for struts-menu at startup,
-   - by default from "/WEB-INF/menu-config.xml".
-   - To override this, add a context-param named "menuConfigLocation"
-   - web.xml file.
-   -->
     <listener>
         <listener-class>net.sf.navigator.menu.MenuContextListener</listener-class>
 	</listener> 
-    
     
     <!-- Servlets -->
     <servlet>
@@ -124,7 +117,7 @@
     </error-page>
     <error-page>
     	<!-- Unauthorized: Similar to 403 Forbidden, but specifically for use when authentication is possible
-    	but has failed or not yet been provided.The response must include a WWW-Authenticate header field containing
+    	but has failed or not yet been provided. The response must include a WWW-Authenticate header field containing
     	a challenge applicable to the requested resource. -->
         <error-code>401</error-code>
         <location>/401.jsp</location>

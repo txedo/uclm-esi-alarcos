@@ -1,5 +1,6 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,7 +23,9 @@ import org.springframework.security.userdetails.UserDetails;
 
 @Entity
 @Table(name="users")
-public class User implements UserDetails {
+public class User implements Serializable, UserDetails {
+	private static final long serialVersionUID = -6629351009307143091L;
+	
 	private int id;
 	private String username;
 	private String password;

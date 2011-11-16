@@ -6,7 +6,7 @@
 
 <html lang="en">
 	<head>
-		<title><s:text name="desglosa.title" /></title>
+		<title><s:text name="login.title" /></title>
 		<meta name="menu" content="Login"/>
 		
 		<link href="<s:url value='/styles/login.css?version=1'/>" rel="stylesheet" type="text/css" />
@@ -35,7 +35,7 @@
 	</head>
 	<body id="login" class="centeredBodyContainer">
 		<div>
-			<h1><s:text name="menu.login"/></h1>
+			<h1><s:text name="login.title"/></h1>
 			
 			<!--  Evaluate login operation -->
 			<c:choose>
@@ -47,10 +47,8 @@
 				</c:when>
 				<c:otherwise>
 					<c:if test="${param.result == 'failed'}">
-					    <div id="errorMessage" class='messageBox error' style="float:left;"><fmt:message key="error.login"/></div>
+					    <div id="errorMessage" class='messageBox error' style="float:left;"><c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>.</div>
 					    <div class='clear'></div>
-					    <!-- "Bad credentials" -->
-					    <!-- <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/> -->
 					</c:if>
 					
 					<form class="form" method="post" id="loginForm" action="<c:url value='/j_spring_security_check'/>" onsubmit="saveUsername(this);return validateForm(this)">

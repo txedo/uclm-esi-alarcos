@@ -1,5 +1,7 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +14,9 @@ import org.springframework.security.GrantedAuthority;
 
 @Entity
 @Table(name="roles")
-public class Role implements GrantedAuthority {
+public class Role implements Serializable, GrantedAuthority {
+	private static final long serialVersionUID = -5782725748407324783L;
+	
 	private int id;
 	private String name;
 	private String description;

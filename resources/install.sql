@@ -143,7 +143,7 @@ CREATE  TABLE IF NOT EXISTS `desglosadb`.`projects` (
   `total_incidences` INT NULL ,
   `repaired_incidences` INT NULL ,
   `size` INT NULL ,
-  `delayed` TINYINT(1)  NULL ,
+  `delay` TINYINT(1)  NULL ,
   `fiabilidad` FLOAT NULL ,
   `usabilidad` FLOAT NULL ,
   `eficiencia` FLOAT NULL ,
@@ -397,10 +397,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (1, 'desglosa', 'DGL', 'DESGLOSA', 1, 1, 1, 500, 100, 7, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (2, 'vilma', 'VLM', 'VILMA', 2, 2, 0, 10, 2, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (3, 'w2p', 'W2P', 'Where2Publish', 3, 3, 1, 60, 21, 4, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delayed`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (4, 'asdf', 'asdf', 'asdf', 1, 1, 1, 23, 32, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delay`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (1, 'desglosa', 'DGL', 'DESGLOSA', 1, 1, 1, 500, 100, 7, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delay`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (2, 'vilma', 'VLM', 'VILMA', 2, 2, 0, 10, 2, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delay`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (3, 'w2p', 'W2P', 'Where2Publish', 3, 3, 1, 60, 21, 4, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `desglosadb`.`projects` (`id`, `name`, `code`, `plan`, `mainFactory_id`, `market_id`, `audited`, `total_incidences`, `repaired_incidences`, `size`, `delay`, `fiabilidad`, `usabilidad`, `eficiencia`, `mantenibilidad`, `portabilidad`, `lineas_de_codigo`, `comentarios`, `puntos_funcion`, `fichaje_codigo`, `fichaje_total`, `actividad`) VALUES (4, 'asdf', 'asdf', 'asdf', 1, 1, 1, 23, 32, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 COMMIT;
 

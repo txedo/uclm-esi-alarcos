@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <table name="roles">
+        <column>id</column>
+        <column>name</column>
+        <column>description</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">ROLE_ADMIN</value>
+            <value description="description">Administrator</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">ROLE_EXECUTIVE</value>
+            <value description="description">Executive staff</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">ROLE_MANAGER</value>
+            <value description="description">Project manager</value>
+        </row>
+        <row>
+            <value description="id">4</value>
+            <value description="name">ROLE_USER</value>
+            <value description="description">Traditional user</value>
+        </row>
+    </table>
+    <table name="groups">
+        <column>id</column>
+        <column>name</column>
+        <column>description</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">Administrators</value>
+            <value description="description">Administrator group</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">Executives</value>
+            <value description="description">Executive staff groups</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">Project Managers</value>
+            <value description="description">Project managers staff group</value>
+        </row>
+        <row>
+            <value description="id">4</value>
+            <value description="name">Users</value>
+            <value description="description">Traditional users group</value>
+        </row>
+    </table>
+    <table name="users">
+        <column>id</column>
+        <column>username</column>
+        <column>password</column>
+        <column>enabled</column>
+        <column>account_expired</column>
+        <column>account_locked</column>
+        <column>credentials_expired</column>
+        <row>
+            <value description="id">1</value>
+            <value description="username">admin</value>
+            <value description="password">21232f297a57a5a743894a0e4a801fc3</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="username">executive</value>
+            <value description="password">3250d1e21c4281d3cd9479f5685770b6</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="username">manager</value>
+            <value description="password">1d0258c2440a8d19e716292b231e3190</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">4</value>
+            <value description="username">user</value>
+            <value description="password">ee11cbb19052e40b07aac0ca060c23ee</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">5</value>
+            <value description="username">disabled</value>
+            <value description="password">075ae3d2fc31640504f814f60e5ef713</value>
+            <value description="enabled">0</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">6</value>
+            <value description="username">expired</value>
+            <value description="password">c4bfb2a0bab0e91bc7dcfbe3bbec246e</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">1</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">7</value>
+            <value description="username">locked</value>
+            <value description="password">4cef2f30ac7d33419d00c1d93a090095</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">true</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">8</value>
+            <value description="username">cexpired</value>
+            <value description="password">9e9198d2bc527fbb46d417f02ecd6439</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">1</value>
+        </row>
+    </table>
+    <table name="groups_roles">
+        <column>group_id</column>
+        <column>role_id</column>
+        <row>
+            <value description="group_id">1</value>
+            <value description="role_id">1</value>
+        </row>
+        <row>
+            <value description="group_id">1</value>
+            <value description="role_id">2</value>
+        </row>
+        <row>
+            <value description="group_id">1</value>
+            <value description="role_id">3</value>
+        </row>
+        <row>
+            <value description="group_id">1</value>
+            <value description="role_id">4</value>
+        </row>
+        <row>
+            <value description="group_id">2</value>
+            <value description="role_id">2</value>
+        </row>
+        <row>
+            <value description="group_id">2</value>
+            <value description="role_id">3</value>
+        </row>
+        <row>
+            <value description="group_id">2</value>
+            <value description="role_id">4</value>
+        </row>
+        <row>
+            <value description="group_id">3</value>
+            <value description="role_id">3</value>
+        </row>
+        <row>
+            <value description="group_id">3</value>
+            <value description="role_id">4</value>
+        </row>
+        <row>
+            <value description="group_id">4</value>
+            <value description="role_id">4</value>
+        </row>
+    </table>
+    <table name="users_groups">
+        <column>user_id</column>
+        <column>group_id</column>
+        <row>
+            <value description="user_id">1</value>
+            <value description="group_id">1</value>
+        </row>
+        <row>
+            <value description="user_id">2</value>
+            <value description="group_id">2</value>
+        </row>
+        <row>
+            <value description="user_id">3</value>
+            <value description="group_id">3</value>
+        </row>
+        <row>
+            <value description="user_id">4</value>
+            <value description="group_id">4</value>
+        </row>
+    </table>
+</dataset>
