@@ -1,5 +1,6 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,7 +23,9 @@ import org.springframework.security.GrantedAuthorityImpl;
 
 @Entity
 @Table(name="groups")
-public class Group {
+public class Group implements Serializable {
+	private static final long serialVersionUID = -2124766882257202136L;
+	
 	private int id;
 	private String name;
 	private String description;

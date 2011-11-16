@@ -93,37 +93,37 @@ public class Subproject {
 		return name;
 	}
 	
-	@Column(name="fiabilidad", nullable=true)
+	@Column(name="fiabilidad", nullable=true, columnDefinition="float default 0.0")
 	public Float getFiabilidad() {
 		return fiabilidad;
 	}
 
-	@Column(name="usabilidad", nullable=true)
+	@Column(name="usabilidad", nullable=true, columnDefinition="float default 0.0")
 	public Float getUsabilidad() {
 		return usabilidad;
 	}
 
-	@Column(name="eficiencia", nullable=true)
+	@Column(name="eficiencia", nullable=true, columnDefinition="float default 0.0")
 	public Float getEficiencia() {
 		return eficiencia;
 	}
 
-	@Column(name="mantenibilidad", nullable=true)
+	@Column(name="mantenibilidad", nullable=true, columnDefinition="float default 0.0")
 	public Float getMantenibilidad() {
 		return mantenibilidad;
 	}
 
-	@Column(name="portabilidad", nullable=true)
+	@Column(name="portabilidad", nullable=true, columnDefinition="float default 0.0")
 	public Float getPortabilidad() {
 		return portabilidad;
 	}
 
-	@Column(name="lineas_de_codigo", nullable=true)
+	@Column(name="lineas_de_codigo", nullable=true, columnDefinition="float default 0.0")
 	public Float getLineasDeCodigo() {
 		return lineasDeCodigo;
 	}
 
-	@Column(name="comentarios", nullable=true)
+	@Column(name="comentarios", nullable=true, columnDefinition="float default 0.0")
 	public Float getComentarios() {
 		return comentarios;
 	}
@@ -133,17 +133,17 @@ public class Subproject {
 		return ratioComentariosLineasDeCodigo;
 	}
 
-	@Column(name="puntos_funcion", nullable=true)
+	@Column(name="puntos_funcion", nullable=true, columnDefinition="float default 0.0")
 	public Float getPuntosFuncion() {
 		return puntosFuncion;
 	}
 
-	@Column(name="fichaje_codigo", nullable=true)
+	@Column(name="fichaje_codigo", nullable=true, columnDefinition="float default 0.0")
 	public Float getFichajeCodigo() {
 		return fichajeCodigo;
 	}
 
-	@Column(name="fichaje_total", nullable=true)
+	@Column(name="fichaje_total", nullable=true, columnDefinition="float default 0.0")
 	public Float getFichajeTotal() {
 		return fichajeTotal;
 	}
@@ -153,7 +153,7 @@ public class Subproject {
 		return ratioFichaje;
 	}
 	
-	@Column(name="actividad", nullable=true)
+	@Column(name="actividad", nullable=true, columnDefinition="float default 0.0")
 	public Float getActividad() {
 		return actividad;
 	}

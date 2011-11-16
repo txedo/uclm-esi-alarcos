@@ -10,7 +10,7 @@
 
 	<global-method-security secured-annotations="enabled" />
 
-	<http auto-config="true">
+	<http auto-config="true" access-denied-page="/401.jsp">
         <intercept-url pattern="/index" filters="none"/>
         <intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/logout" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
@@ -23,10 +23,6 @@
         <!-- <intercept-url pattern="/jsp/visualization.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/> -->
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     	<form-login login-page="/login" default-target-url="/login?result=success"  always-use-default-target="true" authentication-failure-url="/login?result=failed" />
-    	<anonymous />
-    	<http-basic />
-    	<logout logout-url="/logout" logout-success-url="/" invalidate-session="true"/>
-    	<remember-me />
 	</http>
 	
 	<authentication-provider user-service-ref='userDetailsService'>
@@ -38,28 +34,4 @@
 		<beans:property name="userDao" ref="userDao"/>
 	</beans:bean>
 	
-	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
-		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />  
-		<beans:property name="url" value="jdbc:mysql://localhost:3306/desglosadb" />  
-		<beans:property name="username" value="desglosaadmin" />  
-		<beans:property name="password" value="nimdaasolgsed" />  
-	</beans:bean>
-	
-	<!-- HIBERNATE CONFIGURATION -->
-	<beans:bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-		<beans:property name="dataSource" ref="dataSource" />
-		<beans:property name="configLocation" value="classpath:hibernate.cfg.xml"/>
-		<!-- Annotated classes are mapped in hibernate.cfg.xml -->
-		<beans:property name="hibernateProperties">
-			<beans:props>
-				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</beans:prop>
-				<beans:prop key="hibernate.show_sql">true</beans:prop>
-				<beans:prop key="hibernate.hbm2ddl.auto">update</beans:prop>
-			</beans:props>
-		</beans:property>
-	</beans:bean>
-	
-	<beans:bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
-		<beans:property name="sessionFactory" ref="sessionFactory" />
-	</beans:bean>
 </beans:beans>

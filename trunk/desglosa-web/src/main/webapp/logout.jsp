@@ -13,6 +13,4 @@ terminate.setMaxAge(0);
 response.addCookie(terminate);
 %>
 
-<c:if test="${param.result == 'success' }">
-	<c:redirect url="/"/>
-</c:if>
+<c:redirect url="/"/>

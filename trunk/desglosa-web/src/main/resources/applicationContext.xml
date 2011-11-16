@@ -21,66 +21,6 @@
     	<property name="subprojectDao" ref="subprojectDao"/>
     </bean>
     
-    <!-- Struts2 interceptors instantiated by Spring -->
-    <bean id="redirectMessageInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.RedirectMessageInterceptor"/>
-    
-    <bean id="adminInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
-        <property name="authorizedRoles" value="ROLE_ADMIN"/>
-    </bean>
-    
-    <bean id="executiveInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
-        <property name="authorizedRoles" value="ROLE_EXECUTIVE"/>
-    </bean>
-    
-    <bean id="managerInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
-        <property name="authorizedRoles" value="ROLE_MANAGER"/>
-    </bean>
-    
-    <bean id="allUsersInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
-        <property name="authorizedRoles" value="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
-    </bean>
-    
-    <!-- DAOs instantiated by Spring -->
-    <bean id="userDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.UserDAOHibernate">
-    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.User"/>
-        <property name="hibernateTemplate" ref="hibernateTemplate" /> 
-	</bean>
-	
-	<bean id="groupDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.GroupDAOHibernate">
-    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Group"/>
-        <property name="hibernateTemplate" ref="hibernateTemplate" />  
-	</bean>
-	 
-	<bean id="roleDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.RoleDAOHibernate">
-    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Role"/>
-        <property name="hibernateTemplate" ref="hibernateTemplate" />  
-	</bean>
-
-	<bean id="companyDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.CompanyDAOHibernate">
-    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Company"/>
-        <property name="hibernateTemplate" ref="hibernateTemplate" />  
-	</bean>
-	
-	<bean id="factoryDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.FactoryDAOHibernate">
-    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Factory"/>
-        <property name="hibernateTemplate" ref="hibernateTemplate" />  
-	</bean>
-	
-	<bean id="projectDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.ProjectDAOHibernate">
-    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Project"/>
-        <property name="hibernateTemplate" ref="hibernateTemplate" />  
-	</bean>
-	
-	<bean id="subprojectDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.SubprojectDAOHibernate">
-    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject"/>
-        <property name="hibernateTemplate" ref="hibernateTemplate" />  
-	</bean>
-	
-	<bean id="marketDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MarketDAOHibernate">
-    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Market"/>
-        <property name="hibernateTemplate" ref="hibernateTemplate" />  
-	</bean>
-	
     <!-- Other objects instantiated by Spring -->
     <bean id="glObjectManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.GLObjectManager">
     	<property name="companyDao" ref="companyDao"/>

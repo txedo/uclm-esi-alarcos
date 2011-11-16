@@ -45,7 +45,7 @@ public class Project {
 	private Set<Subproject> subprojects;
 	@Property(embedded=true)
 	private Market market;
-	@Property
+	@Property(type="boolean")
 	private boolean audited;
 	@Property
 	private int totalIncidences;
@@ -55,8 +55,8 @@ public class Project {
 	private int nonRepairedIncidences;
 	@Property
 	private int size;
-	@Property
-	private boolean delayed;
+	@Property(type="boolean")
+	private boolean delay;
 	@Property(type="float")
 	private Float fiabilidad;
 	@Property(type="float")
@@ -123,17 +123,17 @@ public class Project {
 		return market;
 	}
 
-	@Column(name="audited")
+	@Column(name="audited", columnDefinition="boolean default false")
 	public boolean isAudited() {
 		return audited;
 	}
 
-	@Column(name="total_incidences")
+	@Column(name="total_incidences", columnDefinition="int default 0")
 	public int getTotalIncidences() {
 		return totalIncidences;
 	}
 
-	@Column(name="repaired_incidences")
+	@Column(name="repaired_incidences", columnDefinition="int default 0")
 	public int getRepairedIncidences() {
 		return repairedIncidences;
 	}
@@ -143,47 +143,47 @@ public class Project {
 		return nonRepairedIncidences;
 	}
 
-	@Column(name="size")
+	@Column(name="size", columnDefinition="int default 0")
 	public int getSize() {
 		return size;
 	}
 
-	@Column(name="delayed")
-	public boolean isDelayed() {
-		return delayed;
+	@Column(name="delay", columnDefinition="boolean default false")
+	public boolean isDelay() {
+		return delay;
 	}
 	
-	@Column(name="fiabilidad", nullable=true)
+	@Column(name="fiabilidad", nullable=true, columnDefinition="float default 0.0")
 	public Float getFiabilidad() {
 		return fiabilidad;
 	}
 
-	@Column(name="usabilidad", nullable=true)
+	@Column(name="usabilidad", nullable=true, columnDefinition="float default 0.0")
 	public Float getUsabilidad() {
 		return usabilidad;
 	}
 
-	@Column(name="eficiencia", nullable=true)
+	@Column(name="eficiencia", nullable=true, columnDefinition="float default 0.0")
 	public Float getEficiencia() {
 		return eficiencia;
 	}
 
-	@Column(name="mantenibilidad", nullable=true)
+	@Column(name="mantenibilidad", nullable=true, columnDefinition="float default 0.0")
 	public Float getMantenibilidad() {
 		return mantenibilidad;
 	}
 
-	@Column(name="portabilidad", nullable=true)
+	@Column(name="portabilidad", nullable=true, columnDefinition="float default 0.0")
 	public Float getPortabilidad() {
 		return portabilidad;
 	}
 
-	@Column(name="lineas_de_codigo", nullable=true)
+	@Column(name="lineas_de_codigo", nullable=true, columnDefinition="float default 0.0")
 	public Float getLineasDeCodigo() {
 		return lineasDeCodigo;
 	}
 
-	@Column(name="comentarios", nullable=true)
+	@Column(name="comentarios", nullable=true, columnDefinition="float default 0.0")
 	public Float getComentarios() {
 		return comentarios;
 	}
@@ -193,17 +193,17 @@ public class Project {
 		return ratioComentariosLineasDeCodigo;
 	}
 
-	@Column(name="puntos_funcion", nullable=true)
+	@Column(name="puntos_funcion", nullable=true, columnDefinition="float default 0.0")
 	public Float getPuntosFuncion() {
 		return puntosFuncion;
 	}
 
-	@Column(name="fichaje_codigo", nullable=true)
+	@Column(name="fichaje_codigo", nullable=true, columnDefinition="float default 0.0")
 	public Float getFichajeCodigo() {
 		return fichajeCodigo;
 	}
 
-	@Column(name="fichaje_total", nullable=true)
+	@Column(name="fichaje_total", nullable=true, columnDefinition="float default 0.0")
 	public Float getFichajeTotal() {
 		return fichajeTotal;
 	}
@@ -213,7 +213,7 @@ public class Project {
 		return ratioFichaje;
 	}
 	
-	@Column(name="actividad", nullable=true)
+	@Column(name="actividad", nullable=true, columnDefinition="float default 0.0")
 	public Float getActividad() {
 		return actividad;
 	}
@@ -266,8 +266,8 @@ public class Project {
 		this.size = size;
 	}
 
-	public void setDelayed(boolean delayed) {
-		this.delayed = delayed;
+	public void setDelay(boolean delayed) {
+		this.delay = delayed;
 	}
 
 	public void setFiabilidad(Float fiabilidad) {
