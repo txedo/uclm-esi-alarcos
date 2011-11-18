@@ -22,66 +22,66 @@ import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 
 @Entity
-@Table(name="groups")
+@Table(name = "groups")
 public class Group implements Serializable {
-	private static final long serialVersionUID = -2124766882257202136L;
-	
-	private int id;
-	private String name;
-	private String description;
-	private Set<Role> roles = new HashSet<Role>();
-	
-	public Group() {
-	}
-
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	public int getId() {
-		return id;
-	}
-
-	@Column(nullable=false,length=45,unique=true)
-	public String getName() {
-		return name;
-	}
-
-	@Column(nullable=true,length=45,unique=false)
-	public String getDescription() {
-		return description;
-	}
-
-	@ManyToMany(fetch = FetchType.EAGER) 
-	@JoinTable(
-			name="groups_roles",
-			joinColumns = { @JoinColumn( name="group_id") },
-			inverseJoinColumns = @JoinColumn( name="role_id")
-	)   
-	public Set<Role> getRoles() {
-		return roles;
-	}
+    private static final long serialVersionUID = -2124766882257202136L;
     
-	@Transient
-	public List<GrantedAuthority> getAuthorities() {
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		for (Role r : this.roles) {
-			authorities.add(new GrantedAuthorityImpl(r.getName()));
-		}
-		return authorities;
-	}
+    private int id;
+    private String name;
+    private String description;
+    private Set<Role> roles = new HashSet<Role>();
+    
+    public Group() {
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    public int getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Column(nullable = false, length = 45, unique = true)
+    public String getName() {
+        return name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @Column(nullable = true, length = 45, unique = false)
+    public String getDescription() {
+        return description;
+    }
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-	
+    @ManyToMany(fetch = FetchType.EAGER) 
+    @JoinTable(
+            name = "groups_roles",
+            joinColumns = { @JoinColumn( name = "group_id") },
+            inverseJoinColumns = @JoinColumn( name = "role_id")
+    )   
+    public Set<Role> getRoles() {
+        return roles;
+    }
+    
+    @Transient
+    public List<GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        for (Role r : this.roles) {
+            authorities.add(new GrantedAuthorityImpl(r.getName()));
+        }
+        return authorities;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
 }

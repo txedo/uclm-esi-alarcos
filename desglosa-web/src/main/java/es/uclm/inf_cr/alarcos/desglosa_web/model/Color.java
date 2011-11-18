@@ -5,35 +5,34 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Color {
-	private String acceptable;
-	private String peripheral;
-	private String nonAcceptable;
-	
-	public Color () {}
+    private String acceptable;
+    private String peripheral;
+    private String nonAcceptable;
+    
+    public Color () {}
 
-	public String getAcceptable() {
-		return acceptable;
-	}
+    public String getAcceptable() {
+        return acceptable;
+    }
 
-	public String getPeripheral() {
-		return peripheral;
-	}
+    public String getPeripheral() {
+        return peripheral;
+    }
 
-	public String getNonAcceptable() {
-		return nonAcceptable;
-	}
+    public String getNonAcceptable() {
+        return nonAcceptable;
+    }
 
-	public void setAcceptable(String acceptable) {
-		this.acceptable = acceptable;
-	}
+    public void setAcceptable(String acceptable) {
+        this.acceptable = acceptable;
+    }
 
-	public void setPeripheral(String peripheral) {
-		this.peripheral = peripheral;
-	}
+    public void setPeripheral(String peripheral) {
+        this.peripheral = peripheral;
+    }
 
-	public void setNonAcceptable(String nonAcceptable) {
-		this.nonAcceptable = nonAcceptable;
-	}
-	
-	
+    public void setNonAcceptable(String nonAcceptable) {
+        this.nonAcceptable = nonAcceptable;
+    }
+
 }

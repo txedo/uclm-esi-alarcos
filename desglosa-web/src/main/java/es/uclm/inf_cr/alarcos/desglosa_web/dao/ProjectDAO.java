@@ -6,14 +6,9 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 
 public interface ProjectDAO extends GenericDAO<Project, Long> {
-
-	public Project getProject(int id) throws ProjectNotFoundException;
-	
-	public Project getProject(String name) throws ProjectNotFoundException;
-	
-	public List<Project> getProjects();
-	
-	public void saveProject(Project project);
-	
-	public void removeProject(int id);
+	Project getProject(int id) throws ProjectNotFoundException;
+	Project getProject(String name) throws ProjectNotFoundException;
+	List<Project> getProjects();
+	void saveProject(Project project);
+	void removeProject(int id);
 }

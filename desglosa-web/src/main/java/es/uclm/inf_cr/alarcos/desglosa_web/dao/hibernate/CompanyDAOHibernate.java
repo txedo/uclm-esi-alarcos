@@ -7,41 +7,41 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 
 public class CompanyDAOHibernate extends GenericDAOHibernate<Company, Long> implements
-		CompanyDAO {
+        CompanyDAO {
 
-	public CompanyDAOHibernate(Class<Company> persistentClass) {
-		super(persistentClass);
-	}
+    public CompanyDAOHibernate(Class<Company> persistentClass) {
+        super(persistentClass);
+    }
 
-	public Company getCompany(int id) throws CompanyNotFoundException {
-		Company c = (Company) getHibernateTemplate().get(Company.class, id);
-		if (c == null) throw new CompanyNotFoundException("company '" + id + "' not found...");
-		return c;
-	}
-	
-	@SuppressWarnings("rawtypes")
-	public Company getCompany(String name) throws CompanyNotFoundException {
-		List companies = getHibernateTemplate().find("from Company where name=?", name);
-	    if (companies == null || companies.isEmpty()) {
-	    	throw new CompanyNotFoundException("company '" + name + "' not found...");
-	    } else {
-	    	return (Company) companies.get(0);
-	    }
-	}
+    public Company getCompany(int id) throws CompanyNotFoundException {
+        Company c = (Company) getHibernateTemplate().get(Company.class, id);
+        if (c == null) throw new CompanyNotFoundException("company '" + id + "' not found...");
+        return c;
+    }
 
-	@SuppressWarnings("unchecked")
-	public List<Company> getCompanies() {
-		return getHibernateTemplate().find("from Company c order by upper(c.name)");
-	}
+    @SuppressWarnings("rawtypes")
+    public Company getCompany(String name) throws CompanyNotFoundException {
+        List companies = getHibernateTemplate().find("from Company where name=?", name);
+        if (companies == null || companies.isEmpty()) {
+            throw new CompanyNotFoundException("company '" + name + "' not found...");
+        } else {
+            return (Company) companies.get(0);
+        }
+    }
 
-	public void saveCompany(Company company) {
-		getHibernateTemplate().saveOrUpdate(company);
-		getHibernateTemplate().flush();
-	}
+    @SuppressWarnings("unchecked")
+    public List<Company> getCompanies() {
+        return getHibernateTemplate().find("from Company c order by upper(c.name)");
+    }
 
-	public void removeCompany(int id) {
-		Object company = getHibernateTemplate().load(Company.class, id);
-		getHibernateTemplate().delete(company);
-	}
+    public void saveCompany(Company company) {
+        getHibernateTemplate().saveOrUpdate(company);
+        getHibernateTemplate().flush();
+    }
+
+    public void removeCompany(int id) {
+        Object company = getHibernateTemplate().load(Company.class, id);
+        getHibernateTemplate().delete(company);
+    }
 
 }

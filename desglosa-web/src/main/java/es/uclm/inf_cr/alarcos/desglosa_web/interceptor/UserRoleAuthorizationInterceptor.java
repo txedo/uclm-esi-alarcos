@@ -10,39 +10,41 @@ import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.Interceptor;
 
 public class UserRoleAuthorizationInterceptor implements Interceptor {
-	private String[] authorizedRoles;
+    private static final long serialVersionUID = 4454081807758760289L;
 
-	public void destroy() {
-	}
+    private String[] authorizedRoles;
 
-	public void init() {
-	}
+    public void destroy() {
+    }
 
-	public void setAuthorizedRoles(String[] authorizedRoles) {
-		this.authorizedRoles = authorizedRoles;
-	}
+    public void init() {
+    }
 
-	public String intercept(ActionInvocation invocation) throws Exception {
-		boolean authorization = false;
-		String action = null;
-		Authentication authenticatedUser = SecurityContextHolder.getContext().getAuthentication();
-		if (authorizedRoles != null) {
-			for (int i = 0; i < authenticatedUser.getAuthorities().length && !authorization; i++) {
-				String userRol = authenticatedUser.getAuthorities()[i].getAuthority();
-				for (int j = 0; j < authorizedRoles.length && !authorization; j++) {
-					if (authorizedRoles[j].equals(userRol)) {
-						authorization = true;
-						action = invocation.invoke();
-					}
-				}
-			}
-		}
-		if (!authorization) {
-			HttpServletResponse response = ServletActionContext.getResponse();
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-		}
+    public void setAuthorizedRoles(String[] authorizedRoles) {
+        this.authorizedRoles = authorizedRoles;
+    }
 
-		return action;
-	}
+    public String intercept(ActionInvocation invocation) throws Exception {
+        boolean authorization = false;
+        String action = null;
+        Authentication authenticatedUser = SecurityContextHolder.getContext().getAuthentication();
+        if (authorizedRoles != null) {
+            for (int i = 0; i < authenticatedUser.getAuthorities().length && !authorization; i++) {
+                String userRol = authenticatedUser.getAuthorities()[i].getAuthority();
+                for (int j = 0; j < authorizedRoles.length && !authorization; j++) {
+                    if (authorizedRoles[j].equals(userRol)) {
+                        authorization = true;
+                        action = invocation.invoke();
+                    }
+                }
+            }
+        }
+        if (!authorization) {
+            HttpServletResponse response = ServletActionContext.getResponse();
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        }
+
+        return action;
+    }
 
 }

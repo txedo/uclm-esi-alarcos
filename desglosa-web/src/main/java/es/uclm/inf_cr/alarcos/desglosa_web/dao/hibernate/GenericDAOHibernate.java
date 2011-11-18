@@ -39,15 +39,15 @@ public class GenericDAOHibernate<T, PK extends Serializable> extends HibernateDa
     }
 
     @SuppressWarnings("unchecked")
-	public List<T> getAll() {
+    public List<T> getAll() {
         return super.getHibernateTemplate().loadAll(this.persistentClass);
     }
-    
+
     public List<T> getAllDistinct() {
         Collection<T> result = new LinkedHashSet<T>(getAll());
         return new ArrayList<T>(result);
     }
-    
+
     @SuppressWarnings("unchecked")
     public T get(PK id) {
         T entity = (T) super.getHibernateTemplate().get(this.persistentClass, id);
@@ -72,7 +72,7 @@ public class GenericDAOHibernate<T, PK extends Serializable> extends HibernateDa
     public void remove(PK id) {
         super.getHibernateTemplate().delete(this.get(id));
     }
-    
+
    @SuppressWarnings("unchecked")
    public List<T> findByNamedQuery(
        String queryName, 
