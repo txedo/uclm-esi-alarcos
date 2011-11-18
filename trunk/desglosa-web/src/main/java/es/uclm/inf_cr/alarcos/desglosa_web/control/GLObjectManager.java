@@ -37,307 +37,305 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
 
 
 public class GLObjectManager {
-	
-	private CompanyDAO companyDao;
-	private FactoryDAO factoryDao;
-	private ProjectDAO projectDao;
-	private MarketDAO marketDao;
-	
-	public City createGLObjects(List entities, String groupBy, String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, EntityNotSupportedException, GroupByOperationNotSupportedException, NoSuchFieldException {
-		City c = new City();
-		// Load selected profile
-		String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + profileName;
-		Metaclass metaclass = XMLAgent.unmarshal(path, Metaclass.class);
+    private CompanyDAO companyDao;
+    private FactoryDAO factoryDao;
+    private ProjectDAO projectDao;
+    private MarketDAO marketDao;
 
-		Class<?> classModel = Class.forName(metaclass.getModelName());
-		c.setModel(metaclass.getModelName());
-		
-		if (entities != null && entities.size() > 0) {
-			// Create a map of list in which key is neighborhood name and value is a list of flats
-			Map<String,List<?>> neighborhoods = groupEntitiesBy(entities.get(0).getClass(), entities, groupBy);
-			// Iterate over each list creating GLObjects while creating GLNeighborhoods and GLCity
-			Iterator it = neighborhoods.entrySet().iterator();
-			while (it.hasNext()) {
-				List<GLObject> glObjects = new ArrayList<GLObject>();
-				Map.Entry<String, List<?>> pairs = (Map.Entry<String, List<?>>)it.next();
-				for (Object e : pairs.getValue()) {
-					Object glObj = classModel.newInstance();
-					// Do mappings using java reflection
-					for (Mapping mapping : metaclass.getMappings()) {
-						// Build setter method using Java Reflective API
-						String setterName = "set" + WordUtils.capitalize(mapping.getModelAttr().getName());
-						// Look for the setter method through all the object hierarchy
-						Class superClass = classModel;
-						Method setterMethod = superClass.getMethod(setterName, mapping.getModelAttr().getParameterType());
-						
-						// Build getter method using Java Reflective API
-						// oneWord_otherWord_anotherWord must be parsed to invoke getOneWord().getOtherWord().getAnotherWord()
-						String[] chainOfGetters = mapping.getEntityAttr().getName().split("_");
-						Class<?> subClass = e.getClass();
-						Object entityAttrValue = e;
-						for (int i = 0; i < chainOfGetters.length && entityAttrValue != null; i++) {
-							String getterPrefix = "get";
-							if (mapping.getEntityAttr().getType().equals("boolean")) getterPrefix = "is";
-							String parentGetterName = getterPrefix + WordUtils.capitalize(chainOfGetters[i]);
-							Method parentGetterMethod = subClass.getMethod(parentGetterName, null);
-							entityAttrValue = parentGetterMethod.invoke(entityAttrValue, null);
-							subClass = subClass.getDeclaredField(chainOfGetters[i]).getType();
-						}
-						if (entityAttrValue != null) {
-							// Check model attribute type and handle it in a special manner if its range or color
-							Object finalValue = null;
-							String entityAttrType = mapping.getEntityAttr().getType();
-							String modelAttrType = mapping.getModelAttr().getType();
-							if (modelAttrType.equals("float_range")) {
-								// leer las reglas y aplicarlas
-								// entityAttrType puede ser int (low-high-value), float (low-high-value), string (low-value), boolean (low-value)
-								for (Rule r : mapping.getRules()) {
-									if (entityAttrType.equals("int") || entityAttrType.equals("float")) {
-										String entityAttrValueType = entityAttrValue.getClass().getName();
-										String ruleLowValueType = r.getLow().getClass().getName();
-										String ruleHighValueType = r.getHigh().getClass().getName();
-										if (entityAttrValueType.equals(ruleLowValueType) && ruleLowValueType.equals(ruleHighValueType)) {
-											if (entityAttrValueType.equals("java.lang.Integer")) {
-												if ((Integer)entityAttrValue >= (Integer)r.getLow() && (Integer)entityAttrValue <= (Integer)r.getHigh()) {
-													finalValue = (Float)r.getValue();
-												}
-											} else if (entityAttrValueType.equals("java.lang.Float")) {
-												if ((Float)entityAttrValue >= (Float)r.getLow() && (Float)entityAttrValue <= (Float)r.getHigh()) {
-													finalValue = (Float)r.getValue();
-												}
-											}
-										} else {
-											// TODO lanzar excepcion de tipos incompatibles
-										}
-									} else if (entityAttrType.equals("string")) {
-										if (((String)entityAttrValue).equals((String)r.getLow())) {
-											finalValue = (String)r.getValue();
-										}
-									} else if (entityAttrType.equals("boolean")) {
-										if (Boolean.valueOf((String)entityAttrValue).equals(Boolean.valueOf((String)r.getLow()))) {
-											finalValue = (String)r.getValue();
-										}
-									}
-								}
-							} else if (!entityAttrType.equals("hexcolor") && modelAttrType.equals("color")) {
-								for (Rule r : mapping.getRules()) {
-									if (entityAttrType.equals("int") || entityAttrType.equals("float")) {
-										String entityAttrValueType = entityAttrValue.getClass().getName();
-										String ruleLowValueType = r.getLow().getClass().getName();
-										String ruleHighValueType = r.getHigh().getClass().getName();
-										if (ruleLowValueType.equals(ruleHighValueType)) {
-											if (entityAttrValueType.equals("java.lang.Integer")) {
-												if ((Integer)entityAttrValue >= (Integer)r.getLow() && (Integer)entityAttrValue <= (Integer)r.getHigh()) {
-													finalValue = (String)r.getValue();
-												}
-											} else if (entityAttrValueType.equals("java.lang.Float")) {
-												if ((Float)entityAttrValue >= (Float)r.getLow() && (Float)entityAttrValue <= (Float)r.getHigh()) {
-													finalValue = (String)r.getValue();
-												}
-											}
-										} else {
-											// TODO lanzar excepcion de tipos incompatibles
-										}
-									} else if (entityAttrType.equals("hexcolor")) {
-										
-									} else if (entityAttrType.equals("string")) {
-										if (((String)entityAttrValue).equals((String)r.getLow())) {
-											finalValue = (String)r.getValue();
-										}
-									} else if (entityAttrType.equals("boolean")) {
-										if (entityAttrValue.equals(Boolean.valueOf((String)r.getLow()))) {
-											finalValue = (String)r.getValue();
-										}
-									}
-								}
-							} else if (entityAttrType.equals("int") && modelAttrType.equals("float")) {
-								finalValue = ((Integer)entityAttrValue).floatValue();
-							} else if (entityAttrType.equals("int") && modelAttrType.equals("string")) {
-								finalValue = ((Integer)entityAttrValue).toString();
-							} else if (entityAttrType.equals("float") && modelAttrType.equals("string")) {
-								finalValue = ((Float)entityAttrValue).toString();
-							} else {
-								finalValue = entityAttrValue;
-							}
-							setterMethod.invoke(classModel.cast(glObj), finalValue);
-						} else {
-							// TODO El valor en la base de datos es null y va a lanzar IllegalArgumentException
-						}
-					}
-					// Apply constant values using java reflection too
-					for (Field field : metaclass.getConstants()) {
-						// Build setter method using Java Reflective API
-						String setterName = "set" + WordUtils.capitalize(field.getName());
-						Method setterMethod = classModel.getMethod(setterName, field.getParameterType());
-						if (field.getValue() != null) {
-							setterMethod.invoke(classModel.cast(glObj), field.getValue());
-						} else {
-							// TODO El valor de la constante es null y va a lanzar IllegalArgumentException
-						}
-					}
-					glObjects.add((GLObject)glObj);
-				}
-				if (glObjects.size() > 0) c.getNeighborhoods().add(new Neighborhood(pairs.getKey(), glObjects));
-			}
-			
-			// Configure caption
-			if (metaclass.getCaptionLines().getEntry().size() > 0) {
-				Map<String,String> captionLines = new HashMap<String,String>();
-				for (MyHashMapEntryType mhmet : metaclass.getCaptionLines().getEntry()) {
-					captionLines.put(mhmet.getKey(), mhmet.getValue());
-				}
-				c.setCaptionLines(captionLines);
-			}
+    public City createGLObjects(List entities, String groupBy, String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, EntityNotSupportedException, GroupByOperationNotSupportedException, NoSuchFieldException {
+        City c = new City();
+        // Load selected profile
+        String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + profileName;
+        Metaclass metaclass = XMLAgent.unmarshal(path, Metaclass.class);
+        
+        Class<?> classModel = Class.forName(metaclass.getModelName());
+        c.setModel(metaclass.getModelName());
+        
+        if (entities != null && entities.size() > 0) {
+            // Create a map of list in which key is neighborhood name and value is a list of flats
+            Map<String,List<?>> neighborhoods = groupEntitiesBy(entities.get(0).getClass(), entities, groupBy);
+            // Iterate over each list creating GLObjects while creating GLNeighborhoods and GLCity
+            Iterator it = neighborhoods.entrySet().iterator();
+            while (it.hasNext()) {
+                List<GLObject> glObjects = new ArrayList<GLObject>();
+                Map.Entry<String, List<?>> pairs = (Map.Entry<String, List<?>>)it.next();
+                for (Object e : pairs.getValue()) {
+                    Object glObj = classModel.newInstance();
+                    // Do mappings using java reflection
+                    for (Mapping mapping : metaclass.getMappings()) {
+                        // Build setter method using Java Reflective API
+                        String setterName = "set" + WordUtils.capitalize(mapping.getModelAttr().getName());
+                        // Look for the setter method through all the object hierarchy
+                        Class superClass = classModel;
+                        Method setterMethod = superClass.getMethod(setterName, mapping.getModelAttr().getParameterType());
+                        
+                        // Build getter method using Java Reflective API
+                        // oneWord_otherWord_anotherWord must be parsed to invoke getOneWord().getOtherWord().getAnotherWord()
+                        String[] chainOfGetters = mapping.getEntityAttr().getName().split("_");
+                        Class<?> subClass = e.getClass();
+                        Object entityAttrValue = e;
+                        for (int i = 0; i < chainOfGetters.length && entityAttrValue != null; i++) {
+                            String getterPrefix = "get";
+                            if (mapping.getEntityAttr().getType().equals("boolean")) getterPrefix = "is";
+                            String parentGetterName = getterPrefix + WordUtils.capitalize(chainOfGetters[i]);
+                            Method parentGetterMethod = subClass.getMethod(parentGetterName, null);
+                            entityAttrValue = parentGetterMethod.invoke(entityAttrValue, null);
+                            subClass = subClass.getDeclaredField(chainOfGetters[i]).getType();
+                        }
+                        if (entityAttrValue != null) {
+                            // Check model attribute type and handle it in a special manner if its range or color
+                            Object finalValue = null;
+                            String entityAttrType = mapping.getEntityAttr().getType();
+                            String modelAttrType = mapping.getModelAttr().getType();
+                            if (modelAttrType.equals("float_range")) {
+                                // leer las reglas y aplicarlas
+                                // entityAttrType puede ser int (low-high-value), float (low-high-value), string (low-value), boolean (low-value)
+                                for (Rule r : mapping.getRules()) {
+                                    if (entityAttrType.equals("int") || entityAttrType.equals("float")) {
+                                        String entityAttrValueType = entityAttrValue.getClass().getName();
+                                        String ruleLowValueType = r.getLow().getClass().getName();
+                                        String ruleHighValueType = r.getHigh().getClass().getName();
+                                        if (entityAttrValueType.equals(ruleLowValueType) && ruleLowValueType.equals(ruleHighValueType)) {
+                                            if (entityAttrValueType.equals("java.lang.Integer")) {
+                                                if ((Integer)entityAttrValue >= (Integer)r.getLow() && (Integer)entityAttrValue <= (Integer)r.getHigh()) {
+                                                    finalValue = (Float)r.getValue();
+                                                }
+                                            } else if (entityAttrValueType.equals("java.lang.Float")) {
+                                                if ((Float)entityAttrValue >= (Float)r.getLow() && (Float)entityAttrValue <= (Float)r.getHigh()) {
+                                                    finalValue = (Float)r.getValue();
+                                                }
+                                            }
+                                        } else {
+                                            // TODO lanzar excepcion de tipos incompatibles
+                                        }
+                                    } else if (entityAttrType.equals("string")) {
+                                        if (((String)entityAttrValue).equals((String)r.getLow())) {
+                                            finalValue = (String)r.getValue();
+                                        }
+                                    } else if (entityAttrType.equals("boolean")) {
+                                        if (Boolean.valueOf((String)entityAttrValue).equals(Boolean.valueOf((String)r.getLow()))) {
+                                            finalValue = (String)r.getValue();
+                                        }
+                                    }
+                                }
+                            } else if (!entityAttrType.equals("hexcolor") && modelAttrType.equals("color")) {
+                                for (Rule r : mapping.getRules()) {
+                                    if (entityAttrType.equals("int") || entityAttrType.equals("float")) {
+                                        String entityAttrValueType = entityAttrValue.getClass().getName();
+                                        String ruleLowValueType = r.getLow().getClass().getName();
+                                        String ruleHighValueType = r.getHigh().getClass().getName();
+                                        if (ruleLowValueType.equals(ruleHighValueType)) {
+                                            if (entityAttrValueType.equals("java.lang.Integer")) {
+                                                if ((Integer)entityAttrValue >= (Integer)r.getLow() && (Integer)entityAttrValue <= (Integer)r.getHigh()) {
+                                                    finalValue = (String)r.getValue();
+                                                }
+                                            } else if (entityAttrValueType.equals("java.lang.Float")) {
+                                                if ((Float)entityAttrValue >= (Float)r.getLow() && (Float)entityAttrValue <= (Float)r.getHigh()) {
+                                                    finalValue = (String)r.getValue();
+                                                }
+                                            }
+                                        } else {
+                                            // TODO lanzar excepcion de tipos incompatibles
+                                        }
+                                    } else if (entityAttrType.equals("hexcolor")) {
+                                        
+                                    } else if (entityAttrType.equals("string")) {
+                                        if (((String)entityAttrValue).equals((String)r.getLow())) {
+                                            finalValue = (String)r.getValue();
+                                        }
+                                    } else if (entityAttrType.equals("boolean")) {
+                                        if (entityAttrValue.equals(Boolean.valueOf((String)r.getLow()))) {
+                                            finalValue = (String)r.getValue();
+                                        }
+                                    }
+                                }
+                            } else if (entityAttrType.equals("int") && modelAttrType.equals("float")) {
+                                finalValue = ((Integer)entityAttrValue).floatValue();
+                            } else if (entityAttrType.equals("int") && modelAttrType.equals("string")) {
+                                finalValue = ((Integer)entityAttrValue).toString();
+                            } else if (entityAttrType.equals("float") && modelAttrType.equals("string")) {
+                                finalValue = ((Float)entityAttrValue).toString();
+                            } else {
+                                finalValue = entityAttrValue;
+                            }
+                            setterMethod.invoke(classModel.cast(glObj), finalValue);
+                        } else {
+                            // TODO El valor en la base de datos es null y va a lanzar IllegalArgumentException
+                        }
+                    }
+                    // Apply constant values using java reflection too
+                    for (Field field : metaclass.getConstants()) {
+                        // Build setter method using Java Reflective API
+                        String setterName = "set" + WordUtils.capitalize(field.getName());
+                        Method setterMethod = classModel.getMethod(setterName, field.getParameterType());
+                        if (field.getValue() != null) {
+                            setterMethod.invoke(classModel.cast(glObj), field.getValue());
+                        } else {
+                            // TODO El valor de la constante es null y va a lanzar IllegalArgumentException
+                        }
+                    }
+                    glObjects.add((GLObject)glObj);
+                }
+                if (glObjects.size() > 0) c.getNeighborhoods().add(new Neighborhood(pairs.getKey(), glObjects));
+            }
+            
+            // Configure caption
+            if (metaclass.getCaptionLines().getEntry().size() > 0) {
+                Map<String,String> captionLines = new HashMap<String,String>();
+                for (MyHashMapEntryType mhmet : metaclass.getCaptionLines().getEntry()) {
+                    captionLines.put(mhmet.getKey(), mhmet.getValue());
+                }
+                c.setCaptionLines(captionLines);
+            }
 
-		}
-		
-		return c;
-	}
-	
-	private Map<String,List<?>> groupEntitiesBy(Class<?> clazz, List<?> entities, String groupBy) throws EntityNotSupportedException, GroupByOperationNotSupportedException {
-		String className = clazz.getSimpleName();
-		Map<String,List<?>> neighborhoods = new HashMap<String,List<?>>();
-		if (className.equals("Factory")) {
-			neighborhoods = groupFactoriesBy(entities, groupBy);
-		} else if (className.equals("Project")) {
-			neighborhoods = groupProjectsBy(entities, groupBy);
-		} else if (className.equals("Subproject")) {
-			neighborhoods = groupSubprojectsBy(entities, groupBy);
-		} else {
-			throw new EntityNotSupportedException();
-		}
-		return neighborhoods;
-	}
-	
-	private Map<String,List<?>> groupFactoriesBy(List<?> factories, String groupBy) throws GroupByOperationNotSupportedException {
-		Map<String,List<?>> neighborhoods = new HashMap<String,List<?>>();
-		if (groupBy.equals("company")) {
-			List <Company> availableCompanies = companyDao.getAll();
-			for (Company comp : availableCompanies) {
-				List<Factory> flats = new ArrayList<Factory>();
-				for (Object f : factories) {
-					if (((Factory)f).getCompany().getId() == comp.getId()) {
-						flats.add((Factory)f);
-					}
-				}
-				if (flats.size() > 0) neighborhoods.put(comp.getName(), flats);
-			}
-		} else if (groupBy.equals("market")) {
-			List <Market> availableMarkets = marketDao.getAll();
-			for (Market m : availableMarkets) {
-				List<Factory> flats = new ArrayList<Factory>();
-				for (Object f : factories) {
-					if (((Factory)f).getMostRepresentativeMarket().equals(m)) flats.add((Factory)f);
-				}
-				if (flats.size() > 0) neighborhoods.put(m.getName(), flats);
-			}
-		} else if (groupBy.equals("project")) {
-			List <Project> availableProjects = projectDao.getAll();
-			for (Project p : availableProjects) {
-				int factoryIndex = 0;
-				List<Factory> flats = new ArrayList<Factory>();
-				for (Object f : factories) {
-					boolean found = false;
-					Iterator it = p.getSubprojects().iterator();
-					while (it.hasNext() && !found) {
-						Subproject spaux = (Subproject)it.next();
-						if (spaux.getFactory().getId() == ((Factory)f).getId()) {
-							flats.add((Factory)f);
-							found = true;
-						}
-					}
-					factoryIndex++;
-				}
-				if (flats.size() > 0) neighborhoods.put(p.getName(), flats);
-			}
-		} else if (groupBy.equals("")) {
-			neighborhoods.put("", factories);
-		} else throw new GroupByOperationNotSupportedException();
-		return neighborhoods;
-	}
+        }
+        
+        return c;
+    }
 
-	private Map<String,List<?>> groupProjectsBy(List<?> projects, String groupBy) throws GroupByOperationNotSupportedException {
-		Map<String,List<?>> neighborhoods = new HashMap<String,List<?>>();
-		if (groupBy.equals("company")) {
-			List <Company> availableCompanies = companyDao.getAll();
-			for (Company comp : availableCompanies) {
-				List<Project> flats = new ArrayList<Project>();
-				for (Object p : projects) {
-					boolean found = false;
-					Iterator it = ((Project)p).getSubprojects().iterator();
-					while (it.hasNext() && !found) {
-						Subproject spaux = (Subproject)it.next();
-						if (spaux.getFactory().getCompany().getId() == comp.getId()) {
-							flats.add((Project)p);
-							found = true;
-						}
-					}
-				}
-				if (flats.size() > 0) neighborhoods.put(comp.getName(), flats);
-			}
-		} else if (groupBy.equals("market")) {
-			List <Market> availableMarkets = marketDao.getAll();
-			for (Market m : availableMarkets) {
-				List<Project> flats = new ArrayList<Project>();
-				for (Object p : projects) {
-					if (((Project)p).getMarket().equals(m)) flats.add((Project)p);
-				}
-				if (flats.size() > 0) neighborhoods.put(m.getName(), flats);
-			}
-		} else if (groupBy.equals("factory")) {
-			List <Factory> availableFactories = factoryDao.getAll();
-			for (Factory f : availableFactories) {
-				List<Project> flats = new ArrayList<Project>();
-				for (Object p : projects) {
-					boolean found = false;
-					Iterator it = ((Project)p).getSubprojects().iterator();
-					while (it.hasNext() && !found) {
-						Subproject spaux = (Subproject)it.next();
-						if (spaux.getFactory().getId() == f.getId()) {
-							flats.add((Project)p);
-							found = true;
-						}
-					}
-				}
-				if (flats.size() > 0) neighborhoods.put(f.getName(), flats);
-			}
-		} else if (groupBy.equals("")) {
-			neighborhoods.put("", projects);
-		} else throw new GroupByOperationNotSupportedException();
-		return neighborhoods;
-	}
-	
-	private Map<String,List<?>> groupSubprojectsBy(List<?> subprojects, String groupBy) throws GroupByOperationNotSupportedException {
-		Map<String,List<?>> neighborhoods = new HashMap<String,List<?>>();
-		if (groupBy.equals("company")) {
+    private Map<String,List<?>> groupEntitiesBy(Class<?> clazz, List<?> entities, String groupBy) throws EntityNotSupportedException, GroupByOperationNotSupportedException {
+        String className = clazz.getSimpleName();
+        Map<String,List<?>> neighborhoods = new HashMap<String,List<?>>();
+        if (className.equals("Factory")) {
+            neighborhoods = groupFactoriesBy(entities, groupBy);
+        } else if (className.equals("Project")) {
+            neighborhoods = groupProjectsBy(entities, groupBy);
+        } else if (className.equals("Subproject")) {
+            neighborhoods = groupSubprojectsBy(entities, groupBy);
+        } else {
+            throw new EntityNotSupportedException();
+        }
+        return neighborhoods;
+    }
 
-		} else if (groupBy.equals("market")) {
-			
-		} else if (groupBy.equals("factory")) {
-			
-		} else if (groupBy.equals("project")) {
-			
-		} else if (groupBy.equals("")) {
-			neighborhoods.put("", subprojects);
-		} else throw new GroupByOperationNotSupportedException();
-		return neighborhoods;
-	}
+    private Map<String,List<?>> groupFactoriesBy(List<?> factories, String groupBy) throws GroupByOperationNotSupportedException {
+        Map<String,List<?>> neighborhoods = new HashMap<String,List<?>>();
+        if (groupBy.equals("company")) {
+            List <Company> availableCompanies = companyDao.getAll();
+            for (Company comp : availableCompanies) {
+                List<Factory> flats = new ArrayList<Factory>();
+                for (Object f : factories) {
+                    if (((Factory)f).getCompany().getId() == comp.getId()) {
+                        flats.add((Factory)f);
+                    }
+                }
+                if (flats.size() > 0) neighborhoods.put(comp.getName(), flats);
+            }
+        } else if (groupBy.equals("market")) {
+            List <Market> availableMarkets = marketDao.getAll();
+            for (Market m : availableMarkets) {
+                List<Factory> flats = new ArrayList<Factory>();
+                for (Object f : factories) {
+                    if (((Factory)f).getMostRepresentativeMarket().equals(m)) flats.add((Factory)f);
+                }
+                if (flats.size() > 0) neighborhoods.put(m.getName(), flats);
+            }
+        } else if (groupBy.equals("project")) {
+            List <Project> availableProjects = projectDao.getAll();
+            for (Project p : availableProjects) {
+                int factoryIndex = 0;
+                List<Factory> flats = new ArrayList<Factory>();
+                for (Object f : factories) {
+                    boolean found = false;
+                    Iterator it = p.getSubprojects().iterator();
+                    while (it.hasNext() && !found) {
+                        Subproject spaux = (Subproject)it.next();
+                        if (spaux.getFactory().getId() == ((Factory)f).getId()) {
+                            flats.add((Factory)f);
+                            found = true;
+                        }
+                    }
+                    factoryIndex++;
+                }
+                if (flats.size() > 0) neighborhoods.put(p.getName(), flats);
+            }
+        } else if (groupBy.equals("")) {
+            neighborhoods.put("", factories);
+        } else throw new GroupByOperationNotSupportedException();
+        return neighborhoods;
+    }
 
-	public void setCompanyDao(CompanyDAO companyDao) {
-		this.companyDao = companyDao;
-	}
+    private Map<String,List<?>> groupProjectsBy(List<?> projects, String groupBy) throws GroupByOperationNotSupportedException {
+        Map<String,List<?>> neighborhoods = new HashMap<String,List<?>>();
+        if (groupBy.equals("company")) {
+            List <Company> availableCompanies = companyDao.getAll();
+            for (Company comp : availableCompanies) {
+                List<Project> flats = new ArrayList<Project>();
+                for (Object p : projects) {
+                    boolean found = false;
+                    Iterator it = ((Project)p).getSubprojects().iterator();
+                    while (it.hasNext() && !found) {
+                        Subproject spaux = (Subproject)it.next();
+                        if (spaux.getFactory().getCompany().getId() == comp.getId()) {
+                            flats.add((Project)p);
+                            found = true;
+                        }
+                    }
+                }
+                if (flats.size() > 0) neighborhoods.put(comp.getName(), flats);
+            }
+        } else if (groupBy.equals("market")) {
+            List <Market> availableMarkets = marketDao.getAll();
+            for (Market m : availableMarkets) {
+                List<Project> flats = new ArrayList<Project>();
+                for (Object p : projects) {
+                    if (((Project)p).getMarket().equals(m)) flats.add((Project)p);
+                }
+                if (flats.size() > 0) neighborhoods.put(m.getName(), flats);
+            }
+        } else if (groupBy.equals("factory")) {
+            List <Factory> availableFactories = factoryDao.getAll();
+            for (Factory f : availableFactories) {
+                List<Project> flats = new ArrayList<Project>();
+                for (Object p : projects) {
+                    boolean found = false;
+                    Iterator it = ((Project)p).getSubprojects().iterator();
+                    while (it.hasNext() && !found) {
+                        Subproject spaux = (Subproject)it.next();
+                        if (spaux.getFactory().getId() == f.getId()) {
+                            flats.add((Project)p);
+                            found = true;
+                        }
+                    }
+                }
+                if (flats.size() > 0) neighborhoods.put(f.getName(), flats);
+            }
+        } else if (groupBy.equals("")) {
+            neighborhoods.put("", projects);
+        } else throw new GroupByOperationNotSupportedException();
+        return neighborhoods;
+    }
 
-	public void setFactoryDao(FactoryDAO factoryDao) {
-		this.factoryDao = factoryDao;
-	}
+    private Map<String,List<?>> groupSubprojectsBy(List<?> subprojects, String groupBy) throws GroupByOperationNotSupportedException {
+        Map<String,List<?>> neighborhoods = new HashMap<String,List<?>>();
+        if (groupBy.equals("company")) {
 
-	public void setProjectDao(ProjectDAO projectDao) {
-		this.projectDao = projectDao;
-	}
+        } else if (groupBy.equals("market")) {
+            
+        } else if (groupBy.equals("factory")) {
+            
+        } else if (groupBy.equals("project")) {
+            
+        } else if (groupBy.equals("")) {
+            neighborhoods.put("", subprojects);
+        } else throw new GroupByOperationNotSupportedException();
+        return neighborhoods;
+    }
 
-	public void setMarketDao(MarketDAO marketDao) {
-		this.marketDao = marketDao;
-	}
-	
-	
+    public void setCompanyDao(CompanyDAO companyDao) {
+        this.companyDao = companyDao;
+    }
+
+    public void setFactoryDao(FactoryDAO factoryDao) {
+        this.factoryDao = factoryDao;
+    }
+
+    public void setProjectDao(ProjectDAO projectDao) {
+        this.projectDao = projectDao;
+    }
+
+    public void setMarketDao(MarketDAO marketDao) {
+        this.marketDao = marketDao;
+    }
+
 }

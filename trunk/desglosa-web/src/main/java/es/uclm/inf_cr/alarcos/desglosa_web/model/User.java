@@ -22,121 +22,120 @@ import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User implements Serializable, UserDetails {
-	private static final long serialVersionUID = -6629351009307143091L;
-	
-	private int id;
-	private String username;
-	private String password;
-	private boolean enabled;
-	private boolean accountExpired;
-	private boolean credentialsExpired;
-	private boolean accountLocked;
-	private Set<Group> groups = new HashSet<Group>();
-	
-	public User() {
-	}
+    private static final long serialVersionUID = -6629351009307143091L;
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	public int getId() {
-		return id;
-	}
+    private int id;
+    private String username;
+    private String password;
+    private boolean enabled;
+    private boolean accountExpired;
+    private boolean credentialsExpired;
+    private boolean accountLocked;
+    private Set<Group> groups = new HashSet<Group>();
 
-	@Column(nullable=false,length=45,unique=true)
-	public String getUsername() {
-		return username;
-	}
+    public User() {}
 
-	@Column(nullable=false)
-	public String getPassword() {
-		return password;
-	}
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    public int getId() {
+        return id;
+    }
 
-	@Column(name="enabled")
-	public boolean isEnabled() {
-		return enabled;
-	}
+    @Column(nullable = false, length = 45, unique = true)
+    public String getUsername() {
+        return username;
+    }
 
-	@Column(name="account_expired",nullable=false)
-	public boolean isAccountExpired() {
-		return accountExpired;
-	}
+    @Column(nullable = false)
+    public String getPassword() {
+        return password;
+    }
 
-	@Column(name="credentials_expired",nullable=false)
-	public boolean isCredentialsExpired() {
-		return credentialsExpired;
-	}
+    @Column(name = "enabled")
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	@Column(name="account_locked",nullable=false)
-	public boolean isAccountLocked() {
-		return accountLocked;
-	}
+    @Column(name = "account_expired", nullable = false)
+    public boolean isAccountExpired() {
+        return accountExpired;
+    }
+
+    @Column(name = "credentials_expired", nullable = false)
+    public boolean isCredentialsExpired() {
+        return credentialsExpired;
+    }
+
+    @Column(name = "account_locked", nullable = false)
+    public boolean isAccountLocked() {
+        return accountLocked;
+    }
 
     @ManyToMany(fetch = FetchType.EAGER) 
     @JoinTable(
-            name="users_groups",
+            name = "users_groups",
             joinColumns = { @JoinColumn( name="user_id") },
             inverseJoinColumns = @JoinColumn( name="group_id")
-    )    
-	public Set<Group> getGroups() {
-		return groups;
-	}
+    )
+    public Set<Group> getGroups() {
+        return groups;
+    }
 
-	@Transient
-	public GrantedAuthority[] getAuthorities() {
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		for (Group g : this.groups) {
-			authorities.addAll(g.getAuthorities());
-		}
-		return authorities.toArray(new GrantedAuthority[0]);
-	}
-	
-	@Transient
-	public boolean isAccountNonExpired() {
-		return !accountExpired;
-	}
+    @Transient
+    public GrantedAuthority[] getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        for (Group g : this.groups) {
+            authorities.addAll(g.getAuthorities());
+        }
+        return authorities.toArray(new GrantedAuthority[0]);
+    }
 
-	@Transient
-	public boolean isCredentialsNonExpired() {
-		return !credentialsExpired;
-	}
+    @Transient
+    public boolean isAccountNonExpired() {
+        return !accountExpired;
+    }
 
-	@Transient
-	public boolean isAccountNonLocked() {
-		return !accountLocked;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Transient
+    public boolean isCredentialsNonExpired() {
+        return !credentialsExpired;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    @Transient
+    public boolean isAccountNonLocked() {
+        return !accountLocked;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setAccountExpired(boolean accountExpired) {
-		this.accountExpired = accountExpired;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setCredentialsExpired(boolean credentialsExpired) {
-		this.credentialsExpired = credentialsExpired;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public void setAccountLocked(boolean accountLocked) {
-		this.accountLocked = accountLocked;
-	}
+    public void setAccountExpired(boolean accountExpired) {
+        this.accountExpired = accountExpired;
+    }
 
-	public void setGroups(Set<Group> groups) {
-		this.groups = groups;
-	}
+    public void setCredentialsExpired(boolean credentialsExpired) {
+        this.credentialsExpired = credentialsExpired;
+    }
+
+    public void setAccountLocked(boolean accountLocked) {
+        this.accountLocked = accountLocked;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
+    }
 
 }

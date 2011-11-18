@@ -10,20 +10,19 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.User;
 
 
 public class CustomUserDetailsService implements UserDetailsService {
-	
-	private UserDAO userDao;
-	
+    private UserDAO userDao;
+    
     public void setUserDao(UserDAO userDao) {
-		this.userDao = userDao;
-	}
+        this.userDao = userDao;
+    }
 
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
-    	User user = userDao.getUser(username);
-    	if (user == null) {
-    		throw new UsernameNotFoundException("user '" + username + "' not found...");
-    	}
-    	else {
-    		return (UserDetails) user;
-    	}
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
+        User user = userDao.getUser(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("user '" + username + "' not found...");
+        }
+        else {
+            return (UserDetails) user;
+        }
     }
 }

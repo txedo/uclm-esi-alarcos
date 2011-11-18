@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Property {
-	public String name() default "";
-	public String type() default "";
-	public String description() default "No description has been set.";
-	public boolean embedded() default false;
+    public String name() default "";
+    public String type() default "";
+    public String description() default "No description has been set.";
+    public boolean embedded() default false;
 }

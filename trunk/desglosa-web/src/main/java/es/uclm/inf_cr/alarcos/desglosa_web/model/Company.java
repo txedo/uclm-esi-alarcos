@@ -18,94 +18,94 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 @Entity
 @Table(name="companies")
 public class Company {
-	@Property
-	private int id;
-	@Property(type="string")
-	private String name;
-	@Property(type="string")
-	private String information;
-	private Director director;
-	@Property
-	private int numberOfFactories;
-	@Property
-	private int numberOfProjects;
-	@Property
-	private int numberOfEmployees;
-	
-	public Company(){}
-	
-	public Company(String name, String information) {
-		this.name = name;
-		this.information = information;
-	}
+    @Property
+    private int id;
+    @Property(type = "string")
+    private String name;
+    @Property(type = "string")
+    private String information;
+    private Director director;
+    @Property
+    private int numberOfFactories;
+    @Property
+    private int numberOfProjects;
+    @Property
+    private int numberOfEmployees;
+    
+    public Company(){}
+    
+    public Company(String name, String information) {
+        this.name = name;
+        this.information = information;
+    }
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	public int getId() {
-		return id;
-	}
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    public int getId() {
+        return id;
+    }
 
-	@Column(nullable=false,length=45,unique=true)
-	public String getName() {
-		return name;
-	}
+    @Column(nullable = false, length = 45, unique=true)
+    public String getName() {
+        return name;
+    }
 
-	@Column(nullable=true)
-	public String getInformation() {
-		return information;
-	}
+    @Column(nullable = true)
+    public String getInformation() {
+        return information;
+    }
 
-	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	@JoinColumn(name="director_id")
-	public Director getDirector() {
-		return director;
-	}
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @JoinColumn(name = "director_id")
+    public Director getDirector() {
+        return director;
+    }
 
-	@Formula("(select count(*) from companies c, factories f where c.id = id and c.id = f.company_id)")
-	public int getNumberOfFactories() {
-		return numberOfFactories;
-	}
+    @Formula("(select count(*) from companies c, factories f where c.id = id and c.id = f.company_id)")
+    public int getNumberOfFactories() {
+        return numberOfFactories;
+    }
 
-	@Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f, companies c where p.id = sp.project_id and sp.factory_id = f.id and f.company_id = c.id and c.id = id)")
-	public int getNumberOfProjects() {
-		return numberOfProjects;
-	}
+    @Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f, companies c where p.id = sp.project_id and sp.factory_id = f.id and f.company_id = c.id and c.id = id)")
+    public int getNumberOfProjects() {
+        return numberOfProjects;
+    }
 
-	@Formula("(select sum(f.employees) from companies c, factories f where c.id = id and c.id = f.company_id)")
-	public int getNumberOfEmployees() {
-		return numberOfEmployees;
-	}
+    @Formula("(select sum(f.employees) from companies c, factories f where c.id = id and c.id = f.company_id)")
+    public int getNumberOfEmployees() {
+        return numberOfEmployees;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setInformation(String information) {
-		this.information = information;
-	}
+    public void setInformation(String information) {
+        this.information = information;
+    }
 
-	public void setDirector(Director director) {
-		this.director = director;
-	}
-	
-	public void setNumberOfFactories(int numberOfFactories) {
-		this.numberOfFactories = numberOfFactories;
-	}
+    public void setDirector(Director director) {
+        this.director = director;
+    }
+    
+    public void setNumberOfFactories(int numberOfFactories) {
+        this.numberOfFactories = numberOfFactories;
+    }
 
-	public void setNumberOfProjects(int numberOfProjects) {
-		this.numberOfProjects = numberOfProjects;
-	}
+    public void setNumberOfProjects(int numberOfProjects) {
+        this.numberOfProjects = numberOfProjects;
+    }
 
-	public void setNumberOfEmployees(int numberOfEmployees) {
-		this.numberOfEmployees = numberOfEmployees;
-	}
+    public void setNumberOfEmployees(int numberOfEmployees) {
+        this.numberOfEmployees = numberOfEmployees;
+    }
 
-	@Override
-	public String toString() {
-		return this.name;
-	}
-	
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
 }

@@ -19,7 +19,7 @@ import org.hibernate.annotations.Formula;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 
 @Entity
-@Table(name="subprojects")
+@Table(name = "subprojects")
 @NamedQueries ({
     @NamedQuery(
         name = "findSubprojectsByCompanyId",
@@ -35,196 +35,196 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
         )
 })
 public class Subproject {
-	@Property
-	private int id;
-	private Project project;
-	@Property(embedded=true)
-	private Factory factory;
-	@Property(type="string")
-	private String name;
-	@Property(type="float")
-	private Float fiabilidad;
-	@Property(type="float")
-	private Float usabilidad;
-	@Property(type="float")
-	private Float eficiencia;
-	@Property(type="float")
-	private Float mantenibilidad;
-	@Property(type="float")
-	private Float portabilidad;
-	@Property(type="float")
-	private Float lineasDeCodigo;
-	@Property(type="float")
-	private Float comentarios;
-	@Property(type="float")
-	private Float ratioComentariosLineasDeCodigo;
-	@Property(type="float")
-	private Float puntosFuncion;
-	@Property(type="float")
-	private Float fichajeCodigo;
-	@Property(type="float")
-	private Float fichajeTotal;
-	@Property(type="float")
-	private Float ratioFichaje;
-	@Property(type="float")
-	private Float actividad;
-	
-	public Subproject() {}
+    @Property
+    private int id;
+    private Project project;
+    @Property(embedded=true)
+    private Factory factory;
+    @Property(type = "string")
+    private String name;
+    @Property(type = "float")
+    private Float fiabilidad;
+    @Property(type = "float")
+    private Float usabilidad;
+    @Property(type = "float")
+    private Float eficiencia;
+    @Property(type = "float")
+    private Float mantenibilidad;
+    @Property(type = "float")
+    private Float portabilidad;
+    @Property(type = "float")
+    private Float lineasDeCodigo;
+    @Property(type = "float")
+    private Float comentarios;
+    @Property(type = "float")
+    private Float ratioComentariosLineasDeCodigo;
+    @Property(type = "float")
+    private Float puntosFuncion;
+    @Property(type = "float")
+    private Float fichajeCodigo;
+    @Property(type = "float")
+    private Float fichajeTotal;
+    @Property(type = "float")
+    private Float ratioFichaje;
+    @Property(type = "float")
+    private Float actividad;
+    
+    public Subproject() {}
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	public int getId() {
-		return id;
-	}
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    public int getId() {
+        return id;
+    }
 
-	@ManyToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-    @JoinColumn(name="project_id", nullable=false)
-	public Project getProject() {
-		return project;
-	}
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @JoinColumn(name = "project_id", nullable = false)
+    public Project getProject() {
+        return project;
+    }
 
-	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	@JoinColumn(name="factory_id")
-	public Factory getFactory() {
-		return factory;
-	}
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @JoinColumn(name = "factory_id")
+    public Factory getFactory() {
+        return factory;
+    }
 
-	@Column(name="name")
-	public String getName() {
-		return name;
-	}
-	
-	@Column(name="fiabilidad", nullable=true, columnDefinition="float default 0.0")
-	public Float getFiabilidad() {
-		return fiabilidad;
-	}
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+    
+    @Column(name = "fiabilidad", nullable = true, columnDefinition = "float default 0.0")
+    public Float getFiabilidad() {
+        return fiabilidad;
+    }
 
-	@Column(name="usabilidad", nullable=true, columnDefinition="float default 0.0")
-	public Float getUsabilidad() {
-		return usabilidad;
-	}
+    @Column(name = "usabilidad", nullable = true, columnDefinition = "float default 0.0")
+    public Float getUsabilidad() {
+        return usabilidad;
+    }
 
-	@Column(name="eficiencia", nullable=true, columnDefinition="float default 0.0")
-	public Float getEficiencia() {
-		return eficiencia;
-	}
+    @Column(name = "eficiencia", nullable = true, columnDefinition = "float default 0.0")
+    public Float getEficiencia() {
+        return eficiencia;
+    }
 
-	@Column(name="mantenibilidad", nullable=true, columnDefinition="float default 0.0")
-	public Float getMantenibilidad() {
-		return mantenibilidad;
-	}
+    @Column(name = "mantenibilidad", nullable = true, columnDefinition = "float default 0.0")
+    public Float getMantenibilidad() {
+        return mantenibilidad;
+    }
 
-	@Column(name="portabilidad", nullable=true, columnDefinition="float default 0.0")
-	public Float getPortabilidad() {
-		return portabilidad;
-	}
+    @Column(name = "portabilidad", nullable = true, columnDefinition = "float default 0.0")
+    public Float getPortabilidad() {
+        return portabilidad;
+    }
 
-	@Column(name="lineas_de_codigo", nullable=true, columnDefinition="float default 0.0")
-	public Float getLineasDeCodigo() {
-		return lineasDeCodigo;
-	}
+    @Column(name = "lineas_de_codigo", nullable = true, columnDefinition = "float default 0.0")
+    public Float getLineasDeCodigo() {
+        return lineasDeCodigo;
+    }
 
-	@Column(name="comentarios", nullable=true, columnDefinition="float default 0.0")
-	public Float getComentarios() {
-		return comentarios;
-	}
-	
-	@Formula("comentarios / lineas_de_codigo")
-	public Float getRatioComentariosLineasDeCodigo() {
-		return ratioComentariosLineasDeCodigo;
-	}
+    @Column(name = "comentarios", nullable = true, columnDefinition = "float default 0.0")
+    public Float getComentarios() {
+        return comentarios;
+    }
+    
+    @Formula("comentarios / lineas_de_codigo")
+    public Float getRatioComentariosLineasDeCodigo() {
+        return ratioComentariosLineasDeCodigo;
+    }
 
-	@Column(name="puntos_funcion", nullable=true, columnDefinition="float default 0.0")
-	public Float getPuntosFuncion() {
-		return puntosFuncion;
-	}
+    @Column(name = "puntos_funcion", nullable = true, columnDefinition = "float default 0.0")
+    public Float getPuntosFuncion() {
+        return puntosFuncion;
+    }
 
-	@Column(name="fichaje_codigo", nullable=true, columnDefinition="float default 0.0")
-	public Float getFichajeCodigo() {
-		return fichajeCodigo;
-	}
+    @Column(name = "fichaje_codigo", nullable = true, columnDefinition = "float default 0.0")
+    public Float getFichajeCodigo() {
+        return fichajeCodigo;
+    }
 
-	@Column(name="fichaje_total", nullable=true, columnDefinition="float default 0.0")
-	public Float getFichajeTotal() {
-		return fichajeTotal;
-	}
-	
-	@Formula("fichaje_codigo / fichaje_total")
-	public Float getRatioFichaje() {
-		return ratioFichaje;
-	}
-	
-	@Column(name="actividad", nullable=true, columnDefinition="float default 0.0")
-	public Float getActividad() {
-		return actividad;
-	}
+    @Column(name = "fichaje_total", nullable = true, columnDefinition = "float default 0.0")
+    public Float getFichajeTotal() {
+        return fichajeTotal;
+    }
+    
+    @Formula("fichaje_codigo / fichaje_total")
+    public Float getRatioFichaje() {
+        return ratioFichaje;
+    }
+    
+    @Column(name = "actividad", nullable = true, columnDefinition = "float default 0.0")
+    public Float getActividad() {
+        return actividad;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setProject(Project project) {
-		this.project = project;
-	}
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
-	public void setFactory(Factory factory) {
-		this.factory = factory;
-	}
+    public void setFactory(Factory factory) {
+        this.factory = factory;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public void setFiabilidad(Float fiabilidad) {
-		this.fiabilidad = fiabilidad;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setUsabilidad(Float usabilidad) {
-		this.usabilidad = usabilidad;
-	}
+    public void setFiabilidad(Float fiabilidad) {
+        this.fiabilidad = fiabilidad;
+    }
 
-	public void setEficiencia(Float eficiencia) {
-		this.eficiencia = eficiencia;
-	}
+    public void setUsabilidad(Float usabilidad) {
+        this.usabilidad = usabilidad;
+    }
 
-	public void setMantenibilidad(Float mantenibilidad) {
-		this.mantenibilidad = mantenibilidad;
-	}
+    public void setEficiencia(Float eficiencia) {
+        this.eficiencia = eficiencia;
+    }
 
-	public void setPortabilidad(Float portabilidad) {
-		this.portabilidad = portabilidad;
-	}
+    public void setMantenibilidad(Float mantenibilidad) {
+        this.mantenibilidad = mantenibilidad;
+    }
 
-	public void setLineasDeCodigo(Float lineasDeCodigo) {
-		this.lineasDeCodigo = lineasDeCodigo;
-	}
+    public void setPortabilidad(Float portabilidad) {
+        this.portabilidad = portabilidad;
+    }
 
-	public void setComentarios(Float comentarios) {
-		this.comentarios = comentarios;
-	}
+    public void setLineasDeCodigo(Float lineasDeCodigo) {
+        this.lineasDeCodigo = lineasDeCodigo;
+    }
 
-	public void setRatioComentariosLineasDeCodigo(
-			Float ratioComentariosLineasDeCodigo) {
-		this.ratioComentariosLineasDeCodigo = ratioComentariosLineasDeCodigo;
-	}
+    public void setComentarios(Float comentarios) {
+        this.comentarios = comentarios;
+    }
 
-	public void setPuntosFuncion(Float puntosFuncion) {
-		this.puntosFuncion = puntosFuncion;
-	}
+    public void setRatioComentariosLineasDeCodigo(
+            Float ratioComentariosLineasDeCodigo) {
+        this.ratioComentariosLineasDeCodigo = ratioComentariosLineasDeCodigo;
+    }
 
-	public void setFichajeCodigo(Float fichajeCodigo) {
-		this.fichajeCodigo = fichajeCodigo;
-	}
+    public void setPuntosFuncion(Float puntosFuncion) {
+        this.puntosFuncion = puntosFuncion;
+    }
 
-	public void setFichajeTotal(Float fichajeTotal) {
-		this.fichajeTotal = fichajeTotal;
-	}
-	
-	public void setRatioFichaje(Float ratioFichaje) {
-		this.ratioFichaje = ratioFichaje;
-	}
+    public void setFichajeCodigo(Float fichajeCodigo) {
+        this.fichajeCodigo = fichajeCodigo;
+    }
 
-	public void setActividad(Float actividad) {
-		this.actividad = actividad;
-	}
-	
+    public void setFichajeTotal(Float fichajeTotal) {
+        this.fichajeTotal = fichajeTotal;
+    }
+    
+    public void setRatioFichaje(Float ratioFichaje) {
+        this.ratioFichaje = ratioFichaje;
+    }
+
+    public void setActividad(Float actividad) {
+        this.actividad = actividad;
+    }
+
 }

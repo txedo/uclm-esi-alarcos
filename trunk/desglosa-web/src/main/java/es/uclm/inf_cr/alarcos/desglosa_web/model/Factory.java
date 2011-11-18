@@ -26,7 +26,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
 
 @Entity
-@Table(name="factories")
+@Table(name = "factories")
 @NamedQueries ({
     @NamedQuery(
         name = "findFactoriesByCompanyId",
@@ -34,139 +34,139 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
         )
 })
 public class Factory {
-	@Property
-	private int id;
-	@Property(embedded=true)
-	private Company company;
-	@Property(type="string")
-	private String name;
-	@Property(type="string")
-	private String information;
-	private Director director;
-	private String email;
-	@Property
-	private int employees;
-	private Address address;
-	private Location location;
-	@Property
-	private int numberOfProjects;
-	@Property(embedded=true)
-	private Market mostRepresentativeMarket;
-	
-	public Factory() {}
+    @Property
+    private int id;
+    @Property(embedded = true)
+    private Company company;
+    @Property(type = "string")
+    private String name;
+    @Property(type = "string")
+    private String information;
+    private Director director;
+    private String email;
+    @Property
+    private int employees;
+    private Address address;
+    private Location location;
+    @Property
+    private int numberOfProjects;
+    @Property(embedded = true)
+    private Market mostRepresentativeMarket;
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	public int getId() {
-		return id;
-	}
+    public Factory() {}
 
-	@ManyToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE})
-	@JoinColumn(name="company_id")
-	public Company getCompany() {
-		return company;
-	}
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    public int getId() {
+        return id;
+    }
 
-	@Column(name="name",nullable=false,length=45,unique=true)
-	public String getName() {
-		return name;
-	}
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "company_id")
+    public Company getCompany() {
+        return company;
+    }
 
-	@Column
-	public String getInformation() {
-		return information;
-	}
+    @Column(name = "name", nullable = false, length = 45, unique = true)
+    public String getName() {
+        return name;
+    }
 
-	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-    @JoinColumn(name="director_id")
-	public Director getDirector() {
-		return director;
-	}
+    @Column
+    public String getInformation() {
+        return information;
+    }
 
-	@Column(name="contact_email")
-	public String getEmail() {
-		return email;
-	}
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @JoinColumn(name = "director_id")
+    public Director getDirector() {
+        return director;
+    }
 
-	@Column
-	public int getEmployees() {
-		return employees;
-	}
+    @Column(name = "contact_email")
+    public String getEmail() {
+        return email;
+    }
 
-	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	@JoinColumn(name="address_id")
-	public Address getAddress() {
-		return address;
-	}
-	
-	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	@JoinColumn(name="location_id")
-	public Location getLocation() {
-		return location;
-	}
-	
-	@Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f where p.id = sp.project_id and sp.factory_id = id)")
-	public int getNumberOfProjects() {
-		return numberOfProjects;
-	}
-	
-	@Transient
-	public Market getMostRepresentativeMarket() {
-		MarketDAOHibernate marketDao = (MarketDAOHibernate) ApplicationContextProvider.getBean("marketDao");
-		Map<String, Object> queryParams = new HashMap<String, Object>();
-		queryParams.put("id", id);
-		List<Market> markets = marketDao.findByNamedQuery("findMostRepresentativeMarketByFactoryId", queryParams);
-		if (markets.size() > 0) mostRepresentativeMarket = markets.get(0);
-		else mostRepresentativeMarket = null;
-		return mostRepresentativeMarket;
-	}
+    @Column
+    public int getEmployees() {
+        return employees;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @JoinColumn(name = "address_id")
+    public Address getAddress() {
+        return address;
+    }
+    
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @JoinColumn(name = "location_id")
+    public Location getLocation() {
+        return location;
+    }
 
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+    @Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f where p.id = sp.project_id and sp.factory_id = id)")
+    public int getNumberOfProjects() {
+        return numberOfProjects;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Transient
+    public Market getMostRepresentativeMarket() {
+        MarketDAOHibernate marketDao = (MarketDAOHibernate) ApplicationContextProvider.getBean("marketDao");
+        Map<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("id", id);
+        List<Market> markets = marketDao.findByNamedQuery("findMostRepresentativeMarketByFactoryId", queryParams);
+        if (markets.size() > 0) mostRepresentativeMarket = markets.get(0);
+        else mostRepresentativeMarket = null;
+        return mostRepresentativeMarket;
+    }
 
-	public void setInformation(String information) {
-		this.information = information;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setDirector(Director director) {
-		this.director = director;
-	}
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setEmployees(int employees) {
-		this.employees = employees;
-	}
+    public void setInformation(String information) {
+        this.information = information;
+    }
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-	
-	public void setLocation(Location location){
-		this.location = location;
-	}
+    public void setDirector(Director director) {
+        this.director = director;
+    }
 
-	public void setNumberOfProjects(int numberOfProjects) {
-		this.numberOfProjects = numberOfProjects;
-	}
-	
-	public void setMostRepresentativeMarket(Market mostRepresentativeMarket) {
-		this.mostRepresentativeMarket = mostRepresentativeMarket;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Override
-	public String toString() {
-		return this.name;
-	}
-	
+    public void setEmployees(int employees) {
+        this.employees = employees;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void setLocation(Location location){
+        this.location = location;
+    }
+
+    public void setNumberOfProjects(int numberOfProjects) {
+        this.numberOfProjects = numberOfProjects;
+    }
+    
+    public void setMostRepresentativeMarket(Market mostRepresentativeMarket) {
+        this.mostRepresentativeMarket = mostRepresentativeMarket;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
 }
