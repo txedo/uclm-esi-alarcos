@@ -38,18 +38,18 @@ public class Factory {
     private int id;
     @Property(embedded = true)
     private Company company;
-    @Property(type = "string")
+    @Property
     private String name;
-    @Property(type = "string")
+    @Property
     private String information;
     private Director director;
     private String email;
     @Property
-    private int employees;
+    private Integer employees;
     private Address address;
     private Location location;
     @Property
-    private int numberOfProjects;
+    private Integer numberOfProjects;
     @Property(embedded = true)
     private Market mostRepresentativeMarket;
 
@@ -88,7 +88,7 @@ public class Factory {
     }
 
     @Column
-    public int getEmployees() {
+    public Integer getEmployees() {
         return employees;
     }
 
@@ -105,7 +105,7 @@ public class Factory {
     }
 
     @Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f where p.id = sp.project_id and sp.factory_id = id)")
-    public int getNumberOfProjects() {
+    public Integer getNumberOfProjects() {
         return numberOfProjects;
     }
 
@@ -144,7 +144,7 @@ public class Factory {
         this.email = email;
     }
 
-    public void setEmployees(int employees) {
+    public void setEmployees(Integer employees) {
         this.employees = employees;
     }
 
@@ -156,7 +156,7 @@ public class Factory {
         this.location = location;
     }
 
-    public void setNumberOfProjects(int numberOfProjects) {
+    public void setNumberOfProjects(Integer numberOfProjects) {
         this.numberOfProjects = numberOfProjects;
     }
     

@@ -20,17 +20,17 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 public class Company {
     @Property
     private int id;
-    @Property(type = "string")
+    @Property
     private String name;
-    @Property(type = "string")
+    @Property
     private String information;
     private Director director;
     @Property
-    private int numberOfFactories;
+    private Integer numberOfFactories;
     @Property
-    private int numberOfProjects;
+    private Integer numberOfProjects;
     @Property
-    private int numberOfEmployees;
+    private Integer numberOfEmployees;
     
     public Company(){}
     
@@ -61,17 +61,17 @@ public class Company {
     }
 
     @Formula("(select count(*) from companies c, factories f where c.id = id and c.id = f.company_id)")
-    public int getNumberOfFactories() {
+    public Integer getNumberOfFactories() {
         return numberOfFactories;
     }
 
     @Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f, companies c where p.id = sp.project_id and sp.factory_id = f.id and f.company_id = c.id and c.id = id)")
-    public int getNumberOfProjects() {
+    public Integer getNumberOfProjects() {
         return numberOfProjects;
     }
 
     @Formula("(select sum(f.employees) from companies c, factories f where c.id = id and c.id = f.company_id)")
-    public int getNumberOfEmployees() {
+    public Integer getNumberOfEmployees() {
         return numberOfEmployees;
     }
 
@@ -91,15 +91,15 @@ public class Company {
         this.director = director;
     }
     
-    public void setNumberOfFactories(int numberOfFactories) {
+    public void setNumberOfFactories(Integer numberOfFactories) {
         this.numberOfFactories = numberOfFactories;
     }
 
-    public void setNumberOfProjects(int numberOfProjects) {
+    public void setNumberOfProjects(Integer numberOfProjects) {
         this.numberOfProjects = numberOfProjects;
     }
 
-    public void setNumberOfEmployees(int numberOfEmployees) {
+    public void setNumberOfEmployees(Integer numberOfEmployees) {
         this.numberOfEmployees = numberOfEmployees;
     }
 

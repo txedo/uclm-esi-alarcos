@@ -1,11 +1,22 @@
 <!DOCTYPE project [
-    <!ENTITY config SYSTEM "./config.xml">
-    <!ENTITY login SYSTEM "./login.xml">
+    <!ENTITY config                           SYSTEM "./config.xml">
+    <!ENTITY goToLoginPage                    SYSTEM "./login/goToLoginPage.xml">
+    <!ENTITY submitLoginData                  SYSTEM "./login/submitLoginData.xml">
+    <!ENTITY checkLoginSuccess                SYSTEM "./login/checkLoginSuccess.xml">
+    <!ENTITY login                            SYSTEM "./login/login.xml">
+    <!ENTITY loginAdmin                       SYSTEM "./login/loginAdmin.xml">
+    <!ENTITY loginCredentialsExpiredUser      SYSTEM "./login/loginCredentialsExpiredUser.xml">
+    <!ENTITY loginDisabledUser                SYSTEM "./login/loginDisabledUser.xml">
+    <!ENTITY loginExpiredUser                 SYSTEM "./login/loginExpiredUser.xml">
+    <!ENTITY loginLockedUser                  SYSTEM "./login/loginLockedUser.xml">
+    <!ENTITY loginIncorrectUsernameOrPassword SYSTEM "./login/loginIncorrectUsernameOrPassword.xml">
 ]>
-<project name="Desglosa Webtest suite" basedir="." default="run-all-tests"> 
+<project name="Desglosa Webtest suite" basedir="." default="run-all-tests">		
     <!-- Use i18n bundle, 2nd one listed is the default -->
     <property file="\${basedir}/target/${webapp.name}/WEB-INF/classes/ApplicationResources_${user.language}.properties"/>
     <property file="\${basedir}/target/${webapp.name}/WEB-INF/classes/ApplicationResources.properties"/>
+	<property file="\${basedir}/target/${webapp.name}/WEB-INF/classes/spring-security-messages_${user.language}.properties"/>
+	<property file="\${basedir}/target/${webapp.name}/WEB-INF/classes/spring-security-messages.properties"/>
 
     <!-- runs all targets -->
     <target name="run-all-tests" 
@@ -13,21 +24,51 @@
         description="Call and executes all test cases (targets)"/>
     
     <!-- Login to the application -->
-    <target name="Login" description="Runs login test and verifies Main Menu's Title">
-        <webtest name="login">
+    <target name="Login" description="Runs login test cases">
+        <webtest name="normal">
             &config;
             <steps>
-                &login;
+                &loginAdmin;
+            </steps>
+        </webtest>
+        <webtest name="credentials expired">
+            &config;
+            <steps>
+                &loginCredentialsExpiredUser;
+            </steps>
+        </webtest>
+        <webtest name="disabled account">
+            &config;
+            <steps>
+                &loginDisabledUser;
+            </steps>
+        </webtest>
+        <webtest name="expired account">
+            &config;
+            <steps>
+                &loginExpiredUser;
+            </steps>
+        </webtest>
+        <webtest name="incorrect username or password">
+            &config;
+            <steps>
+                &loginIncorrectUsernameOrPassword;
+            </steps>
+        </webtest>
+        <webtest name="locked user">
+            &config;
+            <steps>
+                &loginLockedUser;
             </steps>
         </webtest>
     </target>
 
     <!-- Logout of the application -->
-    <target name="Logout" description="Runs logout test and verifies Login's Title">
+    <target name="Logout" description="Runs logout test and verifies Home Page's Title">
         <webtest name="logout">
             &config;
             <steps>
-                &login;
+                &loginAdmin;
                 <invoke description="get Logout Page" url="/logout"/>
                 <verifytitle description="we should see the Home Page again" text=".*${desglosa.title}.*" regex="true"/>
             </steps>

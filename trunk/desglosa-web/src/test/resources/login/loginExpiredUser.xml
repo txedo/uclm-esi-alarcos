@@ -1,0 +1,6 @@
+<storeProperty name="username" value="expired"/>
+<storeProperty name="password" value="expired"/>
+&goToLoginPage;
+&submitLoginData;
+<verifytitle description="we should see the login title yet" text=".*${login.title}.*" regex="true"/>
+<verifytext description="User account must be expired" text=".*${UserDetailsService.expired}.*" regex="true"/>

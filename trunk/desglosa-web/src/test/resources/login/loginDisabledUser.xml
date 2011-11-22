@@ -1,0 +1,6 @@
+<storeProperty name="username" value="disabled"/>
+<storeProperty name="password" value="disabled"/>
+&goToLoginPage;
+&submitLoginData;
+<verifytitle description="we should see the login title yet" text=".*${login.title}.*" regex="true"/>
+<verifytext description="User account must be disabled" text=".*${UserDetailsService.disabled}.*" regex="true"/>
