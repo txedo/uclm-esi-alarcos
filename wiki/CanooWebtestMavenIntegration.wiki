@@ -1,0 +1,201 @@
+#summary How to integrate Canoo Webtest to do functional tests and add an HTML report into Maven site
+#labels canoo,webtest,maven,ant,webtest-maven-plugin,report,test
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+{{{
+<project>
+  ...
+  <build>
+    <finalName>YourProjectFinalName</finalName>
+    <plugins>
+    ...
+    <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-project-info-reports-plugin</artifactId>
+    <version>2.4</version>
+    </plugin>
+    <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-site-plugin</artifactId>
+    <version>2.3</version>
+    <dependencies>
+      <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-core</artifactId>
+      <version>1.1.2</version>
+      <exclusions>
+      <exclusion>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      </exclusion>
+      </exclusions>
+      </dependency>
+    </dependencies>
+    </plugin>
+    </plugins>
+    ...
+  </build>
+
+  <reporting>
+  <plugins>
+    ...
+    <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>webtest-maven-plugin</artifactId>
+    <version>1.0.0</version>
+    </plugin>
+    ...
+  </plugins>
+  </reporting>
+
+  <profiles>
+    <!-- ============================= Testing Profile ============================= -->
+    <!-- Use "mvn clean verify -Pintegration-test" when you want to run this 
+    profile -->
+    <!-- =========================================================================== -->
+    <profile>
+    <id>integration-test</id>
+    <activation>
+    <property>
+    <name>!maven.test.skip</name>
+    </property>
+    </activation>
+    <build>
+    <plugins>
+    <plugin>
+    <groupId>org.codehaus.cargo</groupId>
+    <artifactId>cargo-maven2-plugin</artifactId>
+    <version>0.3</version>
+    <configuration>
+      <wait>${cargo.wait}</wait>
+      <container>
+      <containerId>${cargo.container}</containerId>
+      <zipUrlInstaller>
+      <url>${cargo.container.url}</url>
+      <installDir>${installDir}</installDir>
+      </zipUrlInstaller>
+      </container>
+      <configuration>
+      <home>${project.build.directory}/${cargo.container}/container</home>
+      <properties>
+      <cargo.hostname>${cargo.host}</cargo.hostname>
+      <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
+      <cargo.context>${project.build.finalName}</cargo.context>
+      </properties>
+      </configuration>
+    </configuration>
+    <executions>
+      <execution>
+      <id>start-container</id>
+      <phase>pre-integration-test</phase>
+      <goals>
+      <goal>start</goal>
+      </goals>
+      </execution>
+      <execution>
+      <id>stop-container</id>
+      <phase>post-integration-test</phase>
+      <goals>
+      <goal>stop</goal>
+      </goals>
+      </execution>
+    </executions>
+    </plugin>
+    <plugin>
+    <artifactId>maven-antrun-plugin</artifactId>
+    <version>1.1</version>
+    <configuration>
+      <tasks>
+      <taskdef resource="webtest_base_relaxed.taskdef">
+      <classpath refid="maven.test.classpath" />
+      </taskdef>
+      <!-- Delete old results file if it exists -->
+      <delete dir="target/webtest/webtest-results" />
+      <mkdir dir="target/webtest/webtest-results" />
+      <!-- This is so the default will be used if no test case is specified -->
+      <property name="test" value="run-all-tests" />
+      <echo level="info">Testing '${project.build.finalName}' with
+      locale '${user.language}'</echo>
+      <ant antfile="src/test/resources/web-tests.xml" target="${test}">
+      <property name="user.language" value="${user.language}" />
+      <property name="webapp.name" value="${project.build.finalName}" />
+      <property name="host" value="${cargo.host}" />
+      <property name="port" value="${cargo.port}" />
+      <property name="haltonfailure" value="false" />
+      <property name="haltonerror" value="false" />
+      <property name="loglevel" value="error" />
+      <property name="summary" value="true" />
+      <property name="saveresponse" value="true" />
+      <property name="resultpath" value="target/webtest/webtest-results" />
+      </ant>
+      </tasks>
+    </configuration>
+    <executions>
+      <execution>
+      <phase>integration-test</phase>
+      <goals>
+      <goal>run</goal>
+      </goals>
+      </execution>
+    </executions>
+    <dependencies>
+      <dependency>
+      <groupId>com.canoo.webtest</groupId>
+      <artifactId>webtest</artifactId>
+      <version>${webtest.version}</version>
+      <!-- groovy-all doesn't have a pom in central repo exclude groovy  -->
+      <!-- to prevent trying to fetch pom -->
+      <exclusions>
+      <exclusion>
+      <groupId>groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      </exclusion>
+      </exclusions>
+      </dependency>
+    </dependencies>
+    </plugin>
+    <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>webtest-maven-plugin</artifactId>
+    <version>1.0.0</version>
+    <configuration>
+      <reportdirectory>target/webtest</reportdirectory>
+      <reportname>index.html</reportname>
+      <resultpath>target/webtest/webtest-results</resultpath>
+    </configuration>
+    <executions>
+      <execution>
+      <id>generate-report</id>
+      <phase>post-integration-test</phase>
+      <goals>
+      <goal>report</goal>
+      </goals>
+      </execution>
+    </executions>
+    </plugin>
+    </plugins>
+    </build>
+    </profile>
+  </profiles>
+
+  <properties>
+    ...
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <webapp.name>desglosa-web</webapp.name>
+    <!-- WebTest dependency versions -->
+    <webtest.version>R_1812</webtest.version>
+    <!-- Cargo settings -->
+    <cargo.container>tomcat5x</cargo.container>
+    <cargo.container.url>http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.33/bin/apache-tomcat-6.0.33.zip</cargo.container.url>
+    <cargo.host>localhost</cargo.host>
+    <cargo.port>8081</cargo.port>
+    <cargo.wait>false</cargo.wait>
+  </properties>
+</project>
+}}}
