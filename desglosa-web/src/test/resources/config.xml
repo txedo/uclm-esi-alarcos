@@ -2,8 +2,10 @@
 		port="${port}"
 		protocol="http"
     	basepath="${webapp.name}"
-    	resultpath="target/webtest/webtest-results"
-    	saveresponse="true"
-    	summary="true">
+    	resultpath="${resultpath}"
+    	saveresponse="${saveresponse}"
+    	summary="${summary}"
+    	haltonerror="${haltonerror}"
+    	haltonfailure="${haltonfailure}">
     <header name="Accept-Language" value="${user.language}"/>
 </config>

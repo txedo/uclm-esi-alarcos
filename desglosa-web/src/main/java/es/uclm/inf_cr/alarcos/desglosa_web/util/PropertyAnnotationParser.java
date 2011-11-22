@@ -31,6 +31,15 @@ public class PropertyAnnotationParser {
                 String type = property.type();
                 if (type.equals("")) {
                     type = field.getType().getName();
+                    if (type.equals("java.lang.Boolean")) {
+                	type = "boolean";
+                    } else if (type.equals("java.lang.Integer")) {
+                	type = "int";
+                    } else if (type.equals("java.lang.Float")) {
+                	type = "float";
+                    } else if (type.equals("java.lang.String")) {
+                	type = "string";
+                    }
                 }
                 // if it has embedded properties, parse its class type by recursive call
                 if (property.embedded()) {

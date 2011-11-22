@@ -35,53 +35,53 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 public class Project {
     @Property
     private int id;
-    @Property(type = "string")
+    @Property
     private String name;
-    @Property(type = "string")
+    @Property
     private String code;
-    @Property(type = "string")
+    @Property
     private String plan;
     private Factory mainFactory;
     private Set<Subproject> subprojects;
     @Property(embedded = true)
     private Market market;
-    @Property(type="boolean")
-    private boolean audited;
     @Property
-    private int totalIncidences;
+    private Boolean audited;
     @Property
-    private int repairedIncidences;
+    private Integer totalIncidences;
     @Property
-    private int nonRepairedIncidences;
+    private Integer repairedIncidences;
     @Property
-    private int size;
-    @Property(type = "boolean")
-    private boolean delay;
-    @Property(type = "float")
+    private Integer nonRepairedIncidences;
+    @Property
+    private Integer size;
+    @Property
+    private Boolean delay;
+    @Property
     private Float fiabilidad;
-    @Property(type = "float")
+    @Property
     private Float usabilidad;
-    @Property(type = "float")
+    @Property
     private Float eficiencia;
-    @Property(type = "float")
+    @Property
     private Float mantenibilidad;
-    @Property(type = "float")
+    @Property
     private Float portabilidad;
-    @Property(type = "float")
+    @Property
     private Float lineasDeCodigo;
-    @Property(type = "float")
+    @Property
     private Float comentarios;
-    @Property(type = "float")
+    @Property
     private Float ratioComentariosLineasDeCodigo;
-    @Property(type = "float")
+    @Property
     private Float puntosFuncion;
-    @Property(type = "float")
+    @Property
     private Float fichajeCodigo;
-    @Property(type = "float")
+    @Property
     private Float fichajeTotal;
-    @Property(type = "float")
+    @Property
     private Float ratioFichaje;
-    @Property(type = "float")
+    @Property
     private Float actividad;
     
     public Project(){}
@@ -124,32 +124,32 @@ public class Project {
     }
 
     @Column(name = "audited", columnDefinition = "boolean default false")
-    public boolean isAudited() {
+    public Boolean isAudited() {
         return audited;
     }
 
     @Column(name = "total_incidences", columnDefinition = "int default 0")
-    public int getTotalIncidences() {
+    public Integer getTotalIncidences() {
         return totalIncidences;
     }
 
     @Column(name = "repaired_incidences", columnDefinition = "int default 0")
-    public int getRepairedIncidences() {
+    public Integer getRepairedIncidences() {
         return repairedIncidences;
     }
     
     @Formula("total_incidences - repaired_incidences")
-    public int getNonRepairedIncidences() {
+    public Integer getNonRepairedIncidences() {
         return nonRepairedIncidences;
     }
 
     @Column(name = "size", columnDefinition = "int default 0")
-    public int getSize() {
+    public Integer getSize() {
         return size;
     }
 
     @Column(name = "delay", columnDefinition = "boolean default false")
-    public boolean isDelay() {
+    public Boolean isDelay() {
         return delay;
     }
     
@@ -246,27 +246,27 @@ public class Project {
         this.market = market;
     }
 
-    public void setAudited(boolean audited) {
+    public void setAudited(Boolean audited) {
         this.audited = audited;
     }
 
-    public void setTotalIncidences(int totalIncidences) {
+    public void setTotalIncidences(Integer totalIncidences) {
         this.totalIncidences = totalIncidences;
     }
 
-    public void setRepairedIncidences(int repairedIncidences) {
+    public void setRepairedIncidences(Integer repairedIncidences) {
         this.repairedIncidences = repairedIncidences;
     }
     
-    public void setNonRepairedIncidences(int nonRepairedIncidences) {
+    public void setNonRepairedIncidences(Integer nonRepairedIncidences) {
         this.nonRepairedIncidences = nonRepairedIncidences;
     }
 
-    public void setSize(int size) {
+    public void setSize(Integer size) {
         this.size = size;
     }
 
-    public void setDelay(boolean delayed) {
+    public void setDelay(Boolean delayed) {
         this.delay = delayed;
     }
 

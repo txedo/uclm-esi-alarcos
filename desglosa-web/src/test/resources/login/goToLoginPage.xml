@@ -1,0 +1,2 @@
+<invoke description="get Login Page" url="/login"/>
+<verifytitle description="we should see the login title" text=".*${login.title}.*" regex="true"/>

@@ -40,33 +40,33 @@ public class Subproject {
     private Project project;
     @Property(embedded=true)
     private Factory factory;
-    @Property(type = "string")
+    @Property
     private String name;
-    @Property(type = "float")
+    @Property
     private Float fiabilidad;
-    @Property(type = "float")
+    @Property
     private Float usabilidad;
-    @Property(type = "float")
+    @Property
     private Float eficiencia;
-    @Property(type = "float")
+    @Property
     private Float mantenibilidad;
-    @Property(type = "float")
+    @Property
     private Float portabilidad;
-    @Property(type = "float")
+    @Property
     private Float lineasDeCodigo;
-    @Property(type = "float")
+    @Property
     private Float comentarios;
-    @Property(type = "float")
+    @Property
     private Float ratioComentariosLineasDeCodigo;
-    @Property(type = "float")
+    @Property
     private Float puntosFuncion;
-    @Property(type = "float")
+    @Property
     private Float fichajeCodigo;
-    @Property(type = "float")
+    @Property
     private Float fichajeTotal;
-    @Property(type = "float")
+    @Property
     private Float ratioFichaje;
-    @Property(type = "float")
+    @Property
     private Float actividad;
     
     public Subproject() {}

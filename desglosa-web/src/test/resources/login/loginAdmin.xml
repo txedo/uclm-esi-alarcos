@@ -1,0 +1,6 @@
+<storeProperty name="username" value="admin"/>
+<storeProperty name="password" value="admin"/>
+&goToLoginPage;
+&submitLoginData;
+&checkLoginSuccess;
+<verifytext description="Logged in as desired user" text=".*${label.loggedin}: admin.*" regex="true"/>

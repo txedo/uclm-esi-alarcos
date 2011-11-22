@@ -82,7 +82,12 @@
 			</div>
 			<div class="footer">
 				<s:url id="home" action=""/>
-				<p class="lf">&copy; Copyright <s:a href="%{home}">Desglosa</s:a>.</p>
+				
+				<security:authorize ifNotGranted="ROLE_ANONYMOUS">
+                    <p class="lf"><fmt:message key="label.loggedin"/>: <security:authentication property="principal.username"></security:authentication></p>
+                    <div class="clr"></div>
+                </security:authorize>
+                <p class="lf">&copy; Copyright <s:a href="%{home}">Desglosa</s:a>.</p>
 				
 				<p class="rf">Layout by Cool <a href="http://www.coolwebtemplates.net/">Website Templates</a></p>
 				<div class="clr"></div>
