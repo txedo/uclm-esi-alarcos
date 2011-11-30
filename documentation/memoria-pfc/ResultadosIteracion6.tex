@@ -1,0 +1,154 @@
+En esta iteración (Tabla \ref{table:ficha-iteracion-6}) se aborda:
+\begin{itemize}
+	\item Análisis y diseño de los casos de uso relativos al control de acceso de la aplicación web.
+	\item Implementación de las funcionalidades que permiten ejecutar la herramienta de visualización, notificar qué objeto 3D ha sido seleccionado en el motor gráfico y ver el mapa mundial.
+	\item Pruebas de la integración del motor gráfico en la aplicación web y mecanismos de selección de objetos 3D.
+\end{itemize}
+
+
+\subsubsection{Disciplina de requisitos}
+\label{sec:iteracion-6-requisitos}
+
+Antes de abordar el desarrollo del sistema de control de acceso, se propone al usuario final la posibilidad de dos alternativas de \textbf{política de acceso}, que define qué usuarios o sistemas pueden acceder a determinados recursos o información. La primera de ellas consiste en un \textbf{control de acceso basado en roles}; la segunda, en un \textbf{control de acceso basado en grupos}.
+
+\begin{itemize}
+	\item Control de Acceso basado en \textbf{roles} (en inglés, \textit{\textbf{Role}-based access control} o \textbf{R}BAC). Consiste en una política de seguridad en la que el sistema otorga privilegios al usuario en función de su rol. Un usuario puede tener uno o varios roles.
+	\item Control de Acceso basado en \textbf{grupos} (en inglés, \textit{\textbf{Group}-based access control} o \textbf{G}BAC). Este modelo extiende al RBAC y ofrece más flexibilidad para modelar políticas de acceso más complejas y exigentes. En este caso, los privilegios se otorgan al usuario en función de los grupos a los que pertenezca. Un usuario puede pertenecer a uno o varios grupos, y un grupo puede tener asignados uno o varios roles.
+\end{itemize}
+
+El usuario final, bajo la recomendación de un experto, ha seleccionado la segunda opción dada la gran flexibilidad y opciones de extensibilidad y mantenibilidad que proporciona en cuanto a la adición de futuros requisitos de usuario.
+
+
+\subsubsection{Disciplina de análisis}
+
+Las funcionalidades relativas a autenticación, seguridad y control de acceso son muy comunes en aplicaciones web. Gracias a ellas es posible establecer políticas que indiquen quienes tienen la capacidad de acceder a un conjunto determinado de recursos o información. Por tanto, para no reinventar la rueda en cada ocasión que es necesario implementar características de esta índole, se recomienda hacer uso de frameworks especialmente diseñados para estos propósitos.
+
+Spring Security \cite{homepage-spring-security} es un framework potente y configurable mediante ficheros XML, que proporciona métodos de autenticación y control de acceso en aplicaciones basadas en Spring. Su publicación bajo una licencia Apache 2.0 y su uso extendido por agencias gubernamentales, aplicaciones militares y bancos, hacen de él una alternativa muy competente y confiable.
+
+En la figura \ref{fig:it6-access-control-usecase-diagram} se muestra un pequeño sub-diagrama de casos de uso. En él se observa que el usuario puede realizar las operaciones de iniciar sesión o finalizar sesión. Ambas operaciones realizarán una configuración de los menús que se muestran al usuario en la interfaz gráfica. Esta configuración se delega en la librería \textit{struts-menu}, por lo que a este nivel no es necesario especificarla con más detalle.
+
+\imagenBorde{Cap5//it6-access-control-usecase-diagram}{1.3}{Diagrama de casos de uso para el control de acceso}{fig:it6-access-control-usecase-diagram}
+
+Llegados a este punto, se procede a la descripción de los casos de uso que se están tratando. Para no extender demasiado el capítulo, solo se incluye la descripción de la funcionalidad de \textit{inicio de sesión}, tanto en el escenario general como algunos de sus escenarios alternativos (Tabla \ref{table:login-usecase-description}).
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{15cm} |}
+	\hline
+	\textbf{Nombre}: Iniciar sesión (Login) \\
+	\hline
+	\textbf{Descripción}: Funcionalidad para que un usuario pueda autenticarse y acceder al sistema \\
+	\hline
+	\textbf{Precondiciones}: El usuario debe conocer el nombre de usuario y la contraseña, y estar dado de alta en el sistema. \\
+	\hline
+	\textbf{Post-condiciones}: El usuario accede al sistema. \\
+	\hline 
+	\textbf{Flujo principal}
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+	\item El usuario introduce usuario y contraseña.
+	\item Se autentica al usuario.
+	\item Se crea una sesión para el usuario.
+	\item Se informa al usuario del éxito de la operación.
+	\item Se redirige al usuario a la página principal.
+	\vspace{-6mm}
+	\end{enumerate} 
+	\\	
+	\hline
+	\textbf{Flujo alternativo 1: usuario o contraseña incorrectos}
+	\begin{enumerate}
+	\vspace{-4mm}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{\itemsep}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{-7.5pt}
+	\item El usuario introduce usuario y contraseña.
+	\item Se produce un error de autenticación.
+	\item Se informa al usuario que se ha producido un error.
+	\vspace{-6mm}
+	\end{enumerate}
+	\\	
+	\hline
+	\textbf{Flujo alternativo 2: usuario inexistente}
+	\begin{enumerate}
+	\vspace{-4mm}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{\itemsep}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{-7.5pt}
+	\item (Ver flujo alternativo 1).
+	\vspace{-6mm}
+	\end{enumerate}
+	\\
+	\hline
+	\textbf{Flujo alternativo 3: cuenta de usuario bloqueada, caducada o deshabilitada}
+	\begin{enumerate}
+	\vspace{-4mm}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{\itemsep}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{-7.5pt}
+	\item El usuario introduce usuario y contraseña.
+	\item Se autentica al usuario.
+	\item La cuenta de usuario está bloqueada, caducada o deshabilitada.
+	\item Se informa al usuario que se ha producido un error.
+	\vspace{-6mm}
+	\end{enumerate}
+	\\
+	\hline 
+\end{tabular}
+\caption{Descripción del caso de uso \textit{Iniciar Sesión}}
+\label{table:login-usecase-description}
+\end{table}
+
+
+A continuación, se elaboran los diagramas asociados a la disciplina de análisis. En este documento se proporcionan aquellos relacionados con la funcionalidad de \textit{iniciar sesión} (Fig. \ref{fig:it6-access-control-analysis-class-diagram-login},  \ref{fig:it6-access-control-communication-class-diagram-login} y \ref{fig:it6-access-control-sequence-class-diagram-login}). Nótese como en el paso de uno a otro se va perdiendo abstracción y se va obteniendo un mayor grado de detalle, estando cada vez más cerca de la disciplina de diseño.
+
+\imagenBorde{Cap5//it6-access-control-analysis-class-diagram-login}{1.2}{Diagrama clases de análisis para el inicio de sesión}{fig:it6-access-control-analysis-class-diagram-login}
+
+\imagenBorde{Cap5//it6-access-control-communication-class-diagram-login}{1.0}{Diagrama de comunicación para el inicio de sesión}{fig:it6-access-control-communication-class-diagram-login}
+
+\imagenBorde{Cap5//it6-access-control-sequence-class-diagram-login}{1.0}{Diagrama de secuencia para el inicio de sesión}{fig:it6-access-control-sequence-class-diagram-login}
+
+Para poder continuar con el diseño e implementación del control de acceso mediante este framework, es necesario haber definido la política de acceso (Sección \ref{sec:iteracion-6-requisitos}) y cual será el método de conexión con la base de datos. En este caso, en la iteración 3 ya se definieron las tecnologías que se emplearían en el diseño y desarrollo web y se llegó a la conclusión de que la conexión con la base de datos se realizaría mediante Hibernate.
+
+
+
+\subsubsection{Disciplina de diseño}
+\label{sec:iteracion-6-diseño}
+
+En la figura \ref{fig:it6-access-control-class-diagram-spring-security} se muestra un diagrama de clases que representa las clases e interfaces que intervienen en la implementación de un GBAC mediante Spring, Spring Security e Hibernate. Los espacios de nombre relativos a dichas tecnologías se representan en la parte superior de la imagen como paquetes y subpaquetes UML, donde se han representado las interfaces y clases relevantes para la resolución de este problema. En la parte inferior de la imagen se representa el conocimiento que es necesario implementar en la aplicación. De todas las clases representadas, únicamente las clases \textit{User}, \textit{Group} y \textit{Role} serán persistentes.
+
+\begin{itemize}
+	\item \textbf{Clase User} (Véase Anexo \ref{subsec:user}). Implementa el interfaz UserDetails de Spring Security. Este interfaz obliga que la clase User implemente los métodos que define y, por tanto, se añadan sus respectivos atributos (username, password, enabled, accountNonExpired, credentialsExpired y accountNonLocked). Además, presenta una asociación unidireccional múltiple con la clase Group que será implementada mediante un \textit{Set} de Java. Por último, se mapea mediante JPA (Java Persistence API) con la tabla \textit{users} del esquema de bases de datos descrito en (Fig. \ref{fig:spring-security-database-schema}). Cabe destacar la implementación del método \textit{getAuthorities}, que devuelve todos las autoridades, encapsuladas en un array de tipo GrantedAuthority -definido por Spring Security-, de cada uno de los grupos a los que pertenece el usuario.
+	
+	\item \textbf{Clase Group} (Véase Anexo \ref{subsec:group}). De un modo similar a la clase User, la clase Group presenta una asociación unidireccional múltiple con la clase Role que será implementada mediante un \textit{Set} de Java y se mapea mediante JPA con la tabla \textit{groups}. Una vez más, en este caso cabe destacar la implementación del método \textit{getAuthorities}.
+	
+	\item \textbf{Clase Role} (Véase Anexo \ref{subsec:role}). En este caso no se presenta ningún tipo de asociación, por lo que esta en esta clase sólo será necesario implementar el \textit{interface} GrantedAuthority de Spring Security y realizar su correspondiente mapeo con la tabla \textit{roles} mediante JPA.
+	
+	\item \textbf{Clase CustomUserDetailsService} (Véase Anexo \ref{subsec:customuserdetailsservice}). Esta clase implementa el \textit{interface} UserDetailsService y su responsabilidad se basa en establecer el mecanismo de búsqueda y materialización de los datos del usuario. Este proceso se realiza mediante un DAO (Data Access Object) que hereda las funcionalidades proporcionadas por Spring mediante la clase \textbf{HibernateDaoSupport}.
+\end{itemize}
+
+\imagenBorde{Cap5//it6-access-control-class-diagram-spring-security}{1.0}{Diagrama de clases para implementar un GBAC mediante Spring, Spring Security e Hibernate}{fig:it6-access-control-class-diagram-spring-security}
+
+
+Para finalizar con la disciplina de diseño, en la figura \ref{fig:spring-security-database-schema} se aprecia un esquema minimalista de la base de datos que es necesario diseñar para implementar un GBAC mediante Spring Security. Tal y como se ha indicado, únicamente serán persistentes los usuarios, los grupos y los roles (y las relaciones muchos-a-muchos que los asocian). Si se desea añadir información adicional, es posible añadir nuevas columnas a las tablas del esquema propuesto.
+\begin{itemize}
+	\item \textbf{Tabla \textit{users}}. Contiene la información relativa a los usuarios de la aplicación web. Spring Security exige que los usuarios tengan un nombre de usuario, una contraseña y una serie de atributos que indiquen si la cuenta está habilitada, caducada, bloqueada o si las credenciales han caducado. Esto es debido porque la clase Java perteneciente a la entidad \textit{Usuario} deberá implementar un interfaz de Spring denominado \textit{UserDetails} (Fig. \ref{fig:spring-security-class-diagram}).
+	\item \textbf{Tabla \textit{groups}}. Contiene el nombre y la descripción de los grupos de usuarios que se desean crear. Se establecerá una relación \textit{muchos-a-muchos} entre los usuarios y los grupos gracias a la tabla \textit{users\_groups}.
+	\item \textbf{Tabla \textit{roles}}. Contiene el nombre y la descripción de los roles disponibles en el sistema. En Spring Security, por defecto aunque configurable, el nombre de los roles debe comenzar con el prefijo ``\textit{ROLE\_}''. Se establecerá una relación \textit{muchos-a-muchos} entre los grupos y los roles gracias a la tabla \textit{groups\_roles}.
+\end{itemize}
+
+\imagen{Cap5//spring-security-database-schema}{0.48}{Esquema minimalista de base de datos para configurar un GBAC mediante Spring Security}{fig:spring-security-database-schema}
+
+
+\subsubsection{Disciplina de implementación}
+\label{sec:iteracion-6-implementacion}
+
+
+\subsubsection{Disciplina de pruebas}
+\label{sec:iteracion-6-pruebas}
