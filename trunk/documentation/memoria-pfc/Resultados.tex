@@ -12,50 +12,940 @@
 % Seguridad con Spring Security
 % ...
 
-\section{Control de Acceso Basado en Grupos (GBAC) mediante Spring Security}
+En este capítulo se detallan los resultados obtenidos como consecuencia de la aplicación del método de trabajo expuesto en las secciones \ref{sec:investigacion-preliminar} y \ref{sec:pud}. Para su consecución, se han empleado todas y cada una de las herramientas, frameworks y tecnologías expuestas en la sección \ref{sec:marco}.
 
-Las funcionalidades relativas a autenticación, seguridad y control de acceso son muy comunes en aplicaciones web. Gracias a ellas es posible establecer políticas que indiquen quienes tienen la capacidad de acceder a un conjunto determinado de recursos o información. Por tanto, para no reinventar la rueda en cada ocasión que es necesario implementar características de esta índole, se recomienda hacer uso de frameworks especialmente diseñados para estos propósitos.
+Como se comprobará a lo largo de la lectura de este capítulo, la herramienta desarrollada está compuesta de dos componentes bien diferenciados: un motor encargado de generar gráficos 3D y una aplicación web que lo integra permitiendo realizar las tareas de gestión, configuración y visualización.
+Según la documentación aportada en la sección \ref{sec:pud} y la figura \ref{fig:mapa-conceptual-pud}, el ciclo de vida del software se lleva a cabo en ciclos. En este caso de estudio cada componente podría haber sido abordado en un ciclo distinto dado que constituyen productos software independientes. Sin embargo, dado que el único recurso del que se dispone es el alumno que realiza este PFC, ambos componentes han sido desarrollados de forma paralela en un único ciclo. El producto resultante de este ciclo será una herramienta con ambos componentes integrados, así como la documentación, diagramas y manuales de todo el software.
 
-Spring Security (\textit{http://static.springsource.org/spring-security/site/}) es un framework potente y configurable mediante ficheros XML, que proporciona métodos de autenticación y control de acceso en aplicaciones basadas en Spring. Su publicación bajo una licencia Apache 2.0 y su uso extendido por agencias gubernamentales, aplicaciones militares y bancos, hacen de él una alternativa muy competente y confiable.
+Un ciclo consta de 4 fases: inicio, elaboración, construcción y transición. Estas fases conforman la estructura básica de este capítulo. Dentro de cada fase se desarrollan una o más iteraciones. En cada iteración se ejecuta el flujo de trabajo fundamental, compuesto por las disciplinas de requisitos, análisis, diseño, implementación y pruebas. La envergadura de cada disciplina, que en determinados casos será nula, está condicionada por la fase a la que pertenece la iteración que se está llevando a cabo.
 
-Antes de proceder con la configuración de Spring Security, es necesario tomar dos decisiones de diseño muy importantes: qué política de acceso se desea implementar y cuál será el método de conexión con la base de datos.
+Para evitar que este capítulo y, como consecuencia, todo el documento se prolongase en exceso, no se ha profundizado del mismo modo en todas las iteraciones y sus disciplinas del flujo de trabajo ni se han incluido a modo de figura todos los diagramas realizados. Por otro lado, sí se han incorporado algunos ejemplos de ficheros de configuración y fragmentos de código fuente que pueden resultar de especial interés en la elaboración de futuros proyectos o el mantenimiento de este mismo proyecto.
 
-La \textbf{política de acceso} define qué usuarios o sistemas pueden acceder a determinados recursos o información. En este caso de estudio se han contemplado las dos posibilidades más comunes en aplicaciones web: control de acceso basado en roles y control de acceso basado en grupos.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% FASE DE INICIO %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Fase de inicio}
+
+La fase de inicio goza de diferencias notables con respecto al resto de fases, ya que no se estructura en base a iteraciones y no produce resultados funcionales. Así pues, se centra en la captura e identificación de requisitos, el estudio de viabilidad del sistema y la realización del plan de iteraciones.
+
+
+\subsection{Arquitectura de la visualización de calidad en DGS}
+\label{sec:arquitectura-dgs}
+
+Dada la naturaleza de este PFC y su encuadre dentro de un proyecto de I+D+i, ha sido necesario realizar una serie de reuniones entre los investigadores del Grupo Alarcos y el responsable del proyecto en Indra Software Labs S.L.. El objetivo de estas reuniones se ha centrado tanto en identificar las necesidades que el sistema debe satisfacer como en cuestionar y tratar algunas decisiones de diseño. Así pues, esta sección se corresponde con una parte de la captura de requisitos.
+
+Tal y como se ha tratado en la sección \ref{sec:objetivos}, se desea construir una herramienta de visualización de medidas e indicadores software. Dichas medidas e indicadores representarán la información que se considere importante como -por ejemplo- la \textit{productividad} de las fábricas de software, las incidencias que han surgido a lo largo del ciclo de vida de un proyecto, o la \textit{portabilidad} de un proyecto determinado. Los datos relevantes y susceptibles de representación visual de cada entidad\footnote{Se entiende como entidad a aquellas clases que modelan el contexto del DGS: compañía, factoría, proyecto, etcétera.} pueden variar a lo largo del tiempo, es decir, puede producirse la adición de un conjunto de características para una o varias entidades. Además, puede suceder que en un futuro se deseen añadir más entidades para modelar un contexto más complejo. Por esta razón, es requisito indispensable que la interfaz de usuario se adapte automáticamente, en la medida de lo posible, a los cambios realizados en la lógica de negocio de la herramienta.
+
+Por otro lado, se deberá proporcionar un conjunto de metáforas de visualización, capaces de escenificar las medidas e indicadores definidos previamente. Para ello, se asociarán los atributos de una entidad con las \textit{dimensiones} de una metáfora. Una \textbf{dimensión} es aquella propiedad de la metáfora susceptible de asignarle un valor y que afecta a su forma o figura. Del mismo modo que en el caso de las entidades, las metáforas también pueden experimentar variaciones si la empresa lo requiere, así como puede ser necesario que se extienda el número de dimensiones de una metáfora existente. Por ello, y una vez más, es necesario que la interfaz gráfica de usuario vuelva a adaptarse a dichos cambios.
+
+Inicialmente se ha trabajado en tres metáforas de visualización:
 \begin{itemize}
-	\item Control de Acceso basado en \textbf{roles} (en inglés, \textit{\textbf{Role}-based access control} o \textbf{R}BAC). Consiste en una política de seguridad en la que el sistema otorga privilegios al usuario en función de su rol. Un usuario puede tener uno o varios roles.
-	\item Control de Acceso basado en \textbf{grupos} (en inglés, \textit{\textbf{Group}-based access control} o \textbf{G}BAC). Este modelo extiende al RBAC y ofrece más flexibilidad para modelar políticas de acceso más complejas y exigentes. En este caso, los privilegios se otorgan al usuario en función de los grupos a los que pertenezca. Un usuario puede pertenecer a uno o varios grupos, y un grupo puede tener asignados uno o varios roles.
-\end{itemize}
-
-Se ha seleccionado la segunda opción dada la gran flexibilidad y opciones de extensibilidad y mantenibilidad que proporciona para la adición de futuros requisitos de usuario. En (Fig. \ref{fig:spring-security-database-schema}) se aprecia un esquema minimalista de la base de datos que es necesario diseñar para implementar un GBAC mediante Spring Security. Si se desea añadir información adicional, es posible añadir nuevas columnas a las tablas del esquema propuesto.
-\begin{itemize}
-	\item \textbf{Tabla \textit{users}}. Contiene la información relativa a los usuarios de la aplicación web. Spring Security exige que los usuarios tengan un nombre de usuario, una contraseña y una serie de atributos que indiquen si la cuenta está habilitada, caducada, bloqueada o si las credenciales han caducado. Esto es debido porque la clase Java perteneciente a la entidad \textit{Usuario} deberá implementar un interfaz de Spring denominado \textit{UserDetails} (Fig. \ref{fig:spring-security-class-diagram}).
-	\item \textbf{Tabla \textit{groups}}. Contiene el nombre y la descripción de los grupos de usuarios que se desean crear. Se establecerá una relación \textit{muchos-a-muchos} entre los usuarios y los grupos gracias a la tabla \textit{users\_groups}.
-	\item \textbf{Tabla \textit{roles}}. Contiene el nombre y la descripción de los roles disponibles en el sistema. En Spring Security, por defecto aunque configurable, el nombre de los roles debe comenzar con el prefijo ``\textit{ROLE\_}''. Se establecerá una relación \textit{muchos-a-muchos} entre los grupos y los roles gracias a la tabla \textit{groups\_roles}.
-\end{itemize}
-
-\imagen{Cap5//spring-security-database-schema}{0.48}{Esquema minimalista de base de datos para configurar un GBAC mediante Spring Security}{fig:spring-security-database-schema}
-
-El método de conexión con la base de datos no afecta a las funcionalidades del sistema, pero sí afecta a la implementación del mismo. En este aspecto se han contemplado dos posibilidades: JDBC (Java Database Connectivity) e Hibernate. Para esta característica, al igual que para el resto de la persistencia de la aplicación web, se ha elegido emplear Hibernate dada su eficiencia, gran integración con Spring, y facilidad de configuración entre las tablas de una base de datos relacional y una jerarquía de objetos Java.
-
-En (Fig. \ref{fig:spring-security-class-diagram}) se muestra un diagrama de clases que representa las clases e interfaces que intervienen en la implementación de un GBAC mediante Spring, Spring Security e Hibernate. Los espacios de nombre relativos a dichas tecnologías se representan en la parte superior de la imagen como paquetes y subpaquetes UML, donde se han representado las interfaces y clases relevantes para la resolución de este problema. En la parte inferior de la imagen se representa el conocimiento que es necesario implementar en la aplicación:
-\begin{itemize}
-	\item \textbf{Clase User} (Véase Anexo \ref{subsec:user}). Implementa el interfaz UserDetails de Spring Security. Este interfaz obliga que la clase User implemente los métodos que define y, por tanto, se añadan sus respectivos atributos (username, password, enabled, accountNonExpired, credentialsExpired y accountNonLocked). Además, presenta una asociación unidireccional múltiple con la clase Group que será implementada mediante un \textit{Set} de Java. Por último, se mapea mediante JPA (Java Persistence API) con la tabla \textit{users} del esquema de bases de datos descrito en (Fig. \ref{fig:spring-security-database-schema}). Cabe destacar la implementación del método \textit{getAuthorities}, que devuelve todos las autoridades, encapsuladas en un array de tipo GrantedAuthority -definido por Spring Security-, de cada uno de los grupos a los que pertenece el usuario.
+	\item \textbf{Metáfora de fábricas}. Consiste en un modelo que representa una estructura semejante a una fábrica industrial (Fig. \ref{fig:metaphore-factory}). El modelo está formado por una base que sostiene un edificio y una chimenea. Las dimensiones \textit{mapeables} de este modelo serán la escala de la factoría (tamaño global), el color de la chimenea y la altura de la chimenea. Esta última dimensión también será reflejada en modo texto sobre el edificio. Inicialmente, este modelo ha sido diseñado para representar las asociaciones que se muestran en la Tabla \ref{table:factory-mappings}.
 	
-	\item \textbf{Clase Group} (Véase Anexo \ref{subsec:group}). De un modo similar a la clase User, la clase Group presenta una asociación unidireccional múltiple con la clase Role que será implementada mediante un \textit{Set} de Java y se mapea mediante JPA con la tabla \textit{groups}. Una vez más, en este caso cabe destacar la implementación del método \textit{getAuthorities}.
+	%\imagenBorde{Cap5//metaphore-factory}{0.55}{Esquema a mano alzada para la metáfora de fábricas software}{fig:metaphore-factory}
 	
-	\item \textbf{Clase Role} (Véase Anexo \ref{subsec:role}). En este caso no se presenta ningún tipo de asociación, por lo que esta en esta clase sólo será necesario implementar el \textit{interface} GrantedAuthority de Spring Security y realizar su correspondiente mapeo con la tabla \textit{roles} mediante JPA.
+	\begin{table}[!htbp]%
+	\centering
+	\begin{tabular}{| >{\centering\arraybackslash}m{7cm} | >{\centering\arraybackslash}m{7cm} |}
+		\hline
+			{\cellcolor[gray]{0.7}\textbf{Característica de la factoría}} &
+			{\cellcolor[gray]{0.7}\textbf{Dimensión de la metáfora}} \\
+		\hline
+			Número de trabajadores (número) &
+			Escala \\
+		\hline
+			Mercado de especialización (texto) &
+			Color de la chimenea \\
+		\hline
+			Número de proyectos en desarrollo (número) &
+			Altura de la chimenea \\
+		\hline
+			Número de proyectos en desarrollo (número) &
+			Texto sobre el edificio \\
+		\hline
+	\end{tabular}
+	\caption{Mapeo inicial de una factoría software con la metáfora de factorías software}
+	\label{table:factory-mappings}
+	\end{table}
 	
-	\item \textbf{Clase CustomUserDetailsService} (Véase Anexo \ref{subsec:customuserdetailsservice}). Esta clase implementa el \textit{interface} UserDetailsService y su responsabilidad se basa en establecer el mecanismo de búsqueda y materialización de los datos del usuario. Este proceso se realiza mediante un DAO (Data Access Object) que hereda las funcionalidades proporcionadas por Spring mediante la clase \textbf{HibernateDaoSupport}.
+	\item \textbf{Metáfora de proyectos}. Consiste un modelo que representa una estructura que satisface las necesidades de visualización que los expertos del sector han especificado. La estructura (Fig. \ref{fig:metaphore-project}) está formada por una esfera inferior cuyo tamaño y color son variables. Además, presenta un espacio reservado para mostrar una marca. La marca consiste en el icono de un \textit{check} (\ding{'063}) verde o una cruz (\ding{'067}) roja. Por otro lado, dispone de dos antenas en la parte superior con una pequeña esfera en cada extremo. Estas pequeñas esferas serán de color verde y rojo respectivamente, y presentarán un número entero en modo texto en la parte superior. Por último, bajo la esfera inferior, se mostrará una cadena de texto. Inicialmente, este modelo ha sido diseñado para representar las asociaciones que se muestran en la Tabla \ref{table:project-mappings}.
+	
+	%\imagenBorde{Cap5//metaphore-project}{0.55}{Esquema a mano alzada para la metáfora de proyectos software}{fig:metaphore-project}
+	
+	\begin{table}[!htbp]%
+	\centering
+	\begin{tabular}{| >{\centering\arraybackslash}m{7cm} | >{\centering\arraybackslash}m{7cm} |}
+		\hline
+			{\cellcolor[gray]{0.7}\textbf{Característica del proyecto}} &
+			{\cellcolor[gray]{0.7}\textbf{Dimensión de la metáfora}} \\
+		\hline
+			Líneas de código (número) &
+			Tamaño de la esfera inferior \\
+		\hline
+			Proyecto auditado (booleano) &
+			Marca de la esfera inferior \\
+		\hline
+			Tipo de mercado (texto) &
+			Color de la esfera inferior \\
+		\hline
+			Incidencias resueltas (número) &
+			Texto sobre la esfera superior verde \\
+		\hline
+			Incidencias no resueltas (número) &
+			Texto sobre la esfera superior roja \\
+		\hline
+			Nombre del proyecto (texto) &
+			Texto debajo del modelo gráfico \\
+		\hline
+	\end{tabular}
+	\caption{Mapeo inicial de un proyecto software con la metáfora de proyectos software}
+	\label{table:project-mappings}
+	\end{table}
+	
+	\item \textbf{Metáfora genérica}. Consiste un modelo genérico que representa una estructura semejante a la de un rascacielos o una torre (Fig. \ref{fig:metaphore-generic}). Este modelo se ha diseñado para ser configurado a medida y representar cualquier entidad de un modo genérico. Sus dimensiones son la anchura, profundidad, altura total, altura del relleno y color. Un ejemplo de asociaciones se muestra en la Tabla \ref{table:generic-mappings}.
+	
+	%\imagenBorde{Cap5//metaphore-generic}{0.55}{Esquema a mano alzada para una metáfora genérica}{fig:metaphore-generic}
+	
+	\begin{table}[!htbp]%
+	\centering
+	\begin{tabular}{| >{\centering\arraybackslash}m{7cm} | >{\centering\arraybackslash}m{7cm} |}
+		\hline
+			{\cellcolor[gray]{0.7}\textbf{Característica del subproyecto}} &
+			{\cellcolor[gray]{0.7}\textbf{Dimensión de la metáfora}} \\
+		\hline
+			Líneas de código (número) &
+			Anchura \\
+		\hline
+			Número de comentarios (booleano) &
+			Profundidad \\
+		\hline
+			Fichaje de horas realizadas (texto) &
+			Altura del relleno \\
+		\hline
+			Fichaje de horas estimadas (número) &
+			Altura total \\
+		\hline
+			Retrasado (booleano) &
+			Color \\
+		\hline
+	\end{tabular}
+	\caption{Mapeo inicial de un subproyecto software con la metáfora genérica}
+	\label{table:generic-mappings}
+	\end{table}
+	
 \end{itemize}
 
-\imagen{Cap5//spring-security-class-diagram}{2.0}{Diagrama de clases para implementar un GBAC mediante Spring, Spring Security e Hibernate}{fig:spring-security-class-diagram}
+Para maximizar la experiencia de la visualización y dada la naturaleza personalizable del proyecto en general, y de la metáfora genérica en particular, es necesario que la herramienta permita la creación de \textit{perfiles de visualización}. Un \textbf{perfil de visualización} definirá qué metáfora de visualización será utilizada para representar una entidad determinada. Además, deberá contener información relativa a las \textbf{asociaciones} que se desean establecer entre los atributos de la entidad y las dimensiones de la metáfora seleccionada (Fig. \ref{fig:mapeo}).
 
-A continuación, es necesario configurar Spring Security mediante un fichero de configuración. Se trata de un fichero XML que por convenio suele llamarse \textit{applicationContext-security.xml} (Véase Anexo \ref{subsec:applicationcontext}). Dada la gran cantidad de parámetros que se pueden incluir en este fichero, se recomienda consultar su manual de referencia (\textit{http://static.springsource.org/spring-security/site/reference.html}) para profundizar en el tema y realizar una configuración precisa. En este caso de estudio se destacan los siguientes nodos y \textit{beans}:
+Cabe destacar que para una misma entidad se pueden configurar múltiples perfiles de visualización para lograr configurar distintas vistas que muestren información más específica o relativa a una misma familia. Esta característica es útil cuando se quiere definir un perfil para cada característica de un modelo de calidad, representando sus subcaracterísticas sobre las dimensiones del modelo gráfico.
+
+\imagenBorde{Cap5//mapeo}{0.65}{Esquema que representa las asociaciones entre los atributos de una entidad y las dimensiones de un modelo gráfico}{fig:mapeo}
+
+
+\subsection{Identificación de requisitos}
+\label{sec:identificacion-requisitos}
+
+Para lograr obtener un sistema que satisfaga los requisitos descritos anteriormente, se propone la creación de dos componentes: \textit{Desglosa Graphics Engine}, que se corresponde con un motor de gráficos 3D, y \textit{Desglosa Web}, que se corresponde con una aplicación web. Esta decisión toma fuerza y es aceptada dada la gran potencia de generación de gráficos que aporta un motor gráfico y la capacidad de reutilización del motor gráfico en otros proyectos de visualización al ser desarrollado como un componente independiente.
+
+Después de una serie importante de reuniones, se han identificado un conjunto de requisitos que serán expuestos en las dos siguientes subsecciones y que dan paso al modelado del diagrama de casos de uso \ref{sec:modelo-cdu}.
+
+
+\subsubsection{Requisitos funcionales}
+\label{sec:requisitos-funcionales}
+
+En la tabla \ref{table:requisitos-funcionales} se especifican los requisitos funcionales detectados en la fase de inicio, una descripción en lenguaje natural de los mismos y qué usuarios pueden beneficiarse de cada una de las funcionalidades.
+
+\begin{center}
+\begin{longtable}%[h]%
+{| >{\arraybackslash}m{3.5cm} | >{\arraybackslash}m{7.5cm} | >{\arraybackslash}m{3cm} |}
+	\hline
+		{\cellcolor[gray]{0.7}\centering\textbf{Funcionalidad}} &
+		{\cellcolor[gray]{0.7}\centering\textbf{Descripción}} & 
+		{\cellcolor[gray]{0.7}\centering\textbf{Roles}} \\
+	\hline
+	\endhead
+		Acceso al sistema &
+		Control de acceso al sistema basado en grupos. Engloba las funcionaliades de autenticación y finalización de sesión. &
+		Cualquier usuario \\
+	\hline
+		Gestión de compañías &
+		Engloba las funcionalidades de creación, edición, consulta y supresión de compañías. &
+		Administrador \\
+	\hline
+		Gestión de factorías &
+		Engloba las funcionalidades de creación, edición, consulta y supresión de factorías. &
+		Administrador \\
+	\hline
+		Gestión de proyectos &
+		Engloba las funcionalidades de creación, edición, consulta y supresión de proyectos. &
+		Jefe de proyecto \\
+	\hline
+		Gestión de subproyectos &
+		Engloba las funcionalidades de creación, edición, consulta y supresión de subproyectos. &
+		Jefe de proyecto \\
+	\hline
+		Gestión de perfiles de visualización &
+		Engloba las funcionalidades de creación, consulta y supresión de perfiles de visualización. Un perfil de visualización establece un mapeo entre los atributos de una entidad de la lógica de negocio del DGS y las dimensiones de una metáfora de visualización. &
+		Administrador \\
+	\hline
+		Selección de perfiles &
+		Permitirá que el usuario seleccione un perfil de visualización para configurar la información que desea analizar mediante la herramienta de visualización. &
+		Administrador y jefe de proyecto \\
+	\hline
+		Geolocalización de factorías &
+		Muestra un mapa del mundo con un conjunto de factorías software geolocalizadas. &
+		Administrador y jefe de proyecto \\
+	\hline
+		Visualización de medidas e indicadores &
+		Generación de gráficos 3D a partir de la información de las medidas e indicadores las entidades del DGS. &
+		Administrador y jefe de proyecto \\
+	\hline
+		Selección de objetos 3D &
+		El usuario debe ser capaz de seleccionar los objetos 3D de una escena mediante el puntero del ratón.  &
+		Usuario de la herramienta de visualización \\
+	\hline
+		Navegabilidad entre niveles de abstracción &
+		El usuario debe ser capaz de navegar, siguiendo un enfoque \textit{top-down}, entre los distintos niveles de abstracción que representan el paradigma del DGS con la ayuda del puntero del ratón. &
+		Usuario de la herramienta de visualización \\
+	\hline
+\caption{Requisitos funcionales del sistema}
+\label{table:requisitos-funcionales}
+\end{longtable}
+\end{center}
+
+A modo de síntesis, en las tablas \ref{table:roles-webapp} y \ref{table:roles-graphics-engine} se muestran los roles identificados que harán uso de cada uno de los componentes que conforman el sistema. Nótese que el rol \textit{Usuario} de ambos componentes no se corresponde con el mismo ente, ya que en la aplicación web se refiere a una categoría dentro de la jerarquía de roles y, por otro lado, en el motor gráfico se refiere a la persona que interactua con la escena.
+
+\begin{table}[!htbp]%
+	\centering
+	\begin{tabular}{| >{\arraybackslash}m{3.5cm} | >{\arraybackslash}m{11cm} |}
+		\hline
+			{\cellcolor[gray]{0.7}\centering\textbf{Rol del usuario}} &
+			{\cellcolor[gray]{0.7}\centering\textbf{Descripción}} \\
+		\hline
+			Administrador &
+			Usuarios experto del sistema encargado de gestionar las tareas de configuración criticas y no críticas del sistema y con capacidad de beneficiarse de las funcionalidades de visualización. \\
+		\hline
+			Jefe de proyecto &
+			Usuario del sistema encargado de las tareas de configuración no críticas y con capacidad de beneficiarse de las funcionalidades de visualización. \\
+		\hline
+			Usuario &
+			Usuario estándar con capacidad de beneficiarse de las funcionalidades de visualización.  \\
+		\hline
+			Motor gráfico &
+			Componente software que notifica una acción de selección. \\
+		\hline
+	\end{tabular}
+	\caption{Roles identificados en la aplicación web}
+	\label{table:roles-webapp}
+\end{table}
+	
+\begin{table}[!htbp]%
+	\centering
+	\begin{tabular}{| >{\arraybackslash}m{3.5cm} | >{\arraybackslash}m{11cm} |}
+		\hline
+			{\cellcolor[gray]{0.7}\centering\textbf{Rol del usuario}} &
+			{\cellcolor[gray]{0.7}\centering\textbf{Descripción}} \\
+		\hline
+			Usuario &
+			Usuario capaz de navegar por el entorno 3D e interactuar con los modelos gráficos escenificados en el mismo. \\
+		\hline
+			Aplicación contenedora &
+			Componente que alberga al motor gráfico con capacidad de configurar y mostrar la escena que se requiera. Este componente podrá obtener una realimentación o \textit{feedback} de las distintas acciones de selección de objetos. \\
+		\hline
+	\end{tabular}
+	\caption{Roles identificados en el motor gráfico}
+	\label{table:roles-graphics-engine}
+\end{table}
+
+
+\subsubsection{Requisitos no funcionales}
+
+Las empresas colaboradoras en este proyecto imponen como requisito que el lenguaje de programación sea Java. Por lo tanto, ambos componentes estarán basados en tecnología \textbf{Java} y su ciclo de vida será gestionado de forma separada mediante \textbf{Maven}.
+
+Por otro lado, para que la herramienta sea accesible desde cualquier parte del mundo, siempre y cuando se disponga de una conexión a Internet, será diseñada como una \textbf{aplicación web}. Así pues, y con el objetivo de romper con las diferencias idiomáticas, la aplicación web gozará de una característica de \textit{internacionalización}. En este PFC se incluirán los idiomas de Inglés (Americano) y Español (España), siendo únicamente necesario traducir un conjunto de ficheros en texto plano para añadir cuantos idiomas se deseen.
+
+En cuanto a la generación de gráficos 3D, será necesario encontrar soluciones que abstraigan la generación de los mismos de la arquitectura de la máquina y del sistema operativo. Además, el entorno virtual generado deberá ser interactivo y permitir que el usuario realice distintas operaciones de desplazamiento y enfoque de la cámara, a fin de evitar que queden ocultas algunas zonas de interés.
+
+
+\subsection{Modelo de Casos de Uso}
+\label{sec:modelo-cdu}
+
+A continuación se muestran los diagramas de casos de uso que se han modelado para los dos componentes que conformarán el sistema, a partir de los requisitos funcionales identificados en la sección \ref{sec:requisitos-funcionales}.
+
+La figura \ref{fig:cdu-webapp} muestra el modelo de casos de uso de la aplicación web. En este componente se observan cuatro actores (Tabla \ref{table:roles-webapp}), de los cuales los tres de la izquierda (usuario, administrador y jefe de proyecto) representan a personas físicas y el de la derecha (contenedor de gráficos) representa al contenedor de gráficos generados mediante el motor gráfico.
+
+\imagenBorde{Cap5//cdu1-webapp}{0.85}{Modelo de casos de uso de la aplicación web}{fig:cdu-webapp}
+
+Por otro lado, la figura \ref{fig:cdu-graphics-engine} presenta dos actores (Tabla \ref{table:roles-graphics-engine}): el usuario que interactúa con la escena, que es una persona física y se corresponde con el usuario al que la aplicación contenedora le haya concedido el privilegio de ejecutar el componente de visualización; y la aplicación contenedora que será la encargada de aportar los parámetros de configuración necesarios para configurar y visualizar la escena deseada.
+
+\imagenBorde{Cap5//cdu1-graphics-engine}{0.9}{Modelo de casos de uso del motor gráfico}{fig:cdu-graphics-engine}
+
+Para finalizar, se facilita la tabla \ref{table:denominacion-priorizacion-cdu} que muestra los casos de uso identificados, sus tareas asociadas -en caso de poderse descomponer en funcionalidades más específicas-, la prioridad de realización y un código identificativo que será utilizado para denominar las funcionalidades de aquí en adelante. Cabe destacar que los códigos identificativos de formato \textit{CdU\textbf{1}.x} se refieren a casos de uso del motor gráfico y los de \textit{CdU\textbf{2}.x} se refieren a los de la aplicación web.
+
+\begin{center}
+\begin{longtable}%[h]%
+%\centering
+%\begin{logn}
+{| >{\arraybackslash}m{5.5cm} | >{\centering\arraybackslash}m{1cm} | >{\arraybackslash}m{5.3cm} | >{\arraybackslash}m{1.7cm} |}
+	\hline
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.7}\textbf{Requisito}} &
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.7}\textbf{Prior.}} &
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.7}\textbf{Descomposición de tareas}} &
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.7}\textbf{Id.}} \\
+	\hline
+	\endhead
+		Desplazar cámara &
+		1 &
+		- &
+		CdU1.1\\
+	\hline
+		Rotar cámara &
+		2 &
+		- &
+		CdU1.2\\
+	\hline
+		Seleccionar objetos de la escena &
+		6 &
+		- &
+		CdU1.3\\
+	\hline
+		Cambiar nivel de visualización &
+		5 &
+		- &
+		CdU1.4\\
+	\hline
+		Mostrar escena &
+		3 &
+		Mostrar metáfora de fábricas \newline
+		Mostrar metáfora de proyectos \newline
+		Mostrar metáfora genérica &
+		CdU1.5\\
+	\hline
+		Configurar escena &
+		4 &
+		- &
+		CdU1.6\\
+	\hline
+		Obtener objeto seleccionado &
+		7 &
+		- &
+		CdU1.7\\
+	\hline
+		Acceder al sistema &
+		11 &
+		Iniciar sesión \newline
+		Finalizar sesión \newline 
+		Control de acceso \newline
+		Configuración de menús &
+		CdU2.1\\
+	\hline
+		Gestión de perfiles &
+		13 &
+		Crear perfiles \newline
+		Ver perfiles \newline
+		Borrar perfiles &
+		CdU2.2\\
+	\hline
+		Gestión de compañías &
+		15 &
+		Crear compañías \newline
+		Ver compañías \newline
+		Editar compañías \newline
+		Borrar compañías &
+		CdU2.3\\
+	\hline
+		Gestión de factorías &
+		16 &
+		Crear factorías \newline
+		Ver factorías \newline
+		Editar factorías \newline
+		Borrar factorías &
+		CdU2.4\\
+	\hline
+		Gestión de proyectos &
+		17 &
+		Crear proyectos \newline
+		Ver proyectos \newline
+		Editar proyectos \newline
+		Borrar proyectos &
+		CdU2.5\\
+	\hline
+		Gestión de subproyectos &
+		18 &
+		Crear subproyectos \newline
+		Ver subproyectos \newline
+		Editar subproyectos \newline
+		Borrar subproyectos &
+		CdU2.6\\
+	\hline
+		Ver mapa mundial &
+		10 &
+		- &
+		CdU2.7\\
+	\hline
+		Geolocalizar factorías &
+		12 &
+		- &
+		CdU2.8\\
+	\hline
+		Ejecutar herramienta de visualización &
+		8 &
+		- &
+		CdU2.9\\
+	\hline
+		Seleccionar perfil de visualización &
+		14 &
+		- &
+		CdU2.10\\
+	\hline
+		Notificar selección &
+		9 &
+		- &
+		CdU2.11\\
+	\hline
+\caption{Denominación y priorización de los casos de uso}
+\label{table:denominacion-priorizacion-cdu} 
+\end{longtable}
+\end{center}
+
+
+
+
+\subsection{Glosario de términos}
+
+Se ha elaborado un glosario que define el concepto de algunos de los términos empleados en este software. Así pues, se eliminan posibles confusiones y malentendidos.
+
 \begin{itemize}
-	\item {http}.
-	\item {authentication-provider}.
-	\item {userDetailsService}.
-	\item {dataSource}.
-	\item {sessionFactory}.
-	\item {hibernateTemplate}.
+	\item \textbf{Entidad}. 
+	\item \textbf{Metáfora de visualización}. 
+	\item \textbf{Motor gráfico}. 
+	\item \textbf{Framework}. 
+	\item \textbf{Medida software}. 
+	\item \textbf{Indicador software}. 
+	\item \textbf{Compañía}. Organización, empresa o compañía
+	\item \textbf{Factoría}. Fábrica o factoría
 \end{itemize}
+
+
+
+\subsection{Gestión del riesgo}
+
+Se ha realizado un conjunto de estudios para decidir de qué forma se desarrollará el motor de gráficos 3D. Dado que es requisito que este componente sea independiente de la arquitectura de la máquina y del sistema operativo, consistirá en un \textbf{motor gráfico basado en OpenGL} que deberá ser integrado en la aplicación web. Las alternativas de integración que se han contemplado se basan en el uso de un \textit{canvas} de HTML5 (\textit{HyperText Markup Language}), que haría posible el uso de la tecnología WebGL, o un \textit{applet}, que permitiría desarrollar el motor gráfico con alguna librería basada en Java que permita acceder a OpenGL.
+
+La primera alternativa ha sido desechada ya que en la fecha en la que se aborda el análisis y diseño del motor gráfico, no existe una especificación estándar del API de WebGL (la primera versión ha sido publicada el 10 de Febrero de 2011). Como consecuencia de ello, a la fecha, las versiones estables de los navegadores web tradicionales (Mozilla Firefox, Google Chrome, Internet Explorer, etcétera) aún no implementan dicha tecnología y la documentación para desarrolladores acerca de la misma no es abundante. Por esta razón, se opta por la posibilidad de utilizar una librería basada en Java e integrar el motor gráfico en la aplicación web mediante un applet.
+
+Del conjunto de librerías basadas en Java que se han contemplado para generar gráficos 3D mediante OpenGL, se ha seleccionado \textit{JOGL (Java OpenGL)}. \textbf{JOGL} es un proyecto gratuito y de código libre, con licencia BSD (Berkeley Software Distribution) y goza de la potencia necesaria para un proyecto de estas características.
+
+
+\subsection{Plan de iteraciones}
+
+A partir de los estudios elaborados a lo largo de esta fase, es posible establecer un plan de iteraciones. El plan de iteraciones se ha elaborado como una serie de tablas (metáforas de fichas de papel), en la que cada tabla contiene la información relativa a una iteración: número de iteración, fase a la que pertenece, comentarios adicionales, funcionalidades o casos de uso a comenzar (objetivos), hitos a alcanzar y una pequeña gráfica de la relevancia de cada una de las disciplinas del flujo de trabajo fundamental.
+
+\newlength{\altura}
+\settoheight{\altura}{A}
+\newlength{\anchura}
+\settowidth{\anchura}{Implementación}
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Número de iteración}} &
+	Preliminar \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Fase a la que pertenece}} &
+	Inicio \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
+	Esta iteración se completa al finalizar el presente plan de iteraciones. \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
+	Realizar un estudio y la captura de requisitos del sistema que se pretende desarrollar. \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
+	\begin{itemize}
+		\item Estudio de la arquitectura de visualización de calidad en DGS.
+		\item Identificación de requisitos funcionales y no funcionales.
+		\item Identificación de roles.
+		\item Modelo preliminar de casos de uso.
+		\item Glosario de términos.
+		\item Gestión del riesgo.
+		\item Plan de iteraciones
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
+	Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Análisis\makebox[\dimexpr \anchura-\width+1em]{\phantom{Análisis}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}\newline
+	Diseño\makebox[\dimexpr \anchura-\width+1em]{\phantom{Diseño}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Implementación\makebox[\dimexpr \anchura-\width+1em]{\phantom{Implementación}}\rule[1pt]{0cm}{\dimexpr \altura-1pt}-\newline
+	Pruebas\makebox[\dimexpr \anchura-\width+1em]{\phantom{Pruebas}}\rule[1pt]{0cm}{\dimexpr \altura-1pt}-
+	\\
+	\hline
+\end{tabular}
+\caption{Ficha de la iteración preliminar}
+\label{table:ficha-iteracion-preliminar}
+\end{table}
+
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Número de iteración}} &
+	1 \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Fase a la que pertenece}} &
+	Elaboración \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
+	Iteración centrada en el funcionamiento básico y la arquitectura del motor gráfico. Dado el carácter investigador de esta iteración, no se desarrollará ningún caso de uso.\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
+	Estudiar y entender cómo funciona el hilo de ejecución de un proyecto de Java OpenGL para desarrollar un pequeño proyecto consistente en una ventana que pinte un cubo en tres dimensiones y permita rotarlo. \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
+	\begin{itemize}
+		\item Diagramas de clases de análisis, comunicación, secuencia de análisis, clases de diseño y secuencia de diseño para el desarrollo de un pequeño proyecto que pinte un cubo en tres dimensiones con tecnología JOGL y la posibilidad rotarlo.
+		\item Preparación del entorno de desarrollo y creación del proyecto mediante Maven.
+		\item Implementación del mini-proyecto planteado en esta iteración.
+	\end{itemize}
+	\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
+Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]{1.5cm}{\dimexpr \altura-1pt}\newline
+	Análisis\makebox[\dimexpr \anchura-\width+1em]{\phantom{Análisis}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Diseño\makebox[\dimexpr \anchura-\width+1em]{\phantom{Diseño}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Implementación\makebox[\dimexpr \anchura-\width+1em]{\phantom{Implementación}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}\newline
+	Pruebas\makebox[\dimexpr \anchura-\width+1em]{\phantom{Pruebas}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}
+	\\
+	\hline
+\end{tabular}
+\caption{Ficha de la iteración 1}
+\label{table:ficha-iteracion-1}
+\end{table}
+
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Número de iteración}} &
+	2 \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Fase a la que pertenece}} &
+	Elaboración \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
+	Esta iteración tomará como base el mini-proyecto elaborado en la iteración 1 y comenzará a añadirle las funcionalidades que debe satisfacer el motor gráfico.\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
+	\begin{itemize}
+		\item Análisis y diseño de CdU1.1, CdU1.2 y CdU1.5.
+		\item Implementación de CdU1.1 y CdU1.2
+		\item Implementación de un foco de luz para iluminar la escena (requisito no funcional)
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
+	\begin{itemize}
+		\item Diagramas de clases de análisis, comunicación, secuencia de análisis, clases de diseño y secuencia de diseño de CdU1.1, CdU1.2 y CdU1.5.
+		\item Modelo arquitectónico del componente (motor gráfico).
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
+Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Análisis\makebox[\dimexpr \anchura-\width+1em]{\phantom{Análisis}}\rule[1pt]{1.5cm}{\dimexpr \altura-1pt}\newline
+	Diseño\makebox[\dimexpr \anchura-\width+1em]{\phantom{Diseño}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Implementación\makebox[\dimexpr \anchura-\width+1em]{\phantom{Implementación}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Pruebas\makebox[\dimexpr \anchura-\width+1em]{\phantom{Pruebas}}\rule[1pt]{0cm}{\dimexpr \altura-1pt}-
+	\\
+	\hline
+\end{tabular}
+\caption{Ficha de la iteración 2}
+\label{table:ficha-iteracion-2}
+\end{table}
+
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Número de iteración}} &
+	3 \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Fase a la que pertenece}} &
+	Elaboración \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
+	Esta iteración se centra en la aplicación web, mientras que las iteraciones 1 y 2 se centran en el motor gráfico. Por tanto, la iteración 3 se puede realizar de modo paralelo con sus dos predecesoras si se dispone de recursos.\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
+	Diseñar el modelo datos e investigar acerca de las tecnologías que se van a emplear en el diseño y desarrollo web.\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
+	\begin{itemize}
+		\item Modelo de datos.
+		\item Preparación del entorno de desarrollo y creación del proyecto mediante Maven.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
+Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]{1.5cm}{\dimexpr \altura-1pt}\newline
+	Análisis\makebox[\dimexpr \anchura-\width+1em]{\phantom{Análisis}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Diseño\makebox[\dimexpr \anchura-\width+1em]{\phantom{Diseño}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Implementación\makebox[\dimexpr \anchura-\width+1em]{\phantom{Implementación}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Pruebas\makebox[\dimexpr \anchura-\width+1em]{\phantom{Pruebas}}\rule[1pt]{0cm}{\dimexpr \altura-1pt}-
+	\\
+	\hline
+\end{tabular}
+\caption{Ficha de la iteración 3}
+\label{table:ficha-iteracion-3}
+\end{table}
+
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Número de iteración}} &
+	4 \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Fase a la que pertenece}} &
+	Construcción \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
+	Dada la gran dificultad para implementar una \textit{suite} de pruebas que confirmen que la cámara se desplaza correctamente en el entorno virtual, éstas serán llevadas a cabo y validadas por un usuario experto.\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
+	\begin{itemize}
+		\item Análisis y diseño de CdU1.6.
+		\item Implementación de CdU1.5 y CdU1.6.
+		\item Obtener una arquitectura extensible que permita que la tarea de mantenimiento para añadir nuevas metáforas de visualización sea una tarea fácil.
+		\item Pruebas y verificación del correcto funcionamiento de los CdU1.1 y 1.2.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
+	\begin{itemize}
+		\item Diagramas de clases de análisis, comunicación, secuencia de análisis y clases de diseño de CdU1.6.
+		\item Modelo arquitectónico del componente (motor gráfico) mejorado.
+		\item Informe de verificación y validación del correcto funcionamiento de los CdU1.1 y CdU1.2.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
+Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}\newline
+	Análisis\makebox[\dimexpr \anchura-\width+1em]{\phantom{Análisis}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}\newline
+	Diseño\makebox[\dimexpr \anchura-\width+1em]{\phantom{Diseño}}\rule[1pt]{1.5cm}{\dimexpr \altura-1pt}\newline
+	Implementación\makebox[\dimexpr \anchura-\width+1em]{\phantom{Implementación}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Pruebas\makebox[\dimexpr \anchura-\width+1em]{\phantom{Pruebas}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}
+	\\
+	\hline
+\end{tabular}
+\caption{Ficha de la iteración 4}
+\label{table:ficha-iteracion-4}
+\end{table}
+
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Número de iteración}} &
+	5 \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Fase a la que pertenece}} &
+	Construcción \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
+	Dada la dificultad para implementar una \textit{suite} de pruebas que confirmen que los gráficos generados mediante los CdU1.5 y 1.6 son correctos, éstas serán llevadas a cabo y validadas por un usuario experto.\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
+	\begin{itemize}
+		\item Análisis, diseño e implementación de los CdU1.3, CdU1.4 y CdU1.7.
+		\item Análisis y diseño de los CdU2.9, CdU2.11 y CdU2.7.
+		\item Integración del motor gráfico en la aplicación web.
+		\item Pruebas y verificación de la correcta generación de gráficos de los CdU1.5 y 1.6.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
+	\begin{itemize}
+		\item Diagramas de clases de análisis, comunicación, secuencia de análisis, clases de diseño y secuencia de diseño de los CdU1.3, CdU1.4, CdU1.7, CdU2.9, CdU2.11 y CdU2.7.
+		\item Prototipo de la interfaz gráfica de usuario de la herramienta de visualización en la aplicación web.
+		\item Informe de verificación y validación de la correcta generación de gráficos de los CdU1.5 y CdU1.6.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
+Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Análisis\makebox[\dimexpr \anchura-\width+1em]{\phantom{Análisis}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}\newline
+	Diseño\makebox[\dimexpr \anchura-\width+1em]{\phantom{Diseño}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}\newline
+	Implementación\makebox[\dimexpr \anchura-\width+1em]{\phantom{Implementación}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Pruebas\makebox[\dimexpr \anchura-\width+1em]{\phantom{Pruebas}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}
+	\\
+	\hline
+\end{tabular}
+\caption{Ficha de la iteración 5}
+\label{table:ficha-iteracion-5}
+\end{table}
+
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Número de iteración}} &
+	6 \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Fase a la que pertenece}} &
+	Construcción \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
+	Dada la dificultad para implementar una \textit{suite} de pruebas que confirmen la correcta integración del motor gráfico en una página web, así como el mecanismos de selección de objetos 3D, las pruebas de CdU1.3, CdU1.4 y CdU1.7 serán llevadas a cabo y validadas por un usuario experto.\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
+	\begin{itemize}
+		\item Análisis y diseño de CdU2.1
+		\item Implementación de los CdU2.9, CdU2.11 y CdU2.7.
+		\item Pruebas y verificación de la integración del motor gráfico en la aplicación web y mecanismos de selección de objetos 3D, correspondientes a los CdU1.3, CdU1.4 y CdU1.7.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
+	\begin{itemize}
+		\item Diagramas de clases de análisis, comunicación, secuencia de análisis y clases de diseño de CdU2.1.
+		\item Informe de verificación y validación de la correcta generación de gráficos de los CdU1.5 y CdU1.6.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
+Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Análisis\makebox[\dimexpr \anchura-\width+1em]{\phantom{Análisis}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}\newline
+	Diseño\makebox[\dimexpr \anchura-\width+1em]{\phantom{Diseño}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}\newline
+	Implementación\makebox[\dimexpr \anchura-\width+1em]{\phantom{Implementación}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Pruebas\makebox[\dimexpr \anchura-\width+1em]{\phantom{Pruebas}}\rule[1pt]{1.5cm}{\dimexpr \altura-1pt}
+	\\
+	\hline
+\end{tabular}
+\caption{Ficha de la iteración 6}
+\label{table:ficha-iteracion-6}
+\end{table}
+
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Número de iteración}} &
+	7 \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Fase a la que pertenece}} &
+	Construcción \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
+	\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
+	\begin{itemize}
+		\item Análisis y diseño de CdU2.2 y CdU2.10.
+		\item Implementación de CdU2.1.
+		\item Configuración del entorno de pruebas con Maven.
+		\item Diseño e implementación de pruebas de CdU2.1, CdU2.9, CdU2.11 y CdU2.7.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
+	\begin{itemize}
+		\item Diagramas de clases de análisis, comunicación, secuencia de análisis y clases de diseño de CdU2.2 y CdU2.10.
+		\item Prototipo de la interfaz gráfica de usuario de la herramienta de configuración de perfiles.
+		\item Entorno de desarrollo configurado tanto para la ejecución de pruebas unitarias y funcionales como para la generación de informes.
+		\item Informe de pruebas unitarias y funcionales de CdU2.1, CdU2.9, CdU2.11 y CdU2.7.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
+Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Análisis\makebox[\dimexpr \anchura-\width+1em]{\phantom{Análisis}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Diseño\makebox[\dimexpr \anchura-\width+1em]{\phantom{Diseño}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Implementación\makebox[\dimexpr \anchura-\width+1em]{\phantom{Implementación}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Pruebas\makebox[\dimexpr \anchura-\width+1em]{\phantom{Pruebas}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}
+	\\	\hline
+\end{tabular}
+\caption{Ficha de la iteración 7}
+\label{table:ficha-iteracion-7}
+\end{table}
+
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Número de iteración}} &
+	8 \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Fase a la que pertenece}} &
+	Construcción \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
+	\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
+	\begin{itemize}
+		\item Análisis y diseño de CdU2.3, CdU2.4, CdU2.5 y CdU2.6.
+		\item Implementación y pruebas de CdU2.2 y CdU2.10.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
+	\begin{itemize}
+		\item Diagramas de clases de análisis de CdU2.3, CdU2.4, CdU2.5 y CdU2.6.
+		\item Diagramas de comunicación de CdU2.3, CdU2.4, CdU2.5 y CdU2.6.
+		\item Diagramas de secuencia de análisis de CdU2.3, CdU2.4, CdU2.5 y CdU2.6.
+		\item Diagramas de clases de diseño de CdU2.3, CdU2.4, CdU2.5 y CdU2.6.
+		\item Prototipo de la interfaz gráfica de usuario de las herramienta de gestión de compañías, factorías, proyectos y subproyectos.
+		\item Informe de pruebas unitarias y funcionales de CdU2.2 y CdU2.10.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
+Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Análisis\makebox[\dimexpr \anchura-\width+1em]{\phantom{Análisis}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Diseño\makebox[\dimexpr \anchura-\width+1em]{\phantom{Diseño}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}\newline
+	Implementación\makebox[\dimexpr \anchura-\width+1em]{\phantom{Implementación}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}\newline
+	Pruebas\makebox[\dimexpr \anchura-\width+1em]{\phantom{Pruebas}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}
+	\\	\hline
+\end{tabular}
+\caption{Ficha de la iteración 8}
+\label{table:ficha-iteracion-8}
+\end{table}
+
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Número de iteración}} &
+	9 \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Fase a la que pertenece}} &
+	Construcción \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
+	\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
+	\begin{itemize}
+		\item Implementación y pruebas de CdU2.3, CdU2.4, CdU2.5 y CdU2.6.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
+	\begin{itemize}
+		\item Informe de pruebas unitarias y funcionales de CdU2.3, CdU2.4, CdU2.5 y CdU2.6.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
+Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]{0cm}{\dimexpr \altura-1pt}-\newline
+	Análisis\makebox[\dimexpr \anchura-\width+1em]{\phantom{Análisis}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Diseño\makebox[\dimexpr \anchura-\width+1em]{\phantom{Diseño}}\rule[1pt]{0.5cm}{\dimexpr \altura-1pt}\newline
+	Implementación\makebox[\dimexpr \anchura-\width+1em]{\phantom{Implementación}}\rule[1pt]{1.5cm}{\dimexpr \altura-1pt}\newline
+	Pruebas\makebox[\dimexpr \anchura-\width+1em]{\phantom{Pruebas}}\rule[1pt]{2cm}{\dimexpr \altura-1pt}
+	\\	\hline
+\end{tabular}
+\caption{Ficha de la iteración 9}
+\label{table:ficha-iteracion-9}
+\end{table}
+
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Número de iteración}} &
+	10 \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Fase a la que pertenece}} &
+	Transición \\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
+	En esta fase se corregirán los fallos que hayan podido suceder al ejecutar las distintas \textit{suites} de pruebas unitarias y funcionales.\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
+	\begin{itemize}
+		\item Corregir cualquier \textit{bug} que haya podido detectarse en las disciplinas de pruebas.
+		\item Elaborar el manual de usuario y la documentación asociada al proyecto.
+		\item Obtener la primera versión entregable del software.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
+	\begin{itemize}
+		\item Manual de usuario.
+		\item Documentación del proyecto.
+		\item Versión entregable del software.
+	\end{itemize}\\
+	\hline
+	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
+Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]{0cm}{\dimexpr \altura-1pt}-\newline
+	Análisis\makebox[\dimexpr \anchura-\width+1em]{\phantom{Análisis}}\rule[1pt]{0cm}{\dimexpr \altura-1pt}-\newline
+	Diseño\makebox[\dimexpr \anchura-\width+1em]{\phantom{Diseño}}\rule[1pt]{0cm}{\dimexpr \altura-1pt}-\newline
+	Implementación\makebox[\dimexpr \anchura-\width+1em]{\phantom{Implementación}}\rule[1pt]{1cm}{\dimexpr \altura-1pt}\newline
+	Pruebas\makebox[\dimexpr \anchura-\width+1em]{\phantom{Pruebas}}\rule[1pt]{1.5cm}{\dimexpr \altura-1pt}
+	\\	\hline
+\end{tabular}
+\caption{Ficha de la iteración 10}
+\label{table:ficha-iteracion-10}
+\end{table}
+
+
+A modo de síntesis, y para facilitar el análisis del plan de iteraciones se facilitan las figuras \ref{fig:carga-fases-lineas3d}, \ref{fig:importancia-disciplinas-iteraciones-barras3d} y \ref{fig:importancia-disciplinas-iteraciones-areas3d}. La figura \ref{fig:carga-fases-lineas3d} es una gráfica de líneas que muestra cuántas iteraciones conlleva cada una de las fases del ciclo de vida. Como se puede observar, las fases de inicio y transición son las más livianas (una sola iteración) y, por el contrario, la fase de construcción es la más laboriosa (seis iteraciones).
+
+\imagenBorde{Cap5//carga-fases-lineas3d}{0.55}{Gráfica de líneas que representa la duración de cada fase en iteraciones}{fig:carga-fases-lineas3d}
+
+En las figuras \ref{fig:importancia-disciplinas-iteraciones-barras3d} y \ref{fig:importancia-disciplinas-iteraciones-areas3d} se muestra un diagrama de barras y de áreas, respectivamente. Ambos diagramas muestran la relevancia de las disciplinas del flujo de trabajo fundamental en cada iteración. Nótese cómo las disciplinas de requisitos, análisis y diseño toman fuerza al inicio del ciclo de vida y van cediendo el papel protagonista a las disciplinas de implementación y pruebas.
+
+\imagenBorde{Cap5//importancia-disciplinas-iteraciones-barras3d}{0.55}{Gráfica de barras que representa la relevancia de las disciplinas en cada iteración}{fig:importancia-disciplinas-iteraciones-barras3d}
+
+\imagenBorde{Cap5//importancia-disciplinas-iteraciones-areas3d}{0.55}{Gráfica de áreas que representa la relevancia de las disciplinas en cada iteración}{fig:importancia-disciplinas-iteraciones-areas3d}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% FASE DE ELABORACION %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Fase de elaboración}
+
+\subsection{Iteración 1}
+\input{ResultadosIteracion1}
+
+\subsection{Iteración 2}
+\input{ResultadosIteracion2}
+
+\subsection{Iteración 3}
+\input{ResultadosIteracion3}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%% FASE DE CONSTRUCCION %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Fase de construcción}
+
+\subsection{Iteración 4}
+\input{ResultadosIteracion4}
+
+\subsection{Iteración 5}
+\input{ResultadosIteracion5}
+
+\subsection{Iteración 6}
+\input{ResultadosIteracion6}
+
+\subsection{Iteración 7}
+\input{ResultadosIteracion7}
+
+\subsection{Iteración 8}
+\input{ResultadosIteracion8}
+
+\subsection{Iteración 9}
+\input{ResultadosIteracion9}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% FASE DE TRANSICION %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Fase de transición}
+
+\subsection{Iteración 10}
+\input{ResultadosIteracion10}
+

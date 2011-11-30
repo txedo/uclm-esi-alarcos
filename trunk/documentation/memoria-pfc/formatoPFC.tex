@@ -70,6 +70,9 @@ format=hang]{caption} % Personalización de títulos de figuras y tablas
 %\usepackage{siunitx}    % Para imprimir núms. y unidades del SI en notación científica
 %
 \usepackage[table]{xcolor}     % Manejo del color
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{multirow}
 %
 \usepackage{pdfpages}   % Inclusión de páginas PDF
 %
@@ -92,7 +95,7 @@ format=hang]{caption} % Personalización de títulos de figuras y tablas
 \def\imagen#1#2#3#4{
  \floatstyle{plain} % plain, boxed,ruled
  \restylefloat{figure}
- \begin{figure}[h]
+ \begin{figure}[!htb]
  \begin{center}
    \includegraphics[keepaspectratio,scale=#2]{#1}
  \caption {#3}
@@ -106,7 +109,7 @@ format=hang]{caption} % Personalización de títulos de figuras y tablas
 \def\imagenBorde#1#2#3#4{
  \floatstyle{boxed} % plain, boxed,ruled
  \restylefloat{figure}
- \begin{figure}[h]
+ \begin{figure}[!htb]
  \centering
  	\includegraphics[keepaspectratio,scale=#2]{#1}
  \caption{#3}

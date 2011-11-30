@@ -13,8 +13,65 @@
 
 % Cómo vamos/hemos a aplicar/aplicado el RUP para resolver el problema (enfoque práctico)
 
-\section{PUD}
+\section{Método de investigación preliminar}
+\label{sec:investigacion-preliminar}
 
-\section{Patrones}
+Tal y como se argumenta en la sección \ref{sec:motivacion}, este PFC se encuentra enmarcado dentro del proyecto de investigación \textbf{ORIGIN} (ORganizaciones Inteligentes Globales INnovadoras) \cite{homepage-origin}. Dada la naturaleza de dicho proyecto, ha sido necesario llevar a cabo un conjunto de reuniones entre diferentes investigadores del Grupo Alarcos \cite{homepage-alarcos}, entre los cuales se encuentran Félix Óscar García Rubio, Manuel Ángel Serrano Martin, \director{} (directora del PFC) y \autor{} (autor del PFC). El objetivo de estas reuniones ha consistido en determinar los requisitos que la herramienta debe satisfacer, así como las metáforas de visualización a desarrollar y las dimensiones a visualizar, cuyo resultado se muestra en la sección \ref{sec:arquitectura-dgs}.
+
+\section{Proceso Unificado de Desarrollo (PUD)}
+\label{sec:pud}
+\imagenBorde{Cap4//mapa-conceptual-pud}{0.5}{Mapa conceptual del PUD}{fig:mapa-conceptual-pud}
+
+\section{Patrones de diseño}
+
 
 \section{Marco tecnológico}
+\label{sec:marco}
+
+%planificación, gestión, modelado y desarrollo
+
+En esta sección se indicarán, incluyendo sus respectivos números de versión, las herramientas, frameworks y tecnologías empleadas a lo largo todo el ciclo de vida del proyecto.
+
+\subsection{Herramientas de gestión de proyectos}
+\begin{itemize}
+	\item \textbf{Maven} 2.2.1: esta herramienta sirve para gestionar las dependencias y el ciclo de vida de proyectos Java. Se ha utilizado por medio de un \textit{plugin} de Eclipse denominado \textbf{m2eclipse}.
+	\item \textbf{Subversion}: constituye el sistema de control de versiones que se ha empleado a lo largo del desarrollo del software.
+	\item \textbf{Google Code}
+\end{itemize}
+
+\subsection{Herramientas de modelado de software y elaboración de documentación}
+\begin{itemize}
+	\item \textbf{MySQL Workbench} 5.2 CE: es una herramienta CASE (\textit{Computer Aided Software Engineering} o \textit{Ingeniería de Software Asistida por Computadora}) que proporciona un entorno visual para modelar bases de datos de un modo sencillo y rápido.
+	\item \textbf{Visual Paradigm} 8.0: herramienta CASE utilizada en las etapas de análisis y diseño con el fin de elaborar los diagramas UML necesarios, como por ejemplo los diagramas de casos de uso, clases, secuencia, interacción, etcétera.
+	\item \textbf{\LaTeX{}}: lenguaje de marcas y sistema de composición de documentos utilizado en la creación de documentos científicos y técnicos de gran calidad.
+	\item \textbf{\BibTeX}: herramienta que se utiliza para gestionar la bibliografía y referencias de documentos generados con \LaTeX{}.
+	\item \textbf{Inkscape} 0.48 y \textbf{GIMP} 2.6.11: son herramientas multiplataforma de dibujo que han sido utilizadas para generar las imágenes de este documento.
+\end{itemize}
+
+\subsection{Herramientas, tecnologías y frameworks de desarrollo software}
+\begin{itemize}
+	\item \textbf{Eclipse} EE Helios: se trata del Entorno de Desarrollo Integrado (en inglés, IDE o \textit{Integrated Development Environment}) que se ha utilizado para la implementación de los proyectos \textit{Desglosa Graphics Engine} y \textit{Desglosa Web}.
+	\item \textbf{MySQL Community Server} 5.1.11: es el sistema gestor de bases de datos que se utilizará para hacer persistentes los datos que corresponda.
+	\item \textbf{Apache Tomcat} 7.0.2 y \textbf{Jetty} 6.1.5: son los dos servidores web y contenedores de \textit{servlets} y páginas JSP (\textit{Java Server Pages}) que han sido utilizados tanto en el desarrollo como en el despliegue de la herramienta.
+	\item \textbf{Spring} 2.5.6: es un popular \textit{framework} de desarrollo de aplicaciones basadas en Java que proporciona mecanismos muy bien documentados y fáciles de usar para prácticas comunes.
+	\item \textbf{Spring Security} 2.0.4: es un \textit{framework} que proporciona mecanismos de autenticación y permite implementar políticas de control de acceso a recursos.
+	\item \textbf{Struts} 2.2.3: es un \textit{framework} basado en Java que permite desarrollar aplicaciones web mediante el patrón MVC (Modelo-Vista-Controlador), permitiendo así reducir el acoplamiento entre las tres capas que forman un sistema software.
+	\item \textbf{Struts-Menu} 2.4.3: se trata de una biblioteca de etiquetas que permite crear menús dinámicos a partir de sus definiciones en formato XML. Además, está totalmente integrado con el sistema de autenticación del contenedor web, que en este caso es \textit{Spring Security}.
+	\item \textbf{JSON-Lib} 2.4: es una librería basada en Java que permite transformar distintos tipos de estructuras de datos a formato JSON y viceversa.
+	\item \textbf{Struts2-JQuery} 3.1.0: es un \textit{plugin} para el \textit{framework} Struts2 que proporciona de un modo sencillo las funcionalidades de \textbf{Ajax} y \textit{widgets} basados en el popular \textit{framework} de javascript \textbf{jQuery} 1.5.2  y \textbf{jQuery UI} 1.8.14.
+	\item \textbf{Google Maps API} v2: proporciona un API que permite incorporar Google Maps en un página web y dotarlo de las funcionalidades necesarias.
+	\item \textbf{Displaytag} 1.2: se trata de una librería de etiquetas mostrar y manipular tablas siguiendo el patrón MVC. Soporta operaciones tales como paginación, agrupación, ordenación, exportación, etcétera.
+	\item \textbf{Sitemesh} 2.4.2: es un \textit{framework} para desarrollo de aplicaciones web basadas en Java, que se utiliza para aspectos de decoración y posicionamiento y proporcionar un \textit{look\&feel} entre las distintas páginas de un mismo sitio web. Su funcionamiento se basa en definir una página modelo en la que se define en qué lugares se insertarán los distintos contenidos.
+	\item \textbf{JSP} 2.0: \textit{JavaServer Pages} es una tecnología que proporciona los medios necesarios para crear páginas con contenido web dinámico.
+	\item \textbf{JSTL} 1.2: \textit{JavaServer Pages Standard Tag Library} es una librería que encapsula funcionalidades comunes que son utilizadas en el desarrollo de aplicaciones web, tales como estructuras condicionales, iteraciones, etcétera.
+	\item \textbf{HTML}: \textit{HyperText Markup Language} es un lenguaje de marcas empleado en la elaboración de páginas web.
+	\item \textbf{CSS}: \textit{Cascading Style Sheets} es un lenguaje que describe las características visuales de un documento escrito en un lenguaje de marcas.
+	\item \textbf{JavaScript}: es un lenguaje de programación interpretado que, ejecutado en el lado del cliente, permite desarrollar contenidos web dinámicos evitando recargas innecesarias de la página. De este modo se puede lograr
+	
+	\item \textbf{Java Annotations}: es un método para añadir metadatos a código fuente Java. Estos metadatos podrán ser analizados en tiempo de compilación o tiempo de ejecución para proporcionar la información que se considere oportuna.
+	\item \textbf{Java Reflection API}: la \textit{reflexión} es una técnica mediante la cual un programa informático puede observar y modificar su estructura y comportamiento en tiempo de ejecución. Esta técnica suele utilizarse junto con la \textbf{introspección}, que es la capacidad que poseen algunos lenguajes de programación orientados a objetos para determinar el tipo de un objeto en tiempo de ejecución.
+	\item \textbf{JAXB API} 2.2.4: \textit{Java Architecture for XML Binding} es una tecnología integrada dentro de Java que permite obtener una representación XML a partir de una jerarquía de objetos Java. Este proceso de \textit{serialización} recibe los nombres de \textit{marshalling}, \textit{deflating} o \textit{serializing}. El proceso inverso, también soportado por JAX, recibe los nombres de \textit{unmarshalling}, \textit{inflating} o \textit{deserialization}.
+	\item \textbf{Hibernate} 3.5.4: es un \textit{framework} de tipo ORM (Object-Relational Mapping) que permite establecer asociaciones entre clases Java y tablas de una base de datos relacional. También proporciona mecanismos para realizar consultas sobre la base de datos de un modo más abstracto que si se utilizase el lenguaje específico del sistema gestor de base de datos en cuestión.
+	\item \textbf{JPA} 2.0: \textit{Java Persistence API} es un \textit{framework} de tipo ORM e integrado dentro de la plataforma de Java que nos permite interactuar con una base de datos por medio de objetos de la capa de dominio.
+	\item \textbf{Java OpenGL} 2.0: es una biblioteca que hace de puente entre el lenguaje de programación Java y OpenGL. De este modo, es posible generar gráficos OpenGL a partir de una aplicación escrita en Java.
+\end{itemize}

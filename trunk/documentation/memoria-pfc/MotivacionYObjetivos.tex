@@ -6,6 +6,7 @@
 % Concretar y exponer el problema a resolver describiendo el entorno de trabajo, la situación y detalladamente qué se pretende obtener. Limitaciones y condicionantes a considerar para la resolución del problema (lenguaje de construcción, equipo físico, equipo lógico de base o de apoyo, etc.).
 
 \section{Motivación}
+\label{sec:motivacion}
 
 A medida que la globalización ha ido afectando a la industria del software, las empresas han tenido que ir adaptando sus metodologías y procesos de gestión de productos software\footnote{Se habla de productos software ya que éstos pueden ser fragmentados en diferentes proyectos o descomponerse en un conjunto de fases o etapas en función de la metodología utilizada en su ciclo de vida.} para adaptarse a las nuevas tendencias. Inicialmente, estas metodologías estaban adecuadas para gestionar proyectos o productos tradicionales que se desarrollaban en una única ubicación (Fig. \ref{fig:typology-projects-locations}) \cite{evaristo1999tpm}, pero hoy en día estos trabajos se realizan de forma distribuida, en la que los equipos de trabajo no se encuentran co-localizados. Esta descentralización complica la gestión del software en general y de la calidad del software en particular, ya que es necesario controlar medidas e indicadores de calidad de las organizaciones participantes, sus factorías involucradas y los proyectos o partes de proyectos que se están llevando a cabo en cada una.
 
@@ -15,136 +16,62 @@ Según ha explicado uno de los responsables del proyecto en \textbf{Indra Softwar
 
 \imagenBorde{Cap2//desorden}{0.5}{Datos desordenados relacionados con software global y medidas de calidad del software}{fig:desorden}
 
-La motivación de este PFC viene dada por la necesidad de una herramienta que establezca un modelo de representación para las entidades que intervienen en el desarrollo global. En este caso de estudio, las \textbf{principales entidades} son \textit{compañías}, \textit{factorías}, \textit{proyectos} y \textit{subproyectos} (Fig. \ref{fig:hierarchy}). Así, los usuarios de la herramienta podrán aportar, modificar y consultar datos relativos a medidas e indicadores de las entidades en base a dicho modelo. Acto seguido, será posible definir y realizar las representaciones visuales que se consideren oportunas, evitando los problemas que se han descrito anteriormente.
+La motivación de este PFC viene dada por la necesidad de una herramienta que permita personalizar la visualización de medidas de calidad en base a un modelo de representación para las entidades que intervienen en el desarrollo global. En este caso de estudio, las \textbf{principales entidades} son \textit{compañías}, \textit{factorías}, \textit{proyectos} y \textit{subproyectos} (Fig. \ref{fig:hierarchy}). Así, los usuarios de la herramienta podrán aportar, modificar y consultar datos relativos a medidas e indicadores de las entidades en base a dicho modelo. Acto seguido, será posible definir y realizar las representaciones visuales que se consideren oportunas, evitando los problemas que se han descrito anteriormente.
 
 \imagenBorde{Cap2//hierarchy}{0.5}{Resumen de la jerarquía de entidades que intervienen en el desarrollo global}{fig:hierarchy}
 
 
 \section{Objetivos}
+\label{sec:objetivos}
 
-El objetivo principal del PFC consiste en elaborar una \textbf{herramienta} que permita la visualización de medidas e indicadores software utilizados en el contexto empresarial bajo el paradigma del \textbf{Desarrollo Global de Software}.
+A continuación, y bajo el subtítulo de ``objetivo principal'', se describirá la meta final que se persigue en la elaboración de este PFC, que consiste en obtener un producto software. Un producto software no se constituye únicamente de código fuente ejecutable, sino que también se compone de la documentación, diagramas y modelos -entre otros- que se han generado en todas y cada una de las fases que conforman todo el proceso de desarrollo del software. Ello acarrea la adquisición de una serie de competencias y la compleción de un conjunto de tareas que serán expuestas bajo el título de ``objetivos parciales''.
 
-Dichas medidas e indicadores representarán la información que se considere importante como -por ejemplo- la productividad de las fábricas de software, las incidencias que han surgido a lo largo del ciclo de vida de un proyecto, o la \textit{portabilidad} de un subproyecto determinado. Los datos relevantes y susceptibles de representación visual de cada entidad pueden variar a lo largo del tiempo, es decir, puede producirse la adición de un conjunto de características para una o varias entidades. Además, puede suceder que en un futuro se deseen añadir más entidades para modelar un entorno más complejo. Por esta razón, es requisito indispensable que la interfaz de usuario se adapte automáticamente, en la medida de lo posible, a los cambios realizados en la lógica de negocio de la herramienta.
 
-A fin de desarrollar un sistema extensible y que satisfaga
-los requisitos de visualización más exigentes, se desarrollará un \textbf{motor de gráficos 3D} que deberá ser integrado en la herramienta para proporcionar un conjunto de modelos gráficos capaces de escenificar las medidas e indicadores definidos previamente. Esta escenificación, que permitirá que el usuario navegue a través del entorno como si de un mundo virtual se tratase, se realizará sobre las \textit{dimensiones} de un modelo gráfico. Una \textbf{dimensión} es aquella propiedad del modelo gráfico susceptible de asignarle un valor. Del mismo modo que en el caso de las entidades, los modelos gráficos también pueden experimentar variaciones si la empresa lo requiere, así como puede ser necesario que se extienda el número de dimensiones de un modelo existente. Por ello, y una vez más, es necesario que la interfaz gráfica de usuario vuelva a adaptarse a dichos cambios.
+\subsection{Objetivo principal}
 
-Dada la situación en la que tanto los atributos de las entidades como las dimensiones de los modelos pueden variar a lo largo del tiempo, es necesario que la herramienta permita crear \textit{perfiles de visualización}. Un \textbf{perfil de visualización} definirá qué modelo gráfico será utilizado para representar una entidad determinada, permitiendo así que el usuario interactúe con el modelo para desglosar información cada vez más específica (\textit{niveles de visualización}). Además, deberá contener información relativa a las \textbf{asociaciones} que se desean establecer entre los atributos de la entidad y las dimensiones del modelo seleccionado (Fig. \ref{fig:mapeo}). Por otro lado, el perfil podrá contener información complementaria que será mostrada dentro del modelo gráfico a modo de \textit{leyenda informativa}. Cabe destacar que para una misma entidad se pueden configurar múltiples perfiles de visualización para lograr configurar distintas vistas que muestren información más específica o relativa a una misma familia. Esta característica es útil cuando se quiere definir un perfil para cada característica de un modelo de calidad, representando sus subcaracterísticas sobre las dimensiones del modelo gráfico.
+El objetivo principal del PFC consiste en elaborar una \textbf{herramienta} que permita la visualización de medidas e indicadores software utilizados en el contexto empresarial bajo el paradigma del \textbf{Desarrollo Global de Software}. Dichas medidas e indicadores pueden representar características tales como la productividad de las fábricas de software, las incidencias que han surgido a lo largo del ciclo de vida de un producto o la portabilidad de un determinada funcionalidad de un proyecto. De este modo, se facilitarán las tareas de gestión y análisis de la calidad del software, no sólo a nivel de proyecto sino también a nivel de fábrica o compañía, siendo posible detectar o predecir anomalías o incidencias con un golpe de vista.
 
-\imagenBorde{Cap2//mapeo}{0.65}{Esquema que representa las asociaciones entre los atributos de una entidad y las dimensiones de un modelo gráfico}{fig:mapeo}
+Para abordar el problema, será necesario realizar un estudio previo que permita modelar una abstracción de las entidades que participan en el desarrollo global de software. Así pues, partiendo de dichas entidades y de la figura \ref{fig:hierarchy}, será posible establecer distintos niveles de visualización que permitan obtener información cada vez más detallada siguiendo un planteamiento \textit{top-down}. A modo de ejemplo, se consideran los siguientes niveles:
+\begin{itemize}
+	\item \textbf{Nivel de compañía}. El DGS implica la colaboración entre varias organizaciones y cada organización puede estar compuesta por una o más fábricas de software. Desde este nivel sería posible visualizar, por ejemplo, información relativa a las factorías pertenecientes a una compañía o a los proyectos en los que participa.
+	\item \textbf{Nivel de fábrica}. Una fábrica puede estar desarrollando varios proyectos, o parte de ellos, de forma simultánea. Por tanto, en este nivel se podrá acceder a la información relativa a una fábrica determinada o a un conjunto de fábricas.
+	\item \textbf{Nivel de proyecto}. Un proyecto puede estar desarrollándose en varias fábricas pertenecientes a distintas organizaciones. Desde este nivel se podrá visualizar la información relativa a los proyectos software.
+\end{itemize}
 
-Los \textbf{niveles de visualización} son un aspecto importante, ya que establecen la navegabilidad del usuario en el sistema para ir desglosando información cada vez más específica. Por ejemplo, a \textit{nivel de fábrica} puede ser interesante conocer en qué proyectos está colaborando una determinada factoría; a \textit{nivel de proyecto} se podría conocer si las fábricas que colaboran están especializadas en el mercado del proyecto; y, a \textit{nivel de subproyecto} se podría comprobar qué valores toman un conjunto de medidas de calidad. No obstante, qué información se muestra en cada nivel y cómo se muestra, depende de la configuración del perfil de visualización seleccionado.
+Para permitir que los distintos usuarios del sistema puedan compartir y manejar la información globalizada, la herramienta se diseñará como una \textbf{aplicación web}, que deberá ser accesible por medio de un navegador web convencional. Esta aplicación web será desarrollada empleando como base el lenguaje de programación Java, ya que es uno de los requisitos que impone una de las empresas colaboradoras en el proyecto. Para su puesta en producción, únicamente se requiere una computadora con un servidor web -con soporte de servlets y JSP- y un sistema gestor de bases de datos instalados.
 
-Para permitir que las distintas organizaciones y fábricas involucradas en un conjunto común de proyectos puedan utilizar el sistema de visualización y manejar la información globalizada, la herramienta será diseñada como una \textbf{aplicación web} con \textit{internacionalización}. Estas dos características son muy importantes ya que permiten que sea accesible desde cualquier navegador web convencional y que sea mostrada en el idioma configurado en dicho navegador.
+Además, a fin de desarrollar un sistema extensible y que satisfaga los requisitos de visualización más exigentes, se desarrollará un \textbf{motor gráfico} basado en alguna librería de gráficos 3D, que será integrado posteriormente en la aplicación web. El motor gráfico implementará un conjunto de \textbf{metáforas de visualización} sobre las cuales se representarán visualmente y de un modo ordenado los datos contenidos en los atributos de distintas medidas software empleadas. Al tratarse de un entorno en tres dimensiones sobre el que se podrá representar una gran cantidad de información, debe permitir que el usuario navegue a través de él sin perder el sentido de la orientación.
 
-El grado de internacionalización depende de que previamente se haya traducido el fichero de \textit{localización} correspondiente. Este fichero consiste en un archivo en \textit{texto plano} que contiene un conjunto de etiquetas cuyos valores deberán ser traducidos al idioma deseado. Por defecto, se ofrecerán los ficheros correspondientes a los idiomas Inglés (Reino Unido) y Español (España).
+Para conseguir este objetivo se deben llevar a cabo los objetivos parciales que se abordan en las siguiente subsección.
+
+
+\subsection{Objetivos parciales}
+
+La consecución del objetivo principal acarrea la adquisición y compleción de las siguientes competencias y tareas:
+\begin{itemize}
+	\item Modelar una abstracción del mundo real relativa al contexto del DGS, para lograr un diseño conceptual que abstraiga la información relevante. Acto seguido será posible realizar su implementación en un lenguaje orientado a objetos: Java.
+	\item Analizar las distintas técnicas de visualización empleadas para representar medidas software.
+	\item Seleccionar un conjunto de \textbf{métricas software} utilizadas en el contexto empresarial bajo el paradigma del DGS para su posterior representación visual.
+	\item Realizar un estudio de la arquitectura de visualización de la calidad en el DGS. Esto implica la definición de metáforas de visualización que permitan representar las características de las entidades que forman la arquitectura del DGS.
+	\item Establecer un mecanismo de asociación entre las subcaracterísticas de las metáforas de visualización y los atributos de las métricas software.
+	\item Diseñar el modelo de datos y crear una base de datos que permita la gestión de la lógica de negocio utilizada por la herramienta.
+	\item Investigar sobre librerías para la generación de gráficos 3D y técnicas de visualización de datos empleando gráficos 3D.
+	\item Definir una arquitectura estable y extensible de un motor gráfico que permita la representación de modelos para escenificar metáforas de visualización, empleando buenas prácticas de programación así como patrones de diseño.
+	\item Desarrollar un \textbf{motor gráfico} para la visualización de datos empleando modelos en 3D.
+	\item Analizar tecnologías y \textit{frameworks} para el desarrollo de aplicaciones Web y tecnologías para la generación de gráficos y modelos de visualización en la Web.
+	\item Definir una arquitectura estable y extensible de una aplicación web, utilizando patrones de diseño.
+	\item Desarrollar una \textbf{aplicación web} que permita tanto la gestión de la lógica de negocio así como la generación personalizada de gráficos en tres dimensiones. Para ello será necesario integrar el motor gráfico desarrollado en en la aplicación web.
+	\item Desarrollar las \textbf{pruebas unitarias} del software.
+	\item Elaborar la documentación técnica asociada al proyecto.
+\end{itemize}
 
 Es importante destacar que este PFC se centra en la visualización y personalización de la visualización. Por lo tanto, no proporcionará medios para calcular los valores de las medidas e indicadores, aunque sí incorporará una interfaz gráfica a modo de formulario en la que los usuarios podrán aportar dichos datos.
 
-A modo de síntesis, a continuación se listan algunos de los requisitos más importantes que debe satisfacer el sistema:
+A modo de síntesis, a continuación se listan algunos de los requisitos no funcionales más importantes que debe satisfacer el sistema:
 \begin{itemize}
 	\item \textbf{Intuitivo}. Para permitir que el análisis de los datos sea una tarea rápida y precisa, el sistema de visualización debe permitir vistas intuitivas y de fácil comprensión. Esto no implica que los usuarios no requieran un ligero entrenamiento previo antes de utilizar la herramienta, ya que entonces habría que limitar algunas funcionalidades que podrían resultar de interés.
 	\item \textbf{Flexible}. Cabe la posibilidad de que las empresas que utilicen el sistema deseen añadir nuevas entidades para modelar determinados aspectos de su entorno. Por ello, es necesario que sistema disponga de algún mecanismo que permita esta adición de conocimiento de un modo sencillo.
-	\item \textbf{Adaptable}. Algunos sistemas de visualización son efectivos y eficientes pero tienen un diseño muy específico y resulta costoso adaptarlos para manejar nuevos datos. Dado que \textit{Desglosa} se centra en la visualización, debe disponer de algún mecanismo que permita la adición de nuevos datos de un modo sencillo. Una vez que se hayan configurado los nuevos datos, el sistema debe trabajar de un modo muy genérico para permitir configurar sus representaciones gráficas posteriormente.
-		\item \textbf{Aplicable}. Dado que el paradigma del desarrollo global de software se puede conceptualizar como una jerarquía de objetos, el sistema debe ser capaz de manejar cualquier tipo de métrica de dicha jerarquía.
-	\item \textbf{Extensible}. El sistema debe permitir al equipo encargado del mantenimiento la adición de nuevos modelos gráficos para generar distintos tipos de vistas que resulten de interés en un futuro.
-	\item \textbf{Navegabilidad}. El sistema debe proporcionar un mecanismo mediante el cual el usuario pueda realizar una navegación interactiva. De este modo, se evitará que determinada información quede oculta visualmente o se tolerará que el enfoque visual se centre en una región determinada. Además, debe permitir el paso a través de los distintos niveles de abstracción que representan el paradigma del desarrollo global de software. Por tanto, siguiendo en enfoque \textit{top-bottom}, el usuario deberá ser capaz de navegar desde entidades de un nivel superior y desglosar información más específica referente a las mismas.
-	\item \textbf{Filtros}. El usuario deber tener la capacidad de poder establecer una serie de filtros a fin de obtener la información que desea. Estos filtros serán en base a una jerarquía que modele el paradigma del desarrollo global de software.
-	\item \textbf{Requisitos hardware}. Aunque el sistema dispone de un motor gráfico 3D, sólo será necesario mover la cámara y dibujar figuras sencillas a partir de primitivas. Por tanto, el consumo de recursos será bajo y no será necesario un hardware potente para ejecutar la aplicación.
-\end{itemize}
-
-
-
-\section{Entorno y requisitos}
-
-Para lograr obtener un sistema que satisfaga los requisitos descritos anteriormente, será necesaria la creación de dos proyectos: \textit{Desglosa Graphics Engine} y \textit{Desglosa Web}. Ambos proyectos estarán basados en tecnología \textbf{Java} y su ciclo de vida será gestionado mediante \textbf{Maven}.
-
-
-\subsection{Desglosa Graphics Engine}
-
-Este proyecto consiste en un \textbf{motor gráfico basado en OpenGL} que deberá ser integrado en la aplicación web. Las alternativas de integración que se han contemplado se basan en el uso de un \textit{canvas} de HTML5 (\textit{HyperText Markup Language}), que haría posible el uso de la tecnología WebGL, o un \textit{applet}, que nos permitiría desarrollar el motor gráfico con alguna librería basada en Java que permita acceder a OpenGL.
-
-La primera alternativa ha sido desechada ya que cuando se requería comenzar con el desarrollo de este proyecto, el equipo a cargo de WebGL aún no había publicado la primera especificación del API. Esta publicación se produjo en 10 de Febrero de 2011. Como consecuencia, las versiones estables de los navegadores web tradicionales (Mozilla Firefox, Google Chrome, Internet Explorer, etcétera) aún no implementaban dicha tecnología y la documentación acerca de la misma no era muy abundante. Por esta razón, se optó por la segunda alternativa: utilizar una librería basada en Java e integrar el motor gráfico en la aplicación web mediante un applet.
-
-Del conjunto de librerías basadas en Java que se han contemplado para generar gráficos 3D mediante OpenGL, se ha seleccionado \textit{JOGL (Java OpenGL)}. \textbf{JOGL} es un proyecto gratuito y de código libre, con licencia BSD (Berkeley Software Distribution) y goza de la potencia necesaria para un proyecto de estas características.
-
-El motor gráfico dispondrá de un conjunto de modelos gráficos que serán utilizados en una escena que tratará de simular la metáfora de una ciudad. La arquitectura del proyecto permitirá que el equipo encargado del mantenimiento de la aplicación puedan añadir nuevos modelos y vistas de un modo sencillo.
-
-Un modelo gráfico estará definido en una clase Java. Como cualquier clase, ésta deberá tener un conjunto de atributos que definan el estado de los objetos que se \textit{instancien}. Algunos de estos atributos tendrán la finalidad de ser utilizados como dimensiones del modelo. Una dimensión de un modelo es un atributo al cual se le puede asignar un valor para obtener una representación visual. Para diferenciar qué atributos del modelo pueden ser utilizados como dimensiones y cuáles no, así como para dotar la dimensión de la semántica necesaria, se creará una \textbf{anotación personalizada de Java}. Gracias a esta anotación y con el uso de un pequeño \textbf{analizador de anotaciones} que utiliza \textbf{Java API Reflection} (también conocido como \textit{Introspección}), será posible analizar la clase anotada en tiempo de ejecución para proporcionar la información necesaria a la interfaz gráfica de usuario y que ésta se configure automáticamente.
-
-Por último, para tratar que el motor gráfico no tenga ningún tipo de dependencia con el sistema que lo utilice, los gráficos serán generados a partir de una cadena de texto. Esta cadena de texto será utilizada como entrada de datos, que serán procesados según proceda y, finalmente, los resultados serán mostrados en forma de gráficos 3D. El formato de la cadena de texto debe ser \textbf{JSON} (\textit{JavaScript Object Notation}) (Listado \ref{json-example}) y responder a una estructura definida que será detallada en los sucesivos capítulos de este documento.
-
-\begin{lstlisting}[caption={Ejemplo de texto en formato JSON (http://json.org/example.html)},label=json-example]
-{"menu": {
-  "id": "file",
-  "value": "File",
-  "popup": {
-    "menuitem": [
-      {"value": "New", "onclick": "CreateNewDoc()"},
-      {"value": "Open", "onclick": "OpenDoc()"},
-      {"value": "Close", "onclick": "CloseDoc()"}
-    ]
-  }
-}}
-\end{lstlisting}
-
-
-\subsection{Desglosa Web}
-
-Sintetizando el apartado anterior, se destaca que el motor gráfico genera gráficos 3D a partir de una cadena de texto en formato JSON. Esto implica que el motor gráfico no maneja ningún tipo de lógica de negocio relativa al contexto del desarrollo global. Por ello, toda la lógica de negocio relativa al desarrollo global, así como su control y persistencia, está contenida en la aplicación web.
-
-La aplicación web ha sido diseñada de tal forma que de lugar a una herramienta profesional y de calidad. Para lograrlo se han utilizado tecnologías y \textit{frameworks} que actualmente se utilizan en el mundo empresarial. En la sección \ref{sec:marco} se puede encontrar una lista detallada de las mismas y con qué propósitos han sido utilizadas.
-
-Este proyecto, a parte de permitir la manipulación de la información que maneja mediante formularios, debe implementar dos funcionalidades muy importantes: la de configuración de perfiles y la de visualización del contexto de desarrollo global.
-
-
-\subsubsection{Configuración de perfiles}
-
-Cuando el usuario desee configurar un perfil, deberá seleccionar qué entidad quiere representar sobre qué modelo gráfico. Las entidades que intervienen en el desarrollo global -compañías, factorías, proyectos y subproyectos- tienen un conjunto de atributos que configuran su estado. Algunos de estos atributos pueden ser susceptibles de ser representados visualmente, por ejemplo las medidas e indicadores de calidad. Para diferenciar qué atributos son susceptibles de representación visual y cuáles no, será necesario definir otra \textbf{anotación personalizada de Java} y su correspondiente \textbf{analizador de anotaciones} para hacer nuevamente uso de la \textbf{introspección}. Este tipo de anotaciones, que difiere de las anotaciones del motor gráfico ya que requieren un tratamiento particular, permitirá que la aplicación web analice la clase Java de la entidad en tiempo de ejecución para adaptar su interfaz gráfica de usuario. Del mismo modo, se utilizará el analizador proporcionado por el motor gráfico para analizar las dimensiones del modelo seleccionado y adaptar nuevamente la interfaz gráfica de usuario.
-
-En este momento, el usuario obtendrá una lista de los atributos de la entidad y una lista de las dimensiones del modelo seleccionados. A continuación podrá establecer las asociaciones y configuraciones que estime oportunas entre la entidad y el modelo gráfico, así como suministrar información adicional para mostrar una leyenda informativa, el nombre del perfil y una breve descripción. Por último, el perfil se hará persistente en formato XML (Extensible Markup Language) en el servidor de la aplicación web.
-
-
-\subsubsection{Visualización}
-
-Esta funcionalidad proporciona dos vistas: la primera de ellas consiste en un mapa de Google Maps sobre el cual se irán posicionando las factorías de software que proceda en cada situación; la segunda cargará un applet con el motor gráfico y se mostrará la información que el usuario desee en base al nivel de visualización y el perfil seleccionado. El usuario podrá interactuar con los elementos mostrados en el motor gráfico para navegar por los distintos niveles de visualización y desglosar información cada vez más específica.
-
-La mayor dificultad para generar una escena visual se establece dada la gran capacidad de personalización de perfiles que permite la herramienta. Como se ha podido apreciar a lo largo de la lectura, los usuarios pueden representar cualquier entidad del desarrollo global sobre cualquier modelo gráfico y configurar múltiples tipos de asociaciones. Toda esta información es guardada en un fichero XML pero, ¿cómo puede el sistema conocer qué tipo de objetos debe \textit{instanciar} y a qué métodos llamar para obtener los valores de las entidades y aplicarlos sobre las dimensiones de los objetos? La respuesta, una vez más, es \textbf{Java API Reflection} (método de \textit{reflexión} o \textit{introspección}).
-
-\section{Marco tecnológico de trabajo}
-\label{sec:marco}
-
-A continuación, y a modo de síntesis, se listarán las herramientas y tecnologías empleadas a lo largo del ciclo de vida de este proyecto:
-\begin{itemize}
-	\item \textbf{Eclipse} EE Helios: se trata del Entorno de Desarrollo Integrado (en inglés, IDE o \textit{Integrated Development Environment}) que se ha utilizado para la implementación de los proyectos \textit{Desglosa Graphics Engine} y \textit{Desglosa Web}.
-	\item \textbf{Maven} 2.2.1: esta herramienta sirve para gestionar las dependencias y el ciclo de vida de proyectos Java. Se ha utilizado por medio de un \textit{plugin} de Eclipse denominado \textbf{m2eclipse}.
-	\item \textbf{Subversion}: constituye el sistema de control de versiones que se ha empleado a lo largo del desarrollo del software.
-	\item \textbf{MySQL Community Server} 5.1.11: es el sistema gestor de bases de datos que se utilizará para hacer persistentes los datos que corresponda.
-	\item \textbf{Apache Tomcat} 7.0.2 y \textbf{Jetty} 6.1.5: son los dos servidores web y contenedores de \textit{servlets} y páginas JSP (\textit{Java Server Pages}) que han sido utilizados tanto en el desarrollo como en el despliegue de la herramienta.
-	\item \textbf{Spring} 2.5.6: es un popular \textit{framework} de desarrollo de aplicaciones basadas en Java que proporciona mecanismos muy bien documentados y fáciles de usar para prácticas comunes.
-	\item \textbf{Spring Security} 2.0.4: es un \textit{framework} que proporciona mecanismos de autenticación y permite implementar políticas de control de acceso a recursos.
-	\item \textbf{Struts} 2.2.3: es un \textit{framework} basado en Java que permite desarrollar aplicaciones web mediante el patrón MVC (Modelo-Vista-Controlador), permitiendo así reducir el acoplamiento entre las tres capas que forman un sistema software.
-	\item \textbf{Struts-Menu} 2.4.3: se trata de una biblioteca de etiquetas que permite crear menús dinámicos a partir de sus definiciones en formato XML. Además, está totalmente integrado con el sistema de autenticación del contenedor web, que en este caso es \textit{Spring Security}.
-	\item \textbf{JSON-Lib} 2.4: es una librería basada en Java que permite transformar distintos tipos de estructuras de datos a formato JSON y viceversa.
-	\item \textbf{Struts2-JQuery} 3.1.0: es un \textit{plugin} para el \textit{framework} Struts2 que proporciona de un modo sencillo las funcionalidades de \textbf{Ajax} y \textit{widgets} basados en el popular \textit{framework} de javascript \textbf{jQuery} 1.5.2  y \textbf{jQuery UI} 1.8.14.
-	\item \textbf{Google Maps API} v2: proporciona un API que permite incorporar Google Maps en un página web y dotarlo de las funcionalidades necesarias.
-	\item \textbf{Displaytag} 1.2: se trata de una librería de etiquetas mostrar y manipular tablas siguiendo el patrón MVC. Soporta operaciones tales como paginación, agrupación, ordenación, exportación, etcétera.
-	\item \textbf{Sitemesh} 2.4.2: es un \textit{framework} para desarrollo de aplicaciones web basadas en Java, que se utiliza para aspectos de decoración y posicionamiento y proporcionar un \textit{look\&feel} entre las distintas páginas de un mismo sitio web. Su funcionamiento se basa en definir una página modelo en la que se define en qué lugares se insertarán los distintos contenidos.
-	\item \textbf{JSP} 2.0: \textit{JavaServer Pages} es una tecnología que proporciona los medios necesarios para crear páginas con contenido web dinámico.
-	\item \textbf{JSTL} 1.2: \textit{JavaServer Pages Standard Tag Library} es una librería que encapsula funcionalidades comunes que son utilizadas en el desarrollo de aplicaciones web, tales como estructuras condicionales, iteraciones, etcétera.
-	\item \textbf{HTML}: \textit{HyperText Markup Language} es un lenguaje de marcas empleado en la elaboración de páginas web.
-	\item \textbf{CSS}: \textit{Cascading Style Sheets} es un lenguaje que describe las características visuales de un documento escrito en un lenguaje de marcas.
-	\item \textbf{JavaScript}: es un lenguaje de programación interpretado que, ejecutado en el lado del cliente, permite desarrollar contenidos web dinámicos evitando recargas innecesarias de la página. De este modo se puede lograr
-	
-	\item \textbf{Java Annotations}: es un método para añadir metadatos a código fuente Java. Estos metadatos podrán ser analizados en tiempo de compilación o tiempo de ejecución para proporcionar la información que se considere oportuna.
-	\item \textbf{Java Reflection API}: la \textit{reflexión} es una técnica mediante la cual un programa informático puede observar y modificar su estructura y comportamiento en tiempo de ejecución. Esta técnica suele utilizarse junto con la \textbf{introspección}, que es la capacidad que poseen algunos lenguajes de programación orientados a objetos para determinar el tipo de un objeto en tiempo de ejecución.
-	\item \textbf{JAXB API} 2.2.4: \textit{Java Architecture for XML Binding} es una tecnología integrada dentro de Java que permite obtener una representación XML a partir de una jerarquía de objetos Java. Este proceso de \textit{serialización} recibe los nombres de \textit{marshalling}, \textit{deflating} o \textit{serializing}. El proceso inverso, también soportado por JAX, recibe los nombres de \textit{unmarshalling}, \textit{inflating} o \textit{deserialization}.
-	\item \textbf{Hibernate} 3.5.4: es un \textit{framework} de tipo ORM (Object-Relational Mapping) que permite establecer asociaciones entre clases Java y tablas de una base de datos relacional. También proporciona mecanismos para realizar consultas sobre la base de datos de un modo más abstracto que si se utilizase el lenguaje específico del sistema gestor de base de datos en cuestión.
-	\item \textbf{JPA} 2.0: \textit{Java Persistence API} es un \textit{framework} de tipo ORM e integrado dentro de la plataforma de Java que nos permite interactuar con una base de datos por medio de objetos de la capa de dominio.
-	\item \textbf{Java OpenGL} 2.0: es una biblioteca que hace de puente entre el lenguaje de programación Java y OpenGL. De este modo, es posible generar gráficos OpenGL a partir de una aplicación escrita en Java.
-	\item \textbf{Inkscape} 0.48 y \textbf{GIMP} 2.6.11: son herramientas multiplataforma de dibujo que han sido utilizadas para generar las imágenes de este documento.
-	\item \textbf{MySQL Workbench} 5.2 CE: es una herramienta CASE (\textit{Computer Aided Software Engineering} o \textit{Ingeniería de Software Asistida por Computadora}) que proporciona un entorno visual para modelar bases de datos de un modo sencillo y rápido.
-	\item \textbf{Visual Paradigm} 8.0: herramienta CASE utilizada en las etapas de análisis y diseño con el fin de elaborar los diagramas UML necesarios, como por ejemplo los diagramas de casos de uso, clases, secuencia, interacción, etcétera.
-	\item \textbf{\LaTeX{}}: lenguaje de marcas y sistema de composición de documentos utilizado en la creación de documentos científicos y técnicos de gran calidad.
-	\item \textbf{\BibTeX}: herramienta que se utiliza para gestionar la bibliografía y referencias de documentos generados con \LaTeX{}.
+	\item \textbf{Aplicable}. Algunos sistemas de visualización son efectivos y eficientes pero tienen un diseño muy específico y resulta costoso adaptarlos para manejar nuevos datos. Dado que \textit{Desglosa} se centra en la visualización, debe disponer de algún mecanismo que permita la adición de nuevas medidas a visualizar de un modo sencillo. Así pues, el sistema debe trabajar de un modo muy genérico para permitir que el usuario seleccione la forma gráfica con la que quiere visualizarlas. Por otro lado, dado que el paradigma del desarrollo global de software se puede conceptualizar como una jerarquía de objetos, el sistema debe ser capaz de manejar cualquier tipo de medida de dicha jerarquía.
+	\item \textbf{Extensible}. El sistema debe permitir al equipo encargado del mantenimiento la adición de nuevas metáforas para generar distintos tipos de vistas que resulten de interés en un futuro.
+	\item \textbf{Navegable}. El sistema debe proporcionar un mecanismo mediante el cual el usuario pueda realizar una navegación interactiva. De este modo, se evitará que determinada información quede oculta visualmente y permitirá que el usuario se centre en una región determinada. Además, debe permitir el paso a través de los distintos niveles de abstracción que se consideren relevantes dentro del paradigma del desarrollo global de software. Por tanto, siguiendo el enfoque \textit{top-bottom}, el usuario deberá ser capaz de navegar desde entidades de un nivel superior, desglosando información cada vez más específica hasta llegar a las entidades de los niveles inferiores.
 \end{itemize}

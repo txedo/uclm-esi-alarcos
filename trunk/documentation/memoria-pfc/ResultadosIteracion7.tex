@@ -1,0 +1,41 @@
+En esta iteración (Tabla \ref{table:ficha-iteracion-7}) se aborda:
+\begin{itemize}
+	\item Análisis y diseño de gestión y selección de perfiles de visualización.
+	\item Implementación del control de acceso a la aplicación web mediante Spring Security.
+	\item Configuración del entorno de ejecución de pruebas integrado en Maven.
+	\item Diseño e implementación de pruebas unitarias y funcionales relativas al control de acceso, ejecución de la herramienta de visualización, notificación de selección y visualización del mapa mundial.
+\end{itemize}
+
+
+\subsubsection{Disciplina de análisis}
+
+
+
+
+\subsubsection{Disciplina de diseño}
+
+
+
+
+\subsubsection{Disciplina de implementación}
+\label{sec:iteracion-7-implementacion}
+
+Para llevar a cabo la implementación del control de acceso, es necesario configurar Spring Security mediante un fichero de configuración. Se trata de un fichero XML que por convenio suele llamarse \textit{applicationContext-security.xml} (Véase Anexo \ref{subsec:applicationcontext}). Dada la gran cantidad de parámetros que se pueden incluir en este fichero, se recomienda consultar su manual de referencia \cite{homepage-spring-security-documentation} para profundizar en el tema y realizar una configuración precisa. En él destaca el bean \textit{userDetailsService}, que hace referencia a nuestra clase \textit{CustomUserDetailsService}. Además, es referenciado como \textit{proveedor de autenticación} en el bean \textit{authentication-provider}, donde se especifica la codificación de las contraseñas de usuario (md5 en este caso).
+
+A continuación se implementan las clases correspondientes según el diseño elaborado en \ref{sec:iteracion-6-diseño}. Dada la importancia de estas clases por la inclusión de anotaciones JPA y su posibilidad de reutilización en otros proyectos, se incluye su código fuente en los anexos \ref{subsec:user}, \ref{subsec:group}, \ref{subsec:role} y \ref{subsec:customuserdetailsservice}.
+
+El paso siguiente consiste en implementar el formulario de \textit{login}. Éste será un formulario tradicional en el que el usuario pueda introducir su nombre y su contraseña pero, en este caso, para delegar el proceso de autenticación a Spring Security, el \textit{action} al que se enviarán los datos será \textit{j\_spring\_security\_check}. Si se produce algún error durante la autenticación, el mensaje de error será lanzado en forma de excepción y su valor será accesible por medio de la variable \textit{SPRING\_SECURITY\_LAST\_EXCEPTION.message}.
+
+Por otro lado, los menús que se muestran al usuario en la interfaz gráfica son renderizados de forma automática en función de los privilegios que posee. Esta característica se ha implementado mediante la librería \textit{struts-menu}, cuya configuración se lleva a cabo con un fichero XML (Listado \ref{code:struts-menu}). En este fichero se especifican distintos menús los elementos que los componen. Además, en el atributo \textit{roles} se indica qué roles debe tener el usuario autenticado para que dicho menú sea renderizado y mostrado.
+
+\lstinputlisting[language=XML,caption={Fichero de configuración de struts-menu (menu-config.xml)},label=code:struts-menu]{..//..//desglosa-web//src//main//webapp//WEB-INF//menu-config.xml}
+
+\subsubsection{Disciplina de pruebas}
+\label{sec:iteracion-7-pruebas}
+
+pruebas unitarias y funcionales
+junit y webtest
+configurar maven
+tema de los perfiles
+como ejecutar las pruebas
+informe de pruebas funcionales del login
