@@ -30,7 +30,7 @@
 	</authentication-provider>
 
 	<beans:bean id="userDetailsService" class="es.uclm.inf_cr.alarcos.desglosa_web.security.CustomUserDetailsService">
-		<!-- userDao bean is defined in applicationContext.xml -->
+		<!-- userDao bean is defined in applicationContext-dao.xml -->
 		<beans:property name="userDao" ref="userDao"/>
 	</beans:bean>
 	
