@@ -20,22 +20,143 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-7}) se aborda:
 \subsubsection{Disciplina de implementación}
 \label{sec:iteracion-7-implementacion}
 
-Para llevar a cabo la implementación del control de acceso, es necesario configurar Spring Security mediante un fichero de configuración. Se trata de un fichero XML que por convenio suele llamarse \textit{applicationContext-security.xml} (Véase Anexo \ref{subsec:applicationcontext}). Dada la gran cantidad de parámetros que se pueden incluir en este fichero, se recomienda consultar su manual de referencia \cite{homepage-spring-security-documentation} para profundizar en el tema y realizar una configuración precisa. En él destaca el bean \textit{userDetailsService}, que hace referencia a nuestra clase \textit{CustomUserDetailsService}. Además, es referenciado como \textit{proveedor de autenticación} en el bean \textit{authentication-provider}, donde se especifica la codificación de las contraseñas de usuario (md5 en este caso).
+Para llevar a cabo la implementación del control de acceso, es necesario configurar Spring Security mediante un fichero de configuración. Se trata de un fichero XML que por convenio suele llamarse \textit{applicationContext-security.xml} (Véase Anexo \ref{anexo:applicationcontext}). Dada la gran cantidad de parámetros que se pueden incluir en este fichero, se recomienda consultar su manual de referencia \cite{homepage-spring-security-documentation} para profundizar en el tema y realizar una configuración precisa. En él destaca el bean \textit{userDetailsService}, que hace referencia a nuestra clase \textit{CustomUserDetailsService}. Además, es referenciado como \textit{proveedor de autenticación} en el bean \textit{authentication-provider}, donde se especifica la codificación de las contraseñas de usuario (md5 en este caso).
 
-A continuación se implementan las clases correspondientes según el diseño elaborado en \ref{sec:iteracion-6-diseño}. Dada la importancia de estas clases por la inclusión de anotaciones JPA y su posibilidad de reutilización en otros proyectos, se incluye su código fuente en los anexos \ref{subsec:user}, \ref{subsec:group}, \ref{subsec:role} y \ref{subsec:customuserdetailsservice}.
+A continuación se implementan las clases correspondientes según el diseño elaborado en \ref{sec:iteracion-6-diseño}. Dada la importancia de estas clases por la inclusión de anotaciones JPA y su posibilidad de reutilización en otros proyectos, se incluye su código fuente en los anexos \ref{anexo:user}, \ref{anexo:group}, \ref{anexo:role} y \ref{anexo:customuserdetailsservice}.
 
-El paso siguiente consiste en implementar el formulario de \textit{login}. Éste será un formulario tradicional en el que el usuario pueda introducir su nombre y su contraseña pero, en este caso, para delegar el proceso de autenticación a Spring Security, el \textit{action} al que se enviarán los datos será \textit{j\_spring\_security\_check}. Si se produce algún error durante la autenticación, el mensaje de error será lanzado en forma de excepción y su valor será accesible por medio de la variable \textit{SPRING\_SECURITY\_LAST\_EXCEPTION.message}.
+El paso siguiente consiste en implementar el formulario de \textit{login} (Listado \ref{lst:login.jsp}). Éste será un formulario tradicional en el que el usuario pueda introducir su nombre y su contraseña pero, en este caso, para delegar el proceso de autenticación a Spring Security, el \textit{action} al que se enviarán los datos será \textit{j\_spring\_security\_check}. Si se produce algún error durante la autenticación, el mensaje de error será lanzado en forma de excepción y su valor será accesible por medio de la variable \textit{SPRING\_SECURITY\_LAST\_EXCEPTION.message}.
+
+\lstinputlisting[language=Java,caption={Código fuente del fichero login.jsp para autenticación mediante Spring Security},label=lst:login.jsp]{snippets//login.txt}
 
 Por otro lado, los menús que se muestran al usuario en la interfaz gráfica son renderizados de forma automática en función de los privilegios que posee. Esta característica se ha implementado mediante la librería \textit{struts-menu}, cuya configuración se lleva a cabo con un fichero XML (Listado \ref{code:struts-menu}). En este fichero se especifican distintos menús los elementos que los componen. Además, en el atributo \textit{roles} se indica qué roles debe tener el usuario autenticado para que dicho menú sea renderizado y mostrado.
 
 \lstinputlisting[language=XML,caption={Fichero de configuración de struts-menu (menu-config.xml)},label=code:struts-menu]{..//..//desglosa-web//src//main//webapp//WEB-INF//menu-config.xml}
 
+
+
 \subsubsection{Disciplina de pruebas}
 \label{sec:iteracion-7-pruebas}
 
-pruebas unitarias y funcionales
-junit y webtest
-configurar maven
-tema de los perfiles
-como ejecutar las pruebas
-informe de pruebas funcionales del login
+A partir de esta iteración es cuando se comienza a abordar las pruebas de la aplicación web. Así pues, el primer paso consiste en configurar Maven para poder ejecutarlas y obtener los informes correspondientes. Para comenzar, se realizará la configuración para las pruebas unitarias y, a continuación, la configuración para las pruebas funcionales.
+
+\vspace{10mm}
+\textbf{Configuración de Maven para la ejecución de pruebas unitarias}
+
+Para llevar a cabo la implementación de pruebas es necesario editar el fichero de configuración de Maven y añadir como dependencia del proyecto la librería \textit{JUnit} (Listado \ref{lst:pom-junit}).
+
+\begin{lstlisting}[language=XML,caption={Configuración de pom.xml para añadir JUnit como dependencia del proyecto},label=lst:pom-junit]
+	<dependencies>
+		...
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+    </dependency>
+    ...
+	<dependencies>
+\end{lstlisting}
+
+A continuación, y siguiendo el mismo proceso, se añadirá al proyecto la dependencia \textit{spring-test}. Gracias a esta librería, la implementación de pruebas se beneficiará de las ventajas que aporta \textit{Spring Framework}, como la \textit{inyección de dependencias}. Por tanto, de aquí en adelante, cada vez que sea necesario implementar un \textit{test suite} (Listado \ref{lst:snippet-test}), éste heredará de la clase \textit{AbstractDependencyInjectionSpringContextTests} y sobrescribirá el método \textit{getConfigLocations}, el cual devolverá un vector de cadenas en la que cada elemento se corresponde con la ruta los ficheros de configuración de Spring. De este modo, el programador podrá acceder al objeto \textit{applicationContext} desde cada uno de los \textit{test cases} y recuperar cualquier bean instanciado mediante Spring.
+
+\begin{lstlisting}[language=Java,caption={Snippet de un TestCase implementado mediante JUnit y Spring-Test},label=lst:snippet-test]
+public class ExampleActionTest extends AbstractDependencyInjectionSpringContextTests {
+
+	@Override
+	protected String[] getConfigLocations() {
+		return new String[] {
+			"classpath:applicationContext-resources.xml",
+			"classpath:applicationContext-dao.xml",
+			"classpath:applicationContext.xml"};
+	}
+
+	public void testExampleAction() throws Exception {
+		ExampleAction action = new ExampleAction();
+		action.setExampleDao((ExampleDAO) applicationContext.getBean("exampleDao"));
+		String result = action.execute();
+		assertEquals(Action.SUCCESS, result);
+	}
+}
+\end{lstlisting}
+
+Para que no sea necesario implementar los típicos métodos de pruebas \textit{setUp} y \textit{tearDown}, que usualmente se encargan de inicializar los datos de la base de datos con los que operarán los tests, se utilizará un plugin de Maven llamado \textbf{dbunit-maven-plugin}. Este plugin, que requiere una pequeña configuración (Listado \ref{lst:dbunit-configuration}), se encargará de conectar con la base de datos que utiliza la herramienta y volcar los datos de prueba que se hayan configurado en el fichero XML correspondiente. Este mismo proceso de inicialización se puede utilizar cuando la herramienta va a emplearse en producción.
+
+\begin{lstlisting}[language=XML,caption={Configuración de dbunit-maven-plugin para la inicialización de la base de datos en la fase de pruebas},label=lst:dbunit-configuration]
+<build>
+	...
+	<plugins>
+		...
+		<plugin>
+		  <groupId>org.codehaus.mojo</groupId>
+		  <artifactId>dbunit-maven-plugin</artifactId>
+		  <version>1.0-beta-1</version>
+		  <configuration>
+		    <dataTypeFactoryName>${dbunit.dataTypeFactoryName}</dataTypeFactoryName>
+		    <driver>${jdbc.driverClassName}</driver>
+		    <username>${jdbc.username}</username>
+		    <password>${jdbc.password}</password>
+		    <url>${jdbc.url}</url>
+		    <src>src/test/resources/sample-data.xml</src>
+		    <type>${dbunit.operation.type}</type>
+		    <schema>${dbunit.schema}</schema>
+		    <skip>${maven.test.skip}</skip>
+		  </configuration>
+		  <executions>
+		    <execution>
+		      <id>test-compile</id>
+		      <phase>test-compile</phase>
+		      <goals>
+		        <goal>operation</goal>
+		      </goals>
+		    </execution>
+		    <execution>
+		      <!-- Runs before integration tests and jetty:run-war -->
+		      <id>test</id>
+		      <phase>test</phase>
+		      <goals>
+		        <goal>operation</goal>
+		      </goals>
+		    </execution>
+		  </executions>
+		  <dependencies>
+		    <dependency>
+		      <groupId>${jdbc.groupId}</groupId>
+		      <artifactId>${jdbc.artifactId}</artifactId>
+		      <version>${jdbc.version}</version>
+		    </dependency>
+		  </dependencies>
+		</plugin>
+	</plugins>
+</build>
+\end{lstlisting}
+
+Una vez que se han implementado los \textit{test suites} y sus correspondientes \textit{test cases}, Maven los ejecutará automáticamente durante el proceso de construcción del proyecto. Si algún test produce un error, el proceso de construcción será cancelado.
+
+Un aspecto importante de la etapa de pruebas consiste conocer cuánto código ha sido probado mediante la implementación de las mismas. Para conocer este aspecto se generará su correspondiente informe mediante un plugin de Maven denominado \textit{cobertura-maven-plugin}. Este plugin no requiere configuración y deberá ser añadido en la sección \textit{reporting} del fichero pom.xml (Listado \ref{lst:pom-cobertura}).
+
+\begin{lstlisting}[language=XML,caption={Configuración de pom.xml para añadir Cobertura como plugin de generación de informes},label=lst:pom-cobertura]
+<reporting>
+	...
+	<plugins>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>cobertura-maven-plugin</artifactId>
+			<version>2.5.1</version>
+		</plugin>
+	</plugins>
+</reporting>
+\end{lstlisting}
+
+Llegados a este punto, finaliza la configuración del entorno para la ejecución y generación de informes para las pruebas unitarias.
+
+
+\vspace{10mm}
+\textbf{Configuración de Maven para la ejecución de pruebas funcionales}
+
+Las pruebas funcionales son aquellas que verifican que se satisfacen los requisitos funcionales del sistema. En este caso lo que se comprueba es que el usuario obtiene lo que debe en cada momento, tanto si la operación se está llevando a cabo con normalidad como si se produce algún error.
+
+Existen varias soluciones para realizar las pruebas funcionales de una aplicación web de un modo automatizado. En este PFC se utilizará Canoo Webtest \cite{homepage-webtest}, que permite simular la interacción del usuario con la interfaz gráfica de la aplicación y comprobar la respuesta del sistema.
+
+La implementación de los \textit{test suites} y \textit{test cases} de Canoo Webtest puede realizar mediante clases Java o ficheros XML. En caso de realizarla mediante ficheros XML, su ejecución automática se realizará mediante tareas de \textbf{Ant}. No obstante, este método tiene una dificultad añadida ya que es necesario que la aplicación web se encuentre en un contenedor de servlets para que Canoo Webtest pueda comportarse como un usuario y analizar la respuesta del servidor. Para ello, será necesario realizar una compleja configuración de Maven (Véase Anexo \ref{anexo:integration-test-profile}) que instance un contenedor de servlets (\textit{cargo-maven2-plugin}) y ejecute, mediante el plugin \textbf{maven-antrun-plugin}, las tareas que contienen las pruebas funcionales.
+
+Para la generación de informes de las pruebas funcionales se hará uso del plugin \textbf{webtest-maven-plugin}. Este plugin, del mismo modo el empleado para la generación de informes de las pruebas unitarias, no requiere configuración y deberá ser añadido en la sección \textit{reporting} del fichero pom.xml.

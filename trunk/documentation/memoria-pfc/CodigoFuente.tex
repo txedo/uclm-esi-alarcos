@@ -1,42 +1,51 @@
 \chapter{Codigo Fuente}
 \label{ch:codigofuente}
 
-\section{Clases necesarias para implementar GBCA mediante Spring Security}
+
+\section{Autenticación y control de acceso con Spring Security}
+
+
+\subsection{Clases Java diseñadas para un GBCA (Group-Based Access Control}
 Explicar que implementa cada clase blablabla
 
-\subsection{Clase User.java}
-\label{subsec:user}
+
+\subsubsection{Clase User.java}
+\label{anexo:user}
 Anotada con JPA (implementa UserDetails -Spring Security-)
 
 \lstinputlisting[language=Java,caption={Código fuente de la clase User.java},label=code:User.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//User.java}
 
 
-\subsection{Clase Group.java}
-\label{subsec:group}
+\subsubsection{Clase Group.java}
+\label{anexo:group}
 Anotada con JPA
 
 \lstinputlisting[language=Java,caption={Código fuente de la clase Group.java},label=code:Group.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//Group.java}
 
 
-\subsection{Clase Role.java}
-\label{subsec:role}
+\subsubsection{Clase Role.java}
+\label{anexo:role}
 Anotada con JPA (implementa GrantedAuthority -Spring Security-)
 
 \lstinputlisting[language=Java,caption={Código fuente de la clase Role.java},label=code:Role.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//Role.java}
 
 
-\subsection{Clase CustomUserDetailsService.java}
-\label{subsec:customuserdetailsservice}
+\subsubsection{Clase CustomUserDetailsService.java}
+\label{anexo:customuserdetailsservice}
 Implementa UserDetailsService -Spring Security- y extiende de HibernateDaoSupport -Spring-
 
 \lstinputlisting[language=Java,caption={Código fuente de la clase CustomUserDetailsService.java},label=code:CustomUserDetailsService.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//security//CustomUserDetailsService.java}
 
 
 \subsection{Configuración de Spring Security}
-\label{subsec:applicationcontext}
+\label{anexo:applicationcontext}
 
 \lstinputlisting[language=XML,caption={Fichero de configuración de Spring Security: applicationContext-security.xml},label=code:applicationcontext-security]{..//..//desglosa-web//src//main//resources//applicationContext-security.xml}
 
 
-\subsection{Formulario de login mediante Spring Security}
-\lstinputlisting[language=Java,caption={Código fuente del fichero login.jsp para autenticación mediante Spring Security},label=code:CustomUserDetailsService.java]{..//..//desglosa-web//src//main//webapp//login.jsp}
+
+
+
+\section{Creación de un perfil para ejecutar pruebas funcionales de una aplicación web mediante Maven}
+
+\lstinputlisting[language=XML,caption={Snippet para la automatización de pruebas funcionales de la aplicación web mediante Maven},label=anexo:integration-test-profile]{snippets/integration-test-profile.txt}
