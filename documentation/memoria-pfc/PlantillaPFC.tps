@@ -4,8 +4,8 @@ Version=2
 
 [SessionInfo]
 ActiveTab=2
-FrameCount=8
-ActiveFrame=4
+FrameCount=9
+ActiveFrame=7
 
 [Frame0]
 Columns=1
@@ -34,7 +34,7 @@ cxMin=10
 [Frame0_View0,0]
 Cursor.row=893
 Cursor.column=250
-TopSubLine=1250
+TopSubLine=1258
 
 [Frame1]
 Columns=1
@@ -61,8 +61,8 @@ cxCur=922
 cxMin=10
 
 [Frame1_View0,0]
-Cursor.row=20
-Cursor.column=32
+Cursor.row=0
+Cursor.column=0
 TopSubLine=0
 
 [Frame2]
@@ -119,40 +119,11 @@ cxCur=1430
 cxMin=10
 
 [Frame3_View0,0]
-Cursor.row=153
-Cursor.column=30
-TopSubLine=253
+Cursor.row=140
+Cursor.column=531
+TopSubLine=232
 
 [Frame4]
-Columns=1
-Rows=1
-Flags=2
-ShowCmd=3
-MinPos.x=-1
-MinPos.y=-1
-MaxPos.x=-8
-MaxPos.y=-30
-NormalPos.left=125
-NormalPos.top=125
-NormalPos.right=1592
-NormalPos.bottom=550
-Class=CLatexEdit
-Document=ResultadosIteracion7.tex
-
-[Frame4_Row0]
-cyCur=604
-cyMin=10
-
-[Frame4_Col0]
-cxCur=1646
-cxMin=10
-
-[Frame4_View0,0]
-Cursor.row=41
-Cursor.column=0
-TopSubLine=48
-
-[Frame5]
 Columns=1
 Rows=1
 Flags=0
@@ -168,20 +139,20 @@ NormalPos.bottom=575
 Class=CLatexEdit
 Document=ResultadosIteracion1.tex
 
-[Frame5_Row0]
+[Frame4_Row0]
 cyCur=366
 cyMin=10
 
-[Frame5_Col0]
+[Frame4_Col0]
 cxCur=1430
 cxMin=10
 
-[Frame5_View0,0]
+[Frame4_View0,0]
 Cursor.row=44
 Cursor.column=580
-TopSubLine=103
+TopSubLine=104
 
-[Frame6]
+[Frame5]
 Columns=1
 Rows=1
 Flags=0
@@ -197,20 +168,20 @@ NormalPos.bottom=600
 Class=CLatexEdit
 Document=CodigoFuente.tex
 
-[Frame6_Row0]
+[Frame5_Row0]
 cyCur=366
 cyMin=10
 
-[Frame6_Col0]
+[Frame5_Col0]
 cxCur=1430
 cxMin=10
 
-[Frame6_View0,0]
-Cursor.row=37
-Cursor.column=226
-TopSubLine=30
+[Frame5_View0,0]
+Cursor.row=50
+Cursor.column=141
+TopSubLine=47
 
-[Frame7]
+[Frame6]
 Columns=1
 Rows=1
 Flags=0
@@ -226,16 +197,74 @@ NormalPos.bottom=625
 Class=CLatexEdit
 Document=formatoPFC.tex
 
-[Frame7_Row0]
+[Frame6_Row0]
 cyCur=366
 cyMin=10
 
-[Frame7_Col0]
+[Frame6_Col0]
 cxCur=1430
 cxMin=10
 
+[Frame6_View0,0]
+Cursor.row=0
+Cursor.column=0
+TopSubLine=0
+
+[Frame7]
+Columns=1
+Rows=1
+Flags=2
+ShowCmd=3
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-8
+MaxPos.y=-30
+NormalPos.left=25
+NormalPos.top=25
+NormalPos.right=1349
+NormalPos.bottom=366
+Class=CLatexEdit
+Document=ResultadosIteracion7.tex
+
+[Frame7_Row0]
+cyCur=470
+cyMin=10
+
+[Frame7_Col0]
+cxCur=1453
+cxMin=10
+
 [Frame7_View0,0]
-Cursor.row=235
-Cursor.column=505
-TopSubLine=234
+Cursor.row=162
+Cursor.column=0
+TopSubLine=238
+
+[Frame8]
+Columns=1
+Rows=1
+Flags=0
+ShowCmd=1
+MinPos.x=-1
+MinPos.y=-1
+MaxPos.x=-8
+MaxPos.y=-30
+NormalPos.left=50
+NormalPos.top=50
+NormalPos.right=1374
+NormalPos.bottom=391
+Class=CLatexEdit
+Document=MetodoDeTrabajo.tex
+
+[Frame8_Row0]
+cyCur=282
+cyMin=10
+
+[Frame8_Col0]
+cxCur=1287
+cxMin=10
+
+[Frame8_View0,0]
+Cursor.row=56
+Cursor.column=28
+TopSubLine=76
 
