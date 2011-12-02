@@ -19,7 +19,6 @@
 		  <wait>${cargo.wait}</wait>
 		  <container>
 			<containerId>${cargo.container}</containerId>
-			<!--home>${cargo.container.home}</home -->
 			<zipUrlInstaller>
 			  <url>${cargo.container.url}</url>
 			  <installDir>${installDir}</installDir>
@@ -93,7 +92,7 @@
 			<groupId>com.canoo.webtest</groupId>
 			<artifactId>webtest</artifactId>
 			<version>${webtest.version}</version>
-			<!-- groovy-all doesn't have a pom in central repo exclude groovy  -->
+			<!-- groovy-all does not have a pom in central repo exclude groovy  -->
 			<!-- to prevent trying to fetch pom -->
 			<exclusions>
 			  <exclusion>
