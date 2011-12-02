@@ -153,10 +153,113 @@ Llegados a este punto, finaliza la configuración del entorno para la ejecución y
 \vspace{10mm}
 \textbf{Configuración de Maven para la ejecución de pruebas funcionales}
 
-Las pruebas funcionales son aquellas que verifican que se satisfacen los requisitos funcionales del sistema. En este caso lo que se comprueba es que el usuario obtiene lo que debe en cada momento, tanto si la operación se está llevando a cabo con normalidad como si se produce algún error.
+Las pruebas funcionales son aquellas que verifican que se satisfacen los requisitos funcionales del sistema. En este caso, se comprueba que el usuario pueda llevar a cabo las tareas para las que se desarrolla la herramienta y obtenga los resultados que corresponda en cada momento, tanto si la operación se está llevando a cabo con normalidad como si se produce algún error.
 
 Existen varias soluciones para realizar las pruebas funcionales de una aplicación web de un modo automatizado. En este PFC se utilizará Canoo Webtest \cite{homepage-webtest}, que permite simular la interacción del usuario con la interfaz gráfica de la aplicación y comprobar la respuesta del sistema.
 
-La implementación de los \textit{test suites} y \textit{test cases} de Canoo Webtest puede realizar mediante clases Java o ficheros XML. En caso de realizarla mediante ficheros XML, su ejecución automática se realizará mediante tareas de \textbf{Ant}. No obstante, este método tiene una dificultad añadida ya que es necesario que la aplicación web se encuentre en un contenedor de servlets para que Canoo Webtest pueda comportarse como un usuario y analizar la respuesta del servidor. Para ello, será necesario realizar una compleja configuración de Maven (Véase Anexo \ref{anexo:integration-test-profile}) que instance un contenedor de servlets (\textit{cargo-maven2-plugin}) y ejecute, mediante el plugin \textbf{maven-antrun-plugin}, las tareas que contienen las pruebas funcionales.
+La implementación de los \textit{test suites} y \textit{test cases} de Canoo Webtest puede realizar mediante clases Java o ficheros XML. En caso de emplear ficheros XML, la automatización de su ejecución se realizará mediante tareas de \textbf{Ant}. No obstante, este método tiene una dificultad añadida ya que es necesario que la aplicación web se encuentre en un contenedor de servlets para que Canoo Webtest pueda comportarse como un usuario y analizar la respuesta del servidor. Para ello, será necesario realizar una compleja configuración de Maven (Véase Anexo \ref{anexo:integration-test-profile}) que instancie un contenedor de servlets (\textit{cargo-maven2-plugin}) y ejecute, mediante el plugin \textbf{maven-antrun-plugin}, las tareas que contienen las pruebas funcionales.
 
 Para la generación de informes de las pruebas funcionales se hará uso del plugin \textbf{webtest-maven-plugin}. Este plugin, del mismo modo el empleado para la generación de informes de las pruebas unitarias, no requiere configuración y deberá ser añadido en la sección \textit{reporting} del fichero pom.xml.
+
+
+
+\vspace{10mm}
+\textbf{Diseño e implementación de pruebas unitarias y funcionales}
+
+Una vez que se ha configurado el entorno tal y como se ha descrito en esta sección, se procede a diseñar e implementar las pruebas unitarias y funcionales.
+
+Según la ficha de iteración (Tabla \ref{table:ficha-iteracion-7}), procede elaborar las pruebas de los CdU2.1, CdU2.9, CdU2.11 y CdU2.7. Para evitar que la sección se extienda demasiado, en este documento se sólo se incluye el proceso desarrollado en términos del CdU2.1 (control de acceso), que parte desde el diseño de los casos de prueba. En las tablas \ref{table:cdu2.1-testcase1-description}, \ref{table:cdu2.1-testcase2-description}, \ref{table:cdu2.1-testcase3-description} y \ref{table:cdu2.1-testcase4-description} se incluyen algunos de estos diseños, que se corresponden con los distintos escenarios de casos de uso definidos en la tabla \ref{table:login-usecase-description}.
+
+
+\begin{table}[h]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{15cm} |}
+	\hline
+	\textbf{Caso de uso}: CdU2.1 (Control de acceso) \\
+	\hline
+	\textbf{Caso de prueba}: 1 \\
+	\hline
+	\textbf{Descripción}: El usuario desea iniciar sesión en el sistema. \\
+	\hline
+	\textbf{Precondiciones}: Ninguna. \\
+	\hline
+	\textbf{Resultado}: El usuario accede al sistema y es redirigido a la página principal. \\
+	\hline 
+\end{tabular}
+\caption{Descripción del caso de prueba 1 para CdU2.1}
+\label{table:cdu2.1-testcase1-description}
+\end{table}
+
+
+\begin{table}[h]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{15cm} |}
+	\hline
+	\textbf{Caso de uso}: CdU2.1 (Control de acceso) \\
+	\hline
+	\textbf{Caso de prueba}: 2 \\
+	\hline
+	\textbf{Descripción}: El usuario desea finalizar la sesión en el sistema. \\
+	\hline
+	\textbf{Precondiciones}: El usuario debe tener una sesión activa. \\
+	\hline
+	\textbf{Resultado}: El usuario es desconectado del sistema y redirigido a la página principal. \\
+	\hline 
+\end{tabular}
+\caption{Descripción del caso de prueba 2 para CdU2.1}
+\label{table:cdu2.1-testcase2-description}
+\end{table}
+
+
+\begin{table}[h]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{15cm} |}
+	\hline
+	\textbf{Caso de uso}: CdU2.1 (Control de acceso) \\
+	\hline
+	\textbf{Caso de prueba}: 3 \\
+	\hline
+	\textbf{Descripción}: La usuario introduce un nombre de usuario y/o contraseña incorrecto. \\
+	\hline
+	\textbf{Precondiciones}: Ninguna. \\
+	\hline
+	\textbf{Resultado}: El usuario no inicia sesión y se le muestra un mensaje de error indicando que el nombre de usuario o la contraseña son incorrectos. \\
+	\hline 
+\end{tabular}
+\caption{Descripción del caso de prueba 3 para CdU2.1}
+\label{table:cdu2.1-testcase3-description}
+\end{table}
+
+\begin{table}[h]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{15cm} |}
+	\hline
+	\textbf{Caso de uso}: CdU2.1 (Control de acceso) \\
+	\hline
+	\textbf{Caso de prueba}: 4 \\
+	\hline
+	\textbf{Descripción}: La cuenta de usuario está bloqueada \\
+	\hline
+	\textbf{Precondiciones}: Ninguna. \\
+	\hline
+	\textbf{Resultado}: El usuario no inicia sesión y se le muestra un mensaje de error indicando que la cuenta de usuario se encuentra bloqueada. \\
+	\hline 
+\end{tabular}
+\caption{Descripción del caso de prueba 4 para CdU2.1}
+\label{table:cdu2.1-testcase4-description}
+\end{table}
+
+Los casos de prueba diseñados han sido implementados mediante ficheros XML de Canoo Webtest, y su ejecución se ha automatizado mediante tareas Ant. En la figura \ref{fig:screenshot-login-testsuite} se observa una captura de pantalla del \textit{test suite} que se ha implementado. En ella, cada fichero XML se corresponde con un \textit{test case} e implementa cada uno de los casos de prueba diseñados.
+
+\imagenBorde{Cap5//screenshot-login-testsuite}{0.7}{Captura de pantalla de la \textit{test suite} para CdU2.1}{fig:screenshot-login-testsuite}
+
+Después de la implementación y ejecución de las \textit{suites} de pruebas, Webtest genera un informe en formato HTML. En él se pueden analizar detalladamente los casos de prueba que se han ejecutado y los resultados de ejecución. Además, en caso de producirse algún error, se indica exactamente en qué paso.
+
+En la figura \ref{fig:screenshot-webtest-login-report-general} se facilita el informe de pruebas generado por Canoo Webtest para CdU2.1: en la parte superior se indica que se han ejecutado 7 casos de prueba; en la parte inferior se muestran detalles individuales de la ejecución de cada uno de ellos. El nombre de cada caso de prueba es un enlace que lleva al analista a una nueva página en la que puede estudiar detalladamente la ejecución del caso de prueba (Fig. \ref{fig:screenshot-webtest-login-report-admin} y \ref{fig:screenshot-webtest-login-report-locked}).
+
+\imagenBorde{Cap5//screenshot-webtest-login-report-general}{0.55}{Informe de pruebas para CdU2.1 - vista general)}{fig:screenshot-webtest-login-report-general}
+
+\imagenBorde{Cap5//screenshot-webtest-login-report-general}{0.55}{Informe de pruebas para CdU2.1 - caso de prueba 1 (Tabla \ref{table:cdu2.1-testcase1-description})}{fig:screenshot-webtest-login-report-admin}
+
+\imagenBorde{Cap5//screenshot-webtest-login-report-general}{0.55}{Informe de pruebas para CdU2.1 - caso de prueba 4 (Tabla \ref{table:cdu2.1-testcase4-description})}{fig:screenshot-webtest-login-report-locked}
+

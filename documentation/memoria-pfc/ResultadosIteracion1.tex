@@ -1,11 +1,44 @@
-\subsection{Desglosa Graphics Engine}
+En esta iteración (Tabla \ref{table:ficha-iteracion-1}) se aborda:
+\begin{itemize}
+	\item Especificación detallada de requisitos del motor gráfico.
+	\item Análisis y diseño de un pequeño proyecto utilizando la tecnología JOGL.
+	\item Preparación del entorno de desarrollo y creación del proyecto mediante Maven.
+	\item Análisis y diseño de los casos de uso relativos al control de acceso de la aplicación web.
+	\item Implementación de un mini-proyecto de funcionalidad reducida empleando JOGL.
+\end{itemize}
 
 
-El motor gráfico dispondrá de un conjunto de metáforas de visualización que serán utilizados en una escena que tratará de emular el entorno de una ciudad. La arquitectura del proyecto permitirá que el equipo encargado del mantenimiento de la aplicación puedan añadir nuevos modelos y vistas de un modo sencillo.
+\subsubsection{Disciplina de requisitos}
+\label{sec:iteracion-1-requisitos}
 
-Un modelo gráfico estará definido en una clase Java. Como cualquier clase, ésta deberá tener un conjunto de atributos que definan el estado de los objetos que se \textit{instancien}. Algunos de estos atributos tendrán la finalidad de ser utilizados como dimensiones del modelo. Una dimensión de un modelo es un atributo al cual se le puede asignar un valor para obtener una representación visual. Para diferenciar qué atributos del modelo pueden ser utilizados como dimensiones y cuáles no, así como para dotar la dimensión de la semántica necesaria, se creará una \textbf{anotación personalizada de Java}. Gracias a esta anotación y con el uso de un pequeño \textbf{analizador de anotaciones} que utiliza \textbf{Java API Reflection} (también conocido como \textit{Introspección}), será posible analizar la clase anotada en tiempo de ejecución para proporcionar la información necesaria a la interfaz gráfica de usuario y que ésta se configure automáticamente.
+El motor gráfico dispondrá de un conjunto de metáforas de visualización que serán emplazadas en una escena que tratará de emular el entorno de una ciudad. La arquitectura del proyecto deberá permitir que el equipo encargado del mantenimiento de la aplicación puedan añadir nuevos modelos y vistas de un modo sencillo.
 
-Por último, para tratar que el motor gráfico no tenga ningún tipo de dependencia con el sistema que lo utilice, los gráficos serán generados a partir de una cadena de texto. Esta cadena de texto será utilizada como entrada de datos, que serán procesados según proceda y, finalmente, los resultados serán mostrados en forma de gráficos 3D. El formato de la cadena de texto debe ser \textbf{JSON} (\textit{JavaScript Object Notation}) (Listado \ref{json-example}) y responder a una estructura definida que será detallada en los sucesivos capítulos de este documento.
+Una metáfora de visualización se definirá mediante una clase Java. Como cualquier clase, ésta deberá tener un conjunto de atributos. Algunos de estos atributos podrán ser utilizados como dimensiones de la metáfora, entendiéndose como \textbf{dimensión} a aquel atributo de la metáfora cuyo valor afecta a su representación visual. Estas dimensiones son las que se emplearán a la hora de crear los perfiles de visualización y asociarlas a los atributos de las entidades. Así pues, se debe encontrar un mecanismo que permita diferenciar qué atributos del modelo actúan como dimensiones y cuáles no.
+
+Por otro lado, el motor gráfico no debe tener ningún tipo de dependencia con la herramienta contenedora. Esta característica implica que se establezca algún mecanismo de comunicación con el motor gráfico para que éste genere los gráficos correspondientes.
+
+
+\subsubsection{Disciplinas de análisis y diseño}
+\label{sec:iteracion-1-análisis}
+\label{sec:iteracion-1-diseño}
+
+Debido a los requisitos que se han identificado en esta iteración, es necesario plantear y tomar una serie de decisiones que condicionan el diseño y funcionamiento del motor gráfico.
+
+
+\vspace{10mm}
+\textbf{Dimensiones de las metáforas de visualización}
+
+Se plantea diseñar cada metáfora de visualización como una clase Java. Como es habitual, una clase Java contiene un conjunto de atributos. Estos atributos definen el estado de los objetos que se instancian. Para poder diferenciar qué atributos son auxiliares o de control de aquellos que podrán ser empleados como dimensiones del modelo, así como para dotar la dimensión de la semántica que se crea necesaria, se propone anotar los atributos de la clase con \textbf{anotaciones personalizadas de Java}.
+
+El uso de anotaciones personalizadas también conlleva la implementación de un pequeño \textbf{analizador de anotaciones} basado en \textbf{Java API Reflection}. Gracias a este API se podrá analizar en tiempo de ejecución la clase anotada mediante el método de \textbf{introspección} y proporcionar la información necesaria a la interfaz gráfica de usuario para que ésta se configure automáticamente. De este modo se satisfará el requisito de interfaz gráfica de usuario adaptable.
+
+
+\vspace{10mm}
+\textbf{Motor gráfico independiente de la aplicación contenedora}
+
+Persiguiendo el objetivo de que el motor gráfico pueda ser empleado en cualquier tipo de aplicación, se plantea diseñar un mecanismo generación de gráficos a partir de una cadena de texto. Esta cadena de texto, de estructura predefinida, será utilizada como entrada de datos al motor gráfico. El motor gráfico la procesará según proceda y, finalmente, mostrará los resultados en forma de gráficos 3D.
+
+Para establecer el formato de la cadena de texto de entrada, se propone \textbf{JSON} (\textit{JavaScript Object Notation}) (Listado \ref{json-example}), cuya estructura de nodos será definida y detallada en sucesivas iteraciones.
 
 \begin{lstlisting}[caption={Ejemplo de texto en formato JSON (http://json.org/example.html)},label=json-example]
 {"menu": {
@@ -20,27 +53,4 @@ Por último, para tratar que el motor gráfico no tenga ningún tipo de dependencia
   }
 }}
 \end{lstlisting}
-
-
-\subsection{Desglosa Web}
-
-Sintetizando el apartado anterior, se destaca que el motor gráfico genera gráficos 3D a partir de una cadena de texto en formato JSON. Esto implica que el motor gráfico no maneja ningún tipo de lógica de negocio relativa al contexto del desarrollo global. Por ello, toda la lógica de negocio relativa al desarrollo global, así como su control y persistencia, está contenida en la aplicación web.
-
-La aplicación web ha sido diseñada de tal forma que de lugar a una herramienta profesional y de calidad. Para lograrlo se han utilizado tecnologías y \textit{frameworks} que actualmente se utilizan en el mundo empresarial. En la sección \ref{sec:marco} se puede encontrar una lista detallada de las mismas y con qué propósitos han sido utilizadas.
-
-Este proyecto, a parte de permitir la manipulación de la información que maneja mediante formularios, debe implementar dos funcionalidades muy importantes: la de configuración de perfiles y la de visualización del contexto de desarrollo global.
-
-
-\subsubsection{Configuración de perfiles}
-
-Cuando el usuario desee configurar un perfil, deberá seleccionar qué entidad quiere representar sobre qué modelo gráfico. Las entidades que intervienen en el desarrollo global -compañías, factorías, proyectos y subproyectos- tienen un conjunto de atributos que configuran su estado. Algunos de estos atributos pueden ser susceptibles de ser representados visualmente, por ejemplo las medidas e indicadores de calidad. Para diferenciar qué atributos son susceptibles de representación visual y cuáles no, será necesario definir otra \textbf{anotación personalizada de Java} y su correspondiente \textbf{analizador de anotaciones} para hacer nuevamente uso de la \textbf{introspección}. Este tipo de anotaciones, que difiere de las anotaciones del motor gráfico ya que requieren un tratamiento particular, permitirá que la aplicación web analice la clase Java de la entidad en tiempo de ejecución para adaptar su interfaz gráfica de usuario. Del mismo modo, se utilizará el analizador proporcionado por el motor gráfico para analizar las dimensiones del modelo seleccionado y adaptar nuevamente la interfaz gráfica de usuario.
-
-En este momento, el usuario obtendrá una lista de los atributos de la entidad y una lista de las dimensiones del modelo seleccionados. A continuación podrá establecer las asociaciones y configuraciones que estime oportunas entre la entidad y el modelo gráfico, así como suministrar información adicional para mostrar una leyenda informativa, el nombre del perfil y una breve descripción. Por último, el perfil se hará persistente en formato XML (Extensible Markup Language) en el servidor de la aplicación web.
-
-
-\subsubsection{Visualización}
-
-Esta funcionalidad proporciona dos vistas: la primera de ellas consiste en un mapa de Google Maps sobre el cual se irán posicionando las factorías de software que proceda en cada situación; la segunda cargará un applet con el motor gráfico y se mostrará la información que el usuario desee en base al nivel de visualización y el perfil seleccionado. El usuario podrá interactuar con los elementos mostrados en el motor gráfico para navegar por los distintos niveles de visualización y desglosar información cada vez más específica.
-
-La mayor dificultad para generar una escena visual se establece dada la gran capacidad de personalización de perfiles que permite la herramienta. Como se ha podido apreciar a lo largo de la lectura, los usuarios pueden representar cualquier entidad del desarrollo global sobre cualquier modelo gráfico y configurar múltiples tipos de asociaciones. Toda esta información es guardada en un fichero XML pero, ¿cómo puede el sistema conocer qué tipo de objetos debe \textit{instanciar} y a qué métodos llamar para obtener los valores de las entidades y aplicarlos sobre las dimensiones de los objetos? La respuesta, una vez más, es \textbf{Java API Reflection} (método de \textit{reflexión} o \textit{introspección}).
 
