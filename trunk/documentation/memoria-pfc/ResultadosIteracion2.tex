@@ -1,0 +1,188 @@
+En esta iteración (Tabla \ref{table:ficha-iteracion-1}) se aborda:
+\begin{itemize}
+	\item Especificación detallada de dos nuevos requisitos no funcionales que condicionan críticamente el diseño y funcionamiento del motor gráfico.
+	\item Análisis, diseño e implementación de la funcionalidad que permite que el usuario se desplace a través de la escena.
+	\item Diseño arquitectónico de una estructura que permita generar nuevas escenas y vistas en función de la metáfora de visualización que quiera mostrarse.
+	\item Implementación de un foco de luz que de más realismo a la escena mostrada.
+\end{itemize}
+
+
+
+
+\subsubsection{Disciplina de requisitos}
+\label{sec:iteracion-2-requisitos}
+
+El motor gráfico dispondrá de un conjunto de metáforas de visualización que serán emplazadas en una escena que tratará de emular el entorno de una ciudad. La arquitectura del proyecto deberá permitir que el equipo encargado del mantenimiento de la aplicación puedan añadir nuevos modelos y vistas de un modo sencillo.
+
+El aspecto visual de una metáfora de visualización estará condicionado por los valores que toman sus dimensiones. Se entiende como \textbf{dimensión} de una metáfora a aquel atributo cuyo valor afecta directamente en su representación visual. Estos atributos son los que se emplearán a la hora de crear los perfiles de visualización y asociarlos con los atributos de las entidades de dominio del DGS. Así pues, se debe encontrar un mecanismo que permita diferenciar qué atributos de la metáfora actúan como dimensiones y cuáles no.
+
+Por otro lado, el motor gráfico no debe tener ningún tipo de dependencia con la herramienta contenedora. Esta característica implica que se establezca algún mecanismo de comunicación con el motor gráfico para que éste genere los gráficos correspondientes.
+
+
+
+
+\subsubsection{Disciplina de análisis}
+\label{sec:iteracion-2-requisitos}
+
+El usuario debe ser capaz de manipular la cámara a través de la cual visualiza la escena. Mediante un diagrama de casos de uso (Fig. \ref{fig:it2-camera-usecase}) es posible especificar de un modo general qué movimientos y operaciones se encuentran disponibles: desplazamiento y rotación (en distintas direcciones y ejes de coordenadas). Para poder concretar un poco más, se han modelado los distintos tipos de desplazamiento y rotación como puntos de extensión (\textit{extension points}) pero, aún así, es necesario completar el diagrama con la descripción de los casos de uso. En este documento sólo se incluye la descripción del CDU ``Desplazar'' y algunos de sus puntos de extensión (Tabla \ref{table:move-usecase-description}).
+
+\imagenBorde{Cap5//it2-camera-usecase}{1.1}{Diagrama de casos de uso para la manipulación de la cámara}{fig:it2-camera-usecase}
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{15cm} |}
+	\hline
+	\textbf{Nombre}: Desplazar (Cámara) \\
+	\hline
+	\textbf{Descripción}: Funcionalidad para que un usuario pueda desplazar la cámara y moverse a través de un entorno 3D. \\
+	\hline
+	\textbf{Precondiciones}: Ninguna. \\
+	\hline
+	\textbf{Post-condiciones}: La cámara se desplaza. \\
+	\hline 
+	\textbf{Punto de extensión:} Pulsar W o Clic izq. + arrastrar delante
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+	\item El usuario pulsa la tecla W del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia delante.
+	\item La cámara cambia su posición a un lugar más adelantado en dirección frontal y el usuario percibe la sensación de desplazamiento.
+	\vspace{-6mm}
+	\end{enumerate} 
+	\\	
+	\hline
+	\textbf{Punto de extensión:} Pulsar Q o Clic izq. + arrastrar izquierda
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+	\item El usuario pulsa la tecla Q del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia la izquierda.
+	\item La cámara cambia su posición a un lugar situado más a su izquierda y el usuario percibe la sensación de desplazamiento lateral.
+	\vspace{-6mm}
+	\end{enumerate} 
+	\\	
+	\textbf{Punto de extensión:} Pulsar C
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+	\item El usuario pulsa la tecla C del teclado.
+	\item La cámara cambia su posición a un lugar más elevado y el usuario percibe la sensación de desplazamiento vertical.
+	\vspace{-6mm}
+	\end{enumerate} 
+	\\	
+	\hline 
+\end{tabular}
+\caption{Descripción del caso de uso \textit{Desplazar}}
+\label{table:move-usecase-description}
+\end{table}
+
+Para tratar la cámara como un objeto que se puede situar en cualquier lugar de la escena y enfocar a cualquier punto de la misma, se propone una solución basada en vectores. Esta solución requiere un conjunto de vectores en un espacio de coordenadas \textit{(x, y, z)} de las siguientes características:
+\begin{itemize}
+	\item Un vector que indique la posición de la cámara en la escena.
+	\item Un vector director unitario que indique la dirección de enfoque de la cámara.
+	\item Tres vectores directores unitarios que indiquen la orientación de la cámara: arriba, derecha y frente (Fig. \ref{fig:camera-orientation}.
+\end{itemize}
+
+De este modo, mediante sencillas operaciones vectoriales -tales como sumas, restas, multiplicaciones, productos vectoriales, productos escalares y normalización- es posible calcular la nueva posición y orientación de la cámara. Por ejemplo, para la operación de \textit{elevar} (desplazar la cámara lo largo del eje Y) bastaría con sumar al vector que indica la posición de la cámara, un vector con la misma dirección que el vector director \textit{arriba} que se sitúa sobre el eje Y.
+
+\imagenBorde{Cap5//camera-orientation}{0.7}{Esquema de los vectores directores que orientan la cámara}{fig:camera-orientation}
+
+
+
+
+\subsubsection{Disciplinas de diseño}
+\label{sec:iteracion-2-diseño}
+
+De la disciplina de análisis de esta iteración se entiende que para abordar el diseño de los CdU1.1 y CdU1.2 es necesario diseñar una clase Java para la cámara y una clase auxiliar que represente un vector en un espacio de coordenadas \textit{(x, y, z)} (Fig. \ref{fig:it2-camera-vector-class-diagram}). Las responsabilidades de cada una de estas clases es clara: la clase Vector3f se encargará de realizar operaciones con vectores y la clase GLCamera se beneficiará de las mismas para calcular su posición y orientación al realizar las operaciones de desplazamiento y rotación.
+
+\imagenBorde{Cap5//it2-camera-vector-class-diagram}{0.7}{Diseño de las clases GLCamera y Vector3f}{fig:it2-camera-vector-class-diagram}
+
+Los \textit{listeners} de teclado y ratón podrán manipular el estado y comportamiento de la cámara gracias a la referencia que mantienen del objeto de tipo \textit{GLDrawer}, que a su vez tiene una referencia a la cámara y es el encargado de pintar la escena (Fig. \ref{fig:it2-camera-spotlight-class-diagram}).
+
+\imagenBorde{Cap5//it2-camera-spotlight-class-diagram}{1.15}{Diagrama de clases de diseño para los CdU1.1 y CdU1.2}{fig:it2-camera-spotlight-class-diagram}
+
+En cuanto al diseño de CdU1.5 se propone una arquitectura de vistas basada en herencia y polimorfismo. Así pues, se define una clase abstracta de tipo \textit{GLViewManager} (Gestor de Vistas GL) que implementará un conjunto de operaciones comunes a todas las vistas (por ejemplo, dibujar el suelo de la escena) y definirá una plantilla con métodos que deberán ser implementados por cada vista especializada, es decir, las clases que la extiendan. Además, por medio del patrón de diseño \textbf{Factory Method} -formado por la clase IViewManagerFactoryImpl y la interfaz IViewManagerFactory- se abstrae a la clase \textit{GLDrawer} de la creación específica de cada vista (Fig. \ref{fig:it2-scene-class-diagram}).
+
+\imagenBorde{Cap5//it2-scene-class-diagram}{0.8}{Diagrama de clases de diseño para los CdU1.5}{fig:it2-scene-class-diagram}
+
+
+Para terminar, debido a los requisitos que se han identificado en esta iteración, es necesario plantear y tomar una serie de decisiones que condicionan el diseño, implementación y funcionamiento del motor gráfico en iteraciones posteriores.
+
+\vspace{7mm}
+\textbf{Dimensiones de las metáforas de visualización}
+
+Se plantea diseñar cada metáfora de visualización como una clase Java. Como es habitual, una clase Java contiene un conjunto de atributos que definen el estado de los objetos que se instancian. Para poder diferenciar qué atributos son auxiliares o de control de aquellos que podrán ser empleados como dimensiones, así como para dotar la dimensión de la semántica que se crea necesaria, se propone anotar los atributos de la clase con \textbf{anotaciones personalizadas de Java}.
+
+El uso de anotaciones personalizadas también conlleva la implementación de un pequeño \textbf{analizador de anotaciones} basado en \textbf{Java API Reflection}. Gracias a este API se puede utilizar el método de \textbf{introspección} para analizar en tiempo de ejecución la clase anotada y proporcionar la información necesaria a la interfaz gráfica de usuario para que ésta se configure automáticamente. De este modo se satisfará el requisito de interfaz gráfica de usuario adaptable.
+
+En la figura \ref{} se muestra un breve diagrama de clases en la que se define la estructura de la anotación y su correspondiente analizador.
+
+\imagenBorde{Cap5//it2-dimension-annotation-parser-class-diagram}{1.4}{Clases que definen la estructura de la anotación GLDimension y su correspondiente analizador}{fig:it2-dimension-annotation-parser-class-diagram}
+
+
+\vspace{7mm}
+\textbf{Motor gráfico independiente de la aplicación contenedora}
+
+Persiguiendo el objetivo de que el motor gráfico pueda ser empleado en cualquier tipo de aplicación, se plantea diseñar un mecanismo generación de gráficos a partir de una cadena de texto. Esta cadena de texto, de estructura predefinida, será utilizada como entrada de datos al motor gráfico. El motor gráfico la procesará según proceda y, finalmente, mostrará los resultados en forma de gráficos 3D.
+
+Para establecer el formato de la cadena de texto de entrada, se propone \textbf{JSON} (\textit{JavaScript Object Notation}) (Listado \ref{json-example}), cuya estructura de nodos será definida y detallada en sucesivas iteraciones.
+
+\begin{lstlisting}[caption={Ejemplo de texto en formato JSON (http://json.org/example.html)},label=json-example]
+{"menu": {
+  "id": "file",
+  "value": "File",
+  "popup": {
+    "menuitem": [
+      {"value": "New", "onclick": "CreateNewDoc()"},
+      {"value": "Open", "onclick": "OpenDoc()"},
+      {"value": "Close", "onclick": "CloseDoc()"}
+    ]
+  }
+}}
+\end{lstlisting}
+
+
+
+\subsubsection{Disciplinas de implementación}
+\label{sec:iteracion-2-implementacion}
+
+En esta disciplina se lleva a cabo la implementación de las clases que se han diseñado a lo largo del ciclo de vida para satisfacer los requisitos funcionales de desplazamiento y rotación de la cámara y el requisito no funcional de la iluminación de la escena.
+
+En este documento sólo se incluyen dos aspectos relativos a la implementación la cámara que resultan de vital importancia y que se corresponden con las funciones \textit{render()} y \textit{calibrate()} de la clase \textbf{GLCamera} (Listado \ref{lst:camera-render-calibrate}).
+\begin{itemize}
+	\item \textit{render()}. Esta función, que será ejecutada cada vez que se produzca cualquier tipo de alteración en la posición o dirección de enfoque de la cámara, se encarga de hacer efectivos los nuevos cálculos.
+	\item \textit{calibrate()}. Un movimiento de rotación implica que la dirección a la que apunta el objetivo de la cámara cambie. Así pues, los vectores directores -\textit{frente} y \textit{derecha}- que establecen la orientación de la cámara quedan desorientados y deben ser ``re-calibrados''. Esta operación de \textit{re-calibrado} se lleva a cabo mediante la \textit{regla o ley de la mano derecha} y productos vectoriales.
+\end{itemize}
+
+
+\begin{lstlisting}[language=Java,caption={Fragmento de código Java de la clase GLCamera},label=lst:camera-render-calibrate]
+public class GLCamera {
+	private Vector3f position;	// Camera position
+	private Vector3f viewDir;	// View direction of camera eye
+	private Vector3f frontVector;	// Front unit-director vector
+	private Vector3f upVector;	// Up unit-director vector
+	private Vector3f rightVector;	// Right unit-director vector
+	
+	private void calibrate () {
+		upVector = new Vector3f(0.0f, 1.0f, 0.0f);
+		rightVector = viewDir.cross(upVector);
+		frontVector = rightVector.cross(upVector).mult(-1);
+		xrot = yrot = 0.0f;
+	}
+	
+	public void render() throws GLSingletonNotInitializedException {
+		Vector3f viewPoint = this.getViewPoint();
+
+		GLSingleton.getGLU().gluLookAt(position.getX(), position.getY(), position.getZ(),
+				viewPoint.getX(), viewPoint.getY(), viewPoint.getZ(),
+				upVector.getX(), upVector.getY(), upVector.getZ());
+	}
+}
+\end{lstlisting}
