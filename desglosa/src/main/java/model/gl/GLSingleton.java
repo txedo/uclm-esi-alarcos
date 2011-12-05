@@ -17,71 +17,77 @@ import exceptions.GLSingletonNotInitializedException;
  * Use Singleton.instance() to access this instance.
  */
 public class GLSingleton {
-	static private boolean initiated;
-	static private GLAutoDrawable drawable;
-	static private GL2 gl;
-	static private GLUgl2 glu;
-	static private GLUT glut;
-	
-	static public double scale = 1.0;
+    static private boolean initiated;
+    static private GLAutoDrawable drawable;
+    static private GL2 gl;
+    static private GLUgl2 glu;
+    static private GLUT glut;
 
-	/**
-	 * The constructor could be made private to prevent others from
-	 * instantiating this class. But this would also make it impossible to
-	 * create instances of Singleton subclasses.
-	 */
-	protected GLSingleton() {
-		initiated = false;
-		drawable = null;
-		gl = null;
-		glu = null;
-		glut = null;
-	}
+    static public double scale = 1.0;
 
-	/**
-	 * A handle to the unique Singleton instance.
-	 */
-	static private GLSingleton _instance = null;
+    /**
+     * The constructor could be made private to prevent others from
+     * instantiating this class. But this would also make it impossible to
+     * create instances of Singleton subclasses.
+     */
+    protected GLSingleton() {
+        initiated = false;
+        drawable = null;
+        gl = null;
+        glu = null;
+        glut = null;
+    }
 
-	/**
-	 * @return The unique instance of this class.
-	 */
-	static public GLSingleton getInstance() {
-		if (null == _instance) {
-			_instance = new GLSingleton();
-		}
-		return _instance;
-	}
-	
-	static public void init (GLAutoDrawable glDrawable) {
-		drawable = glDrawable;
-		gl = glDrawable.getGL().getGL2();
-		glu = new GLUgl2();
-		glut = new GLUT();
-		initiated = true;
-	}
-	
-	public static boolean isInitiated () {
-		return initiated;
-	}
+    /**
+     * A handle to the unique Singleton instance.
+     */
+    static private GLSingleton _instance = null;
 
-	public static GLAutoDrawable getDrawable() {
-		return drawable;
-	}
+    /**
+     * @return The unique instance of this class.
+     */
+    static public GLSingleton getInstance() {
+        if (null == _instance) {
+            _instance = new GLSingleton();
+        }
+        return _instance;
+    }
 
-	static public GL2 getGL() throws GLSingletonNotInitializedException {
-		if (gl == null) throw new GLSingletonNotInitializedException();
-		else return gl;
-	}
+    static public void init(GLAutoDrawable glDrawable) {
+        drawable = glDrawable;
+        gl = glDrawable.getGL().getGL2();
+        glu = new GLUgl2();
+        glut = new GLUT();
+        initiated = true;
+    }
 
-	static public GLUgl2 getGLU() throws GLSingletonNotInitializedException {
-		if (glu == null) throw new GLSingletonNotInitializedException();
-		else return glu;
-	}
+    public static boolean isInitiated() {
+        return initiated;
+    }
 
-	static public GLUT getGLUT() throws GLSingletonNotInitializedException {
-		if (glut == null) throw new GLSingletonNotInitializedException();
-		else return glut;
-	}
+    public static GLAutoDrawable getDrawable() {
+        return drawable;
+    }
+
+    static public GL2 getGL() throws GLSingletonNotInitializedException {
+        if (gl == null)
+            throw new GLSingletonNotInitializedException();
+        else
+            return gl;
+    }
+
+    static public GLUgl2 getGLU() throws GLSingletonNotInitializedException {
+        if (glu == null)
+            throw new GLSingletonNotInitializedException();
+        else
+            return glu;
+    }
+
+    static public GLUT getGLUT() throws GLSingletonNotInitializedException {
+        if (glut == null)
+            throw new GLSingletonNotInitializedException();
+        else
+            return glut;
+    }
 
 }

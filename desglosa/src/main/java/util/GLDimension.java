@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GLDimension {
-	public String name() default "";
-	public String type() default "";
+    String name() default "";
+
+    String type() default "";
 }

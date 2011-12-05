@@ -3,34 +3,37 @@ package model;
 import java.util.ArrayList;
 
 public class NotifyUIManager {
-	private static ArrayList<IObserverUI> observers = new ArrayList<IObserverUI>();
+    private static ArrayList<IObserverUI> observers = new ArrayList<IObserverUI>();
 
-	public static void attach (IObserverUI ob) {
-		observers.add(ob);
-	}
-	
-	public static void notifyMessage(String message) {
-		for (IObserverUI iob : observers) {
-			iob.showMessage(message);
-		}
-	}
-	
-	public static void notifySelectedAntennaBall (int idProject, int clickButton, int clickCount) {
-		for (IObserverUI iob : observers) {
-			iob.selectAntennaBall(idProject, clickButton, clickCount);
-		}
-	}
-	
-	public static void notifySelectedBuilding (int idFactory, int clickButton, int clickCount) {
-		for (IObserverUI iob : observers) {
-			iob.selectBuilding(idFactory, clickButton, clickCount);
-		}
-	}
-	
-	public static void notifySelectedTower (int idTower, int clickButton, int clickCount) {
-		for (IObserverUI iob : observers) {
-			iob.selectTower(idTower, clickButton, clickCount);
-		}
-	}
+    public static void attach(IObserverUI ob) {
+        observers.add(ob);
+    }
+
+    public static void notifyMessage(String message) {
+        for (IObserverUI iob : observers) {
+            iob.showMessage(message);
+        }
+    }
+
+    public static void notifySelectedAntennaBall(int idProject,
+            int clickButton, int clickCount) {
+        for (IObserverUI iob : observers) {
+            iob.selectAntennaBall(idProject, clickButton, clickCount);
+        }
+    }
+
+    public static void notifySelectedBuilding(int idFactory, int clickButton,
+            int clickCount) {
+        for (IObserverUI iob : observers) {
+            iob.selectBuilding(idFactory, clickButton, clickCount);
+        }
+    }
+
+    public static void notifySelectedTower(int idTower, int clickButton,
+            int clickCount) {
+        for (IObserverUI iob : observers) {
+            iob.selectTower(idTower, clickButton, clickCount);
+        }
+    }
 
 }
