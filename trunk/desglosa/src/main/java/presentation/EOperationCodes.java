@@ -1,7 +1,5 @@
 package presentation;
 
 public enum EOperationCodes {
-	TowerSelection,
-	BuildingSelection,
-	AntennaBallSelection
+    TowerSelection, BuildingSelection, AntennaBallSelection
 }

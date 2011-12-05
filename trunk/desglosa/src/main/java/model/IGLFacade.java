@@ -3,7 +3,12 @@ package model;
 import exceptions.ViewManagerNotInstantiatedException;
 
 public interface IGLFacade {
-	public void visualizeBuildings (String JSONtext) throws ViewManagerNotInstantiatedException;
-	public void visualizeAntennaBalls (String JSONtext) throws ViewManagerNotInstantiatedException;
-	public void visualizeTowers (String JSONtext) throws ViewManagerNotInstantiatedException;
+    void visualizeBuildings(String jsonCity)
+            throws ViewManagerNotInstantiatedException;
+
+    void visualizeAntennaBalls(String jsonCity)
+            throws ViewManagerNotInstantiatedException;
+
+    void visualizeTowers(String jsonCity)
+            throws ViewManagerNotInstantiatedException;
 }

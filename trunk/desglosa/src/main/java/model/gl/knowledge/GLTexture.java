@@ -3,7 +3,7 @@ package model.gl.knowledge;
 import java.nio.ByteBuffer;
 
 public class GLTexture {
-	
+
     private ByteBuffer pixels;
     private int width;
     private int height;

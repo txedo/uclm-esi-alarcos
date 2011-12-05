@@ -7,99 +7,98 @@ import util.GLDimension;
 import model.gl.GLSingleton;
 import model.util.Color;
 
-
 import exceptions.GLSingletonNotInitializedException;
 
 public abstract class GLObject {
-	@GLDimension(name="id",type="int")
-	protected int id;
-	protected float maxWidth = 0.0f;
-	protected float maxDepth = 0.0f;
-	protected float positionX;
-	protected float positionY;
-	@GLDimension(name="color",type="color")
-	protected Color color;
-	@GLDimension(name="scale",type="float_range")
-	protected float scale;
-	
-	public GLObject () {
-		this.id = -1;
-		this.positionX = 0.0f;
-		this.positionY = 0.0f;
-		this.color = new Color(0.0f, 0.0f, 0.0f);
-		this.scale = 1.0f;
-	}
-	
-	public GLObject (float posx, float posy) {
-		this.id = -1;
-		this.positionX = posx;
-		this.positionY = posy;
-		this.color = new Color(0.0f, 0.0f, 0.0f);
-		this.scale = 1.0f;
-	}
-	
-	public abstract void draw() throws GLSingletonNotInitializedException;
-	
-	protected void enableLight () throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
-		GLSingleton.getGL().glEnable(GL2.GL_LIGHT1);			// Habilitamos la iluminacion
-	}
-	
-	protected void disableLight () throws GLSingletonNotInitializedException {
-		GLSingleton.getGL().glDisable(GL2.GL_LIGHTING);
-		GLSingleton.getGL().glDisable(GL2.GL_LIGHT1);			// Deshabilitamos la iluminación
-	}
+    @GLDimension(name = "id", type = "int")
+    protected int id;
+    protected float maxWidth = 0.0f;
+    protected float maxDepth = 0.0f;
+    protected float positionX;
+    protected float positionY;
+    @GLDimension(name = "color", type = "color")
+    protected Color color;
+    @GLDimension(name = "scale", type = "float_range")
+    protected float scale;
 
-	public int getId() {
-		return id;
-	}
+    public GLObject() {
+        this.id = -1;
+        this.positionX = 0.0f;
+        this.positionY = 0.0f;
+        this.color = new Color(0.0f, 0.0f, 0.0f);
+        this.scale = 1.0f;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public GLObject(float posx, float posy) {
+        this.id = -1;
+        this.positionX = posx;
+        this.positionY = posy;
+        this.color = new Color(0.0f, 0.0f, 0.0f);
+        this.scale = 1.0f;
+    }
 
-	public float getPositionX() {
-		return positionX;
-	}
+    public abstract void draw() throws GLSingletonNotInitializedException;
 
-	public void setPositionX(float origin_x) {
-		this.positionX = origin_x;
-	}
+    protected void enableLight() throws GLSingletonNotInitializedException {
+        GLSingleton.getGL().glEnable(GL2.GL_LIGHTING);
+        GLSingleton.getGL().glEnable(GL2.GL_LIGHT1);
+    }
 
-	public float getPositionZ() {
-		return positionY;
-	}
+    protected void disableLight() throws GLSingletonNotInitializedException {
+        GLSingleton.getGL().glDisable(GL2.GL_LIGHTING);
+        GLSingleton.getGL().glDisable(GL2.GL_LIGHT1);
+    }
 
-	public void setPositionZ(float origin_z) {
-		this.positionY = origin_z;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setColor(Color color) {
-		this.color = color;
-	}
-	
-	public void setColor(String hexCode) {
-		this.color = new Color(hexCode);
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Color getColor() {
-		return color;
-	}
+    public float getPositionX() {
+        return positionX;
+    }
 
-	public float getScale() {
-		return scale;
-	}
+    public void setPositionX(float origin_x) {
+        this.positionX = origin_x;
+    }
 
-	public void setScale(float scale) {
-		this.scale = scale;
-	}
+    public float getPositionZ() {
+        return positionY;
+    }
 
-	public float getMaxWidth() {
-		return maxWidth;
-	}
+    public void setPositionZ(float origin_z) {
+        this.positionY = origin_z;
+    }
 
-	public float getMaxDepth() {
-		return maxDepth;
-	}
-	
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setColor(String hexCode) {
+        this.color = new Color(hexCode);
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public float getScale() {
+        return scale;
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
+
+    public float getMaxWidth() {
+        return maxWidth;
+    }
+
+    public float getMaxDepth() {
+        return maxDepth;
+    }
+
 }

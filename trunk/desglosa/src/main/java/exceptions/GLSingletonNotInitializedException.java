@@ -1,15 +1,14 @@
 package exceptions;
 
 public class GLSingletonNotInitializedException extends Exception {
+    private static final long serialVersionUID = -5816492103385164789L;
 
-	private static final long serialVersionUID = -5816492103385164789L;
+    public GLSingletonNotInitializedException() {
+        super();
+    }
 
-	public GLSingletonNotInitializedException () {
-		super();
-	}
-	
-	public GLSingletonNotInitializedException (String message) {
-		super(message);
-	}
-	
+    public GLSingletonNotInitializedException(String message) {
+        super(message);
+    }
+
 }
