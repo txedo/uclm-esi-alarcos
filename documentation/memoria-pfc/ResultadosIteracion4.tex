@@ -1,11 +1,29 @@
-\subsubsection{Disciplina de requisitos}
-\label{sec:iteracion-4-requisitos}
+En esta iteración (Tabla \ref{table:ficha-iteracion-4}) se aborda:
+\begin{itemize}
+	\item Análisis y diseño para la configuración de escenas 3D.
+	\item Diseño de una arquitectura extensible de metáforas de visualización.
+	\item Implementación de la configuración y pintado de escenas.
+	\item Pruebas y verificación del correcto funcionamiento de la cámara.
+\end{itemize}
 
 
 
 
 \subsubsection{Disciplina de análisis}
 \label{sec:iteracion-4-analisis}
+
+La configuración de escenas plantea una problemática referente al posicionamiento de las metáforas de visualización en el entorno 3D. En esta disciplina se trabaja en un algoritmo de posicionamiento que calcule los emplazamientos de las metáforas de manera que dos metáforas no ocupen la misma posición en la escena, ya que de lo contrario una de ellas quedaría oculta.
+
+El emplazamiento de los elementos de la escena se realizará en tres niveles (Fig. \ref{fig:it4-city-schema}):
+\begin{itemize}
+	\item El primer nivel representa la metáfora de una ciudad.
+	\item El segundo nivel representa los barrios que componen la ciudad del primer nivel.
+	\item El tercer nivel representa los edificios que se encuentran dentro de un barrio del segundo nivel. Estos edificios son las metáforas de visualización del CdU1.5.
+\end{itemize}
+
+\imagenBorde{Cap5//it4-city-schema}{0.9}{Esquema conceptual de la estructura de ciudades y barrios para una escena 3D}{fig:it4-city-schema}
+
+Con el enfoque planteado, es posible calcular las posiciones relativas de los edificios en su propio barrio y, acto seguido, posicionar los barrios en la ciudad. Así pues, la aplicación contenedora del motor gráfico deberá proporcionar una cadena de texto en formato JSON respetando la estructura de tres niveles que se ha descrito.
 
 
 
@@ -14,13 +32,33 @@
 \label{sec:iteracion-4-diseño}
 
 
+\imagenBorde{Cap5//it4-city-class-diagram}{0.9}{Diagrama de clases de la metáfora de una ciudad}{fig:it4-city-class-diagram}
+
+\imagenBorde{Cap5//it4-city-globject-class-diagram}{0.9}{Diagrama de clases de las metáforas de visualización}{fig:it4-city-globject-class-diagram}
+
+
 
 
 \subsubsection{Disciplina de implementación}
 \label{sec:iteracion-4-implementacion}
+
+Durante esta disciplina se implementan los casos de uso CdU1.5 y CdU1.6, tal y como se estableció en el plan de iteraciones. No se adjuntan detalles de implementación para no extender el documento en exceso.
 
 
 
 
 \subsubsection{Disciplina de pruebas}
 \label{sec:iteracion-4-pruebas}
+
+Las pruebas de los casos de uso correspondientes al movimiento y rotación de la cámara del motor gráfico (CdU1.1 y CdU1.2) se han con la colaboración de un usuario experto.
+
+El proceso que se ha seguido ha sido el siguiente:
+\begin{enumerate}
+	\item Diseño de los casos de prueba utilizando como base la descripción de los CdU1.1 y CdU1.2 (Tabla \ref{table:move-usecase-description}).
+	\item Elaboración de un \textit{checklist} con los casos de prueba diseñados en el punto 1. En cada entrada del checklist se ha incluido una casilla en la que el usuario deberá anotar si el resultado de la operación ha sido correcto o no.
+	\item Planificación de una reunión con el usuario experto, en la cual se le facilitará un ordenador con una instancia del motor gráfico y el checklist elaborado en el punto 2.
+	\item Ejecución de los casos de prueba diseñados.
+	\item Creación del informe de validación y verificación de las pruebas.
+\end{enumerate}
+
+El informe obtenido como resultado de esta disciplina indica que todas las pruebas han sido ejecutadas correctamente.

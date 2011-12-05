@@ -7,14 +7,18 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="744.09448819"
    height="1052.3622047"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.1 "
-   sodipodi:docname="New document 1">
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="camera-orientation.svg"
+   inkscape:export-filename="D:\Repositorios\uclm-esi-alarcos\documentation\memoria-pfc\Figuras\Cap5\camera-orientation.png"
+   inkscape:export-xdpi="95"
+   inkscape:export-ydpi="95">
   <defs
      id="defs4">
     <marker
@@ -52,13 +56,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="197.93674"
+     inkscape:cx="289.17313"
      inkscape:cy="610.66288"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1138"
+     inkscape:window-width="1280"
+     inkscape:window-height="1002"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -163,5 +167,45 @@
          id="tspan4795"
          x="400.52551"
          y="560.41791">x</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="176.7767"
+       y="564.96362"
+       id="text3002"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3004"
+         x="176.7767"
+         y="564.96362">Cámara</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:13px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       id="text3006"
+       sodipodi:linespacing="125%"
+       transform="translate(-3.0304576,-30.304576)"><textPath
+         xlink:href="#path2989"
+         id="textPath3013"><tspan
+   style="font-size:8px"
+   id="tspan3008">vector director &quot;arriba&quot;</tspan></textPath></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       id="text3016"
+       sodipodi:linespacing="125%"
+       transform="translate(35.860415,-17.677669)"><textPath
+         xlink:href="#path4575"
+         id="textPath3024"><tspan
+   style="font-size:8px"
+   id="tspan3018">vector director &quot;frente&quot;</tspan></textPath></text>
+    <text
+       xml:space="preserve"
+       style="font-size:8px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       id="text3020"
+       sodipodi:linespacing="125%"
+       transform="translate(44.951788,16.667517)"><textPath
+         xlink:href="#path3759"
+         id="textPath3027"><tspan
+   id="tspan3022">vector director &quot;derecha&quot;</tspan></textPath></text>
   </g>
 </svg>
