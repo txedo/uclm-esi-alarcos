@@ -1,56 +1,76 @@
 En esta iteración (Tabla \ref{table:ficha-iteracion-1}) se aborda:
 \begin{itemize}
-	\item Especificación detallada de requisitos del motor gráfico.
 	\item Análisis y diseño de un pequeño proyecto utilizando la tecnología JOGL.
 	\item Preparación del entorno de desarrollo y creación del proyecto mediante Maven.
-	\item Análisis y diseño de los casos de uso relativos al control de acceso de la aplicación web.
 	\item Implementación de un mini-proyecto de funcionalidad reducida empleando JOGL.
 \end{itemize}
+
+
 
 
 \subsubsection{Disciplina de requisitos}
 \label{sec:iteracion-1-requisitos}
 
-El motor gráfico dispondrá de un conjunto de metáforas de visualización que serán emplazadas en una escena que tratará de emular el entorno de una ciudad. La arquitectura del proyecto deberá permitir que el equipo encargado del mantenimiento de la aplicación puedan añadir nuevos modelos y vistas de un modo sencillo.
-
-Una metáfora de visualización se definirá mediante una clase Java. Como cualquier clase, ésta deberá tener un conjunto de atributos. Algunos de estos atributos podrán ser utilizados como dimensiones de la metáfora, entendiéndose como \textbf{dimensión} a aquel atributo de la metáfora cuyo valor afecta a su representación visual. Estas dimensiones son las que se emplearán a la hora de crear los perfiles de visualización y asociarlas a los atributos de las entidades. Así pues, se debe encontrar un mecanismo que permita diferenciar qué atributos del modelo actúan como dimensiones y cuáles no.
-
-Por otro lado, el motor gráfico no debe tener ningún tipo de dependencia con la herramienta contenedora. Esta característica implica que se establezca algún mecanismo de comunicación con el motor gráfico para que éste genere los gráficos correspondientes.
+Se deberá elaborar un pequeña aplicación de funcionalidad reducida utilizando la librería Java OpenGL. Esta mini-proyecto, que servirá como base para todo el desarrollo del motor gráfico, deberá mostrar un poliedro de seis caras en tres dimensiones y permitir que el usuario lo rote para examinarlo desde cualquier ángulo.
 
 
-\subsubsection{Disciplinas de análisis y diseño}
-\label{sec:iteracion-1-análisis}
+
+
+\subsubsection{Disciplinas de análisis}
+\label{sec:iteracion-1-analisis}
+
+Para poder abordar el análisis de un proyecto de estas características, primero ha sido necesario realizar un estudio sobre la librería de gráficos OpenGL en general y Java OpenGL en particular. Ha sido necesario estudiar ambas librerías ya que Java OpenGL (JOGL) es un \textit{binding} que da acceso a OpenGL pero tiene ciertas limitaciones y particularidades. La principal característica es la forma en la que JOGL implementa el hilo de ejecución sobre el cual se realizan las operaciones de \textit{pintado} de la escena.
+
+Aunque semánticamente podría ser incorrecto, dado el nivel de abstracción en el que se encuentra el proyecto, se ha considerado al hilo de ejecución de JOGL como un actor del sistema. Este \textit{pseudo-actor} desaparecerá en futuros diagramas de casos de uso y, de hecho, no se ha considerado en el diagrama general de casos de uso del motor gráfico (Fig. \ref{fig:cdu-graphics-engine}) que se obtuvo en la fase de inicio (Sección \ref{sec:modelo-cdu}).
+
+En la figura \ref{fig:it1-jogl-usecase} se muestra el diagrama de casos de uso que corresponde en este punto del ciclo de vida del motor gráfico. Como se puede observar, se trata de un escenario muy sencillo en el que el hilo de ejecución de JOGL se encarga de pintar un cubo y el usuario tiene la posibilidad de rotarlo.
+
+\imagenBorde{Cap5//it1-jogl-usecase}{1.2}{Diagrama de casos de uso para mini-proyecto JOGL de funcionalidad reducida)}{fig:it1-jogl-usecase}
+
+El siguiente paso consiste en modelar el diagrama de clases de análisis que permitirá comprender el funcionamiento del sistema con un poco más de detalle (Fig. \ref{fig:it1-analysis-class-diagram}). En él se observa que el usuario interactúa con contenedor de gráficos, cuyas características serán definidas en un futuro, que se encarga de iniciar el hilo de ejecución de JOGL. Este hilo es el encargado de pintar los cubos y mantener a la escucha un \textit{listener} de eventos de teclado que permitirá que el usuario rote los poliedros. Esta misma explicación se facilita en formato gráfico, e indicando el pasos de los distintos mensajes y señales, en el diagrama de comunicación asociado (Fig. \ref{fig:it1-communication-class-diagram}).
+
+\imagenBorde{Cap5//it1-analysis-class-diagram}{1.2}{Diagrama de clases de análisis para mini-proyecto JOGL de funcionalidad reducida}{fig:it1-analysis-class-diagram}
+
+\imagenBorde{Cap5//it1-communication-class-diagram}{1.1}{Diagrama de comunicación para mini-proyecto JOGL de funcionalidad reducida}{fig:it1-communication-class-diagram}
+
+
+
+
+\subsubsection{Disciplinas de diseño}
 \label{sec:iteracion-1-diseño}
 
-Debido a los requisitos que se han identificado en esta iteración, es necesario plantear y tomar una serie de decisiones que condicionan el diseño y funcionamiento del motor gráfico.
+Como fruto del estudio de la librería JOGL y de los diagramas de análisis modelados en la sección \ref{sec:iteracion-1-analisis}, es posible modelar el primer diagrama de clases de diseño que servirá como base para todo el motor gráfico (Fig. \ref{fig:it1-jogl-class-diagram}). En este diagrama, que hasta el momento sólo goza de las capas de presentación y dominio, es importante destacar los paquetes en los que están agrupados su diferentes clases:
+\begin{itemize}
+	\item \textbf{javax.media.opengl}. Este espacio de nombres está contenido en la librería de JOGL y nos proporciona la clase GLCanvas, que hereda de la clase Canvas de AWT (Abstract Window Toolkit) de Java, y la interfaz GLEventListener, que declara los métodos que se deberán implementar poder pintar gráficos en pantalla.
+	\item \textbf{com.sun.opengl.util}. Este espacio de nombres, también contenido en la librería de JOGL, proporciona la clase Animator que será la encargada de crear el hilo de ejecución de JOGL.
+	\item \textbf{presentacion}. Paquete propio que contendrá una clase de tipo \textit{Window} que se encargará de configurar un GLCanvas y un Animator.
+	\item \textbf{dominio}. Paquete propio con dos subpaquetes para una mejor organización de las clases del proyecto: \textbf{control}, que contendrá distintas clases de control, y \textbf{conocimiento}, que proporcionará las distintas clases de conocimiento.
+\end{itemize}
+
+\imagenBorde{Cap5//it1-jogl-class-diagram}{0.8}{Diagrama de clases de diseño para mini-proyecto JOGL de funcionalidad reducida}{fig:it1-jogl-class-diagram}
+
+El diagrama de clases de diseño describe una vista estática del sistema, pero para comprender el funcionamiento del mismo es necesario especificar una vista dinámica que muestre cómo se crean los distintos objetos y cómo interactúan entre ellos. Para una mejor comprensión, esta vista se ha divido en dos diagramas de secuencia: inicialización y ejecución.
+
+En el diagrama de secuencia de inicialización (Fig. \ref{fig:it1-jogl-initialization-sequence-diagram}) se observa qué llamadas se producen entre los distintos objetos hasta que el hilo de ejecución de JOGL entra en el bucle que le permite repintar la escena constantemente.
+
+\imagenBorde{Cap5//it1-jogl-initialization-sequence-diagram}{1.3}{Diagrama de secuencia de la inicialización del hilo de JOGL}{fig:it1-jogl-initialization-sequence-diagram}
+
+En el diagrama de secuencia de ejecución (Fig. \ref{fig:it1-jogl-execution-sequence-diagram}) se asume la parte de inicialización y se centra en la interacción entre objetos que se produce para pintar la escena.
+
+\imagenBorde{Cap5//it1-jogl-execution-sequence-diagram}{1.1}{Diagrama de secuencia de ejecución del hilo de JOGL}{fig:it1-jogl-execution-sequence-diagram}
 
 
-\vspace{10mm}
-\textbf{Dimensiones de las metáforas de visualización}
 
-Se plantea diseñar cada metáfora de visualización como una clase Java. Como es habitual, una clase Java contiene un conjunto de atributos. Estos atributos definen el estado de los objetos que se instancian. Para poder diferenciar qué atributos son auxiliares o de control de aquellos que podrán ser empleados como dimensiones del modelo, así como para dotar la dimensión de la semántica que se crea necesaria, se propone anotar los atributos de la clase con \textbf{anotaciones personalizadas de Java}.
+\subsubsection{Disciplinas de implementación}
+\label{sec:iteracion-1-implementacion}
+%rev 13
 
-El uso de anotaciones personalizadas también conlleva la implementación de un pequeño \textbf{analizador de anotaciones} basado en \textbf{Java API Reflection}. Gracias a este API se podrá analizar en tiempo de ejecución la clase anotada mediante el método de \textbf{introspección} y proporcionar la información necesaria a la interfaz gráfica de usuario para que ésta se configure automáticamente. De este modo se satisfará el requisito de interfaz gráfica de usuario adaptable.
+La disciplina de implementación del mini-proyecto que se aborda en esta iteración comienza con la configuración del entorno y la creación del proyecto.
 
+En esta primera parte se ha instalado y configurado Eclipse IDE, Maven y el plugin m2eclipse en sus versiones especificadas en la sección \ref{sec:marco}. A continuación se ha creado un proyecto Maven de tipo \textbf{maven-archetype-quickstart} y se han añadido las dependencias de JOGL necesarias (Listado \ref{lst:pom-jogl}). Puesto que estas dependencias no se encuentran alojadas en los repositorios generales de Maven, es necesario añadirlas manualmente al repositorio local. Para evitar conflictos de versiones, las dependencias que se han utilizado en este PFC se proporcionan en su DVD adjunto bajo el directorio \textit{desglosa\textbackslash{}builds\textbackslash{}jogamp\textbackslash{}eployment\textbackslash{}webstart\textbackslash{}archive}, junto con un pequeño fichero de texto que detalla cómo realizar la operación.
 
-\vspace{10mm}
-\textbf{Motor gráfico independiente de la aplicación contenedora}
+\lstinputlisting[language=XML,caption={Configuración de pom.xml para añadir JOGL como dependencia del proyecto},label=lst:pom-jogl]{snippets//maven-jogl.txt}
 
-Persiguiendo el objetivo de que el motor gráfico pueda ser empleado en cualquier tipo de aplicación, se plantea diseñar un mecanismo generación de gráficos a partir de una cadena de texto. Esta cadena de texto, de estructura predefinida, será utilizada como entrada de datos al motor gráfico. El motor gráfico la procesará según proceda y, finalmente, mostrará los resultados en forma de gráficos 3D.
+A continuación implementan tal y como se ha modelado en la disciplina de diseño de esta misma iteración. El resultado es una pequeña ventana que pinta, de un modo muy básico y sin apenas calidad gráfica, una torre de color rojo y una torre de color verde sobre un suelo gris (Fig. \ref{fig:it1-screenshot-joglworld}).
 
-Para establecer el formato de la cadena de texto de entrada, se propone \textbf{JSON} (\textit{JavaScript Object Notation}) (Listado \ref{json-example}), cuya estructura de nodos será definida y detallada en sucesivas iteraciones.
-
-\begin{lstlisting}[caption={Ejemplo de texto en formato JSON (http://json.org/example.html)},label=json-example]
-{"menu": {
-  "id": "file",
-  "value": "File",
-  "popup": {
-    "menuitem": [
-      {"value": "New", "onclick": "CreateNewDoc()"},
-      {"value": "Open", "onclick": "OpenDoc()"},
-      {"value": "Close", "onclick": "CloseDoc()"}
-    ]
-  }
-}}
-\end{lstlisting}
-
+\imagenBorde{Cap5//it1-screenshot-joglworld}{0.55}{Resultado de la disciplina de implementación de la iteración 1}{fig:it1-screenshot-joglworld}

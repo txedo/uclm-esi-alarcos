@@ -28,9 +28,9 @@ El paso siguiente consiste en implementar el formulario de \textit{login} (Lista
 
 \lstinputlisting[language=Java,caption={Código fuente del fichero login.jsp para autenticación mediante Spring Security},label=lst:login.jsp]{snippets//login.txt}
 
-Por otro lado, los menús que se muestran al usuario en la interfaz gráfica son renderizados de forma automática en función de los privilegios que posee. Esta característica se ha implementado mediante la librería \textit{struts-menu}, cuya configuración se lleva a cabo con un fichero XML (Listado \ref{code:struts-menu}). En este fichero se especifican distintos menús los elementos que los componen. Además, en el atributo \textit{roles} se indica qué roles debe tener el usuario autenticado para que dicho menú sea renderizado y mostrado.
+Por otro lado, los menús que se muestran al usuario en la interfaz gráfica son renderizados de forma automática en función de los privilegios que posee. Esta característica se ha implementado mediante la librería \textit{struts-menu}, cuya configuración se lleva a cabo con un fichero XML (Listado \ref{lst:struts-menu}). En este fichero se especifican distintos menús los elementos que los componen. Además, en el atributo \textit{roles} se indica qué roles debe tener el usuario autenticado para que dicho menú sea renderizado y mostrado.
 
-\lstinputlisting[language=XML,caption={Fichero de configuración de struts-menu (menu-config.xml)},label=code:struts-menu]{..//..//desglosa-web//src//main//webapp//WEB-INF//menu-config.xml}
+\lstinputlisting[language=XML,caption={Fichero de configuración de struts-menu (menu-config.xml)},label=lst:struts-menu]{..//..//desglosa-web//src//main//webapp//WEB-INF//menu-config.xml}
 
 
 
@@ -150,7 +150,7 @@ Un aspecto importante de la etapa de pruebas consiste conocer cuánto código ha s
 Llegados a este punto, finaliza la configuración del entorno para la ejecución y generación de informes para las pruebas unitarias.
 
 
-\vspace{10mm}
+\vspace{7mm}
 \textbf{Configuración de Maven para la ejecución de pruebas funcionales}
 
 Las pruebas funcionales son aquellas que verifican que se satisfacen los requisitos funcionales del sistema. En este caso, se comprueba que el usuario pueda llevar a cabo las tareas para las que se desarrolla la herramienta y obtenga los resultados que corresponda en cada momento, tanto si la operación se está llevando a cabo con normalidad como si se produce algún error.
@@ -162,8 +162,7 @@ La implementación de los \textit{test suites} y \textit{test cases} de Canoo Web
 Para la generación de informes de las pruebas funcionales se hará uso del plugin \textbf{webtest-maven-plugin}. Este plugin, del mismo modo el empleado para la generación de informes de las pruebas unitarias, no requiere configuración y deberá ser añadido en la sección \textit{reporting} del fichero pom.xml.
 
 
-
-\vspace{10mm}
+\vspace{7mm}
 \textbf{Diseño e implementación de pruebas unitarias y funcionales}
 
 Una vez que se ha configurado el entorno tal y como se ha descrito en esta sección, se procede a diseñar e implementar las pruebas unitarias y funcionales.

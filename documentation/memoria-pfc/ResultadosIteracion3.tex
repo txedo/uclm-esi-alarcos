@@ -1,21 +1,90 @@
-\subsection{Desglosa Web}
-
-Sintetizando el apartado anterior, se destaca que el motor gráfico genera gráficos 3D a partir de una cadena de texto en formato JSON. Esto implica que el motor gráfico no maneja ningún tipo de lógica de negocio relativa al contexto del desarrollo global. Por ello, toda la lógica de negocio relativa al desarrollo global, así como su control y persistencia, está contenida en la aplicación web.
-
-La aplicación web ha sido diseñada de tal forma que de lugar a una herramienta profesional y de calidad. Para lograrlo se han utilizado tecnologías y \textit{frameworks} que actualmente se utilizan en el mundo empresarial. En la sección \ref{sec:marco} se puede encontrar una lista detallada de las mismas y con qué propósitos han sido utilizadas.
-
-Este proyecto, a parte de permitir la manipulación de la información que maneja mediante formularios, debe implementar dos funcionalidades muy importantes: la de configuración de perfiles y la de visualización del contexto de desarrollo global.
-
-
-\subsubsection{Configuración de perfiles}
-
-Cuando el usuario desee configurar un perfil, deberá seleccionar qué entidad quiere representar sobre qué modelo gráfico. Las entidades que intervienen en el desarrollo global -compañías, factorías, proyectos y subproyectos- tienen un conjunto de atributos que configuran su estado. Algunos de estos atributos pueden ser susceptibles de ser representados visualmente, por ejemplo las medidas e indicadores de calidad. Para diferenciar qué atributos son susceptibles de representación visual y cuáles no, será necesario definir otra \textbf{anotación personalizada de Java} y su correspondiente \textbf{analizador de anotaciones} para hacer nuevamente uso de la \textbf{introspección}. Este tipo de anotaciones, que difiere de las anotaciones del motor gráfico ya que requieren un tratamiento particular, permitirá que la aplicación web analice la clase Java de la entidad en tiempo de ejecución para adaptar su interfaz gráfica de usuario. Del mismo modo, se utilizará el analizador proporcionado por el motor gráfico para analizar las dimensiones del modelo seleccionado y adaptar nuevamente la interfaz gráfica de usuario.
-
-En este momento, el usuario obtendrá una lista de los atributos de la entidad y una lista de las dimensiones del modelo seleccionados. A continuación podrá establecer las asociaciones y configuraciones que estime oportunas entre la entidad y el modelo gráfico, así como suministrar información adicional para mostrar una leyenda informativa, el nombre del perfil y una breve descripción. Por último, el perfil se hará persistente en formato XML (Extensible Markup Language) en el servidor de la aplicación web.
+En esta iteración, que se centra en el componente correspondiente con la aplicación web, (Tabla \ref{table:ficha-iteracion-3}) se aborda:
+\begin{itemize}
+	\item Especificación detallada de los requisitos funcionales más importantes de la herramienta: configuración de perfiles y visualización.
+	\item Análisis del mundo real en el contexto del DSG.
+	\item Diseño del modelo de datos que dará lugar a la base de datos utilizada por la herramienta para la gestión del conocimiento.
+	\item Investigación acerca de las tecnologías de desarrollo y diseño web que serán utilizadas.
+	\item Preparación del entorno de desarrollo y creación del proyecto del componente web mediante Maven.
+\end{itemize}
 
 
-\subsubsection{Visualización}
 
-Esta funcionalidad proporciona dos vistas: la primera de ellas consiste en un mapa de Google Maps sobre el cual se irán posicionando las factorías de software que proceda en cada situación; la segunda cargará un applet con el motor gráfico y se mostrará la información que el usuario desee en base al nivel de visualización y el perfil seleccionado. El usuario podrá interactuar con los elementos mostrados en el motor gráfico para navegar por los distintos niveles de visualización y desglosar información cada vez más específica.
+\subsubsection{Disciplina de requisitos}
+\label{sec:iteracion-3-requisitos}
 
-La mayor dificultad para generar una escena visual se establece dada la gran capacidad de personalización de perfiles que permite la herramienta. Como se ha podido apreciar a lo largo de la lectura, los usuarios pueden representar cualquier entidad del desarrollo global sobre cualquier modelo gráfico y configurar múltiples tipos de asociaciones. Toda esta información es guardada en un fichero XML pero, ¿cómo puede el sistema conocer qué tipo de objetos debe \textit{instanciar} y a qué métodos llamar para obtener los valores de las entidades y aplicarlos sobre las dimensiones de los objetos? La respuesta, una vez más, es \textbf{Java API Reflection} (método de \textit{reflexión} o \textit{introspección}).
+La aplicación web debe ser diseñada de forma que de lugar a una herramienta profesional y de calidad. Para lograrlo se deberán utilizar tecnologías y \textit{frameworks} (Sección \ref{sec:marco}) que actualmente se utilicen en el mundo empresarial para fomentar un desarrollo y mantenimiento fácil y poco costoso.
+
+A continuación se especifican detalladamente los requisitos funcionales más importantes del componente web de visualización: configuración de perfiles de visualización y visualización de medidas e indicadores del DGS.
+
+
+\vspace{7mm}
+\textbf{Configuración de perfiles de visualización}
+
+La configuración de un perfil de visualización deberá comenzar con la selección de una entidad del contexto del desarrollo global -compañía, factoría, proyecto o subproyecto- y la metáfora de visualización sobre la que se desean visualizar sus medidas e indicadores. Cuando se hayan seleccionado ambos elementos, se motrarán dos listas: una incluirá las medidas e indicadores software de la entidad y la otra contendrá las dimensiones mapeables de la metáfora. Acto seguido, el usuario establecerá mediante un formulario los mapeos y configuraciones que estime oportunos, siempre dentro de unas restricciones que serán detalladas más adelante, y podrá aportar información adicional para mostrar una leyenda informativa dentro de la escena 3D. Además deberá indicar el nombre del perfil y una breve descripción. Para finalizar, el perfil de visualización deberá hacerse persistente para su posterior recuperación durante las operaciones de visualización.
+
+
+\vspace{7mm}
+\textbf{Visualización de medidas e indicadores del DGS}
+
+Esta funcionalidad proporciona dos vistas: la primera de ellas geolocalizará las factorías de software que proceda, según un criterio de filtro o selección, en un mapa mundial; la segunda mostrará un conjunto de gráficos 3D generados con el motor gráfico. En esta segunda vista el usuario podrá interactuar con los elementos de la escena para navegar por los distintos niveles de abstracción de la visualización y desglosar información cada vez más específica.
+
+
+
+
+\subsubsection{Disciplina de análisis}
+\label{sec:iteracion-3-analisis}
+
+De las decisiones de diseño que se han tomado en la iteración 2 (Sección \ref{sec:iteracion-2-diseño}), en este momento cabe destacar la que determina que el motor gráfico generará gráficos 3D a partir de una cadena de texto en formato JSON. Esto implica que el motor gráfico no manejará información ni la lógica de negocio relativa al contexto del desarrollo global. Por ello, toda la lógica de negocio relativa al desarrollo global, así como su control y persistencia, está contenida en la aplicación web.
+
+Además, es en esta disciplina en la que se realiza un estudio conceptual del mundo real en el contexto del desarrollo global para modelar el diagrama entidad-relación extendido (EER) de los datos.
+
+
+
+
+\subsubsection{Disciplina de diseño}
+\label{sec:iteracion-3-diseño}
+
+En esta disciplina se resuelven dos cuestiones importantes. Por un lado, se obtiene el modelo entidad-relación extendido (EER) que dará lugar a la base de datos y, por otro, se toman algunas decisiones de diseño relacionadas con los requisitos identificados en la sección \ref{sec:iteracion-3-requisitos}.
+
+En el modelo EER (Fig. \ref{fig:it3-eer-model}), que ha sido elaborado con la herramienta MySQL Workbench, se observan las distintas tablas que formarán la base de datos. Conceptualmente expresa que una compañía posee un conjunto de factorías. Cada factoría puede tener asignado un conjunto de proyectos y cada proyecto, a su vez, se puede fragmentar en una serie de subproyectos. Este mismo concepto es una generalización de la figura \ref{fig:hierarchy} que se facilitó en la sección \ref{sec:motivacion}.
+
+\imagenBorde{Cap5//it3-eer-model}{0.35}{Modelo Entidad-Relación Extendido}{fig:it3-eer-model}
+
+A continuación se detallan las decisiones de diseño que se tomarán a partir de los requisitos identificados en la sección \ref{sec:iteracion-3-requisitos}
+
+
+\vspace{7mm}
+\textbf{Configuración de perfiles de visualización}
+
+Las entidades que modelan el contexto del desarrollo global (compañía, factoría, proyecto y subproyecto) serán diseñadas como clases Java. Como es habitual, una clase Java tiene un conjunto de atributos que definen el estado de los objetos que se instancian. Para determinar cuáles de estos atributos son susceptibles de representación visual, se propone una solución basada en \textbf{anotaciones personalizadas de Java} similar a la de detección de dimensiones de las metáforas de visualización. Por ello, será necesario definir una nueva anotación y su correspondiente \textbf{analizador de anotaciones} basado en \textbf{Java API Reflection} (Fig. \ref{it3-property-annotation-parser-class-diagram}). Esta solución permite, nuevamente, analizar las entidades en tiempo de ejecución y adaptar la interfaz gráfica de usuario a sus necesidades.
+
+\imagenBorde{Cap5//it3-property-annotation-parser-class-diagram}{1.4}{Clases que definen la estructura de la anotación Property y su correspondiente analizador}{fig:it3-property-annotation-parser-class-diagram}
+
+Por otro lado, los perfiles de visualización se harán persistentes mediante ficheros en formato XML (Extensible Markup Language), alojados en el servidor de la aplicación web. Se utilizará este formato dada la gran facilidad de \textit{serialización} y \textit{deserialización} que proporciona JAXB (Sección \ref{sec:marco}).
+
+
+\vspace{7mm}
+\textbf{Visualización}
+
+La herramienta debe disponer de una vista que muestre un mapa del mundo sobre el cual se geolocalizarán distintas factorías en base a ciertos criterios de filtrado o selección. Para satisfacer este requisito, se propone el uso de alguno de los múltiples \textbf{Sistema de Información Geográfica} (SIG o GIS, en su acrónimo inglés Geographic Information System) que ofrecen un API para desarrolladores basada en JavaScript, como Bing Maps o Google Maps. En este PFC se utilizará Google maps.
+
+Por otro lado, para generar los gráficos 3D en base al perfil de visualización seleccionado por el usuario, será necesario examinar y modificar el estado y cokmportamiento de los objetos en tiempo de ejecución. Esta característica se puede llevar a cabo gracias al \textbf{Java API Reflection} y el método de \textbf{reflexión}.
+
+
+
+
+\subsubsection{Disciplina de implementación}
+\label{sec:iteracion-3-implementacion}
+
+Como el entorno de desarrollo ya se instaló y configuró al comenzar la implementación del motor gráfico (Sección \ref{sec:iteracion-1-implementacion}), se pasa directamente a la creación del proyecto.
+
+En este caso la arquitectura Maven que se utilizará es \textbf{struts2-archetype-starter} \cite{struts2-maven-archetypes}. Este arquetipo crea un proyecto de una aplicación web, cuya estructura se muestra en la figura \ref{fig:struts2-archetype-starter}, basada en tecnologías que se emplean actualmente en aplicaciones de producción. Entre sus características destacan la integración por defecto de Sitemesh, Spring, Struts 2 y mecanismos de internacionalización (i18N).
+
+%\imagenBorde{Cap5//struts2-archetype-starter}{0.8}{Estructura de un proyecto Maven con arquetipo struts2-archetype-starter}{fig:struts2-archetype-starter}
+
+Para finalizar, se han implementado la anotación y el analizador de anotaciones descrito en la disciplina de diseño (Fig. \ref{fig:it3-property-annotation-parser-class-diagram}), además de las clases de dominio que han sido debidamente anotadas.
+
+De la implementación de la anotación personalizada \textbf{Property} (Listado \ref{lst:property.java}) cabe destacar las anotaciones \textit{@Target} y \textit{@Runtime} que establecen que la anotación \textit{@Property} únicamente es aplicable a atributos de clase que debe mantenerse en el \textit{bytecode} hasta el tiempo de ejecución de la aplicación en la JVM (Java Virtual Machine), respectivamente.
+
+\lstinputlisting[language=Java,caption={Código fuente de la anotación personalizada Property},label=lst:property.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//util//Property.java}
+

@@ -1,0 +1,10 @@
+En esta última iteración del ciclo se han corregido algunos \textit{bugs} que se han detectado a lo largo del ciclo de desarrollo. Además, tal y como se indica en la ficha de iteración \ref{table:ficha-iteracion-10} se elaboran los documentos asociados al proyecto:
+\begin{itemize}
+	\item \textbf{Memoria del PFC}. Entregable conformado por este documento, los diagramas se han modelado a lo largo de todas las iteraciones del ciclo de desarrollo y las imágenes que se han generado.
+	\item \textbf{Manual de usuario}. Documento que explica las principales funcionalidades de las que dispone el sistema desarrollado (Véase Anexo \ref{ch:manualdeusuario}).
+	\item \textbf{Manual de instalación y configuración del entorno de desarrollo}. Documento que será vital para el equipo que se encargue del mantenimiento del sistema (Véase Anexo \ref{ch:instalacionentorno}).
+\end{itemize}
+
+A continuación, se procede la creación del paquete de distribución en formato WAR (Web application ARchive), que contiene todo el código ejecutable de la aplicación web, y su paso a producción. Gracias al uso de Maven para la gestión del ciclo de vida del proyecto, esta operación consiste en ejecutar el comando \textit{mvn package} y se obtendrá el fichero WAR correspondiente que deberá ser desplegado en un contenedor de servlets y páginas JSP.
+
+Para finalizar, cabe destacar la posibilidad de la generación automática de páginas web para la distribución de cada uno de los componentes que conforman este PFC. Esto es posible, una vez más, gracias al uso de Maven. Para generar dichas páginas web bastará con ejecutar el comando \textit{mvn site} para cada uno de los componentes.
