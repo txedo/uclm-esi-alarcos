@@ -56,7 +56,7 @@ A continuación se detallan las decisiones de diseño que se tomarán a partir de l
 \vspace{7mm}
 \textbf{Configuración de perfiles de visualización}
 
-Las entidades que modelan el contexto del desarrollo global (compañía, factoría, proyecto y subproyecto) serán diseñadas como clases Java. Como es habitual, una clase Java tiene un conjunto de atributos que definen el estado de los objetos que se instancian. Para determinar cuáles de estos atributos son susceptibles de representación visual, se propone una solución basada en \textbf{anotaciones personalizadas de Java} similar a la de detección de dimensiones de las metáforas de visualización. Por ello, será necesario definir una nueva anotación y su correspondiente \textbf{analizador de anotaciones} basado en \textbf{Java API Reflection} (Fig. \ref{it3-property-annotation-parser-class-diagram}). Esta solución permite, nuevamente, analizar las entidades en tiempo de ejecución y adaptar la interfaz gráfica de usuario a sus necesidades.
+Las entidades que modelan el contexto del desarrollo global (compañía, factoría, proyecto y subproyecto) serán diseñadas como clases Java. Como es habitual, una clase Java tiene un conjunto de atributos que definen el estado de los objetos que se instancian. Para determinar cuáles de estos atributos son susceptibles de representación visual, se propone una solución basada en \textbf{anotaciones personalizadas de Java} similar a la de detección de dimensiones de las metáforas de visualización. Por ello, será necesario definir una nueva anotación y su correspondiente \textbf{analizador de anotaciones} basado en \textbf{Java API Reflection} (Fig. \ref{fig:it3-property-annotation-parser-class-diagram}). Esta solución permite, nuevamente, analizar las entidades en tiempo de ejecución y adaptar la interfaz gráfica de usuario a sus necesidades.
 
 \imagenBorde{Cap5//it3-property-annotation-parser-class-diagram}{1.4}{Clases que definen la estructura de la anotación Property y su correspondiente analizador}{fig:it3-property-annotation-parser-class-diagram}
 
@@ -80,11 +80,11 @@ Como el entorno de desarrollo ya se instaló y configuró al comenzar la implement
 
 En este caso la arquitectura Maven que se utilizará es \textbf{struts2-archetype-starter} \cite{struts2-maven-archetypes}. Este arquetipo crea un proyecto de una aplicación web, cuya estructura se muestra en la figura \ref{fig:struts2-archetype-starter}, basada en tecnologías que se emplean actualmente en aplicaciones de producción. Entre sus características destacan la integración por defecto de Sitemesh, Spring, Struts 2 y mecanismos de internacionalización (i18N).
 
-%\imagenBorde{Cap5//struts2-archetype-starter}{0.8}{Estructura de un proyecto Maven con arquetipo struts2-archetype-starter}{fig:struts2-archetype-starter}
+\imagenBorde{Cap5//struts2-archetype-starter}{0.55}{Estructura de un proyecto Maven con arquetipo struts2-archetype-starter}{fig:struts2-archetype-starter}
 
 Para finalizar, se han implementado la anotación y el analizador de anotaciones descrito en la disciplina de diseño (Fig. \ref{fig:it3-property-annotation-parser-class-diagram}), además de las clases de dominio que han sido debidamente anotadas.
 
-De la implementación de la anotación personalizada \textbf{Property} (Listado \ref{lst:property.java}) cabe destacar las anotaciones \textit{@Target} y \textit{@Runtime} que establecen que la anotación \textit{@Property} únicamente es aplicable a atributos de clase que debe mantenerse en el \textit{bytecode} hasta el tiempo de ejecución de la aplicación en la JVM (Java Virtual Machine), respectivamente.
+De la implementación de la anotación personalizada \textbf{Property} (Listado \ref{lst:property.java}) cabe destacar las anotaciones \textit{@Target} y \textit{@Runtime} que establecen que la anotación \textit{@Property} únicamente es aplicable a atributos de clase y que debe mantenerse en el \textit{bytecode} hasta el tiempo de ejecución de la aplicación en la JVM (Java Virtual Machine), respectivamente.
 
 \lstinputlisting[language=Java,caption={Código fuente de la anotación personalizada Property},label=lst:property.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//util//Property.java}
 
