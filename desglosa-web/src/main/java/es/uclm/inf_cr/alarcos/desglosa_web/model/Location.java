@@ -14,9 +14,11 @@ public class Location {
     private float latitude;
     private float longitude;
 
-    public Location() {}
+    public Location() {
+    }
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -34,7 +36,7 @@ public class Location {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public void setLatitude(float latitude) {
         this.latitude = latitude;
     }

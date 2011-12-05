@@ -1,6 +1,5 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +19,12 @@ public class Mapping {
     private Object ratio;
     @XmlElement(name = "rule")
     private List<Rule> rules = new ArrayList<Rule>();
-    
-    public Mapping () {}
-    
-    public Mapping(Field entityAttr, Field modelAttr, Object value, Object ratio, List<Rule> rules) {
+
+    public Mapping() {
+    }
+
+    public Mapping(Field entityAttr, Field modelAttr, Object value,
+            Object ratio, List<Rule> rules) {
         this.entityAttr = entityAttr;
         this.modelAttr = modelAttr;
         this.value = value;

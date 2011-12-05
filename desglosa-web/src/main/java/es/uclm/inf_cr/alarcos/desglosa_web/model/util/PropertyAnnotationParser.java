@@ -1,23 +1,25 @@
-package es.uclm.inf_cr.alarcos.desglosa_web.util;
+package es.uclm.inf_cr.alarcos.desglosa_web.model.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
-import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper;
-
 /*
  * http://isagoksu.com/2009/development/java/creating-custom-annotations-and-making-use-of-them/
  */
 public class PropertyAnnotationParser {
+    
+    private PropertyAnnotationParser() {
+    }
 
-    public final List<PropertyWrapper> parse(String clazz) throws Exception {
+    public static final List<PropertyWrapper> parse(final String clazz)
+            throws Exception {
         return parse(Class.forName(clazz));
     }
 
-    public final List<PropertyWrapper> parse(final Class<?> clazz) throws Exception {
+    public static final List<PropertyWrapper> parse(final Class<?> clazz)
+            throws Exception {
         List<PropertyWrapper> properties = new ArrayList<PropertyWrapper>();
         List<Field> fields = Arrays.asList(clazz.getDeclaredFields());
 
@@ -32,16 +34,17 @@ public class PropertyAnnotationParser {
                 if (type.equals("")) {
                     type = field.getType().getName();
                     if (type.equals("java.lang.Boolean")) {
-                	type = "boolean";
+                        type = "boolean";
                     } else if (type.equals("java.lang.Integer")) {
-                	type = "int";
+                        type = "int";
                     } else if (type.equals("java.lang.Float")) {
-                	type = "float";
+                        type = "float";
                     } else if (type.equals("java.lang.String")) {
-                	type = "string";
+                        type = "string";
                     }
                 }
-                // if it has embedded properties, parse its class type by recursive call
+                // if it has embedded properties, parse its class type by
+                // recursive call
                 if (property.embedded()) {
                     Class<?> c = Class.forName(type);
                     List<PropertyWrapper> embeddedProperties = parse(c);
@@ -54,7 +57,8 @@ public class PropertyAnnotationParser {
                 } else {
                     String description = property.description();
                     // add it
-                    properties.add(new PropertyWrapper(name, type, description));
+                    properties
+                            .add(new PropertyWrapper(name, type, description));
                 }
             }
         }

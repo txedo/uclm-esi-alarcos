@@ -6,7 +6,7 @@ public class SubprojectNotFoundException extends Exception {
     public SubprojectNotFoundException() {
         super();
     }
-    
+
     public SubprojectNotFoundException(String message) {
         super(message);
     }

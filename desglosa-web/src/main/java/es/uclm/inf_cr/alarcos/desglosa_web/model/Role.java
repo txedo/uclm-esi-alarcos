@@ -16,15 +16,16 @@ import org.springframework.security.GrantedAuthority;
 @Table(name = "roles")
 public class Role implements Serializable, GrantedAuthority {
     private static final long serialVersionUID = -5782725748407324783L;
-    
+
     private int id;
     private String name;
     private String description;
-    
-    public Role () {
+
+    public Role() {
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -38,7 +39,7 @@ public class Role implements Serializable, GrantedAuthority {
     public String getDescription() {
         return description;
     }
-    
+
     @Transient
     public String getAuthority() {
         return getName();
@@ -57,8 +58,10 @@ public class Role implements Serializable, GrantedAuthority {
     }
 
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Role)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Role))
+            return false;
         final Role role = (Role) o;
         return !(name != null ? !name.equals(role.name) : role.name != null);
     }

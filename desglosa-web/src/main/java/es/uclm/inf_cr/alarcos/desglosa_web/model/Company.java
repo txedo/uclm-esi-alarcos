@@ -16,7 +16,7 @@ import org.hibernate.annotations.Formula;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 
 @Entity
-@Table(name="companies")
+@Table(name = "companies")
 public class Company {
     @Property
     private int id;
@@ -31,20 +31,22 @@ public class Company {
     private Integer numberOfProjects;
     @Property
     private Integer numberOfEmployees;
-    
-    public Company(){}
-    
+
+    public Company() {
+    }
+
     public Company(String name, String information) {
         this.name = name;
         this.information = information;
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
 
-    @Column(nullable = false, length = 45, unique=true)
+    @Column(nullable = false, length = 45, unique = true)
     public String getName() {
         return name;
     }
@@ -90,7 +92,7 @@ public class Company {
     public void setDirector(Director director) {
         this.director = director;
     }
-    
+
     public void setNumberOfFactories(Integer numberOfFactories) {
         this.numberOfFactories = numberOfFactories;
     }

@@ -1,6 +1,5 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class Metaclass {
     @XmlElement(name = "description")
     private String description;
     @XmlAttribute(name = "entity")
-    private String entityName;    
+    private String entityName;
     @XmlAttribute(name = "model")
     private String modelName;
     @XmlElementWrapper(name = "mappings")
@@ -33,7 +32,8 @@ public class Metaclass {
     @XmlElement(name = "caption")
     private MyHashMapType captionLines = new MyHashMapType();
 
-    public Metaclass() {}
+    public Metaclass() {
+    }
 
     public Metaclass(String name, String description, String entityName,
             String modelName, List<Mapping> mappings, List<Field> constants,
@@ -62,11 +62,11 @@ public class Metaclass {
     public String getModelName() {
         return modelName;
     }
-    
+
     public List<Mapping> getMappings() {
         return mappings;
     }
-    
+
     public List<Field> getConstants() {
         return constants;
     }
@@ -74,7 +74,7 @@ public class Metaclass {
     public MyHashMapType getCaptionLines() {
         return captionLines;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }

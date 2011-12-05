@@ -35,9 +35,11 @@ public class User implements Serializable, UserDetails {
     private boolean accountLocked;
     private Set<Group> groups = new HashSet<Group>();
 
-    public User() {}
+    public User() {
+    }
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -72,12 +74,8 @@ public class User implements Serializable, UserDetails {
         return accountLocked;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER) 
-    @JoinTable(
-            name = "users_groups",
-            joinColumns = { @JoinColumn( name="user_id") },
-            inverseJoinColumns = @JoinColumn( name="group_id")
-    )
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = @JoinColumn(name = "group_id"))
     public Set<Group> getGroups() {
         return groups;
     }

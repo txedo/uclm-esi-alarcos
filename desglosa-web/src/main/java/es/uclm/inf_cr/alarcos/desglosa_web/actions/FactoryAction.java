@@ -27,7 +27,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.FileUtil;
  * Ideally, Action classes should be as short as possible. All the core logic should be pushed 
  * back to a support class or a business facade, so that Actions only call methods. Actions 
  * are best used as adapters, rather than as a class where coding logic is defined.
-*/
+ */
 public class FactoryAction extends ActionSupport {
     private static final long serialVersionUID = -6215763127414281847L;
     private static String DEFAULT_PIC = "images/anonymous.gif";
@@ -41,10 +41,10 @@ public class FactoryAction extends ActionSupport {
     // Required attributes by Save Action
     private Factory factory;
     // Required attributes to upload files
-    private File upload;//The actual file
-    private String uploadContentType; //The content type of the file
-    private String uploadFileName; //The uploaded file name
-    
+    private File upload;// The actual file
+    private String uploadContentType; // The content type of the file
+    private String uploadFileName; // The uploaded file name
+
     public int getId() {
         return id;
     }
@@ -52,7 +52,7 @@ public class FactoryAction extends ActionSupport {
     public Factory getFactory() {
         return factory;
     }
-    
+
     public List<Factory> getFactories() {
         return factories;
     }
@@ -121,7 +121,8 @@ public class FactoryAction extends ActionSupport {
                 result = ERROR;
             } else {
                 try {
-                    // Check if the factory id exists and place it in value stack
+                    // Check if the factory id exists and place it in value
+                    // stack
                     factory = factoryDao.getFactory(id);
                 } catch (FactoryNotFoundException e) {
                     addActionError(getText("error.factory.id"));
@@ -142,12 +143,15 @@ public class FactoryAction extends ActionSupport {
                     // If it exists, set it to factory
                     factory.setCompany(c);
                 } else {
-                    addFieldError("error.company_mandatory", getText("error.company.is_mandatory"));
+                    addFieldError("error.company_mandatory",
+                            getText("error.company.is_mandatory"));
                 }
                 // Check that factory name is already taken
                 factoryDao.getFactory(factory.getName());
-                addFieldError("error.factory.name", getText("error.factory.already_exists"));
-                // If factory name is available, then throw and catch FactoryNotFoundException
+                addFieldError("error.factory.name",
+                        getText("error.factory.already_exists"));
+                // If factory name is available, then throw and catch
+                // FactoryNotFoundException
             } catch (CompanyNotFoundException e) {
                 addActionError(getText("error.company.id"));
             } catch (FactoryNotFoundException e) {
@@ -156,37 +160,46 @@ public class FactoryAction extends ActionSupport {
             // Check that required fields are filled in
             // Factory data
             if (factory.getName().trim().length() == 0) {
-            addFieldError("error.factory.name", getText("error.factory.name"));
+                addFieldError("error.factory.name",
+                        getText("error.factory.name"));
             }
             // Director data
             if (factory.getDirector().getName().trim().length() == 0) {
-                addFieldError("error.director.name", getText("error.director.name"));
+                addFieldError("error.director.name",
+                        getText("error.director.name"));
             }
             if (factory.getDirector().getLastName().trim().length() == 0) {
-                addFieldError("error.director.lastName", getText("error.director.last_name"));
+                addFieldError("error.director.lastName",
+                        getText("error.director.last_name"));
             }
             // Address data
             if (factory.getAddress().getAddress().trim().length() == 0) {
-                addFieldError("error.factory.address.address", getText("error.address.address"));
+                addFieldError("error.factory.address.address",
+                        getText("error.address.address"));
             }
             if (factory.getAddress().getCity().trim().length() == 0) {
-                addFieldError("error.factory.address.city", getText("error.address.city"));
+                addFieldError("error.factory.address.city",
+                        getText("error.address.city"));
             }
             if (factory.getAddress().getCountry().trim().length() == 0) {
-                addFieldError("error.factory.address.country", getText("error.address.country"));
+                addFieldError("error.factory.address.country",
+                        getText("error.address.country"));
             }
             // Location data
-            if (factory.getLocation().getLatitude() == 0.0f || factory.getLocation().getLongitude() == 0.0f) {
-                addFieldError("error.factory.location", getText("error.location"));
+            if (factory.getLocation().getLatitude() == 0.0f
+                    || factory.getLocation().getLongitude() == 0.0f) {
+                addFieldError("error.factory.location",
+                        getText("error.location"));
             }
-        }else {
+        } else {
             addActionError(getText("error.general"));
         }
         if (hasActionErrors() || hasErrors() || hasFieldErrors()) {
             companies = companyDao.getAll();
         }
         if (hasFieldErrors()) {
-            addFieldError("error.mandatory_fields", getText("error.mandatory_fields"));
+            addFieldError("error.mandatory_fields",
+                    getText("error.mandatory_fields"));
         }
     }
 
@@ -215,7 +228,7 @@ public class FactoryAction extends ActionSupport {
                     addActionError(getText("error.factory.id"));
                 }
                 fAux = factoryDao.getFactory(factory.getId());
-            } catch  (FactoryNotFoundException e) {
+            } catch (FactoryNotFoundException e) {
                 addActionError(getText("error.factory.id"));
             }
             try {
@@ -226,14 +239,18 @@ public class FactoryAction extends ActionSupport {
                     // If it exists, set it to factory
                     factory.setCompany(c);
                 } else {
-                    addFieldError("error.company_mandatory", getText("error.company.is_mandatory"));
+                    addFieldError("error.company_mandatory",
+                            getText("error.company.is_mandatory"));
                 }
-                // Check that there is no company with same name and different id
+                // Check that there is no company with same name and different
+                // id
                 fAux = factoryDao.getFactory(factory.getName());
                 if (fAux.getId() != factory.getId()) {
-                    addFieldError("error.factory.name", getText("error.factory.already_exists"));
+                    addFieldError("error.factory.name",
+                            getText("error.factory.already_exists"));
                 }
-                // If factory name is available, then throw and catch FactoryNotFoundException
+                // If factory name is available, then throw and catch
+                // FactoryNotFoundException
             } catch (CompanyNotFoundException e) {
                 addActionError(getText("error.company.id"));
             } catch (FactoryNotFoundException e) {
@@ -242,37 +259,46 @@ public class FactoryAction extends ActionSupport {
             // Check that required fields are filled in
             // Factory data
             if (factory.getName().trim().length() == 0) {
-                addFieldError("error.factory.name", getText("error.factory.name"));
+                addFieldError("error.factory.name",
+                        getText("error.factory.name"));
             }
             // Director data
             if (factory.getDirector().getName().trim().length() == 0) {
-                addFieldError("error.director.name", getText("error.director.name"));
+                addFieldError("error.director.name",
+                        getText("error.director.name"));
             }
             if (factory.getDirector().getLastName().trim().length() == 0) {
-                addFieldError("error.director.lastName", getText("error.director.last_name"));
+                addFieldError("error.director.lastName",
+                        getText("error.director.last_name"));
             }
             // Address data
             if (factory.getAddress().getAddress().trim().length() == 0) {
-                addFieldError("error.factory.address.address", getText("error.address.address"));
+                addFieldError("error.factory.address.address",
+                        getText("error.address.address"));
             }
             if (factory.getAddress().getCity().trim().length() == 0) {
-                addFieldError("error.factory.address.city", getText("error.address.city"));
+                addFieldError("error.factory.address.city",
+                        getText("error.address.city"));
             }
             if (factory.getAddress().getCountry().trim().length() == 0) {
-                addFieldError("error.factory.address.country", getText("error.address.country"));
+                addFieldError("error.factory.address.country",
+                        getText("error.address.country"));
             }
             // Location data
-            if (factory.getLocation().getLatitude() == 0.0f || factory.getLocation().getLongitude() == 0.0f) {
-                addFieldError("error.factory.location", getText("error.location"));
+            if (factory.getLocation().getLatitude() == 0.0f
+                    || factory.getLocation().getLongitude() == 0.0f) {
+                addFieldError("error.factory.location",
+                        getText("error.location"));
             }
-        }else {
+        } else {
             addActionError(getText("error.general"));
         }
         if (hasActionErrors() || hasErrors() || hasFieldErrors()) {
             companies = companyDao.getAll();
         }
         if (hasFieldErrors()) {
-            addFieldError("error.mandatory_fields", getText("error.mandatory_fields"));
+            addFieldError("error.mandatory_fields",
+                    getText("error.mandatory_fields"));
         }
     }
 
@@ -315,10 +341,10 @@ public class FactoryAction extends ActionSupport {
         }
     }
 
-    public String delete(){
+    public String delete() {
         factoryDao.removeFactory(id);
         addActionMessage(getText("message.factory.deleted_successfully"));
-        
+
         return SUCCESS;
     }
 

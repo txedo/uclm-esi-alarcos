@@ -1,6 +1,5 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -15,7 +14,8 @@ public class Field {
     @XmlElement
     private Object value;
 
-    public Field() {}
+    public Field() {
+    }
 
     public Field(String type, String name) {
         this.type = type;
@@ -30,12 +30,18 @@ public class Field {
 
     public Class<?> getParameterType() {
         Class<?> parameterType = null;
-        if (this.type.equals("int")) parameterType = Integer.TYPE;
-        else if (this.type.equals("float")) parameterType = Float.TYPE;
-        else if (this.type.equals("string")) parameterType = String.class;
-        else if (this.type.equals("boolean")) parameterType = Boolean.TYPE;
-        else if (this.type.equals("color")) parameterType = String.class; // hexCode
-        else if (this.type.equals("float_range")) parameterType = Float.TYPE;
+        if (this.type.equals("int"))
+            parameterType = Integer.TYPE;
+        else if (this.type.equals("float"))
+            parameterType = Float.TYPE;
+        else if (this.type.equals("string"))
+            parameterType = String.class;
+        else if (this.type.equals("boolean"))
+            parameterType = Boolean.TYPE;
+        else if (this.type.equals("color"))
+            parameterType = String.class; // hexCode
+        else if (this.type.equals("float_range"))
+            parameterType = Float.TYPE;
         return parameterType;
     }
 

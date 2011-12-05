@@ -27,10 +27,13 @@ public class UserRoleAuthorizationInterceptor implements Interceptor {
     public String intercept(ActionInvocation invocation) throws Exception {
         boolean authorization = false;
         String action = null;
-        Authentication authenticatedUser = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authenticatedUser = SecurityContextHolder.getContext()
+                .getAuthentication();
         if (authorizedRoles != null) {
-            for (int i = 0; i < authenticatedUser.getAuthorities().length && !authorization; i++) {
-                String userRol = authenticatedUser.getAuthorities()[i].getAuthority();
+            for (int i = 0; i < authenticatedUser.getAuthorities().length
+                    && !authorization; i++) {
+                String userRol = authenticatedUser.getAuthorities()[i]
+                        .getAuthority();
                 for (int j = 0; j < authorizedRoles.length && !authorization; j++) {
                     if (authorizedRoles[j].equals(userRol)) {
                         authorization = true;

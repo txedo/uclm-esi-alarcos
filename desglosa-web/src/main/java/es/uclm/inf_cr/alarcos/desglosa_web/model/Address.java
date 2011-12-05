@@ -16,10 +16,12 @@ public class Address {
     private String province;
     private String country;
     private String postalCode;
-    
-    public Address() {}
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    public Address() {
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -44,7 +46,7 @@ public class Address {
         return country;
     }
 
-    @Column(name="postal_code")
+    @Column(name = "postal_code")
     public String getPostalCode() {
         return postalCode;
     }

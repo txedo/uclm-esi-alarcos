@@ -7,8 +7,12 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 
 public interface FactoryDAO extends GenericDAO<Factory, Long> {
     Factory getFactory(int id) throws FactoryNotFoundException;
+
     Factory getFactory(String name) throws FactoryNotFoundException;
+
     List<Factory> getFactories();
+
     void saveFactory(Factory factory);
+
     void removeFactory(int id);
 }

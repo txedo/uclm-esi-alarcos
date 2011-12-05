@@ -33,16 +33,16 @@ public class VisualizationAction extends ActionSupport {
     private static final long serialVersionUID = 2840789582526466159L;
     private int id;
     private boolean generateGLObjects;
-    private String groupBy = ""; //company, market, factory, project
+    private String groupBy = ""; // company, market, factory, project
     private String profileFileName;
     private City city;
     private GLObjectManager glObjectManager;
-    
+
     private FactoryDAO factoryDao;
     private CompanyDAO companyDao;
     private ProjectDAO projectDao;
     private SubprojectDAO subprojectDao;
-    
+
     private List<Factory> factories;
     private List<Company> companies;
     private List<Project> projects;
@@ -167,7 +167,8 @@ public class VisualizationAction extends ActionSupport {
         } else {
             Map<String, Object> queryParams = new HashMap<String, Object>();
             queryParams.put("id", id);
-            factories = factoryDao.findByNamedQuery("findFactoriesByCompanyId", queryParams);
+            factories = factoryDao.findByNamedQuery("findFactoriesByCompanyId",
+                    queryParams);
         }
         if (generateGLObjects) {
             entity2model(factories);
@@ -195,7 +196,8 @@ public class VisualizationAction extends ActionSupport {
         } else {
             Map<String, Object> queryParams = new HashMap<String, Object>();
             queryParams.put("id", id);
-            projects = projectDao.findByNamedQuery("findProjectsByCompanyId", queryParams);
+            projects = projectDao.findByNamedQuery("findProjectsByCompanyId",
+                    queryParams);
         }
         if (generateGLObjects) {
             entity2model(projects);
@@ -209,7 +211,8 @@ public class VisualizationAction extends ActionSupport {
         } else {
             Map<String, Object> queryParams = new HashMap<String, Object>();
             queryParams.put("id", id);
-            projects = projectDao.findByNamedQuery("findProjectsByFactoryId", queryParams);
+            projects = projectDao.findByNamedQuery("findProjectsByFactoryId",
+                    queryParams);
         }
         if (generateGLObjects) {
             entity2model(projects);
@@ -240,7 +243,8 @@ public class VisualizationAction extends ActionSupport {
         } else {
             Map<String, Object> queryParams = new HashMap<String, Object>();
             queryParams.put("id", id);
-            subprojects = subprojectDao.findByNamedQuery("findSubprojectsByCompanyId", queryParams);
+            subprojects = subprojectDao.findByNamedQuery(
+                    "findSubprojectsByCompanyId", queryParams);
         }
         if (generateGLObjects) {
             entity2model(subprojects);
@@ -254,7 +258,8 @@ public class VisualizationAction extends ActionSupport {
         } else {
             Map<String, Object> queryParams = new HashMap<String, Object>();
             queryParams.put("id", id);
-            subprojects = subprojectDao.findByNamedQuery("findSubprojectsByFactoryId", queryParams);
+            subprojects = subprojectDao.findByNamedQuery(
+                    "findSubprojectsByFactoryId", queryParams);
         }
         if (generateGLObjects) {
             entity2model(subprojects);
@@ -268,7 +273,8 @@ public class VisualizationAction extends ActionSupport {
         } else {
             Map<String, Object> queryParams = new HashMap<String, Object>();
             queryParams.put("id", id);
-            subprojects = subprojectDao.findByNamedQuery("findSubprojectsByProjectId", queryParams);
+            subprojects = subprojectDao.findByNamedQuery(
+                    "findSubprojectsByProjectId", queryParams);
         }
         if (generateGLObjects) {
             entity2model(subprojects);
@@ -290,9 +296,10 @@ public class VisualizationAction extends ActionSupport {
         return SUCCESS;
     }
 
-    private void entity2model (List<?> entities) {
+    private void entity2model(List<?> entities) {
         try {
-            city = glObjectManager.createGLObjects(entities, groupBy, profileFileName);
+            city = glObjectManager.createGLObjects(entities, groupBy,
+                    profileFileName);
         } catch (SecurityException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
