@@ -5,7 +5,8 @@ import java.util.List;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.RoleDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Role;
 
-public class RoleDAOHibernate extends GenericDAOHibernate<Role, Long> implements RoleDAO {
+public class RoleDAOHibernate extends GenericDAOHibernate<Role, Long> implements
+        RoleDAO {
 
     public RoleDAOHibernate(Class<Role> persistentClass) {
         super(persistentClass);
@@ -13,7 +14,8 @@ public class RoleDAOHibernate extends GenericDAOHibernate<Role, Long> implements
 
     @SuppressWarnings("unchecked")
     public Role getRoleByName(String rolename) {
-        List<Role> roles = getHibernateTemplate().find("from Role where name=?", rolename);
+        List<Role> roles = getHibernateTemplate().find(
+                "from Role where name=?", rolename);
         if (roles.isEmpty()) {
             return null;
         } else {
@@ -27,7 +29,8 @@ public class RoleDAOHibernate extends GenericDAOHibernate<Role, Long> implements
 
     @SuppressWarnings("unchecked")
     public List<Role> getRoles() {
-        return getHibernateTemplate().find("from Role r order by upper(r.name)");
+        return getHibernateTemplate()
+                .find("from Role r order by upper(r.name)");
     }
 
     public void saveRole(Role role) {

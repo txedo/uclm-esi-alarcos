@@ -22,16 +22,9 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 
 @Entity
 @Table(name = "projects")
-@NamedQueries ({
-    @NamedQuery(
-        name = "findProjectsByCompanyId",
-        query = "select p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = f.id and f.company.id = :id "
-        ),
-    @NamedQuery(
-        name = "findProjectsByFactoryId",
-        query = "select p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = :id group by p"
-        )
-})
+@NamedQueries({
+        @NamedQuery(name = "findProjectsByCompanyId", query = "select p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = f.id and f.company.id = :id "),
+        @NamedQuery(name = "findProjectsByFactoryId", query = "select p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = :id group by p") })
 public class Project {
     @Property
     private int id;
@@ -83,14 +76,16 @@ public class Project {
     private Float ratioFichaje;
     @Property
     private Float actividad;
-    
-    public Project(){}
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    public Project() {
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
-    
+
     @Column(name = "name")
     public String getName() {
         return name;
@@ -137,7 +132,7 @@ public class Project {
     public Integer getRepairedIncidences() {
         return repairedIncidences;
     }
-    
+
     @Formula("total_incidences - repaired_incidences")
     public Integer getNonRepairedIncidences() {
         return nonRepairedIncidences;
@@ -152,7 +147,7 @@ public class Project {
     public Boolean isDelay() {
         return delay;
     }
-    
+
     @Column(name = "fiabilidad", nullable = true, columnDefinition = "float default 0.0")
     public Float getFiabilidad() {
         return fiabilidad;
@@ -187,7 +182,7 @@ public class Project {
     public Float getComentarios() {
         return comentarios;
     }
-    
+
     @Formula("comentarios / lineas_de_codigo")
     public Float getRatioComentariosLineasDeCodigo() {
         return ratioComentariosLineasDeCodigo;
@@ -207,12 +202,12 @@ public class Project {
     public Float getFichajeTotal() {
         return fichajeTotal;
     }
-    
+
     @Formula("fichaje_codigo / fichaje_total")
     public Float getRatioFichaje() {
         return ratioFichaje;
     }
-    
+
     @Column(name = "actividad", nullable = true, columnDefinition = "float default 0.0")
     public Float getActividad() {
         return actividad;
@@ -257,7 +252,7 @@ public class Project {
     public void setRepairedIncidences(Integer repairedIncidences) {
         this.repairedIncidences = repairedIncidences;
     }
-    
+
     public void setNonRepairedIncidences(Integer nonRepairedIncidences) {
         this.nonRepairedIncidences = nonRepairedIncidences;
     }
@@ -314,7 +309,7 @@ public class Project {
     public void setFichajeTotal(Float fichajeTotal) {
         this.fichajeTotal = fichajeTotal;
     }
-    
+
     public void setRatioFichaje(Float ratioFichaje) {
         this.ratioFichaje = ratioFichaje;
     }
@@ -326,7 +321,8 @@ public class Project {
     @Override
     public String toString() {
         String res = this.name;
-        if (subprojects.size() > 1) res = this.name + " *";
+        if (subprojects.size() > 1)
+            res = this.name + " *";
         return res;
     }
 

@@ -14,7 +14,8 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.FileUtil;
 
-public class CompanyAction extends ActionSupport implements GenericActionInterface {
+public class CompanyAction extends ActionSupport implements
+        GenericActionInterface {
     private static final long serialVersionUID = -8572805918582070731L;
     private static String DEFAULT_PIC = "images/anonymous.gif";
     private int id;
@@ -25,9 +26,9 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
     // Attributes required by List action (default method execute)
     private List<Company> companies;
     // Required attributes to upload files
-    private File upload; //The actual file
-    private String uploadContentType; //The content type of the file
-    private String uploadFileName; //The uploaded file name
+    private File upload; // The actual file
+    private String uploadContentType; // The content type of the file
+    private String uploadFileName; // The uploaded file name
 
     public void setCompanyDao(CompanyDAO companyDao) {
         this.companyDao = companyDao;
@@ -84,7 +85,8 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
     }
 
     public String showForm() throws Exception {
-        // validateDoShowForm is not necessary since it would do the same as this method
+        // validateDoShowForm is not necessary since it would do the same as
+        // this method
         String result = SUCCESS;
         // Get the company id attribute from URL
         HttpServletRequest request = ServletActionContext.getRequest();
@@ -96,7 +98,8 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
                     addActionError(getText("error.company.id"));
                 } else {
                     try {
-                        // Check if the company id exists and place it in value stack
+                        // Check if the company id exists and place it in value
+                        // stack
                         company = companyDao.getCompany(id);
                     } catch (CompanyNotFoundException e) {
                         addActionError(getText("error.company.id"));
@@ -106,33 +109,37 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
                 addActionError(getText("error.company.id"));
             }
         } // Else, show a blank form
-        if(hasActionErrors()) {
+        if (hasActionErrors()) {
             result = ERROR;
             companies = companyDao.getAll();
         }
         return result;
     }
 
-    public void validateDoSave(){
+    public void validateDoSave() {
         if (company != null) {
             // Check company name is not empty
             if (company.getName().trim().length() == 0) {
-                addFieldError("error.company.name", getText("error.company.name"));
+                addFieldError("error.company.name",
+                        getText("error.company.name"));
             } else {
                 // Check company name is not already taken
                 try {
                     companyDao.getCompany(company.getName());
-                    addFieldError("error.company.name", getText("error.company.already_exists"));
+                    addFieldError("error.company.name",
+                            getText("error.company.already_exists"));
                 } catch (CompanyNotFoundException e) {
                     // Name not taken. Nothing to do here
                 }
             }
             // Director data
             if (company.getDirector().getName().trim().length() == 0) {
-                addFieldError("error.director.name", getText("error.director.name"));
+                addFieldError("error.director.name",
+                        getText("error.director.name"));
             }
             if (company.getDirector().getLastName().trim().length() == 0) {
-                addFieldError("error.director.last_name", getText("error.director.last_name"));
+                addFieldError("error.director.last_name",
+                        getText("error.director.last_name"));
             }
         } else {
             addActionError(getText("error.general"));
@@ -158,18 +165,22 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
         Company cAux;
         if (company != null) {
             // Check if company id is valid
-            if (company.getId() <= 0) addActionError(getText("error.company.id"));
+            if (company.getId() <= 0)
+                addActionError(getText("error.company.id"));
             try {
                 cAux = companyDao.getCompany(company.getId());
                 // Check company name is not empty
                 if (company.getName().trim().length() == 0) {
-                    addFieldError("error.company.name", getText("error.company.name"));
+                    addFieldError("error.company.name",
+                            getText("error.company.name"));
                 } else {
-                    // Check that there is no company with same name and different id
+                    // Check that there is no company with same name and
+                    // different id
                     try {
                         cAux = companyDao.getCompany(company.getName());
                         if (cAux.getId() != company.getId()) {
-                            addFieldError("error.company.name", getText("error.company.already_exists"));
+                            addFieldError("error.company.name",
+                                    getText("error.company.already_exists"));
                         }
                     } catch (CompanyNotFoundException e) {
                         // Name not taken. Nothing to do here.
@@ -177,10 +188,12 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
                 }
                 // Director data
                 if (company.getDirector().getName().trim().length() == 0) {
-                    addFieldError("error.director.name", getText("error.director.name"));
+                    addFieldError("error.director.name",
+                            getText("error.director.name"));
                 }
                 if (company.getDirector().getLastName().trim().length() == 0) {
-                    addFieldError("error.director.last_name", getText("error.director.last_name"));
+                    addFieldError("error.director.last_name",
+                            getText("error.director.last_name"));
                 }
             } catch (CompanyNotFoundException e1) {
                 addActionError(getText("error.company.id"));
@@ -274,7 +287,7 @@ public class CompanyAction extends ActionSupport implements GenericActionInterfa
     public String get() throws Exception {
         company = companyDao.getCompany(id);
         addActionMessage(getText("message.company.found"));
-        
+
         return SUCCESS;
     }
 

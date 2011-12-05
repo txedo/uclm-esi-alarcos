@@ -5,7 +5,8 @@ import java.util.List;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.GroupDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Group;
 
-public class GroupDAOHibernate extends GenericDAOHibernate<Group, Long> implements GroupDAO {
+public class GroupDAOHibernate extends GenericDAOHibernate<Group, Long>
+        implements GroupDAO {
 
     public GroupDAOHibernate(Class<Group> persistentClass) {
         super(persistentClass);
@@ -13,7 +14,8 @@ public class GroupDAOHibernate extends GenericDAOHibernate<Group, Long> implemen
 
     @SuppressWarnings("unchecked")
     public Group getGroupByName(String groupname) {
-        List<Group> groups = getHibernateTemplate().find("from Group where name=?", groupname);
+        List<Group> groups = getHibernateTemplate().find(
+                "from Group where name=?", groupname);
         if (groups.isEmpty()) {
             return null;
         } else {
@@ -27,7 +29,8 @@ public class GroupDAOHibernate extends GenericDAOHibernate<Group, Long> implemen
 
     @SuppressWarnings("unchecked")
     public List<Group> getGroups() {
-        return getHibernateTemplate().find("from Group g order by upper(g.name)");
+        return getHibernateTemplate().find(
+                "from Group g order by upper(g.name)");
     }
 
     public void saveGroup(Group group) {

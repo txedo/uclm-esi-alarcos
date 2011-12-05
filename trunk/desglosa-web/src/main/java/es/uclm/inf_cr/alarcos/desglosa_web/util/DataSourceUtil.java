@@ -20,12 +20,11 @@ public class DataSourceUtil extends JdbcDaoSupport {
     private MappingSqlQuery tablesByTablenameQueryMapping;
     private String tablesByTablenameQuery;
 
-    public static final String DEF_TABLES_BY_TABLENAME_QUERY = "SELECT COLUMN_NAME, DATA_TYPE" +
-            " FROM INFORMATION_SCHEMA.COLUMNS" +
-            " WHERE TABLE_SCHEMA = 'desglosadb'" +
-            " AND TABLE_NAME = ?" +
-            " AND COLUMN_KEY <> 'MUL'" +
-            " ORDER BY ORDINAL_POSITION;";
+    public static final String DEF_TABLES_BY_TABLENAME_QUERY = "SELECT COLUMN_NAME, DATA_TYPE"
+            + " FROM INFORMATION_SCHEMA.COLUMNS"
+            + " WHERE TABLE_SCHEMA = 'desglosadb'"
+            + " AND TABLE_NAME = ?"
+            + " AND COLUMN_KEY <> 'MUL'" + " ORDER BY ORDINAL_POSITION;";
 
     public DataSourceUtil() {
         tablesByTablenameQuery = DEF_TABLES_BY_TABLENAME_QUERY;
@@ -33,14 +32,15 @@ public class DataSourceUtil extends JdbcDaoSupport {
 
     @Override
     protected void initDao() throws Exception {
-        tablesByTablenameQueryMapping = new TablesByTablenameMapping(getDataSource());
+        tablesByTablenameQueryMapping = new TablesByTablenameMapping(
+                getDataSource());
     }
 
-    /** 
-     * Executes the <tt>tablesByTablenameQuery</tt> and returns a list of Metaclass objects (there should normally 
-     * only be one matching table). 
+    /**
+     * Executes the <tt>tablesByTablenameQuery</tt> and returns a list of
+     * Metaclass objects (there should normally only be one matching table).
      */
-    public List<?> loadTablesByTablename (String tablename) {
+    public List<?> loadTablesByTablename(String tablename) {
         return tablesByTablenameQueryMapping.execute(tablename);
     }
 
@@ -52,12 +52,15 @@ public class DataSourceUtil extends JdbcDaoSupport {
         }
 
         protected Object mapRow(ResultSet rs, int rownum) throws SQLException {
-            Map<String,String> tableColumns = new HashMap<String, String>();
+            Map<String, String> tableColumns = new HashMap<String, String>();
             do {
                 String columnName = rs.getString(COLUMN_NAME);
                 String columnType = rs.getString(DATA_TYPE);
-                if (columnType.equals("varchar") || columnType.equals("tinytext")) columnType = "string";
-                if (columnType.equals("tinyint")) columnType = "boolean";
+                if (columnType.equals("varchar")
+                        || columnType.equals("tinytext"))
+                    columnType = "string";
+                if (columnType.equals("tinyint"))
+                    columnType = "boolean";
                 tableColumns.put(columnName, columnType);
             } while (rs.next());
             return tableColumns;

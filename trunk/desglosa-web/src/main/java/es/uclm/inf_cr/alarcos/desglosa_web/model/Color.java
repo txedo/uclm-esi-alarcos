@@ -8,8 +8,9 @@ public class Color {
     private String acceptable;
     private String peripheral;
     private String nonAcceptable;
-    
-    public Color () {}
+
+    public Color() {
+    }
 
     public String getAcceptable() {
         return acceptable;

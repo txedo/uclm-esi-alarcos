@@ -9,12 +9,12 @@ import java.util.Map;
 import org.apache.commons.lang.WordUtils;
 import org.springframework.web.context.ContextLoader;
 
+import util.AnnotationParser;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
-
-import util.AnnotationParser;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -22,13 +22,14 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Field;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyAnnotationParser;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.FileUtil;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.MyHashMapType;
-import es.uclm.inf_cr.alarcos.desglosa_web.util.PropertyAnnotationParser;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
 
-public class ProfileAction extends ActionSupport implements GenericActionInterface {
+public class ProfileAction extends ActionSupport implements
+        GenericActionInterface {
     static final long serialVersionUID = 6496919542324618999L;
     private Map<String, String> profileNames;
     private Metaclass profile;
@@ -43,19 +44,27 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
     private Map<String, String> modelAttributes;
     private Map<String, String> entities = new HashMap<String, String>() {
         private static final long serialVersionUID = 1443703980383438531L;
-    {
-        put("es.uclm.inf_cr.alarcos.desglosa_web.model.Company", getText("label.company"));
-        put("es.uclm.inf_cr.alarcos.desglosa_web.model.Factory", getText("label.factory"));
-        put("es.uclm.inf_cr.alarcos.desglosa_web.model.Project", getText("label.project"));
-        put("es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject", getText("label.subproject"));
-    } };
+        {
+            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Company",
+                    getText("label.company"));
+            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Factory",
+                    getText("label.factory"));
+            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Project",
+                    getText("label.project"));
+            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject",
+                    getText("label.subproject"));
+        }
+    };
     private Map<String, String> models = new HashMap<String, String>() {
         private static final long serialVersionUID = 6918186658085961722L;
-    {
-        put("model.gl.knowledge.GLTower", getText("label.model.towers"));
-        put("model.gl.knowledge.GLAntennaBall", getText("label.model.antennaballs"));
-        put("model.gl.knowledge.GLFactory", getText("label.model.buildings"));
-    } };
+        {
+            put("model.gl.knowledge.GLTower", getText("label.model.towers"));
+            put("model.gl.knowledge.GLAntennaBall",
+                    getText("label.model.antennaballs"));
+            put("model.gl.knowledge.GLFactory",
+                    getText("label.model.buildings"));
+        }
+    };
 
     public void setProfileName(String profileName) {
         this.profileName = profileName;
@@ -134,8 +143,7 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
         if (entity != null) {
             try {
                 Class<?> c = Class.forName(entity);
-                PropertyAnnotationParser pap = new PropertyAnnotationParser();
-                entityAttributes = pap.parse(c);
+                entityAttributes = PropertyAnnotationParser.parse(c);
             } catch (ClassNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -151,8 +159,7 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
         if (model != null) {
             try {
                 Class<?> c = Class.forName(model);
-                AnnotationParser ap = new AnnotationParser();
-                modelAttributes = ap.parse(c);
+                modelAttributes = AnnotationParser.parse(c);
             } catch (ClassNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -166,16 +173,16 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
 
     public void validateDoSave() {
         if (profileName == null || profileName.equals("")) {
-            
+
         }
         if (profileDescription == null || profileDescription.equals("")) {
-            
+
         }
         if (entity == null || entity.equals("")) {
-            
+
         }
         if (model == null || model.equals("")) {
-            
+
         }
         // check type compatibility server side
     }
@@ -193,20 +200,27 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
         metaclass.setModelName(model);
         // Add mapping data to metaclass
         List<Mapping> mappings = new ArrayList<Mapping>();
-        JSONArray mappingArray = (JSONArray) JSONSerializer.toJSON(jsonMappings);
+        JSONArray mappingArray = (JSONArray) JSONSerializer
+                .toJSON(jsonMappings);
         for (int i = 0; i < mappingArray.size(); i++) {
             JSONObject mappingObject = mappingArray.getJSONObject(i);
-            JSONObject entityAttribute = mappingObject.getJSONObject("entityAttribute");
-            Field column = new Field(entityAttribute.getString("type"), entityAttribute.getString("name"));
-            JSONObject modelAttribute = mappingObject.getJSONObject("modelAttribute");
-            Field attribute = new Field(modelAttribute.getString("type"), modelAttribute.getString("name"));
+            JSONObject entityAttribute = mappingObject
+                    .getJSONObject("entityAttribute");
+            Field column = new Field(entityAttribute.getString("type"),
+                    entityAttribute.getString("name"));
+            JSONObject modelAttribute = mappingObject
+                    .getJSONObject("modelAttribute");
+            Field attribute = new Field(modelAttribute.getString("type"),
+                    modelAttribute.getString("name"));
             Object ratio = mappingObject.get("ratio");
             if (ratio instanceof JSONNull) {
-        	ratio = null;
-            } else if (ratio instanceof Integer && attribute.getType().equals("float")) {
-        	ratio = ((Integer)ratio).floatValue();
-            } else if (ratio instanceof Double && attribute.getType().equals("float")) {
-        	ratio = ((Double)ratio).floatValue();
+                ratio = null;
+            } else if (ratio instanceof Integer
+                    && attribute.getType().equals("float")) {
+                ratio = ((Integer) ratio).floatValue();
+            } else if (ratio instanceof Double
+                    && attribute.getType().equals("float")) {
+                ratio = ((Double) ratio).floatValue();
             }
             JSONArray jsonRules = mappingObject.getJSONArray("rules");
             List<Rule> rules = new ArrayList<Rule>();
@@ -215,26 +229,32 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
                 Object low = ruleJSONObject.get("low");
                 if (low instanceof JSONNull) {
                     low = null;
-                } else if (low instanceof Integer && column.getType().equals("float")) {
-                    low = ((Integer)low).floatValue();
-                } else if (low instanceof Double && column.getType().equals("float")) {
-                    low = ((Double)low).floatValue();
+                } else if (low instanceof Integer
+                        && column.getType().equals("float")) {
+                    low = ((Integer) low).floatValue();
+                } else if (low instanceof Double
+                        && column.getType().equals("float")) {
+                    low = ((Double) low).floatValue();
                 }
                 Object high = ruleJSONObject.get("high");
                 if (high instanceof JSONNull) {
                     high = null;
-                } else if (high instanceof Integer && column.getType().equals("float")) {
-                    high = ((Integer)high).floatValue();
-                } else if (high instanceof Double && column.getType().equals("float")) {
-                    high = ((Double)high).floatValue();
+                } else if (high instanceof Integer
+                        && column.getType().equals("float")) {
+                    high = ((Integer) high).floatValue();
+                } else if (high instanceof Double
+                        && column.getType().equals("float")) {
+                    high = ((Double) high).floatValue();
                 }
                 Object value = ruleJSONObject.get("value");
                 if (value instanceof JSONNull) {
                     value = null;
-                } else if (value instanceof Integer && attribute.getType().equals("float_range")) {
-                    value = ((Integer)value).floatValue();
-                } else if (value instanceof Double && attribute.getType().equals("float_range")) {
-                    value = ((Double)value).floatValue();
+                } else if (value instanceof Integer
+                        && attribute.getType().equals("float_range")) {
+                    value = ((Integer) value).floatValue();
+                } else if (value instanceof Double
+                        && attribute.getType().equals("float_range")) {
+                    value = ((Double) value).floatValue();
                 }
                 rules.add(new Rule(low, high, value));
             }
@@ -244,23 +264,25 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
         metaclass.setMappings(mappings);
         // Add constants data to metaclass
         List<Field> constants = new ArrayList<Field>();
-        JSONArray constantArray = (JSONArray) JSONSerializer.toJSON(jsonConstants);
+        JSONArray constantArray = (JSONArray) JSONSerializer
+                .toJSON(jsonConstants);
         for (int i = 0; i < constantArray.size(); i++) {
             JSONObject constantObject = constantArray.getJSONObject(i);
             String name = constantObject.getString("name");
-            String type = constantObject.getString("type");            
+            String type = constantObject.getString("type");
             Object value = constantObject.get("value");
             if (value instanceof Integer && type.equals("float")) {
-        	value = ((Integer) value).floatValue();
+                value = ((Integer) value).floatValue();
             } else if (value instanceof Double && type.equals("float")) {
-        	value = ((Double) value).floatValue();
+                value = ((Double) value).floatValue();
             }
             constants.add(new Field(type, name, value));
         }
         metaclass.setConstants(constants);
         // Add caption data to metaclass
         Map<String, String> captionLines = new HashMap<String, String>();
-        JSONArray captionArray = (JSONArray) JSONSerializer.toJSON(jsonCaptionLines);
+        JSONArray captionArray = (JSONArray) JSONSerializer
+                .toJSON(jsonCaptionLines);
         for (int i = 0; i < captionArray.size(); i++) {
             JSONObject captionObject = captionArray.getJSONObject(i);
             String label = captionObject.getString("label");
@@ -270,10 +292,18 @@ public class ProfileAction extends ActionSupport implements GenericActionInterfa
         metaclass.setCaptionLines(new MyHashMapType(captionLines));
         // Create XML from metaclass and place it in server
         String[] entityParts = entity.split("\\.");
-        String filename = WordUtils.uncapitalize(entityParts[entityParts.length-1]) + "-" + profileName + "-" + Calendar.getInstance().getTimeInMillis() + ".xml";
-        String path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("profiles") + "\\" + filename;
+        String filename = WordUtils
+                .uncapitalize(entityParts[entityParts.length - 1])
+                + "-"
+                + profileName
+                + "-"
+                + Calendar.getInstance().getTimeInMillis()
+                + ".xml";
+        String path = ContextLoader.getCurrentWebApplicationContext()
+                .getServletContext().getRealPath("profiles")
+                + "\\" + filename;
         XMLAgent.marshal(path, Metaclass.class, metaclass);
-        
+
         return SUCCESS;
     }
 

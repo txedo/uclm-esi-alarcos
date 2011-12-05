@@ -27,12 +27,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
 
 @Entity
 @Table(name = "factories")
-@NamedQueries ({
-    @NamedQuery(
-        name = "findFactoriesByCompanyId",
-        query = "select f from Factory f where f.company.id = :id "
-        )
-})
+@NamedQueries({ @NamedQuery(name = "findFactoriesByCompanyId", query = "select f from Factory f where f.company.id = :id ") })
 public class Factory {
     @Property
     private int id;
@@ -53,14 +48,17 @@ public class Factory {
     @Property(embedded = true)
     private Market mostRepresentativeMarket;
 
-    public Factory() {}
+    public Factory() {
+    }
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST,
+            CascadeType.MERGE })
     @JoinColumn(name = "company_id")
     public Company getCompany() {
         return company;
@@ -97,7 +95,7 @@ public class Factory {
     public Address getAddress() {
         return address;
     }
-    
+
     @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
     @JoinColumn(name = "location_id")
     public Location getLocation() {
@@ -111,12 +109,16 @@ public class Factory {
 
     @Transient
     public Market getMostRepresentativeMarket() {
-        MarketDAOHibernate marketDao = (MarketDAOHibernate) ApplicationContextProvider.getBean("marketDao");
+        MarketDAOHibernate marketDao = (MarketDAOHibernate) ApplicationContextProvider
+                .getBean("marketDao");
         Map<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("id", id);
-        List<Market> markets = marketDao.findByNamedQuery("findMostRepresentativeMarketByFactoryId", queryParams);
-        if (markets.size() > 0) mostRepresentativeMarket = markets.get(0);
-        else mostRepresentativeMarket = null;
+        List<Market> markets = marketDao.findByNamedQuery(
+                "findMostRepresentativeMarketByFactoryId", queryParams);
+        if (markets.size() > 0)
+            mostRepresentativeMarket = markets.get(0);
+        else
+            mostRepresentativeMarket = null;
         return mostRepresentativeMarket;
     }
 
@@ -152,14 +154,14 @@ public class Factory {
         this.address = address;
     }
 
-    public void setLocation(Location location){
+    public void setLocation(Location location) {
         this.location = location;
     }
 
     public void setNumberOfProjects(Integer numberOfProjects) {
         this.numberOfProjects = numberOfProjects;
     }
-    
+
     public void setMostRepresentativeMarket(Market mostRepresentativeMarket) {
         this.mostRepresentativeMarket = mostRepresentativeMarket;
     }

@@ -1,4 +1,5 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.util;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,8 @@ public class MyHashMapType {
         }
     }
 
-    public MyHashMapType() { }
+    public MyHashMapType() {
+    }
 
     public List<MyHashMapEntryType> getEntry() {
         return entry;

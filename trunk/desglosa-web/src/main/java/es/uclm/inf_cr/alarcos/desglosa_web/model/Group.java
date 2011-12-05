@@ -25,16 +25,17 @@ import org.springframework.security.GrantedAuthorityImpl;
 @Table(name = "groups")
 public class Group implements Serializable {
     private static final long serialVersionUID = -2124766882257202136L;
-    
+
     private int id;
     private String name;
     private String description;
     private Set<Role> roles = new HashSet<Role>();
-    
+
     public Group() {
     }
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -49,16 +50,12 @@ public class Group implements Serializable {
         return description;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER) 
-    @JoinTable(
-            name = "groups_roles",
-            joinColumns = { @JoinColumn( name = "group_id") },
-            inverseJoinColumns = @JoinColumn( name = "role_id")
-    )   
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "groups_roles", joinColumns = { @JoinColumn(name = "group_id") }, inverseJoinColumns = @JoinColumn(name = "role_id"))
     public Set<Role> getRoles() {
         return roles;
     }
-    
+
     @Transient
     public List<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();

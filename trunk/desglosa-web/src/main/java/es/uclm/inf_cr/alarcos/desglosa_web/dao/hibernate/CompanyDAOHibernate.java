@@ -6,8 +6,8 @@ import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 
-public class CompanyDAOHibernate extends GenericDAOHibernate<Company, Long> implements
-        CompanyDAO {
+public class CompanyDAOHibernate extends GenericDAOHibernate<Company, Long>
+        implements CompanyDAO {
 
     public CompanyDAOHibernate(Class<Company> persistentClass) {
         super(persistentClass);
@@ -15,15 +15,19 @@ public class CompanyDAOHibernate extends GenericDAOHibernate<Company, Long> impl
 
     public Company getCompany(int id) throws CompanyNotFoundException {
         Company c = (Company) getHibernateTemplate().get(Company.class, id);
-        if (c == null) throw new CompanyNotFoundException("company '" + id + "' not found...");
+        if (c == null)
+            throw new CompanyNotFoundException("company '" + id
+                    + "' not found...");
         return c;
     }
 
     @SuppressWarnings("rawtypes")
     public Company getCompany(String name) throws CompanyNotFoundException {
-        List companies = getHibernateTemplate().find("from Company where name=?", name);
+        List companies = getHibernateTemplate().find(
+                "from Company where name=?", name);
         if (companies == null || companies.isEmpty()) {
-            throw new CompanyNotFoundException("company '" + name + "' not found...");
+            throw new CompanyNotFoundException("company '" + name
+                    + "' not found...");
         } else {
             return (Company) companies.get(0);
         }
@@ -31,7 +35,8 @@ public class CompanyDAOHibernate extends GenericDAOHibernate<Company, Long> impl
 
     @SuppressWarnings("unchecked")
     public List<Company> getCompanies() {
-        return getHibernateTemplate().find("from Company c order by upper(c.name)");
+        return getHibernateTemplate().find(
+                "from Company c order by upper(c.name)");
     }
 
     public void saveCompany(Company company) {

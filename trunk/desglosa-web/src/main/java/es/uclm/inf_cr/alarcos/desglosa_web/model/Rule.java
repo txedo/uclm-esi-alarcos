@@ -1,6 +1,5 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -14,7 +13,8 @@ public class Rule {
     @XmlElement
     private Object value;
 
-    public Rule() {}
+    public Rule() {
+    }
 
     public Rule(Object low, Object high, Object value) {
         this.low = low;

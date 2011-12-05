@@ -6,8 +6,8 @@ import es.uclm.inf_cr.alarcos.desglosa_web.dao.MarketDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.MarketNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Market;
 
-public class MarketDAOHibernate extends GenericDAOHibernate<Market, Long> implements
-        MarketDAO {
+public class MarketDAOHibernate extends GenericDAOHibernate<Market, Long>
+        implements MarketDAO {
 
     public MarketDAOHibernate(Class<Market> persistentClass) {
         super(persistentClass);
@@ -15,15 +15,19 @@ public class MarketDAOHibernate extends GenericDAOHibernate<Market, Long> implem
 
     public Market getMarket(int id) throws MarketNotFoundException {
         Market m = (Market) getHibernateTemplate().get(Market.class, id);
-        if (m == null) throw new MarketNotFoundException("market '" + id + "' not found...");
+        if (m == null)
+            throw new MarketNotFoundException("market '" + id
+                    + "' not found...");
         return m;
     }
 
     @SuppressWarnings("rawtypes")
     public Market getMarket(String name) throws MarketNotFoundException {
-        List markets = getHibernateTemplate().find("from Market where name=?", name);
+        List markets = getHibernateTemplate().find("from Market where name=?",
+                name);
         if (markets == null || markets.isEmpty()) {
-            throw new MarketNotFoundException("market '" + name + "' not found...");
+            throw new MarketNotFoundException("market '" + name
+                    + "' not found...");
         } else {
             return (Market) markets.get(0);
         }
@@ -31,7 +35,8 @@ public class MarketDAOHibernate extends GenericDAOHibernate<Market, Long> implem
 
     @SuppressWarnings("unchecked")
     public List<Market> getMarkets() {
-        return getHibernateTemplate().find("from Market f order by upper(f.name)");
+        return getHibernateTemplate().find(
+                "from Market f order by upper(f.name)");
     }
 
     public void saveMarket(Market market) {

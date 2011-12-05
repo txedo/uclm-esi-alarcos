@@ -8,15 +8,16 @@ import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
 
-
 /**
- * Utility class that allows transparent reading of files from
- * the current working directory or from the classpath.
+ * Utility class that allows transparent reading of files from the current
+ * working directory or from the classpath.
+ * 
  * @author Pepijn Van Eeckhoudt
  */
 public final class ResourceRetriever {
 
-    private ResourceRetriever() { }
+    private ResourceRetriever() {
+    }
 
     public static URL getResource(final String filename) throws IOException {
         // Try to load resource from jar
@@ -29,11 +30,13 @@ public final class ResourceRetriever {
         }
     }
 
-    public static InputStream getResourceAsStream(final String filename) throws IOException {
+    public static InputStream getResourceAsStream(final String filename)
+            throws IOException {
         // Try to load resource from jar
         InputStream stream = ClassLoader.getSystemResourceAsStream(filename);
         if (stream == null) {
-            stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filename);
+            stream = Thread.currentThread().getContextClassLoader()
+                    .getResourceAsStream(filename);
         }
         // If not found in jar, then load from disk
         if (stream == null) {
@@ -42,7 +45,8 @@ public final class ResourceRetriever {
         return stream;
     }
 
-    public static byte[] getResourceAsByteArray(final String filename) throws IOException {
+    public static byte[] getResourceAsByteArray(final String filename)
+            throws IOException {
         InputStream stream = getResourceAsStream(filename);
         return IOUtils.toByteArray(stream);
     }
@@ -51,7 +55,8 @@ public final class ResourceRetriever {
         return new ByteArrayInputStream(data);
     }
 
-    public static boolean isResourceAvailable (final String filename) throws IOException {
+    public static boolean isResourceAvailable(final String filename)
+            throws IOException {
         boolean available = false;
         if (getResourceAsStream(filename) != null) {
             available = true;

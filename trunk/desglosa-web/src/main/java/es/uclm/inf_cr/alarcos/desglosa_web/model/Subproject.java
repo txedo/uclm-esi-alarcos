@@ -20,25 +20,15 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 
 @Entity
 @Table(name = "subprojects")
-@NamedQueries ({
-    @NamedQuery(
-        name = "findSubprojectsByCompanyId",
-        query = "select sp from Subproject sp, Factory f where sp.factory.id = f.id and f.company.id = :id group by sp.name"
-        ),
-    @NamedQuery(
-        name = "findSubprojectsByFactoryId",
-        query = "select sp from Subproject sp where sp.factory.id = :id "
-        ),
-    @NamedQuery(
-        name = "findSubprojectsByProjectId",
-        query = "select sp from Subproject sp where sp.project.id = :id "
-        )
-})
+@NamedQueries({
+        @NamedQuery(name = "findSubprojectsByCompanyId", query = "select sp from Subproject sp, Factory f where sp.factory.id = f.id and f.company.id = :id group by sp.name"),
+        @NamedQuery(name = "findSubprojectsByFactoryId", query = "select sp from Subproject sp where sp.factory.id = :id "),
+        @NamedQuery(name = "findSubprojectsByProjectId", query = "select sp from Subproject sp where sp.project.id = :id ") })
 public class Subproject {
     @Property
     private int id;
     private Project project;
-    @Property(embedded=true)
+    @Property(embedded = true)
     private Factory factory;
     @Property
     private String name;
@@ -68,10 +58,12 @@ public class Subproject {
     private Float ratioFichaje;
     @Property
     private Float actividad;
-    
-    public Subproject() {}
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    public Subproject() {
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -92,7 +84,7 @@ public class Subproject {
     public String getName() {
         return name;
     }
-    
+
     @Column(name = "fiabilidad", nullable = true, columnDefinition = "float default 0.0")
     public Float getFiabilidad() {
         return fiabilidad;
@@ -127,7 +119,7 @@ public class Subproject {
     public Float getComentarios() {
         return comentarios;
     }
-    
+
     @Formula("comentarios / lineas_de_codigo")
     public Float getRatioComentariosLineasDeCodigo() {
         return ratioComentariosLineasDeCodigo;
@@ -147,12 +139,12 @@ public class Subproject {
     public Float getFichajeTotal() {
         return fichajeTotal;
     }
-    
+
     @Formula("fichaje_codigo / fichaje_total")
     public Float getRatioFichaje() {
         return ratioFichaje;
     }
-    
+
     @Column(name = "actividad", nullable = true, columnDefinition = "float default 0.0")
     public Float getActividad() {
         return actividad;
@@ -218,7 +210,7 @@ public class Subproject {
     public void setFichajeTotal(Float fichajeTotal) {
         this.fichajeTotal = fichajeTotal;
     }
-    
+
     public void setRatioFichaje(Float ratioFichaje) {
         this.ratioFichaje = ratioFichaje;
     }
