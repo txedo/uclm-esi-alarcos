@@ -1,0 +1,23 @@
+<applet code="org.jdesktop.applet.util.JNLPAppletLauncher" 
+	codebase="./" 
+	id="DesglosaApplet"
+	alt="Check your browser configuration to allow java applets." 
+	width=600
+	height=400
+	archive="jar/applet-launcher.jar,
+			 jar/jogl.all.jar,
+			 jar/gluegen-rt.jar,
+			 applet/desglosa.jar">
+   <param name="codebase_lookup" value="false"/>
+   <param name="subapplet.classname" value="presentation.AppletMain"/>
+   <param name="subapplet.displayname" value="Desglosa Applet"/>
+	   <param name="noddraw.check" value="true"/>
+	   <param name="progressbar" value="true"/>
+	   <param name="jnlpNumExtensions" value="1"/>
+	   <param name="jnlpExtension1"
+			  value="applet/jogl-all-awt.jnlp"/>
+	   <param name="java_arguments" value="-Dsun.java2d.noddraw=true"/>
+	   <param name="jnlp_href" value="applet/applet-desglosa.jnlp"/>
+	   <img src="images/gtk-cancel.png" alt="<s:text name="label.error"/>" title="<s:text name="label.error"/>" width="32" height="32"/><br />
+	   <s:text name="error.no_JRE"/>
+</applet>

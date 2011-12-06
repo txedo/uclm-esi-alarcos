@@ -31,10 +31,15 @@ Con el enfoque planteado, es posible calcular las posiciones relativas de los ed
 \subsubsection{Disciplina de diseño}
 \label{sec:iteracion-4-diseño}
 
+Durante esta disciplina, y a partir del análisis realizado, se elaboran los diagramas de diseño relativos al CdU1.6.
 
-\imagenBorde{Cap5//it4-city-class-diagram}{0.9}{Diagrama de clases de la metáfora de una ciudad}{fig:it4-city-class-diagram}
+En la figura \ref{} se muestra el diagrama de clases que representa la estructura de una ciudad tal y como se ha sugerido en la disciplina de análisis. Cabe destacar que los \textit{edificios} de un \textit{barrio} son de tipo \textbf{GLObject}. Esta decisión de diseño se ha llevado a cabo para abstraer la generación de escenas del tipo de metáfora que se vaya a emplear. De este modo, todas las metáforas de visualización que se implementen deben ser especializaciones de \textit{GLObject}.
 
-\imagenBorde{Cap5//it4-city-globject-class-diagram}{0.9}{Diagrama de clases de las metáforas de visualización}{fig:it4-city-globject-class-diagram}
+\imagenBorde{Cap5//it4-city-class-diagram}{1.0}{Diagrama de clases de la metáfora de una ciudad}{fig:it4-city-class-diagram}
+
+En la figura \ref{fig:it4-globject-class-diagram} se puede analizar cómo se han diseñado las metáforas de visualización. En primer lugar se modela una clase \textbf{GLObject} con los atributos básicos de cualquier metáfora de visualización, ya sea en dos o tres dimensiones: un identificador, su posición en un plano de dos dimensiones, el color y la escala. En segundo lugar se crea una clase denominada \textbf{GLObject3D} que hereda de \textit{GLObject}. Esta especialización añade conceptos relativos con la altura o tercera dimensión de la metáfora y es a partir de la cual se implementará cada metáfora de visualización.
+
+\imagenBorde{Cap5//it4-globject-class-diagram}{0.8}{Diagrama de clases de las metáforas de visualización}{fig:it4-globject-class-diagram}
 
 
 
@@ -57,8 +62,46 @@ El proceso que se ha seguido ha sido el siguiente:
 	\item Diseño de los casos de prueba utilizando como base la descripción de los CdU1.1 y CdU1.2 (Tabla \ref{table:move-usecase-description}).
 	\item Elaboración de un \textit{checklist} con los casos de prueba diseñados en el punto 1. En cada entrada del checklist se ha incluido una casilla en la que el usuario deberá anotar si el resultado de la operación ha sido correcto o no.
 	\item Planificación de una reunión con el usuario experto, en la cual se le facilitará un ordenador con una instancia del motor gráfico y el checklist elaborado en el punto 2.
-	\item Ejecución de los casos de prueba diseñados.
-	\item Creación del informe de validación y verificación de las pruebas.
+	\item Ejecución de los casos de prueba diseñados y rellenado del checklist.
 \end{enumerate}
 
-El informe obtenido como resultado de esta disciplina indica que todas las pruebas han sido ejecutadas correctamente.
+El informe obtenido como resultado de esta disciplina indica que todas las pruebas han sido ejecutadas correctamente. En este documento sólo se adjunta el informe correspondiente a las pruebas del CdU1.1 (Tabla \ref{table:move-testcase-report}).
+
+\begin{table}[!htbp]%
+	\centering
+	\begin{tabular}{| >{\arraybackslash}m{4cm} | >{\arraybackslash}m{8cm} | >{\arraybackslash}m{2cm} |}
+	\hline
+		\multicolumn{3}{|c|}{\cellcolor[gray]{0.9}\textbf{Identificador de CDU}: CdU1.1} \\
+	\hline
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Caso de prueba}} &
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Descripción}} &
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Resultado}} \\
+	\hline
+		Desplazar hacia delante &
+		El usuario percibe la sensación de desplazamiento hacia delante cuando pulsa la tecla W del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia delante. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+		Desplazar hacia atrás &
+		El usuario percibe la sensación de desplazamiento hacia atrás cuando pulsa la tecla S del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia atrás. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+		Desplazar hacia la izquierda &
+		El usuario percibe la sensación de desplazamiento lateral hacia la izquierda cuando pulsa la tecla Q del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia la izquierda. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+		Desplazar hacia la derecha &
+		El usuario percibe la sensación de desplazamiento lateral hacia la derecha cuando pulsa la tecla E del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia la derecha. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+		Descender &
+		El usuario percibe la sensación de descenso vertical cuando pulsa la tecla C del teclado. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+		Ascender/Elevar &
+		El usuario percibe la sensación de ascenso vertical cuando pulsa la barra espaciadora del teclado. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+	\end{tabular}
+	\caption{Informe de pruebas del caso de uso \textit{Desplazar} (CdU1.1)}
+	\label{table:move-testcase-report}
+\end{table}

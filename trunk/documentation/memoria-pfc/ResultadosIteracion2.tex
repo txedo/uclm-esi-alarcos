@@ -32,6 +32,8 @@ El usuario debe ser capaz de manipular la cámara a través de la cual visualiza l
 \centering
 \begin{tabular}{| >{\arraybackslash}m{15cm} |}
 	\hline
+	\textbf{Identificador}: CdU1.1 \\
+	\hline
 	\textbf{Nombre}: Desplazar (Cámara) \\
 	\hline
 	\textbf{Descripción}: Funcionalidad para que un usuario pueda desplazar la cámara y moverse a través de un entorno 3D. \\
@@ -79,7 +81,7 @@ El usuario debe ser capaz de manipular la cámara a través de la cual visualiza l
 	\\	
 	\hline 
 \end{tabular}
-\caption{Descripción del caso de uso \textit{Desplazar}}
+\caption{Descripción del caso de uso \textit{Desplazar} (CdU1.1)}
 \label{table:move-usecase-description}
 \end{table}
 
@@ -108,7 +110,7 @@ Los \textit{listeners} de teclado y ratón podrán manipular el estado y comportam
 
 \imagenBorde{Cap5//it2-camera-spotlight-class-diagram}{1.15}{Diagrama de clases de diseño para los CdU1.1 y CdU1.2}{fig:it2-camera-spotlight-class-diagram}
 
-En cuanto al diseño de CdU1.5 se propone una arquitectura de vistas basada en herencia y polimorfismo. Así pues, se define una clase abstracta de tipo \textit{GLViewManager} (Gestor de Vistas GL) que implementará un conjunto de operaciones comunes a todas las vistas (por ejemplo, dibujar el suelo de la escena) y definirá una plantilla con métodos que deberán ser implementados por cada vista especializada, es decir, las clases que la extiendan. Además, por medio del patrón de diseño \textbf{Factory Method} -formado por la clase IViewManagerFactoryImpl y la interfaz IViewManagerFactory- se abstrae a la clase \textit{GLDrawer} de la creación específica de cada vista (Fig. \ref{fig:it2-scene-class-diagram}).
+En cuanto al diseño de CdU1.5 se propone una arquitectura de vistas basada en herencia y polimorfismo. Así pues, se define una clase abstracta de tipo \textit{GLViewManager} (Gestor de Vistas GL) que implementará un conjunto de operaciones comunes a todas las vistas (por ejemplo, dibujar el suelo de la escena) y definirá una plantilla con métodos que deberán ser implementados por cada vista especializada, es decir, las clases que la extiendan. Además, por medio del patrón de diseño \textbf{Factory Method} -formado por la clase IViewManagerFactoryImpl y la interfaz IViewManagerFactory- se abstrae a la clase \textit{GLDrawer} de la creación específica de cada vista (Fig. \ref{fig:it2-scene-class-diagram}). Por otro lado, para evitar crear múltiples instancias de un mismo gestor de vistas, se utilizará el patrón \textbf{Singleton}.
 
 \imagenBorde{Cap5//it2-scene-class-diagram}{0.8}{Diagrama de clases de diseño para los CdU1.5}{fig:it2-scene-class-diagram}
 
@@ -122,7 +124,7 @@ Se plantea diseñar cada metáfora de visualización como una clase Java. Como es h
 
 El uso de anotaciones personalizadas también conlleva la implementación de un pequeño \textbf{analizador de anotaciones} basado en \textbf{Java API Reflection}. Gracias a este API se puede utilizar el método de \textbf{introspección} para analizar en tiempo de ejecución la clase anotada y proporcionar la información necesaria a la interfaz gráfica de usuario para que ésta se configure automáticamente. De este modo se satisfará el requisito de interfaz gráfica de usuario adaptable.
 
-En la figura \ref{} se muestra un breve diagrama de clases en la que se define la estructura de la anotación y su correspondiente analizador.
+En la figura \ref{fig:it2-dimension-annotation-parser-class-diagram} se muestra un breve diagrama de clases en la que se define la estructura de la anotación y su correspondiente analizador.
 
 \imagenBorde{Cap5//it2-dimension-annotation-parser-class-diagram}{1.4}{Clases que definen la estructura de la anotación GLDimension y su correspondiente analizador}{fig:it2-dimension-annotation-parser-class-diagram}
 
