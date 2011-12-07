@@ -14,6 +14,7 @@ import javax.xml.bind.JAXBException;
 import org.apache.commons.lang.WordUtils;
 import org.springframework.web.context.ContextLoader;
 
+
 import model.gl.knowledge.GLObject;
 import model.util.City;
 import model.util.Neighborhood;
@@ -32,8 +33,8 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
-import es.uclm.inf_cr.alarcos.desglosa_web.util.MyHashMapEntryType;
-import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MyHashMapEntryType;
+import es.uclm.inf_cr.alarcos.desglosa_web.persistence.XMLAgent;
 
 public class GLObjectManager {
     private CompanyDAO companyDao;

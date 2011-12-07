@@ -1,4 +1,4 @@
-package es.uclm.inf_cr.alarcos.desglosa_web.util;
+package es.uclm.inf_cr.alarcos.desglosa_web.persistence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

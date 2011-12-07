@@ -5,11 +5,24 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-6}) se aborda:
 	\item Pruebas de la integración del motor gráfico en la aplicación web y mecanismos de selección de objetos 3D.
 	\item \textbf{Resolución de los errores detectados en la disciplina de pruebas de la quinta iteración (Sección \ref{sec:iteracion-5-pruebas})}.
 \end{itemize}
-errores detectados.
+
+Como se puede observar, la planificación de esta iteración ha sufrido ligeras alteraciones como consecuencia de la no superación de la disciplina de pruebas de su predecesora. Por lo tanto, será necesario atender a cuestiones relativas tanto a la resolución de los errores detectados en la quinta iteración, como de las tareas planificadas para esta misma iteración.
+
+
 
 
 \subsubsection{Disciplina de requisitos}
 \label{sec:iteracion-6-requisitos}
+
+Durante esta disciplina se abordan cuestiones de requisitos de ambos componentes.
+
+\vspace{7mm}
+\textbf{Motor gráfico}
+
+El usuario experto que ha llevado a cabo las pruebas de la quinta iteración (Sección \ref{sec:iteracion-5-pruebas}) afirma que no percibe sensación de profundidad cuando visualiza la escena. Para resolver este problema se propone la generación de sombras en tiempo real y la adición de un \textit{skybox}\footnote{Método empleado el área de los videojuegos que se basa en la adición de imágenes de fondo para conseguir que una escena parezca más grande de lo que realmente es.}.
+
+\vspace{7mm}
+\textbf{Aplicación web}
 
 Antes de abordar el desarrollo del sistema de control de acceso, se propone al usuario final la posibilidad de dos alternativas de \textbf{política de acceso}, que define qué usuarios o sistemas pueden acceder a determinados recursos o información. La primera de ellas consiste en un \textbf{control de acceso basado en roles}; la segunda, en un \textbf{control de acceso basado en grupos}.
 
@@ -18,16 +31,24 @@ Antes de abordar el desarrollo del sistema de control de acceso, se propone al u
 	\item Control de Acceso basado en \textbf{grupos} (en inglés, \textit{\textbf{Group}-based access control} o \textbf{G}BAC). Este modelo extiende al RBAC y ofrece más flexibilidad para modelar políticas de acceso más complejas y exigentes. En este caso, los privilegios se otorgan al usuario en función de los grupos a los que pertenezca. Un usuario puede pertenecer a uno o varios grupos, y un grupo puede tener asignados uno o varios roles.
 \end{itemize}
 
-El usuario final, bajo la recomendación de un experto, ha seleccionado la segunda opción dada la gran flexibilidad y opciones de extensibilidad y mantenibilidad que proporciona en cuanto a la adición de futuros requisitos de usuario.
+El usuario final, bajo la recomendación de un experto, ha seleccionado la segunda opción dada la gran flexibilidad y opciones de extensibilidad y mantenibilidad que proporciona en cuanto a la adición de futuras políticas de acceso.
+
+
 
 
 \subsubsection{Disciplina de análisis}
+\label{sec:iteracion-6-analisis}
+
+Durante esta disciplina se abordan cuestiones de análisis de ambos componentes.
 
 \vspace{7mm}
 \textbf{Motor gráfico}
 
-error detectado en las transparencias de las torres
-se detecta que se quieren añadir sombras (req. no funcional)
+Durante esta disciplina se analiza cómo resolver dos de las cuestiones que han surgido en referencia al motor gráfico: errores de visualización en las transparencias de las metáforas y cálculo de sombras en tiempo real. Y resulta que casos tiene una estrecha relación con la posición en la que se encuentra la cámara de la escena.
+
+En primer lugar, para que el usuario perciba las transparencias correctamente, es necesario pintar los objetos de la escena desde los más lejanos a la cámara hasta los más cercanos. Por ello, es necesario diseñar algún algoritmo que, proporcionándole la lista de metáforas -con sus coordenadas en la escena- y la posición de la cámara, calcule las distancias y las ordene de forma descendente. Este algoritmo deberá ser aplicado cada vez que se ejecute cualquier tipo de movimiento sobre la cámara ya que las distancias pueden variar.
+
+En segundo lugar, para calcular las sombras en tiempo real será necesario realizar algunos cálculos en un espacio vectorial de tres dimensiones. Estos cálculos consisten en hallar el producto escalar entre el vector que indica la posición del foco de iluminación -que usualmente está junto a la cámara- y el vector normal del plano que representa el suelo de la escena. Este vector normal es muy sencillo calcularlo mediante el producto vectorial de dos vectores cualesquiera ya que el suelo se encuentra en el plano \textit{y=0}. A partir de estos datos se calculará la matriz de proyección de las sombras, sobre la cual se volverán a pintar las metáforas que conforman la escena en color negro semi-transparente.
 
 \vspace{7mm}
 \textbf{Aplicación web}
@@ -157,9 +178,39 @@ Para finalizar con la disciplina de diseño, en la figura \ref{fig:spring-securit
 \imagen{Cap5//spring-security-database-schema}{0.48}{Esquema minimalista de base de datos para configurar un GBAC mediante Spring Security}{fig:spring-security-database-schema}
 
 
+
 \subsubsection{Disciplina de implementación}
 \label{sec:iteracion-6-implementacion}
+
+Durante esta disciplina se abordan cuestiones de implementación de ambos componentes.
+
+\vspace{7mm}
+\textbf{Motor gráfico}
+
+Durante esta disciplina se lleva cabo la implementación del pintado de sombras en tiempo real, el \textit{skybox} que otorgará mayor sensación de profundidad y el algoritmo ordena las metáforas en función de la distancia con respecto de la cámara para que las transparencias sean dibujadas correctamente.
+
+En la figura \ref{fig:it6-fixed-tests-it5} se muestran dos capturas de pantalla en la que se aprecia la evolución de los gráficos generados.
+
+\imagenBorde{Cap5//it6-fixed-tests-it5}{0.45}{Gráficos generados después de la disciplina de implementación de la sexta iteración: a la izquierda no se generan sombras ni \textit{skybox}; a la derecha se incorporan ambas características}{fig:it6-fixed-tests-it5}
+
+
+\vspace{7mm}
+\textbf{Aplicación web}
+
+En esta parte de la disciplina se han implementado aquellos casos de uso que estaban planificados. De aquí en adelante, la aplicación web proporciona las siguientes funcionalidades:
+\begin{itemize}
+	\item Muestra un mapa mundial basado en Google Maps y permite que el usuario navegue a través de ellos.
+	\item Integra el motor gráfico mediante JNLPAppletLauncher y permite que el usuario ejecute la última versión del motor gráfico sin la necesidad de realizar procesos de instalación o configuración complejos. La descarga de extensiones y librerías nativas se realiza automáticamente gracias a un fichero de configuración \textit{.jnlp} que indica dónde se encuentran disponibles los distintos recursos nativos.
+	\item El usuario puede seleccionar las distintas metáforas que genera el motor gráfico y obtiene un mensaje en el cual se indica el identificador de la misma.
+\end{itemize} 
+
 
 
 \subsubsection{Disciplina de pruebas}
 \label{sec:iteracion-6-pruebas}
+
+Dada la naturaleza de los casos de uso a probar, esta disciplina de pruebas se ha llevado a cabo con la ayuda de un usuario experto y el método basado en \textit{checklists}. En ella se ha comprobado que el usuario es capaz de seleccionar las distintas metáforas de una escena generada mediante el motor gráfico, y que obtiene sus correspondientes identificadores.
+
+Además, se ha comprobado que el applet en el que se distribuye el motor gráfico carga correctamente en los siguientes navegadores: Google Chrome 15.0 o superior, Mozilla Firefox 4.0 o superior, Internet Explorer 7 o superior.
+
+Para finalizar con esta disciplina, se han repetido los casos de prueba de la quinta iteración (Sección \ref{sec:iteracion-5-pruebas} y se ha obtenido un resultado positivo.

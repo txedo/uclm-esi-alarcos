@@ -433,9 +433,9 @@ Se ha elaborado un glosario que define el concepto de algunos de los términos em
 
 \subsection{Gestión del riesgo}
 
-Se ha realizado un conjunto de estudios para decidir de qué forma se desarrollará el motor de gráficos 3D. Dado que es requisito que este componente sea independiente de la arquitectura de la máquina y del sistema operativo, consistirá en un \textbf{motor gráfico basado en OpenGL} que deberá ser integrado en la aplicación web. Las alternativas de integración que se han contemplado se basan en el uso de un \textit{canvas} de HTML5 (\textit{HyperText Markup Language}), que haría posible el uso de la tecnología WebGL, o un \textit{applet}, que permitiría desarrollar el motor gráfico con alguna librería basada en Java que permita acceder a OpenGL.
+Se ha realizado un conjunto de estudios para decidir de qué forma se desarrollará el motor de gráficos 3D. Dado que es requisito que este componente sea independiente de la arquitectura de la máquina y del sistema operativo, consistirá en un \textbf{motor gráfico basado en OpenGL} que deberá ser integrado en la aplicación web. Las alternativas de integración que se han contemplado se basan en el uso de un \textit{canvas} de HTML5 (\textit{HyperText Markup Language}), que haría posible el uso de la tecnología WebGL, o un alguna tecnología tipo \textit{applet} o \textit{Java Web Start}, que permitiría desarrollar el motor gráfico con alguna librería basada en Java que permita acceder a OpenGL.
 
-La primera alternativa ha sido desechada ya que en la fecha en la que se aborda el análisis y diseño del motor gráfico, no existe una especificación estándar del API de WebGL (la primera versión ha sido publicada el 10 de Febrero de 2011). Como consecuencia de ello, a la fecha, las versiones estables de los navegadores web tradicionales (Mozilla Firefox, Google Chrome, Internet Explorer, etcétera) aún no implementan dicha tecnología y la documentación para desarrolladores acerca de la misma no es abundante. Por esta razón, se opta por la posibilidad de utilizar una librería basada en Java e integrar el motor gráfico en la aplicación web mediante un applet.
+La primera alternativa ha sido desechada ya que en la fecha en la que se aborda el análisis y diseño del motor gráfico, no existe una especificación estándar del API de WebGL (la primera versión ha sido publicada el 10 de Febrero de 2011). Como consecuencia de ello, a la fecha, las versiones estables de los navegadores web tradicionales (Mozilla Firefox, Google Chrome, Internet Explorer, etcétera) aún no implementan dicha tecnología y la documentación para desarrolladores acerca de la misma no es abundante. Por esta razón, se opta por la posibilidad de utilizar una librería basada en Java e integrar el motor gráfico en la aplicación web mediante un applet o Java Web Start.
 
 Del conjunto de librerías basadas en Java que se han contemplado para generar gráficos 3D mediante OpenGL, se ha seleccionado \textit{JOGL (Java OpenGL)}. \textbf{JOGL} es un proyecto gratuito y de código libre, con licencia BSD (Berkeley Software Distribution) y goza de la potencia necesaria para un proyecto de estas características.
 
@@ -622,14 +622,14 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 		\item Análisis y diseño de CdU1.6.
 		\item Implementación de CdU1.5 y CdU1.6.
 		\item Obtener una arquitectura extensible que permita que la tarea de mantenimiento para añadir nuevas metáforas de visualización sea una tarea fácil.
-		\item Pruebas y verificación del correcto funcionamiento de los CdU1.1 y 1.2.
+		\item Probar los CdU1.1 y 1.2.
 	\end{itemize}\\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
 	\begin{itemize}
 		\item Diagramas de clases de análisis, comunicación, secuencia de análisis y clases de diseño de CdU1.6.
 		\item Modelo arquitectónico del componente (motor gráfico) mejorado.
-		\item Informe de verificación y validación del correcto funcionamiento de los CdU1.1 y CdU1.2.
+		\item Informe de verificación y validación de pruebas de los CdU1.1 y CdU1.2.
 	\end{itemize}\\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
@@ -663,7 +663,7 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 	\begin{itemize}
 		\item Análisis, diseño e implementación de los CdU1.3, CdU1.4 y CdU1.7.
 		\item Análisis y diseño de los CdU2.9, CdU2.11 y CdU2.7.
-		\item Pruebas y verificación de la correcta generación de gráficos de los CdU1.5 y 1.6.
+		\item Probar la correcta generación de gráficos de los CdU1.5 y 1.6.
 	\end{itemize}\\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
@@ -704,13 +704,13 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 	\begin{itemize}
 		\item Análisis y diseño de CdU2.1
 		\item Implementación de los CdU2.9, CdU2.11 y CdU2.7, lo cual supone la integración del motor gráfico en la aplicación web.
-		\item Pruebas y verificación de la integración del motor gráfico en la aplicación web y mecanismos de selección de objetos 3D, correspondientes a los CdU1.3, CdU1.4 y CdU1.7.
+		\item Probar la integración del motor gráfico en la aplicación web y los mecanismos de selección de objetos 3D, correspondientes a los CdU1.3, CdU1.4 y CdU1.7.
 	\end{itemize}\\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
 	\begin{itemize}
 		\item Diagramas de clases de análisis, comunicación, secuencia de análisis y clases de diseño de CdU2.1.
-		\item Informe de verificación y validación de la correcta generación de gráficos de los CdU1.5 y CdU1.6.
+		\item Informe de verificación y validación de la correcta integración del motor gráfico en la aplicación web y del mecanismo de selección y notificación de objetos 3D.
 	\end{itemize}\\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Relevancia de las disciplinas}} &
@@ -751,6 +751,7 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
 	\begin{itemize}
 		\item Diagramas de clases de análisis, comunicación, secuencia de análisis y clases de diseño de CdU2.2 y CdU2.10.
+		\item Modelo arquitectónico de la aplicación web.
 		\item Prototipo de la interfaz gráfica de usuario de la herramienta de configuración de perfiles.
 		\item Entorno de desarrollo configurado tanto para la ejecución de pruebas unitarias y funcionales como para la generación de informes.
 		\item Informe de pruebas unitarias y funcionales de CdU2.1, CdU2.9, CdU2.11 y CdU2.7.

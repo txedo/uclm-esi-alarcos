@@ -13,11 +13,11 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-5}) se aborda:
 
 Dada la estrecha relación que existe entre los casos de uso CdU1.3 y CdU1.7, el análisis de ambos se ha realizado de manera conjunta.
 
-En la figura \ref{fig:it5-selection-communication-diagram} se muestra un diagrama de comunicación. Este diagrama representa el paso de mensajes que se produce entre los distintos controladores del motor gráfico cuando el usuario ejecuta un \textit{clic} sobre una metáfora de visualización. Entre ellos destaca un nuevo elemento llamdo \textit{observador}. Este elemento, que se ha representado con una clase de control, en realidad consistirá en un \textbf{patrón observador}. Por medio de este patrón, será posible notificar el resultado de una operación de selección a la interfaz gráfica de usuario sin acoplar la capa de dominio con la capa de presentación.
+En la figura \ref{fig:it5-selection-communication-diagram} se muestra un diagrama de comunicación que representa el paso de mensajes que se produce entre los distintos controladores del motor gráfico cuando el usuario ejecuta un \textit{clic} sobre una metáfora de visualización. Entre ellos destaca un nuevo elemento llamdo \textit{observador}. Este elemento, que se ha representado con una clase de control, en realidad consistirá en un \textbf{patrón observador}. Por medio de este patrón, será posible notificar el resultado de una operación de selección a la interfaz gráfica de usuario sin acoplar la capa de dominio con la capa de presentación.
 
 \imagenBorde{Cap5//it5-selection-communication-diagram}{1.1}{Diagrama de comunicación para CdU1.3 y 1.7}{fig:it5-selection-communication-diagram}
 
-Por otro lado, para modelar el cambio de vistas o niveles de visualización, se proporciona un diagrama de flujo (Fig. \ref{fig:it5-change-level-flow-diagram}). Este diagrama es una representación gráfica del concepto que habrá que implementar más adelante para que el hilo de JOGL pueda realizar los cambios de escena correctamente.
+Por otro lado, el cambio de vistas o niveles de visualización no es una tarea trivial debido a las limitaciones de implementación que presenta JOGL en lo que a múltiples hilos de ejecución se refiere. Como Java implementa los \textit{listeners} de teclado y ratón como hilos separados del hilo principal, no es posible cambiar la vista directamente desde ellos. Así pues, dichos hilos cambiarán una variable de control que será examinada por el hilo principal de ejecución que será el encargado de hacer el cambio de vista efectivo. Para comprender mejor esta idea se proporciona un diagrama de flujo (Fig. \ref{fig:it5-change-level-flow-diagram}).
 
 \imagenBorde{Cap5//it5-change-level-flow-diagram}{1.0}{Diagrama de flujo para CdU1.4}{fig:it5-change-level-flow-diagram}
 
@@ -32,13 +32,13 @@ Durante esta disciplina se abordan cuestiones de diseño tanto del motor gráfico 
 \vspace{7mm}
 \textbf{Motor gráfico}
 
-La selección de objetos es una funcionalidad igual para todas las vistas. Por ello, su implementación se hará una sola vez en la clase \textit{GLViewManager} a partir de la cual surgen todas las vistas especializadas. Por otro lado, cada vista -\textit{GLTowerViewManager}, \textit{GLProjectViewManager} y \textit{GLFactoryViewManager}- deberá implementar de manera específica cómo tratar el objeto seleccionado. No obstante, las acciones que se llevarán a cabo con el objeto seleccionado no se han delegado en el motor gráfico, sino que se dejarán a merced de la aplicación contenedora que, en este caso, es una aplicación web. Esta decisión se fundamenta en el deseo de maximizar la capacidad de reutilización del motor gráfico en otros proyectos.
+La selección de objetos es una funcionalidad similar en todas las vistas. Por ello, su implementación se hará una sola vez en la clase \textit{GLViewManager} a partir de la cual surgen todas las vistas especializadas (Fig. \ref{fig:it5-observer-class-diagram}). Por otro lado, cada vista -\textit{GLTowerViewManager}, \textit{GLProjectViewManager} y \textit{GLFactoryViewManager}- deberá implementar de manera específica cómo tratar el objeto seleccionado. No obstante, las acciones que se llevarán a cabo con el objeto seleccionado no se han delegado en el motor gráfico, sino que se dejarán a merced de la aplicación contenedora que, en este caso, es una aplicación web. Esta decisión se fundamenta en el deseo de maximizar la capacidad de reutilización del motor gráfico en otros proyectos.
 
-Para que el motor gráfico pueda notificar el objeto seleccionado a la aplicación contenedora, cualesquiera que sea la tecnología en la que se implemente su interfaz gráfica de usuario (jsp, swing, awt, etcétera), se ha diseñado el sistema de notificación mediante un \textbf{patrón observador} \ref{fig:it5-observer-class-diagram}. El uso de este patrón permite que la notificación de selección de objetos no tenga ningún tipo de dependencia con la capa de presentación del motor gráfico ni con la aplicación contenedora. La única dependencia de uso se da entre la capa de presentación del motor gráfico con la capa de presentación de la aplicación contenedora. Aún así, esta dependencia puede reducirse casi al completo mediante un patrón \textbf{Adapter}.
+Para que el motor gráfico pueda notificar el objeto seleccionado a la aplicación contenedora, cualesquiera que sea la tecnología en la que se implemente su interfaz gráfica de usuario (jsp, swing, awt, etcétera), se ha diseñado el sistema de notificación mediante un \textbf{patrón observador} (Fig. \ref{fig:it5-observer-class-diagram}). El uso de este patrón permite que la notificación de selección de objetos no tenga ningún tipo de dependencia con la capa de presentación del motor gráfico ni con la aplicación contenedora. La única dependencia de uso se da entre la capa de presentación del motor gráfico con la capa de presentación de la aplicación contenedora. Aún así, esta dependencia puede reducirse casi al completo mediante un patrón \textbf{Adapter}.
 
 \imagenBorde{Cap5//it5-observer-class-diagram}{0.9}{Diagrama de clases de diseño para CdU1.3 y CdU1.7}{fig:it5-observer-class-diagram}
 
-El diagrama de secuencia que se muestra en la figura \ref{fig:it5-selection-sequence-diagram}, representa una vista dinámica del funcionamiento del mecanismo de selección de objetos. Para empezar, es necesario que la ventana contenedora del motor gráfico se añada a la lista de observadores para que se le puedan notificar las operaciones de selección. En este caso, como el motor gráfico se integrará el sistema mediante un \textit{applet}, la ventana contenedora será el propio applet. A continuación, cuando el usuario efectúa un clic sobre una metáfora de visualización, se desencadena una serie de eventos y paso de mensajes. Finalmente, el gestor de vista activo \textbf{notificará al controlador NotifyUIManager} qué objeto ha sido seleccionado para que éste lo propague por todos los observadores que están esperando ser notificados. Entre estos observadores, se encuentra el propio applet contenedor del motor gráfico.
+El diagrama de secuencia que se muestra en la figura \ref{fig:it5-selection-sequence-diagram}, representa una vista dinámica del funcionamiento del mecanismo de selección de objetos. Para empezar, es necesario que el contenedor del motor gráfico se añada a la lista de observadores para que se le puedan notificar las operaciones de selección cuando sea requerido. A continuación, cuando el usuario efectúa un clic sobre una metáfora de visualización, se desencadena una serie de eventos y paso de mensajes. Finalmente, el gestor de vista activo \textbf{notificará al controlador NotifyUIManager} qué objeto ha sido seleccionado para que éste lo notifique a todos los observadores, entre los que se encuentra el contenedor del motor gráfico.
 
 \imagenBorde{Cap5//it5-selection-sequence-diagram}{0.9}{Diagrama de secuencia para CdU1.3 y 1.7}{fig:it5-selection-sequence-diagram}
 
@@ -46,12 +46,17 @@ El diagrama de secuencia que se muestra en la figura \ref{fig:it5-selection-sequ
 \vspace{7mm}
 \textbf{Aplicación web}
 
-Tal y como se detalló en la disciplina de diseño de la tercera iteración (Seccion \ref{sec:iteracion-3-diseño}), el CdU2.7 y la geolocalización de factorías se satisfará mediante alguno de los múltiples \textbf{Sistema de Información Geográfica} (SIG o GIS, en su acrónimo inglés Geographic Information System) que ofrecen un API para desarrolladores basada en JavaScript, como Bing Maps o Google Maps. Para concretar, en este PFC se utilizará Google Maps ya que dispone de un API bien documentada y su licencia se adapta a los requisitos del mismo.
+Tal y como se propusoen la disciplina de diseño de la tercera iteración (Seccion \ref{sec:iteracion-3-diseño}), el CdU2.7 y CdU2.8 se satisfará mediante alguno de los múltiples \textbf{Sistema de Información Geográfica} (SIG o GIS, en su acrónimo inglés Geographic Information System) que ofrecen un API para desarrolladores basada en JavaScript, como Bing Maps o Google Maps. Para concretar, en este PFC se utilizará Google Maps ya que dispone de un API bien documentada y su licencia se adapta a los requisitos del mismo.
 
-Por otro lado, 
+Por otro lado, surge la necesidad de integrar el motor gráfico en la aplicación web. Esta operación se llevará a cabo mediante un \textit{applet} ya que, desde la versión 1.6.0\_10 del JDK (Java Development Kit), su eficiencia se ha mejorado notablemente y hace muy factible el despliegue de grandes aplicaciones contenidas en los mismos. No obstante, persiste la problemática relacionada con la dependencia que posee el motor gráfico con múltiples librerías de propósito general -como \textit{jogl.jar} y \textit{gluegen-rt.jar}- y librerías nativas, es decir, que dependen de la arquitectura y del sistema operativo sobre el que se ejecuta la aplicación. 
 
-ejecutar herramienta con applet launcher jogamp para abstraer la arquitectura de la máquina, el navegador y el sistema operativo
-applet -> webapp mediante JS
+Persiguiendo el objeto de desplegar el motor gráfico mediante algún mecanismo que abstraiga al usuario de la distribución e instalación del motor gráfico y sus dependencias, se propone una solución basada en el componente \textbf{JNLPAppletLauncher}.
+
+JNLPAppletLauncher \cite{jogamp-jnlpappletlauncher}\cite{java2-jnlpappletlauncher} es un componente de propósito general basado en la tecnología JNLP\footnote{\textbf{JNLP (Java Network Launching Protocol)} es un protocolo en formato XML que define el procedimiento a seguir para ejecutar una aplicación Java. Este protocolo incluye información sobre el paquete JAR que se distribuye, el nombre de la clase principal de la aplicación y parámetros adicionales. Con esta información JNLP hace posible la ejecución de aplicaciones Java directamente desde Internet mediante un navegador web, sin la necesidad de instalarlas en el sistema del usuario, y asegura que el cliente siempre ejecute la última versión de la aplicación.}, utilizado para desplegar applets que utilizan extensiones que contienen código nativo como Java3D, JOGL (Java binding for OpenGL -Graphics Library- API) o JOAL (Java binding for OpenAL -Audio Library- API).
+
+Para finalizar, y debido a la integración de ambos componentes mediante un applet, cabe destacar que el paso de mensajes, en ambas direcciones, se realizará mediante JavaScript.
+
+
 
 
 \subsubsection{Disciplina de implementación}
@@ -62,11 +67,13 @@ Durante esta disciplina se ha llevado a cabo la implementación de los casos de u
 \lstinputlisting[language=Java,caption={Fragmento de código Java para la implementación de CdU1.4},label=lst:cdu1.4]{snippets//change-view-state-machine.txt}
 
 
+
+
 \subsubsection{Disciplina de pruebas}
 \label{sec:iteracion-5-pruebas}
 
 Las pruebas planificadas en esta iteración se han realizado nuevamente con la ayuda de un usuario experto. En este caso, el usuario debe validar la correcta configuración y visualización de la escena y las metáforas de visualización.
 
-Al igual que en las pruebas de la disciplina anterior (Sección \ref{sec:iteracion-4-pruebas}), en esta disciplina se ha vuelto a emplear el método basado en \textit{checklists}. No obstante, en este caso el usuario ha detectado errores en la visualización a través de las transparencias de la metáfora de torres genéricas y ha resaltado la falta de percepción de profundidad.
+Al igual que en las pruebas de la disciplina anterior (Sección \ref{sec:iteracion-4-pruebas}), en esta disciplina se ha vuelto a emplear el método basado en \textit{checklists}. No obstante, en este caso el usuario ha detectado errores en la visualización a través de las transparencias de la metáfora de torres genéricas. Esto es debido a que las transparencias sólo se visualizan correctamente si los elementos son pintados en pantalla de manera ordenada desde las posiciones más lejanas hasta las más cercanas, respecto de la cámara. Además, ha hecho constar la falta de percepción de profundidad.
 
 En conclusión, las pruebas planificadas para esta iteración \textbf{no} han sido superadas y la resolución de los problemas detectados será añadida a la siguiente iteración.

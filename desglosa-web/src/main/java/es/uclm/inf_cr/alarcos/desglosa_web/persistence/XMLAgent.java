@@ -1,4 +1,4 @@
-package es.uclm.inf_cr.alarcos.desglosa_web.util;
+package es.uclm.inf_cr.alarcos.desglosa_web.persistence;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,6 +7,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
+import persistence.ResourceRetriever;
+
 
 public final class XMLAgent {
 

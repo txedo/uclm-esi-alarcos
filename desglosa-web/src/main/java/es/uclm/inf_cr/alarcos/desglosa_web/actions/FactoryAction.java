@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 
+
 import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
@@ -15,7 +16,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
-import es.uclm.inf_cr.alarcos.desglosa_web.util.FileUtil;
+import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
 
 /* Experience shows that chaining should be used with care. If chaining is overused, 
  * an application can turn into "spaghetti code". Actions should be treated as a 
