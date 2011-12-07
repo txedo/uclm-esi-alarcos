@@ -9,16 +9,57 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-7}) se aborda:
 
 \subsubsection{Disciplina de análisis}
 
+El caso de uso CdU2.2 es una funcionalidad con cierta complejidad e importancia en la herramienta. Por esta razón se ha elaborado un diagrama de casos de uso más detallado (Fig. \ref{fig:it7-profile-usecase-diagram}). Además, se facilita la descripción del escenario general para facilitar el estudiod el diagrama (Tabla \ref{table:cdu2.2-usecase-description}).
+
 \imagenBorde{Cap5//it7-profile-usecase-diagram}{1.1}{Diagrama de casos de uso para la gestión de perfiles de visualización (CdU2.2)}{fig:it7-profile-usecase-diagram}
 
-tabla de un escenario
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{15cm} |}
+	\hline
+	\textbf{Identificador}: CdU2.2 \\
+	\hline
+	\textbf{Nombre}: Gestión de perfiles (Crear perfiles) \\
+	\hline
+	\textbf{Descripción}: Funcionalidad para que el administrador del sistema pueda configurar y crear perfiles de visualización. \\
+	\hline
+	\textbf{Precondiciones}: El usuario debe haber iniciado sesión en el sistema como \textit{administrador}. \\
+	\hline
+	\textbf{Post-condiciones}: Se crea un perfil de visualización en formato XML. \\
+	\hline 
+	\textbf{Escenario general}
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+		\item El sistema muestra al usuario una lista de entidades y una lista de metáforas de visualización.
+		\item El usuario selecciona una entidad.
+		\item El sistema muestra los atributos mapeables de la entidad.
+		\item El usuario selecciona una metáfora de visualización.
+		\item El sistema muestra las dimensiones mapeables de la metáfora.
+		\item El usuario configura los mapeos entre los atributos de la entidad y las dimensiones de la metáfora, y datos adicionales del perfil.
+		\item El sistema guarda el perfil en formato XML.	\vspace{-6mm}
+	\end{enumerate} 
+	\\	
+	\hline 
+\end{tabular}
+\caption{Descripción del caso de uso \textit{Gestión de perfiles (Crear perfiles)}}
+\label{table:cdu2.2-usecase-description}
+\end{table}
 
-\imagenBorde{Cap5//it7-profile-communication-class-diagram}{0.7}{Diagrama de comunicación la configuración de un perfil de visualización}{fig:it7-profile-communication-class-diagram}
+El diagrama de casos de uso y la descripción de sus escenarios no proporcionan una vista detallada de la funcionalidad, sino que muestran la interacción entre el usuario y el sistema. Para comenzar a obtener vistas más específicas, se elabora el diagrama de comunicación a partir de ambos modelos. Este diagrama ofrece una vista más detallada en cuanto a los controladores y entidades que intervienen en la ejecución de la operación.
+
+En la figura \ref{fig:it7-profile-communication-class-diagram} se muestra el diagrama de comunicación del caso de uso CdU2.2. En él observa que la clase de control \textit{ProfileAction} actúa de fachada entre la interfaz gráfica de usuario y el resto de controladores y entidades. Esta estructura se da en todos los diagramas de comunicación de la aplicación web porque la fachada es una acción de Struts 2 y este es el fundamento del patrón MVC que implementa dicho framework.
+
+\imagenBorde{Cap5//it7-profile-communication-class-diagram}{0.75}{Diagrama de comunicación la configuración de un perfil de visualización}{fig:it7-profile-communication-class-diagram}
+
+También destaca la interacción con las clases de un paquete denominado \textit{motor gráfico}. Esto sucede porque la aplicación web, que actúa como contenedora del motor gráfico, debe tener cierto conocimiento sobre el mismo y, como consecuencia, dependencia. En este caso, la dependencia se encuentra sobre la clase \textit{DimensionAnnotationParser}, que proporcionará a la aplicación web la última versión de las dimensiones de las metáforas.
+
+Con el estudio de análisis que se ha realizado durante esta disciplina, se modela el primer prototipo de la interfaz gráfica de usuario (Fig. \ref{fig:it7-configure-profile-ui}). Esta interfaz se ha diseñado siguiendo la idea del típico \textit{asistente de instalación} que permite aportar los datos de configuración paso a paso.
 
 \imagenBorde{Cap5//it7-configure-profile-ui}{0.9}{Prototipo de la interfaz gráfica para la configuración de perfiles}{fig:it7-configure-profile-ui}
-
-\lstinputlisting[language=XML,caption={Fragmento de un perfil de visualización en formato XML},label=lst:profile-snippet]{snippets//profile-snippet.xml}
-
 
 \subsubsection{Disciplina de diseño}
 
@@ -38,11 +79,24 @@ De entre todos los subpaquetes destacan los siguientes:
 
 \imagenBorde{Cap5//it7-webapp-package-diagram}{1.1}{Diagrama de paquetes de la aplicación web}{fig:it7-webapp-package-diagram}
 
-Para abordar cuestiones más específicas, se modela el diagrama de clases que da forma a la estructura de los perfiles de visualización (Fig. \ref{fig:it7-profile-class-diagram}). La estructura diseñada se corresponde exactamente con la que se propone en el \textit{snippet} de la disciplina de análisis de esta misma iteración (Listado \ref{lst:profile-snippet}). Cabe destacar que, tal y como se detalla en dicho diagrama, todas las clases deberán ser debidamente anotadas con anotaciones de JAXB para que sea posible su \textit{serialización} a formato XML y su posterior escritura en un fichero.
+Durante esta disciplina también se ha abordado el diseño de cuestiones más especificas, como la estructura de los perfiles de visualización. Para comenzar, se ha estudiado el tipo de información que se desea hacer persistente y la estructura del fichero XML que se escribirá cuando se cree un perfil. A continuación se detallan los nodos y atributos que conforman dicha estructura:
+\begin{itemize}
+	\item \textbf{profile}: es el nodo raíz de la estructura y contiene dos atributos: \textit{model}, que referencia a la metáfora de visualización, y \textit{entity}, que referencia a la entidad que se quiere visualizar.
+	\item \textbf{name}: nombre del perfil.
+	\item \textbf{description}: cadena de texto que describe el tipo de información que podrá visualizar el usuario por medio de este perfil.
+	\item \textbf{mappings}: lista de asociaciones que contiene elementos de tipo \textit{mapping}.
+	\item \textbf{mapping}: elemento que contiene la asociación entre un atributo de la entidad -\textit{entityAttr}-, una dimensión del modelo -\textit{modelAttr}-, y una lista de reglas -\textit{rule}- si procede.
+	\item \textbf{constants}: lista de nodos \textit{constant} que contiene la configuración de las dimensiones del modelo que no se han asociado con ningún atributo de la entidad. El valor constante de una dimensión es tomado como su valor por defecto.
+	\item \textbf{caption}: lista de nodos \textit{entry} que configura la leyenda informativa que será mostrada en la escena.
+\end{itemize}
+
+\lstinputlisting[language=XML,caption={Ejemplo de un perfil de visualización en formato XML},label=lst:profile-snippet]{snippets//profile-snippet.xml}
+
+En el listado \ref{lst:profile-snippet} se propone un ejemplo que cumple con la estructura expuesta anteriormente. Para poder obtener un fichero de este tipo mediante la tecnología JAXB, es necesario diseñar una jerarquía de clases que represente dicha estructura (Fig \ref{fig:it7-profile-class-diagram}). Acto seguido, es necesario anotar debidamente los atributos de las clases mediante anotaciones de JAXB para que sea posible su \textit{serialización} a formato XML y su posterior escritura en un fichero..
 
 \imagenBorde{Cap5//it7-profile-class-diagram}{1.1}{Diagrama de clases de los perfiles de de visualización}{fig:it7-profile-class-diagram}
 
-
+Para finalizar, cabe destacar que cuando se desee configurar una escena a partir de un perfil de visualización, primero habrá que \textit{deserializarlo}, es decir, instanciar la jerarquía de objetos definida por la estructura de clases de la figura \ref{fig:it7-profile-class-diagram}. Acto seguido, habrá que operar con dichos objetos e instanciar las metáforas de visualización por medio del método de \textbf{reflexión}. Por último, se construirá una cadena con formato JSON que será proporcionada al motor gráfico como dato de entrada para que éste genere los gráficos.
 
 
 \subsubsection{Disciplina de implementación}

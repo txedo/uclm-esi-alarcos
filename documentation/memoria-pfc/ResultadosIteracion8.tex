@@ -1,23 +1,31 @@
-\subsubsection{Disciplina de requisitos}
-\label{sec:iteracion-8-requisitos}
-
-
+En esta iteración (Tabla \ref{table:ficha-iteracion-8}) se aborda:
+\begin{itemize}
+	\item Análisis y diseño de las funcionalidades relativas a la gestión de compañías, factorías, proyectos y subproyectos.
+	\item Implementación de la gestión y selección de perfiles de visualización.
+	\item Pruebas unitarias y funcionales relativas a la gestión y selección de perfiles de visualización.
+\end{itemize}
 
 
 \subsubsection{Disciplina de análisis}
 \label{sec:iteracion-8-analisis}
 
+\imagenBorde{Cap5//it8-management-usecase-diagram}{0.9}{Diagrama de casos de uso para la gestión de compañías y factorías (CdU2.3 y CdU2.4)}{fig:it8-management-usecase-diagram}
 
+\imagenBorde{Cap5//it8-company-create-communication-diagram}{0.9}{Diagrama de comunicación para la creación de una compañía (CdU2.3)}{fig:it8-company-create-communication-diagram}
 
 
 \subsubsection{Disciplina de diseño}
 \label{sec:iteracion-8-diseño}
 
+\imagenBorde{Cap5//it8-company-create-sequence-diagram}{0.9}{Diagrama de secuencia para la creación de una compañía (CdU2.3)}{fig:it8-company-create-sequence-diagram}
 
+\imagenBorde{Cap5//it8-management-class-diagram}{0.9}{Diagrama de clases de dominio}{fig:it8-management-class-diagram}
 
 
 \subsubsection{Disciplina de implementación}
 \label{sec:iteracion-8-implementacion}
+
+implementación de 2.10 mediante reflexion -- conlleva la generacion de la cadena json mediante la clase city
 
 
 
@@ -25,7 +33,9 @@
 \subsubsection{Disciplina de pruebas}
 \label{sec:iteracion-8-pruebas}
 
+Durante esta disciplina se construyen los casos de prueba que sirven para
+comprobar la funcionalidad de los requisitos implementados la disciplina de implementación de esta misma iteración.
 
+Cabe destacar que uno de los casos de prueba consiste comprobar que los tipos de datos asociados los atributos de las entidades y las dimensiones de la metáfora sean compatibles.
 
-
-Por otro lado, se propone que un \textit{perfil de visualización} contenga información complementaria que será mostrada dentro de la escena 3D a modo de \textit{leyenda informativa}. Esta característica es muy importante ya que el usuario que disfrute de la visualización debe disponer de una realimentación que le indice qué significan los colores y dimensiones que está analizando.
+No se incorporan más detalles al documento para no alargar la extensión del mismo.

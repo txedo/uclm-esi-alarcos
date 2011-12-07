@@ -67,7 +67,9 @@ Llegados a este punto, se procede a la descripción de los casos de uso que se es
 \centering
 \begin{tabular}{| >{\arraybackslash}m{15cm} |}
 	\hline
-	\textbf{Nombre}: Iniciar sesión (Login) \\
+	\textbf{Identificador}: CdU2.1 \\
+	\hline
+	\textbf{Nombre}: Acceder al sistema (Iniciar sesión) \\
 	\hline
 	\textbf{Descripción}: Funcionalidad para que un usuario pueda autenticarse y acceder al sistema \\
 	\hline
@@ -75,7 +77,7 @@ Llegados a este punto, se procede a la descripción de los casos de uso que se es
 	\hline
 	\textbf{Post-condiciones}: El usuario accede al sistema. \\
 	\hline 
-	\textbf{Flujo principal}
+	\textbf{Escenario general}
 	\vspace{-4mm}
 	\begin{enumerate}
 	\setlength{\itemsep}{-7.5pt}
@@ -91,7 +93,7 @@ Llegados a este punto, se procede a la descripción de los casos de uso que se es
 	\end{enumerate} 
 	\\	
 	\hline
-	\textbf{Flujo alternativo 1: usuario o contraseña incorrectos}
+	\textbf{Escenario alternativo 1: usuario o contraseña incorrectos}
 	\begin{enumerate}
 	\vspace{-4mm}
 	\setlength{\itemsep}{-7.5pt}
@@ -105,7 +107,7 @@ Llegados a este punto, se procede a la descripción de los casos de uso que se es
 	\end{enumerate}
 	\\	
 	\hline
-	\textbf{Flujo alternativo 2: usuario inexistente}
+	\textbf{Escenario alternativo 2: usuario inexistente}
 	\begin{enumerate}
 	\vspace{-4mm}
 	\setlength{\itemsep}{-7.5pt}
@@ -117,7 +119,7 @@ Llegados a este punto, se procede a la descripción de los casos de uso que se es
 	\end{enumerate}
 	\\
 	\hline
-	\textbf{Flujo alternativo 3: cuenta de usuario bloqueada, caducada o deshabilitada}
+	\textbf{Escenario alternativo 3: cuenta de usuario bloqueada, caducada o deshabilitada}
 	\begin{enumerate}
 	\vspace{-4mm}
 	\setlength{\itemsep}{-7.5pt}
@@ -133,7 +135,7 @@ Llegados a este punto, se procede a la descripción de los casos de uso que se es
 	\\
 	\hline 
 \end{tabular}
-\caption{Descripción del caso de uso \textit{Iniciar Sesión}}
+\caption{Descripción del caso de uso \textit{Acceder al sistema (Iniciar sesión)}}
 \label{table:login-usecase-description}
 \end{table}
 
