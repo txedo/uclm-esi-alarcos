@@ -7,12 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 
+
 import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
-import es.uclm.inf_cr.alarcos.desglosa_web.util.FileUtil;
+import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
 
 public class CompanyAction extends ActionSupport implements
         GenericActionInterface {

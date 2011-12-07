@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang.WordUtils;
 import org.springframework.web.context.ContextLoader;
 
+
 import util.AnnotationParser;
 
 import net.sf.json.JSONArray;
@@ -22,11 +23,11 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Field;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MyHashMapType;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyAnnotationParser;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper;
-import es.uclm.inf_cr.alarcos.desglosa_web.util.FileUtil;
-import es.uclm.inf_cr.alarcos.desglosa_web.util.MyHashMapType;
-import es.uclm.inf_cr.alarcos.desglosa_web.util.XMLAgent;
+import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
+import es.uclm.inf_cr.alarcos.desglosa_web.persistence.XMLAgent;
 
 public class ProfileAction extends ActionSupport implements
         GenericActionInterface {

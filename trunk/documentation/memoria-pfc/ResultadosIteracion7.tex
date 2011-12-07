@@ -9,10 +9,38 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-7}) se aborda:
 
 \subsubsection{Disciplina de análisis}
 
+\imagenBorde{Cap5//it7-profile-usecase-diagram}{1.1}{Diagrama de casos de uso para la gestión de perfiles de visualización (CdU2.2)}{fig:it7-profile-usecase-diagram}
 
+tabla de un escenario
+
+\imagenBorde{Cap5//it7-profile-communication-class-diagram}{0.7}{Diagrama de comunicación la configuración de un perfil de visualización}{fig:it7-profile-communication-class-diagram}
+
+\imagenBorde{Cap5//it7-configure-profile-ui}{0.9}{Prototipo de la interfaz gráfica para la configuración de perfiles}{fig:it7-configure-profile-ui}
+
+\lstinputlisting[language=XML,caption={Fragmento de un perfil de visualización en formato XML},label=lst:profile-snippet]{snippets//profile-snippet.xml}
 
 
 \subsubsection{Disciplina de diseño}
+
+Se debe diseñar una arquitectura adecuada para que la aplicación tenga una organización estructural adecuada que haga posible la reutilización de código, la aplicación de patrones estructurales y de diseño, y reduzca el acoplamiento entre capas y clases.
+
+En la figura \ref{fig:it7-webapp-package-diagram} se muestra un diagrama de paquetes que cumple con las expectativas mencionadas. A grandes rasgos se observan tres paquetes -presentación, dominio y persistencia- que se corresponden con las tres capas del \textbf{patrón MVC} (Modelo-Vista-Controlador). Dentro de cada uno de estos grandes paquetes se han modelado distintos subpaquetes que agrupan ficheros y clases de características similares. Por ejemplo, en el paquete \textit{jsp} se incluirán todas las páginsa jsp, en el paquete \textit{js} contendrá las librerías de JavaScript, etcétera.
+
+De entre todos los subpaquetes destacan los siguientes:
+\begin{itemize}
+	\item \textbf{dao}, que a su vez contiene al subpaquete \textit{hibernate}. Esto indica que existirá una especificación genérica de la estructura que debe tener un fichero que implemente el \textbf{patrón DAO} (Data Access Object) y, además, existirá una implementación específica basada en Hibernate.
+	\item \textbf{applet}, que presenta una asociación especial con el paquete \textit{Desglosa Graphics Engine}. Esta asociación indica que el paquete \textit{applet} contiene el componente del motor gráfico.
+	\item \textbf{actions}, que contiene las acciones de Struts 2 que satisfarán los requisitos funcionales del sistema. Nótese la dependencia de este paquete con los paquetes de control, modelo, utilidades, etcétera.
+	\item \textbf{interceptor}, que contiene interceptores que se implementarán para extender la funcionalidad de Struts 2 a las necesidades del sistema.
+	\item \textbf{control}, en el que se incluirán todas las clases de utilidades que permiten operar con las clases de dominio.
+	\item \textbf{model}, en el que se incluirán las clases de dominio.
+\end{itemize}
+
+\imagenBorde{Cap5//it7-webapp-package-diagram}{1.1}{Diagrama de paquetes de la aplicación web}{fig:it7-webapp-package-diagram}
+
+Para abordar cuestiones más específicas, se modela el diagrama de clases que da forma a la estructura de los perfiles de visualización (Fig. \ref{fig:it7-profile-class-diagram}). La estructura diseñada se corresponde exactamente con la que se propone en el \textit{snippet} de la disciplina de análisis de esta misma iteración (Listado \ref{lst:profile-snippet}). Cabe destacar que, tal y como se detalla en dicho diagrama, todas las clases deberán ser debidamente anotadas con anotaciones de JAXB para que sea posible su \textit{serialización} a formato XML y su posterior escritura en un fichero.
+
+\imagenBorde{Cap5//it7-profile-class-diagram}{1.1}{Diagrama de clases de los perfiles de de visualización}{fig:it7-profile-class-diagram}
 
 
 

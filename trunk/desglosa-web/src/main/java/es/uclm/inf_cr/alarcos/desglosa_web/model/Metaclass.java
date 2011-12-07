@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import es.uclm.inf_cr.alarcos.desglosa_web.util.MyHashMapType;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MyHashMapType;
 
 @XmlRootElement(name = "profile")
 @XmlAccessorType(XmlAccessType.FIELD)
