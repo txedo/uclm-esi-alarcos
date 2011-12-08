@@ -23,17 +23,16 @@ public class GLAntennaBall extends GLObject3D {
     private float childBallRadius;
     private Color leftChildBallColor;
     private Color rightChildBallColor;
-    @GLDimension
-    private int leftChildBallValue;
-    @GLDimension
-    private int rightChildBallValue;
+    @GLDimension(type = "string")
+    private String leftChildBallValue;
+    @GLDimension(type = "string")
+    private String rightChildBallValue;
     private final float ANTENNA_WIDTH = 3.0f;
     private final float ANTENNA_ANGLE = 45.0f;
     private final float ANTENNA_LENGTH = 0.5f;
 
     public static final float MAX_SIZE = 1.5f;
-    public static final float MAX_HEIGHT = MAX_SIZE * 2 + 3.0f
-            * (float) Math.sin(45.0f);
+    public static final float MAX_HEIGHT = MAX_SIZE * 2;
 
     private GLUquadric quadric;
 
@@ -54,8 +53,8 @@ public class GLAntennaBall extends GLObject3D {
         this.leftChildBallColor = new Color(0.0f, 1.0f, 0.0f);
         this.rightChildBallColor = new Color(1.0f, 0.0f, 0.0f);
 
-        this.leftChildBallValue = 0;
-        this.rightChildBallValue = 0;
+        this.leftChildBallValue = "";
+        this.rightChildBallValue = "";
 
         this.maxWidth = GLAntennaBall.MAX_SIZE * 2.0f;
         this.maxDepth = GLAntennaBall.MAX_SIZE * 2.0f;
@@ -72,8 +71,8 @@ public class GLAntennaBall extends GLObject3D {
 
         // Draw the child balls
         if (shadow) {
-            this.drawChildBall(true, super.SHADOW_COLOR, -1);
-            this.drawChildBall(false, super.SHADOW_COLOR, -1);
+            this.drawChildBall(true, super.SHADOW_COLOR, "");
+            this.drawChildBall(false, super.SHADOW_COLOR, "");
         } else {
             this.drawChildBall(true, this.leftChildBallColor,
                     this.leftChildBallValue);
@@ -115,7 +114,7 @@ public class GLAntennaBall extends GLObject3D {
         GLUtils.disableMultisample();
     }
 
-    private void drawChildBall(boolean left, Color color, int value)
+    private void drawChildBall(boolean left, Color color, String value)
             throws GLSingletonNotInitializedException {
         int x = 1;
         if (left)
@@ -152,12 +151,9 @@ public class GLAntennaBall extends GLObject3D {
         GLSingleton.getGL().glColor4fv(color.getColorFB());
         GLSingleton.getGLU().gluSphere(this.quadric, this.childBallRadius,
                 this.subdivisions, this.subdivisions);
-        if (value >= 0) {
-            // Draw its value
-            GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
-            GLUtils.renderBitmapString(0, this.childBallRadius * 1.10f, 0, 2,
-                    "" + value);
-        }
+        // Draw its value
+        GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
+        GLUtils.renderBitmapString(0, this.childBallRadius * 1.10f, 0, 4, "" + value);
         GLSingleton.getGL().glPopMatrix();
     }
 
@@ -185,19 +181,19 @@ public class GLAntennaBall extends GLObject3D {
         this.label = label;
     }
 
-    public int getLeftChildBallValue() {
+    public String getLeftChildBallValue() {
         return leftChildBallValue;
     }
 
-    public void setLeftChildBallValue(int leftChildBallValue) {
+    public void setLeftChildBallValue(String leftChildBallValue) {
         this.leftChildBallValue = leftChildBallValue;
     }
 
-    public int getRightChildBallValue() {
+    public String getRightChildBallValue() {
         return rightChildBallValue;
     }
 
-    public void setRightChildBallValue(int rightChildBallValue) {
+    public void setRightChildBallValue(String rightChildBallValue) {
         this.rightChildBallValue = rightChildBallValue;
     }
 

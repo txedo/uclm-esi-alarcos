@@ -132,7 +132,7 @@ public class GLProjectViewManager extends GLViewManager {
                 Vector3f offsetPosition = objectPosition
                         .add(normalizedOppositeCameraViewDir.mult(offset));
                 GLUtils.renderBitmapString(offsetPosition.getX(), 0.1f,
-                        offsetPosition.getZ(), 5,
+                        offsetPosition.getZ(), 4,
                         ((GLAntennaBall) glo).getLabel());
             }
         }
