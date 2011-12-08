@@ -9,23 +9,51 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-8}) se aborda:
 \subsubsection{Disciplina de análisis}
 \label{sec:iteracion-8-analisis}
 
+Durante esta disciplina se aborda el análisis de las funcionalidades que permiten gestionar el conocimiento del sistema. Se trata de los requisitos de gestión de compañías, factorías, proyectos y subproyectos.
+
+Para comenzar, se modela un diagrama de casos de uso algo más detallado que el que se ofreció en un primer momento. En este diagrama (Fig. \ref{fig:it8-management-usecase-diagram} se muestran las tareas asociadas a cada caso de uso. Cabe destacar que sólo se han representado las tareas relativas a la gestión de compañías y factorías por no alagar la extensión de este documento.
+
 \imagenBorde{Cap5//it8-management-usecase-diagram}{0.9}{Diagrama de casos de uso para la gestión de compañías y factorías (CdU2.3 y CdU2.4)}{fig:it8-management-usecase-diagram}
 
-\imagenBorde{Cap5//it8-company-create-communication-diagram}{0.9}{Diagrama de comunicación para la creación de una compañía (CdU2.3)}{fig:it8-company-create-communication-diagram}
+A partir del diagrama de casos de uso y de la descripción de sus escenarios, se han modelado los diagramas de comunicación. En las figuras \ref{fig:it8-company-create-communication-diagram} y \ref{fig:it8-company-view-communication-diagram} se muestran los diagramas de comunicación de los escenarios generales para las funcionalidades de \textit{crear compañía} y \textit{ver o consultar compañía}. De estos diagramas cabe destacar dos detalles: por un lado, la clase \textit{CompanyAction} que actúa de \textbf{fachada} entre la interfaz gráfica de usuario y el resto de controladores y entidades (\textbf{patrón MVC}); y por otro lado, la clase \textbf{HibernateTemplate} que es una de las herramientas que proporciona Spring para acceder a bases de datos mediante Hibernate.
+
+\imagenBorde{Cap5//it8-company-create-communication-diagram}{1.1}{Diagrama de comunicación para la creación de una compañía (CdU2.3)}{fig:it8-company-create-communication-diagram}
+
+\imagenBorde{Cap5//it8-company-view-communication-diagram}{1.1}{Diagrama de comunicación para la consulta de una compañía (CdU2.3)}{fig:it8-company-view-communication-diagram}
+
+
 
 
 \subsubsection{Disciplina de diseño}
 \label{sec:iteracion-8-diseño}
 
-\imagenBorde{Cap5//it8-company-create-sequence-diagram}{0.9}{Diagrama de secuencia para la creación de una compañía (CdU2.3)}{fig:it8-company-create-sequence-diagram}
+Durante esta disciplina se aborda el diseño de las funcionalidades que permiten gestionar el conocimiento del sistema: gestión de compañías, factorías, proyectos y subproyectos.
 
-\imagenBorde{Cap5//it8-management-class-diagram}{0.9}{Diagrama de clases de dominio}{fig:it8-management-class-diagram}
+Inicialmente se han modelado los diagramas de secuencia que se corresponden con los diagramas de comunicación de la disciplina de análisis (Fig. \ref{fig:it8-company-create-sequence-diagram} y \ref{fig:it8-company-view-sequence-diagram}). Como se puede apreciar, estos diagramas también han sido modelados con más nivel de detalle, ya que se incluyen las llamadas específicas a los métodos de las clases y se representa la llamada a los métodos \textit{validate} de Struts 2 antes de ejecutar una acción.
+
+Por la misma razón que en la disciplina de análisis, en este documento sólo se incluyen los diagramas relativos al escenario general de las funcionalidades de \textit{crear compañía} y \textit{ver compañía}.
+
+\imagenBorde{Cap5//it8-company-create-sequence-diagram}{1.1}{Diagrama de secuencia para la creación de una compañía (CdU2.3)}{fig:it8-company-create-sequence-diagram}
+
+\imagenBorde{Cap5//it8-company-view-sequence-diagram}{1.1}{Diagrama de secuencia para la consulta de una compañía (CdU2.3)}{fig:it8-company-view-sequence-diagram}
+
+
 
 
 \subsubsection{Disciplina de implementación}
 \label{sec:iteracion-8-implementacion}
 
-implementación de 2.10 mediante reflexion -- conlleva la generacion de la cadena json mediante la clase city
+En esta disciplina se lleva a cabo la implementación de una clase \textbf{GLObjectManager}. Esta clase utiliza métodos de \textbf{reflexión} para para generar las objetos de las metáforas de visualización en tiempo real y asignar los valores correspondientes a sus dimensiones. Gracias a la solución propuesta, es posible agregar nuevas metáforas de visualización al motor gráfico y utilizarlas desde la aplicación web sin la necesidad de hacer cambios en la clase.
+
+El procedimiento se basa en \textit{deserializar} el fichero XML del perfil seleccionado para obtener su jerarquía de objetos \ref{fig:it7-profile-class-diagram}. Una vez conocidos la entidad y la metáfora que asocia el perfil, se recupera de la base de datos todos los objetos del tipo de la instancia que se está tratando. Acto seguido, se construyen los métodos \textit{setters} y \textit{getters} de ambas instancias conforme se leen los datos del perfil. Finalmente, se crea una instancia de la clase \textbf{City}, que está contenida en el motor gráfico y es la única dependencia de la aplicación web con el mismo (junto con el analizador de dimensiones), a la cual se le añaden las metáforas de visualización con los valores asignados a sus dimensiones.
+
+Una vez que se tiene en memoria la ciudad completa, se obtiene su representación en formato JSON. La cadena de texto resultante será la que se le proporcione al motor gráfico como dato de entrada y a partir de la cual se generarán los gráficos en tres dimensiones.
+
+Como resultado de esta disciplina, se facilita una cadena de texto en formato JSON (Listado \ref{lst:graphics-engine-input-example}) y el resultado que produce el motor gráfico cuando la procesa (Fig. \ref{fig:it6-jogl-tower-screenshot}).
+
+\lstinputlisting[caption={Fragmento de la representación en formato JSON de una instancia de la clase City},label=lst:graphics-engine-input-example]{snippets//graphics-engine-input-example.txt}
+
+\imagenBorde{Cap5//it6-jogl-tower-screenshot}{0.7}{Resultado de procesar la cadena de texto en formato JSON (Listado \ref{lst:graphics-engine-input-example})}{fig:it6-jogl-tower-screenshot}
 
 
 
