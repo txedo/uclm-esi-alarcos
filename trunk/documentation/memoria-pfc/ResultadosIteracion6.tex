@@ -19,7 +19,7 @@ Durante esta disciplina se abordan cuestiones de requisitos de ambos componentes
 \vspace{7mm}
 \textbf{Motor gráfico}
 
-El usuario experto que ha llevado a cabo las pruebas de la quinta iteración (Sección \ref{sec:iteracion-5-pruebas}) afirma que no percibe sensación de profundidad cuando visualiza la escena. Para resolver este problema se propone la generación de sombras en tiempo real y la adición de un \textit{skybox}\footnote{Método empleado el área de los videojuegos que se basa en la adición de imágenes de fondo para conseguir que una escena parezca más grande de lo que realmente es.}.
+El usuario experto que ha llevado a cabo las pruebas de la quinta iteración (Sección \ref{sec:iteracion-5-pruebas}) afirma que no percibe sensación de profundidad cuando visualiza la escena. Para resolver este problema se propone la generación de sombras en tiempo real y la adición de un \textit{skybox}\footnote{Método empleado en el área de los videojuegos que se basa en la adición de imágenes de fondo para conseguir que una escena parezca más grande de lo que realmente es.}.
 
 \vspace{7mm}
 \textbf{Aplicación web}
@@ -44,24 +44,24 @@ Durante esta disciplina se abordan cuestiones de análisis de ambos componentes.
 \vspace{7mm}
 \textbf{Motor gráfico}
 
-Durante esta disciplina se analiza cómo resolver dos de las cuestiones que han surgido en referencia al motor gráfico: errores de visualización en las transparencias de las metáforas y cálculo de sombras en tiempo real. Y resulta que casos tiene una estrecha relación con la posición en la que se encuentra la cámara de la escena.
+Durante esta disciplina se analiza cómo resolver dos de las cuestiones que han surgido en referencia al motor gráfico: errores de visualización en las transparencias de las metáforas y cálculo de sombras en tiempo real. Ambos casos tienen una estrecha relación con la posición de la cámara en la escena.
 
 En primer lugar, para que el usuario perciba las transparencias correctamente, es necesario pintar los objetos de la escena desde los más lejanos a la cámara hasta los más cercanos. Por ello, es necesario diseñar algún algoritmo que, proporcionándole la lista de metáforas -con sus coordenadas en la escena- y la posición de la cámara, calcule las distancias y las ordene de forma descendente. Este algoritmo deberá ser aplicado cada vez que se ejecute cualquier tipo de movimiento sobre la cámara ya que las distancias pueden variar.
 
-En segundo lugar, para calcular las sombras en tiempo real será necesario realizar algunos cálculos en un espacio vectorial de tres dimensiones. Estos cálculos consisten en hallar el producto escalar entre el vector que indica la posición del foco de iluminación -que usualmente está junto a la cámara- y el vector normal del plano que representa el suelo de la escena. Este vector normal es muy sencillo calcularlo mediante el producto vectorial de dos vectores cualesquiera ya que el suelo se encuentra en el plano \textit{y=0}. A partir de estos datos se calculará la matriz de proyección de las sombras, sobre la cual se volverán a pintar las metáforas que conforman la escena en color negro semi-transparente.
+En segundo lugar, para calcular las sombras en tiempo real será necesario realizar algunos cálculos en un espacio vectorial de tres dimensiones. Estos cálculos consisten en hallar el producto escalar entre el vector que indica la posición del foco de iluminación -que usualmente está junto a la cámara- y el vector normal del plano que representa el suelo de la escena. Este vector se calcula mediante el producto vectorial de dos vectores cualesquiera, teniendo en cuenta que el plano se encuentra en $y=0$. A partir de estos datos se calculará la matriz de proyección de las sombras, sobre la cual se volverán a pintar las metáforas que conforman la escena, pero esta vez en color negro semi-transparente.
 
 \vspace{7mm}
 \textbf{Aplicación web}
 
-Las funcionalidades relativas a autenticación, seguridad y control de acceso son muy comunes en aplicaciones web. Gracias a ellas es posible establecer políticas que indiquen quienes tienen la capacidad de acceder a un conjunto determinado de recursos o información. Por tanto, para no reinventar la rueda en cada ocasión que es necesario implementar características de esta índole, se recomienda hacer uso de frameworks especialmente diseñados para estos propósitos.
+Las funcionalidades relativas a autenticación, seguridad y control de acceso son muy comunes en aplicaciones web. Gracias a ellas es posible establecer políticas que indiquen quiénes tienen la capacidad de acceder a un conjunto determinado de recursos o información. Por tanto, para no reinventar la rueda en cada ocasión que es necesario implementar características de esta índole, se recomienda hacer uso de frameworks especialmente diseñados para estos propósitos.
 
 Spring Security \cite{homepage-spring-security} es un framework potente y configurable mediante ficheros XML, que proporciona métodos de autenticación y control de acceso en aplicaciones basadas en Spring. Su publicación bajo una licencia Apache 2.0 y su uso extendido por agencias gubernamentales, aplicaciones militares y bancos, hacen de él una alternativa muy competente y confiable.
 
 En la figura \ref{fig:it6-access-control-usecase-diagram} se muestra un pequeño sub-diagrama de casos de uso. En él se observa que el usuario puede realizar las operaciones de iniciar sesión o finalizar sesión. Ambas operaciones realizarán una configuración de los menús que se muestran al usuario en la interfaz gráfica. Esta configuración se delega en la librería \textit{struts-menu}, por lo que a este nivel no es necesario especificarla con más detalle.
 
-\imagenBorde{Cap5//it6-access-control-usecase-diagram}{1.3}{Diagrama de casos de uso para el control de acceso}{fig:it6-access-control-usecase-diagram}
+\imagenBorde{Cap5//it6-access-control-usecase-diagram}{1.3}{Diagrama de casos de uso para CdU2.1 (Iniciar sesión)}{fig:it6-access-control-usecase-diagram}
 
-Llegados a este punto, se procede a la descripción de los casos de uso que se están tratando. Para no extender demasiado el capítulo, solo se incluye la descripción de la funcionalidad de \textit{inicio de sesión}, tanto en el escenario general como algunos de sus escenarios alternativos (Tabla \ref{table:login-usecase-description}).
+Llegados a este punto, se procede a la descripción de los casos de uso que se están tratando. Para no extender demasiado el capítulo, sólo se incluye la descripción de la funcionalidad de \textit{inicio de sesión}, tanto en el escenario general como algunos de sus escenarios alternativos (Tabla \ref{table:login-usecase-description}).
 
 \begin{table}[!htbp]%
 \centering
@@ -135,20 +135,20 @@ Llegados a este punto, se procede a la descripción de los casos de uso que se es
 	\\
 	\hline 
 \end{tabular}
-\caption{Descripción del caso de uso \textit{Acceder al sistema (Iniciar sesión)}}
+\caption{Descripción del caso de uso CdU2.1 (Iniciar sesión)}
 \label{table:login-usecase-description}
 \end{table}
 
 
 A continuación, se elaboran los diagramas asociados a la disciplina de análisis. En este documento se proporcionan aquellos relacionados con la funcionalidad de \textit{iniciar sesión} (Fig. \ref{fig:it6-access-control-analysis-class-diagram-login},  \ref{fig:it6-access-control-communication-class-diagram-login} y \ref{fig:it6-access-control-sequence-class-diagram-login}). Nótese como en el paso de uno a otro se va perdiendo abstracción y se va obteniendo un mayor grado de detalle, estando cada vez más cerca de la disciplina de diseño.
 
-\imagenBorde{Cap5//it6-access-control-analysis-class-diagram-login}{1.2}{Diagrama clases de análisis para el inicio de sesión}{fig:it6-access-control-analysis-class-diagram-login}
+\imagenBorde{Cap5//it6-access-control-analysis-class-diagram-login}{1.2}{Diagrama clases de análisis para CdU2.1 (Iniciar sesión)}{fig:it6-access-control-analysis-class-diagram-login}
 
-\imagenBorde{Cap5//it6-access-control-communication-class-diagram-login}{1.0}{Diagrama de comunicación para el inicio de sesión}{fig:it6-access-control-communication-class-diagram-login}
+\imagenBorde{Cap5//it6-access-control-communication-class-diagram-login}{1.0}{Diagrama de comunicación para CdU2.1 (Iniciar sesión)}{fig:it6-access-control-communication-class-diagram-login}
 
-\imagenBorde{Cap5//it6-access-control-sequence-class-diagram-login}{1.0}{Diagrama de secuencia para el inicio de sesión}{fig:it6-access-control-sequence-class-diagram-login}
+\imagenBorde{Cap5//it6-access-control-sequence-class-diagram-login}{1.0}{Diagrama de secuencia para CdU2.1 (Iniciar sesión)}{fig:it6-access-control-sequence-class-diagram-login}
 
-Para poder continuar con el diseño e implementación del control de acceso mediante este framework, es necesario haber definido la política de acceso (Sección \ref{sec:iteracion-6-requisitos}) y cual será el método de conexión con la base de datos. En este caso, en la iteración 3 ya se definieron las tecnologías que se emplearían en el diseño y desarrollo web y se llegó a la conclusión de que la conexión con la base de datos se realizaría mediante Hibernate.
+Para poder continuar con el diseño e implementación del control de acceso mediante este framework, es necesario haber definido la política de acceso (Sección \ref{sec:iteracion-6-requisitos}) y cual será el método de conexión con la base de datos. En este caso, ya se definieron las tecnologías que se emplearían en el diseño y desarrollo web en la iteración 3, y se llegó a la conclusión de que la conexión con la base de datos se realizaría mediante Hibernate.
 
 
 
@@ -167,7 +167,7 @@ En la figura \ref{fig:it6-access-control-class-diagram-spring-security} se muest
 	\item \textbf{Clase CustomUserDetailsService} (Véase Anexo \ref{anexo:customuserdetailsservice}). Esta clase implementa el \textit{interface} UserDetailsService y su responsabilidad se basa en establecer el mecanismo de búsqueda y materialización de los datos del usuario. Este proceso se realiza mediante un DAO (Data Access Object) que hereda las funcionalidades proporcionadas por Spring mediante la clase \textbf{HibernateDaoSupport}.
 \end{itemize}
 
-\imagenBorde{Cap5//it6-access-control-class-diagram-spring-security}{1.0}{Diagrama de clases para implementar un GBAC mediante Spring, Spring Security e Hibernate}{fig:it6-access-control-class-diagram-spring-security}
+\imagenBorde{Cap5//it6-access-control-class-diagram-spring-security}{1.0}{Diagrama de clases de diseño para CdU2.1 (GBAC mediante Spring Security)}{fig:it6-access-control-class-diagram-spring-security}
 
 
 Para finalizar con la disciplina de diseño, en la figura \ref{fig:spring-security-database-schema} se aprecia un esquema minimalista de la base de datos que es necesario diseñar para implementar un GBAC mediante Spring Security. Tal y como se ha indicado, únicamente serán persistentes los usuarios, los grupos y los roles (y las relaciones muchos-a-muchos que los asocian). Si se desea añadir información adicional, es posible añadir nuevas columnas a las tablas del esquema propuesto.
@@ -177,7 +177,7 @@ Para finalizar con la disciplina de diseño, en la figura \ref{fig:spring-securit
 	\item \textbf{Tabla \textit{roles}}. Contiene el nombre y la descripción de los roles disponibles en el sistema. En Spring Security, por defecto aunque configurable, el nombre de los roles debe comenzar con el prefijo ``\textit{ROLE\_}''. Se establecerá una relación \textit{muchos-a-muchos} entre los grupos y los roles gracias a la tabla \textit{groups\_roles}.
 \end{itemize}
 
-\imagen{Cap5//spring-security-database-schema}{0.48}{Esquema minimalista de base de datos para configurar un GBAC mediante Spring Security}{fig:spring-security-database-schema}
+\imagen{Cap5//spring-security-database-schema}{0.48}{Modelo Entidad-Relación Extendido para CdU2.1 (GBAC mediante Spring Security)}{fig:spring-security-database-schema}
 
 
 
@@ -193,7 +193,7 @@ Durante esta disciplina se lleva cabo la implementación del pintado de sombras e
 
 En las figuras \ref{fig:it6-fixed-tests-it5} y \ref{fig:it6-jogl-mixed-screenshot} se muestran dos capturas de pantalla en las que se aprecia la evolución y el resultado de los gráficos generados.
 
-\imagenBorde{Cap5//it6-fixed-tests-it5}{0.45}{Gráficos generados después de la disciplina de implementación de la sexta iteración: a la izquierda no se generan sombras ni \textit{skybox}; a la derecha se incorporan ambas características}{fig:it6-fixed-tests-it5}
+\imagenBorde{Cap5//it6-fixed-tests-it5}{0.45}{Gráficos generados después de la disciplina de implementación de la sexta iteración: a la izquierda sin sombras ni \textit{skybox}; a la derecha con ambas características}{fig:it6-fixed-tests-it5}
 
 \imagenBorde{Cap5//it6-jogl-mixed-screenshot}{0.25}{Gráficos generados después de la disciplina de implementación de la sexta iteración. De izquierda a derecha se muestran las metáforas de torres genéricas, factorías y proyectos}{fig:it6-jogl-mixed-screenshot}
 

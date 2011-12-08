@@ -3,7 +3,7 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-1}) se aborda:
 	\item Especificación detallada de dos nuevos requisitos no funcionales que condicionan críticamente el diseño y funcionamiento del motor gráfico.
 	\item Análisis, diseño e implementación de la funcionalidad que permite que el usuario se desplace a través de la escena.
 	\item Diseño arquitectónico de una estructura que permita generar nuevas escenas y vistas en función de la metáfora de visualización que quiera mostrarse.
-	\item Implementación de un foco de luz que de más realismo a la escena mostrada.
+	\item Implementación de un foco de luz que otorgue más realismo a la escena mostrada.
 \end{itemize}
 
 
@@ -26,7 +26,7 @@ Por otro lado, el motor gráfico no debe tener ningún tipo de dependencia con la 
 
 El usuario debe ser capaz de manipular la cámara a través de la cual visualiza la escena. Mediante un diagrama de casos de uso (Fig. \ref{fig:it2-camera-usecase}) es posible especificar de un modo general qué movimientos y operaciones se encuentran disponibles: desplazamiento y rotación (en distintas direcciones y ejes de coordenadas). Para poder concretar un poco más, se han modelado los distintos tipos de desplazamiento y rotación como puntos de extensión (\textit{extension points}) pero, aún así, es necesario completar el diagrama con la descripción de los casos de uso. En este documento sólo se incluye la descripción del CDU ``Desplazar'' y algunos de sus puntos de extensión (Tabla \ref{table:move-usecase-description}).
 
-\imagenBorde{Cap5//it2-camera-usecase}{1.1}{Diagrama de casos de uso para la manipulación de la cámara}{fig:it2-camera-usecase}
+\imagenBorde{Cap5//it2-camera-usecase}{1.1}{Diagrama de casos de uso para CdU1.1 y CdU1.2}{fig:it2-camera-usecase}
 
 \begin{table}[!htbp]%
 \centering
@@ -81,7 +81,7 @@ El usuario debe ser capaz de manipular la cámara a través de la cual visualiza l
 	\\	
 	\hline 
 \end{tabular}
-\caption{Descripción del caso de uso \textit{Desplazar} (CdU1.1)}
+\caption{Descripción del caso de uso CdU1.1}
 \label{table:move-usecase-description}
 \end{table}
 
@@ -89,12 +89,16 @@ Para tratar la cámara como un objeto que se puede situar en cualquier lugar de l
 \begin{itemize}
 	\item Un vector que indique la posición de la cámara en la escena.
 	\item Un vector director unitario que indique la dirección de enfoque de la cámara.
-	\item Tres vectores directores unitarios que indiquen la orientación de la cámara: arriba, derecha y frente (Fig. \ref{fig:camera-orientation}.
+	\item Tres vectores directores unitarios que indiquen la orientación de la cámara: arriba, derecha y frente (Fig. \ref{fig:camera-orientation}).
 \end{itemize}
 
-De este modo, mediante sencillas operaciones vectoriales -tales como sumas, restas, multiplicaciones, productos vectoriales, productos escalares y normalización- es posible calcular la nueva posición y orientación de la cámara. Por ejemplo, para la operación de \textit{elevar} (desplazar la cámara lo largo del eje Y) bastaría con sumar al vector que indica la posición de la cámara, un vector con la misma dirección que el vector director \textit{arriba} que se sitúa sobre el eje Y.
+De este modo, mediante sencillas operaciones vectoriales -tales como sumas, restas, multiplicaciones, productos vectoriales y productos escalares- es posible calcular la nueva posición y orientación de la cámara. Por ejemplo, para la operación de \textit{elevar} (desplazar la cámara lo largo del eje Y) bastaría con sumar al vector que indica la posición de la cámara, un vector con la misma dirección que el vector director \textit{arriba} que se sitúa sobre el eje Y.
 
-\imagenBorde{Cap5//camera-orientation}{0.7}{Esquema de los vectores directores que orientan la cámara}{fig:camera-orientation}
+\imagenBorde{Cap5//camera-orientation}{0.7}{Esquema de los vectores directores que mantienen la orientación de la cámara}{fig:camera-orientation}
+
+Si se desea rotar la cámara sobre el eje Y (Fig. \ref{fig:camera-rotation}), es necesario definir a priori el ángulo de rotación ($\alpha$). Nótese que la rotación se efectúa sobre el eje Y, por lo tanto, la dirección del vector director $arriba$, que es perpendicular y saliente al papel, no varía. A partir de ahí, como se conocen los tres vectores directores que la orientan ($frente\sb{0}$, $derecha\sb{0}$ y $arriba\sb{0}$), se puede calcular la nueva dirección de enfoque $frente\sb{1}$ mediante la suma de sus componentes $frente_{1y}$ y $frente_{1x}$, donde $frente_{1y} = frente_{0} * cos\alpha$ y $frente_{1x} = derecha_{0} * sin\alpha$. A continuación, se recalcula el vector director $derecha\sb{1}$ a partir del producto vectorial de $arriba\sb{0}$ y $frente\sb{1}$.
+
+\imagenBorde{Cap5//camera-rotation}{0.7}{Cálculo de los vectores directores de orientación de la cámara después de una operación de rotación. Los vectores $arriba\sb{0}$ y $arriba\sb{1}$ no se visualizan ya que se consideran perpendiculares y en sentido saliente al papel}{fig:camera-rotation}
 
 
 
@@ -108,11 +112,11 @@ De la disciplina de análisis de esta iteración se entiende que para abordar el d
 
 Los \textit{listeners} de teclado y ratón podrán manipular el estado y comportamiento de la cámara gracias a la referencia que mantienen del objeto de tipo \textit{GLDrawer}, que a su vez tiene una referencia a la cámara y es el encargado de pintar la escena (Fig. \ref{fig:it2-camera-spotlight-class-diagram}).
 
-\imagenBorde{Cap5//it2-camera-spotlight-class-diagram}{1.15}{Diagrama de clases de diseño para los CdU1.1 y CdU1.2}{fig:it2-camera-spotlight-class-diagram}
+\imagenBorde{Cap5//it2-camera-spotlight-class-diagram}{1.15}{Diagrama de clases de diseño para CdU1.1 y CdU1.2}{fig:it2-camera-spotlight-class-diagram}
 
 En cuanto al diseño de CdU1.5 se propone una arquitectura de vistas basada en herencia y polimorfismo. Así pues, se define una clase abstracta de tipo \textit{GLViewManager} (Gestor de Vistas GL) que implementará un conjunto de operaciones comunes a todas las vistas (por ejemplo, dibujar el suelo de la escena) y definirá una plantilla con métodos que deberán ser implementados por cada vista especializada, es decir, las clases que la extiendan. Además, por medio del patrón de diseño \textbf{Factory Method} -formado por la clase IViewManagerFactoryImpl y la interfaz IViewManagerFactory- se abstrae a la clase \textit{GLDrawer} de la creación específica de cada vista (Fig. \ref{fig:it2-scene-class-diagram}). Por otro lado, para evitar crear múltiples instancias de un mismo gestor de vistas, se utilizará el patrón \textbf{Singleton}.
 
-\imagenBorde{Cap5//it2-scene-class-diagram}{0.8}{Diagrama de clases de diseño para los CdU1.5}{fig:it2-scene-class-diagram}
+\imagenBorde{Cap5//it2-scene-class-diagram}{0.8}{Diagrama de clases de diseño para CdU1.5}{fig:it2-scene-class-diagram}
 
 
 Para terminar, debido a los requisitos que se han identificado en esta iteración, es necesario plantear y tomar una serie de decisiones que condicionan el diseño, implementación y funcionamiento del motor gráfico en iteraciones posteriores.
@@ -132,7 +136,7 @@ En la figura \ref{fig:it2-dimension-annotation-parser-class-diagram} se muestra 
 \vspace{7mm}
 \textbf{Motor gráfico independiente de la aplicación contenedora}
 
-Persiguiendo el objetivo de que el motor gráfico pueda ser empleado en cualquier tipo de aplicación, se plantea diseñar un mecanismo generación de gráficos a partir de una cadena de texto. Esta cadena de texto, de estructura predefinida, será utilizada como entrada de datos al motor gráfico. El motor gráfico la procesará según proceda y, finalmente, mostrará los resultados en forma de gráficos 3D.
+Persiguiendo el objetivo por el cual el motor gráfico podrá ser empleado en cualquier tipo de aplicación, se plantea diseñar un mecanismo generación de gráficos a partir de una cadena de texto. Esta cadena de texto, de estructura predefinida, será utilizada como entrada de datos al motor gráfico. El motor gráfico la procesará según proceda y, finalmente, mostrará los resultados en forma de gráficos 3D.
 
 Para establecer el formato de la cadena de texto de entrada, se propone \textbf{JSON} (\textit{JavaScript Object Notation}) (Listado \ref{json-example}), cuya estructura de nodos será definida y detallada en sucesivas iteraciones.
 
@@ -157,9 +161,9 @@ Para establecer el formato de la cadena de texto de entrada, se propone \textbf{
 
 En esta disciplina se lleva a cabo la implementación de las clases que se han diseñado a lo largo del ciclo de vida para satisfacer los requisitos funcionales de desplazamiento y rotación de la cámara y el requisito no funcional de la iluminación de la escena.
 
-En este documento sólo se incluyen dos aspectos relativos a la implementación la cámara que resultan de vital importancia y que se corresponden con las funciones \textit{render()} y \textit{calibrate()} de la clase \textbf{GLCamera} (Listado \ref{lst:camera-render-calibrate}).
+En este documento sólo se incluyen dos aspectos relativos a la implementación la cámara. Se trata de las funciones \textit{render()} y \textit{calibrate()} de la clase \textbf{GLCamera} (Listado \ref{lst:camera-render-calibrate}).
 \begin{itemize}
-	\item \textit{render()}. Esta función, que será ejecutada cada vez que se produzca cualquier tipo de alteración en la posición o dirección de enfoque de la cámara, se encarga de hacer efectivos los nuevos cálculos.
+	\item \textit{render()}. Esta función, que será ejecutada cada vez que se produzca cualquier tipo de modificación en la posición de la cámara o su dirección de enfoque, se encarga de hacer efectivos los nuevos cálculos.
 	\item \textit{calibrate()}. Un movimiento de rotación implica que la dirección a la que apunta el objetivo de la cámara cambie. Así pues, los vectores directores -\textit{frente} y \textit{derecha}- que establecen la orientación de la cámara quedan desorientados y deben ser ``re-calibrados''. Esta operación de \textit{re-calibrado} se lleva a cabo mediante la \textit{regla o ley de la mano derecha} y productos vectoriales.
 \end{itemize}
 

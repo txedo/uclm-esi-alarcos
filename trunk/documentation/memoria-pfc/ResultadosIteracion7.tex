@@ -9,9 +9,9 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-7}) se aborda:
 
 \subsubsection{Disciplina de análisis}
 
-El caso de uso CdU2.2 es una funcionalidad con cierta complejidad e importancia en la herramienta. Por esta razón se ha elaborado un diagrama de casos de uso más detallado (Fig. \ref{fig:it7-profile-usecase-diagram}). Además, se facilita la descripción del escenario general para facilitar el estudiod el diagrama (Tabla \ref{table:cdu2.2-usecase-description}).
+El caso de uso CdU2.2 es una funcionalidad con cierta complejidad e importancia en la herramienta. Por esta razón se ha elaborado un diagrama de casos de uso más detallado (Fig. \ref{fig:it7-profile-usecase-diagram}). Además, se facilita la descripción del escenario general para facilitar el estudio del diagrama (Tabla \ref{table:cdu2.2-usecase-description}).
 
-\imagenBorde{Cap5//it7-profile-usecase-diagram}{1.1}{Diagrama de casos de uso para la gestión de perfiles de visualización (CdU2.2)}{fig:it7-profile-usecase-diagram}
+\imagenBorde{Cap5//it7-profile-usecase-diagram}{1.1}{Diagrama de casos de uso para CdU2.2}{fig:it7-profile-usecase-diagram}
 
 \begin{table}[!htbp]%
 \centering
@@ -45,7 +45,7 @@ El caso de uso CdU2.2 es una funcionalidad con cierta complejidad e importancia 
 	\\	
 	\hline 
 \end{tabular}
-\caption{Descripción del caso de uso \textit{Gestión de perfiles (Crear perfiles)}}
+\caption{Descripción del caso de uso CdU2.2 (Crear perfil de visualización)}
 \label{table:cdu2.2-usecase-description}
 \end{table}
 
@@ -53,13 +53,13 @@ El diagrama de casos de uso y la descripción de sus escenarios no proporcionan u
 
 En la figura \ref{fig:it7-profile-communication-class-diagram} se muestra el diagrama de comunicación del caso de uso CdU2.2. En él observa que la clase de control \textit{ProfileAction} actúa de fachada entre la interfaz gráfica de usuario y el resto de controladores y entidades. Esta estructura se da en todos los diagramas de comunicación de la aplicación web porque la fachada es una acción de Struts 2 y este es el fundamento del patrón MVC que implementa dicho framework.
 
-\imagenBorde{Cap5//it7-profile-communication-class-diagram}{0.75}{Diagrama de comunicación la configuración de un perfil de visualización}{fig:it7-profile-communication-class-diagram}
+\imagenBorde{Cap5//it7-profile-communication-class-diagram}{0.75}{Diagrama de comunicación para CdU2.2 (Crear perfil de visualización)}{fig:it7-profile-communication-class-diagram}
 
 También destaca la interacción con las clases de un paquete denominado \textit{motor gráfico}. Esto sucede porque la aplicación web, que actúa como contenedora del motor gráfico, debe tener cierto conocimiento sobre el mismo y, como consecuencia, dependencia. En este caso, la dependencia se encuentra sobre la clase \textit{DimensionAnnotationParser}, que proporcionará a la aplicación web la última versión de las dimensiones de las metáforas.
 
 Con el estudio de análisis que se ha realizado durante esta disciplina, se modela el primer prototipo de la interfaz gráfica de usuario (Fig. \ref{fig:it7-configure-profile-ui}). Esta interfaz se ha diseñado siguiendo la idea del típico \textit{asistente de instalación} que permite aportar los datos de configuración paso a paso.
 
-\imagenBorde{Cap5//it7-configure-profile-ui}{0.9}{Prototipo de la interfaz gráfica para la configuración de perfiles}{fig:it7-configure-profile-ui}
+\imagenBorde{Cap5//it7-configure-profile-ui}{0.9}{Prototipo de la interfaz gráfica para CdU2.2 (Crear perfil de visualización)}{fig:it7-configure-profile-ui}
 
 \subsubsection{Disciplina de diseño}
 
@@ -94,7 +94,7 @@ Durante esta disciplina también se ha abordado el diseño de cuestiones más espec
 
 En el listado \ref{lst:profile-snippet} se propone un ejemplo que cumple con la estructura expuesta anteriormente. Para poder obtener un fichero de este tipo mediante la tecnología JAXB, es necesario diseñar una jerarquía de clases que represente dicha estructura (Fig \ref{fig:it7-profile-class-diagram}). Acto seguido, es necesario anotar debidamente los atributos de las clases mediante anotaciones de JAXB para que sea posible su \textit{serialización} a formato XML y su posterior escritura en un fichero..
 
-\imagenBorde{Cap5//it7-profile-class-diagram}{1.1}{Diagrama de clases de los perfiles de de visualización}{fig:it7-profile-class-diagram}
+\imagenBorde{Cap5//it7-profile-class-diagram}{1.1}{Diagrama de clases de dominio para CdU2.2}{fig:it7-profile-class-diagram}
 
 Para finalizar, cabe destacar que cuando se desee configurar una escena a partir de un perfil de visualización, primero habrá que \textit{deserializarlo}, es decir, instanciar la jerarquía de objetos definida por la estructura de clases de la figura \ref{fig:it7-profile-class-diagram}. Acto seguido, habrá que operar con dichos objetos e instanciar las metáforas de visualización por medio del método de \textbf{reflexión}. Por último, se construirá una cadena con formato JSON que será proporcionada al motor gráfico como dato de entrada para que éste genere los gráficos.
 
@@ -173,15 +173,15 @@ Para que no sea necesario implementar los típicos métodos de pruebas \textit{set
 		  <artifactId>dbunit-maven-plugin</artifactId>
 		  <version>1.0-beta-1</version>
 		  <configuration>
-		    <dataTypeFactoryName>${dbunit.dataTypeFactoryName}</dataTypeFactoryName>
-		    <driver>${jdbc.driverClassName}</driver>
-		    <username>${jdbc.username}</username>
-		    <password>${jdbc.password}</password>
-		    <url>${jdbc.url}</url>
+		    <dataTypeFactoryName>\${dbunit.dataTypeFactoryName}</dataTypeFactoryName>
+		    <driver>\${jdbc.driverClassName}</driver>
+		    <username>\${jdbc.username}</username>
+		    <password>\${jdbc.password}</password>
+		    <url>\${jdbc.url}</url>
 		    <src>src/test/resources/sample-data.xml</src>
-		    <type>${dbunit.operation.type}</type>
-		    <schema>${dbunit.schema}</schema>
-		    <skip>${maven.test.skip}</skip>
+		    <type>\${dbunit.operation.type}</type>
+		    <schema>\${dbunit.schema}</schema>
+		    <skip>\${maven.test.skip}</skip>
 		  </configuration>
 		  <executions>
 		    <execution>
@@ -202,9 +202,9 @@ Para que no sea necesario implementar los típicos métodos de pruebas \textit{set
 		  </executions>
 		  <dependencies>
 		    <dependency>
-		      <groupId>${jdbc.groupId}</groupId>
-		      <artifactId>${jdbc.artifactId}</artifactId>
-		      <version>${jdbc.version}</version>
+		      <groupId>\${jdbc.groupId}</groupId>
+		      <artifactId>\${jdbc.artifactId}</artifactId>
+		      <version>\${jdbc.version}</version>
 		    </dependency>
 		  </dependencies>
 		</plugin>
@@ -332,15 +332,15 @@ Según la ficha de iteración (Tabla \ref{table:ficha-iteracion-7}), procede elabo
 
 Los casos de prueba diseñados han sido implementados mediante ficheros XML de Canoo Webtest, y su ejecución se ha automatizado mediante tareas Ant. En la figura \ref{fig:screenshot-login-testsuite} se observa una captura de pantalla del \textit{test suite} que se ha implementado. En ella, cada fichero XML se corresponde con un \textit{test case} e implementa cada uno de los casos de prueba diseñados.
 
-\imagenBorde{Cap5//screenshot-login-testsuite}{0.7}{Captura de pantalla de la \textit{test suite} para CdU2.1}{fig:screenshot-login-testsuite}
+\imagenBorde{Cap5//screenshot-login-testsuite}{0.7}{Estructura del \textit{test suite} para CdU2.1}{fig:screenshot-login-testsuite}
 
 Después de la implementación y ejecución de las \textit{suites} de pruebas, Webtest genera un informe en formato HTML. En él se pueden analizar detalladamente los casos de prueba que se han ejecutado y los resultados de ejecución. Además, en caso de producirse algún error, se indica exactamente en qué paso.
 
 En la figura \ref{fig:screenshot-webtest-login-report-general} se facilita el informe de pruebas generado por Canoo Webtest para CdU2.1: en la parte superior se indica que se han ejecutado 7 casos de prueba; en la parte inferior se muestran detalles individuales de la ejecución de cada uno de ellos. El nombre de cada caso de prueba es un enlace que lleva al analista a una nueva página en la que puede estudiar detalladamente la ejecución del caso de prueba (Fig. \ref{fig:screenshot-webtest-login-report-admin} y \ref{fig:screenshot-webtest-login-report-locked}).
 
-\imagenBorde{Cap5//screenshot-webtest-login-report-general}{0.55}{Informe de pruebas para CdU2.1 - vista general)}{fig:screenshot-webtest-login-report-general}
+\imagenBorde{Cap5//screenshot-webtest-login-report-general}{0.55}{Informe de pruebas para CdU2.1 (Vista global)}{fig:screenshot-webtest-login-report-general}
 
-\imagenBorde{Cap5//screenshot-webtest-login-report-general}{0.55}{Informe de pruebas para CdU2.1 - caso de prueba 1 (Tabla \ref{table:cdu2.1-testcase1-description})}{fig:screenshot-webtest-login-report-admin}
+\imagenBorde{Cap5//screenshot-webtest-login-report-general}{0.55}{Informe de pruebas para CdU2.1 (Caso de prueba 1 -Tabla \ref{table:cdu2.1-testcase1-description}-)}{fig:screenshot-webtest-login-report-admin}
 
-\imagenBorde{Cap5//screenshot-webtest-login-report-general}{0.55}{Informe de pruebas para CdU2.1 - caso de prueba 4 (Tabla \ref{table:cdu2.1-testcase4-description})}{fig:screenshot-webtest-login-report-locked}
+\imagenBorde{Cap5//screenshot-webtest-login-report-general}{0.55}{Informe de pruebas para CdU2.1 (Caso de prueba 4 -Tabla \ref{table:cdu2.1-testcase4-description}-)}{fig:screenshot-webtest-login-report-locked}
 
