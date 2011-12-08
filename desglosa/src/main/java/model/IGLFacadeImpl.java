@@ -102,9 +102,9 @@ public class IGLFacadeImpl implements IGLFacade {
                 antennaBall.setProgressionMark(jobj
                         .getBoolean("progressionMark"));
                 antennaBall.setLeftChildBallValue(jobj
-                        .getInt("rightChildBallValue"));
+                        .getString("rightChildBallValue"));
                 antennaBall.setRightChildBallValue(jobj
-                        .getInt("leftChildBallValue"));
+                        .getString("leftChildBallValue"));
                 antennaBall.setColor(readJSONColor(jobj, "color"));
                 float size = (float) jobj.getDouble("parentBallRadius");
                 antennaBall.setParentBallRadius(size);
@@ -128,7 +128,7 @@ public class IGLFacadeImpl implements IGLFacade {
         }
 
         // Place flats and neighborhoods once normalized
-        city.placeNeighborhoods(GLAntennaBall.MAX_SIZE * 2);
+        city.placeNeighborhoods(GLAntennaBall.MAX_HEIGHT * 2);
 
         // Configure caption lines
         Caption caption = configureCaption(json.getJSONObject("captionLines"));
