@@ -47,10 +47,15 @@ En la figura \ref{fig:it4-globject-class-diagram} se puede analizar cómo se han 
 \subsubsection{Disciplina de implementación}
 \label{sec:iteracion-4-implementacion}
 
-Durante esta disciplina se implementan los casos de uso CdU1.5 y CdU1.6, tal y como se estableció en el plan de iteraciones. No se adjuntan detalles de implementación para no extender el documento en exceso, pero sí se incluye una captura de pantalla para mostrar la evolución del motor gráfico (Fig. \ref{fig:it4-jogl-screenshot}).
+Durante esta disciplina se implementan los casos de uso CdU1.5 y CdU1.6, tal y como se estableció en el plan de iteraciones. 
+
+Cabe destacar que dada la jerarquía establecida para las metáforas de visualización (Fig. \ref{fig:it4-globject-class-diagram}), las dimensiones pueden encontrarse presentes en cualquier nivel (padres o hijos). Por lo tanto, el analizador de anotaciones de dimensión se ha implementado de forma que pueda recorrer toda la jerarquía desde la metáfora indicada hasta que llega al nodo raíz de la misma. En el listado \ref{lst:globject-annotation-snippet} se muestra un ejemplo de una clase anotada mediante la anotación \textit{GLDimension}.
+
+\lstinputlisting[language=Java,caption={Ejemplo de clase Java anotada con la anotación GLDimension},label=lst:globject-annotation-snippet]{snippets//globject-annotation-snippet.txt}
+
+Para finalizar, se incluye una captura de pantalla que muestra la evolución del motor gráfico (Fig. \ref{fig:it4-jogl-screenshot}).
 
 \imagenBorde{Cap5//it4-jogl-screenshot}{0.65}{Gráficos generados después de la disciplina de implementación de la cuarta iteración}{fig:it4-jogl-screenshot}
-
 
 
 

@@ -46,7 +46,9 @@ Además, es en esta disciplina en la que se realiza un estudio conceptual del mun
 
 En esta disciplina se resuelven dos cuestiones importantes. Por un lado, se obtiene el modelo entidad-relación extendido (EER) que dará lugar a la base de datos y, por otro, se toman algunas decisiones de diseño relacionadas con los requisitos identificados en la sección \ref{sec:iteracion-3-requisitos}.
 
-En el modelo EER (Fig. \ref{fig:it3-eer-model}), que ha sido elaborado con la herramienta MySQL Workbench, se observan las distintas tablas que formarán la base de datos. Conceptualmente expresa que una compañía posee un conjunto de factorías. Cada factoría puede tener asignado un conjunto de proyectos y cada proyecto, a su vez, se puede fragmentar en una serie de subproyectos. Este mismo concepto es una generalización de la figura \ref{fig:hierarchy} que se facilitó en la sección \ref{sec:motivacion}.
+En el modelo EER (Fig. \ref{fig:it3-eer-model}), que ha sido elaborado con la herramienta MySQL Workbench, se observan las distintas tablas que formarán la base de datos. Este modelo se ha diseñado a partir del diagrama de clases que representa las asociaciones entre las distintas entidades de conocimiento (Fig. \ref{fig:it3-knowledge-class-diagram}) ya que marca las clases persistentes con el estereotipo \textit{ORM Persistable}. Conceptualmente expresa que una compañía posee un conjunto de factorías; cada factoría puede tener asignado un conjunto de proyectos; y cada proyecto, a su vez, se puede fragmentar en una serie de subproyectos. Este mismo concepto es una generalización de la figura \ref{fig:hierarchy} que se facilitó en la sección \ref{sec:motivacion}.
+
+\imagenBorde{Cap5//it3-knowledge-class-diagram}{1.0}{Diagrama de clases de dominio}{fig:it3-knowledge-class-diagram}
 
 \imagenBorde{Cap5//it3-eer-model}{0.35}{Modelo Entidad-Relación Extendido}{fig:it3-eer-model}
 
@@ -56,7 +58,9 @@ A continuación se detallan las decisiones de diseño que se tomarán a partir de l
 \vspace{7mm}
 \textbf{Configuración de perfiles de visualización}
 
-Las entidades que modelan el contexto del desarrollo global (compañía, factoría, proyecto y subproyecto) serán diseñadas como clases Java. Como es habitual, una clase Java tiene un conjunto de atributos que definen el estado de los objetos que se instancian. Para determinar cuáles de estos atributos son susceptibles de representación visual, se propone una solución basada en \textbf{anotaciones personalizadas de Java} similar a la de detección de dimensiones de las metáforas de visualización. Por ello, será necesario definir una nueva anotación y su correspondiente \textbf{analizador de anotaciones} basado en \textbf{Java API Reflection} (Fig. \ref{fig:it3-property-annotation-parser-class-diagram}). Esta solución permite, nuevamente, analizar las entidades en tiempo de ejecución y adaptar la interfaz gráfica de usuario a sus necesidades.
+Las entidades que modelan el contexto del desarrollo global (compañía, factoría, proyecto y subproyecto) serán diseñadas como clases Java. Como es habitual, una clase Java tiene un conjunto de atributos que definen el estado de los objetos que se instancian. Para determinar cuáles de estos atributos son susceptibles de representación visual, se propone una solución basada en \textbf{anotaciones personalizadas de Java} similar a la de detección de dimensiones de las metáforas de visualización. Por ello, será necesario definir una nueva anotación y su correspondiente \textbf{analizador de anotaciones} basado en \textbf{Java API Reflection} (Fig. \ref{fig:it3-property-annotation-parser-class-diagram}).
+
+No obstante, en este caso surge una ligera diferencia a la hora de analizar las clases que consiste en las asociaciones que existirán entre las diferentes clases del dominio. Esta característica se observa perfectamente en el modelo EER (Fig. \ref{fig:it3-eer-model}). De modo que, a la hora de configurar un perfil para una entidad, puede resultar interesante la posibilidad de incluir información acerca de las medidas o indicadores de sus entidades asociadas. Para lograr esta funcionalidad se añade el atributo \textit{embedded} a la anotación \textit{PropertyAnnotation}, que indicará al analizador si debe emplear el método de introspección sobre la clase del atributo anotado. Esta solución permite, nuevamente, analizar las entidades en tiempo de ejecución y adaptar la interfaz gráfica de usuario a sus necesidades.
 
 \imagenBorde{Cap5//it3-property-annotation-parser-class-diagram}{1.4}{Clases que definen la estructura de la anotación Property y su correspondiente analizador}{fig:it3-property-annotation-parser-class-diagram}
 
@@ -68,7 +72,7 @@ Por otro lado, los perfiles de visualización se harán persistentes mediante fich
 
 La herramienta debe disponer de una vista que muestre un mapa del mundo sobre el cual se geolocalizarán distintas factorías en base a ciertos criterios de filtrado o selección. Para satisfacer este requisito, se propone el uso de alguno de los múltiples \textbf{Sistema de Información Geográfica} (SIG o GIS, en su acrónimo inglés Geographic Information System) que ofrecen un API para desarrolladores basada en JavaScript, como Bing Maps o Google Maps.
 
-Por otro lado, para generar los gráficos 3D en base al perfil de visualización seleccionado por el usuario, será necesario examinar y modificar el estado y cokmportamiento de los objetos en tiempo de ejecución. Esta característica se puede llevar a cabo gracias al \textbf{Java API Reflection} y el método de \textbf{reflexión}.
+Por otro lado, para generar los gráficos 3D en base al perfil de visualización seleccionado por el usuario, será necesario examinar y modificar el estado y comportamiento de los objetos en tiempo de ejecución. Esta característica se puede llevar a cabo gracias al \textbf{Java API Reflection} y el método de \textbf{reflexión}.
 
 
 

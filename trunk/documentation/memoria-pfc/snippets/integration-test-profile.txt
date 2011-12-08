@@ -1,7 +1,7 @@
-<!-- ============================= Testing Profile ============================= -->
+<!-- == Testing Profile === -->
 <!-- Use "mvn clean verify -Pintegration-test" when you want to run this 
   profile -->
-<!-- =========================================================================== -->
+<!-- ====================== -->
 <profile>
   <id>integration-test</id>
   <activation>

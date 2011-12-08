@@ -1,0 +1,33 @@
+{
+	\"captionLines\":
+		{
+			\"Línea informativa\":\"00649a\",
+			\"Otra línea informativa\":\"2a8400\",
+			\"Y otra más\":\"ff8c00\"
+		},
+	\"model\":\"model.gl.knowledge.GLTower\",
+	\"neighborhoods\":[
+		{
+		\"captionLines\":{},
+		\"depth\":0,
+		\"flats\":[
+			{
+				\"color\":{\"alpha\":1,\"b\":0.6039216,\"colorFB\":{\"direct\":false,\"readOnly\":false},\"g\":0.39215687,\"r\":0},
+				\"depth\":1,
+				\"height\":6.9,
+				\"id\":4,
+				\"innerHeight\":5.5,
+				\"maxDepth\":3,
+				\"maxHeight\":12,
+				\"maxWidth\":3,
+				\"positionX\":0,
+				\"positionZ\":0,
+				\"scale\":1,
+				\"width\":2
+			},
+			...
+		}
+		...
+	}
+	...
+}
