@@ -21,7 +21,7 @@ El emplazamiento de los elementos de la escena se realizará en tres niveles (Fig
 	\item El tercer nivel representa los edificios que se encuentran dentro de un barrio del segundo nivel. Estos edificios son las metáforas de visualización del CdU1.5.
 \end{itemize}
 
-\imagenBorde{Cap5//it4-city-schema}{0.9}{Esquema conceptual de la estructura de ciudades y barrios para una escena 3D}{fig:it4-city-schema}
+\imagenBorde{Cap5//it4-city-schema}{0.9}{Esquema conceptual para el posicionamiento de las metáforas en CdU1.5}{fig:it4-city-schema}
 
 Con el enfoque planteado, es posible calcular las posiciones relativas de los edificios en su propio barrio y, acto seguido, posicionar los barrios en la ciudad. Así pues, la aplicación contenedora del motor gráfico deberá proporcionar una cadena de texto en formato JSON respetando la estructura de tres niveles que se ha descrito.
 
@@ -35,11 +35,11 @@ Durante esta disciplina, y a partir del análisis realizado, se elaboran los diag
 
 En la figura \ref{fig:it4-city-class-diagram} se muestra el diagrama de clases que representa la estructura de una ciudad tal y como se ha sugerido en la disciplina de análisis. Cabe destacar que los \textit{edificios} de un \textit{barrio} son de tipo \textbf{GLObject}. Esta decisión de diseño se ha llevado a cabo para abstraer la generación de escenas del tipo de metáfora que se vaya a emplear. De este modo, todas las metáforas de visualización que se implementen deben ser especializaciones de \textit{GLObject}.
 
-\imagenBorde{Cap5//it4-city-class-diagram}{1.0}{Diagrama de clases de la metáfora de una ciudad}{fig:it4-city-class-diagram}
+\imagenBorde{Cap5//it4-city-class-diagram}{1.0}{Diagrama de clases para CdU1.5 (1/2)}{fig:it4-city-class-diagram}
 
 En la figura \ref{fig:it4-globject-class-diagram} se puede analizar cómo se han diseñado las metáforas de visualización. En primer lugar se modela una clase \textbf{GLObject} con los atributos básicos de cualquier metáfora de visualización, ya sea en dos o tres dimensiones: un identificador, su posición en un plano de dos dimensiones, el color y la escala. En segundo lugar se crea una clase denominada \textbf{GLObject3D} que hereda de \textit{GLObject}. Esta especialización añade conceptos relativos con la altura o tercera dimensión de la metáfora y es a partir de la cual se implementará cada metáfora de visualización.
 
-\imagenBorde{Cap5//it4-globject-class-diagram}{0.8}{Diagrama de clases de las metáforas de visualización}{fig:it4-globject-class-diagram}
+\imagenBorde{Cap5//it4-globject-class-diagram}{0.8}{Diagrama de clases para CdU1.5 (2/2)}{fig:it4-globject-class-diagram}
 
 
 
@@ -69,7 +69,7 @@ El proceso que se ha seguido ha sido el siguiente:
 	\item Diseño de los casos de prueba utilizando como base la descripción de los CdU1.1 y CdU1.2 (Tabla \ref{table:move-usecase-description}).
 	\item Elaboración de un \textit{checklist} con los casos de prueba diseñados en el punto 1. En cada entrada del checklist se ha incluido una casilla en la que el usuario deberá anotar si el resultado de la operación ha sido correcto o no.
 	\item Planificación de una reunión con el usuario experto, en la cual se le facilitará un ordenador con una instancia del motor gráfico y el checklist elaborado en el punto 2.
-	\item Ejecución de los casos de prueba diseñados y rellenado del checklist.
+	\item Ejecución de los casos de prueba diseñados y cumplimentado del checklist.
 \end{enumerate}
 
 El informe obtenido como resultado de esta disciplina indica que todas las pruebas han sido ejecutadas correctamente. En este documento sólo se adjunta el informe correspondiente a las pruebas del CdU1.1 (Tabla \ref{table:move-testcase-report}).
@@ -109,6 +109,6 @@ El informe obtenido como resultado de esta disciplina indica que todas las prueb
 		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
 	\hline
 	\end{tabular}
-	\caption{Informe de pruebas del caso de uso \textit{Desplazar} (CdU1.1)}
+	\caption{Informe de pruebas para CdU1.1}
 	\label{table:move-testcase-report}
 \end{table}

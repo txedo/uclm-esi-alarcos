@@ -13,13 +13,13 @@ Durante esta disciplina se aborda el análisis de las funcionalidades que permite
 
 Para comenzar, se modela un diagrama de casos de uso algo más detallado que el que se ofreció en un primer momento. En este diagrama (Fig. \ref{fig:it8-management-usecase-diagram} se muestran las tareas asociadas a cada caso de uso. Cabe destacar que sólo se han representado las tareas relativas a la gestión de compañías y factorías por no alagar la extensión de este documento.
 
-\imagenBorde{Cap5//it8-management-usecase-diagram}{0.9}{Diagrama de casos de uso para la gestión de compañías y factorías (CdU2.3 y CdU2.4)}{fig:it8-management-usecase-diagram}
+\imagenBorde{Cap5//it8-management-usecase-diagram}{0.9}{Diagrama de casos de uso para CdU2.3 y CdU2.4}{fig:it8-management-usecase-diagram}
 
-A partir del diagrama de casos de uso y de la descripción de sus escenarios, se han modelado los diagramas de comunicación. En las figuras \ref{fig:it8-company-create-communication-diagram} y \ref{fig:it8-company-view-communication-diagram} se muestran los diagramas de comunicación de los escenarios generales para las funcionalidades de \textit{crear compañía} y \textit{ver o consultar compañía}. De estos diagramas cabe destacar dos detalles: por un lado, la clase \textit{CompanyAction} que actúa de \textbf{fachada} entre la interfaz gráfica de usuario y el resto de controladores y entidades (\textbf{patrón MVC}); y por otro lado, la clase \textbf{HibernateTemplate} que es una de las herramientas que proporciona Spring para acceder a bases de datos mediante Hibernate.
+A partir del diagrama de casos de uso y de la descripción de sus escenarios, se han modelado los diagramas de comunicación. En las figuras \ref{fig:it8-company-create-communication-diagram} y \ref{fig:it8-company-view-communication-diagram} se muestran los diagramas de comunicación de los escenarios generales para las funcionalidades de \textit{crear compañía} y \textit{ver o consultar compañía}. De estos diagramas cabe destacar dos detalles: por un lado, la clase \textit{CompanyAction} que actúa de \textbf{fachada} entre la interfaz gráfica de usuario y el resto de controladores y entidades (\textbf{patrón MVC}); y por otro lado, la clase \textbf{HibernateDaoSupport} que es una de las herramientas que proporciona Spring para acceder a bases de datos mediante Hibernate.
 
-\imagenBorde{Cap5//it8-company-create-communication-diagram}{1.1}{Diagrama de comunicación para la creación de una compañía (CdU2.3)}{fig:it8-company-create-communication-diagram}
+\imagenBorde{Cap5//it8-company-create-communication-diagram}{2.1}{Diagrama de comunicación para CdU2.3 (Crear compañía)}{fig:it8-company-create-communication-diagram}
 
-\imagenBorde{Cap5//it8-company-view-communication-diagram}{1.1}{Diagrama de comunicación para la consulta de una compañía (CdU2.3)}{fig:it8-company-view-communication-diagram}
+\imagenBorde{Cap5//it8-company-view-communication-diagram}{2.1}{Diagrama de comunicación para CdU2.3 (Ver compañía)}{fig:it8-company-view-communication-diagram}
 
 
 
@@ -33,9 +33,9 @@ Inicialmente se han modelado los diagramas de secuencia que se corresponden con 
 
 Por la misma razón que en la disciplina de análisis, en este documento sólo se incluyen los diagramas relativos al escenario general de las funcionalidades de \textit{crear compañía} y \textit{ver compañía}.
 
-\imagenBorde{Cap5//it8-company-create-sequence-diagram}{1.1}{Diagrama de secuencia para la creación de una compañía (CdU2.3)}{fig:it8-company-create-sequence-diagram}
+\imagenBorde{Cap5//it8-company-create-sequence-diagram}{2.1}{Diagrama de secuencia para CdU2.3 (Crear compañía)}{fig:it8-company-create-sequence-diagram}
 
-\imagenBorde{Cap5//it8-company-view-sequence-diagram}{1.1}{Diagrama de secuencia para la consulta de una compañía (CdU2.3)}{fig:it8-company-view-sequence-diagram}
+\imagenBorde{Cap5//it8-company-view-sequence-diagram}{2.1}{Diagrama de secuencia para CdU2.3 (Ver compañía)}{fig:it8-company-view-sequence-diagram}
 
 
 
