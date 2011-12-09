@@ -18,9 +18,59 @@
 
 Tal y como se argumenta en la sección \ref{sec:motivacion}, este PFC se encuentra enmarcado dentro del proyecto de investigación \textbf{ORIGIN} (ORganizaciones Inteligentes Globales INnovadoras) \cite{homepage-origin}. Dada la naturaleza de dicho proyecto, ha sido necesario llevar a cabo un conjunto de reuniones entre diferentes investigadores del Grupo Alarcos \cite{homepage-alarcos}, entre los cuales se encuentran Félix Óscar García Rubio, Manuel Ángel Serrano Martin, \director{} (directora del PFC) y \autor{} (autor del PFC). El objetivo de estas reuniones ha consistido en determinar los requisitos que la herramienta debe satisfacer, así como las metáforas de visualización a desarrollar y las dimensiones a visualizar, cuyo resultado se muestra en la sección \ref{sec:arquitectura-dgs}.
 
+
+
+
 \section{Proceso Unificado de Desarrollo (PUD)}
 \label{sec:pud}
+
+Debido al carácter investigador de este proyecto, por su encuadre dentro de un proyecto de I+D+i, se ha optado por utilizar una metodología de desarrollo de software genérica que permita adaptarse a este caso de estudio. Por estas razones, se ha seleccionado el \textbf{Proceso Unificado de Desarrollo} (en adelante PUD) como metodología de trabajo.
+
+El PUD es una evolución del Proceso Unificado de Rational, que define un \textit{``conjunto de actividades necesarias para transformar los requisitos de usuario en un sistema software''}. Este método de trabajo consiste en un marco de desarrollo genérico y extensible que puede ser adaptado a organizaciones o proyectos específicos, independientemente del tamaño o área de aplicación de los mismos \cite{jac00}. Sus principales características son las siguientes:
+
+\begin{itemize}
+	\item \textbf{Dirigido por casos de uso}. Para poder desarrollar un sistema es necesario saber qué necesitan sus usuarios. Un usuario puede ser un ser humano u otro sistema que interacciona con el sistema que se está desarrollando. Las necesidades de un usuario se denominan requisitos funcionales y se representan por medio de casos de uso.
+	
+	Los casos de uso guían el proceso de desarrollo desde la especificación de requisitos hasta las pruebas y se utilizan para crear los modelos que permitan la construcción e implementación de los mismos. Todos los casos de uso juntos constituyen el \textbf{modelo de casos de uso}.
+	
+	\item \textbf{Centrado en la arquitectura}. La ingeniería informática, como cualquier otra ingeniería, elabora un diseño de la idea antes de llevarla a cabo. Este diseño, que se construye a partir del modelo de casos de uso e incluye los aspectos estáticos y dinámicos más significativos del sistema, es lo que se conoce como \textbf{arquitectura del sistema}.
+	
+	\item \textbf{Iterativo e incremental}. La estrategia \textit{divide et impera} (en castellano, \textit{divide y vencerás}) consiste en dividir un problema en partes más pequeñas y fáciles de resolver. El PUD (Fig. \ref{fig:mapa-conceptual-pud}) aplica esta estrategia y divide todo el ciclo de vida del software en ciclos más pequeños, que concluyen con una versión del producto, y estos a su vez en iteraciones. Cada iteración aborda un conjunto de casos de uso y produce un incremento en la funcionalidad del sistema software que se está desarrollando . Dada la importancia de seleccionar y ejecutar las iteraciones de forma planificada, éstas serán distribuidas a lo largo de 4 fases que componen un cada ciclo y abordarán, en mayor o menor medida, cada una de las disciplinas del flujo de trabajo fundamental: requisitos, análisis, diseño, implementación y pruebas.
+\end{itemize}
+	
 \imagenBorde{Cap4//mapa-conceptual-pud}{0.5}{Mapa conceptual del PUD}{fig:mapa-conceptual-pud}
+
+
+	
+\subsection{Fases del Proceso Unificado de Desarrollo}
+
+La aplicación del PUD para llevar a cabo el desarrollo de un proyecto software implica la realización de un conjunto de ciclos que -juntos- representan el ciclo de vida del proyecto en cuestión. Cada ciclo concluye con una versión entregable del sistema que incluye el software, los manuales, la documentación y los productos que se han obtenido a lo largo de las fases de las que consta. Un ciclo consta de las siguientes cuatro fases:
+
+\begin{itemize}
+		\item \textbf{Inicio}. Se define el alcance del proyecto. Para ello se lleva a cabo la captura de los requisitos que da lugar a una primera versión del modelo de casos de uso. Acto seguido se identifican los riesgos potenciales, se elabora un glosario de términos y se establece un plan de iteraciones.
+		
+		\item \textbf{Elaboración}. Se mejora el modelo de casos de uso y se diseña la arquitectura base del sistema. A continuación, se desarrollan los casos de uso más críticos que se identificaron en la fase de inicio y se obtiene una \textit{línea base} de la arquitectura para planificar las actividades y estimar los recursos necesarios para terminar el proyecto.
+		
+		\item \textbf{Construcción}. Se crea el producto en base a las dos fases anteriores.
+		
+		\item \textbf{Transición}. Implica la corrección de errores y \textit{bugs}, así como el mantenimiento del sistema.
+\end{itemize}
+
+
+\subsection{Disciplinas del flujo de trabajo fundamental}
+ forma controlada y siguiendo un flujo de trabajo. Este flujo de trabajo consta de cinco etapas:
+	\begin{itemize}
+		\item \textbf{Requisitos}. El equipo de desarrollo y los clientes establecen comunicaciones por diferentes medios para especificar qué es lo que el usuario espera del sistema que se va a desarrollar.
+		
+		\item \textbf{Análisis}. Se identifican y especifican los casos de uso relevantes.
+		
+		\item \textbf{Diseño}. Se crea un diseño utilizando la arquitectura seleccionada como guía para tratar de dotar al sistema de las funcionalidades representadas por los casos de uso identificados en la etapa de análisis.
+		
+		\item \textbf{Implementación}. Se implementan las decisiones tomadas en la etapa de diseño, con el fin de construir las funcionalidades que satisfacen los casos de uso identificados en la etapa de análisis.
+		
+		\item \textbf{Pruebas}. Se verifica que los cambios realizados en el sistema satisfacen los casos de uso.
+	\end{itemize}
+
 
 \section{Patrones de diseño}
 
