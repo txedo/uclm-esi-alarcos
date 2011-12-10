@@ -1,4 +1,4 @@
-\chapter{Método de trabajo}
+\chapter{Método de Trabajo}
 \label{ch:metododetrabajo}
 
 % MOISES
@@ -33,9 +33,9 @@ El PUD es una evolución del Proceso Unificado de Rational, que define un \textit
 	
 	Los casos de uso guían el proceso de desarrollo desde la especificación de requisitos hasta las pruebas y se utilizan para crear los modelos que permitan la construcción e implementación de los mismos. Todos los casos de uso juntos constituyen el \textbf{modelo de casos de uso}.
 	
-	\item \textbf{Centrado en la arquitectura}. La ingeniería informática, como cualquier otra ingeniería, elabora un diseño de la idea antes de llevarla a cabo. Este diseño, que se construye a partir del modelo de casos de uso e incluye los aspectos estáticos y dinámicos más significativos del sistema, es lo que se conoce como \textbf{arquitectura del sistema}.
+	\item \textbf{Centrado en la arquitectura}. La ingeniería informática, como cualquier otra ingeniería, elabora un diseño de la idea antes de llevarla a cabo. Este diseño, que se construye a partir del modelo de casos de uso e incluye los aspectos estáticos y dinámicos más significativos del sistema, es lo que se conoce como \textbf{arquitectura del sistema}. Para diseñar una buena arquitectura hay que tener en cuenta conceptos como los \textit{patrones de diseño} y la \textit{programación contra interfaces} ya que tienen un gran impacto sobre ella y, por lo tanto, en su rendimiento, robustez, capacidad de evolución y escalabilidad.
 	
-	\item \textbf{Iterativo e incremental}. La estrategia \textit{divide et impera} (en castellano, \textit{divide y vencerás}) consiste en dividir un problema en partes más pequeñas y fáciles de resolver. El PUD (Fig. \ref{fig:mapa-conceptual-pud}) aplica esta estrategia y divide todo el ciclo de vida del software en ciclos más pequeños, que concluyen con una versión del producto, y estos a su vez en iteraciones. Cada iteración aborda un conjunto de casos de uso y produce un incremento en la funcionalidad del sistema software que se está desarrollando . Dada la importancia de seleccionar y ejecutar las iteraciones de forma planificada, éstas serán distribuidas a lo largo de 4 fases que componen un cada ciclo y abordarán, en mayor o menor medida, cada una de las disciplinas del flujo de trabajo fundamental: requisitos, análisis, diseño, implementación y pruebas.
+	\item \textbf{Iterativo e incremental}. La estrategia \textit{divide et impera} (en castellano, \textit{divide y vencerás}) consiste en dividir un problema en partes más pequeñas y fáciles de resolver. El PUD (Fig. \ref{fig:mapa-conceptual-pud}) aplica esta estrategia y divide todo el ciclo de vida del software en ciclos más pequeños, que concluyen con una versión del producto, y estos a su vez en iteraciones. Cada iteración aborda un conjunto de casos de uso y produce un incremento en la funcionalidad del sistema software que se está desarrollando. Dada la importancia de seleccionar y ejecutar las iteraciones de forma planificada, éstas serán distribuidas a lo largo de 4 fases que componen un cada ciclo y abordarán, en mayor o menor medida, cada una de las disciplinas del flujo de trabajo fundamental: requisitos, análisis, diseño, implementación y pruebas.
 \end{itemize}
 	
 \imagenBorde{Cap4//mapa-conceptual-pud}{0.5}{Mapa conceptual del PUD}{fig:mapa-conceptual-pud}
@@ -43,33 +43,64 @@ El PUD es una evolución del Proceso Unificado de Rational, que define un \textit
 
 	
 \subsection{Fases del Proceso Unificado de Desarrollo}
+\label{sec:pud-fases}
 
-La aplicación del PUD para llevar a cabo el desarrollo de un proyecto software implica la realización de un conjunto de ciclos que -juntos- representan el ciclo de vida del proyecto en cuestión. Cada ciclo concluye con una versión entregable del sistema que incluye el software, los manuales, la documentación y los productos que se han obtenido a lo largo de las fases de las que consta. Un ciclo consta de las siguientes cuatro fases:
+La aplicación del PUD para llevar a cabo el desarrollo de un proyecto software implica la realización de un conjunto de ciclos que -juntos- representan el ciclo de vida del proyecto en cuestión. Cada ciclo concluye con una versión entregable del sistema que incluye el software, los manuales, la documentación y los productos que se han obtenido a lo largo de las cuatro fases de las que consta: inicio, elaboración, construcción y transición.
 
 \begin{itemize}
-		\item \textbf{Inicio}. Se define el alcance del proyecto. Para ello se lleva a cabo la captura de los requisitos que da lugar a una primera versión del modelo de casos de uso. Acto seguido se identifican los riesgos potenciales, se elabora un glosario de términos y se establece un plan de iteraciones.
+		\item \textbf{Inicio}. Durante esta fase se define el alcance del proyecto y se identifican los riesgos principales. Esto permitirá llevar a cabo un estudio de viabilidad del sistema.
 		
-		\item \textbf{Elaboración}. Se mejora el modelo de casos de uso y se diseña la arquitectura base del sistema. A continuación, se desarrollan los casos de uso más críticos que se identificaron en la fase de inicio y se obtiene una \textit{línea base} de la arquitectura para planificar las actividades y estimar los recursos necesarios para terminar el proyecto.
+		Los artefactos que se obtienen a lo largo de esta fase son los siguientes:
+		\begin{itemize}
+			\item \textbf{Modelo de casos de uso}. Ya que se ha realizado una captura de requisitos, es posible identificar los requisitos funcionales del sistema y elaborar el diagrama de casos de uso.
+			\item \textbf{Gestión del riesgo}. Se identifican y describen los posibles riesgos que puedan afectar al desarrollo del proyecto.
+			\item \textbf{Glosario de términos}. Se elabora un glosario con los conceptos más relevantes del dominio en el que se está trabajando.
+			\item \textbf{Plan de iteraciones}. Las iteraciones dedicadas a la fase de inicio se denominan \textit{iteraciones preliminares}. Será a partir de la fase de elaboración cuando comienza una sucesión de iteraciones en las que se describen los objetivos e hitos a alcanzar en las mismas.
+		\end{itemize}
 		
-		\item \textbf{Construcción}. Se crea el producto en base a las dos fases anteriores.
+		\item \textbf{Elaboración}. Esta fase se compone de un pequeño conjunto de iteraciones en el cual se mejora el modelo de casos de uso y se diseña la arquitectura base del sistema. A continuación, se desarrollan los casos de uso más críticos que se identificaron en la fase de inicio y se obtiene una \textit{línea base} de la arquitectura.
 		
-		\item \textbf{Transición}. Implica la corrección de errores y \textit{bugs}, así como el mantenimiento del sistema.
+		Los artefactos que se obtienen a lo largo de esta fase son los siguientes:
+		\begin{itemize}
+			\item \textbf{Modelo de casos de uso mejorado}. Se trabaja a partir del modelo de casos de uso obtenido en la fase de inicio, al cual se le añaden los requisitos funcionales que se hayan detectado a lo largo de la fase de elaboración.
+			\item \textbf{Modelo de análisis}. Este modelo, sin llegar al nivel de detalle que ofrecen los modelos de diseño, ofrece una vista más formal que el modelo de casos de uso. Se compone de los diagramas de clases de análisis y diagramas de comunicación de los casos de uso más importantes.
+			\item \textbf{Modelo de diseño}. Este modelo se compone por dos tipos de diagramas: estáticos, que muestran una vista estática del sistema -por ejemplo, diagramas de clases-, y dinámicos, que muestran una vista dinámica del sistema -por ejemplo, diagramas de secuencia e interacción-.
+			\item \textbf{Modelo de datos}. Es una abstracción del dominio en el que se trabaja, que describe los elementos que intervienen en la resolución del problema y sus relaciones, tanto a nivel conceptual, como lógico y físico (o persistente).
+		\end{itemize}
+		
+		\item \textbf{Construcción}. Esta fase, que utiliza como entrada todos los modelos producidos en las fases anteriores, aborda la mayor parte de la implementación de los requisitos funcionales del sistema. De manera conjunta, diseña y ejecuta las pruebas para las funcionalidades que se implementan.
+		
+		Los artefactos que se obtienen a lo largo de esta fase son los siguientes:
+		\begin{itemize}
+			\item \textbf{Modelo de diseño mejorado}. Se refina y completa el modelo de diseño obtenido en la fase de elaboración.
+			\item \textbf{Modelo de implementación}. Consta de los diagramas de componentes y despliegue, que representan los elementos que participan en la ejecución del sistema (librerías, paquetes, etcétera), sus relaciones y dónde se ejecutan cada uno de ellos.
+			\item \textbf{Modelo de pruebas}. Consta de los diferentes diseños de casos de prueba tanto unitarias como funcionales.
+		\end{itemize}
+		
+		\item \textbf{Transición}. Al comienzo de esta fase se dispone una versión del producto prácticamente completa. Durante el desarrollo de la misma se completa la implementación del sistema y se refinan los modelos obtenidos en la fase de construcción. Cuando esta fase concluye se dispone de una versión del producto lista para ser entregada al cliente, junto con los manuales y documentos obtenidos a lo largo de todo el ciclo.
 \end{itemize}
 
 
 \subsection{Disciplinas del flujo de trabajo fundamental}
- forma controlada y siguiendo un flujo de trabajo. Este flujo de trabajo consta de cinco etapas:
-	\begin{itemize}
-		\item \textbf{Requisitos}. El equipo de desarrollo y los clientes establecen comunicaciones por diferentes medios para especificar qué es lo que el usuario espera del sistema que se va a desarrollar.
+
+Cada una de las fases explicadas en la sección \ref{sec:pud-fases} se divide en una o varias iteraciones. Como ya se ha explicado anteriormente, una iteración aborda un conjunto de casos de uso y produce un incremento en la funcionalidad del sistema software que se está desarrollando. Esta situación se da porque cada iteración ejecuta  por completo el \textbf{flujo de trabajo fundamental}, que se compone de cinco disciplinas: requisitos, análisis, diseño, implementación y pruebas (Fig. \ref{fig:fases-pud}).
+
+\begin{itemize}
+	\item \textbf{Requisitos}. Esta disciplina, cuyo mayor grado de participación se da en las fases de inicio y elaboración, se centra en la captura e identificación de requisitos. Para ello, el equipo de desarrollo y los clientes establecen comunicaciones por diferentes medios para especificar qué es lo que se espera del sistema que se va a desarrollar.
+	
+	Los requisitos identificados que describen una funcionalidad del sistema se denominan \textbf{requisitos funcionales} y son descritos mediante casos de uso. Por otro lado, cualquier otra característica requerida del sistema que no forme parte de una funcionalidad, recibe el nombre de \textbf{requisito no funcional}.
 		
-		\item \textbf{Análisis}. Se identifican y especifican los casos de uso relevantes.
+	\item \textbf{Análisis}. Su mayor grado de participación se da en la fase de elaboración. En ella se elabora una especificación más detallada de los casos de uso tratando de obtener una comprensión más precisa de los requisitos del sistema. Por otro lado, se elabora el modelo de análisis que ofrecerá al equipo de desarrollo una vista más específica del sistema sin llegar al nivel de detalle del modelo de diseño.
 		
-		\item \textbf{Diseño}. Se crea un diseño utilizando la arquitectura seleccionada como guía para tratar de dotar al sistema de las funcionalidades representadas por los casos de uso identificados en la etapa de análisis.
+	\item \textbf{Diseño}. Durante esta disciplina se elabora el modelo de diseño, que comienza a alejarse de los modelos conceptuales y ofrece un mayor nivel de detalle cada vez más cercano a la implementación.
 		
-		\item \textbf{Implementación}. Se implementan las decisiones tomadas en la etapa de diseño, con el fin de construir las funcionalidades que satisfacen los casos de uso identificados en la etapa de análisis.
+	\item \textbf{Implementación}. Durante esta disciplina, que toma su mayor grado de participación en la fase de construcción, se implementan las decisiones tomadas en la etapa de diseño. El objetivo que se persigue consiste en construir las funcionalidades que satisfacen los casos de uso identificados en la etapa de análisis.
 		
-		\item \textbf{Pruebas}. Se verifica que los cambios realizados en el sistema satisfacen los casos de uso.
-	\end{itemize}
+	\item \textbf{Pruebas}. Según el PUD, los componentes deben ser probados conforme son son implementados. Así pues, esta disciplina se encuentra presente en todas las fases en las que se ha llevado a cabo la implementación de alguna funcionalidad. La disciplina de pruebas tiene objetivo el diseño e implementación de pruebas unitarias y funcionales del sistema, así como de la automatización de su ejecución siempre y cuando sea posible.
+\end{itemize}
+	
+\imagenBorde{Cap4//fases-pud}{1.0}{Grado de participación de las disciplinas del flujo de trabajo fundamental en las iteraciones del PUD}{fig:fases-pud}
+	
 
 
 \section{Patrones de diseño}
