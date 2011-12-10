@@ -110,7 +110,7 @@ format=hang]{caption} % Personalización de títulos de figuras y tablas
 \def\imagenBorde#1#2#3#4{
  \floatstyle{boxed} % plain, boxed,ruled
  \restylefloat{figure}
- \begin{figure}[!htb]
+ \begin{figure}[!ht]
  \centering
  	\includegraphics[keepaspectratio,scale=#2]{#1}
  \caption{#3}
@@ -229,7 +229,9 @@ captionpos=b,            % ajusta la posición de títulos
 breaklines=true,         % ajusta la división automática de líneas
 breakatwhitespace=false,
 xleftmargin=1cm,
-xrightmargin=1cm
+xrightmargin=1cm,
+keywordstyle=,
+ndkeywordstyle=,
 }
 
 \lstset{ %
@@ -246,22 +248,21 @@ xrightmargin=1cm
 
 \lstdefinelanguage{JavaScript}{
   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
-  keywordstyle=\color{blue}\bfseries,
+  keywordstyle=,
   ndkeywords={class, export, boolean, throw, implements, import, this},
-  ndkeywordstyle=\color{darkgray}\bfseries,
-  identifierstyle=\color{black},
+  ndkeywordstyle=,
+  identifierstyle=,
   sensitive=false,
   comment=[l]{//},
   morecomment=[s]{/*}{*/},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\color{red}\ttfamily,
+  commentstyle=\ttfamily,
+  stringstyle=\ttfamily,
   morestring=[b]',
   morestring=[b]"
 }
 
 \lstset{
    language=JavaScript,
-   backgroundcolor=\color{lightgray},
    extendedchars=true,
    basicstyle=\footnotesize\ttfamily,
    showstringspaces=false,
