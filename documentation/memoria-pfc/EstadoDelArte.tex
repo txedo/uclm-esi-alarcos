@@ -11,11 +11,14 @@
 % Librerías de visualización
 % Perspectiva de en qué consiste y qué hay en la literatura ¡CUIDADO REFERENCIAS!
 
+En este capítulo se muestran los conocimientos teóricos obtenidos de manera previa a la elaboración de este PFC. Entre ellos se encuentran los temas de Desarrollo Global de Software (DGS), calidad y medidas software, visualización de medidas software, qué son los gráficos por computador y las librerías más importantes para generar gráficos por computador.
+
+
 \section{Desarrollo Global de Software (DGS)}
 
-La globalización económica ha hecho que la industria y el comercio se adapte a nuevos modelos de negocio. En el capítulo 1 de este documento se ha hecho mención a los diez acontecimientos que, según Thomas Friedman \cite{Friedman:2005}, dieron lugar a este fenómeno. Estos acontecimientos también afectaron a la industria del software que a día de hoy ha roto con cualquier frontera física que se le pudiera imponer gracias a su fuerte relación con las innovaciones tecnológicas y en telecomunicaciones.
+La globalización económica ha hecho que la industria y el comercio se adapte a nuevos modelos de negocio. En el capítulo 1 de este documento se ha hecho mención a los diez acontecimientos que, según Thomas Friedman \cite{Friedman:2005}, dieron lugar a este fenómeno. Estos acontecimientos también afectaron a la industria del software que a día de hoy ha roto con cualquier frontera física que se le pudiera imponer gracias a su fuerte relación con las innovaciones en tecnología y telecomunicaciones.
 
-Como prueba de ello, y en búsqueda de aumentar su competitividad y minimizar costes, el desarrollo de software se está llevando a cabo en todo momento y en cualquier parte del mundo (Fig. \ref{fig:advantech-gsd}), lo que introduce el concepto de \textit{Desarrollo Global de Software} (en inglés \textit{Global Software Development} o GSD). Para llegar a este modelo ha sido necesario evolucionar a través de dos predecesores: el \textit{modelo tradicional}, en el que los equipos de trabajo encargados de desarrollar un software se encontraban co-localizados en un mismo edificio; y el \textit{Desarrollo Distribuido de Software}, en el que esos equipos de trabajo se encontraban dispersos en una misma ciudad o incluso en distintas ciudades de un mismo país \cite{herb-moitra-2001}. A modo de síntesis, en la Tabla \ref{table:sd-scenarios} se muestra una clasificación de los distintos tipos de desarrollo de software en base a la dispersión geográfica.
+Como prueba de ello, hoy en día es posible realizar software en todo momento y en cualquier parte del mundo (Fig. \ref{fig:advantech-gsd}), lo que introduce el concepto de \textit{Desarrollo Global de Software} (en inglés \textit{Global Software Development} o GSD). Para llegar a este modelo ha sido necesario evolucionar a través de dos predecesores: el \textit{modelo tradicional}, en el que los equipos de trabajo encargados de desarrollar un software se encontraban co-localizados en un mismo edificio; y el \textit{Desarrollo Distribuido de Software}, en el que esos equipos de trabajo se encontraban dispersos en una misma ciudad o incluso en distintas ciudades de un mismo país \cite{herb-moitra-2001}. A modo de síntesis, en la Tabla \ref{table:sd-scenarios} se muestra una clasificación de los distintos tipos de desarrollo de software en base a la dispersión geográfica.
 
 \imagenBorde{Cap3//advantech-gsd}{0.60}{Mapa del mundo que refleja la dispersión geográfica de factorías involucradas en desarrollo global \cite{advantech-gsd}}{fig:advantech-gsd}
 
@@ -36,7 +39,7 @@ Como prueba de ello, y en búsqueda de aumentar su competitividad y minimizar cos
 		Desarrollo Global de Software (GSD) \\
 	\hline
 \end{tabular}
-\caption{Clasificación de desarrollo de software según dispersión geográfica}
+\caption{Clasificación de desarrollo de software según dispersión geográfica \cite{dsd-challenges}}
 \label{table:sd-scenarios}
 \end{table}
 
@@ -53,21 +56,21 @@ Estos conceptos se muestran sintetizados en la Tabla \ref{table:gsd-types}.
 \renewcommand{\arraystretch}{1.5}
 \begin{tabular}{| p{5cm} | p{3.5cm} | p{3.5cm} |}
 	\hline
-		\cellcolor[gray]{0.7} &
-		\cellcolor[gray]{0.9}Mismo país &
-		Inshoring \\
-	\cline{2-3}
-		\raisebox{3,0 ex}[0ex][0ex]{\cellcolor[gray]{0.7}Externalización de servicios} &
-		\cellcolor[gray]{0.9}Distintos países &
-		Outsourcing \\
+		&
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.9}Mismo país} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.7}Inshoring} \\
+	\hhline{|~|-|-|}
+		\multicolumn{1}{|l|}{\multirow{-2}{*}{Externalización de servicios}} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.9}Distintos países} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.7}Outsourcing} \\
 	\hline
-		\cellcolor[gray]{0.7} &
-		\cellcolor[gray]{0.9}Países vecinos &
-		Nearshoring \\
-	\cline{2-3}
-		\raisebox{3,0 ex}[0ex][0ex]{\cellcolor[gray]{0.7}Traslación de fábricas} &
-		\cellcolor[gray]{0.9}Países distantes &
-		Offshoring \\
+		&
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.9}Países vecinos} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.7}Nearshoring} \\
+	\hhline{|~|-|-|}
+		\multicolumn{1}{|l|}{\multirow{-2}{*}{Traslación de fábricas}} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.9}Países distantes} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.7}Offshoring} \\
 	\hline
 \end{tabular}
 \caption{Modelos y variantes de Desarrollo Global de Software}
