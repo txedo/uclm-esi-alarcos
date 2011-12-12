@@ -6,7 +6,9 @@
 \section{Método de investigación preliminar}
 \label{sec:investigacion-preliminar}
 
-Tal y como se argumenta en la sección \ref{sec:motivacion}, este PFC se encuentra enmarcado dentro del proyecto de investigación \textbf{ORIGIN} (ORganizaciones Inteligentes Globales INnovadoras) \cite{homepage-origin}. Dada la naturaleza de dicho proyecto, ha sido necesario llevar a cabo un conjunto de reuniones entre diferentes investigadores del Grupo Alarcos \cite{homepage-alarcos}, entre los cuales se encuentran Félix Óscar García Rubio, Manuel Ángel Serrano Martin, \director{} (directora del PFC) y \autor{} (autor del PFC). El objetivo de estas reuniones ha consistido en determinar los requisitos que la herramienta debe satisfacer, así como las metáforas de visualización a desarrollar y las dimensiones a visualizar, cuyo resultado se muestra en la sección \ref{sec:arquitectura-dgs}.
+Tal y como se argumenta en la sección \ref{sec:motivacion}, este PFC se encuentra enmarcado dentro del proyecto de investigación \textbf{ORIGIN} (ORganizaciones Inteligentes Globales INnovadoras) \cite{homepage-origin}. Dada la naturaleza de dicho proyecto, ha sido necesario llevar a cabo un conjunto de reuniones entre el responsable del proyecto en Indra Software Labs S.L. y diferentes investigadores del Grupo Alarcos \cite{homepage-alarcos}, entre los que se encuentran Félix Óscar García Rubio, Manuel Ángel Serrano Martin, \director{} (directora del PFC) y \autor{} (autor del PFC).
+
+El objetivo de estas reuniones ha consistido en determinar los requisitos que la herramienta debe satisfacer, así como las metáforas de visualización a desarrollar y las dimensiones a visualizar, cuyo resultado se muestra en la sección \ref{sec:arquitectura-dgs}.
 
 
 
@@ -14,7 +16,7 @@ Tal y como se argumenta en la sección \ref{sec:motivacion}, este PFC se encuentr
 \section{Proceso Unificado de Desarrollo (PUD)}
 \label{sec:pud}
 
-Debido al carácter investigador de este proyecto, por su encuadre dentro de un proyecto de I+D+i, se ha optado por utilizar una metodología de desarrollo de software genérica que permita adaptarse a este caso de estudio. Por estas razones, se ha seleccionado el \textbf{Proceso Unificado de Desarrollo} (en adelante PUD) como metodología de trabajo.
+Debido a la naturaleza de este proyecto y por su encuadre dentro de un proyecto de I+D+i, se ha optado por utilizar una metodología de desarrollo de software genérica que permita adaptarse a este caso de estudio. Por estas razones, se ha seleccionado el \textbf{Proceso Unificado de Desarrollo} (en adelante PUD) como metodología de trabajo.
 
 El PUD es una evolución del Proceso Unificado de Rational, que define un \textit{``conjunto de actividades necesarias para transformar los requisitos de usuario en un sistema software''}. Este método de trabajo consiste en un marco de desarrollo genérico y extensible que puede ser adaptado a organizaciones o proyectos específicos, independientemente del tamaño o área de aplicación de los mismos \cite{jac00}. Sus principales características son las siguientes:
 
@@ -23,9 +25,9 @@ El PUD es una evolución del Proceso Unificado de Rational, que define un \textit
 	
 	Los casos de uso guían el proceso de desarrollo desde la especificación de requisitos hasta las pruebas y se utilizan para crear los modelos que permitan la construcción e implementación de los mismos. Todos los casos de uso juntos constituyen el \textbf{modelo de casos de uso}.
 	
-	\item \textbf{Centrado en la arquitectura}. La ingeniería informática, como cualquier otra ingeniería, elabora un diseño de la idea antes de llevarla a cabo. Este diseño, que se construye a partir del modelo de casos de uso e incluye los aspectos estáticos y dinámicos más significativos del sistema, es lo que se conoce como \textbf{arquitectura del sistema}. Para diseñar una buena arquitectura hay que tener en cuenta conceptos como los \textit{patrones de diseño} y la \textit{programación contra interfaces} ya que tienen un gran impacto sobre ella y, por lo tanto, en su rendimiento, robustez, capacidad de evolución y escalabilidad.
+	\item \textbf{Centrado en la arquitectura}. La ingeniería informática, como cualquier otra ingeniería, elabora un diseño de la idea antes de llevarla a cabo. Este diseño, que se construye a partir del modelo de casos de uso e incluye los aspectos estáticos y dinámicos más significativos del sistema, es lo que se conoce como \textbf{arquitectura del sistema}. Para diseñar una buena arquitectura hay que tener en cuenta conceptos como los \textit{patrones de diseño} y la \textit{programación contra interfaces}. Estas \textbf{buenas prácticas de diseño y programación} tienen un gran impacto sobre ella y, por lo tanto, en su rendimiento, robustez, capacidad de evolución y escalabilidad.
 	
-	\item \textbf{Iterativo e incremental}. La estrategia \textit{divide et impera} (en castellano, \textit{divide y vencerás}) consiste en dividir un problema en partes más pequeñas y fáciles de resolver. El PUD (Fig. \ref{fig:mapa-conceptual-pud}) aplica esta estrategia y divide todo el ciclo de vida del software en ciclos más pequeños, que concluyen con una versión del producto, y estos a su vez en iteraciones. Cada iteración aborda un conjunto de casos de uso y produce un incremento en la funcionalidad del sistema software que se está desarrollando. Dada la importancia de seleccionar y ejecutar las iteraciones de forma planificada, éstas serán distribuidas a lo largo de 4 fases que componen un cada ciclo y abordarán, en mayor o menor medida, cada una de las disciplinas del flujo de trabajo fundamental: requisitos, análisis, diseño, implementación y pruebas.
+	\item \textbf{Iterativo e incremental}. La estrategia \textit{divide et impera} (en castellano, \textit{divide y vencerás}) consiste en dividir un problema en partes más pequeñas y fáciles de resolver. El PUD (Fig. \ref{fig:mapa-conceptual-pud}) aplica esta estrategia y divide todo el ciclo de vida del software en ciclos más pequeños, que concluyen con una versión del producto. Del mismo modo, los ciclos se dividen en iteraciones. Cada iteración aborda un conjunto de casos de uso y produce un incremento en la funcionalidad del sistema software que se está desarrollando. Dada la importancia de seleccionar y ejecutar las iteraciones de forma planificada, éstas serán distribuidas a lo largo de las cuatro fases que componen un cada ciclo y abordarán, en mayor o menor medida, cada una de las disciplinas del flujo de trabajo fundamental: requisitos, análisis, diseño, implementación y pruebas.
 \end{itemize}
 	
 \imagenBorde{Cap4//mapa-conceptual-pud}{0.5}{Mapa conceptual del PUD}{fig:mapa-conceptual-pud}
@@ -35,7 +37,7 @@ El PUD es una evolución del Proceso Unificado de Rational, que define un \textit
 \subsection{Fases del Proceso Unificado de Desarrollo}
 \label{sec:pud-fases}
 
-La aplicación del PUD para llevar a cabo el desarrollo de un proyecto software implica la realización de un conjunto de ciclos que -juntos- representan el ciclo de vida del proyecto en cuestión. Cada ciclo concluye con una versión entregable del sistema que incluye el software, los manuales, la documentación y los productos que se han obtenido a lo largo de las cuatro fases de las que consta: inicio, elaboración, construcción y transición.
+La aplicación del PUD para llevar a cabo el desarrollo de un proyecto software implica la realización de una serie de ciclos que -juntos- representan el ciclo de vida completo del proyecto en cuestión. Cada ciclo concluye con una versión entregable del sistema, que incluye el software, los manuales, la documentación y los productos que se han obtenido a lo largo de las cuatro fases de las que consta: inicio, elaboración, construcción y transición.
 
 \begin{itemize}
 		\item \textbf{Inicio}. Durante esta fase se define el alcance del proyecto y se identifican los riesgos principales. Esto permitirá llevar a cabo un estudio de viabilidad del sistema.
@@ -45,7 +47,7 @@ La aplicación del PUD para llevar a cabo el desarrollo de un proyecto software i
 			\item \textbf{Modelo de casos de uso}. Ya que se ha realizado una captura de requisitos, es posible identificar los requisitos funcionales del sistema y elaborar el diagrama de casos de uso.
 			\item \textbf{Gestión del riesgo}. Se identifican y describen los posibles riesgos que puedan afectar al desarrollo del proyecto.
 			\item \textbf{Glosario de términos}. Se elabora un glosario con los conceptos más relevantes del dominio en el que se está trabajando.
-			\item \textbf{Plan de iteraciones}. Las iteraciones dedicadas a la fase de inicio se denominan \textit{iteraciones preliminares}. Será a partir de la fase de elaboración cuando comienza una sucesión de iteraciones en las que se describen los objetivos e hitos a alcanzar en las mismas.
+			\item \textbf{Plan de iteraciones}. Las iteraciones dedicadas a la fase de inicio se denominan \textit{iteraciones preliminares}. Será a partir de la fase de elaboración cuando comience una sucesión de iteraciones en las que se describen los objetivos e hitos a alcanzar en las mismas.
 		\end{itemize}
 		
 		\item \textbf{Elaboración}. Esta fase se compone de un pequeño conjunto de iteraciones en el cual se mejora el modelo de casos de uso y se diseña la arquitectura base del sistema. A continuación, se desarrollan los casos de uso más críticos que se identificaron en la fase de inicio y se obtiene una \textit{línea base} de la arquitectura.
@@ -54,7 +56,7 @@ La aplicación del PUD para llevar a cabo el desarrollo de un proyecto software i
 		\begin{itemize}
 			\item \textbf{Modelo de casos de uso mejorado}. Se trabaja a partir del modelo de casos de uso obtenido en la fase de inicio, al cual se le añaden los requisitos funcionales que se hayan detectado a lo largo de la fase de elaboración.
 			\item \textbf{Modelo de análisis}. Este modelo, sin llegar al nivel de detalle que ofrecen los modelos de diseño, ofrece una vista más formal que el modelo de casos de uso. Se compone de los diagramas de clases de análisis y diagramas de comunicación de los casos de uso más importantes.
-			\item \textbf{Modelo de diseño}. Este modelo se compone por dos tipos de diagramas: estáticos, que muestran una vista estática del sistema -por ejemplo, diagramas de clases-, y dinámicos, que muestran una vista dinámica del sistema -por ejemplo, diagramas de secuencia e interacción-.
+			\item \textbf{Modelo de diseño}. Este modelo se compone por dos categorías de diagramas: estáticos, que muestran una vista estática del sistema -por ejemplo, diagramas de clases-, y dinámicos, que muestran una vista dinámica del sistema -por ejemplo, diagramas de secuencia e interacción-.
 			\item \textbf{Modelo de datos}. Es una abstracción del dominio en el que se trabaja, que describe los elementos que intervienen en la resolución del problema y sus relaciones, tanto a nivel conceptual, como lógico y físico (o persistente).
 		\end{itemize}
 		
@@ -86,7 +88,7 @@ Cada una de las fases explicadas en la sección \ref{sec:pud-fases} se divide en 
 		
 	\item \textbf{Implementación}. Durante esta disciplina, que toma su mayor grado de participación en la fase de construcción, se implementan las decisiones tomadas en la etapa de diseño. El objetivo que se persigue consiste en construir las funcionalidades que satisfacen los casos de uso identificados en la etapa de análisis.
 		
-	\item \textbf{Pruebas}. Según el PUD, los componentes deben ser probados conforme son son implementados. Así pues, esta disciplina se encuentra presente en todas las fases en las que se ha llevado a cabo la implementación de alguna funcionalidad. La disciplina de pruebas tiene objetivo el diseño e implementación de pruebas unitarias y funcionales del sistema, así como de la automatización de su ejecución siempre y cuando sea posible.
+	\item \textbf{Pruebas}. Según el PUD, los componentes deben ser probados a medida que son implementados. Así pues, esta disciplina se encuentra presente en todas las fases en las que se ha llevado a cabo la implementación de alguna funcionalidad. La disciplina de pruebas tiene por objetivo el diseño e implementación de pruebas unitarias y funcionales del sistema, así como de la automatización de su ejecución siempre y cuando sea posible.
 \end{itemize}
 	
 \imagenBorde{Cap4//fases-pud}{1.0}{Grado de participación de las disciplinas del flujo de trabajo fundamental en las iteraciones del PUD}{fig:fases-pud}
@@ -97,21 +99,19 @@ Cada una de las fases explicadas en la sección \ref{sec:pud-fases} se divide en 
 
 El desarrollo de sistemas software, en general, y sistemas software orientados a objetos, en particular, es una tarea difícil y costosa en términos económicos y temporales, entre otros. Si además se requiere que el sistema desarrollado o partes del mismo sean reutilizables, se puede convertir en un auténtico desafío.
 
-El diseño de un software orientado a objetos requiere una abstracción y conceptualización del dominio en el que se trabaja para poder identificar los objetos relevantes y diseñar las clases que los representan. Las clases se deben diseñar con la \textbf{granularidad} adecuada, ya que un \textit{grano grueso} comprometería la reutilización de las mismas y violaría el principio de \textbf{bajo acoplamiento}, y un \textit{grano fino} aumentaría la complejidad del sistema y violaría el principio de \textbf{alta cohesión}. Además, es necesario definir interfaces, herencias y las relaciones entre clases. Todos estos factores que intervienen en el diseño de un sistema orientado a objetos han de ser específicos al contexto y, a su vez, lo suficientemente genéricos debido a razones de extensibilidad por futuros problemas o requisitos que puedan surgir.
+El diseño de un software orientado a objetos requiere una abstracción y conceptualización del dominio en el que se trabaja para poder identificar los objetos relevantes y diseñar las clases que los representan. Las clases se deben diseñar con la \textbf{granularidad} adecuada, ya que un \textit{grano grueso} comprometería la reutilización de las mismas y violaría el principio de \textbf{bajo acoplamiento}, y un \textit{grano fino} aumentaría la complejidad del sistema y violaría el principio de \textbf{alta cohesión}. Además, es necesario definir interfaces, herencias y las relaciones entre clases. Todos estos factores que intervienen en el diseño de un sistema orientado a objetos han de ser específicos al contexto y, a su vez, lo suficientemente genéricos debido a razones de extensibilidad por futuros problemas o requisitos que puedan surgir \cite{gang-of-four}.
 
-En el diseño de sistemas software, cualquiera que sea su área de aplicación, existen problemas recurrentes que se dan una y otra vez. Por ejemplo, cuando se diseña una nueva una aplicación a menudo surge la necesidad de querer notificar a la interfaz gráfica de usuario los cambios que se producen en el estado de determinados objetos, y evitar a toda costa cualquier tipo de dependencia de la capa de dominio con la capa de presentación. Para resolver este problema existen soluciones de las que ya se conoce su eficacia y se ha comprobado que funcionan. Además, este problema y muchos otros, surgen a la hora de diseñar distintos sistemas, por lo que es fácil encontrar varias situaciones en el contexto del diseño orientado a objetos en las que se sigue un patrón en el diseño de las clases o la comunicación de los objetos.
+En el diseño de sistemas software, cualquiera que sea su área de aplicación, existen problemas recurrentes que se dan una y otra vez. Por ejemplo, cuando se diseña una nueva una aplicación a menudo surge la necesidad de querer notificar a la interfaz gráfica de usuario los cambios que se producen en el estado de determinados objetos, y evitar a toda costa cualquier tipo de dependencia de la capa de dominio con la capa de presentación. Para resolver este problema existen soluciones de las que ya se conoce su eficacia y se ha comprobado que funcionan. Además, este problema y muchos otros, surgen en repetidas ocasiones a la hora de diseñar distintos sistemas, por lo que es fácil encontrar varias situaciones -en el contexto del diseño orientado a objetos- en las que se sigue un \textit{patrón} en el diseño de las clases o la comunicación de los objetos.
 
-En 1977, un arquitecto británico llamado Christopher Alexander definió el término \textbf{patrón}, en referencia a problemas relacionados al diseño de edificios y ciudades, de la siguiente manera: \textit{``cada patrón describe un problema que ocurre una y otra vez en nuestro entorno y, puede ser estudiado para descubrir la esencia de su solución, por lo que se puede utilizar esta solución un millón de veces sin repetir el estudio una segunda vez.''} \cite{Ale77}. Desde entonces surgen definiciones más directas como \textit{``un patrón es una solución recurrente para un problema recurrente en un contexto''}, \textit{``un patrón es una solución recurrente para un problema estándar''} o \textit{``un patrón resuelve un problema dentro de un contexto''} \cite{Ale79}.
+En 1977, un arquitecto británico llamado Christopher Alexander definió el término \textbf{patrón}, en referencia a problemas relacionados al diseño de edificios y ciudades, de la siguiente manera: \textit{``cada patrón describe un problema que ocurre una y otra vez en nuestro entorno y, puede ser estudiado para descubrir la esencia de su solución, por lo que se puede utilizar esta solución un millón de veces sin repetir el estudio una segunda vez.''} \cite{Ale77}. Desde entonces surgen definiciones más directas como \textit{``un patrón es una solución recurrente para un problema recurrente dentro de un contexto''}, \textit{``un patrón es una solución recurrente para un problema estándar''} o \textit{``un patrón resuelve un problema dentro de un contexto''} \cite{Ale79}.
 
-A mediados de los años 90, un grupo de ingenieros informáticos que se hacían llamar \textbf{the gang-of-four} (\textit{el grupo de los cuatro}), adaptaron el término a la ingeniería del software y publicaron un conjunto de \textbf{patrones software} que proponían soluciones a problemas comunes basadas en buenas prácticas de diseño y programación. Estos patrones resuelven problemas de diseño específicos y hacen a la programación orientada a objetos de una disciplina más flexible, elegante y reutilizable. Así pues, no es coherente tratar de diseñar una solución desde cero y se recomienda crear nuevos diseños a partir de la experiencia previa \cite{gang-of-four}. La forma de capturar y transmitir experiencias para que puedan ser mejoradas y utilizadas otra vez se registra en forma de \textbf{patrones de diseño}, análogamente al modisto que diseña y guarda el patrón de un vestido.
+A mediados de los años 90, un grupo de autores que se hacían llamar \textbf{the gang-of-four} (\textit{el grupo de los cuatro}), adaptaron el término a la ingeniería del software y publicaron un conjunto de \textbf{patrones software}, basados en buenas prácticas de diseño y programación, que proponían soluciones a problemas comunes. Estos patrones resuelven problemas de diseño específicos y hacen a la programación orientada a objetos de una disciplina más flexible, elegante y reutilizable. Así pues, no es coherente tratar de diseñar una solución desde cero y se recomienda crear nuevos diseños a partir de la experiencia previa \cite{gang-of-four}. La forma de capturar y transmitir experiencias para que puedan ser mejoradas y utilizadas otra vez se registra en forma de \textbf{patrones de diseño}, análogamente al modisto que diseña y guarda el patrón de un vestido.
 
-Un patrón de diseño se compone de un nombre, una explicación del problema que pretende resolver, la solución propuesta y una evaluación que indica las ventajas e inconvenientes de su uso. La evaluación es un factor muy importante ya que incluye el impacto que tiene el uso del patrón sobre la flexibilidad, portabilidad y extensibilidad del sistema, y permite estudiar otras alternativas.
-
-También mejoran la documentación y el mantenimiento ya que proporcionan una especificación explícita de las clases que participan, la comunicación entre objetos y su propósito y, además, son ampliamente conocidos por un gran número de diseñadores y desarrolladores.
+Un patrón de diseño se compone de un nombre, una explicación del problema que pretende resolver, la solución propuesta y una evaluación que indica las ventajas e inconvenientes de su uso. La evaluación es un factor muy importante ya que incluye el impacto que tiene el uso del patrón sobre la flexibilidad, portabilidad y extensibilidad del sistema, y permite estudiar otras alternativas. Por otro lado, los patrones de diseño mejoran la documentación y el mantenimiento ya que proporcionan una especificación explícita de las clases que participan, la comunicación entre objetos y su propósito y, además, son ampliamente conocidos por un gran número de diseñadores y desarrolladores.
 
 A modo de síntesis, a continuación se enumeran las ventajas que proporciona el uso de patrones de diseño:
 \begin{itemize}
-	\item \textbf{Enriquecen el lenguaje de modelado}. Los patrones de diseño enriquecen los lenguajes de modelado como UML. De hecho, algunas herramientas de modelado permiten crear y aplicar patrones de diseño. Gracias a ellos, no es necesario comenzar los diseños desde cero a partir de entidades primitivas como clases e interfaces, sino que se pueden combinar en bloques y modelar desde un nivel de abstracción superior.
+	\item \textbf{Enriquecen el lenguaje de modelado}. Los patrones de diseño enriquecen los lenguajes de modelado como UML. De hecho, algunas herramientas de modelado permiten crear y aplicar patrones de diseño. Gracias a ellos, no es necesario comenzar los diseños desde cero y a partir de entidades primitivas como clases e interfaces, sino que se pueden combinar en bloques y modelar desde un nivel de abstracción superior.
 	\item \textbf{Mejoran la documentación}. Al utilizar patrones de diseño se están empleando -lo que los expertos consideran- buenas prácticas de diseño y programación que son ampliamente conocidas por otros diseñadores y desarrolladores.
 	\item \textbf{Agilizan el diseño y la implementación}. Dado que los patrones de diseño proporcionan un nivel superior de abstracción, no es necesario comenzar el trabajo desde cero ya que fomentan la reutilización de diseños e implementaciones previas.
 	\item \textbf{Aumento de la calidad}. Los patrones se basan en la experiencia previa, por lo que reducen fallos, son de eficacia probada y evitan la búsqueda de la solución a un problema que ya fue resuelto. Por lo tanto, son más correctos y robustos que una solución nueva.
@@ -124,11 +124,11 @@ A modo de síntesis, a continuación se enumeran las ventajas que proporciona el u
 \section{Marco tecnológico}
 \label{sec:marco}
 
-El conjunto de herramientas, tecnologías y frameworks que se ha empleado durante todo el ciclo de vida de este PFC es muy extenso. A continuación se enumeran los elementos más destacables, incluyendo una breve descripción de la misma y la versión empleada, si procede.
+El conjunto de herramientas, tecnologías y frameworks que se emplean durante todo el ciclo de vida de este PFC es muy extenso. A continuación se enumeran los elementos más destacables, incluyendo una breve descripción de la misma y la versión empleada, si procede.
 
 \subsection{Herramientas de gestión de proyectos}
 
-En esta sección se muestran las herramientas que se serán utilizadas para la gestión de este PFC durante todo su ciclo de vida.
+En esta sección se muestran las herramientas empleadas para la gestión de este PFC durante todo su ciclo de vida.
 
 \subsubsection{Maven}
 
@@ -136,13 +136,13 @@ En esta sección se muestran las herramientas que se serán utilizadas para la ges
 
 Maven \cite{site:maven} es una herramienta de compartición de conocimiento y gestión de proyectos basados en tecnología Java. Maven establece un modelo (POM, en su acrónimo inglés Project Object Model) para especificar distintos aspectos del proyecto. Este modelo, que se representa en formato XML (Listado \ref{lst:pom-example}), permite a Maven gestionar distintos aspectos del ciclo de vida del proyecto, como la construcción, generación de informes y documentación, gestión de dependencias, gestión de la configuración, lanzamiento de versiones, distribución, etcétera.
 
-Inicialmente, el objetivo de Maven consistía en conseguir que distintos proyectos de la \textbf{Fundación Apache} trabajasen de un modo común. Así, los desarrolladores podrían trabajar en cualquier proyecto sin tener que invertir tiempo en aprender aspectos específicos su construcción, ya que todos utiliza el mismo proceso. Después, esta misma idea se aplicó a distintas disciplinas como pruebas, generación de documentación, generación de informes, despliegue, etcétera.
+Inicialmente, el objetivo de Maven consistía en conseguir que distintos proyectos de la \textbf{Fundación Apache} trabajasen de un modo común. Así, los desarrolladores podrían trabajar en cualquier proyecto sin tener que invertir tiempo en aprender aspectos específicos acerca de su construcción, ya que todos utilizarían el mismo formato. Después, esta misma idea se aplicó a distintas disciplinas como pruebas, generación de documentación, generación de informes, despliegue, etcétera.
 
 A día de hoy muchas las comunidades, empresas y organizaciones gestionan sus proyectos a través de Maven.
 
-Por último, destacar que la funcionalidad de Maven es cada vez más amplia gracias a la posibilidad de creación e incorporación de plugins.
+Por último, señalar que la funcionalidad de Maven es cada vez más amplia gracias a la posibilidad de creación e incorporación de plugins y ya existente variedad de los mismos.
 
-\begin{lstlisting}[caption={Ejemplo de configuración de un ficher \textit{pom.xml} \cite{site:maven-getting-started}},label=lst:pom-example]
+\begin{lstlisting}[caption={Ejemplo de configuración de un fichero \textit{pom.xml} \cite{site:maven-getting-started}},label=lst:pom-example]
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -168,51 +168,51 @@ Por último, destacar que la funcionalidad de Maven es cada vez más amplia gracia
 
 \subsubsection{Apache Subversion}
 
-Apache Subversion \cite{site:apache-svn} es el sistema de control de versiones que se será empleado a lo largo de todo el ciclo de vida de este PFC. Su uso permitirá realizar un seguimiento del estado de las versiones y sus cambios, además de la integración de las partes del software (código ejecutable, documentación, etcétera) en un solo producto.
+Apache Subversion \cite{site:apache-svn} es el sistema de control de versiones que se emplea a lo largo de todo el ciclo de vida de este PFC. Su uso permite realizar un seguimiento del estado de las versiones y sus cambios, además de la integración de las partes del software (código ejecutable, documentación, etcétera) en un solo producto.
 
 
 \subsubsection{Google Code Project Hosting}
 
-Google Code Project Hosting \cite{site:google-code-project-hosting} es un servicio de alojamiento de proyectos software rápido, fiable y sencillo. Ofrece varias herramientas tales como \textit{Subversion}, \textit{Mercurial} y \textit{Git} para el control de versiones, una \textit{wiki} para la publicación de documentación, una sección de descargas, gestión de problemas (\textit{issue management}), entre otros. Además, permite consultar código fuente en un visor integrado y utilizar herramientas de revisión de código y revisión de contribuciones.
+Google Code Project Hosting \cite{site:google-code-project-hosting} es un servicio -rápido, fiable y sencillo- de alojamiento de proyectos software. Ofrece varias herramientas tales como \textit{Subversion}, \textit{Mercurial} y \textit{Git} para el control de versiones, una \textit{wiki} para la publicación de documentación, una sección de descargas, gestión de problemas (\textit{issue management}), entre otros. Además, permite consultar código fuente en un visor integrado y utilizar herramientas de revisión de código y revisión de contribuciones.
 
 
 \subsection{Herramientas de modelado de software y elaboración de documentación}
 
-En esta sección se muestran las herramientas que serán empleadas para la elaboración de la documentación del proyecto y de los distintos diagramas y modelos que sean necesarios en cada una de las fases del ciclo de vida de este PFC.
+En esta sección se muestran las herramientas empleadas para la elaboración de la documentación del proyecto y de los distintos diagramas y modelos que sean necesarios en cada una de las fases del ciclo de vida de este PFC.
 
 
 \subsubsection{MySQL Workbench}
 
 \textbf{Versión:} 5.2 CE
 
-MySQL Workbench \cite{site:mysql-workbench} (Fig. \ref{fig:mysq-workbench}) es una que permite diseñar, configurar y administrar bases de datos y servidores de bases de datos de un modo sencillo e intuitivo. Para ello dispone de funciones para modelado de datos, administración de usuarios, etcétera.
+MySQL Workbench \cite{site:mysql-workbench} (Fig. \ref{fig:mysql-workbench}) es una herramienta que permite diseñar, configurar y administrar bases de datos y servidores de bases de datos de un modo sencillo e intuitivo. Para ello proporciona al usuario funcionalidades para modelado de datos, administración de usuarios, etcétera.
 
-Una de las funcionalidades más interesantes es que permite generar el \textit{script} de instalación de la base de datos a partir del modelo EER (Entidad-Relación Extendido), el cual permite diseñar mediante una herramienta CASE (Computer Aided Software Engineering).
+Una de las funcionalidades más interesantes consiste en la generación automática del \textit{script} de instalación de la base de datos a partir del modelo EER (Entidad-Relación Extendido), el cual permite diseñar mediante una herramienta de dibujo.
 
-\imagenBorde{Cap4//mysql-workbench}{0.8}{Captura de pantalla de la herramienta MySQL Workbench 5.2 CE}{fig:mysql-workbench}
+\imagenBorde{Cap4//mysql-workbench}{1.2}{Captura de pantalla de la herramienta MySQL Workbench 5.2 CE}{fig:mysql-workbench}
 
 
 \subsubsection{Visual Paradigm for UML}
 
 \textbf{Versión:} 8.0
 
-Visual Paradigm (Fig. \ref{fig:visual-paradigm}) es una herramienta CASE (Computer Aided Software Engineering) profesional para modelado UML (Unified Modeling Language). Ofrece un conjunto de funcionalidades muy amplio que son necesarios para etapas como la captura de requisitos, planificación del proyecto, planificación de las pruebas, modelado de clases, modelado de datos, entre otras.
+Visual Paradigm (Fig. \ref{fig:visual-paradigm}) es una herramienta CASE (Computer Aided Software Engineering) profesional para modelado UML (Unified Modeling Language). Ofrece un conjunto de funcionalidades muy amplio, tales como modelado de clases de análisis y diseño o modelado de datos, que son necesarios para etapas como la captura de requisitos, la planificación del proyecto y la planificación de las pruebas.
 
 En este PFC se utilizará durante las disciplinas de análisis y diseño con el fin de elaborar los diagramas UML necesarios: casos de uso, clases de análisis, comunicación, clases de diseño, secuencia, interacción, despligue, componentes, etcétera.
 
-\imagenBorde{Cap4//visual-paradigm}{0.8}{Captura de pantalla de la herramienta Visual Paradigm 8.0}{fig:visual-paradigm}
+\imagenBorde{Cap4//visual-paradigm}{1.2}{Captura de pantalla de la herramienta Visual Paradigm 8.0}{fig:visual-paradigm}
 
 
 \subsubsection{\LaTeX{}}
 
-\LaTeX{} \cite{site:latex} es un sistema de composición de textos de alta calidad diseñado para la creación de documentos científicos y técnicos. Además, es el estándar \textit{de facto} para la publicación de documentos científicos.
+\LaTeX{} \cite{site:latex} es un sistema de composición de textos de alta calidad diseñado para la creación de documentos científicos y técnicos. Además, es el estándar \textit{de-facto} para la publicación de documentos científicos.
 
-En este PFC será empleado para la elaboración de la documentación.
+En este PFC se ha empleado para la elaboración de este documento.
  
  
 \subsubsection{\BibTeX}
 
-\BibTeX \cite{site:bibtex} es, a su vez, una herramienta y un formato de fichero que se emplea para gestionar la bibliografía y referencias de documentos generados con \LaTeX{}.
+\BibTeX \cite{site:bibtex} es, paralelamente, una herramienta y un formato de fichero que se emplea para gestionar la bibliografía y referencias de documentos generados con \LaTeX{}.
 
 
 \subsubsection{Inkscape y GIMP}
@@ -221,11 +221,14 @@ En este PFC será empleado para la elaboración de la documentación.
 
 Por un lado, Inkscape es un editor de gráficos vectoriales, con capacidades similares a Adobe Illustrator y Macromedia Freehand. Por otro, GIMP (GNU Image Manipulation Program) es un programa para manipulación y edición de imágenes, con capacidades similares a Adobe Photoshop.
 
-Se trata de dos herramientas de dibujo muy potentes, gratuitos, de código abierto y multiplataforma, que serán empleadas para la generación y manipulación de las imágenes utilizadas tanto en el software como en la elaboración de la documentación asociada.
+Se trata de dos herramientas de dibujo muy potentes, gratuitas, de código abierto y multiplataforma, que serán empleadas para la generación y manipulación de las imágenes utilizadas tanto en el software como en la elaboración de la documentación asociada.
 
 
 
 \subsection{Herramientas, tecnologías y frameworks de desarrollo software}
+
+En esta sección se muestran las herramientas, tecnologías y frameworks empleados para el desarrollo de la herramienta software que se incluye en este PFC.
+
 
 \subsubsection{Eclipse IDE}
 
@@ -234,7 +237,7 @@ Se trata de dos herramientas de dibujo muy potentes, gratuitos, de código abiert
 Eclipse es un IDE (Integrated Development Environment) de código abierto,
 multiplataforma y ampliable en cuanto a funcionalidades mediante la incorporación de plugins.
 
-En este PFC será utilizado para la construcción e implementación la herramienta. Además, su funcionalidad será ampliada mediante la incorporación del plugin  \textbf{m2eclipse} (m2e) \cite{site:m2e}, que proporcionará soporte integrado para Apache Maven. De este modo será más sencillo editar el fichero \textit{pom.xml}, gestionar las dependencias y construir el proyecto desde el propio IDE, entre otros.
+En este PFC será utilizado para la construcción e implementación la herramienta y sus componentes asociados. Además, su funcionalidad será ampliada mediante la incorporación del plugin \textbf{m2eclipse} (m2e) \cite{site:m2e}, que proporcionará soporte integrado para Apache Maven. De este modo será más sencillo editar el fichero \textit{pom.xml}, gestionar las dependencias y construir el proyecto desde el propio IDE, entre otros.
 
 
 
@@ -242,7 +245,9 @@ En este PFC será utilizado para la construcción e implementación la herramienta.
 
 \textbf{Versión:} 5.1.11
 
-MySQL Server es un SGBD (Sistema Gestor de Bases de Datos) relacional multi-hilo, multi-usuario y que soporta el lenguaje SQL (Structured Query Language). Posee una doble licencia: una GNU GPL para aquellos usuarios que decidan utilizar el software bajo los términos de la misma, y otra comercial para aquellos que quieran incorporarlo en productos privativos.
+MySQL Server es un SGBD (Sistema Gestor de Bases de Datos) relacional multi-hilo, multi-usuario y que soporta el lenguaje SQL (Structured Query Language).
+
+Posee doble licencia: una GNU GPL para aquellos usuarios que decidan utilizar el software bajo los términos de la misma, y otra comercial para aquellos que quieran incorporarlo en productos privativos.
 
 
 \subsubsection{Apache Tomcat}
@@ -258,16 +263,16 @@ Este servidor será empleado tanto en el desarrollo como en el despliegue la herr
 
 \textbf{Versión:} 2.5.6
 
-Spring Framework \cite{site:spring} es un popular \textit{framework} de desarrollo de aplicaciones basadas en Java, cuyo objetivo es facilitar el desarrollo de las mismas promoviendo buenas prácticas de diseño y programación. Proporciona un conjunto de mecanismos muy bien documentados y fáciles de usar para acceder a una amplia colección de tecnologías que mejoran la productividad y el desarrollo de sistemas software. De este modo, de los desarrolladores pueden centrarse en cuestiones relativas con la lógica de negocio de la aplicación y abstraerse de la conexión entre componentes y sistemas.
+Spring Framework \cite{site:spring} es un popular \textit{framework} de desarrollo de aplicaciones basadas en Java, cuyo objetivo es facilitar el desarrollo de las mismas promoviendo buenas prácticas de diseño y programación. Proporciona un conjunto de mecanismos muy bien documentados y fáciles de usar para acceder a una amplia colección de tecnologías que mejoran la productividad y el desarrollo de sistemas software. De este modo, los desarrolladores pueden centrarse en cuestiones relativas con la lógica de negocio de la aplicación y abstraerse de la conexión entre componentes y sistemas.
 
-Spring es una plataforma diseñada en capas para distintos niveles de abstracción. Una de las características más populares de Spring Framework es la implementación del acceso a datos. Destaca la gestión de transacciones, la abstracción de JDBC que simplifica el manejo de errores y reduce la cantidad de código a implementar, integración con Hibernate, JD, iBATIS y SQL Maps, y una implementación del patrón MVC para aplicaciones web.
+Spring es una plataforma diseñada en capas para distintos niveles de abstracción. Una de las características más populares de Spring Framework es la implementación del acceso a datos. Destaca la gestión de transacciones, la abstracción de JDBC que simplifica el manejo de errores y reduce la cantidad de código a implementar, integración con Hibernate, JDO, iBATIS y SQL Maps, y una implementación del patrón MVC para aplicaciones web.
 
 Además existen numerosas extensiones para multitud de propósitos. A continuación se listan algunas de las más importantes:
 \begin{itemize}
 	\item \textbf{Spring Security}. Es un framework configurable para el control de acceso y autenticación.
-	\item \textbf{Spring Mobile}. Es una extensión de la implementación del patrón MVC de Spring creado específicamente para el desarrollo de aplicaciones web para dispositivos móviles como Android, iOS, Blackberry, Windows Phone 7 o J2ME.
+	\item \textbf{Spring Mobile}. Es una extensión de la implementación del patrón MVC de Spring, creado específicamente para el desarrollo de aplicaciones web para dispositivos móviles como Android, iOS, Blackberry, Windows Phone 7 o J2ME.
 	\item \textbf{Spring Android}. Se trata una extensión de Spring destinada a simplificar el desarrollo de aplicaciones nativas de Android.
-	\item \textbf{Spring Social}. Es una extensión de Spring que permite conectar las aplicaciones con proveedores de SaaS (Software-as-a-Service) como Facebook y Twitter. SaaS es un modelo de distribución de software basado en el paradigma cliente-servidor, en el que el servidor aloja el software y proporciona a los clientes el acceso al mismo a través de un navegador web o un cliente específico.
+	\item \textbf{Spring Social}. Es una extensión de Spring que permite conectar las aplicaciones con proveedores de SaaS (Software-as-a-Service) como Facebook y Twitter. SaaS es un modelo de distribución de software basado en el paradigma cliente-servidor, en el que el servidor aloja el software y proporciona a los clientes el acceso al mismo a través de un navegador web convencional o un cliente específico.
 	\item \textbf{Spring Web Flow}. Se trata de una extensión de la implementación del patrón MVC de Spring, que permite implementar el \textit{flujo} de una aplicación web. El flujo encapsula una secuencia de pasos que guían al usuario durante la ejecución de una tarea.
 \end{itemize}
 
@@ -283,7 +288,7 @@ Spring Security \cite{homepage-spring-security} es un \textit{framework} potente
 
 \textbf{Versión:} 2.2.3
 
-Struts \cite{site:struts} es un \textit{framework} de código abierto que permite desarrollar aplicaciones web\footnote{Una aplicación web difiere de una página web convencional en su capacidad de crear respuestas dinámicas y no generar únicamente páginas estáticas.} basadas en tecnología Java, como JSP o servlets, mediante el patrón MVC (Modelo-Vista-Controlador), permitiendo así reducir el acoplamiento entre la interfaz de usuario de la aplicación web y la lógica de negocio.
+Struts \cite{site:struts} es un \textit{framework} de código abierto que permite desarrollar aplicaciones web\footnote{Una aplicación web difiere de una página web convencional por su capacidad de crear respuestas dinámicas y no generar únicamente páginas estáticas.} basadas en tecnología Java, como JSP o servlets, mediante el patrón MVC (Modelo-Vista-Controlador), permitiendo así reducir el acoplamiento entre la interfaz de usuario de la aplicación web y la lógica de negocio.
 
 La funcionalidad de Struts es similar a Spring MVC, Stripes o Apache Tapestry.
 
@@ -294,7 +299,7 @@ La funcionalidad de Struts es similar a Spring MVC, Stripes o Apache Tapestry.
 
 Struts-menu \cite{site:struts-menu} es un framework que permite generar dinámicamente los menús de una página web basada en Struts y JSP.
 
-Proporciona un conjunto de etiquetas que permite crear menús basados en roles a partir de sus definiciones en formato XML. Además, está totalmente integrado con el sistema de autenticación del contenedor web, que en este caso es \textit{Spring Security}.
+Proporciona un conjunto de etiquetas que permite crear menús y controlar su renderizado en base a los roles del usuario. Además, está totalmente integrado con el sistema de autenticación del contenedor web, que en este caso es \textit{Spring Security} y sus definiciones se realizan mediante ficheros XML.
 
 
 \subsubsection{JSON-lib}
@@ -326,7 +331,7 @@ Se trata de un framework dedicado a la \textbf{automatización de pruebas unitari
 
 \textbf{Versión:} 2.5.6.SEC03
 
-Se trata de una extensión de Spring Framework que permite integrar el desarrollo de pruebas en como parte del desarrollo de la aplicación. Para ello permite incorporar el núcleo de Spring (el contendor IoC -Inversion of Control-, responsable de la creación y configuración de objetos) en las pruebas unitarias con el objetivo de que éstas puedan beneficiarse de él.
+Se trata de una extensión de Spring Framework que permite integrar el desarrollo de pruebas como parte del desarrollo de la aplicación. Para ello permite incorporar el núcleo de Spring (el contendor IoC -Inversion of Control-, responsable de la creación y configuración de objetos) en las pruebas unitarias con el objetivo de que éstas puedan beneficiarse de él.
 
 
 \subsubsection{Canoo WebTest}
@@ -363,7 +368,7 @@ Soporta operaciones tales como paginación, agrupación de columnas, ordenación de
 
 Se trata de un \textit{framework} para desarrollo de aplicaciones web basadas en Java, que gestiona aspectos de decoración y diseño para proporcionar un \textit{look\&feel} consistente entre las distintas páginas de un mismo sitio web.
 
-Para configurarlo es necesario definir una página modelo, denominada \textit{decorador}, en la que se especifica el diseño de la página y en qué lugares se insertarán los distintos contenidos. Acto seguido, SiteMesh interceptará todas las peticiones que los distintos clientes hagan al servidor web, tanto de páginas HTML generadas de manera estática como de manera dinámica, para procesar su contenido y adaptarlo a la definición del \textit{decorador} y construir el resultado final.
+Para configurarlo es necesario definir una página modelo, denominada \textit{decorador}, en la que se especifica el diseño de la página y en qué lugares se insertarán los distintos contenidos. Acto seguido, SiteMesh interceptará todas las peticiones que los distintos clientes hagan al servidor web, tanto de páginas HTML generadas de manera estática como de manera dinámica, para procesar su contenido adaptándolo a la definición del \textit{decorador} y construir el resultado final.
 
 
 \subsubsection{JSTL: JavaServer Pages Standard Tag Library}
@@ -394,32 +399,32 @@ JavaScript es un lenguaje de programación interpretado que, ejecutado en el lado
 
 El código JavaScript se ejecuta sin la necesidad de ser compilado previamente y su intérprete está implementado en la mayoría de los navegadores web que se utilizan hoy en día.
 
-Para que los programadores no lidien directamente con JavaScript, existen frameworks como JQuery y Dojo que agilizan el desarrollo mediante este lenguaje y amplían su funcionalidad al encargarse de la integración con AJAX (Asynchronous JavaScript And XML).	
+Para que los programadores no lidien directamente con JavaScript, existen frameworks como JQuery y Dojo que agilizan el desarrollo con este lenguaje y amplían su funcionalidad al automatizar la integración con AJAX (Asynchronous JavaScript And XML).	
 
 
 \subsubsection{Java Annotations}
 
 Una anotación, en el lenguaje de programación Java, es un método para añadir metadatos al código fuente. Estos metadatos, que pueden aplicarse a clases, métodos, variables, parámetros y paquetes, podrán ser analizados en tiempo de compilación o tiempo de ejecución para proporcionar la información que se considere oportuna.
 
-Las anotaciones Java proporcionan información sobre el programa, pero no afectan a su funcionamiento. Además, son completamente accesibles a nivel de aplicación utilizando el método de \textbf{introspección}. Por otro lado, la información que proporcionan las anotaciones puede ser utilizada por distintas herramientas para generar código usando el método de \textbf{reflexión}, documentos XML, etcétera.
+Las anotaciones Java proporcionan información sobre el programa, pero no afectan a su funcionamiento. Además, son completamente accesibles a nivel de aplicación utilizando el método de \textbf{introspección}. Por otro lado, la información que proporcionan las anotaciones puede ser utilizada por distintas herramientas para generar código usando el método de \textbf{reflexión}.
 
-En este PFC se utiliza esta tecnología para analizar diferentes clases cuyos atributos pueden variar a lo largo del tiempo y condicionan las operaciones de visualización y generación de escenas en tres dimensiones.
+En este PFC se utiliza esta tecnología para analizar diferentes clases cuyos atributos pueden variar a lo largo del tiempo y condicionan las operaciones de visualización y generación de escenas en tres dimensiones (Secciones \ref{sec:iteracion-2-diseño} y \ref{sec:iteracion-3-diseño}).
 
 
 \subsubsection{Java Reflection API}
 
-Gracias a este API es posible aplicar las técnicas de \textbf{reflexión} e \textbf{introspección}. Se trata de dos técnicas muy potentes y complejas, ya que requieren un alto conocimiento del lenguaje de programación, que permiten que las aplicaciones lleven a cabo operaciones que de otro modo sería imposible.
+Gracias a este API es posible aplicar las técnicas de \textbf{reflexión} e \textbf{introspección}. Se trata de dos técnicas muy potentes y complejas, ya que requieren un alto conocimiento del lenguaje de programación, que permiten a las aplicaciones llevar a cabo operaciones que de otro modo sería imposible.
 
-la \textit{reflexión} es una técnica mediante la cual un programa informático puede observar y modificar su estructura y comportamiento en tiempo de ejecución. Esta técnica suele utilizarse junto con la \textbf{introspección}, que es la capacidad que poseen algunos lenguajes de programación orientados a objetos para determinar el tipo de un objeto en tiempo de ejecución.
+La \textit{reflexión} es una técnica mediante la cual un programa informático puede observar y modificar su estructura y comportamiento en tiempo de ejecución. Esta técnica suele utilizarse junto con la \textbf{introspección}, que es la capacidad que poseen algunos lenguajes de programación orientados a objetos para determinar el tipo de un objeto en tiempo de ejecución.
 
 
 \subsubsection{JAXB: Java Architecture for XML Binding}
 
 \textbf{Versión:}  2.2.4
 
-JAXB es una framework integrado dentro de Java que permite obtener una representación XML a partir de una jerarquía de objetos Java, y viceversa. El proceso de obtención del documento XML se denomina \textit{serialización}, y  recibe los nombres de \textit{marshalling} o \textit{serializing}. El proceso inverso, \textit{deserialización}, se conoce como \textit{unmarshalling} o \textit{deserialization}.
+JAXB es un framework integrado dentro de Java, que permite obtener un documento XML a partir de una jerarquía de objetos Java, y viceversa. El proceso de obtención del documento XML se denomina \textit{serialización}, y  recibe los nombres de \textit{marshalling} o \textit{serializing}. El proceso inverso, \textit{deserialización}, se conoce como \textit{unmarshalling} o \textit{deserialization}.
 
-La característica más destacable de esta tecnología es su facilidad de uso por medio de anotaciones. Para ello habrá necesario anotar las clases correspondientes mediante anotaciones de JAXB, para permitir su serialización y deserialización, e implementar un pequeño adaptador que proporcione acceso a las funciones correspondientes de JAXB.
+La característica más destacable de esta tecnología es su facilidad de uso por medio de anotaciones. Para ello es necesario anotar las clases correspondientes mediante anotaciones de JAXB e implementar un pequeño adaptador que proporcione acceso a las funciones de \textit{serialización} y \textit{deserialización} de JAXB.
 
 En este PFC, los ficheros XML son utilizados para hacer persistentes los perfiles de visualización.
 
@@ -443,4 +448,4 @@ JOGL \cite{site:jogl} es una biblioteca que proporciona acceso a la librería de 
 
 JOGL proporciona acceso completo a las versiones del API relativas a las especificaciones 1.3 - 3.0, 3.1 - 3.3, $\geqslant{}$ 4.0, ES 1.x y ES 2.x (Embedded Systems).
 
-Además, está completamente integrado con los widgets proporcionados por Swing y AWT para facilitar la creación de una interfaz gráfica. No obstante, en las últimas versiones también incluye un \textbf{gestor de ventanas nativo} de alto rendimiento llamado \textbf{NEWT (Native Windowing Toolkit)}.
+Además, está completamente integrado con los componentes proporcionados por Swing y AWT para facilitar la creación de una interfaz gráfica. Aún así, en las últimas versiones también incluye un \textbf{gestor de ventanas nativo} de alto rendimiento llamado \textbf{NEWT (Native Windowing Toolkit)}.
