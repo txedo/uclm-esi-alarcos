@@ -88,7 +88,7 @@ En este caso la arquitectura Maven que se utilizará es \textbf{struts2-archetype
 
 Para finalizar, se han implementado la anotación y el analizador de anotaciones descrito en la disciplina de diseño (Fig. \ref{fig:it3-property-annotation-parser-class-diagram}), además de las clases de dominio que han sido debidamente anotadas.
 
-De la implementación de la anotación personalizada \textbf{Property} (Listado \ref{lst:property.java}) cabe destacar las anotaciones \textit{@Target} y \textit{@Runtime} que establecen que la anotación \textit{@Property} únicamente es aplicable a atributos de clase y que debe mantenerse en el \textit{bytecode} hasta el tiempo de ejecución de la aplicación en la JVM (Java Virtual Machine), respectivamente.
+De la implementación de la anotación personalizada \textbf{Property} (Listado \ref{lst:property.java}) cabe destacar las anotaciones \textit{@Target} y \textit{@Runtime} que establecen que la anotación \textit{@Property} únicamente es aplicable a atributos de clase que se desea anotar y que debe mantenerse en el \textit{bytecode} del fichero \textit{.class} generado por el compilador hasta el tiempo de ejecución de la aplicación en la JVM (Java Virtual Machine), respectivamente.
 
 \lstinputlisting[language=Java,caption={Código fuente de la anotación personalizada Property},label=lst:property.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//util//Property.java}
 

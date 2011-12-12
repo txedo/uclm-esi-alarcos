@@ -1,16 +1,6 @@
 \chapter{Método de Trabajo}
 \label{ch:metododetrabajo}
 
-% MOISES
-
-% Explicar cómo se ha solucionado el problema.
-
-%\section{Metodología de desarrollo}
-%\subsection{Proceso Unificado de Desarrollo (PUD)}
-%\section{... ¿monolítico o en iteraciones? ...}
-
-% MARIAN
-
 % Cómo vamos/hemos a aplicar/aplicado el RUP para resolver el problema (enfoque práctico)
 
 \section{Método de investigación preliminar}
@@ -199,7 +189,7 @@ MySQL Workbench \cite{site:mysql-workbench} (Fig. \ref{fig:mysq-workbench}) es u
 
 Una de las funcionalidades más interesantes es que permite generar el \textit{script} de instalación de la base de datos a partir del modelo EER (Entidad-Relación Extendido), el cual permite diseñar mediante una herramienta CASE (Computer Aided Software Engineering).
 
-\imagenBorde{Cap4//mysql-workbench}{0.5}{Captura de pantalla de la herramienta MySQL Workbench 5.2 CE}{fig:mysql-workbench}
+\imagenBorde{Cap4//mysql-workbench}{0.8}{Captura de pantalla de la herramienta MySQL Workbench 5.2 CE}{fig:mysql-workbench}
 
 
 \subsubsection{Visual Paradigm for UML}
@@ -210,7 +200,7 @@ Visual Paradigm (Fig. \ref{fig:visual-paradigm}) es una herramienta CASE (Comput
 
 En este PFC se utilizará durante las disciplinas de análisis y diseño con el fin de elaborar los diagramas UML necesarios: casos de uso, clases de análisis, comunicación, clases de diseño, secuencia, interacción, despligue, componentes, etcétera.
 
-\imagenBorde{Cap4//visual-paradigm}{0.5}{Captura de pantalla de la herramienta Visual Paradigm 8.0}{fig:visual-paradigm}
+\imagenBorde{Cap4//visual-paradigm}{0.8}{Captura de pantalla de la herramienta Visual Paradigm 8.0}{fig:visual-paradigm}
 
 
 \subsubsection{\LaTeX{}}
@@ -264,114 +254,161 @@ Se trata de un servidor web y contenedor de servlets de código abierto  que impl
 Este servidor será empleado tanto en el desarrollo como en el despliegue la herramienta.
 
 
-\subsubsection{Spring}
+\subsubsection{Spring Framework}
 
 \textbf{Versión:} 2.5.6
 
-es un popular \textit{framework} de desarrollo de aplicaciones basadas en Java que proporciona mecanismos muy bien documentados y fáciles de usar para prácticas comunes.
+Spring Framework \cite{site:spring} es un popular \textit{framework} de desarrollo de aplicaciones basadas en Java, cuyo objetivo es facilitar el desarrollo de las mismas promoviendo buenas prácticas de diseño y programación. Proporciona un conjunto de mecanismos muy bien documentados y fáciles de usar para acceder a una amplia colección de tecnologías que mejoran la productividad y el desarrollo de sistemas software. De este modo, de los desarrolladores pueden centrarse en cuestiones relativas con la lógica de negocio de la aplicación y abstraerse de la conexión entre componentes y sistemas.
+
+Spring es una plataforma diseñada en capas para distintos niveles de abstracción. Una de las características más populares de Spring Framework es la implementación del acceso a datos. Destaca la gestión de transacciones, la abstracción de JDBC que simplifica el manejo de errores y reduce la cantidad de código a implementar, integración con Hibernate, JD, iBATIS y SQL Maps, y una implementación del patrón MVC para aplicaciones web.
+
+Además existen numerosas extensiones para multitud de propósitos. A continuación se listan algunas de las más importantes:
+\begin{itemize}
+	\item \textbf{Spring Security}. Es un framework configurable para el control de acceso y autenticación.
+	\item \textbf{Spring Mobile}. Es una extensión de la implementación del patrón MVC de Spring creado específicamente para el desarrollo de aplicaciones web para dispositivos móviles como Android, iOS, Blackberry, Windows Phone 7 o J2ME.
+	\item \textbf{Spring Android}. Se trata una extensión de Spring destinada a simplificar el desarrollo de aplicaciones nativas de Android.
+	\item \textbf{Spring Social}. Es una extensión de Spring que permite conectar las aplicaciones con proveedores de SaaS (Software-as-a-Service) como Facebook y Twitter. SaaS es un modelo de distribución de software basado en el paradigma cliente-servidor, en el que el servidor aloja el software y proporciona a los clientes el acceso al mismo a través de un navegador web o un cliente específico.
+	\item \textbf{Spring Web Flow}. Se trata de una extensión de la implementación del patrón MVC de Spring, que permite implementar el \textit{flujo} de una aplicación web. El flujo encapsula una secuencia de pasos que guían al usuario durante la ejecución de una tarea.
+\end{itemize}
 
 
 \subsubsection{Spring Security}
 
 \textbf{Versión:} 2.0.4
 
-es un \textit{framework} que proporciona mecanismos de autenticación y permite implementar políticas de control de acceso a recursos.
+Spring Security \cite{homepage-spring-security} es un \textit{framework} potente y configurable que proporciona mecanismos de autenticación y permite implementar políticas de control de acceso a recursos. Es el estándar \textit{de-facto} para la seguridad de aplicaciones basadas en Spring.
+
 
 \subsubsection{Struts}
 
 \textbf{Versión:} 2.2.3
 
-es un \textit{framework} basado en Java que permite desarrollar aplicaciones web mediante el patrón MVC (Modelo-Vista-Controlador), permitiendo así reducir el acoplamiento entre las tres capas que forman un sistema software.
+Struts \cite{site:struts} es un \textit{framework} de código abierto que permite desarrollar aplicaciones web\footnote{Una aplicación web difiere de una página web convencional en su capacidad de crear respuestas dinámicas y no generar únicamente páginas estáticas.} basadas en tecnología Java, como JSP o servlets, mediante el patrón MVC (Modelo-Vista-Controlador), permitiendo así reducir el acoplamiento entre la interfaz de usuario de la aplicación web y la lógica de negocio.
+
+La funcionalidad de Struts es similar a Spring MVC, Stripes o Apache Tapestry.
 
 
 \subsubsection{Struts-Menu}
 
 \textbf{Versión:} 2.4.3
 
-se trata de una biblioteca de etiquetas que permite crear menús dinámicos a partir de sus definiciones en formato XML. Además, está totalmente integrado con el sistema de autenticación del contenedor web, que en este caso es \textit{Spring Security}.
+Struts-menu \cite{site:struts-menu} es un framework que permite generar dinámicamente los menús de una página web basada en Struts y JSP.
+
+Proporciona un conjunto de etiquetas que permite crear menús basados en roles a partir de sus definiciones en formato XML. Además, está totalmente integrado con el sistema de autenticación del contenedor web, que en este caso es \textit{Spring Security}.
 
 
-\subsubsection{JSON-Lib}
+\subsubsection{JSON-lib}
 
 \textbf{Versión:} 2.4
 
-es una librería basada en Java que permite transformar distintos tipos de estructuras de datos a formato JSON y viceversa.
+JSON-lib \cite{site:json-lib} es una librería basada en Java que permite transformar distintos tipos de estructuras de datos a formato JSON y viceversa. Entre los tipos de datos que maneja destacan distintos tipos que implementan las interfaces \textit{List}, \textit{Collection} y \textit{Map}, entre otros.
+
+JSON (JavaScript Object Notation) es un formato de intercambio de datos ligero. Su funcionalidad es similar a XML, pero es más sencillo de analizar y generar, tanto para humanos como para procesadores de textos, al no contener etiquetas y basarse en separadores de caracteres. Además, es completamente independiente del lenguaje de programación.
 
 
 \subsubsection{Struts2-JQuery}
 
 \textbf{Versión:} 3.1.0
 
-es un \textit{plugin} para el \textit{framework} Struts2 que proporciona de un modo sencillo las funcionalidades de \textbf{Ajax} y \textit{widgets} basados en el popular \textit{framework} de javascript \textbf{jQuery} 1.5.2  y \textbf{jQuery UI} 1.8.14.
+Se trata de un \textit{plugin} para el \textit{framework} Struts2 que proporciona mecanismos de acceso para las funcionalidades de \textbf{Ajax} mediante jQuery 1.5.2, y un conjunto de widgets mediante jQuery UI 1.8.14.
+
+Este plugin será necesario para lograr que la aplicación web goze de dinamismo y tenga una apariencia más atractiva.
 
 
 \subsubsection{JUnit}
 
-\textbf{Versión:} 
+\textbf{Versión:} 4.8.2
+
+Se trata de un framework dedicado a la \textbf{automatización de pruebas unitarias} para aplicaciones basadas en Java. Permite implementar pruebas para los distintos casos de prueba (\textit{test cases}) de una aplicación, y organizarlos en \textit{test suites}. Además, se integra perfectamente con Maven para la generación de informes de cobertura.
 
 
 \subsubsection{Spring Test}
 
-\textbf{Versión:} 
+\textbf{Versión:} 2.5.6.SEC03
+
+Se trata de una extensión de Spring Framework que permite integrar el desarrollo de pruebas en como parte del desarrollo de la aplicación. Para ello permite incorporar el núcleo de Spring (el contendor IoC -Inversion of Control-, responsable de la creación y configuración de objetos) en las pruebas unitarias con el objetivo de que éstas puedan beneficiarse de él.
 
 
-\subsubsection{Canoo Webtest}
+\subsubsection{Canoo WebTest}
 
-\textbf{Versión:} 
+\textbf{Versión:} R\_1812
 
+Canoo WebTest \cite{homepage-webtest} es una herramienta de código abierto que facilita la automatización de las pruebas funcionales de aplicaciones web. Permite especificar los casos de prueba mediante ficheros XML y la ejecución automatizada de los mismos mediante tareas \textbf{Ant}.
 
-\subsubsection{Ant}
+Además, genera los informes con los resultados de ejecución de las pruebas en formato HTML. Por otro lado, goza de una integración perfecta con Maven, gracias al plugin \textbf{webtest-maven-plugin}, para realizar las pruebas de integración, es decir, aquellas que se realizan sin la necesidad de desplegar la aplicación web en un servidor web.
 
-para la ejecución de tests funcionales mediante Canoo Webtest.
 
 
 \subsubsection{Google Maps API}
 
 \textbf{Versión:} v2
 
-proporciona un API que permite incorporar Google Maps en un página web y dotarlo de las funcionalidades necesarias.
+Google Maps es un \textbf{Sistema de Información Geográfica} (SIG o GIS, en su acrónimo inglés Geographic Information System) que ofrece un API para desarrolladores basada en JavaScript. Gracias a ella es posible insertar un mapa de Google en una página web, así como manipular el mapa, superponer datos propios y añadir contenido a través de diferentes servicios que proporciona.
+
+En este PFC se empleará para geolocalizar las factorías de software.
 
 
 \subsubsection{Displaytag}
 
 \textbf{Versión:} 1.2
 
-se trata de una librería de etiquetas mostrar y manipular tablas siguiendo el patrón MVC. Soporta operaciones tales como paginación, agrupación, ordenación, exportación, etcétera.
+Se trata de una librería de código abierto, que proporciona un conjunto de etiquetas mediante las cuales es posible mostrar y manipular tablas en una página web, sin violar el principio del patrón MVC.
+
+Soporta operaciones tales como paginación, agrupación de columnas, ordenación de filas, exportación de los resultados a distintos formatos como XLS, PDF, XML o CSV, etcétera.
 
 
-\subsubsection{Sitemesh}
+\subsubsection{SiteMesh}
 
 \textbf{Versión:}  2.4.2
 
-es un \textit{framework} para desarrollo de aplicaciones web basadas en Java, que se utiliza para aspectos de decoración y posicionamiento y proporcionar un \textit{look\&feel} entre las distintas páginas de un mismo sitio web. Su funcionamiento se basa en definir una página modelo en la que se define en qué lugares se insertarán los distintos contenidos.
+Se trata de un \textit{framework} para desarrollo de aplicaciones web basadas en Java, que gestiona aspectos de decoración y diseño para proporcionar un \textit{look\&feel} consistente entre las distintas páginas de un mismo sitio web.
 
-
-\subsubsection{JSP: JavaServer Pages}
-
-\textbf{Versión:}  2.0
-
-es una tecnología que proporciona los medios necesarios para crear páginas con contenido web dinámico.
+Para configurarlo es necesario definir una página modelo, denominada \textit{decorador}, en la que se especifica el diseño de la página y en qué lugares se insertarán los distintos contenidos. Acto seguido, SiteMesh interceptará todas las peticiones que los distintos clientes hagan al servidor web, tanto de páginas HTML generadas de manera estática como de manera dinámica, para procesar su contenido y adaptarlo a la definición del \textit{decorador} y construir el resultado final.
 
 
 \subsubsection{JSTL: JavaServer Pages Standard Tag Library}
 
 \textbf{Versión:}  1.2
 
-es una librería que encapsula funcionalidades comunes que son utilizadas en el desarrollo de aplicaciones web, tales como estructuras condicionales, iteraciones, etcétera.
+Se trata de una librería que encapsula funcionalidades comunes que son utilizadas en el desarrollo de aplicaciones web. Entre ellas destaca el soporte a la programación en cuanto a estructuras condicionales e iteraciones, manipulación de documentos XML, internacionalización y sentencias SQL.
+
+En el listado \ref{lst:jstl-example} se muestra un ejemplo de estructuras condicionales con JSTL.
+
+\begin{lstlisting}[caption={Ejemplo de estructuras condicionales con JSTL},label=lst:jstl-example]
+<c:choose>
+	<c:when test="\${test1}">
+		// Si test1 es verdadero, entonces...
+	</c:when>
+	<c:otherwise>
+		<c:if test="\${test2}">
+		    // Si test1 es falso y test2 es verdadero, entonces....
+		</c:if>
+		// Si test1 es falso e independientemnte de test2, entonces...
+	</c:otherwise>
+</c:choose>\end{lstlisting}
 
 
 \subsubsection{JavaScript}
 
-es un lenguaje de programación interpretado que, ejecutado en el lado del cliente, permite desarrollar contenidos web dinámicos evitando recargas innecesarias de la página. De este modo se puede lograr
-	
+JavaScript es un lenguaje de programación interpretado que, ejecutado en el lado del cliente, permite desarrollar contenidos web dinámicos evitando recargas innecesarias de la página. De este modo se puede lograr que la interfaz gráfica de usuario de una aplicación web sea tan interactiva como la de una aplicación de escritorio.
+
+El código JavaScript se ejecuta sin la necesidad de ser compilado previamente y su intérprete está implementado en la mayoría de los navegadores web que se utilizan hoy en día.
+
+Para que los programadores no lidien directamente con JavaScript, existen frameworks como JQuery y Dojo que agilizan el desarrollo mediante este lenguaje y amplían su funcionalidad al encargarse de la integración con AJAX (Asynchronous JavaScript And XML).	
 
 
 \subsubsection{Java Annotations}
 
-es un método para añadir metadatos a código fuente Java. Estos metadatos podrán ser analizados en tiempo de compilación o tiempo de ejecución para proporcionar la información que se considere oportuna.
+Una anotación, en el lenguaje de programación Java, es un método para añadir metadatos al código fuente. Estos metadatos, que pueden aplicarse a clases, métodos, variables, parámetros y paquetes, podrán ser analizados en tiempo de compilación o tiempo de ejecución para proporcionar la información que se considere oportuna.
+
+Las anotaciones Java proporcionan información sobre el programa, pero no afectan a su funcionamiento. Además, son completamente accesibles a nivel de aplicación utilizando el método de \textbf{introspección}. Por otro lado, la información que proporcionan las anotaciones puede ser utilizada por distintas herramientas para generar código usando el método de \textbf{reflexión}, documentos XML, etcétera.
+
+En este PFC se utiliza esta tecnología para analizar diferentes clases cuyos atributos pueden variar a lo largo del tiempo y condicionan las operaciones de visualización y generación de escenas en tres dimensiones.
 
 
 \subsubsection{Java Reflection API}
+
+Gracias a este API es posible aplicar las técnicas de \textbf{reflexión} e \textbf{introspección}. Se trata de dos técnicas muy potentes y complejas, ya que requieren un alto conocimiento del lenguaje de programación, que permiten que las aplicaciones lleven a cabo operaciones que de otro modo sería imposible.
 
 la \textit{reflexión} es una técnica mediante la cual un programa informático puede observar y modificar su estructura y comportamiento en tiempo de ejecución. Esta técnica suele utilizarse junto con la \textbf{introspección}, que es la capacidad que poseen algunos lenguajes de programación orientados a objetos para determinar el tipo de un objeto en tiempo de ejecución.
 
@@ -380,26 +417,30 @@ la \textit{reflexión} es una técnica mediante la cual un programa informático pu
 
 \textbf{Versión:}  2.2.4
 
-es una tecnología integrada dentro de Java que permite obtener una representación XML a partir de una jerarquía de objetos Java. Este proceso de \textit{serialización} recibe los nombres de \textit{marshalling}, \textit{deflating} o \textit{serializing}. El proceso inverso, también soportado por JAX, recibe los nombres de \textit{unmarshalling}, \textit{inflating} o \textit{deserialization}.
+JAXB es una framework integrado dentro de Java que permite obtener una representación XML a partir de una jerarquía de objetos Java, y viceversa. El proceso de obtención del documento XML se denomina \textit{serialización}, y  recibe los nombres de \textit{marshalling} o \textit{serializing}. El proceso inverso, \textit{deserialización}, se conoce como \textit{unmarshalling} o \textit{deserialization}.
+
+La característica más destacable de esta tecnología es su facilidad de uso por medio de anotaciones. Para ello habrá necesario anotar las clases correspondientes mediante anotaciones de JAXB, para permitir su serialización y deserialización, e implementar un pequeño adaptador que proporcione acceso a las funciones correspondientes de JAXB.
+
+En este PFC, los ficheros XML son utilizados para hacer persistentes los perfiles de visualización.
 
 
 \subsubsection{Hibernate}
 
 \textbf{Versión:}  3.5.4
 
-es un \textit{framework} de tipo ORM (Object-Relational Mapping) que permite establecer asociaciones entre clases Java y tablas de una base de datos relacional. También proporciona mecanismos para realizar consultas sobre la base de datos de un modo más abstracto que si se utilizase el lenguaje específico del sistema gestor de base de datos en cuestión.
+Hibernate es un \textit{framework}, de código abierto, de tipo ORM (Object-Relational Mapping). Permite asociar clases Java con tablas de una base de datos relacional para gestionar la persistencia de una aplicación y ejecutar consultas sobre la base de datos. Las consultas se realizan mediante los lenguajes HQL (Hibernate Query Language) y SQL (Structured Query Language).
+
+El objetivo de Hibernate consiste en mecanizar prácticamente todas las tareas de programación relativas a la persistencia. Así pues, el programador no debe implementarlas a mano mediante SQL y JDBC.
+
+Además, Hibernate contiene un paquete de anotaciones de que incluye las anotaciones de JPA (Java Persistence API), que son estándar de Java, y EJB.
 
 
-\subsubsection{JPA: Java Persistence API}
-
-\textbf{Versión:} 2.0
-
-API es un \textit{framework} de tipo ORM e integrado dentro de la plataforma de Java que nos permite interactuar con una base de datos por medio de objetos de la capa de dominio.
-
-
-\subsubsection{JOGL: Java binding for OpenGL}
+\subsubsection{JOGL: Java binding for the OpenGL API}
 
 \textbf{Versión:}  2.0
 
-es una biblioteca que hace de puente entre el lenguaje de programación Java y OpenGL. De este modo, es posible generar gráficos OpenGL a partir de una aplicación escrita en Java.
+JOGL \cite{site:jogl} es una biblioteca que proporciona acceso a la librería de gráficos OpenGL (Sección \ref{sec:opengl}) a través del lenguaje de programación Java. De este modo es posible renderizar gráficos 2D y 3D acelerados por hardware desde una aplicación basada en Java.
 
+JOGL proporciona acceso completo a las versiones del API relativas a las especificaciones 1.3 - 3.0, 3.1 - 3.3, $\geqslant{}$ 4.0, ES 1.x y ES 2.x (Embedded Systems).
+
+Además, está completamente integrado con los widgets proporcionados por Swing y AWT para facilitar la creación de una interfaz gráfica. No obstante, en las últimas versiones también incluye un \textbf{gestor de ventanas nativo} de alto rendimiento llamado \textbf{NEWT (Native Windowing Toolkit)}.
