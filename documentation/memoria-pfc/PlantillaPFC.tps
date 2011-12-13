@@ -16,23 +16,23 @@ MinPos.x=-1
 MinPos.y=-1
 MaxPos.x=-8
 MaxPos.y=-30
-NormalPos.left=175
-NormalPos.top=175
-NormalPos.right=1663
-NormalPos.bottom=534
+NormalPos.left=100
+NormalPos.top=100
+NormalPos.right=1346
+NormalPos.bottom=437
 Class=CLatexEdit
-Document=EstadoDelArte.tex
+Document=Resultados.tex
 
 [Frame0_Row0]
-cyCur=517
+cyCur=470
 cyMin=10
 
 [Frame0_Col0]
-cxCur=1646
+cxCur=1379
 cxMin=10
 
 [Frame0_View0,0]
-Cursor.row=78
-Cursor.column=0
-TopSubLine=123
+Cursor.row=278
+Cursor.column=36
+TopSubLine=421
 
