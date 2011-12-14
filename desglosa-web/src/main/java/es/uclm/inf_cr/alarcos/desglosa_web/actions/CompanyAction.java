@@ -10,8 +10,12 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.control.CompanyManager;
+import es.uclm.inf_cr.alarcos.desglosa_web.control.GenericManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
 
@@ -223,70 +227,49 @@ public class CompanyAction extends ActionSupport implements
     }
 
     public void validateDoDelete() {
-        // Get the company id attribute from URL
-        HttpServletRequest request = ServletActionContext.getRequest();
-        if (request.getParameter("id") != null) {
-            try {
-                id = Integer.parseInt(request.getParameter("id"));
-                // If id <= 0, then ERROR
-                if (id <= 0) {
-                    addActionError(getText("error.company.id"));
-                } else {
-                    try {
-                        // Check if the company id exists
-                        companyDao.getCompany(id);
-                    } catch (CompanyNotFoundException e) {
-                        addActionError(getText("error.company.id"));
-                    }
-                }
-            } catch (NumberFormatException nfe) {
-                addActionError(getText("error.company.id"));
-            }
-        } else {
+        try {
+            int id = GenericManager.checkValidId(ServletActionContext.getRequest());
+            CompanyManager.checkCompanyExists(id);
+        } catch (NullIdParameterException e1) {
+            addActionError(getText("error.company.id"));
+        } catch (NotValidIdParameterException e1) {
+            addActionError(getText("error.company.id"));
+        } catch (CompanyNotFoundException e) {
             addActionError(getText("error.company.id"));
         }
         if (hasActionErrors()) {
-            companies = companyDao.getAll();
+            companies = CompanyManager.getAllCompanies();
         }
     }
 
     public String delete() {
-        companyDao.removeCompany(id);
+        CompanyManager.removeCompany(id);
         addActionMessage(getText("message.company.deleted_successfully"));
 
         return SUCCESS;
     }
 
     public void validateDoGet() {
-        // Get the company id attribute from URL
-        HttpServletRequest request = ServletActionContext.getRequest();
-        if (request.getParameter("id") != null) {
-            try {
-                id = Integer.parseInt(request.getParameter("id"));
-                // If id <= 0, then ERROR
-                if (id <= 0) {
-                    addActionError(getText("error.company.id"));
-                } else {
-                    try {
-                        // Check if the company id exists
-                        companyDao.getCompany(id);
-                    } catch (CompanyNotFoundException e) {
-                        addActionError(getText("error.company.id"));
-                    }
-                }
-            } catch (NumberFormatException nfe) {
-                addActionError(getText("error.company.id"));
-            }
-        } else {
+        try {
+            int id = GenericManager.checkValidId(ServletActionContext.getRequest());
+            company = CompanyManager.checkCompanyExists(id);
+        } catch (NullIdParameterException e1) {
+            addActionError(getText("error.company.id"));
+        } catch (NotValidIdParameterException e1) {
+            addActionError(getText("error.company.id"));
+        } catch (CompanyNotFoundException e) {
             addActionError(getText("error.company.id"));
         }
         if (hasActionErrors()) {
-            companies = companyDao.getAll();
+            companies = CompanyManager.getAllCompanies();
         }
     }
 
     public String get() throws Exception {
-        company = companyDao.getCompany(id);
+        // Company was retrieved at validateDoGet but we want to be sure so...
+        if (company == null) {
+            company = CompanyManager.getCompany(id);
+        }
         addActionMessage(getText("message.company.found"));
 
         return SUCCESS;

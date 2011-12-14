@@ -31,4 +31,7 @@
 	
 	<bean id="applicationContextProvider" class="es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider"/>
 	
+	<bean id="companyManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.CompanyManager">
+    	<property name="companyDao" ref="companyDao"/>
+	</bean>
 </beans>
