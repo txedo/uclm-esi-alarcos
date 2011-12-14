@@ -41,7 +41,7 @@
   		</snapshots>
   		<id>uclm-esi-alarcos</id>
   		<name>Desglosa Visualization System</name>
-  		<url>http://uclm-esi-alarcos.googlecode.com/svn/trunk/desglosa-web</url>
+  		<url>http://uclm-esi-alarcos.googlecode.com/svn/trunk/desglosa-web uclm-esi-alarcos</url>
   	</repository>
   </repositories>
   <dependencies>
