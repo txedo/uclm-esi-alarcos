@@ -3,8 +3,6 @@ package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 import java.io.File;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.struts2.ServletActionContext;
 
 
@@ -12,7 +10,6 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.control.CompanyManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.control.GenericManager;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
@@ -24,8 +21,6 @@ public class CompanyAction extends ActionSupport implements
     private static final long serialVersionUID = -8572805918582070731L;
     private static String DEFAULT_PIC = "images/anonymous.gif";
     private int id;
-    // companyDao is set from applicationContext.xml
-    private CompanyDAO companyDao;
     // Attributes required by Save, Delete and Edit action methods
     private Company company;
     // Attributes required by List action (default method execute)
@@ -34,10 +29,6 @@ public class CompanyAction extends ActionSupport implements
     private File upload; // The actual file
     private String uploadContentType; // The content type of the file
     private String uploadFileName; // The uploaded file name
-
-    public void setCompanyDao(CompanyDAO companyDao) {
-        this.companyDao = companyDao;
-    }
 
     public int getId() {
         return id;
@@ -84,67 +75,59 @@ public class CompanyAction extends ActionSupport implements
     }
 
     @Override
-    public String execute() throws Exception {
-        companies = companyDao.getAll();
+    public String execute() {
+        companies = CompanyManager.getAllCompanies();
         return SUCCESS;
     }
-
-    public String showForm() throws Exception {
-        // validateDoShowForm is not necessary since it would do the same as
-        // this method
-        String result = SUCCESS;
-        // Get the company id attribute from URL
-        HttpServletRequest request = ServletActionContext.getRequest();
-        if (request.getParameter("id") != null) {
-            try {
-                id = Integer.parseInt(request.getParameter("id"));
-                // If id <= 0, then ERROR
-                if (id <= 0) {
-                    addActionError(getText("error.company.id"));
-                } else {
-                    try {
-                        // Check if the company id exists and place it in value
-                        // stack
-                        company = companyDao.getCompany(id);
-                    } catch (CompanyNotFoundException e) {
-                        addActionError(getText("error.company.id"));
-                    }
-                }
-            } catch (NumberFormatException nfe) {
+    
+    public void validateDoShowForm() {
+        try {
+            // Check id is valid
+            int id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            // Check there a company that exists with that id
+            if (!CompanyManager.checkCompanyExists(id)) {
                 addActionError(getText("error.company.id"));
             }
-        } // Else, show a blank form
-        if (hasActionErrors()) {
-            result = ERROR;
-            companies = companyDao.getAll();
+        } catch (NullIdParameterException e) {
+            addActionError(getText("error.company.id"));
+        } catch (NotValidIdParameterException e) {
+            addActionError(getText("error.company.id"));
         }
-        return result;
+        if (hasActionErrors()) {
+            companies = CompanyManager.getAllCompanies();
+        }
+    }
+
+    public String showForm() {
+        String sResult = SUCCESS;
+        try {
+            company = CompanyManager.getCompany(id);
+        } catch (CompanyNotFoundException e) {
+            sResult = ERROR;
+        }
+        return sResult;
     }
 
     public void validateDoSave() {
         if (company != null) {
             // Check company name is not empty
-            if (company.getName().trim().length() == 0) {
-                addFieldError("error.company.name",
-                        getText("error.company.name"));
+            if (GenericManager.isEmptyString(company.getName())) {
+                addFieldError("error.company.name", getText("error.company.name"));
             } else {
                 // Check company name is not already taken
                 try {
-                    companyDao.getCompany(company.getName());
-                    addFieldError("error.company.name",
-                            getText("error.company.already_exists"));
+                    CompanyManager.getCompany(company.getName());
+                    addFieldError("error.company.name", getText("error.company.already_exists"));
                 } catch (CompanyNotFoundException e) {
                     // Name not taken. Nothing to do here
                 }
             }
             // Director data
-            if (company.getDirector().getName().trim().length() == 0) {
-                addFieldError("error.director.name",
-                        getText("error.director.name"));
+            if (GenericManager.isEmptyString(company.getDirector().getName())) {
+                addFieldError("error.director.name", getText("error.director.name"));
             }
-            if (company.getDirector().getLastName().trim().length() == 0) {
-                addFieldError("error.director.last_name",
-                        getText("error.director.last_name"));
+            if (GenericManager.isEmptyString(company.getDirector().getLastName())) {
+                addFieldError("error.director.last_name", getText("error.director.last_name"));
             }
         } else {
             addActionError(getText("error.general"));
@@ -154,10 +137,11 @@ public class CompanyAction extends ActionSupport implements
     public String save() {
         try {
             String path = DEFAULT_PIC;
-            if (upload != null)
+            if (upload != null) {
                 path = FileUtil.uploadFile(uploadFileName, upload);
+            }
             company.getDirector().setImagePath(path);
-            companyDao.saveCompany(company);
+            CompanyManager.saveCompany(company);
             addActionMessage(getText("message.company.added_successfully"));
         } catch (Exception e) {
             addActionError(e.getMessage());
@@ -169,38 +153,34 @@ public class CompanyAction extends ActionSupport implements
     public void validateDoEdit() {
         Company cAux;
         if (company != null) {
-            // Check if company id is valid
-            if (company.getId() <= 0)
-                addActionError(getText("error.company.id"));
             try {
-                cAux = companyDao.getCompany(company.getId());
+                // Check if company id is valid
+                GenericManager.checkValidId(company.getId());
+                cAux = CompanyManager.getCompany(company.getId());
                 // Check company name is not empty
-                if (company.getName().trim().length() == 0) {
-                    addFieldError("error.company.name",
-                            getText("error.company.name"));
+                if (GenericManager.isEmptyString(company.getName())) {
+                    addFieldError("error.company.name", getText("error.company.name"));
                 } else {
-                    // Check that there is no company with same name and
-                    // different id
                     try {
-                        cAux = companyDao.getCompany(company.getName());
+                        // Check that there is no company with same name and different id
+                        cAux = CompanyManager.getCompany(company.getName());
                         if (cAux.getId() != company.getId()) {
-                            addFieldError("error.company.name",
-                                    getText("error.company.already_exists"));
+                            addFieldError("error.company.name", getText("error.company.already_exists"));
                         }
                     } catch (CompanyNotFoundException e) {
                         // Name not taken. Nothing to do here.
                     }
+                    // Director data
+                    if (GenericManager.isEmptyString(company.getDirector().getName())) {
+                        addFieldError("error.director.name", getText("error.director.name"));
+                    }
+                    if (GenericManager.isEmptyString(company.getDirector().getLastName())) {
+                        addFieldError("error.director.last_name", getText("error.director.last_name"));
+                    }
                 }
-                // Director data
-                if (company.getDirector().getName().trim().length() == 0) {
-                    addFieldError("error.director.name",
-                            getText("error.director.name"));
-                }
-                if (company.getDirector().getLastName().trim().length() == 0) {
-                    addFieldError("error.director.last_name",
-                            getText("error.director.last_name"));
-                }
-            } catch (CompanyNotFoundException e1) {
+            } catch (NotValidIdParameterException e) {
+                addActionError(getText("error.company.id"));
+            } catch (CompanyNotFoundException e) {
                 addActionError(getText("error.company.id"));
             }
         } else {
@@ -211,13 +191,13 @@ public class CompanyAction extends ActionSupport implements
         }
     }
 
-    public String edit() throws Exception {
+    public String edit() {
         try {
             if (upload != null) {
                 String path = FileUtil.uploadFile(uploadFileName, upload);
                 company.getDirector().setImagePath(path);
             }
-            companyDao.saveCompany(company);
+            CompanyManager.saveCompany(company);
             addActionMessage(getText("message.company.updated_successfully"));
         } catch (Exception e) {
             addActionError(e.getMessage());
@@ -228,13 +208,13 @@ public class CompanyAction extends ActionSupport implements
 
     public void validateDoDelete() {
         try {
-            int id = GenericManager.checkValidId(ServletActionContext.getRequest());
-            CompanyManager.checkCompanyExists(id);
+            int id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            if (!CompanyManager.checkCompanyExists(id)) {
+                addActionError(getText("error.company.id"));
+            }
         } catch (NullIdParameterException e1) {
             addActionError(getText("error.company.id"));
         } catch (NotValidIdParameterException e1) {
-            addActionError(getText("error.company.id"));
-        } catch (CompanyNotFoundException e) {
             addActionError(getText("error.company.id"));
         }
         if (hasActionErrors()) {
@@ -251,13 +231,13 @@ public class CompanyAction extends ActionSupport implements
 
     public void validateDoGet() {
         try {
-            int id = GenericManager.checkValidId(ServletActionContext.getRequest());
-            company = CompanyManager.checkCompanyExists(id);
+            int id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            if (!CompanyManager.checkCompanyExists(id)) {
+                addActionError(getText("error.company.id"));
+            }
         } catch (NullIdParameterException e1) {
             addActionError(getText("error.company.id"));
         } catch (NotValidIdParameterException e1) {
-            addActionError(getText("error.company.id"));
-        } catch (CompanyNotFoundException e) {
             addActionError(getText("error.company.id"));
         }
         if (hasActionErrors()) {
@@ -265,14 +245,17 @@ public class CompanyAction extends ActionSupport implements
         }
     }
 
-    public String get() throws Exception {
-        // Company was retrieved at validateDoGet but we want to be sure so...
-        if (company == null) {
+    public String get() {
+        String sResult = SUCCESS;
+        try {
             company = CompanyManager.getCompany(id);
+            addActionMessage(getText("message.company.found"));
+        } catch (CompanyNotFoundException e) {
+            addActionError(getText("error.company.id"));
+            sResult = ERROR;
         }
-        addActionMessage(getText("message.company.found"));
 
-        return SUCCESS;
+        return sResult;
     }
 
 }

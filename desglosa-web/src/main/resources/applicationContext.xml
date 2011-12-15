@@ -6,9 +6,7 @@
 <beans>    
     <!-- SAF2 actions instantiated by Spring -->
     <bean id="profileAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ProfileAction" singleton="false" />
-    <bean id="companyAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.CompanyAction" singleton="false">
-    	<property name="companyDao" ref="companyDao"/>
-    </bean>
+    <bean id="companyAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.CompanyAction" singleton="false" />
     <bean id="factoryAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.FactoryAction" singleton="false">
     	<property name="factoryDao" ref="factoryDao"/>
     	<property name="companyDao" ref="companyDao"/>
@@ -31,7 +29,7 @@
 	
 	<bean id="applicationContextProvider" class="es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider"/>
 	
-	<bean id="companyManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.CompanyManager">
+	<bean id="companyManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.CompanyManager" singleton="true" >
     	<property name="companyDao" ref="companyDao"/>
 	</bean>
 </beans>

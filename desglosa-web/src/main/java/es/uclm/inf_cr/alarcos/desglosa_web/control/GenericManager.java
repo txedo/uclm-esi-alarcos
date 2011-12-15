@@ -1,6 +1,5 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.control;
 
-import javax.servlet.http.HttpServletRequest;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
@@ -11,8 +10,26 @@ public class GenericManager {
     private GenericManager() {
     }
     
-    public static Integer checkValidId(HttpServletRequest request) throws NullIdParameterException, NotValidIdParameterException {
-        String sId = request.getParameter(ID);
+    public static boolean isEmptyString(String field) {
+        boolean bEmpty = false;
+        if (field == null) {
+            bEmpty = true;
+        } else {
+            if (field.trim().length() == 0) {
+                bEmpty = true;
+            }
+        }
+        return bEmpty;
+    }
+    
+    public static void checkValidId(int id) throws NotValidIdParameterException {
+        // Id must be greater than 0
+        if (id <= 0) {
+            throw new NotValidIdParameterException();
+        }
+    }
+    
+    public static Integer checkValidId(String sId) throws NullIdParameterException, NotValidIdParameterException {
         Integer nId = null;
         
         // Check if id is null
@@ -21,10 +38,7 @@ public class GenericManager {
         } else {
             try {
                 nId = Integer.parseInt(sId);
-                // Id must be greater than 0
-                if (nId <= 0) {
-                    throw new NotValidIdParameterException();
-                }
+                GenericManager.checkValidId(nId);
             } catch (NumberFormatException nfe) {
                 throw new NotValidIdParameterException();
             }
