@@ -57,9 +57,8 @@ public class Factory {
         return id;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST,
-            CascadeType.MERGE })
-    @JoinColumn(name = "company_id")
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
     public Company getCompany() {
         return company;
     }

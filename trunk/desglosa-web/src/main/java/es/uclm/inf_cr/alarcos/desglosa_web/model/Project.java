@@ -1,5 +1,6 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -35,7 +36,7 @@ public class Project {
     @Property
     private String plan;
     private Factory mainFactory;
-    private Set<Subproject> subprojects;
+    private Set<Subproject> subprojects = new HashSet<Subproject>();
     @Property(embedded = true)
     private Market market;
     @Property
