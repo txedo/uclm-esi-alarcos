@@ -1,6 +1,7 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
@@ -19,7 +20,6 @@ import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
 public class CompanyAction extends ActionSupport implements
         GenericActionInterface {
     private static final long serialVersionUID = -8572805918582070731L;
-    private static String DEFAULT_PIC = "images/anonymous.gif";
     private int id;
     // Attributes required by Save, Delete and Edit action methods
     private Company company;
@@ -136,14 +136,13 @@ public class CompanyAction extends ActionSupport implements
 
     public String save() {
         try {
-            String path = DEFAULT_PIC;
-            if (upload != null) {
-                path = FileUtil.uploadFile(uploadFileName, upload);
+            if (upload != null && !GenericManager.isEmptyString(uploadFileName)) {
+                String path = FileUtil.uploadFile(uploadFileName, upload);
+                company.getDirector().setImagePath(path);
             }
-            company.getDirector().setImagePath(path);
             CompanyManager.saveCompany(company);
             addActionMessage(getText("message.company.added_successfully"));
-        } catch (Exception e) {
+        } catch (IOException e) {
             addActionError(e.getMessage());
             return INPUT;
         }

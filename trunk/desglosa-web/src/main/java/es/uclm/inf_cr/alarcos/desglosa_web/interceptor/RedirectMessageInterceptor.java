@@ -72,8 +72,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
         Map<String, ?> session = invocation.getInvocationContext().getSession();
 
         @SuppressWarnings("unchecked")
-        Collection<String> actionErrors = (Collection) session
-                .remove(ACTION_ERRORS_KEY);
+        Collection<String> actionErrors = (Collection) session.remove(ACTION_ERRORS_KEY);
         if (actionErrors != null && actionErrors.size() > 0) {
             for (String error : actionErrors) {
                 validationAware.addActionError(error);

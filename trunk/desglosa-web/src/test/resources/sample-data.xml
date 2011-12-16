@@ -195,4 +195,29 @@
             <value description="group_id">4</value>
         </row>
     </table>
+    
+    <table name="directors">
+        <column>id</column>
+        <column>name</column>
+        <column>last_name</column>
+        <column>image_path</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">test director name 1</value>
+            <value description="last_name">test director last name 1</value>
+            <value description="image_path">images/anonymous.gif</value>
+        </row>
+    </table>
+    <table name="companies">
+        <column>id</column>
+        <column>name</column>
+        <column>information</column>
+        <column>director_id</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">test company name 1</value>
+            <value description="information">test company information 1</value>
+            <value description="director_id">1</value>
+        </row>
+    </table>
 </dataset>

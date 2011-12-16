@@ -24,6 +24,7 @@
             	<interceptor-ref name="adminOnly"/>
             	<interceptor-ref name="executiveOnly"/>
             	<interceptor-ref name="managerOnly"/>
+            	<interceptor-ref name="defaultStack" />
             </interceptor-stack>
         </interceptors>
         
