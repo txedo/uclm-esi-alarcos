@@ -10,10 +10,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "directors")
 public class Director {
+    public static final String DEFAULT_PIC = "images/anonymous.gif";
+    
     private int id;
     private String name;
     private String lastName;
-    private String imagePath;
+    private String imagePath = DEFAULT_PIC;
 
     public Director() {
     }

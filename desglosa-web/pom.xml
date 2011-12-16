@@ -320,6 +320,27 @@
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+    	<groupId>org.apache.struts</groupId>
+    	<artifactId>struts2-junit-plugin</artifactId>
+    	<version>2.2.3</version>
+    	<type>jar</type>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.struts</groupId>
+    	<artifactId>struts2-spring-plugin</artifactId>
+    	<version>2.2.3</version>
+    	<type>jar</type>
+    	<scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>javax.servlet</groupId>
+    	<artifactId>jsp-api</artifactId>
+    	<version>2.0</version>
+    	<type>jar</type>
+    	<scope>test</scope>
+    </dependency>
   </dependencies>
   <scm>
   	<connection>scm:svn:http://uclm-esi-alarcos.googlecode.com/svn/trunk/desglosa-web</connection>
