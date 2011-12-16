@@ -1,5 +1,8 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,9 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Formula;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
@@ -25,6 +30,7 @@ public class Company {
     @Property
     private String information;
     private Director director;
+    private Set<Factory> factories = new HashSet<Factory>();
     @Property
     private Integer numberOfFactories;
     @Property
@@ -56,10 +62,15 @@ public class Company {
         return information;
     }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
     @JoinColumn(name = "director_id")
     public Director getDirector() {
         return director;
+    }
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy = "company", orphanRemoval = true)
+    public Set<Factory> getFactories() {
+        return factories;
     }
 
     @Formula("(select count(*) from companies c, factories f where c.id = id and c.id = f.company_id)")
@@ -91,6 +102,10 @@ public class Company {
 
     public void setDirector(Director director) {
         this.director = director;
+    }
+    
+    public void setFactories(Set<Factory> factories) {
+        this.factories = factories;
     }
 
     public void setNumberOfFactories(Integer numberOfFactories) {

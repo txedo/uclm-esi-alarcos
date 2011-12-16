@@ -89,7 +89,7 @@ public class CompanyAction extends ActionSupport implements
                 addActionError(getText("error.company.id"));
             }
         } catch (NullIdParameterException e) {
-            addActionError(getText("error.company.id"));
+            // Show blank form
         } catch (NotValidIdParameterException e) {
             addActionError(getText("error.company.id"));
         }
@@ -100,10 +100,12 @@ public class CompanyAction extends ActionSupport implements
 
     public String showForm() {
         String sResult = SUCCESS;
-        try {
-            company = CompanyManager.getCompany(id);
-        } catch (CompanyNotFoundException e) {
-            sResult = ERROR;
+        if (ServletActionContext.getRequest().getParameter("id") != null) {
+            try {
+                company = CompanyManager.getCompany(id);
+            } catch (CompanyNotFoundException e) {
+                sResult = ERROR;
+            }
         }
         return sResult;
     }
