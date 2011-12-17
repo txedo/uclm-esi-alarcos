@@ -339,6 +339,12 @@
     	<version>2.0</version>
     	<type>jar</type>
     </dependency>
+    <dependency>
+    	<groupId>dbunit</groupId>
+    	<artifactId>dbunit</artifactId>
+    	<version>2.2</version>
+    	<scope>test</scope>
+    </dependency>
   </dependencies>
   <scm>
   	<connection>scm:svn:http://uclm-esi-alarcos.googlecode.com/svn/trunk/desglosa-web</connection>
@@ -410,6 +416,13 @@
         </configuration>
         <executions>
           <execution>
+            <id>test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>hbm2ddl</goal>
+            </goals>
+          </execution>
+          <execution>
             <phase>process-test-resources</phase>
             <goals>
               <goal>hbm2ddl</goal>
@@ -446,6 +459,17 @@
             <goals>
               <goal>operation</goal>
             </goals>
+          </execution>
+          <!-- Runs before each test suite -->
+          <execution>
+            <id>reset-data-before-test</id>
+            <phase>process-test-resources</phase>
+            <goals>
+                <goal>operation</goal>
+            </goals>
+            <configuration>
+                <type>CLEAN_INSERT</type>
+            </configuration>
           </execution>
           <execution>
             <!-- Runs before integration tests and jetty:run-war -->
@@ -527,6 +551,10 @@
           <exclude>ApplicationResources_es.properties</exclude>
           <exclude>spring-security-messages_es.properties</exclude>
         </excludes>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>src/test/resources</directory>
         <filtering>true</filtering>
       </resource>
     </resources>
