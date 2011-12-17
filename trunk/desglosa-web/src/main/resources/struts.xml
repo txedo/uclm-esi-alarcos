@@ -106,11 +106,7 @@
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewCompanies.jsp</result>
-			<result name="input">
-				<param name="location">/jsp/formCompany.jsp?id=${id}</param>
-      			<param name="parse">true</param>
-      			<param name="encode">true</param>
-			</result>
+			<result name="input">/jsp/formCompany.jsp</result>
 			<result name="success" type="redirectAction">listCompanies</result>
 		</action>
 		<action name="deleteCompany" class="companyAction" method="delete">
@@ -148,11 +144,7 @@
 			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewFactories.jsp</result>
-			<result name="input">
-				<param name="location">/jsp/formFactory.jsp?id=${id}</param>
-      			<param name="parse">true</param>
-      			<param name="encode">true</param>
-			</result>
+			<result name="input">/jsp/formFactory.jsp</result>
 			<result name="success" type="redirectAction">listFactories</result>
 		</action>
 		<action name="deleteFactory" class="factoryAction" method="delete">

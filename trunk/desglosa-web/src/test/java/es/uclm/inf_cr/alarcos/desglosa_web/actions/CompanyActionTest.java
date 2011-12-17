@@ -12,23 +12,25 @@ public class CompanyActionTest extends StrutsSpringTestCaseBase {
     private Company company;
     
     public void testExecute() throws Exception {
-        proxy = configureProxy("/", "listCompanies", "admin");
+        configureProxy("/", "listCompanies", "admin");
+        assertTrue(action instanceof CompanyAction);
         assertEquals(Action.SUCCESS, proxy.execute());
     }
 
     public void testShowForm() throws Exception {
         // Show a blank form
-        proxy = configureProxy("/", "showCompanyForm", "admin");
+        configureProxy("/", "showCompanyForm", "admin");
+        assertTrue(action instanceof CompanyAction);
         assertEquals(Action.SUCCESS, proxy.execute());
         
         // Show 
         String sId = "1";
         request.setParameter("id", sId);
-        proxy = configureProxy("/", "showCompanyForm", "admin");
+        configureProxy("/", "showCompanyForm", "admin");
+        assertTrue(action instanceof CompanyAction);
         assertEquals(Action.SUCCESS, proxy.execute());
-        action = (CompanyAction)proxy.getAction();
         
-        company = action.getCompany();
+        company = ((CompanyAction)action).getCompany();
         assertEquals(Integer.parseInt(sId), company.getId());
         assertEquals("test company name 1", company.getName());
         assertEquals("test company information 1", company.getInformation());
@@ -42,52 +44,51 @@ public class CompanyActionTest extends StrutsSpringTestCaseBase {
         String sInvalidIds[] = { "-1", "0", "", " ", "a", "3a", " a3", " 3" };
         for (String sId : sInvalidIds) {
             request.setParameter("id", sId);
-            proxy = configureProxy("/", "showCompanyForm", "admin");
+            configureProxy("/", "showCompanyForm", "admin");
+            assertTrue(action instanceof CompanyAction);
             assertEquals("Testing invalid id: " + sId, Action.INPUT, proxy.execute());
-            action = (CompanyAction)proxy.getAction();
-            assertTrue(action.hasActionErrors());
-            action.clearActionErrors();
+            assertTrue(((CompanyAction)action).hasActionErrors());
+            ((CompanyAction)action).clearActionErrors();
         }
         // Company not found
         String sId = "2";
         request.setParameter("id", sId);
-        proxy = configureProxy("/", "showCompanyForm", "admin");
+        configureProxy("/", "showCompanyForm", "admin");
+        assertTrue(action instanceof CompanyAction);
         assertEquals(Action.INPUT, proxy.execute());
-        action = (CompanyAction)proxy.getAction();
-        assertTrue(action.hasActionErrors());
+        assertTrue(((CompanyAction)action).hasActionErrors());
     }
     
     public void testSave() throws Exception {
         // Save company with default director picture
-        proxy = configureProxy("/", "saveCompany", "admin");
-        action = (CompanyAction)proxy.getAction();
+        configureProxy("/", "saveCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
         company = testUtils.generateRandomCompany();
-        action.setCompany(company);
+        ((CompanyAction)action).setCompany(company);
         assertEquals(Action.SUCCESS, proxy.execute());
     }
     
     public void testSaveError() throws Exception {
-        // Save a null company
-        proxy = configureProxy("/", "saveCompany", "admin");
-        action = (CompanyAction)proxy.getAction();
-        company = null;
-        action.setCompany(company);
+        // Try to save a null company
+        configureProxy("/", "saveCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        ((CompanyAction)action).setCompany(null);
         assertEquals(Action.INPUT, proxy.execute());
         // Save a empty company name, director name and director last_name
-        proxy = configureProxy("/", "saveCompany", "admin");
-        action = (CompanyAction)proxy.getAction();
+        configureProxy("/", "saveCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
         company = testUtils.generateRandomCompany();
         company.setName("");
         company.getDirector().setName("");
         company.getDirector().setLastName("");
-        action.setCompany(company);
+        ((CompanyAction)action).setCompany(company);
         assertEquals(Action.INPUT, proxy.execute());
         // Save a company with a name already taken
-        proxy = configureProxy("/", "saveCompany", "admin");
-        action = (CompanyAction)proxy.getAction();
+        configureProxy("/", "saveCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
         company = testUtils.generateRandomCompany();
         company.setName("test company name 1");
-        action.setCompany(company);
+        ((CompanyAction)action).setCompany(company);
         assertEquals(Action.INPUT, proxy.execute());
     }
     
@@ -95,14 +96,14 @@ public class CompanyActionTest extends StrutsSpringTestCaseBase {
         String newName = "changed name";
         String oldName = "test company name 1";
         // Edit a company
-        proxy = configureProxy("/", "editCompany", "admin");
-        action = (CompanyAction)proxy.getAction();
+        configureProxy("/", "editCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
         // First, retrieve an example company and set it to the action
         company = CompanyManager.getCompany(oldName);
         assertEquals(1, company.getId());
         // Change its name to a new one
         company.setName(newName);
-        action.setCompany(company);
+        ((CompanyAction)action).setCompany(company);
         assertEquals(Action.SUCCESS, proxy.execute());
         // Check that the name has changed
         assertTrue(CompanyManager.checkCompanyExists(newName));
@@ -110,34 +111,100 @@ public class CompanyActionTest extends StrutsSpringTestCaseBase {
     }
     
     public void testEditError() throws Exception {
-        
+        // Generate and save a random company to edit it
+        company = testUtils.generateRandomCompany();
+        assertNotNull("Randomly generated company should not be null");
+        CompanyManager.saveCompany(company);
+        // Now get its id and set it to the memory object
+        int realId = CompanyManager.getCompany(company.getName()).getId();
+        // Try to edit a null company
+        configureProxy("/", "editCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        ((CompanyAction)action).setCompany(null);
+        assertEquals(Action.INPUT, proxy.execute());
+        // Try to set a invalid id
+        company.setId(-1);
+        configureProxy("/", "editCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        ((CompanyAction)action).setCompany(company);
+        assertEquals(Action.INPUT, proxy.execute());
+        // Try to edit a company with same name and different id
+        company.setId(realId);
+        company.setName("test company name 1");
+        configureProxy("/", "editCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        ((CompanyAction)action).setCompany(company);
+        assertEquals(Action.INPUT, proxy.execute());
+        // Try to edit a company which does not exist
+        company.setId(10);
+        configureProxy("/", "editCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        ((CompanyAction)action).setCompany(company);
+        assertEquals(Action.INPUT, proxy.execute());
+        // Try to edit a company with empty name, director name and director last name
+        company.setId(realId);
+        company.setName("");
+        company.getDirector().setName("");
+        company.getDirector().setLastName("");
+        request.setParameter("id", realId+"");
+        configureProxy("/", "editCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        ((CompanyAction)action).setCompany(company);
+        ((CompanyAction)action).setId(realId);
+        assertEquals(Action.INPUT, proxy.execute());
     }
     
     public void testDelete() throws Exception {
         String sId = "1";
         // Delete a company
         request.setParameter("id", sId);
-        proxy = configureProxy("/", "deleteCompany", "admin");
-        action = (CompanyAction)proxy.getAction();
+        configureProxy("/", "deleteCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
         assertEquals(Action.SUCCESS, proxy.execute());
         // Check that the company does not exist
         assertFalse(CompanyManager.checkCompanyExists(Integer.parseInt(sId)));
     }
     
     public void testDeleteError() throws Exception {
-        
+        // Try to get a company without setting request id parameter
+        configureProxy("/", "deleteCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        assertEquals(Action.INPUT, proxy.execute());
+        // Try to delete a invalid id company
+        request.setParameter("id", "-1");
+        configureProxy("/", "deleteCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        assertEquals(Action.INPUT, proxy.execute());
+        // Try to delete a non existing company
+        request.setParameter("id", "100");
+        configureProxy("/", "deleteCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        assertEquals(Action.INPUT, proxy.execute());
     }
     
     public void testGet() throws Exception {
         // View a company
         request.setParameter("id", "1");
-        proxy = configureProxy("/", "viewCompany", "admin");
-        action = (CompanyAction)proxy.getAction();
+        configureProxy("/", "viewCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
         assertEquals(Action.SUCCESS, proxy.execute());
     }
     
     public void testGetError() throws Exception {
-        
+        // Try to get a company without setting request id parameter
+        configureProxy("/", "viewCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        assertEquals(Action.INPUT, proxy.execute());
+        // Try to view a invalid id company
+        request.setParameter("id", "-1");
+        configureProxy("/", "viewCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        assertEquals(Action.INPUT, proxy.execute());
+        // Try to view a non existing company
+        request.setParameter("id", "100");
+        configureProxy("/", "viewCompany", "admin");
+        assertTrue(action instanceof CompanyAction);
+        assertEquals(Action.INPUT, proxy.execute());
     }
     
 }

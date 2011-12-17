@@ -18,14 +18,12 @@
 		
 		<c:set var="form" value="/editCompany"/>
 		<c:set var="buttonLabel"><s:text name="button.edit_company"></s:text></c:set>
-		<c:if test="${empty param.id}">
+		<c:if test="${empty param.id and not fn:endsWith(header.referer,'/editCompany') and not fn:contains(header.referer,'id=')}">
 			<c:set var="form" value="/saveCompany"/>
 			<c:set var="buttonLabel"><s:text name="button.add_company"></s:text></c:set>
 		</c:if>
 		<form id="formCompany" class="form" method="post" action="<c:url value="${form}"/>" enctype="multipart/form-data">
-			<c:if test="${not empty param.id}">
-				<s:hidden name="company.id"/>
-			</c:if>
+			<s:hidden name="company.id"/>
 			
 			<fieldset id="companyForm">
 				<legend><s:text name="label.configure.company"/></legend>
@@ -54,7 +52,7 @@
 					<li>
 						<label for="company.director.lastName"><s:text name="label.configure.director.last_name"/></label>
 						<s:textfield id="company.director.lastName" name="company.director.lastName" tabindex="4"/>
-						<s:fielderror><s:param>error.director.lastName</s:param></s:fielderror>
+						<s:fielderror><s:param>error.director.last_name</s:param></s:fielderror>
 						
 						<s:hidden id="company.director.imagePath" name="company.director.imagePath"/>
 						<s:set name="company" value="company" scope="request"/>

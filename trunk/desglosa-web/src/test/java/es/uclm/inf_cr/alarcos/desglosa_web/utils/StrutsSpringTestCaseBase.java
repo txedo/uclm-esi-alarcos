@@ -5,14 +5,13 @@ import java.util.Map;
 
 import org.apache.struts2.StrutsSpringTestCase;
 
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionProxy;
 
-import es.uclm.inf_cr.alarcos.desglosa_web.actions.CompanyAction;
-
 public class StrutsSpringTestCaseBase extends StrutsSpringTestCase {
     protected ActionProxy proxy;
-    protected CompanyAction action;
+    protected Action action;
     protected ActionContext actionContext;
     
     /* (non-Javadoc)
@@ -28,18 +27,16 @@ public class StrutsSpringTestCaseBase extends StrutsSpringTestCase {
         return contextLocations;
     }
     
-    protected ActionProxy configureProxy(String namespace, String actionName, String sessionUsername) {
+    protected void configureProxy(String namespace, String actionName, String sessionUsername) {
         proxy = getActionProxy(namespace + actionName);
         assertNotNull(proxy);
-        action = (CompanyAction)proxy.getAction();
+        action = (Action) proxy.getAction();
         assertNotNull(action);
         
         Map<String, Object> session = new HashMap<String, Object>();  
         request.setParameter("username", sessionUsername);  
         actionContext = proxy.getInvocation().getInvocationContext();  
         actionContext.setSession(session);
-        
-        return proxy;
     }
 
     /* (non-Javadoc)

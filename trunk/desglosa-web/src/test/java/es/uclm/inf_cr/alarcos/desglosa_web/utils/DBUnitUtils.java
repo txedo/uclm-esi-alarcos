@@ -26,6 +26,15 @@ public class DBUnitUtils extends DBTestCase {
     private final static String USERNAME = "desglosaadmin";
     private final static String PASSWORD = "nimdaasolgsed";
     
+    private final static String FILE = "src/test/resources/sample-data.xml";
+    private final static String CHARSET = "UTF8";
+    
+    private final static String TABLE_NAMES[] = { "roles", "groups", "users", 
+        "groups_roles", "users_groups", 
+        "directors", "companies", 
+        "addresses", "locations", "factories",
+        "markets", "projects", "subprojects" };
+    
     private static DBUnitUtils _instance = null;
     
     private DBUnitUtils() {
@@ -50,21 +59,21 @@ public class DBUnitUtils extends DBTestCase {
         
         QueryDataSet partialDataSet = new QueryDataSet(connection);
         //Specify the SQL to run to retrieve the data
-        partialDataSet.addTable("companies", "SELECT * FROM companies");
+        for (String tableName : TABLE_NAMES) {
+            partialDataSet.addTable(tableName, "SELECT * FROM " + tableName);
+        }
         
         //Specify the location of the flat file(XML)
         //FlatXmlWriter datasetWriter = new FlatXmlWriter(new FileOutputStream("temp.xml"));
-        MyXmlDataSetWriter datasetWriter = new MyXmlDataSetWriter(new OutputStreamWriter(new FileOutputStream("src/test/resources/sample-data.xm"), "UTF8"));
+        MyXmlDataSetWriter datasetWriter = new MyXmlDataSetWriter(new OutputStreamWriter(new FileOutputStream(FILE), CHARSET));
         
         //Export the data
         datasetWriter.write(partialDataSet);
-        
-        //IDataSet dataSet = new XmlDataSet(new InputStreamReader(new FileInputStream("src/test/resources/sample-data.xml")));
     }
 
     @Override
     protected IDataSet getDataSet() throws Exception {
-        return new XmlDataSet(new InputStreamReader(new FileInputStream("src/test/resources/sample-data.xml")));
+        return new XmlDataSet(new InputStreamReader(new FileInputStream(FILE)));
     }
     
     /* (non-Javadoc)
