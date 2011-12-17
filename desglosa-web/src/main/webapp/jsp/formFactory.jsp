@@ -209,16 +209,13 @@
 	
 	<c:set var="form" value="/editFactory.action"/>
 	<c:set var="buttonLabel" value="button.edit_factory"/>
-	<c:if test="${empty param.id}">
+	<c:if test="${empty param.id and not fn:endsWith(header.referer,'/editFactory') and not fn:contains(header.referer,'id=')}">
 		<c:set var="form" value="/saveFactory.action"/>
 		<c:set var="buttonLabel" value="button.add_factory"/>
 	</c:if>
 
 	<form id="formFactory" method="post" action="<c:url value="${form}"/>" enctype="multipart/form-data">
-
-		<c:if test="${not empty param.id}">
-			<s:hidden name="factory.id"/>
-		</c:if>
+		<s:hidden name="factory.id"/>
 		
 		<s:div id="fillFactoryData" cssStyle="display: ">
 			<s:fielderror><s:param>error.company_mandatory</s:param></s:fielderror>

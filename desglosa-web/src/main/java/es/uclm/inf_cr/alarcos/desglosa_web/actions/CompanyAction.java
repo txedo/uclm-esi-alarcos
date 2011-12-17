@@ -83,7 +83,7 @@ public class CompanyAction extends ActionSupport implements
     public void validateDoShowForm() {
         try {
             // Check id is valid
-            int id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             // Check there a company that exists with that id
             if (!CompanyManager.checkCompanyExists(id)) {
                 addActionError(getText("error.company.id"));
@@ -98,16 +98,12 @@ public class CompanyAction extends ActionSupport implements
         }
     }
 
-    public String showForm() {
-        String sResult = SUCCESS;
-        if (ServletActionContext.getRequest().getParameter("id") != null) {
-            try {
-                company = CompanyManager.getCompany(id);
-            } catch (CompanyNotFoundException e) {
-                sResult = ERROR;
-            }
+    public String showForm() throws CompanyNotFoundException {
+        // if id == 0 then show a blank form
+        if (id > 0) {
+            company = CompanyManager.getCompany(id);
         }
-        return sResult;
+        return SUCCESS;
     }
 
     public void validateDoSave() {
@@ -146,7 +142,7 @@ public class CompanyAction extends ActionSupport implements
             addActionMessage(getText("message.company.added_successfully"));
         } catch (IOException e) {
             addActionError(e.getMessage());
-            return INPUT;
+            return ERROR;
         }
         return SUCCESS;
     }
@@ -171,13 +167,13 @@ public class CompanyAction extends ActionSupport implements
                     } catch (CompanyNotFoundException e) {
                         // Name not taken. Nothing to do here.
                     }
-                    // Director data
-                    if (GenericManager.isEmptyString(company.getDirector().getName())) {
-                        addFieldError("error.director.name", getText("error.director.name"));
-                    }
-                    if (GenericManager.isEmptyString(company.getDirector().getLastName())) {
-                        addFieldError("error.director.last_name", getText("error.director.last_name"));
-                    }
+                }
+                // Director data
+                if (GenericManager.isEmptyString(company.getDirector().getName())) {
+                    addFieldError("error.director.name", getText("error.director.name"));
+                }
+                if (GenericManager.isEmptyString(company.getDirector().getLastName())) {
+                    addFieldError("error.director.last_name", getText("error.director.last_name"));
                 }
             } catch (NotValidIdParameterException e) {
                 addActionError(getText("error.company.id"));
@@ -202,14 +198,14 @@ public class CompanyAction extends ActionSupport implements
             addActionMessage(getText("message.company.updated_successfully"));
         } catch (Exception e) {
             addActionError(e.getMessage());
-            return INPUT;
+            return ERROR;
         }
         return SUCCESS;
     }
 
     public void validateDoDelete() {
         try {
-            int id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             if (!CompanyManager.checkCompanyExists(id)) {
                 addActionError(getText("error.company.id"));
             }
@@ -232,7 +228,7 @@ public class CompanyAction extends ActionSupport implements
 
     public void validateDoGet() {
         try {
-            int id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             if (!CompanyManager.checkCompanyExists(id)) {
                 addActionError(getText("error.company.id"));
             }
@@ -246,17 +242,11 @@ public class CompanyAction extends ActionSupport implements
         }
     }
 
-    public String get() {
-        String sResult = SUCCESS;
-        try {
-            company = CompanyManager.getCompany(id);
-            addActionMessage(getText("message.company.found"));
-        } catch (CompanyNotFoundException e) {
-            addActionError(getText("error.company.id"));
-            sResult = ERROR;
-        }
+    public String get() throws Exception {
+        company = CompanyManager.getCompany(id);
+        addActionMessage(getText("message.company.found"));
 
-        return sResult;
+        return SUCCESS;
     }
 
 }
