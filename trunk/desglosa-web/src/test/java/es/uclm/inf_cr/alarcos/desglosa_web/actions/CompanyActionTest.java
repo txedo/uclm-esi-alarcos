@@ -1,52 +1,16 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.struts2.StrutsSpringTestCase;
 
 import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionProxy;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.control.CompanyManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
+import es.uclm.inf_cr.alarcos.desglosa_web.utils.StrutsSpringTestCaseBase;
 import es.uclm.inf_cr.alarcos.desglosa_web.utils.testUtils;
 
-public class CompanyActionTest extends StrutsSpringTestCase {
+public class CompanyActionTest extends StrutsSpringTestCaseBase {
     private Company company;
-    private ActionProxy proxy;
-    private CompanyAction action;
-    private ActionContext actionContext;
     
-    /* (non-Javadoc)
-     * @see org.apache.struts2.StrutsSpringTestCase#getContextLocations()
-     */
-    @Override
-    protected String[] getContextLocations() {
-        String contextLocations[] = { "classpath*:applicationContext-dao.xml",
-                "classpath*:applicationContext-interceptor.xml",
-                "classpath*:applicationContext-resources.xml",
-                "classpath*:applicationContext-security.xml",
-                "classpath*:applicationContext.xml" };
-        return contextLocations;
-    }
-
-    private ActionProxy configureProxy(String namespace, String actionName, String sessionUsername) {
-        proxy = getActionProxy(namespace + actionName);
-        assertNotNull(proxy);
-        action = (CompanyAction)proxy.getAction();
-        assertNotNull(action);
-        
-        Map<String, Object> session = new HashMap<String, Object>();  
-        request.setParameter("username", sessionUsername);  
-        actionContext = proxy.getInvocation().getInvocationContext();  
-        actionContext.setSession(session);
-        
-        return proxy;
-    }
-    
-
     public void testExecute() throws Exception {
         proxy = configureProxy("/", "listCompanies", "admin");
         assertEquals(Action.SUCCESS, proxy.execute());
@@ -149,18 +113,6 @@ public class CompanyActionTest extends StrutsSpringTestCase {
         
     }
     
-    public void testGet() throws Exception {
-        // View a company
-        request.setParameter("id", "1");
-        proxy = configureProxy("/", "viewCompany", "admin");
-        action = (CompanyAction)proxy.getAction();
-        assertEquals(Action.SUCCESS, proxy.execute());
-    }
-    
-    public void testGetError() throws Exception {
-        
-    }
-    
     public void testDelete() throws Exception {
         String sId = "1";
         // Delete a company
@@ -175,5 +127,17 @@ public class CompanyActionTest extends StrutsSpringTestCase {
     public void testDeleteError() throws Exception {
         
     }
-
+    
+    public void testGet() throws Exception {
+        // View a company
+        request.setParameter("id", "1");
+        proxy = configureProxy("/", "viewCompany", "admin");
+        action = (CompanyAction)proxy.getAction();
+        assertEquals(Action.SUCCESS, proxy.execute());
+    }
+    
+    public void testGetError() throws Exception {
+        
+    }
+    
 }

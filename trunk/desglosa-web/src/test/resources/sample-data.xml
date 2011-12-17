@@ -207,6 +207,18 @@
             <value description="last_name">test director last name 1</value>
             <value description="image_path">images/anonymous.gif</value>
         </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">test director name 2</value>
+            <value description="last_name">test director last name 2</value>
+            <value description="image_path">images/anonymous.gif</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">test director name 3</value>
+            <value description="last_name">test director last name 3</value>
+            <value description="image_path">images/anonymous.gif</value>
+        </row>
     </table>
     <table name="companies">
         <column>id</column>
@@ -218,6 +230,78 @@
             <value description="name">test company name 1</value>
             <value description="information">test company information 1</value>
             <value description="director_id">1</value>
+        </row>
+    </table>
+    <table name="addresses">
+        <column>id</column>
+        <column>address</column>
+        <column>city</column>
+        <column>province</column>
+        <column>country</column>
+        <column>postal_code</column>
+        <row>
+            <value description="id">1</value>
+            <value description="address">factory address 1</value>
+            <value description="city">factory city 1</value>
+            <value description="province">factory province 1</value>
+            <value description="country">factory country 1</value>
+            <value description="postal_code">factory postal code 1</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="address">factory address 2</value>
+            <value description="city">factory city 2</value>
+            <value description="province">factory province 2</value>
+            <value description="country">factory country 2</value>
+            <value description="postal_code">factory postal code 2</value>
+        </row>
+    </table>
+    <table name="locations">
+        <column>id</column>
+        <column>latitude</column>
+        <column>longitude</column>
+        <row>
+            <value description="id">1</value>
+            <value description="latitude">1.0</value>
+            <value description="longitude">1.0</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="latitude">2.0</value>
+            <value description="longitude">2.0</value>
+        </row>
+    </table>
+    <table name="factories">
+        <column>id</column>
+        <column>name</column>
+        <column>information</column>
+        <column>contact_email</column>
+        <column>employees</column>
+        <column>company_id</column>
+        <column>address_id</column>
+        <column>director_id</column>
+        <column>location_id</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">test factory name 1</value>
+            <value description="information">test factory information 1</value>
+            <value description="contact_email">factory1@email.es</value>
+            <value description="employees">10</value>
+            <value description="company_id">1</value>
+            <value description="address_id">1</value>
+            <value description="director_id">2</value>
+            <value description="location_id">1</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">test factory name 2</value>
+            <value description="information">test factory information 2</value>
+            <value description="contact_email">factory2@email.es</value>
+            <value description="employees">20</value>
+            <value description="company_id">1</value>
+            <value description="address_id">2</value>
+            <value description="director_id">3</value>
+            <value description="location_id">2</value>
         </row>
     </table>
 </dataset>
