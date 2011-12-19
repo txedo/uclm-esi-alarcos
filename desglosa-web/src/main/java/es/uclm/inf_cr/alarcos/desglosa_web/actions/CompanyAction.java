@@ -244,8 +244,6 @@ public class CompanyAction extends ActionSupport implements
 
     public String get() throws Exception {
         company = CompanyManager.getCompany(id);
-        addActionMessage(getText("message.company.found"));
-
         return SUCCESS;
     }
 

@@ -9,9 +9,12 @@
 	<meta name="menu" content="ManageFactories"/>
 </head>
 <body id="viewFactories">
-	<h1><s:text name="menu.admin.factories"/></h1>
+	<h1><s:text name="management.factory.list.title" /></h1>
+	<p><s:text name="management.factory.list.text" /></p>
+	
 	<s:actionerror />
 	<s:actionmessage />
+	
 	<s:set name="factories" value="factories" scope="request"/>  
 	<display:table name="factories" uid="factory" defaultsort="1" class="" pagesize="10" requestURI="">
 	  

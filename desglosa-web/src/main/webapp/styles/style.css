@@ -16,6 +16,15 @@ html, .main {
 	background:#f1f1f1 url(../images/main_bg.gif) top repeat-x;
 }
 
+.buttonPane {
+	margin-top: 30px;
+}
+
+fieldset.viewingfieldset {
+	margin-top: 30px;
+	border: none;
+}
+
 .centeredBodyContainer {
 	float: right;
 	position: relative;
@@ -121,19 +130,19 @@ h2 {
 	margin: 0;
 	margin-bottom: 20px;
 	padding: 5px 0;
-	width: 340px;
+	width: 500px;
 	color: #383939;
 	font: normal 30px Arial, Helvetica, sans-serif;
 	letter-spacing: 0px;
 }
 
-ul.errorMessage {
+ul.errorMessage, ul.actionMessage {
 	list-style: none;	
 	margin-bottom: 10px;
     margin-top: 10px;
 }
 
-ul.errorMessage li {
+ul.errorMessage li, ul.actionMessage li {
 	display: inline;
 }
 
@@ -153,6 +162,24 @@ ul.errorMessage li span {
     background-image: url("../images/icon_error.png");
     border: 1px solid #800000;
     color: #800000;
+}
+
+ul.actionMessage li span {
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
+	background-position: 10px center;
+    background-repeat: no-repeat;
+    background-size: 15px auto;
+    border-radius: 6px 6px 6px 6px;
+    margin: 10px 0;
+    padding: 5px 5px 5px 40px;
+    text-align: left;
+    font: normal 12px/1.8em Arial, Helvetica, sans-serif;
+    background-color: #E5FFE5;
+    background-image: url("../images/icon_ok.png");
+    border: 1px solid #008000;
+    color: #008000;
 }
 
 .form p.label {
@@ -177,6 +204,11 @@ ul.errorMessage li span {
 	font: normal 12px/1.8em Arial, Helvetica, sans-serif;
 	float: left;
 	width: 150px;
+}
+
+.form label.key {
+	font-weight: bold;
+	clear: left;
 }
 
 .form .input {

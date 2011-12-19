@@ -102,8 +102,8 @@ public class Project {
         return plan;
     }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-    @JoinColumn(name = "mainFactory_id")
+    @OneToOne
+    @JoinColumn(name = "mainFactory_id", nullable = false)
     public Factory getMainFactory() {
         return mainFactory;
     }

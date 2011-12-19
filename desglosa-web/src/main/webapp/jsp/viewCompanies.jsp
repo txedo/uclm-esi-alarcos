@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<%@page import="es.uclm.inf_cr.alarcos.desglosa_web.model.Company"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
 <%@ include file='/jsp/dialogs.jsp' %>
@@ -18,8 +19,10 @@
 			return $("input:radio[name=companyIds]:checked").val();
 		}
 		
-		function call(urlAction) {
-			if (isUndefined(getSelectedRadioButton())) {
+		function call(urlAction,selectionRequired) {
+			if (!selectionRequired) {
+				$(location).attr('href',urlAction);
+			} else if (selectionRequired && isUndefined(getSelectedRadioButton())) {
 				$("#errorDialogBody").html("<p class='messageBox error'><c:out value='${noCompanySelected}'/></p>");
 				$("#errorDialog").dialog("open");
 			} else {
@@ -30,16 +33,18 @@
 	</SCRIPT>
 </head>
 <body id="viewCompanies">
-	<h1><s:text name="menu.admin.companies" /></h1>
-	<s:actionerror />
-	<s:actionmessage />
+	<h1><s:text name="management.company.list.title" /></h1>
+	<p><s:text name="management.company.list.text" /></p>
+	<s:actionerror  />
+	<s:actionmessage  />
 	<s:set name="companies" value="companies" scope="request"/>  
 	<display:table name="companies" uid="company" defaultsort="1" class="" pagesize="10" requestURI="">
-	  	<display:column>
+	  	<display:column  style="width: 5%">
 	  		<input type="radio" id="companyIdRadio" name="companyIds" value="${company.id}">
 	  	</display:column>
 	    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.company.name" sortable="true"/>
-	    <display:column property="information" escapeXml="true" style="width: 30%" titleKey="table.header.company.information" sortable="false"/>
+	    <display:column property="information" escapeXml="true" style="width: 55%" titleKey="table.header.company.information" sortable="false"/>
+	    <display:column escapeXml="true" style="width: 10%" titleKey="table.header.company.factories" sortable="true"><%=((Company)company).getFactories().size()%></display:column>
 	    
 	    <display:setProperty name="paging.banner.placement" value="top"/>
 	    <display:setProperty name="paging.banner.item_name"><fmt:message key="message.company"/></display:setProperty>
@@ -50,17 +55,18 @@
 	    <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.some_items_found"/></span></display:setProperty>
 	</display:table>
 	
-	<div id="controls">
+	<div class="buttonPane">
 		<c:url var="view" value="/viewCompany"/>
-		<a href="javascript:void(0)" onclick="javascript:call('<c:out value="${view}"/>')"><fmt:message key="button.view_company"/></a>
+		<button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_company"/></button>
 		<!-- TODO add security tag -->
 		<c:url var="edit" value="/showCompanyForm"/>
-		<a href="javascript:void(0)" onclick="javascript:call('<c:out value="${edit}"/>')"><fmt:message key="button.edit_company"/></a>
+		<button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_company"/></button>
 		<!-- TODO add security tag -->
 		<c:url var="delete" value="/deleteCompany"/>
-		<a href="javascript:void(0)" onclick="javascript:call('<c:out value="${delete}"/>')"><fmt:message key="button.delete_company"/></a>
+		<button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_company"/></button>
 		<!-- TODO add security tag -->
-		<a href="<c:url value="/showCompanyForm"/>"><fmt:message key="button.add_company"/></a>
+		<c:url var="add" value="/showCompanyForm"/>
+		<button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_company"/></button>
 	</div>
 </body>
 </html>
