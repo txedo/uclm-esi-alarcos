@@ -340,9 +340,10 @@
     	<type>jar</type>
     </dependency>
     <dependency>
-    	<groupId>dbunit</groupId>
+    	<groupId>org.dbunit</groupId>
     	<artifactId>dbunit</artifactId>
-    	<version>2.2</version>
+    	<version>2.4.8</version>
+    	<type>jar</type>
     	<scope>test</scope>
     </dependency>
   </dependencies>
@@ -421,6 +422,9 @@
             <goals>
               <goal>hbm2ddl</goal>
             </goals>
+            <configuration>
+            	<hibernate.dialect>${hibernate.dialect}</hibernate.dialect>
+            </configuration>
           </execution>
           <execution>
             <phase>process-test-resources</phase>

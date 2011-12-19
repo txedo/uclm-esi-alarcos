@@ -20,6 +20,7 @@
 	
 	<title><decorator:title/> <fmt:message key="desglosa.title"/></title>
 	<link href="<s:url value='/styles/style.css?version=1'/>" rel="stylesheet" type="text/css" />
+	<link href="<s:url value='/styles/buttonscss3.css?version=1'/>" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="js/cufon-yui.js"></script>
 	<script type="text/javascript" src="js/arial.js"></script>
 	<script type="text/javascript" src="js/cuf_run.js"></script>

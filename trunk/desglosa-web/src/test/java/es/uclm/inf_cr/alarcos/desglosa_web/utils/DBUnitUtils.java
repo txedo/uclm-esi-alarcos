@@ -11,11 +11,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.dbunit.DBTestCase;
+import org.dbunit.DatabaseUnitException;
 import org.dbunit.PropertiesBasedJdbcDatabaseTester;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.database.QueryDataSet;
-import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.XmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
@@ -51,7 +51,7 @@ public class DBUnitUtils extends DBTestCase {
         return _instance;
     }
 
-    protected static void writeDataSet() throws SQLException, UnsupportedEncodingException, FileNotFoundException, DataSetException {
+    protected static void writeDataSet() throws SQLException, UnsupportedEncodingException, FileNotFoundException, DatabaseUnitException {
         DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         Connection conn = DriverManager.getConnection(CONNECTION_URL, USERNAME, PASSWORD);
         

@@ -9,7 +9,7 @@
       	   autoOpen="false"
       	   modal="true"
       	   closeOnEscape="true"
-      	   showEffect="fold"
+      	   showEffect="clip"
       	   hideEffect="scale"
       	   draggable="false"
       	   title="%{getText('label.dialog.title.error')}">
@@ -20,7 +20,7 @@
       	   autoOpen="false"
       	   modal="true"
       	   closeOnEscape="true"
-      	   showEffect="fold"
+      	   showEffect="clip"
       	   hideEffect="scale"
       	   draggable="false"
       	   title="%{getText('label.dialog.title.info')}">
@@ -31,7 +31,7 @@
       	   autoOpen="false"
       	   modal="true"
       	   closeOnEscape="true"
-      	   showEffect="fold"
+      	   showEffect="clip"
       	   hideEffect="scale"
       	   draggable="false"
       	   title="%{getText('label.dialog.title.warning')}">

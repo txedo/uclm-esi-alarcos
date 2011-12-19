@@ -9,7 +9,7 @@
 	<meta name="menu" content="ManageFactories"/>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
-	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/utils.js?version=1"></script>
 	<script type="text/javascript">	
 	/** Reset address fields.
 	 */
@@ -202,7 +202,8 @@
 	</script>
 </head>
 <body>
-	<s:text name="menu.admin.factories" />
+	<h1><s:text name="management.factory.add.title" /></h1>
+	<p><s:text name="management.factory.add.text" /></p>
 	
 	<s:actionerror />
 	<s:fielderror><s:param>error.mandatory_fields</s:param></s:fielderror>
@@ -264,7 +265,7 @@
 			<s:textfield id="factory.employees" name="factory.employees" tabindex="4"/>
 			<s:fielderror><s:param>error.factory.employees</s:param></s:fielderror>
 			
-			<br /><s:a href="#" onclick="swapDivVisibility('fillFactoryData','fillDirector')">Next &gt;</s:a>
+			<br /><s:a href="javascript:void(0)" onclick="swapDivVisibility('#fillFactoryData','#fillDirector')">Next &gt;</s:a>
 		</s:div>
 		
 		<s:div id="fillDirector" cssStyle="display: none">
@@ -286,13 +287,13 @@
 			<s:file id="factory.director.image" name="upload"></s:file>
 			<s:fielderror><s:param>error.director.image</s:param></s:fielderror>
 
-			<br /><s:a href="#" onclick="swapDivVisibility('fillDirector','fillFactoryData')">&lt; Back</s:a>
+			<br /><s:a href="javascript:void(0)" onclick="swapDivVisibility('#fillDirector','#fillFactoryData')">&lt; Back</s:a>
 			<c:choose>
 				<c:when test="${not empty factory.location.latitude && not empty factory.location.longitude}">
-					<s:a href="#" onclick="swapDivVisibility('fillDirector','fillAddress');showCurrentLocation();">Next &gt;</s:a>
+					<s:a href="javascript:void(0)" onclick="swapDivVisibility('#fillDirector','#fillAddress');showCurrentLocation();">Next &gt;</s:a>
 				</c:when>
 				<c:otherwise>
-					<s:a href="#" onclick="swapDivVisibility('fillDirector','fillAddress');searchAddress();">Next &gt;</s:a>
+					<s:a href="javascript:void(0)" onclick="swapDivVisibility('#fillDirector','#fillAddress');searchAddress();">Next &gt;</s:a>
 				</c:otherwise>
 			</c:choose>
 		</s:div>
@@ -324,12 +325,12 @@
 			<s:hidden id="factory.location.longitude" name="factory.location.longitude"/>
 			<s:fielderror><s:param>error.factory.location</s:param></s:fielderror>
 			
-			<br /><s:a href="#" onclick="locate()">Locate</s:a>
-			<s:a href="#" onclick="resetAddrFields()">Reset</s:a>
+			<br /><s:a href="javascript:void(0)" onclick="locate()">Locate</s:a>
+			<s:a href="javascript:void(0)" onclick="resetAddrFields()">Reset</s:a>
 			<br /><s:div id="map_info"></s:div>
 			<br /><s:div id="map_canvas" cssStyle="width: 600px; height: 400px; display: ;"></s:div>
 
-			<br /><s:a href="#" onclick="swapDivVisibility('fillAddress','fillDirector')">&lt; Back</s:a>
+			<br /><s:a href="javascript:void(0)" onclick="swapDivVisibility('#fillAddress','#fillDirector')">&lt; Back</s:a>
 			<s:submit value="%{getText(#attr.buttonLabel)}"/>
 		</s:div>
 	</form>

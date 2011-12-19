@@ -11,7 +11,8 @@
 </head>
 <body id="showCompany" class="">
 	<div>
-		<h1><s:text name="menu.admin.companies" /></h1>
+		<h1><s:text name="management.company.add.title" /></h1>
+		<p><s:text name="management.company.add.text" /></p>
 		
 		<s:actionerror />
 		<s:actionmessage />

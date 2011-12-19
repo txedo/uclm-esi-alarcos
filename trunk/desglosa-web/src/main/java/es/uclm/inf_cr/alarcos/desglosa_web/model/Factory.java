@@ -1,8 +1,10 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -43,6 +46,7 @@ public class Factory {
     private Integer employees;
     private Address address;
     private Location location;
+    private Set<Project> projects = new HashSet<Project>();
     @Property
     private Integer numberOfProjects;
     @Property(embedded = true)
@@ -101,6 +105,11 @@ public class Factory {
         return location;
     }
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy = "mainFactory", orphanRemoval = true)
+    public Set<Project> getProjects() {
+        return projects;
+    }
+
     @Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f where p.id = sp.project_id and sp.factory_id = id)")
     public Integer getNumberOfProjects() {
         return numberOfProjects;
@@ -155,6 +164,10 @@ public class Factory {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+    
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
     }
 
     public void setNumberOfProjects(Integer numberOfProjects) {
