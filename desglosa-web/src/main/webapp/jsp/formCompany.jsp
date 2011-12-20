@@ -26,8 +26,8 @@
 		<form id="formCompany" class="form" method="post" action="<c:url value="${form}"/>" enctype="multipart/form-data">
 			<s:hidden name="company.id"/>
 			
-			<fieldset id="companyForm">
-				<legend><s:text name="label.configure.company"/></legend>
+			<fieldset id="companyForm" class="formfieldset">
+				<h2><s:text name="label.configure.company"/></h2>
 				<ul>
 					<li>
 						<label for="company.name"><s:text name="label.company.name"/></label>
@@ -42,8 +42,8 @@
 				</ul>
 			</fieldset>
 			
-			<fieldset id="directorForm">
-				<legend><s:text name="label.configure.director"/></legend>
+			<fieldset id="directorForm" class="formfieldset">
+				<h2><s:text name="label.configure.director"/></h2>
 				<ul>
 					<li>
 						<label for="company.director.name"><s:text name="label.configure.director.name"/></label>

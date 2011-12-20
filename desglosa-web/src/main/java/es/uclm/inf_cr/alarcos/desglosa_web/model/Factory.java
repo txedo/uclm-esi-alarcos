@@ -61,7 +61,7 @@ public class Factory {
         return id;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
     @JoinColumn(name = "company_id", nullable = false)
     public Company getCompany() {
         return company;
@@ -77,7 +77,7 @@ public class Factory {
         return information;
     }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
     @JoinColumn(name = "director_id")
     public Director getDirector() {
         return director;
@@ -93,13 +93,13 @@ public class Factory {
         return employees;
     }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
     @JoinColumn(name = "address_id")
     public Address getAddress() {
         return address;
     }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
     @JoinColumn(name = "location_id")
     public Location getLocation() {
         return location;

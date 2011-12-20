@@ -25,6 +25,23 @@ fieldset.viewingfieldset {
 	border: none;
 }
 
+fieldset.formfieldset {
+    margin-top: 30px;
+    border: none;
+}
+
+fieldset.viewingfieldset img, fieldset.formfieldset img {
+    padding:1px;
+    border:1px solid #000;
+    background-color:#fff;
+}
+
+.wizardSteps {
+    clear: both;
+    margin-top: 30px;
+    width: 100%;
+}
+
 .centeredBodyContainer {
 	float: right;
 	position: relative;

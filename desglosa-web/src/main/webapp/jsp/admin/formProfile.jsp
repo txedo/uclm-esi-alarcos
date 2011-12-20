@@ -3,7 +3,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
-<%@ include file='/jsp/dialogs.jsp' %>
+<%@ include file='/common/dialogs.jsp' %>
 
 <html lang="en">
 <head>
@@ -21,6 +21,7 @@
 
 	<meta name="menu" content="ManageProfiles"/>
 	
+	<link href="<s:url value='/styles/style.css?version=1'/>" rel="stylesheet" type="text/css" />
 	<link href="<s:url value='/styles/profile.css?version=1'/>" rel="stylesheet" type="text/css" />
 	<link href="<s:url value='/styles/buttons.css?version=1'/>" rel="stylesheet" type="text/css" />
 	<link href="<s:url value='/js/colorpicker/css/colorpicker.css?version=1'/>" rel="stylesheet" type="text/css" media="screen" />

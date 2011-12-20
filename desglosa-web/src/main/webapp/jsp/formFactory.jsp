@@ -206,28 +206,30 @@
 	<p><s:text name="management.factory.add.text" /></p>
 	
 	<s:actionerror />
-	<s:fielderror><s:param>error.mandatory_fields</s:param></s:fielderror>
+	<s:fielderror><s:param>error.required_fields</s:param></s:fielderror>
 	
-	<c:set var="form" value="/editFactory.action"/>
+	<c:set var="form" value="/editFactory"/>
 	<c:set var="buttonLabel" value="button.edit_factory"/>
 	<c:if test="${empty param.id and not fn:endsWith(header.referer,'/editFactory') and not fn:contains(header.referer,'id=')}">
-		<c:set var="form" value="/saveFactory.action"/>
+		<c:set var="form" value="/saveFactory"/>
 		<c:set var="buttonLabel" value="button.add_factory"/>
 	</c:if>
 
-	<form id="formFactory" method="post" action="<c:url value="${form}"/>" enctype="multipart/form-data">
+	<form id="formFactory" class="form" method="post" action="<c:url value="${form}"/>" enctype="multipart/form-data">
 		<s:hidden name="factory.id"/>
 		
 		<s:div id="fillFactoryData" cssStyle="display: ">
+		  <fieldset class="formfieldset">
+		    <h2><s:text name="label.configure.factory.company"/></h2>
 			<s:fielderror><s:param>error.company_mandatory</s:param></s:fielderror>
-			<s:text name="%{getText('label.configure.factory.choose_company')}:"/>
+			<s:text name="label.configure.factory.choose_company"/>
 			
 			<s:set name="companies" value="companies" scope="request"/>  
 			<s:set name="factory" value="factory" scope="request"/>
 			<display:table name="companies" id="company" cellspacing="0" cellpadding="0" defaultsort="1" pagesize="10" requestURI="showFactoryForm.action">
 				<display:column style="width: 5%">
 					<c:choose>
-						<c:when test="${factory.company.id == company.id}">
+						<c:when test="${factory.company.id == company.id or company.id == param.companyId}">
 							<input type="radio" name="factory.company.id" value="${company.id}" checked/>
 						</c:when>
 						<c:otherwise>
@@ -236,7 +238,7 @@
 					</c:choose>
 				</display:column>
 			    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.company.name" sortable="true"/>
-			    <display:column property="information" escapeXml="true" style="width: 30%" titleKey="table.header.company.information" sortable="false"/>
+			    <display:column property="information" escapeXml="true" style="width: 55%" titleKey="table.header.company.information" sortable="false"/>
 			    
 			    <display:setProperty name="paging.banner.placement" value="bottom"/>
 			    <display:setProperty name="paging.banner.item_name"><fmt:message key="message.company"/></display:setProperty>
@@ -246,92 +248,134 @@
 			    <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>
 			    <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.some_items_found"/></span></display:setProperty>
 			</display:table>
-			
-			<br /><s:text name="%{getText('label.configure.factory.data')}:"/>
-
-			<br /><s:label for="factory.name" value="%{getText('label.configure.factory.data.name')}:"/>
-			<s:textfield id="factory.name" name="factory.name" tabindex="1"/>
-			<s:fielderror><s:param>error.factory.name</s:param></s:fielderror>
-			
-			<br /><s:label for="factory.information" value="%{getText('label.configure.factory.data.information')}:"/>
-			<s:textfield id="factory.information" name="factory.information" tabindex="2"/>
-			<s:fielderror><s:param>error.factory.information</s:param></s:fielderror>
-			
-			<br /><s:label for="factory.email" value="%{getText('label.configure.factory.data.email')}:"/>
-			<s:textfield id="factory.email" name="factory.email" tabindex="3"/>
-			<s:fielderror><s:param>error.factory.email</s:param></s:fielderror>
-			
-			<br /><s:label for="factory.employees" value="%{getText('label.configure.factory.data.employees')}:"/>
-			<s:textfield id="factory.employees" name="factory.employees" tabindex="4"/>
-			<s:fielderror><s:param>error.factory.employees</s:param></s:fielderror>
-			
-			<br /><s:a href="javascript:void(0)" onclick="swapDivVisibility('#fillFactoryData','#fillDirector')">Next &gt;</s:a>
+		  </fieldset>
+		  
+		  <fieldset class="formfieldset">
+			<h2><s:text name="label.configure.factory.data"/></h2>
+            <ul>
+                <li>
+		            <label for="factory.name"><s:text name="label.configure.factory.data.name"/></label>
+		            <s:textfield id="factory.name" name="factory.name" tabindex="1"/>
+		            <s:fielderror><s:param>error.factory.name</s:param></s:fielderror>
+	            </li>
+                <li>
+		            <label for="factory.information"><s:text name="label.configure.factory.data.information"/></label>
+		            <s:textfield id="factory.information" name="factory.information" tabindex="2"/>
+		            <s:fielderror><s:param>error.factory.information</s:param></s:fielderror>
+	            </li>
+                <li>
+		            <label for="factory.email"><s:text name="label.configure.factory.data.email"/></label>
+		            <s:textfield id="factory.email" name="factory.email" tabindex="3"/>
+		            <s:fielderror><s:param>error.factory.email</s:param></s:fielderror>
+	            </li>
+                <li>
+		            <label for="factory.employees"><s:text name="label.configure.factory.data.employees"/></label>
+		            <s:textfield id="factory.employees" name="factory.employees" tabindex="4"/>
+		            <s:fielderror><s:param>error.factory.employees</s:param></s:fielderror>
+	            </li>
+            </ul>
+		  </fieldset>
+          <div class="clear"></div>
+          <div class="wizardSteps">
+              <a href="javascript:void(0)" class="right" onclick="swapDivVisibility('#fillFactoryData','#fillDirector')"><s:text name="label.next"/> &gt;</a>
+          </div>
+          <div class="clear"></div>
 		</s:div>
 		
 		<s:div id="fillDirector" cssStyle="display: none">
-			<s:text name="%{getText('label.configure.director')}:"/>
-
-			<br /><s:label for="factory.director.name" value="%{getText('label.configure.director.name')}:"/>
-			<s:textfield id="factory.director.name" name="factory.director.name" tabindex="1"/>
-			<s:fielderror><s:param>error.director.name</s:param></s:fielderror>
-			<br /><s:label for="factory.director.lastName" value="%{getText('label.configure.director.last_name')}:"/>
-			<s:textfield id="factory.director.lastName" name="factory.director.lastName" tabindex="2"/>
-			<s:fielderror><s:param>error.director.lastName</s:param></s:fielderror>
-			<s:hidden id="factory.director.imagePath" name="factory.director.imagePath"/>
-			<!-- factory var is already set at the beggining of this form -->
-			<c:if test="${not empty factory.director.imagePath}">
-				<br /><s:label for="factory.director.image" value="%{getText('label.configure.director.current_image')}:"/>
-				<img src="<s:text name='factory.director.imagePath'/>" width="128" height="128" alt="%{getText('label.configure.director.current_image')}"/>
-			</c:if>
-			<br /><s:label for="factory.director.image" value="%{getText('label.configure.director.image')}:"/>
-			<s:file id="factory.director.image" name="upload"></s:file>
-			<s:fielderror><s:param>error.director.image</s:param></s:fielderror>
-
-			<br /><s:a href="javascript:void(0)" onclick="swapDivVisibility('#fillDirector','#fillFactoryData')">&lt; Back</s:a>
+		  <fieldset class="formfieldset">
+			<h2><s:text name="label.configure.director"/></h2>
+            <ul>
+                <li>
+					<label for="factory.director.name"><s:text name="label.configure.director.name"/></label>
+					<s:textfield id="factory.director.name" name="factory.director.name" tabindex="1"/>
+					<s:fielderror><s:param>error.director.name</s:param></s:fielderror>
+                </li>
+                <li>
+					<label for="factory.director.lastName"><s:text name="label.configure.director.last_name"/></label>
+					<s:textfield id="factory.director.lastName" name="factory.director.lastName" tabindex="2"/>
+					<s:fielderror><s:param>error.director.lastName</s:param></s:fielderror>
+					<s:hidden id="factory.director.imagePath" name="factory.director.imagePath"/>
+				</li>
+				<!-- factory var is already set at the beggining of this form -->
+				<c:if test="${not empty factory.director.imagePath}">
+				<li>
+					<label for="factory.director.image"><s:text name="label.configure.director.current_image"/></label>
+					<img src="<s:text name='factory.director.imagePath'/>" width="128" height="128" alt="%{getText('label.configure.director.current_image')}"/>
+			    </li>
+			    </c:if>
+                <li>
+					<label for="factory.director.image"><s:text name="label.configure.director.image"/></label>
+					<s:file id="factory.director.image" name="upload"></s:file>
+					<s:fielderror><s:param>error.director.image</s:param></s:fielderror>
+                </li>
+            </ul>
+          </fieldset>
+          <div class="clear"></div>
+          <div class="wizardSteps">
+			<a href="javascript:void(0)" class="left" onclick="swapDivVisibility('#fillDirector','#fillFactoryData')">&lt; <s:text name="label.back"/></a>
 			<c:choose>
 				<c:when test="${not empty factory.location.latitude && not empty factory.location.longitude}">
-					<s:a href="javascript:void(0)" onclick="swapDivVisibility('#fillDirector','#fillAddress');showCurrentLocation();">Next &gt;</s:a>
+					<a href="javascript:void(0)" class="right" onclick="swapDivVisibility('#fillDirector','#fillAddress');showCurrentLocation();"><s:text name="label.next"/> &gt;</a>
 				</c:when>
 				<c:otherwise>
-					<s:a href="javascript:void(0)" onclick="swapDivVisibility('#fillDirector','#fillAddress');searchAddress();">Next &gt;</s:a>
+					<a href="javascript:void(0)" class="right" onclick="swapDivVisibility('#fillDirector','#fillAddress');searchAddress();"><s:text name="label.next"/> &gt;</a>
 				</c:otherwise>
 			</c:choose>
+          </div>
+          <div class="clear"></div>
 		</s:div>
 		
 		<s:div id="fillAddress" cssStyle="display: none">
-			<s:text name="%{getText('label.configure.factory.address')}:"/>
-
-			<br /><s:label for="factory.address.address" value="%{getText('label.configure.factory.address.address')}:"/>
-			<s:textfield id="factory.address.address" name="factory.address.address" tabindex="1"/>
-			<s:fielderror><s:param>error.factory.address.address</s:param></s:fielderror>
-			<br /><s:label for="factory.address.city" value="%{getText('label.configure.factory.address.city')}:"/>
-			<s:textfield id="factory.address.city" name="factory.address.city" tabindex="2"/>
-			<s:fielderror><s:param>error.factory.address.city</s:param></s:fielderror>
-			
-			<br /><s:label for="factory.address.province" value="%{getText('label.configure.factory.address.province')}:"/>
-			<s:textfield id="factory.address.province" name="factory.address.province" tabindex="3"/>
-			<s:fielderror><s:param>error.factory.address.province</s:param></s:fielderror>
-			
-			<br /><s:label for="factory.address.country" value="%{getText('label.configure.factory.address.country')}:"/>
-			<s:textfield id="factory.address.country" name="factory.address.country" tabindex="4"/>
-			<s:fielderror><s:param>error.factory.address.country</s:param></s:fielderror>
-			
-			<br /><s:label for="factory.address.postalCode" value="%{getText('label.configure.factory.address.postal_code')}:"/>
-			<s:textfield id="factory.address.postalCode" name="factory.address.postalCode" tabindex="5"/>
-			<s:fielderror><s:param>error.factory.address.postalCode</s:param></s:fielderror>			
-
-			<!-- address, number, postal_code city, province, country -->
-			<s:hidden id="factory.location.latitude" name="factory.location.latitude"/>
-			<s:hidden id="factory.location.longitude" name="factory.location.longitude"/>
-			<s:fielderror><s:param>error.factory.location</s:param></s:fielderror>
-			
-			<br /><s:a href="javascript:void(0)" onclick="locate()">Locate</s:a>
-			<s:a href="javascript:void(0)" onclick="resetAddrFields()">Reset</s:a>
-			<br /><s:div id="map_info"></s:div>
-			<br /><s:div id="map_canvas" cssStyle="width: 600px; height: 400px; display: ;"></s:div>
-
-			<br /><s:a href="javascript:void(0)" onclick="swapDivVisibility('#fillAddress','#fillDirector')">&lt; Back</s:a>
+		  <fieldset class="formfieldset">
+			<h2><s:text name="label.configure.factory.address"/></h2>
+            <ul>
+                <li>
+					<label for="factory.address.address"><s:text name="label.configure.factory.address.address"/></label>
+					<s:textfield id="factory.address.address" name="factory.address.address" tabindex="1"/>
+					<s:fielderror><s:param>error.factory.address.address</s:param></s:fielderror>
+                </li>
+                <li>
+					<label for="factory.address.city"><s:text name="label.configure.factory.address.city"/></label>
+					<s:textfield id="factory.address.city" name="factory.address.city" tabindex="2"/>
+					<s:fielderror><s:param>error.factory.address.city</s:param></s:fielderror>
+                </li>
+                <li>
+					<label for="factory.address.province"><s:text name="label.configure.factory.address.province"/></label>
+					<s:textfield id="factory.address.province" name="factory.address.province" tabindex="3"/>
+					<s:fielderror><s:param>error.factory.address.province</s:param></s:fielderror>
+                </li>
+                <li>
+					<label for="factory.address.country"><s:text name="label.configure.factory.address.country"/></label>
+					<s:textfield id="factory.address.country" name="factory.address.country" tabindex="4"/>
+					<s:fielderror><s:param>error.factory.address.country</s:param></s:fielderror>
+                </li>
+                <li>
+					<label for="factory.address.postalCode"><s:text name="label.configure.factory.address.postal_code"/></label>
+					<s:textfield id="factory.address.postalCode" name="factory.address.postalCode" tabindex="5"/>
+					<s:fielderror><s:param>error.factory.address.postalCode</s:param></s:fielderror>
+		          
+					<!-- address, number, postal_code city, province, country -->
+					<s:hidden id="factory.location.latitude" name="factory.location.latitude"/>
+					<s:hidden id="factory.location.longitude" name="factory.location.longitude"/>
+					<s:fielderror><s:param>error.factory.location</s:param></s:fielderror>
+                </li>
+                <li>
+					<button class="minimal" onclick="locate();return false;"><s:text name="label.locate"/></button>
+					<button class="minimal" onclick="resetAddrFields();return false;"><s:text name="label.reset"/></button>
+                </li>
+                <li>
+				    <s:div id="map_info"></s:div>
+				    <s:div id="map_canvas" cssStyle="width: 600px; height: 400px; display: ;"></s:div>
+			    </li>
+            </ul>
+          </fieldset>
+          <div class="clear"></div>
+          <div class="wizardSteps">
+			<a href="javascript:void(0)" class="left" onclick="swapDivVisibility('#fillAddress','#fillDirector')">&lt; <s:text name="label.back"/></a>
 			<s:submit value="%{getText(#attr.buttonLabel)}"/>
+          </div>
+          <div class="clear"></div>
 		</s:div>
 	</form>
 </body>

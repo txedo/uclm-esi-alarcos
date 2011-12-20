@@ -1,19 +1,21 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
+import es.uclm.inf_cr.alarcos.desglosa_web.control.CompanyManager;
+import es.uclm.inf_cr.alarcos.desglosa_web.control.FactoryManager;
+import es.uclm.inf_cr.alarcos.desglosa_web.control.GenericManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
@@ -31,11 +33,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
  */
 public class FactoryAction extends ActionSupport {
     private static final long serialVersionUID = -6215763127414281847L;
-    private static String DEFAULT_PIC = "images/anonymous.gif";
     private int id;
-    // factoryDao is set from applicationContext.xml
-    private FactoryDAO factoryDao;
-    private CompanyDAO companyDao;
     // Required attributes by List Action
     private List<Factory> factories;
     private List<Company> companies;
@@ -82,14 +80,6 @@ public class FactoryAction extends ActionSupport {
         this.factory = factory;
     }
 
-    public void setFactoryDao(FactoryDAO factoryDao) {
-        this.factoryDao = factoryDao;
-    }
-
-    public void setCompanyDao(CompanyDAO companyDao) {
-        this.companyDao = companyDao;
-    }
-
     public void setUpload(File upload) {
         this.upload = upload;
     }
@@ -104,118 +94,108 @@ public class FactoryAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        factories = factoryDao.getAll();
+        factories = FactoryManager.getAllFactories();
         return SUCCESS;
+    }
+    
+    public void validateDoShowForm() {
+        try {
+            // Check id is valid
+            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            // Check there a factory that exists with that id
+            if (!FactoryManager.checkFactoryExists(id)) {
+                addActionError(getText("error.factory.id"));
+            }
+        } catch (NullIdParameterException e) {
+            // This is expected. So show blank form
+        } catch (NotValidIdParameterException e) {
+            addActionError(getText("error.factory.id"));
+        }
+        if (hasActionErrors()) {
+            factories = FactoryManager.getAllFactories();
+        }
     }
 
     public String showForm() throws Exception {
-        String result = SUCCESS;
         // Get all the companies
-        companies = companyDao.getAll();
-        // Get the factory id attribute from URL
-        HttpServletRequest request = ServletActionContext.getRequest();
-        if (request.getParameter("id") != null) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            // If id <= 0, then ERROR
-            if (id <= 0) {
-                addActionError(getText("error.factory.id"));
-                result = ERROR;
-            } else {
-                try {
-                    // Check if the factory id exists and place it in value
-                    // stack
-                    factory = factoryDao.getFactory(id);
-                } catch (FactoryNotFoundException e) {
-                    addActionError(getText("error.factory.id"));
-                    result = ERROR;
-                }
-            }
-        } // Else, show a blank form
-        return result;
+        companies = CompanyManager.getAllCompanies();
+        // if id == 0 then show a blank form
+        if (id > 0) {
+            factory = FactoryManager.getFactory(id);
+        }
+        return SUCCESS;
     }
 
     public void validateDoSave() {
         if (factory != null) {
-            try {
-                // Check that the company ID exists
-                Company c;
-                if (factory.getCompany() != null) {
-                    c = companyDao.getCompany(factory.getCompany().getId());
+            // Check that the company ID exists
+            if (factory.getCompany() != null) {
+                if (CompanyManager.checkCompanyExists(factory.getCompany().getId())) {
                     // If it exists, set it to factory
-                    factory.setCompany(c);
+                    try {
+                        factory.setCompany(CompanyManager.getCompany(factory.getCompany().getId()));
+                    } catch (CompanyNotFoundException e) {
+                        addActionError(getText("error.company.id"));
+                    }
                 } else {
-                    addFieldError("error.company_mandatory",
-                            getText("error.company.is_mandatory"));
+                    addFieldError("error.company_mandatory", getText("error.company.is_mandatory"));
                 }
-                // Check that factory name is already taken
-                factoryDao.getFactory(factory.getName());
-                addFieldError("error.factory.name",
-                        getText("error.factory.already_exists"));
-                // If factory name is available, then throw and catch
-                // FactoryNotFoundException
-            } catch (CompanyNotFoundException e) {
+                // Check if factory name is available
+                if (FactoryManager.checkFactoryExists(factory.getName())) {
+                    addFieldError("error.factory.name", getText("error.factory.already_exists"));
+                }
+            } else {
                 addActionError(getText("error.company.id"));
-            } catch (FactoryNotFoundException e) {
-                // Name not taken. Nothing to do here.
             }
             // Check that required fields are filled in
             // Factory data
-            if (factory.getName().trim().length() == 0) {
-                addFieldError("error.factory.name",
-                        getText("error.factory.name"));
+            if (GenericManager.isEmptyString(factory.getName())) {
+                addFieldError("error.factory.name", getText("error.factory.name"));
             }
             // Director data
-            if (factory.getDirector().getName().trim().length() == 0) {
-                addFieldError("error.director.name",
-                        getText("error.director.name"));
+            if (GenericManager.isEmptyString(factory.getDirector().getName())) {
+                addFieldError("error.director.name", getText("error.director.name"));
             }
-            if (factory.getDirector().getLastName().trim().length() == 0) {
-                addFieldError("error.director.lastName",
-                        getText("error.director.last_name"));
+            if (GenericManager.isEmptyString(factory.getDirector().getLastName())) {
+                addFieldError("error.director.lastName", getText("error.director.last_name"));
             }
             // Address data
-            if (factory.getAddress().getAddress().trim().length() == 0) {
-                addFieldError("error.factory.address.address",
-                        getText("error.address.address"));
+            if (GenericManager.isEmptyString(factory.getAddress().getAddress())) {
+                addFieldError("error.factory.address.address", getText("error.address.address"));
             }
-            if (factory.getAddress().getCity().trim().length() == 0) {
-                addFieldError("error.factory.address.city",
-                        getText("error.address.city"));
+            if (GenericManager.isEmptyString(factory.getAddress().getCity())) {
+                addFieldError("error.factory.address.city", getText("error.address.city"));
             }
-            if (factory.getAddress().getCountry().trim().length() == 0) {
-                addFieldError("error.factory.address.country",
-                        getText("error.address.country"));
+            if (GenericManager.isEmptyString(factory.getAddress().getCountry())) {
+                addFieldError("error.factory.address.country", getText("error.address.country"));
             }
             // Location data
-            if (factory.getLocation().getLatitude() == 0.0f
-                    || factory.getLocation().getLongitude() == 0.0f) {
-                addFieldError("error.factory.location",
-                        getText("error.location"));
+            if (factory.getLocation().getLatitude() == 0.0f ||
+                factory.getLocation().getLongitude() == 0.0f) {
+                addFieldError("error.factory.location", getText("error.location"));
             }
         } else {
             addActionError(getText("error.general"));
         }
         if (hasActionErrors() || hasErrors() || hasFieldErrors()) {
-            companies = companyDao.getAll();
+            companies = CompanyManager.getAllCompanies();
         }
         if (hasFieldErrors()) {
-            addFieldError("error.mandatory_fields",
-                    getText("error.mandatory_fields"));
+            addFieldError("error.required_fields", getText("error.required_fields"));
         }
     }
 
     public String save() {
         try {
-            String path = DEFAULT_PIC;
             if (upload != null) {
-                path = FileUtil.uploadFile(uploadFileName, upload);
+                String path = FileUtil.uploadFile(uploadFileName, upload);
+                factory.getDirector().setImagePath(path);
             }
-            factory.getDirector().setImagePath(path);
-            factoryDao.saveFactory(factory);
+            FactoryManager.saveFactory(factory);
             addActionMessage(getText("message.factory.added_successfully"));
-        } catch (Exception e) {
+        } catch (IOException e) {
             addActionError(e.getMessage());
-            return INPUT;
+            return ERROR;
         }
         return SUCCESS;
     }
@@ -223,83 +203,73 @@ public class FactoryAction extends ActionSupport {
     public void validateDoEdit() {
         Factory fAux;
         if (factory != null) {
-            // Check if factory ID is valid
             try {
-                if (factory.getId() <= 0) {
-                    addActionError(getText("error.factory.id"));
-                }
-                fAux = factoryDao.getFactory(factory.getId());
-            } catch (FactoryNotFoundException e) {
-                addActionError(getText("error.factory.id"));
-            }
-            try {
+                // Check if factory ID is valid
+                GenericManager.checkValidId(factory.getId());
+                fAux = FactoryManager.getFactory(factory.getId());
                 // Check that the company ID exists
-                Company c;
                 if (factory.getCompany() != null) {
-                    c = companyDao.getCompany(factory.getCompany().getId());
                     // If it exists, set it to factory
-                    factory.setCompany(c);
+                    factory.setCompany(CompanyManager.getCompany(factory.getCompany().getId()));
                 } else {
-                    addFieldError("error.company_mandatory",
-                            getText("error.company.is_mandatory"));
+                    addFieldError("error.company_mandatory", getText("error.company.is_mandatory"));
                 }
-                // Check that there is no company with same name and different
-                // id
-                fAux = factoryDao.getFactory(factory.getName());
-                if (fAux.getId() != factory.getId()) {
-                    addFieldError("error.factory.name",
-                            getText("error.factory.already_exists"));
+                // Check factory name is not empty
+                if (GenericManager.isEmptyString(factory.getName())) {
+                    addFieldError("error.factory.name", getText("error.factory.name"));
+                } else {
+                    try {
+                        // Check that there is no factory with same name and different id
+                        fAux = FactoryManager.getFactory(factory.getName());
+                        if (fAux.getId() != factory.getId()) {
+                            addFieldError("error.factory.name", getText("error.factory.already_exists"));
+                        }
+                    } catch (FactoryNotFoundException e) {
+                        // Name not taken. Nothing to do here.
+                    }
                 }
-                // If factory name is available, then throw and catch
-                // FactoryNotFoundException
             } catch (CompanyNotFoundException e) {
                 addActionError(getText("error.company.id"));
             } catch (FactoryNotFoundException e) {
-                // Name not taken. Nothing to do here.
+                addActionError(getText("error.factory.id"));
+            } catch (NotValidIdParameterException e) {
+                addActionError(getText("error.factory.id"));
             }
             // Check that required fields are filled in
             // Factory data
-            if (factory.getName().trim().length() == 0) {
-                addFieldError("error.factory.name",
-                        getText("error.factory.name"));
+            if (GenericManager.isEmptyString(factory.getName())) {
+                addFieldError("error.factory.name", getText("error.factory.name"));
             }
             // Director data
-            if (factory.getDirector().getName().trim().length() == 0) {
-                addFieldError("error.director.name",
-                        getText("error.director.name"));
+            if (GenericManager.isEmptyString(factory.getDirector().getName())) {
+                addFieldError("error.director.name", getText("error.director.name"));
             }
-            if (factory.getDirector().getLastName().trim().length() == 0) {
-                addFieldError("error.director.lastName",
-                        getText("error.director.last_name"));
+            if (GenericManager.isEmptyString(factory.getDirector().getLastName())) {
+                addFieldError("error.director.lastName", getText("error.director.last_name"));
             }
             // Address data
-            if (factory.getAddress().getAddress().trim().length() == 0) {
-                addFieldError("error.factory.address.address",
-                        getText("error.address.address"));
+            if (GenericManager.isEmptyString(factory.getAddress().getAddress())) {
+                addFieldError("error.factory.address.address", getText("error.address.address"));
             }
-            if (factory.getAddress().getCity().trim().length() == 0) {
-                addFieldError("error.factory.address.city",
-                        getText("error.address.city"));
+            if (GenericManager.isEmptyString(factory.getAddress().getCity())) {
+                addFieldError("error.factory.address.city", getText("error.address.city"));
             }
-            if (factory.getAddress().getCountry().trim().length() == 0) {
-                addFieldError("error.factory.address.country",
-                        getText("error.address.country"));
+            if (GenericManager.isEmptyString(factory.getAddress().getCountry())) {
+                addFieldError("error.factory.address.country", getText("error.address.country"));
             }
             // Location data
-            if (factory.getLocation().getLatitude() == 0.0f
-                    || factory.getLocation().getLongitude() == 0.0f) {
-                addFieldError("error.factory.location",
-                        getText("error.location"));
+            if (factory.getLocation().getLatitude() == 0.0f ||
+                factory.getLocation().getLongitude() == 0.0f) {
+                addFieldError("error.factory.location", getText("error.location"));
             }
         } else {
             addActionError(getText("error.general"));
         }
         if (hasActionErrors() || hasErrors() || hasFieldErrors()) {
-            companies = companyDao.getAll();
+            companies = CompanyManager.getAllCompanies();
         }
         if (hasFieldErrors()) {
-            addFieldError("error.mandatory_fields",
-                    getText("error.mandatory_fields"));
+            addFieldError("error.required_fields", getText("error.required_fields"));
         }
     }
 
@@ -309,43 +279,56 @@ public class FactoryAction extends ActionSupport {
                 String path = FileUtil.uploadFile(uploadFileName, upload);
                 factory.getDirector().setImagePath(path);
             }
-            factoryDao.saveFactory(factory);
+            FactoryManager.saveFactory(factory);
             addActionMessage(getText("message.factory.updated_successfully"));
-        } catch (Exception e) {
+        } catch (IOException e) {
             addActionError(e.getMessage());
-            return INPUT;
+            return ERROR;
         }
         return SUCCESS;
     }
 
     public void validateDoDelete() {
-        // Get the company id attribute from URL
-        HttpServletRequest request = ServletActionContext.getRequest();
-        if (request.getParameter("id") != null) {
-            id = Integer.parseInt(request.getParameter("id"));
-            // If id <= 0, then ERROR
-            if (id <= 0) {
+        try {
+            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            if (!FactoryManager.checkFactoryExists(id)) {
                 addActionError(getText("error.factory.id"));
-            } else {
-                try {
-                    // Check if the factory id exists
-                    factoryDao.getFactory(id);
-                } catch (FactoryNotFoundException e) {
-                    addActionError(getText("error.factory.id"));
-                }
             }
-        } else {
+        } catch (NullIdParameterException e1) {
+            addActionError(getText("error.factory.id"));
+        } catch (NotValidIdParameterException e1) {
             addActionError(getText("error.factory.id"));
         }
         if (hasActionErrors()) {
-            factories = factoryDao.getAll();
+            factories = FactoryManager.getAllFactories();
         }
     }
 
     public String delete() {
-        factoryDao.removeFactory(id);
+        FactoryManager.removeFactory(id);
         addActionMessage(getText("message.factory.deleted_successfully"));
 
+        return SUCCESS;
+    }
+    
+    public void validateDoGet() {
+        try {
+            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            if (!FactoryManager.checkFactoryExists(id)) {
+                addActionError(getText("error.factory.id"));
+            }
+        } catch (NullIdParameterException e1) {
+            addActionError(getText("error.factory.id"));
+        } catch (NotValidIdParameterException e1) {
+            addActionError(getText("error.factory.id"));
+        }
+        if (hasActionErrors()) {
+            factories = FactoryManager.getAllFactories();
+        }
+    }
+
+    public String get() throws Exception {
+        factory = FactoryManager.getFactory(id);
         return SUCCESS;
     }
 
