@@ -14,6 +14,7 @@ public class FactoryDAOTest extends SpringTestCaseBase {
     private Factory factory;
     private FactoryDAO factoryDao;
     
+    
     /* (non-Javadoc)
      * @see org.springframework.test.AbstractSingleSpringContextTests#onSetUp()
      */
@@ -93,18 +94,23 @@ public class FactoryDAOTest extends SpringTestCaseBase {
             fail("Factory has not been removed successfully");
         } catch (FactoryNotFoundException e) {
             // This is expected
-            // TODO lo de antes
+            // Now check that the company exists yet
+            assertTrue(CompanyManager.checkCompanyExists(1));
+            // Check that all associations are removed
+            assertEquals(0, hibernateTemplate.find("from Director where name=?", "test director name 2").size());
+            assertEquals(0, hibernateTemplate.find("from Address where id=?", 1).size());
+            assertEquals(0, hibernateTemplate.find("from Location where id=?", 1).size());
+            assertEquals(0, hibernateTemplate.find("from Project where mainFactory.id=?", 1).size());
+            assertEquals(0, hibernateTemplate.find("from Subproject where factory.id=?", 1).size());
         }
     }
     
     public void testSaveFactory() {
         assertNotNull(factoryDao);
-        factory = testUtils.generateRandomFactory();
-        assertNotNull(factory);
         try {
-            factory.setCompany(CompanyManager.getCompany(1));
+            factory = testUtils.generateRandomFactory(CompanyManager.getCompany(1));
+            assertNotNull(factory);
             factoryDao.saveFactory(factory);
-            
             Factory factoryAux;
             try {
                 // Check that the company and its relations has been saved

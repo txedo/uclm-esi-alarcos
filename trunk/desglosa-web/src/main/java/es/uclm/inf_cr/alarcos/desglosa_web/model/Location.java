@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Table(name = "locations")
 public class Location {
     private int id;
-    private float latitude;
-    private float longitude;
+    private String latitude;
+    private String longitude;
 
     public Location() {
     }
@@ -24,12 +24,12 @@ public class Location {
     }
 
     @Column
-    public float getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
     @Column
-    public float getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
@@ -37,11 +37,11 @@ public class Location {
         this.id = id;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 

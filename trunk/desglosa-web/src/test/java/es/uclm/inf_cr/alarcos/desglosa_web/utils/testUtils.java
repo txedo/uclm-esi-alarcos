@@ -19,11 +19,8 @@ public class testUtils {
         c.setName("test company " + generator);
         c.setInformation("test information for test company " + generator);
         c.setDirector(testUtils.generateRandomDirector());
-        for (int i = 0; i < 2; i++) {
-            Factory factory = testUtils.generateRandomFactory();
-            factory.setCompany(c);
-            c.getFactories().add(factory);
-        }
+        // This method does not generate the factories.
+        // Developer must generate them outside this method, associate the company to them and save them using FactoryDAO
         return c;
     }
     
@@ -37,8 +34,8 @@ public class testUtils {
     
     public static Location generateRandomLocation() {
         Location l = new Location();
-        l.setLatitude(new Float(testUtils.getRandomFloat(100)));
-        l.setLongitude(new Float(testUtils.getRandomFloat(100)));
+        l.setLatitude(new Float(testUtils.getRandomFloat(100)).toString());
+        l.setLongitude(new Float(testUtils.getRandomFloat(100)).toString());
         return l;
     }
     
@@ -53,7 +50,7 @@ public class testUtils {
         return a;
     }
     
-    public static Factory generateRandomFactory() {
+    public static Factory generateRandomFactory(Company company) {
         Factory f = new Factory();
         long generator = testUtils.getGenerator();
         f.setName("test factory " + generator);
@@ -61,7 +58,7 @@ public class testUtils {
         f.setEmail(generator + "@email.es");
         f.setEmployees(testUtils.getRandomInt(100));
         f.setAddress(testUtils.generateRandomAddress());
-        // f.setCompany
+        f.setCompany(company);
         f.setDirector(testUtils.generateRandomDirector());
         f.setLocation(testUtils.generateRandomLocation());
         return f;

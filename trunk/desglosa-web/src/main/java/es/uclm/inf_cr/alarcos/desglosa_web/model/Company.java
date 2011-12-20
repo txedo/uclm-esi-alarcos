@@ -67,7 +67,7 @@ public class Company {
         return director;
     }
     
-    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy = "company", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "company", orphanRemoval = true)
     public Set<Factory> getFactories() {
         return factories;
     }

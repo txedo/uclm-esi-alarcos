@@ -61,8 +61,8 @@ public class Factory {
         return id;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-    @JoinColumn(name = "company_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "company_id")
     public Company getCompany() {
         return company;
     }
@@ -105,7 +105,7 @@ public class Factory {
         return location;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy = "mainFactory", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "mainFactory", orphanRemoval = true)
     public Set<Project> getProjects() {
         return projects;
     }

@@ -262,13 +262,13 @@
         <column>longitude</column>
         <row>
             <value description="id">1</value>
-            <value description="latitude">1.0</value>
-            <value description="longitude">1.0</value>
+            <value description="latitude">38.9931718028834</value>
+            <value description="longitude">-3.92495155334473</value>
         </row>
         <row>
             <value description="id">2</value>
-            <value description="latitude">2.0</value>
-            <value description="longitude">2.0</value>
+            <value description="latitude">40.4503434970018</value>
+            <value description="longitude">-3.69878768920898</value>
         </row>
     </table>
     <table name="factories">

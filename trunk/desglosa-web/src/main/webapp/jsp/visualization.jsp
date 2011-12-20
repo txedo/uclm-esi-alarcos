@@ -438,9 +438,12 @@
 		
 		$("#factorySelect").change( function() {
 			clearAllMarkers();
-			if ($("#factorySelect").hasClass('disabled')) $("#factorySelect").removeClass('disabled');
+			if ($("#factorySelect").hasClass('disabled')){
+				$("#factorySelect").removeAttr('disabled');
+				$("#factorySelect").removeClass('disabled');
+			}
 			if ($("#factoryProjectSelect").hasClass('disabled')) {
-				$("#factoryProjectSelect").attr('disabled','');
+				$("#factoryProjectSelect").removeAttr('disabled');
 				$("#factoryProjectSelect").removeClass('disabled');
 			}
 			$("#factoryProjectSelect").val(-1);

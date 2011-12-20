@@ -142,6 +142,7 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 					// Change active view
 					var city = JSON.stringify(data.city);
 					if (city != "null") {
+						//alert(city);
 						desglosa_handleVisualization(data.city.model, city);
 					} else {
 						$('#jogl_canvas').css('display','none');
