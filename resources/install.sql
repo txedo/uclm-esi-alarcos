@@ -64,8 +64,8 @@ DROP TABLE IF EXISTS `desglosadb`.`locations` ;
 
 CREATE  TABLE IF NOT EXISTS `desglosadb`.`locations` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `latitude` FLOAT NOT NULL ,
-  `longitude` FLOAT NOT NULL ,
+  `latitude` VARCHAR(45) NOT NULL ,
+  `longitude` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -362,10 +362,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `desglosadb`;
-INSERT INTO `desglosadb`.`locations` (`id`, `latitude`, `longitude`) VALUES (1, 38.9931718028834, -3.92495155334473);
-INSERT INTO `desglosadb`.`locations` (`id`, `latitude`, `longitude`) VALUES (2, 40.4503434970018, -3.69878768920898);
-INSERT INTO `desglosadb`.`locations` (`id`, `latitude`, `longitude`) VALUES (3, 38.9583409248377, -3.88306617736816);
-INSERT INTO `desglosadb`.`locations` (`id`, `latitude`, `longitude`) VALUES (4, 40.4910873563272, -3.65896224975586);
+INSERT INTO `desglosadb`.`locations` (`id`, `latitude`, `longitude`) VALUES (1, '38.9931718028834', '-3.92495155334473');
+INSERT INTO `desglosadb`.`locations` (`id`, `latitude`, `longitude`) VALUES (2, '40.4503434970018', '-3.69878768920898');
+INSERT INTO `desglosadb`.`locations` (`id`, `latitude`, `longitude`) VALUES (3, '38.9583409248377', '-3.88306617736816');
+INSERT INTO `desglosadb`.`locations` (`id`, `latitude`, `longitude`) VALUES (4, '40.4910873563272', '-3.65896224975586');
 
 COMMIT;
 

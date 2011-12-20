@@ -17,6 +17,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Director;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
 
@@ -170,8 +171,8 @@ public class FactoryAction extends ActionSupport {
                 addFieldError("error.factory.address.country", getText("error.address.country"));
             }
             // Location data
-            if (factory.getLocation().getLatitude() == 0.0f ||
-                factory.getLocation().getLongitude() == 0.0f) {
+            if (factory.getLocation().getLatitude() == null || factory.getLocation().getLatitude().equals("") ||
+                factory.getLocation().getLongitude() == null || factory.getLocation().getLongitude().equals("")) {
                 addFieldError("error.factory.location", getText("error.location"));
             }
         } else {
@@ -190,6 +191,8 @@ public class FactoryAction extends ActionSupport {
             if (upload != null) {
                 String path = FileUtil.uploadFile(uploadFileName, upload);
                 factory.getDirector().setImagePath(path);
+            } else {
+                factory.getDirector().setImagePath(Director.DEFAULT_PIC);
             }
             FactoryManager.saveFactory(factory);
             addActionMessage(getText("message.factory.added_successfully"));
@@ -258,8 +261,8 @@ public class FactoryAction extends ActionSupport {
                 addFieldError("error.factory.address.country", getText("error.address.country"));
             }
             // Location data
-            if (factory.getLocation().getLatitude() == 0.0f ||
-                factory.getLocation().getLongitude() == 0.0f) {
+            if (factory.getLocation().getLatitude() == null || factory.getLocation().getLatitude().equals("") ||
+                factory.getLocation().getLongitude() == null || factory.getLocation().getLongitude().equals("")) {
                 addFieldError("error.factory.location", getText("error.location"));
             }
         } else {
@@ -278,6 +281,8 @@ public class FactoryAction extends ActionSupport {
             if (upload != null) {
                 String path = FileUtil.uploadFile(uploadFileName, upload);
                 factory.getDirector().setImagePath(path);
+            } else {
+                factory.getDirector().setImagePath(Director.DEFAULT_PIC);
             }
             FactoryManager.saveFactory(factory);
             addActionMessage(getText("message.factory.updated_successfully"));

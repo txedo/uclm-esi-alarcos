@@ -1,9 +1,12 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.utils;
 
 
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 public class SpringTestCaseBase extends AbstractDependencyInjectionSpringContextTests {
+    protected HibernateTemplate hibernateTemplate;
+    
     protected String[] getConfigLocations() {
         String contextLocations[] = { "classpath*:applicationContext-dao.xml",
                 "classpath*:applicationContext-interceptor.xml",
@@ -18,6 +21,7 @@ public class SpringTestCaseBase extends AbstractDependencyInjectionSpringContext
      */
     @Override
     protected void onSetUp() throws Exception {
+        hibernateTemplate = (HibernateTemplate) applicationContext.getBean("hibernateTemplate");
         DBUnitUtils.getInstance().setUp();
         super.onSetUp();
     }

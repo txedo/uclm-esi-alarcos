@@ -210,7 +210,7 @@
 	
 	<c:set var="form" value="/editFactory"/>
 	<c:set var="buttonLabel" value="button.edit_factory"/>
-	<c:if test="${empty param.id and not fn:endsWith(header.referer,'/editFactory') and not fn:contains(header.referer,'id=')}">
+	<c:if test="${empty param.id and not fn:contains(header.referer,'/editFactory') and not fn:contains(header.referer,'id=') and not fn:contains(header.referer,'companyId=')}">
 		<c:set var="form" value="/saveFactory"/>
 		<c:set var="buttonLabel" value="button.add_factory"/>
 	</c:if>

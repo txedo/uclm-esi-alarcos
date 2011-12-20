@@ -15,6 +15,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Director;
 import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
 
 public class CompanyAction extends ActionSupport implements
@@ -131,9 +132,11 @@ public class CompanyAction extends ActionSupport implements
 
     public String save() {
         try {
-            if (upload != null && !GenericManager.isEmptyString(uploadFileName)) {
+            if (upload != null) {
                 String path = FileUtil.uploadFile(uploadFileName, upload);
                 company.getDirector().setImagePath(path);
+            } else {
+                company.getDirector().setImagePath(Director.DEFAULT_PIC);
             }
             CompanyManager.saveCompany(company);
             addActionMessage(getText("message.company.added_successfully"));
@@ -190,6 +193,8 @@ public class CompanyAction extends ActionSupport implements
             if (upload != null) {
                 String path = FileUtil.uploadFile(uploadFileName, upload);
                 company.getDirector().setImagePath(path);
+            } else {
+                company.getDirector().setImagePath(Director.DEFAULT_PIC);
             }
             CompanyManager.saveCompany(company);
             addActionMessage(getText("message.company.updated_successfully"));
