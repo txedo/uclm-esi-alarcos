@@ -89,7 +89,7 @@ public class CompanyAction extends ActionSupport implements
                 addActionError(getText("error.company.id"));
             }
         } catch (NullIdParameterException e) {
-            // Show blank form
+            // This is expected. So show blank form
         } catch (NotValidIdParameterException e) {
             addActionError(getText("error.company.id"));
         }
@@ -112,12 +112,9 @@ public class CompanyAction extends ActionSupport implements
             if (GenericManager.isEmptyString(company.getName())) {
                 addFieldError("error.company.name", getText("error.company.name"));
             } else {
-                // Check company name is not already taken
-                try {
-                    CompanyManager.getCompany(company.getName());
+                // Check if company name is available
+                if (CompanyManager.checkCompanyExists(company.getName())) {
                     addFieldError("error.company.name", getText("error.company.already_exists"));
-                } catch (CompanyNotFoundException e) {
-                    // Name not taken. Nothing to do here
                 }
             }
             // Director data
@@ -196,7 +193,7 @@ public class CompanyAction extends ActionSupport implements
             }
             CompanyManager.saveCompany(company);
             addActionMessage(getText("message.company.updated_successfully"));
-        } catch (Exception e) {
+        } catch (IOException e) {
             addActionError(e.getMessage());
             return ERROR;
         }
