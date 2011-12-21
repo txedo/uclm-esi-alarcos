@@ -472,6 +472,14 @@
             </configuration>
           </execution>
           <execution>
+            <!-- This is just for debugging purposes for developers -->
+            <id>dbunit-test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>operation</goal>
+            </goals>
+          </execution>
+          <execution>
             <!-- Runs before integration tests and jetty:run-war -->
             <id>test</id>
             <phase>test</phase>

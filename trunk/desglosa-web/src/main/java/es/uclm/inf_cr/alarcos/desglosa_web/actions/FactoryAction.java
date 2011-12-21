@@ -101,9 +101,9 @@ public class FactoryAction extends ActionSupport {
     
     public void validateDoShowForm() {
         try {
-            // Check id is valid
+            // Check if id is valid
             id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
-            // Check there a factory that exists with that id
+            // Check if there is a factory that exists with that id
             if (!FactoryManager.checkFactoryExists(id)) {
                 addActionError(getText("error.factory.id"));
             }
@@ -131,14 +131,11 @@ public class FactoryAction extends ActionSupport {
         if (factory != null) {
             // Check that the company ID exists
             if (factory.getCompany() != null) {
-                if (CompanyManager.checkCompanyExists(factory.getCompany().getId())) {
-                    // If it exists, set it to factory
-                    try {
-                        factory.setCompany(CompanyManager.getCompany(factory.getCompany().getId()));
-                    } catch (CompanyNotFoundException e) {
-                        addActionError(getText("error.company.id"));
-                    }
-                } else {
+                // If it exists, set it to factory
+                try {
+                    factory.setCompany(CompanyManager.getCompany(factory.getCompany().getId()));
+                } catch (CompanyNotFoundException e) {
+                    addActionError(getText("error.company.id"));
                     addFieldError("error.company_mandatory", getText("error.company.is_mandatory"));
                 }
                 // Check if factory name is available
@@ -312,7 +309,6 @@ public class FactoryAction extends ActionSupport {
     public String delete() {
         FactoryManager.removeFactory(id);
         addActionMessage(getText("message.factory.deleted_successfully"));
-
         return SUCCESS;
     }
     

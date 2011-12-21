@@ -114,19 +114,23 @@ public class Factory {
     public Integer getNumberOfProjects() {
         return numberOfProjects;
     }
-
+    
     @Transient
     public Market getMostRepresentativeMarket() {
-        MarketDAOHibernate marketDao = (MarketDAOHibernate) ApplicationContextProvider
-                .getBean("marketDao");
+        MarketDAOHibernate marketDao = (MarketDAOHibernate) ApplicationContextProvider.getBean("marketDao");
         Map<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("id", id);
-        List<Market> markets = marketDao.findByNamedQuery(
-                "findMostRepresentativeMarketByFactoryId", queryParams);
-        if (markets.size() > 0)
+        List<Market> markets = marketDao.findByNamedQuery("findMostRepresentativeMarketByFactoryId", queryParams);
+        if (markets.size() > 0) {
             mostRepresentativeMarket = markets.get(0);
-        else
-            mostRepresentativeMarket = null;
+        } else {
+            markets = marketDao.findByNamedQuery("findMostLeadedMarketByFactoryId", queryParams);
+            if (markets.size() > 0) {
+                mostRepresentativeMarket = markets.get(0);
+            } else {
+                mostRepresentativeMarket = null;
+            }
+        }
         return mostRepresentativeMarket;
     }
 

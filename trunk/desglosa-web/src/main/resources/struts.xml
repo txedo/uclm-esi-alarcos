@@ -162,6 +162,96 @@
 			<result name="success" type="redirectAction">listFactories</result>
 		</action>
 		<!-- End of Factory related actions -->
+		
+        <!-- Project related actions -->
+        <action name="listProjects" class="projectAction">
+            <!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewProjects.jsp</result>
+            <result name="input">/jsp/viewProjects.jsp</result>
+            <result name="success">/jsp/viewProjects.jsp</result>
+        </action>
+        <action name="showProjectForm" class="projectAction" method="showForm">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/formProject.jsp</result>
+            <result name="input">/jsp/formProject.jsp</result>
+            <result name="success">/jsp/formProject.jsp</result>
+        </action>
+        <action name="viewProject" class="projectAction" method="get">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewProject.jsp</result>
+            <result name="input">/jsp/viewProject.jsp</result>
+            <result name="success">/jsp/viewProject.jsp</result>
+        </action>
+        <action name="saveProject" class="projectAction" method="save">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/formProject.jsp</result>
+            <result name="input">/jsp/formProject.jsp</result>
+            <result name="success" type="redirectAction">listProjects</result>
+        </action>
+        <action name="editProject" class="projectAction" method="edit">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewProjects.jsp</result>
+            <result name="input">/jsp/formProject.jsp</result>
+            <result name="success" type="redirectAction">listProjects</result>
+        </action>
+        <action name="deleteProject" class="projectAction" method="delete">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewProjects.jsp</result>
+            <result name="input">/jsp/viewProjects.jsp</result>
+            <result name="success" type="redirectAction">listProjects</result>
+        </action>
+        <!-- End of Project related actions -->
+        
+        <!-- Subproject related actions -->
+        <action name="listSubprojects" class="subprojectAction">
+            <!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewSubprojects.jsp</result>
+            <result name="input">/jsp/viewSubprojects.jsp</result>
+            <result name="success">/jsp/viewSubprojects.jsp</result>
+        </action>
+        <action name="showSubprojectForm" class="subprojectAction" method="showForm">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/formSubproject.jsp</result>
+            <result name="input">/jsp/formSubproject.jsp</result>
+            <result name="success">/jsp/formSubproject.jsp</result>
+        </action>
+        <action name="viewSubproject" class="subprojectAction" method="get">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewSubproject.jsp</result>
+            <result name="input">/jsp/viewSubproject.jsp</result>
+            <result name="success">/jsp/viewSubproject.jsp</result>
+        </action>
+        <action name="saveSubproject" class="subprojectAction" method="save">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/formSubproject.jsp</result>
+            <result name="input">/jsp/formSubproject.jsp</result>
+            <result name="success" type="redirectAction">listSubprojects</result>
+        </action>
+        <action name="editSubproject" class="subprojectAction" method="edit">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewSubprojects.jsp</result>
+            <result name="input">/jsp/formSubproject.jsp</result>
+            <result name="success" type="redirectAction">listSubprojects</result>
+        </action>
+        <action name="deleteSubproject" class="subprojectAction" method="delete">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewSubprojects.jsp</result>
+            <result name="input">/jsp/viewSubprojects.jsp</result>
+            <result name="success" type="redirectAction">listSubprojects</result>
+        </action>
+        <!-- End of Subproject related actions -->
 	</package>
 	
 	<package name="json" extends="json-default">

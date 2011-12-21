@@ -140,15 +140,15 @@
                     <display:column  style="width: 5%">
                         <input type="radio" id="projectIdRadio" name="projectIds" value="${project.id}">
                     </display:column>
-                    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.project.name" sortable="true"/>
-                    <display:column property="code" escapeXml="true" style="width: 55%" titleKey="table.header.project.code" sortable="false"/>
-                    <display:column property="plan" escapeXml="true" style="width: 55%" titleKey="table.header.project.plan" sortable="false"/>
-                    <display:column property="market" escapeXml="true" style="width: 55%" titleKey="table.header.project.market" sortable="false"/>
+                    <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.project.name" sortable="true"/>
+                    <display:column property="code" escapeXml="true" style="width: 15%" titleKey="table.header.project.code" sortable="true"/>
+                    <display:column property="plan" escapeXml="true" style="width: 15%" titleKey="table.header.project.plan" sortable="true"/>
+                    <display:column property="market.name" escapeXml="true" style="width: 15%" titleKey="table.header.market.name" sortable="true"/>
                     <display:column escapeXml="true" style="width: 10%" titleKey="table.header.project.subprojects" sortable="true"><%=((Project)project).getSubprojects().size()%></display:column>
                     
                     <display:setProperty name="paging.banner.placement" value="top"/>
-                    <display:setProperty name="paging.banner.item_name"><fmt:message key="message.project"/></display:setProperty>
-                    <display:setProperty name="paging.banner.items_name"><fmt:message key="message.projects"/></display:setProperty>
+                    <display:setProperty name="paging.banner.item_name"><fmt:message key="label.project"/></display:setProperty>
+                    <display:setProperty name="paging.banner.items_name"><fmt:message key="label.projects"/></display:setProperty>
                     <display:setProperty name="paging.banner.no_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.no_items_found"/></span></display:setProperty>
                     <display:setProperty name="paging.banner.one_item_found"><span class="pagebanner"><fmt:message key="table.paging.banner.one_item_found"/></span></display:setProperty>
                     <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>

@@ -15,9 +15,11 @@ public class FactoryDAOHibernate extends GenericDAOHibernate<Factory, Long>
 
     public Factory getFactory(int id) throws FactoryNotFoundException {
         Factory f = (Factory) getHibernateTemplate().get(Factory.class, id);
-        if (f == null)
-            throw new FactoryNotFoundException("factory '" + id
-                    + "' not found...");
+        if (f == null) {
+            throw new FactoryNotFoundException("factory '" + id + "' not found...");
+        } else {
+            f.getMostRepresentativeMarket();
+        }
         return f;
     }
 
@@ -26,17 +28,20 @@ public class FactoryDAOHibernate extends GenericDAOHibernate<Factory, Long>
         List factories = getHibernateTemplate().find(
                 "from Factory where name=?", name);
         if (factories == null || factories.isEmpty()) {
-            throw new FactoryNotFoundException("factory '" + name
-                    + "' not found...");
+            throw new FactoryNotFoundException("factory '" + name + "' not found...");
         } else {
+            ((Factory)factories.get(0)).getMostRepresentativeMarket();
             return (Factory) factories.get(0);
         }
     }
 
     @SuppressWarnings("unchecked")
     public List<Factory> getFactories() {
-        return getHibernateTemplate().find(
-                "from Factory f order by upper(f.name)");
+        List<Factory> factories = getHibernateTemplate().find("from Factory f order by upper(f.name)");
+        for (Factory f : factories) {
+            f.getMostRepresentativeMarket();
+        }
+        return factories;
     }
 
     public void saveFactory(Factory factory) {
