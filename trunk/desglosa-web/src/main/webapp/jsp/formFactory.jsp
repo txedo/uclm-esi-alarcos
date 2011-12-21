@@ -201,7 +201,7 @@
 	}
 	</script>
 </head>
-<body>
+<body id="showFactory" class="">
 	<h1><s:text name="management.factory.add.title" /></h1>
 	<p><s:text name="management.factory.add.text" /></p>
 	
