@@ -67,4 +67,9 @@ public class Market {
         return equals;
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
 }
