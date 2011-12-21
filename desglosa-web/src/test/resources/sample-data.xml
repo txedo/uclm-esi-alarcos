@@ -304,4 +304,48 @@
             <value description="location_id">2</value>
         </row>
     </table>
+    <table name="markets">
+        <column>id</column>
+        <column>name</column>
+        <column>color</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">Arquitectura</value>
+            <value description="color">00649a</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">Defensa</value>
+            <value description="color">298400</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">Sanitario</value>
+            <value description="color">ff8c00</value>
+        </row>
+    </table>
+    <table name="projects">
+        <column>id</column>
+        <column>name</column>
+        <column>code</column>
+        <column>plan</column>
+        <column>mainFactory_id</column>
+        <column>market_id</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">desglosa</value>
+            <value description="code">dgs</value>
+            <value description="plan">1112</value>
+            <value description="mainFactory_id">1</value>
+            <value description="market_id">2</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">where to publish</value>
+            <value description="code">w2p</value>
+            <value description="plan">1112</value>
+            <value description="mainFactory_id">2</value>
+            <value description="market_id">1</value>
+        </row>
+    </table>
 </dataset>

@@ -42,6 +42,13 @@ fieldset.viewingfieldset img, fieldset.formfieldset img {
     width: 100%;
 }
 
+span.icon {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	border: 1px solid #000;
+}
+
 .centeredBodyContainer {
 	float: right;
 	position: relative;
