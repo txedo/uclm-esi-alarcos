@@ -15,6 +15,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterExceptio
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
 
@@ -23,6 +24,7 @@ public class SubprojectAction extends ActionSupport implements
     private static final long serialVersionUID = -8802591889117560853L;
     private int id;
     private List<Subproject> subprojects;
+    private List<Factory> factories;
     private List<Project> projects;
     private Subproject subproject;
     
@@ -38,6 +40,13 @@ public class SubprojectAction extends ActionSupport implements
      */
     public List<Subproject> getSubprojects() {
         return subprojects;
+    }
+    
+    /**
+     * @return the factories
+     */
+    public List<Factory> getFactories() {
+        return factories;
     }
 
     /**
@@ -66,6 +75,13 @@ public class SubprojectAction extends ActionSupport implements
      */
     public void setSubprojects(List<Subproject> subprojects) {
         this.subprojects = subprojects;
+    }
+    
+    /**
+     * @param factories the factories to set
+     */
+    public void setFactories(List<Factory> factories) {
+        this.factories = factories;
     }
 
     /**
@@ -107,8 +123,9 @@ public class SubprojectAction extends ActionSupport implements
     }
     
     public String showForm() throws Exception {
-        // Get all projects
+        // Get all projects and all factories
         projects = ProjectManager.getAllProjects();
+        factories = FactoryManager.getAllFactories();
         // if id == 0 then show a blank form
         if (id > 0) {
             subproject = SubprojectManager.getSubproject(id);
@@ -124,12 +141,10 @@ public class SubprojectAction extends ActionSupport implements
                 try {
                     subproject.setProject(ProjectManager.getProject(subproject.getProject().getId()));
                 } catch (ProjectNotFoundException e) {
-                    addActionError(getText("error.project.id"));
-                    addFieldError("error.project_required", getText("error.project.required"));
+                    addFieldError("error.project_required", getText("error.subproject.project.required"));
                 }
             } else {
-                addActionError(getText("error.project.id"));
-                addFieldError("error.project_required", getText("error.project.required"));
+                addFieldError("error.project_required", getText("error.subproject.project.required"));
             }
             // Check that the factory ID
             if (subproject.getFactory() != null) {
@@ -137,12 +152,10 @@ public class SubprojectAction extends ActionSupport implements
                 try {
                     subproject.setFactory(FactoryManager.getFactory(subproject.getFactory().getId()));
                 } catch (FactoryNotFoundException e) {
-                    addActionError(getText("error.factory.id"));
-                    addFieldError("error.factory_required", getText("error.factory.required"));
+                    addFieldError("error.factory_required", getText("error.subproject.factory.required"));
                 }
             } else {
-                addActionError(getText("error.project.id"));
-                addFieldError("error.project_required", getText("error.project.required"));
+                addFieldError("error.project_required", getText("error.subproject.factory.required"));
             }
             // Check that required fields are filled in
             if (GenericManager.isEmptyString(subproject.getName())) {
@@ -153,6 +166,7 @@ public class SubprojectAction extends ActionSupport implements
         }
         if (hasActionErrors() || hasErrors() || hasFieldErrors()) {
             projects = ProjectManager.getAllProjects();
+            factories = FactoryManager.getAllFactories();
         }
         if (hasFieldErrors()) {
             addFieldError("error.required_fields", getText("error.required_fields"));
@@ -177,21 +191,19 @@ public class SubprojectAction extends ActionSupport implements
                     // If it exists, set it to the project main factory
                     subproject.setProject(ProjectManager.getProject(subproject.getProject().getId()));
                 } else {
-                    addActionError(getText("error.project.id"));
+                    addFieldError("error.project_required", getText("error.subproject.project.required"));
                 }
                 // Check that the factory ID exits
                 if (subproject.getFactory() != null) {
                     // If it exists, set it to the project main factory
                     subproject.setFactory(FactoryManager.getFactory(subproject.getFactory().getId()));
                 } else {
-                    addActionError(getText("error.factory.id"));
+                    addFieldError("error.factory_required", getText("error.subproject.factory.required"));
                 }
             } catch (FactoryNotFoundException e) {
-                addActionError(getText("error.factory.id"));
-                addFieldError("error.factory_required", getText("error.factory.required"));
+                addFieldError("error.factory_required", getText("error.subproject.factory.required"));
             } catch (ProjectNotFoundException e) {
-                addActionError(getText("error.project.id"));
-                addFieldError("error.project_required", getText("error.project.required"));
+                addFieldError("error.project_required", getText("error.subproject.project.required"));
             } catch (NotValidIdParameterException e) {
                 addActionError(getText("error.subproject.id"));
             } catch (SubprojectNotFoundException e) {
@@ -206,6 +218,7 @@ public class SubprojectAction extends ActionSupport implements
         }
         if (hasActionErrors() || hasErrors() || hasFieldErrors()) {
             projects = ProjectManager.getAllProjects();
+            factories = FactoryManager.getAllFactories();
         }
         if (hasFieldErrors()) {
             addFieldError("error.required_fields", getText("error.required_fields"));

@@ -11,12 +11,22 @@
 	    <sj:head jqueryui="true" />
 	    <script type="text/javascript" src="js/jquery.tools-1.2.6.min.js?version=1"></script>
 	    <link href="<s:url value='/styles/tooltip.css?version=1'/>" rel="stylesheet" type="text/css" />
+	    
+	    <script type="text/javascript" src="js/utils.js?version=1"></script>
     
 		<meta name="menu" content="ManageCompanies"/>
 		
 		<fmt:message key="error.factory_not_selected" var="noFactorySelected"/>
 		
 		<SCRIPT type="text/javascript">
+		function getMarketSpan (color, name) {
+			var result = "-";
+			if (color != "" && name != "") {
+				result = "<span class='icon' style='background-color:#" + color + "'></span>" + name;
+			}
+			"<c:out value='${result}'/>";
+		}
+		
 		function getSelectedRadioButton() {
 			return $("input:radio[name=factoryIds]:checked").val();
 		}
@@ -104,8 +114,11 @@
 				    <display:column property="name" escapeXml="true" style="width: 20%" titleKey="table.header.factory.name" sortable="true"/>
 				    <display:column property="information" escapeXml="true" style="width: 25%" titleKey="table.header.factory.information" sortable="false"/>
 				    <display:column escapeXml="true" style="width: 10%" titleKey="table.header.factory.projects" sortable="true"><%=((Factory)factory).getProjects().size()%></display:column>
-                    <display:column escapeXml="false" style="width: 11%" titleKey="table.header.market.name" sortable="true">
-                        <span class="icon" style="background-color:#<%=((Factory)factory).getMostRepresentativeMarket().getColor()%>"></span><%=((Factory)factory).getMostRepresentativeMarket().getName()%>
+                    <display:column escapeXml="false" style="width: 11%" titleKey="table.header.market.name" sortable="true" >
+                    	<script>
+                    	getMarketSpan('${factory.mostRepresentativeMarket.color}', '${factory.mostRepresentativeMarket.name}');
+                    	</script>
+<%--                         <span class="icon" style="background-color:#<c:out value='${factory.mostRepresentativeMarket.color}'/>"></span><c:out value='${factory.mostRepresentativeMarket.name}'/> --%>
                     </display:column>
                     <display:column property="address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="true"/>
                     <display:column property="address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="true"/>

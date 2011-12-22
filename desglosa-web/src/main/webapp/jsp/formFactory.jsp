@@ -223,32 +223,34 @@
 		  <fieldset class="formfieldset">
 		    <h2><s:text name="label.configure.factory.company"/></h2>
 			<s:fielderror><s:param>error.company_mandatory</s:param></s:fielderror>
-			<s:text name="label.configure.factory.choose_company"/>
+			<p><s:text name="label.configure.factory.choose_company"/></p>
 			
-			<s:set name="companies" value="companies" scope="request"/>  
-			<s:set name="factory" value="factory" scope="request"/>
-			<display:table name="companies" id="company" cellspacing="0" cellpadding="0" defaultsort="1" pagesize="10" requestURI="showFactoryForm.action">
-				<display:column style="width: 5%">
-					<c:choose>
-						<c:when test="${factory.company.id == company.id or company.id == param.companyId}">
-							<input type="radio" name="factory.company.id" value="${company.id}" checked/>
-						</c:when>
-						<c:otherwise>
-							<input type="radio" name="factory.company.id" value="${company.id}" />
-						</c:otherwise>
-					</c:choose>
-				</display:column>
-			    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.company.name" sortable="true"/>
-			    <display:column property="information" escapeXml="true" style="width: 55%" titleKey="table.header.company.information" sortable="false"/>
-			    
-			    <display:setProperty name="paging.banner.placement" value="bottom"/>
-			    <display:setProperty name="paging.banner.item_name"><fmt:message key="message.company"/></display:setProperty>
-			    <display:setProperty name="paging.banner.items_name"><fmt:message key="message.companies"/></display:setProperty>
-			    <display:setProperty name="paging.banner.no_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.no_items_found"/></span></display:setProperty>
-			    <display:setProperty name="paging.banner.one_item_found"><span class="pagebanner"><fmt:message key="table.paging.banner.one_item_found"/></span></display:setProperty>
-			    <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>
-			    <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.some_items_found"/></span></display:setProperty>
-			</display:table>
+			<div>
+				<s:set name="companies" value="companies" scope="request"/>  
+				<s:set name="factory" value="factory" scope="request"/>
+				<display:table name="companies" id="company" cellspacing="0" cellpadding="0" defaultsort="1" pagesize="10" requestURI="showFactoryForm.action">
+					<display:column style="width: 5%">
+						<c:choose>
+							<c:when test="${factory.company.id == company.id or company.id == param.companyId}">
+								<input type="radio" name="factory.company.id" value="${company.id}" checked/>
+							</c:when>
+							<c:otherwise>
+								<input type="radio" name="factory.company.id" value="${company.id}" />
+							</c:otherwise>
+						</c:choose>
+					</display:column>
+				    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.company.name" sortable="true"/>
+				    <display:column property="information" escapeXml="true" style="width: 55%" titleKey="table.header.company.information" sortable="false"/>
+				    
+				    <display:setProperty name="paging.banner.placement" value="top"/>
+				    <display:setProperty name="paging.banner.item_name"><fmt:message key="label.company"/></display:setProperty>
+				    <display:setProperty name="paging.banner.items_name"><fmt:message key="label.companies"/></display:setProperty>
+				    <display:setProperty name="paging.banner.no_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.no_items_found"/></span></display:setProperty>
+				    <display:setProperty name="paging.banner.one_item_found"><span class="pagebanner"><fmt:message key="table.paging.banner.one_item_found"/></span></display:setProperty>
+				    <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>
+				    <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.some_items_found"/></span></display:setProperty>
+				</display:table>
+			</div>
 		  </fieldset>
 		  
 		  <fieldset class="formfieldset">

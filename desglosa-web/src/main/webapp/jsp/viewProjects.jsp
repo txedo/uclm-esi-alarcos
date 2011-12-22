@@ -54,23 +54,25 @@
             <input type="radio" id="projectIdRadio" name="projectIds" value="${project.id}">
         </display:column>
         <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.project.name" sortable="true"/>
-        <display:column property="code" escapeXml="true" style="width: 15%" titleKey="table.header.project.code" sortable="true"/>
-        <display:column property="plan" escapeXml="true" style="width: 15%" titleKey="table.header.project.plan" sortable="true"/>
-        <display:column escapeXml="false" style="width: 20%" titleKey="table.header.market.name" sortable="true">
+        <display:column property="code" escapeXml="true" style="width: 7%" titleKey="table.header.project.code" sortable="true"/>
+        <display:column property="plan" escapeXml="true" style="width: 7%" titleKey="table.header.project.plan" sortable="true"/>
+        <display:column escapeXml="false" style="width: 10%" titleKey="table.header.market.name" sortable="true">
             <span class="icon" style="background-color:#<%=((Project)project).getMarket().getColor()%>"></span><%=((Project)project).getMarket().getName()%>
         </display:column>
+        <display:column escapeXml="true" style="width: 10%" titleKey="table.header.project.subprojects" sortable="true"><%=((Project)project).getSubprojects().size()%></display:column>
         <display:column escapeXml="false" style="width: 20%" titleKey="table.header.factory.name" sortable="true">
             <div class="tooltipstyle" title="<img src='http://maps.google.com/maps/api/staticmap?zoom=10&size=170x130&maptype=roadmap&markers=color:red|color:red|<c:out value='${project.mainFactory.location.latitude}'/>,<c:out value='${project.mainFactory.location.longitude}'/>&sensor=false' width='170' height='130' title='<s:text name='label.configure.factory.address.image'/>'/>"><img class="searchIcon" src="images/world_search.png" height="16" width="16" /><c:out value="${project.mainFactory.name}"/></div>
         </display:column>
-        <display:column escapeXml="true" style="width: 10%" titleKey="table.header.project.subprojects" sortable="true"><%=((Project)project).getSubprojects().size()%></display:column>
+        <display:column property="mainFactory.address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="true"/>
+        <display:column property="mainFactory.address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="true"/>
         
         <display:setProperty name="paging.banner.placement" value="top"/>
         <display:setProperty name="paging.banner.item_name"><fmt:message key="label.project"/></display:setProperty>
         <display:setProperty name="paging.banner.items_name"><fmt:message key="label.projects"/></display:setProperty>
-        <display:setProperty name="paging.banner.no_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.no_items_found"/></span></display:setProperty>
-        <display:setProperty name="paging.banner.one_item_found"><span class="pagebanner"><fmt:message key="table.paging.banner.one_item_found"/></span></display:setProperty>
-        <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>
-        <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.some_items_found"/></span></display:setProperty>
+        <display:setProperty name="paging.banner.no_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.no_items_found_male"/></span></display:setProperty>
+        <display:setProperty name="paging.banner.one_item_found"><span class="pagebanner"><fmt:message key="table.paging.banner.one_item_found_male"/></span></display:setProperty>
+        <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found_male"/></span></display:setProperty>
+        <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.some_items_found_male"/></span></display:setProperty>
     </display:table>
     
     <div class="buttonPane">

@@ -163,9 +163,11 @@ h2 {
 }
 
 ul.errorMessage, ul.actionMessage {
+	display: inline;
 	list-style: none;	
-	margin-bottom: 10px;
-    margin-top: 10px;
+	margin-left: 10px;
+	/* margin-bottom: 10px;
+    margin-top: 10px; */
 }
 
 ul.errorMessage li, ul.actionMessage li {
@@ -206,6 +208,24 @@ ul.actionMessage li span {
     background-image: url("../images/icon_ok.png");
     border: 1px solid #008000;
     color: #008000;
+}
+
+.form span.errorMessage {
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
+	background-position: 10px center;
+    background-repeat: no-repeat;
+    background-size: 15px auto;
+    border-radius: 6px 6px 6px 6px;
+    margin: 10px 0;
+    padding: 5px 5px 5px 40px;
+    text-align: left;
+    font: normal 12px/1.8em Arial, Helvetica, sans-serif;
+    background-color: #FFE5E5;
+    background-image: url("../images/icon_error.png");
+    border: 1px solid #800000;
+    color: #800000;
 }
 
 .form p.label {
@@ -255,6 +275,10 @@ ul.actionMessage li span {
 .form input#submit {
 	margin-top: 15px;
 	margin-bottom: 50px;	
+}
+
+.formfieldset h2 {
+	margin-bottom: 15px;
 }
 
 legend {

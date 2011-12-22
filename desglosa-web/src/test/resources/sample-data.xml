@@ -219,6 +219,18 @@
             <value description="last_name">test director last name 3</value>
             <value description="image_path">images/anonymous.gif</value>
         </row>
+        <row>
+            <value description="id">4</value>
+            <value description="name">test director name 4</value>
+            <value description="last_name">test director last name 4</value>
+            <value description="image_path">images/anonymous.gif</value>
+        </row>
+        <row>
+            <value description="id">5</value>
+            <value description="name">test director name 5</value>
+            <value description="last_name">test director last name 5</value>
+            <value description="image_path">images/anonymous.gif</value>
+        </row>
     </table>
     <table name="companies">
         <column>id</column>
@@ -230,6 +242,12 @@
             <value description="name">test company name 1</value>
             <value description="information">test company information 1</value>
             <value description="director_id">1</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">test company name 2</value>
+            <value description="information">test company information 2</value>
+            <value description="director_id">4</value>
         </row>
     </table>
     <table name="addresses">
@@ -255,6 +273,14 @@
             <value description="country">factory country 2</value>
             <value description="postal_code">factory postal code 2</value>
         </row>
+		<row>
+            <value description="id">3</value>
+            <value description="address">factory address 3</value>
+            <value description="city">factory city 3</value>
+            <value description="province">factory province 3</value>
+            <value description="country">factory country 3</value>
+            <value description="postal_code">factory postal code 3</value>
+        </row>
     </table>
     <table name="locations">
         <column>id</column>
@@ -269,6 +295,11 @@
             <value description="id">2</value>
             <value description="latitude">40.4503434970018</value>
             <value description="longitude">-3.69878768920898</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="latitude">38.9583409248377</value>
+            <value description="longitude">-3.88306617736816</value>
         </row>
     </table>
     <table name="factories">
@@ -302,6 +333,17 @@
             <value description="address_id">2</value>
             <value description="director_id">3</value>
             <value description="location_id">2</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">test factory name 3</value>
+            <value description="information">without projects</value>
+            <value description="contact_email">factory3@email.es</value>
+            <value description="employees">30</value>
+            <value description="company_id">2</value>
+            <value description="address_id">3</value>
+            <value description="director_id">5</value>
+            <value description="location_id">3</value>
         </row>
     </table>
     <table name="markets">
