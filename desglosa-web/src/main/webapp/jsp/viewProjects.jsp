@@ -8,7 +8,9 @@
 
 <html lang="en">
 <head>
-    <sj:head jqueryui="true"/>
+    <sj:head jqueryui="true" />
+    <script type="text/javascript" src="js/jquery.tools-1.2.6.min.js?version=1"></script>
+    <link href="<s:url value='/styles/tooltip.css?version=1'/>" rel="stylesheet" type="text/css" />
     
     <meta name="menu" content="ManageProjects"/>
     
@@ -30,6 +32,13 @@
                 $(location).attr('href',url);
             }
         }
+        
+        $(document).ready(function() {
+            $("div.tooltipstyle").tooltip({
+                position: 'top center',
+                delay: 0
+                });
+        });
     </SCRIPT>
 </head>
 <body id="viewProjects">
@@ -44,11 +53,15 @@
         <display:column  style="width: 5%">
             <input type="radio" id="projectIdRadio" name="projectIds" value="${project.id}">
         </display:column>
-        <display:column property="name" escapeXml="true" style="width: 20%" titleKey="table.header.project.name" sortable="true"/>
+        <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.project.name" sortable="true"/>
         <display:column property="code" escapeXml="true" style="width: 15%" titleKey="table.header.project.code" sortable="true"/>
         <display:column property="plan" escapeXml="true" style="width: 15%" titleKey="table.header.project.plan" sortable="true"/>
-        <display:column property="market.name" escapeXml="true" style="width: 20%" titleKey="table.header.market.name" sortable="true"/>
-        <display:column property="mainFactory.name" escapeXml="true" style="width: 20%" titleKey="table.header.factory.name" sortable="true"/>
+        <display:column escapeXml="false" style="width: 20%" titleKey="table.header.market.name" sortable="true">
+            <span class="icon" style="background-color:#<%=((Project)project).getMarket().getColor()%>"></span><%=((Project)project).getMarket().getName()%>
+        </display:column>
+        <display:column escapeXml="false" style="width: 20%" titleKey="table.header.factory.name" sortable="true">
+            <div class="tooltipstyle" title="<img src='http://maps.google.com/maps/api/staticmap?zoom=10&size=170x130&maptype=roadmap&markers=color:red|color:red|<c:out value='${project.mainFactory.location.latitude}'/>,<c:out value='${project.mainFactory.location.longitude}'/>&sensor=false' width='170' height='130' title='<s:text name='label.configure.factory.address.image'/>'/>"><img class="searchIcon" src="images/world_search.png" height="16" width="16" /><c:out value="${project.mainFactory.name}"/></div>
+        </display:column>
         <display:column escapeXml="true" style="width: 10%" titleKey="table.header.project.subprojects" sortable="true"><%=((Project)project).getSubprojects().size()%></display:column>
         
         <display:setProperty name="paging.banner.placement" value="top"/>

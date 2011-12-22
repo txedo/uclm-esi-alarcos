@@ -114,7 +114,7 @@ public class Project {
         return subprojects;
     }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "market_id")
     public Market getMarket() {
         return market;

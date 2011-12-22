@@ -113,6 +113,7 @@ public class ProjectAction extends ActionSupport implements
                 }
             } else {
                 addActionError(getText("error.factory.id"));
+                addFieldError("error.factory_required", getText("error.factory.required"));
             }
             // Check that required fields are filled in
             if (GenericManager.isEmptyString(project.getName())) {
@@ -124,8 +125,10 @@ public class ProjectAction extends ActionSupport implements
             if (GenericManager.isEmptyString(project.getPlan())) {
                 addFieldError("error.project.plan", getText("error.project.plan"));
             }
-            if (GenericManager.isEmptyString(project.getMarket().getName())) {
-                addFieldError("error.project.market.name", getText("error.project.market.name"));
+            try {
+                GenericManager.checkValidId(project.getMarket().getId());
+            } catch (NotValidIdParameterException e) {
+                addFieldError("error.project.market", getText("error.project.market"));
             }
         } else {
             addActionError(getText("error.general"));
@@ -176,8 +179,10 @@ public class ProjectAction extends ActionSupport implements
             if (GenericManager.isEmptyString(project.getPlan())) {
                 addFieldError("error.project.plan", getText("error.project.plan"));
             }
-            if (GenericManager.isEmptyString(project.getMarket().getName())) {
-                addFieldError("error.project.market.name", getText("error.project.market.name"));
+            try {
+                GenericManager.checkValidId(project.getMarket().getId());
+            } catch (NotValidIdParameterException e) {
+                addFieldError("error.project.market", getText("error.project.market"));
             }
         } else {
             addActionError(getText("error.general"));

@@ -6,9 +6,7 @@
 <%@ include file="/common/taglibs.jsp"%>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<sj:head jqueryui="true" jquerytheme="cupertino"/>
-	
+<head>	
 	<!-- HTTP 1.1 -->
     <meta http-equiv="Cache-Control" content="no-store"/>
     <!-- HTTP 1.0 -->

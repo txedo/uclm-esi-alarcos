@@ -348,4 +348,40 @@
             <value description="market_id">1</value>
         </row>
     </table>
+    <table name="subprojects">
+        <column>id</column>
+        <column>name</column>
+        <column>project_id</column>
+        <column>factory_id</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">dgs-graphics-engine</value>
+            <value description="project_id">1</value>
+            <value description="factory_id">1</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">dgs-webapp</value>
+            <value description="project_id">1</value>
+            <value description="factory_id">2</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">dgs-final</value>
+            <value description="project_id">1</value>
+            <value description="factory_id">1</value>
+        </row>
+        <row>
+            <value description="id">4</value>
+            <value description="name">w2p-webapp</value>
+            <value description="project_id">2</value>
+            <value description="factory_id">2</value>
+        </row>
+        <row>
+            <value description="id">5</value>
+            <value description="name">w2p-environment</value>
+            <value description="project_id">2</value>
+            <value description="factory_id">1</value>
+        </row>
+    </table>
 </dataset>

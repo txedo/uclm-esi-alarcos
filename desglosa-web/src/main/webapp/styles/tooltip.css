@@ -2,8 +2,16 @@
 	display: none;
 	background: transparent url(../images/black_arrow_medium.png);
 	height: 163px;
-	padding: 40px 30px 10px 30px;
-	width: 310px;
+	padding: 35px 30px 10px 30px;
+	width: 170px;
 	font-size: 11px;
 	color: #fff;
+}
+
+div.tooltipstyle {
+	cursor:pointer;
+}
+
+img.searchIcon {
+	margin-right: 15px;
 }

@@ -47,7 +47,7 @@ public class CompanyManager {
     }
     
     public static List<Company> getAllCompanies() {
-        return companyDao.getAll();
+        return companyDao.getCompanies();
     }
     
     public static void removeCompany(int id) {

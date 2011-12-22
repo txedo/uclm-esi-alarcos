@@ -262,6 +262,13 @@
 				<!-- <param name="excludeNullProperties">true</param> -->
 			</result>
 		</action>
+        <action name="json_m_*" class="marketAction" method="{1}">
+            <result name="success" type="json">
+                <param name="noCache">true</param>
+                <!-- <param name="excludeProperties">companies, projects</param> -->
+                <!-- <param name="excludeNullProperties">true</param> -->
+            </result>
+        </action>
 		<action name="json_*" class="visualizationAction" method="{1}">
 			<result name="success" type="json">
 				<param name="noCache">true</param>
