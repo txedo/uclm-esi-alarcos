@@ -136,14 +136,13 @@ public class FactoryAction extends ActionSupport {
                     factory.setCompany(CompanyManager.getCompany(factory.getCompany().getId()));
                 } catch (CompanyNotFoundException e) {
                     addActionError(getText("error.company.id"));
-                    addFieldError("error.company_mandatory", getText("error.company.is_mandatory"));
                 }
                 // Check if factory name is available
                 if (FactoryManager.checkFactoryExists(factory.getName())) {
                     addFieldError("error.factory.name", getText("error.factory.already_exists"));
                 }
             } else {
-                addActionError(getText("error.company.id"));
+                addFieldError("error.company_mandatory", getText("error.company.is_mandatory"));
             }
             // Check that required fields are filled in
             // Factory data
@@ -239,6 +238,12 @@ public class FactoryAction extends ActionSupport {
             // Factory data
             if (GenericManager.isEmptyString(factory.getName())) {
                 addFieldError("error.factory.name", getText("error.factory.name"));
+            }
+            if (GenericManager.isEmptyString(factory.getEmail())) {
+                addFieldError("error.factory.email", getText("error.factory.email"));
+            }
+            if (factory.getEmployees() < 0) {
+                addFieldError("error.factory.employees", getText("error.factory.employees"));
             }
             // Director data
             if (GenericManager.isEmptyString(factory.getDirector().getName())) {

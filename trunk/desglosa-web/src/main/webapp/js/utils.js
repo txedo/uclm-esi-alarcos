@@ -28,3 +28,4 @@ function swapDivVisibility (hideSelector, showSelector) {
 	$(hideSelector).css('display','none');
 	$(showSelector).css('display','');
 }
+

@@ -60,13 +60,13 @@ public class CompanyDAOTest extends SpringTestCaseBase {
         assertNotNull(companyDao);
         // by id 
         try {
-            company = companyDao.getCompany(2);
-            fail("Getting company by id=2 should have thrown CompanyNotFoundException");
+            company = companyDao.getCompany(5);
+            fail("Getting company by id=5 should have thrown CompanyNotFoundException");
         } catch (CompanyNotFoundException e) {
             // This is expected
         }
         // by name
-        String name = "test company name 2";
+        String name = "test company name 5";
         try {
             company = companyDao.getCompany(name);
             fail("Getting company by name=\"" + name + "\" should have thrown CompanyNotFoundException");
@@ -77,7 +77,7 @@ public class CompanyDAOTest extends SpringTestCaseBase {
     
     public void testGetCompanies() {
         assertNotNull(companyDao);
-        assertEquals("Checking number of companies: ", 1, companyDao.getCompanies().size());
+        assertEquals("Checking number of companies: ", 2, companyDao.getCompanies().size());
     }
     
     public void testRemoveCompany() {
@@ -85,19 +85,19 @@ public class CompanyDAOTest extends SpringTestCaseBase {
         companyDao.removeCompany(1);
         // Check that the company nor its associations does not exist anymore
         try {
-            companyDao.getCompany(2);
+            companyDao.getCompany(1);
             fail("Company has not been removed successfully");
         } catch (CompanyNotFoundException e) {
             // This is expected
             // Now check that its factories does not exist
             FactoryDAO factoryDao = (FactoryDAO)applicationContext.getBean("factoryDao");
             try {
-                factoryDao.getFactory(3);
+                factoryDao.getFactory(1);
                 fail("The factory id=1 has not been removed with its parent");
             } catch (FactoryNotFoundException e1) {
                 // This is expected
                 try {
-                    factoryDao.getFactory(4);
+                    factoryDao.getFactory(2);
                     fail("The factory id=2 has not been removed with its parent");
                 } catch (FactoryNotFoundException e2) {
                  // This is expected

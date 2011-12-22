@@ -79,7 +79,7 @@ public class FactoryDAOTest extends SpringTestCaseBase {
     
     public void testGetFactories() {
         assertNotNull(factoryDao);
-        assertEquals("Checking number of factories: ", 2, factoryDao.getFactories().size());
+        assertEquals("Checking number of factories: ", 3, factoryDao.getFactories().size());
     }
     
     public void testRemoveFactory() {
