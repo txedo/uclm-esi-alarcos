@@ -47,7 +47,7 @@ public class FactoryManager {
     }
     
     public static List<Factory> getAllFactories() {
-        return factoryDao.getAll();
+        return factoryDao.getFactories();
     }
     
     public static void removeFactory(int id) {

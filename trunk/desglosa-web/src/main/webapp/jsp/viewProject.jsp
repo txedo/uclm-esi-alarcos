@@ -7,31 +7,41 @@
 
 <html lang="en">
     <head>
-        <sj:head jqueryui="true"/>
+	    <sj:head jqueryui="true" />
+	    <script type="text/javascript" src="js/jquery.tools-1.2.6.min.js?version=1"></script>
+	    <link href="<s:url value='/styles/tooltip.css?version=1'/>" rel="stylesheet" type="text/css" />
     
         <meta name="menu" content="ManageFactories"/>
         
         <fmt:message key="error.subproject_not_selected" var="noSubprojectSelected"/>
-        
+
         <SCRIPT type="text/javascript">
-            function getSelectedRadioButton() {
-                return $("input:radio[name=subprojectIds]:checked").val();
+        function getSelectedRadioButton() {
+            return $("input:radio[name=subprojectIds]:checked").val();
+        }
+        
+        function call(urlAction,selectionRequired) {
+            if (!selectionRequired) {
+                $(location).attr('href',urlAction);
+            } else if (selectionRequired && isUndefined(getSelectedRadioButton())) {
+                $("#errorDialogBody").html("<p class='messageBox error'><c:out value='${noSubprojectSelected}'/></p>");
+                $("#errorDialog").dialog("open");
+            } else {
+                var url = urlAction+"?id="+getSelectedRadioButton();
+                $(location).attr('href',url);
             }
-            
-            function call(urlAction,selectionRequired) {
-                if (!selectionRequired) {
-                    $(location).attr('href',urlAction);
-                } else if (selectionRequired && isUndefined(getSelectedRadioButton())) {
-                    $("#errorDialogBody").html("<p class='messageBox error'><c:out value='${noSubprojectSelected}'/></p>");
-                    $("#errorDialog").dialog("open");
-                } else {
-                    var url = urlAction+"?id="+getSelectedRadioButton();
-                    $(location).attr('href',url);
-                }
-            }
+        }
+        
+        $(document).ready(function() {
+            // Initialize tooltips
+            $("div.tooltipstyle").tooltip({
+                position: 'top center',
+                delay: 0
+                });
+        });
         </SCRIPT>
     </head>
-    <body id="viewCompany">
+    <body id="viewProject">
         <h1><s:text name="management.project.view.title" /></h1>
         <p><s:text name="management.project.view.text" /></p>
         <s:actionerror />
@@ -86,6 +96,10 @@
                             <label class="key"><s:text name="label.market.name"/></label>
                             <label class="value"><s:text name="project.mainFactory.mostRepresentativeMarket.name"/><span class="icon" style="background-color:#<s:text name='project.mainFactory.mostRepresentativeMarket.color'/>"></span></label>
                         </li>
+                        <li>
+                            <label class="key" />
+                            <img style="float:left;" src="http://maps.google.com/maps/api/staticmap?zoom=10&size=256x256&maptype=roadmap&markers=color:red|color:red|<c:out value='${project.mainFactory.location.latitude}'/>,<c:out value='${project.mainFactory.location.longitude}'/>&sensor=false" width="256" height="256" title="<s:text name='label.configure.factory.address.image'/>"/>
+                        </li>
                     </ul>
                     <div class="clear"></div>
                 </fieldset>
@@ -106,14 +120,20 @@
                     <display:column  style="width: 5%">
                         <input type="radio" id="subprojectIdRadio" name="subprojectIds" value="${subproject.id}">
                     </display:column>
-                    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.subproject.name" sortable="true"/>
-                    <display:column property="factory.name" escapeXml="true" style="width: 55%" titleKey="table.header.factory.name" sortable="false"/>
-                    <display:column property="plan" escapeXml="true" style="width: 55%" titleKey="table.header.project.plan" sortable="false"/>
-                    <display:column property="market" escapeXml="true" style="width: 55%" titleKey="table.header.project.market" sortable="false"/>
+                    <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.subproject.name" sortable="true"/>
+                    <display:column property="factory.company.name" escapeXml="true" style="width: 15%" titleKey="table.header.company.name" sortable="true"/>
+                    <display:column escapeXml="false" style="width: 15%" titleKey="table.header.factory.name" sortable="true">
+                        <div class="tooltipstyle" title="<img src='http://maps.google.com/maps/api/staticmap?zoom=10&size=170x130&maptype=roadmap&markers=color:red|color:red|<c:out value='${subproject.factory.location.latitude}'/>,<c:out value='${subproject.factory.location.longitude}'/>&sensor=false' width='170' height='130' title='<s:text name='label.configure.factory.address.image'/>'/>"><img class="searchIcon" src="images/world_search.png" height="16" width="16" /><c:out value="${subproject.factory.name}"/></div>
+                    </display:column>
+                    <display:column escapeXml="false" style="width: 15%" titleKey="table.header.factory.market" sortable="true">
+			            <span class="icon" style="background-color:#<c:out value='${subproject.factory.mostRepresentativeMarket.color}'/>"></span><c:out value='${subproject.factory.mostRepresentativeMarket.name}'/>
+			        </display:column>
+			        <display:column property="factory.address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="true"/>
+			        <display:column property="factory.address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="true"/>
                     
                     <display:setProperty name="paging.banner.placement" value="top"/>
-                    <display:setProperty name="paging.banner.item_name"><fmt:message key="message.subproject"/></display:setProperty>
-                    <display:setProperty name="paging.banner.items_name"><fmt:message key="submessage.projects"/></display:setProperty>
+                    <display:setProperty name="paging.banner.item_name"><fmt:message key="label.subproject"/></display:setProperty>
+                    <display:setProperty name="paging.banner.items_name"><fmt:message key="label.subprojects"/></display:setProperty>
                     <display:setProperty name="paging.banner.no_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.no_items_found"/></span></display:setProperty>
                     <display:setProperty name="paging.banner.one_item_found"><span class="pagebanner"><fmt:message key="table.paging.banner.one_item_found"/></span></display:setProperty>
                     <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>

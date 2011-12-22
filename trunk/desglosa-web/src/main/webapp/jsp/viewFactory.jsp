@@ -32,7 +32,7 @@
             }
         </SCRIPT>
     </head>
-    <body id="viewCompany">
+    <body id="viewFactory">
         <h1><s:text name="management.factory.view.title" /></h1>
         <p><s:text name="management.factory.view.text" /></p>
         <s:actionerror />
@@ -70,6 +70,10 @@
                         <li>
                             <label class="key"><s:text name="label.factory.employees"/></label>
                             <label class="value"><s:text name="factory.employees"/></label>
+                        </li>
+                        <li>
+                            <label class="key"><s:text name="label.market.name"/></label>
+                            <label class="value"><s:text name="factory.mostRepresentativeMarket.name"/><span class="icon" style="background-color:#<s:text name='factory.mostRepresentativeMarket.color'/>"></span></label>
                         </li>
                     </ul>
                     <div class="clear"></div>
@@ -143,7 +147,9 @@
                     <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.project.name" sortable="true"/>
                     <display:column property="code" escapeXml="true" style="width: 15%" titleKey="table.header.project.code" sortable="true"/>
                     <display:column property="plan" escapeXml="true" style="width: 15%" titleKey="table.header.project.plan" sortable="true"/>
-                    <display:column property="market.name" escapeXml="true" style="width: 15%" titleKey="table.header.market.name" sortable="true"/>
+                    <display:column escapeXml="false" style="width: 15%" titleKey="table.header.market.name" sortable="true">
+			            <span class="icon" style="background-color:#<%=((Project)project).getMarket().getColor()%>"></span><%=((Project)project).getMarket().getName()%>
+			        </display:column>
                     <display:column escapeXml="true" style="width: 10%" titleKey="table.header.project.subprojects" sortable="true"><%=((Project)project).getSubprojects().size()%></display:column>
                     
                     <display:setProperty name="paging.banner.placement" value="top"/>

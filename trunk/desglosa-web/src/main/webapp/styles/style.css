@@ -47,6 +47,7 @@ span.icon {
 	height: 10px;
 	display: inline-block;
 	border: 1px solid #000;
+	margin-right: 5px;
 }
 
 .centeredBodyContainer {
