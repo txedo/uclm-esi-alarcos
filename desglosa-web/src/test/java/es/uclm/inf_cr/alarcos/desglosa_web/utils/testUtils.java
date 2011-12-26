@@ -3,11 +3,15 @@ package es.uclm.inf_cr.alarcos.desglosa_web.utils;
 import java.util.Calendar;
 import java.util.Random;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.control.MarketManager;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.MarketNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Address;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Director;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Location;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
 
 public class testUtils {
     private testUtils() {
@@ -64,6 +68,29 @@ public class testUtils {
         return f;
     }
     
+    public static Project generateRandomProject(Factory mainFactory) {
+        Project p = new Project();
+        long generator = testUtils.getGenerator();
+        p.setName("test project name " + generator);
+        p.setCode("test project code " + generator);
+        p.setPlan("test project plan " + generator);
+        p.setMainFactory(mainFactory);
+        try {
+            p.setMarket(MarketManager.getMarket(1));
+        } catch (MarketNotFoundException e) {
+            e.printStackTrace();
+        }
+        return p;
+    }
+    
+    public static Subproject generateRandomSubproject(Factory factory, Project project) {
+        Subproject sp = new Subproject();
+        sp.setFactory(factory);
+        sp.setProject(project);
+        sp.setName("test subproject name " + testUtils.getGenerator());
+        return sp;
+    }
+    
     public static long getGenerator() {
         long result = 0;
         try {
@@ -86,4 +113,5 @@ public class testUtils {
         r.setSeed(testUtils.getGenerator());
         return r.nextInt(n+1);
     }
+
 }

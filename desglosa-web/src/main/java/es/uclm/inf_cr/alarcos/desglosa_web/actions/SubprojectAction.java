@@ -155,7 +155,7 @@ public class SubprojectAction extends ActionSupport implements
                     addFieldError("error.factory_required", getText("error.subproject.factory.required"));
                 }
             } else {
-                addFieldError("error.project_required", getText("error.subproject.factory.required"));
+                addFieldError("error.factory_required", getText("error.subproject.factory.required"));
             }
             // Check that required fields are filled in
             if (GenericManager.isEmptyString(subproject.getName())) {

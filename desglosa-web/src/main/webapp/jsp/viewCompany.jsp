@@ -19,14 +19,6 @@
 		<fmt:message key="error.factory_not_selected" var="noFactorySelected"/>
 		
 		<SCRIPT type="text/javascript">
-		function getMarketSpan (color, name) {
-			var result = "-";
-			if (color != "" && name != "") {
-				result = "<span class='icon' style='background-color:#" + color + "'></span>" + name;
-			}
-			"<c:out value='${result}'/>";
-		}
-		
 		function getSelectedRadioButton() {
 			return $("input:radio[name=factoryIds]:checked").val();
 		}
@@ -54,7 +46,7 @@
 	</head>
 	<body id="viewCompany">
 		<h1><s:text name="management.company.view.title" /></h1>
-		<p><s:text name="management.company.view.text" /></p>
+<%-- 		<p><s:text name="management.company.view.text" /></p> --%>
 		<s:actionerror />
 		<s:actionmessage />
 		
@@ -107,33 +99,37 @@
 			
 			<fieldset class="viewingfieldset">
 				<h2><s:text name="label.configure.factories"/></h2>
-				<display:table name="company.factories" uid="factory" defaultsort="1" class="" pagesize="10" requestURI="">
-				  	<display:column  style="width: 5%">
-			  			<input type="radio" id="factoryIdRadio" name="factoryIds" value="${factory.id}">
-			  		</display:column>
-				    <display:column property="name" escapeXml="true" style="width: 20%" titleKey="table.header.factory.name" sortable="true"/>
-				    <display:column property="information" escapeXml="true" style="width: 25%" titleKey="table.header.factory.information" sortable="false"/>
-				    <display:column escapeXml="true" style="width: 10%" titleKey="table.header.factory.projects" sortable="true"><%=((Factory)factory).getProjects().size()%></display:column>
-                    <display:column escapeXml="false" style="width: 11%" titleKey="table.header.market.name" sortable="true" >
-                    	<script>
-                    	getMarketSpan('${factory.mostRepresentativeMarket.color}', '${factory.mostRepresentativeMarket.name}');
-                    	</script>
-<%--                         <span class="icon" style="background-color:#<c:out value='${factory.mostRepresentativeMarket.color}'/>"></span><c:out value='${factory.mostRepresentativeMarket.name}'/> --%>
-                    </display:column>
-                    <display:column property="address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="true"/>
-                    <display:column property="address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="true"/>
-                    <display:column escapeXml="false" style="width: 10%" titleKey="table.header.location" sortable="false">
-                        <div class="tooltipstyle" title="<img src='http://maps.google.com/maps/api/staticmap?zoom=10&size=170x130&maptype=roadmap&markers=color:red|color:red|<c:out value='${factory.location.latitude}'/>,<c:out value='${factory.location.longitude}'/>&sensor=false' width='170' height='130' title='<s:text name='label.configure.factory.address.image'/>'/>"><img src="images/world_search.png" height="16" width="16" /></div>
-                    </display:column>
-				    
-				    <display:setProperty name="paging.banner.placement" value="top"/>
-				    <display:setProperty name="paging.banner.item_name"><fmt:message key="message.factory"/></display:setProperty>
-				    <display:setProperty name="paging.banner.items_name"><fmt:message key="message.factories"/></display:setProperty>
-				    <display:setProperty name="paging.banner.no_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.no_items_found"/></span></display:setProperty>
-				    <display:setProperty name="paging.banner.one_item_found"><span class="pagebanner"><fmt:message key="table.paging.banner.one_item_found"/></span></display:setProperty>
-				    <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>
-				    <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.some_items_found"/></span></display:setProperty>
-				</display:table>
+				
+				<div class="displaytagTable">
+					<display:table name="company.factories" uid="factory" defaultsort="1" class="" pagesize="10" requestURI="">
+					  	<display:column  style="width: 5%; text-align: center;">
+				  			<input type="radio" id="factoryIdRadio" name="factoryIds" value="${factory.id}">
+				  		</display:column>
+					    <display:column property="name" escapeXml="true" style="width: 20%" titleKey="table.header.factory.name" sortable="true"/>
+					    <display:column property="information" escapeXml="true" style="width: 25%" titleKey="table.header.factory.information" sortable="false"/>
+					    <display:column escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.factory.projects" sortable="true"><%=((Factory)factory).getProjects().size()%></display:column>
+	                    <display:column escapeXml="false" style="width: 11%" titleKey="table.header.market.name" sortable="true">
+	                    	<script>
+	                    	var span = getMarketSpan('${factory.mostRepresentativeMarket.color}', '${factory.mostRepresentativeMarket.name}');
+	                    	$("td:last").append(span);
+	                    	</script>
+	                    </display:column>
+	                    <display:column property="address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="true"/>
+	                    <display:column property="address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="true"/>
+	                    <display:column escapeXml="false" style="width: 10%; text-align: center;" titleKey="table.header.location" sortable="false">
+	                        <div class="tooltipstyle" title="<img src='http://maps.google.com/maps/api/staticmap?zoom=10&size=170x130&maptype=roadmap&markers=color:red|color:red|<c:out value='${factory.location.latitude}'/>,<c:out value='${factory.location.longitude}'/>&sensor=false' width='170' height='130' title='<s:text name='label.configure.factory.address.image'/>'/>"><img src="images/world_search.png" height="16" width="16" /></div>
+	                    </display:column>
+					    
+					    <display:setProperty name="paging.banner.placement" value="top"/>
+					    <display:setProperty name="paging.banner.item_name"><fmt:message key="message.factory"/></display:setProperty>
+					    <display:setProperty name="paging.banner.items_name"><fmt:message key="message.factories"/></display:setProperty>
+					    <display:setProperty name="paging.banner.no_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.no_items_found"/></span></display:setProperty>
+					    <display:setProperty name="paging.banner.one_item_found"><span class="pagebanner"><fmt:message key="table.paging.banner.one_item_found"/></span></display:setProperty>
+					    <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>
+					    <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.some_items_found"/></span></display:setProperty>
+					</display:table>
+				</div>
+				
 				<div class="buttonPane">
 					<!-- TODO add security tag -->
 					<c:url var="view" value="/viewFactory"/>

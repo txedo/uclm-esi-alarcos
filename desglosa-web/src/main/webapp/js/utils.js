@@ -29,3 +29,11 @@ function swapDivVisibility (hideSelector, showSelector) {
 	$(showSelector).css('display','');
 }
 
+
+function getMarketSpan (color, name) {
+	var result = "<span>-</span>";
+	if (color != "" && name != "") {
+		result = "<span class='icon' style='background-color:#" + color + "'></span>" + name;
+	}
+	return result;
+}

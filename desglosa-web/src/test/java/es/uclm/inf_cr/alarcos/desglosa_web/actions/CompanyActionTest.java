@@ -51,7 +51,7 @@ public class CompanyActionTest extends StrutsSpringTestCaseBase {
             ((CompanyAction)action).clearActionErrors();
         }
         // Company not found
-        String sId = "2";
+        String sId = "20";
         request.setParameter("id", sId);
         configureProxy("/", "showCompanyForm", "admin");
         assertTrue(action instanceof CompanyAction);

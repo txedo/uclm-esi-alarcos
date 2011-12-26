@@ -64,22 +64,22 @@
 				<h2><s:text name="label.configure.project.data"/></h2>
 				<ul>
 					<li>
-						<label for="project.name"><s:text name="label.project.name"/></label>
+						<label for="project.name"><s:text name="label.project.name"/> (*)</label>
 						<s:textfield id="project.name" name="project.name" tabindex="1"/>
 						<s:fielderror><s:param>error.project.name</s:param></s:fielderror>
 					</li>
 					<li>
-						<label for="project.code"><s:text name="label.project.code"/></label>
+						<label for="project.code"><s:text name="label.project.code"/> (*)</label>
 						<s:textfield id="project.code" name="project.code" tabindex="2"/>
 						<s:fielderror><s:param>error.project.code</s:param></s:fielderror>
 					</li>
 					<li>
-						<label for="project.plan"><s:text name="label.project.plan"/></label>
+						<label for="project.plan"><s:text name="label.project.plan"/> (*)</label>
 						<s:textfield id="project.plan" name="project.plan" tabindex="3"/>
 						<s:fielderror><s:param>error.project.plan</s:param></s:fielderror>
 					</li>
 					<li>
-						<label for="project.market"><s:text name="label.configure.project.market"/></label>
+						<label for="project.market"><s:text name="label.configure.project.market"/> (*)</label>
 						<select id="marketSelect" name="project.market.id"></select>
 						<s:fielderror><s:param>error.project.market</s:param></s:fielderror>
 					</li>
@@ -89,12 +89,12 @@
 			<fieldset class="formfieldset">
 				<h2><s:text name="label.configure.project.factory"/></h2>
 				<s:fielderror><s:param>error.factory_required</s:param></s:fielderror>
-				<s:text name="label.configure.factory.choose_factory"/>
-				<div>
+				<p>(*) <s:text name="label.configure.project.choose_factory"/></p>
+				<div class="displaytagTable">
 					<s:set name="factories" value="factories" scope="request"/>  
 					<s:set name="project" value="project" scope="request"/>
-					<display:table name="factories" id="factory" cellspacing="0" cellpadding="0" defaultsort="1" pagesize="10" requestURI="showFactoryForm.action">
-						<display:column style="width: 5%">
+					<display:table name="factories" id="factory"defaultsort="1" pagesize="10" requestURI="">
+						<display:column style="width: 5%; text-align: center;">
 						<c:choose>
 							<c:when test="${project.mainFactory.id == factory.id or factory.id == param.factoryId}">
 								<input type="radio" name="project.mainFactory.id" value="${factory.id}" checked/>
@@ -106,10 +106,15 @@
 						</display:column>
 						<display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.factory.name" sortable="true"/>
 						<display:column property="information" escapeXml="true" style="width: 30%" titleKey="table.header.factory.information" sortable="false"/>
-						<display:column property="mostRepresentativeMarket" escapeXml="true" style="width: 11%" titleKey="table.header.market.name" sortable="true"/>
+						<display:column escapeXml="false" style="width: 15%" titleKey="table.header.market.name" sortable="true">
+						    <script>
+	                        var span = getMarketSpan('${factory.mostRepresentativeMarket.color}', '${factory.mostRepresentativeMarket.name}');
+	                        $("td:last").append(span);
+	                        </script>
+						</display:column>
 						<display:column property="address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="true"/>
 						<display:column property="address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="true"/>
-						<display:column escapeXml="false" style="width: 10%" titleKey="table.header.location" sortable="false">
+						<display:column escapeXml="false" style="width: 10%; text-align: center;" titleKey="table.header.location" sortable="false">
 							<div class="tooltipstyle" title="<img src='http://maps.google.com/maps/api/staticmap?zoom=10&size=170x130&maptype=roadmap&markers=color:red|color:red|<c:out value='${factory.location.latitude}'/>,<c:out value='${factory.location.longitude}'/>&sensor=false' width='170' height='130' title='<s:text name='label.configure.factory.address.image'/>'/>"><img src="images/world_search.png" height="16" width="16" /></div>
 						</display:column>
 						

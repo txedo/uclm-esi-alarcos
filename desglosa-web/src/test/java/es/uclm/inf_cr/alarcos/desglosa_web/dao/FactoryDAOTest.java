@@ -40,7 +40,7 @@ public class FactoryDAOTest extends SpringTestCaseBase {
             assertNotNull(factory);
             assertEquals("Checking name: ", "test factory name 1", factory.getName());
             assertEquals("Cheking director name: ", "test director name 2", factory.getDirector().getName());
-            assertEquals("Cheking number of factories: ", 0, factory.getProjects().size());
+            assertEquals("Cheking number of factories: ", 1, factory.getProjects().size());
         } catch (FactoryNotFoundException e) {
             fail("Factory not found by id=1");
         }
@@ -52,7 +52,7 @@ public class FactoryDAOTest extends SpringTestCaseBase {
             assertNotNull(factory);
             assertEquals("Cheking id: ", 1, factory.getId());
             assertEquals("Cheking director name: ", "test director name 2", factory.getDirector().getName());
-            assertEquals("Cheking number of projects: ", 0, factory.getProjects().size());
+            assertEquals("Cheking number of projects: ", 1, factory.getProjects().size());
         } catch (FactoryNotFoundException e) {
             fail("Factory not found by name=\"" + name + "\"");
         }

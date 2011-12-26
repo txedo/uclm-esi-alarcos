@@ -47,8 +47,11 @@ public class Factory {
     private Address address;
     private Location location;
     private Set<Project> projects = new HashSet<Project>();
+    private Set<Subproject> subprojects = new HashSet<Subproject>();
     @Property
-    private Integer numberOfProjects;
+    private Integer numberOfLeadingProjects;
+    @Property
+    private Integer numberOfDevelopingSubprojects;
     @Property(embedded = true)
     private Market mostRepresentativeMarket;
 
@@ -109,10 +112,23 @@ public class Factory {
     public Set<Project> getProjects() {
         return projects;
     }
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, mappedBy = "factory", orphanRemoval = true)
+    public Set<Subproject> getSubprojects() {
+        return subprojects;
+    }
 
-    @Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f where p.id = sp.project_id and sp.factory_id = id)")
-    public Integer getNumberOfProjects() {
-        return numberOfProjects;
+    //@Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f where p.id = sp.project_id and sp.factory_id = id)")
+    @Transient
+    public Integer getNumberOfLeadingProjects() {
+        numberOfLeadingProjects = projects.size();
+        return numberOfLeadingProjects;
+    }
+    
+    @Transient
+    public Integer getNumberOfDevelopingSubprojects() {
+        numberOfDevelopingSubprojects = subprojects.size();
+        return numberOfDevelopingSubprojects;
     }
     
     @Transient
@@ -173,9 +189,17 @@ public class Factory {
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
     }
+    
+    public void setSubprojects(Set<Subproject> subprojects) {
+        this.subprojects = subprojects;
+    }
 
-    public void setNumberOfProjects(Integer numberOfProjects) {
-        this.numberOfProjects = numberOfProjects;
+    public void setNumberOfLeadingProjects(Integer numberOfLeadingProjects) {
+        this.numberOfLeadingProjects = numberOfLeadingProjects;
+    }
+    
+    public void setNumberOfDevelopingProjects(Integer numberOfDevelopingSubprojects) {
+        this.numberOfDevelopingSubprojects = numberOfDevelopingSubprojects;
     }
 
     public void setMostRepresentativeMarket(Market mostRepresentativeMarket) {

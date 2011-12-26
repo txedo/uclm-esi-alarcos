@@ -30,7 +30,7 @@
 				<h2><s:text name="label.configure.company"/></h2>
 				<ul>
 					<li>
-						<label for="company.name"><s:text name="label.company.name"/></label>
+						<label for="company.name"><s:text name="label.company.name"/> (*)</label>
 						<s:textfield id="company.name" name="company.name" tabindex="1"/>
 						<s:fielderror><s:param>error.company.name</s:param></s:fielderror>
 					</li>
@@ -46,12 +46,12 @@
 				<h2><s:text name="label.configure.director"/></h2>
 				<ul>
 					<li>
-						<label for="company.director.name"><s:text name="label.configure.director.name"/></label>
+						<label for="company.director.name"><s:text name="label.configure.director.name"/> (*)</label>
 						<s:textfield id="company.director.name" name="company.director.name" tabindex="3"/>
 						<s:fielderror><s:param>error.director.name</s:param></s:fielderror>
 					</li>
 					<li>
-						<label for="company.director.lastName"><s:text name="label.configure.director.last_name"/></label>
+						<label for="company.director.lastName"><s:text name="label.configure.director.last_name"/> (*)</label>
 						<s:textfield id="company.director.lastName" name="company.director.lastName" tabindex="4"/>
 						<s:fielderror><s:param>error.director.last_name</s:param></s:fielderror>
 						
