@@ -11,6 +11,9 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
 	<script type="text/javascript" src="js/utils.js?version=1"></script>
+	
+	<fmt:message key="label.configure.factory.location.not_found" var="locationError"/>
+	
 	<script type="text/javascript">	
 	/** Reset address fields.
 	 */
@@ -84,7 +87,7 @@
 		            placeMark(results[0].geometry.location, true);
 	        		break;
 	        	case google.maps.GeocoderStatus.ZERO_RESULTS:
-	        		var message = "Could not find specified address. Please, check that the address data is correct or click on the map.";
+	        		var message = "<c:out value='${locationError}'/>";
 	        		if (infoDiv != null) document.getElementById(infoDiv).innerHTML=message;
 	        		map.setZoom(1);
 	        		map.setCenter(defaultLatLng);
@@ -142,7 +145,7 @@
 	            		document.getElementById("factory.address.postalCode").value = postal_code;
 		            }
 		          } else {
-		        	  var message = "Could not find specified address. Please, check that the address data is correct or click on the map.";
+		        	  var message = "<c:out value='${locationError}'/>";
 		        	  document.getElementById(infoDiv).innerHTML=message;
 		          }
 		        });
@@ -223,13 +226,13 @@
 		  <fieldset class="formfieldset">
 		    <h2><s:text name="label.configure.factory.company"/></h2>
 			<s:fielderror><s:param>error.company_mandatory</s:param></s:fielderror>
-			<p><s:text name="label.configure.factory.choose_company"/></p>
+			<p>(*) <s:text name="label.configure.factory.choose_company"/></p>
 			
-			<div>
+			<div class="displaytagTable">
 				<s:set name="companies" value="companies" scope="request"/>  
 				<s:set name="factory" value="factory" scope="request"/>
-				<display:table name="companies" id="company" cellspacing="0" cellpadding="0" defaultsort="1" pagesize="10" requestURI="showFactoryForm.action">
-					<display:column style="width: 5%">
+				<display:table name="companies" id="company" defaultsort="1" pagesize="10" requestURI="">
+					<display:column style="width: 5%; text-align: center;">
 						<c:choose>
 							<c:when test="${factory.company.id == company.id or company.id == param.companyId}">
 								<input type="radio" name="factory.company.id" value="${company.id}" checked/>
@@ -257,7 +260,7 @@
 			<h2><s:text name="label.configure.factory.data"/></h2>
             <ul>
                 <li>
-		            <label for="factory.name"><s:text name="label.configure.factory.data.name"/></label>
+		            <label for="factory.name"><s:text name="label.configure.factory.data.name"/> (*)</label>
 		            <s:textfield id="factory.name" name="factory.name" tabindex="1"/>
 		            <s:fielderror><s:param>error.factory.name</s:param></s:fielderror>
 	            </li>
@@ -290,12 +293,12 @@
 			<h2><s:text name="label.configure.director"/></h2>
             <ul>
                 <li>
-					<label for="factory.director.name"><s:text name="label.configure.director.name"/></label>
+					<label for="factory.director.name"><s:text name="label.configure.director.name"/> (*)</label>
 					<s:textfield id="factory.director.name" name="factory.director.name" tabindex="1"/>
 					<s:fielderror><s:param>error.director.name</s:param></s:fielderror>
                 </li>
                 <li>
-					<label for="factory.director.lastName"><s:text name="label.configure.director.last_name"/></label>
+					<label for="factory.director.lastName"><s:text name="label.configure.director.last_name"/> (*)</label>
 					<s:textfield id="factory.director.lastName" name="factory.director.lastName" tabindex="2"/>
 					<s:fielderror><s:param>error.director.lastName</s:param></s:fielderror>
 					<s:hidden id="factory.director.imagePath" name="factory.director.imagePath"/>
@@ -332,14 +335,15 @@
 		<s:div id="fillAddress" cssStyle="display: none">
 		  <fieldset class="formfieldset">
 			<h2><s:text name="label.configure.factory.address"/></h2>
+			<p><s:text name="label.configure.factory.address.text"/></p>
             <ul>
                 <li>
-					<label for="factory.address.address"><s:text name="label.configure.factory.address.address"/></label>
+					<label for="factory.address.address"><s:text name="label.configure.factory.address.address"/> (*)</label>
 					<s:textfield id="factory.address.address" name="factory.address.address" tabindex="1"/>
 					<s:fielderror><s:param>error.factory.address.address</s:param></s:fielderror>
                 </li>
                 <li>
-					<label for="factory.address.city"><s:text name="label.configure.factory.address.city"/></label>
+					<label for="factory.address.city"><s:text name="label.configure.factory.address.city"/> (*)</label>
 					<s:textfield id="factory.address.city" name="factory.address.city" tabindex="2"/>
 					<s:fielderror><s:param>error.factory.address.city</s:param></s:fielderror>
                 </li>
@@ -349,7 +353,7 @@
 					<s:fielderror><s:param>error.factory.address.province</s:param></s:fielderror>
                 </li>
                 <li>
-					<label for="factory.address.country"><s:text name="label.configure.factory.address.country"/></label>
+					<label for="factory.address.country"><s:text name="label.configure.factory.address.country"/> (*)</label>
 					<s:textfield id="factory.address.country" name="factory.address.country" tabindex="4"/>
 					<s:fielderror><s:param>error.factory.address.country</s:param></s:fielderror>
                 </li>
@@ -357,15 +361,16 @@
 					<label for="factory.address.postalCode"><s:text name="label.configure.factory.address.postal_code"/></label>
 					<s:textfield id="factory.address.postalCode" name="factory.address.postalCode" tabindex="5"/>
 					<s:fielderror><s:param>error.factory.address.postalCode</s:param></s:fielderror>
-		          
-					<!-- address, number, postal_code city, province, country -->
-					<s:hidden id="factory.location.latitude" name="factory.location.latitude"/>
-					<s:hidden id="factory.location.longitude" name="factory.location.longitude"/>
-					<s:fielderror><s:param>error.factory.location</s:param></s:fielderror>
-                </li>
+		        </li>
                 <li>
 					<button class="minimal" onclick="locate();return false;"><s:text name="label.locate"/></button>
 					<button class="minimal" onclick="resetAddrFields();return false;"><s:text name="label.reset"/></button>
+                </li>
+                <li>
+                    <!-- address, number, postal_code city, province, country -->
+                    <s:hidden id="factory.location.latitude" name="factory.location.latitude"/>
+                    <s:hidden id="factory.location.longitude" name="factory.location.longitude"/>
+                    <s:fielderror><s:param>error.factory.location</s:param></s:fielderror>
                 </li>
                 <li>
 				    <s:div id="map_info"></s:div>

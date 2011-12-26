@@ -37,23 +37,26 @@
 	<p><s:text name="management.company.list.text" /></p>
 	<s:actionerror  />
 	<s:actionmessage  />
-	<s:set name="companies" value="companies" scope="request"/>  
-	<display:table name="companies" uid="company" defaultsort="1" class="" pagesize="10" requestURI="">
-	  	<display:column  style="width: 5%">
-	  		<input type="radio" id="companyIdRadio" name="companyIds" value="${company.id}">
-	  	</display:column>
-	    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.company.name" sortable="true"/>
-	    <display:column property="information" escapeXml="true" style="width: 55%" titleKey="table.header.company.information" sortable="false"/>
-	    <display:column escapeXml="true" style="width: 10%" titleKey="table.header.company.factories" sortable="true"><%=((Company)company).getFactories().size()%></display:column>
-	    
-	    <display:setProperty name="paging.banner.placement" value="top"/>
-	    <display:setProperty name="paging.banner.item_name"><fmt:message key="message.company"/></display:setProperty>
-	    <display:setProperty name="paging.banner.items_name"><fmt:message key="message.companies"/></display:setProperty>
-	    <display:setProperty name="paging.banner.no_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.no_items_found"/></span></display:setProperty>
-	    <display:setProperty name="paging.banner.one_item_found"><span class="pagebanner"><fmt:message key="table.paging.banner.one_item_found"/></span></display:setProperty>
-	    <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>
-	    <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.some_items_found"/></span></display:setProperty>
-	</display:table>
+	
+	<div class="displaytagTable">
+		<s:set name="companies" value="companies" scope="request"/>  
+		<display:table name="companies" uid="company" defaultsort="1" class="" pagesize="10" requestURI="">
+		  	<display:column  style="width: 5%; text-align: center;">
+		  		<input type="radio" id="companyIdRadio" name="companyIds" value="${company.id}">
+		  	</display:column>
+		    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.company.name" sortable="true"/>
+		    <display:column property="information" escapeXml="true" style="width: 55%" titleKey="table.header.company.information" sortable="false"/>
+		    <display:column escapeXml="true" style="width: 15%; text-align: center;" titleKey="table.header.company.factories" sortable="true"><%=((Company)company).getFactories().size()%></display:column>
+		    
+		    <display:setProperty name="paging.banner.placement" value="top"/>
+		    <display:setProperty name="paging.banner.item_name"><fmt:message key="message.company"/></display:setProperty>
+		    <display:setProperty name="paging.banner.items_name"><fmt:message key="message.companies"/></display:setProperty>
+		    <display:setProperty name="paging.banner.no_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.no_items_found"/></span></display:setProperty>
+		    <display:setProperty name="paging.banner.one_item_found"><span class="pagebanner"><fmt:message key="table.paging.banner.one_item_found"/></span></display:setProperty>
+		    <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>
+		    <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.some_items_found"/></span></display:setProperty>
+		</display:table>
+	</div>
 	
 	<div class="buttonPane">
 		<c:url var="view" value="/viewCompany"/>

@@ -66,16 +66,21 @@
 		<div class="fbg">
 			<div class="fbg_resize">
 				<div class="col c1">
-					<h2><span>Sitemap section 1</span></h2>
-					<p>subsections</p>
+					<h2><span>Escuela Superior de Informática</span></h2>
+					<p>Paseo de la Universidad, 4<br />
+					13071, Ciudad Real<br />
+					Teléfono: 926 29 53 00<br />
+					Fax: 926 29 53 54<br />
+					esi@uclm.es</p>
 				</div>
 				<div class="col c2">
-					<h2><span>Sitemap section 2</span></h2>
+					<h2><span>Mapa del sitio</span></h2>
 					<p>more subsections</p>
 				</div>
 				<div class="col c3">
-					<h2><span>Sitemap section 3</span></h2>
-					<p>... and more subsections</p>
+					<h2><span>Destacados</span></h2>
+					<p><a href="http://innovation-labs.com/origin/" target="_blank">Proyecto ORIGIN</a><br />
+					<a href="http://www.indracompany.com/sostenibilidad-e-innovacion/proyectos-innovacion/origin-organizaciones-inteligentes-globales-innovad" target="_blank">Proyectos de Innovación</a>
 				</div>
 				<div class="clr"></div>
 			</div>

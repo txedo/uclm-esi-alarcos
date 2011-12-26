@@ -109,10 +109,8 @@ public class ProjectAction extends ActionSupport implements
                     project.setMainFactory(FactoryManager.getFactory(project.getMainFactory().getId()));
                 } catch (FactoryNotFoundException e) {
                     addActionError(getText("error.factory.id"));
-                    addFieldError("error.factory_required", getText("error.factory.required"));
                 }
             } else {
-                addActionError(getText("error.factory.id"));
                 addFieldError("error.factory_required", getText("error.factory.required"));
             }
             // Check that required fields are filled in

@@ -46,7 +46,7 @@
 				<h2><s:text name="label.configure.subproject.data"/></h2>
 				<ul>
 					<li>
-						<label for="subproject.name"><s:text name="label.subproject.name"/></label>
+						<label for="subproject.name"><s:text name="label.subproject.name"/> (*)</label>
 						<s:textfield id="subproject.name" name="subproject.name" tabindex="1"/>
 						<s:fielderror><s:param>error.subproject.name</s:param></s:fielderror>
 					</li>
@@ -56,12 +56,12 @@
 			<fieldset class="formfieldset">
 				<h2><s:text name="label.configure.subproject.factory"/></h2>
 				<s:fielderror><s:param>error.factory_required</s:param></s:fielderror>
-				<s:text name="label.configure.subproject.choose_factory"/>
-				<div>
+				<p>(*) <s:text name="label.configure.subproject.choose_factory"/></p>
+				<div class="displaytagTable">
 					<s:set name="factories" value="factories" scope="request"/>  
 					<s:set name="subproject" value="subproject" scope="request"/>
-					<display:table name="factories" id="factory" cellspacing="0" cellpadding="0" defaultsort="1" pagesize="10" requestURI="showFactoryForm.action">
-						<display:column style="width: 5%">
+					<display:table name="factories" id="factory" defaultsort="1" pagesize="10" requestURI="">
+						<display:column style="width: 5%; text-align: center;">
 						<c:choose>
 							<c:when test="${subproject.factory.id == factory.id or factory.id == param.factoryId}">
 								<input type="radio" name="subproject.factory.id" value="${factory.id}" checked/>
@@ -74,11 +74,14 @@
 						<display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.factory.name" sortable="true"/>
 						<display:column property="information" escapeXml="true" style="width: 25%" titleKey="table.header.factory.information" sortable="false"/>
 						<display:column escapeXml="false" style="width: 12%" titleKey="table.header.market.name" sortable="true">
-				            <span class="icon" style="background-color:#<c:out value='${factory.mostRepresentativeMarket.color}' />"></span><c:out value='${factory.mostRepresentativeMarket.name}' />
+						    <script>
+                            var span = getMarketSpan('${factory.mostRepresentativeMarket.color}', '${factory.mostRepresentativeMarket.name}');
+                            $("td:last").append(span);
+                            </script>
 				        </display:column>
 						<display:column property="address.city" escapeXml="true" style="width: 12%" titleKey="table.header.address.city" sortable="true"/>
 						<display:column property="address.country" escapeXml="true" style="width: 12%" titleKey="table.header.address.country" sortable="true"/>
-						<display:column escapeXml="false" style="width: 8%" titleKey="table.header.location" sortable="false">
+						<display:column escapeXml="false" style="width: 8%; text-align: center;" titleKey="table.header.location" sortable="false">
 							<div class="tooltipstyle" title="<img src='http://maps.google.com/maps/api/staticmap?zoom=10&size=170x130&maptype=roadmap&markers=color:red|color:red|<c:out value='${factory.location.latitude}'/>,<c:out value='${factory.location.longitude}'/>&sensor=false' width='170' height='130' title='<s:text name='label.configure.factory.address.image'/>'/>"><img src="images/world_search.png" height="16" width="16" /></div>
 						</display:column>
 						
@@ -96,12 +99,12 @@
 			<fieldset class="formfieldset">
 				<h2><s:text name="label.configure.subproject.project"/></h2>
 				<s:fielderror><s:param>error.project_required</s:param></s:fielderror>
-				<s:text name="label.configure.subproject.choose_project"/>
-				<div>
+				<p>(*) <s:text name="label.configure.subproject.choose_project"/></p>
+				<div class="displaytagTable">
 					<s:set name="projects" value="projects" scope="request"/>  
 					<s:set name="subproject" value="subproject" scope="request"/>
-					<display:table name="projects" id="project" cellspacing="0" cellpadding="0" defaultsort="1" pagesize="10" requestURI="showFactoryForm.action">
-						<display:column style="width: 5%">
+					<display:table name="projects" id="project" defaultsort="1" pagesize="10" requestURI="">
+						<display:column style="width: 5%; text-align: center;">
 						<c:choose>
 							<c:when test="${subproject.project.id == project.id or project.id == param.projectId}">
 								<input type="radio" name="subproject.project.id" value="${project.id}" checked/>
@@ -112,7 +115,7 @@
 						</c:choose>
 						</display:column>
 						<display:column property="name" escapeXml="true" style="width: 12%" titleKey="table.header.project.name" sortable="true"/>
-						<display:column property="code" escapeXml="true" style="width: 8%" titleKey="table.header.project.code" sortable="true"/>
+						<display:column property="code" escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.project.code" sortable="true"/>
 				        <display:column property="plan" escapeXml="true" style="width: 8%" titleKey="table.header.project.plan" sortable="true"/>
 				        <display:column escapeXml="false" style="width: 15%" titleKey="table.header.project.market" sortable="true">
 				            <span class="icon" style="background-color:#<c:out value='${project.market.color}' />"></span><c:out value='${project.market.name}' />

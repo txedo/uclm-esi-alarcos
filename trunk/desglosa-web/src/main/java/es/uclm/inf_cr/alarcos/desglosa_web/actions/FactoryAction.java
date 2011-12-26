@@ -19,6 +19,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Director;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
 import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
 
 /* Experience shows that chaining should be used with care. If chaining is overused, 
@@ -35,10 +36,9 @@ import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
 public class FactoryAction extends ActionSupport {
     private static final long serialVersionUID = -6215763127414281847L;
     private int id;
-    // Required attributes by List Action
     private List<Factory> factories;
     private List<Company> companies;
-    // Required attributes by Save Action
+    private List<Subproject> subprojects;
     private Factory factory;
     // Required attributes to upload files
     private File upload;// The actual file
@@ -59,6 +59,10 @@ public class FactoryAction extends ActionSupport {
 
     public List<Company> getCompanies() {
         return companies;
+    }
+    
+    public List<Subproject> getSubprojects() {
+        return subprojects;
     }
 
     public File getUpload() {

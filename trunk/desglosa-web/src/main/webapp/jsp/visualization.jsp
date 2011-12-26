@@ -12,10 +12,10 @@
 	<!-- These variables are defined in the head of the html document in order to localize JavaScript messages 
 	by using <c:out value='${varName}'/> -->
 	<fmt:message key="message.no_profiles" var="noProfiles"/>
-	<fmt:message key="label.company" var="labelCompany"/>
-	<fmt:message key="label.factory" var="labelFactory"/>
-	<fmt:message key="label.project" var="labelProject"/>
-	<fmt:message key="label.market" var="labelMarket"/>
+	<fmt:message key="label.Company" var="labelCompany"/>
+	<fmt:message key="label.Factory" var="labelFactory"/>
+	<fmt:message key="label.Project" var="labelProject"/>
+	<fmt:message key="label.Market" var="labelMarket"/>
 	<fmt:message key="label.no_group_by" var="labelNoGroupBy"/>
 	<fmt:message key="label.available_profiles" var="availableProfiles"/>
 	<fmt:message key="label.group_by_option" var="groupByOption"/>
@@ -24,10 +24,10 @@
 	<fmt:message key="error.general" var="generalError"/>
 	<fmt:message key="label.global_info" var="globalInformation"/>
 	<fmt:message key="label.show_global_info" var="showGlobalInformation"/>
-	<fmt:message key="label.companies" var="companyInformation"/>
-	<fmt:message key="label.factories" var="factoryInformation"/>
-	<fmt:message key="label.projects" var="projectInformation"/>
-	<fmt:message key="label.subprojects" var="subprojectInformation"/>
+	<fmt:message key="label.Companies" var="companyInformation"/>
+	<fmt:message key="label.Factories" var="factoryInformation"/>
+	<fmt:message key="label.Projects" var="projectInformation"/>
+	<fmt:message key="label.Subprojects" var="subprojectInformation"/>
 	
 	<meta name="menu" content="Visualization"/>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -525,30 +525,30 @@
 			<legend><s:text name="label.filter.corporative"/>:</legend>
 			
 			<div id="companyFilter" class="filter form">
-				<span>
-				<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
-				<select id="companySelect">
-					<option value="-1" disabled="disabled">-- <fmt:message key="label.select.choose_company"/> --</option>
-					<option value="0"><fmt:message key="label.all_female"/></option>
-					<s:iterator var="company" value="companies">
-						<option value="<s:property value='id'/>"><s:property value="name"/></option>
-					</s:iterator>
-				</select>
+				<span style="margin-left: 15px;">
+					<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
+					<select id="companySelect">
+						<option value="-1" disabled="disabled">-- <fmt:message key="label.select.choose_company"/> --</option>
+						<option value="0"><fmt:message key="label.all_female"/></option>
+						<s:iterator var="company" value="companies">
+							<option value="<s:property value='id'/>"><s:property value="name"/></option>
+						</s:iterator>
+					</select>
 				</span>
-				<span>
-				<s:label for="companyProjectSelect" value="%{getText('label.select.project')}:"/>
-				<s:select id="companyProjectSelect" name="companyProjectSelect" listKey="id" list="projects" size="5"></s:select>
+				<span style="margin-left: 15px;">
+					<s:label for="companyProjectSelect" value="%{getText('label.select.project')}:"/>
+					<s:select id="companyProjectSelect" name="companyProjectSelect" listKey="id" list="projects" size="5"></s:select>
 				</span>
 			</div>
 			
 			<div id="factoryFilter" class="filter form">
-				<span>
-				<s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
-				<select id="factorySelect" disabled="disabled" class="disabled"></select>
+				<span style="margin-left: 15px;">
+				    <s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
+				    <select id="factorySelect" disabled="disabled" class="disabled"></select>
 				</span>
-				<span>
-				<s:label for="factoryProjectSelect" value="%{getText('label.select.project')}:"/>
-				<s:select id="factoryProjectSelect" name="factoryProjectSelect" listKey="id" list="projects" size="5" cssClass="disabled"></s:select>
+				<span style="margin-left: 15px;">
+				    <s:label for="factoryProjectSelect" value="%{getText('label.select.project')}:"/>
+				    <s:select id="factoryProjectSelect" name="factoryProjectSelect" listKey="id" list="projects" size="5" cssClass="disabled"></s:select>
 				</span>
 			</div>
 			
@@ -687,10 +687,10 @@
 			<s:text name='label.detailed_info'/>:
 			<sj:tabbedpanel id="infoTabs" animate="true">
 				<sj:tab id="generalInfoTab" target="generalInformation" label="%{getText('label.global_info')}"/>
-				<sj:tab id="companyInfoTab" target="companyInformation" label="%{getText('label.company')}"/>
-				<sj:tab id="factoryInfoTab" target="factoryInformation" label="%{getText('label.factory')}"/>
-				<sj:tab id="projectInfoTab" target="projectInformation" label="%{getText('label.project')}"/>
-				<sj:tab id="subprojectInfoTab" target="subprojectInformation" label="%{getText('label.subproject')}"/>
+				<sj:tab id="companyInfoTab" target="companyInformation" label="%{getText('label.Company')}"/>
+				<sj:tab id="factoryInfoTab" target="factoryInformation" label="%{getText('label.Factory')}"/>
+				<sj:tab id="projectInfoTab" target="projectInformation" label="%{getText('label.Project')}"/>
+				<sj:tab id="subprojectInfoTab" target="subprojectInformation" label="%{getText('label.Subproject')}"/>
 				<div id="generalInformation" class="default"></div>
 				<div id="companyInformation" class="default"></div>
 				<div id="factoryInformation" class="default"></div>

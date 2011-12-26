@@ -17,16 +17,16 @@ html, .main {
 }
 
 .buttonPane {
-	margin-top: 30px;
+	margin-top: 20px;
 }
 
 fieldset.viewingfieldset {
-	margin-top: 30px;
+	margin-top: 20px;
 	border: none;
 }
 
 fieldset.formfieldset {
-    margin-top: 30px;
+    margin-top: 20px;
     border: none;
 }
 
@@ -48,6 +48,30 @@ span.icon {
 	display: inline-block;
 	border: 1px solid #000;
 	margin-right: 5px;
+}
+
+.displaytagTable span.pagebanner {
+	text-align: center;
+	display: block;
+}
+
+.displaytagTable span.pagelinks {
+    text-align: center;
+    display: block;
+}
+
+.displaytagTable table thead {
+    text-align: center;
+    background-color: #1e557a;
+    color: #ffffff;
+}
+
+.displaytagTable table thead a {
+	color: #e0f2ff;
+}
+
+.displaytagTable table tbody tr.even {
+	background-color: #C7DFF0;
 }
 
 .centeredBodyContainer {
@@ -259,10 +283,6 @@ ul.actionMessage li span {
 
 .form .input {
 	float: left;
-}
-
-.form span {
-	margin-left: 15px;
 }
 
 .form .header {
