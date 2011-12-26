@@ -68,6 +68,7 @@
 	margin: 5px;
 	padding: 5px;
 	list-style-type: none;
+	cursor: pointer;
 }
 
 .selectablelist:hover {

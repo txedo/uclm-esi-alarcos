@@ -1,6 +1,8 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.control;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
@@ -41,6 +43,18 @@ public class ProjectManager {
     
     public static void removeProject(int id) {
         projectDao.removeProject(id);
+    }
+    
+    public static List<Project> getDevelopingProjectsByCompanyId(int id) {
+        Map<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("id", id);
+        return projectDao.findByNamedQuery("findProjectsByCompanyId", queryParams);
+    }
+    
+    public static List<Project> getDevelopingProjectsByFactoryId(int id) {
+        Map<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("id", id);
+        return projectDao.findByNamedQuery("findProjectsByFactoryId", queryParams);
     }
 
     /**
