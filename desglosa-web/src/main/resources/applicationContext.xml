@@ -13,19 +13,10 @@
     <bean id="marketAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.MarketAction" singleton="false" />
     <bean id="visualizationAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.VisualizationAction" singleton="false">
     	<property name="glObjectManager" ref="glObjectManager"/>
-    	<property name="factoryDao" ref="factoryDao"/>
-    	<property name="companyDao" ref="companyDao"/>
-    	<property name="projectDao" ref="projectDao"/>
-    	<property name="subprojectDao" ref="subprojectDao"/>
     </bean>
     
     <!-- Other objects instantiated by Spring -->
-    <bean id="glObjectManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.GLObjectManager">
-    	<property name="companyDao" ref="companyDao"/>
-    	<property name="factoryDao" ref="factoryDao"/>
-    	<property name="projectDao" ref="projectDao"/>
-    	<property name="marketDao" ref="marketDao"/>
-	</bean>
+    <bean id="glObjectManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.GLObjectManager" />
 	
 	<bean id="applicationContextProvider" class="es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider"/>
 	

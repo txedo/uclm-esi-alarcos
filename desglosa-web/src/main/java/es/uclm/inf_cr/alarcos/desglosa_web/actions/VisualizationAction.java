@@ -3,9 +3,7 @@ package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
@@ -13,11 +11,11 @@ import model.util.City;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.control.CompanyManager;
+import es.uclm.inf_cr.alarcos.desglosa_web.control.FactoryManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.control.GLObjectManager;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.SubprojectDAO;
+import es.uclm.inf_cr.alarcos.desglosa_web.control.ProjectManager;
+import es.uclm.inf_cr.alarcos.desglosa_web.control.SubprojectManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.EntityNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
@@ -37,11 +35,6 @@ public class VisualizationAction extends ActionSupport {
     private String profileFileName;
     private City city;
     private GLObjectManager glObjectManager;
-
-    private FactoryDAO factoryDao;
-    private CompanyDAO companyDao;
-    private ProjectDAO projectDao;
-    private SubprojectDAO subprojectDao;
 
     private List<Factory> factories;
     private List<Company> companies;
@@ -104,22 +97,6 @@ public class VisualizationAction extends ActionSupport {
         this.glObjectManager = glObjectManager;
     }
 
-    public void setFactoryDao(FactoryDAO factoryDao) {
-        this.factoryDao = factoryDao;
-    }
-
-    public void setCompanyDao(CompanyDAO companyDao) {
-        this.companyDao = companyDao;
-    }
-
-    public void setProjectDao(ProjectDAO projectDao) {
-        this.projectDao = projectDao;
-    }
-
-    public void setSubprojectDao(SubprojectDAO subprojectDao) {
-        this.subprojectDao = subprojectDao;
-    }
-
     public void setFactories(List<Factory> factories) {
         this.factories = factories;
     }
@@ -138,19 +115,19 @@ public class VisualizationAction extends ActionSupport {
 
     @Override
     public String execute() throws Exception {
-        factories = factoryDao.getFactories();
-        companies = companyDao.getCompanies();
-        projects = projectDao.getProjects();
+        factories = FactoryManager.getAllFactories();
+        companies = CompanyManager.getAllCompanies();
+        projects = ProjectManager.getAllProjects();
         return SUCCESS;
     }
 
     public String factoryById() {
         if (id == 0) {
-            factories = factoryDao.getFactories();
+            factories = FactoryManager.getAllFactories();
         } else {
             try {
                 factories = new ArrayList<Factory>();
-                factories.add(factoryDao.getFactory(id));
+                factories.add(FactoryManager.getFactory(id));
             } catch (FactoryNotFoundException e) {
                 return ERROR;
             }
@@ -163,12 +140,13 @@ public class VisualizationAction extends ActionSupport {
 
     public String factoriesByCompanyId() {
         if (id == 0) {
-            factories = factoryDao.getFactories();
+            factories = FactoryManager.getAllFactories();
         } else {
-            Map<String, Object> queryParams = new HashMap<String, Object>();
-            queryParams.put("id", id);
-            factories = factoryDao.findByNamedQuery("findFactoriesByCompanyId",
-                    queryParams);
+            try {
+                factories = new ArrayList<Factory>(CompanyManager.getCompany(id).getFactories());
+            } catch (CompanyNotFoundException e) {
+                return ERROR;
+            }
         }
         if (generateGLObjects) {
             entity2model(factories);
@@ -178,11 +156,11 @@ public class VisualizationAction extends ActionSupport {
 
     public String companyById() {
         if (id == 0) {
-            companies = companyDao.getCompanies();
+            companies = CompanyManager.getAllCompanies();
         } else {
             try {
                 companies = new ArrayList<Company>();
-                companies.add(companyDao.getCompany(id));
+                companies.add(CompanyManager.getCompany(id));
             } catch (CompanyNotFoundException e) {
                 return ERROR;
             }
@@ -192,12 +170,9 @@ public class VisualizationAction extends ActionSupport {
 
     public String projectsByCompanyId() {
         if (id == 0) {
-            projects = projectDao.getProjects();
+            projects = ProjectManager.getAllProjects();
         } else {
-            Map<String, Object> queryParams = new HashMap<String, Object>();
-            queryParams.put("id", id);
-            projects = projectDao.findByNamedQuery("findProjectsByCompanyId",
-                    queryParams);
+            projects = ProjectManager.getDevelopingProjectsByCompanyId(id);
         }
         if (generateGLObjects) {
             entity2model(projects);
@@ -207,12 +182,9 @@ public class VisualizationAction extends ActionSupport {
 
     public String projectsByFactoryId() {
         if (id == 0) {
-            projects = projectDao.getProjects();
+            projects = ProjectManager.getAllProjects();
         } else {
-            Map<String, Object> queryParams = new HashMap<String, Object>();
-            queryParams.put("id", id);
-            projects = projectDao.findByNamedQuery("findProjectsByFactoryId",
-                    queryParams);
+            projects = ProjectManager.getDevelopingProjectsByFactoryId(id);
         }
         if (generateGLObjects) {
             entity2model(projects);
@@ -222,11 +194,11 @@ public class VisualizationAction extends ActionSupport {
 
     public String projectById() {
         if (id == 0) {
-            projects = projectDao.getProjects();
+            projects = ProjectManager.getAllProjects();
         } else {
             try {
                 projects = new ArrayList<Project>();
-                projects.add(projectDao.getProject(id));
+                projects.add(ProjectManager.getProject(id));
             } catch (ProjectNotFoundException e) {
                 return ERROR;
             }
@@ -239,12 +211,9 @@ public class VisualizationAction extends ActionSupport {
 
     public String subprojectsByCompanyId() {
         if (id == 0) {
-            subprojects = subprojectDao.getSubprojects();
+            subprojects = SubprojectManager.getAllSubprojects();
         } else {
-            Map<String, Object> queryParams = new HashMap<String, Object>();
-            queryParams.put("id", id);
-            subprojects = subprojectDao.findByNamedQuery(
-                    "findSubprojectsByCompanyId", queryParams);
+            subprojects = SubprojectManager.getDevelopingSubprojectsByCompanyId(id);
         }
         if (generateGLObjects) {
             entity2model(subprojects);
@@ -254,12 +223,13 @@ public class VisualizationAction extends ActionSupport {
 
     public String subprojectsByFactoryId() {
         if (id == 0) {
-            subprojects = subprojectDao.getSubprojects();
+            subprojects = SubprojectManager.getAllSubprojects();
         } else {
-            Map<String, Object> queryParams = new HashMap<String, Object>();
-            queryParams.put("id", id);
-            subprojects = subprojectDao.findByNamedQuery(
-                    "findSubprojectsByFactoryId", queryParams);
+            try {
+                subprojects = new ArrayList<Subproject>(FactoryManager.getFactory(id).getSubprojects());
+            } catch (FactoryNotFoundException e) {
+                return ERROR;
+            }
         }
         if (generateGLObjects) {
             entity2model(subprojects);
@@ -267,14 +237,15 @@ public class VisualizationAction extends ActionSupport {
         return SUCCESS;
     }
 
-    public String projectsByProjectId() {
+    public String subprojectsByProjectId() {
         if (id == 0) {
-            subprojects = subprojectDao.getSubprojects();
+            subprojects = SubprojectManager.getAllSubprojects();
         } else {
-            Map<String, Object> queryParams = new HashMap<String, Object>();
-            queryParams.put("id", id);
-            subprojects = subprojectDao.findByNamedQuery(
-                    "findSubprojectsByProjectId", queryParams);
+            try {
+                subprojects = new ArrayList<Subproject>(ProjectManager.getProject(id).getSubprojects());
+            } catch (ProjectNotFoundException e) {
+                return ERROR;
+            }
         }
         if (generateGLObjects) {
             entity2model(subprojects);
@@ -284,11 +255,11 @@ public class VisualizationAction extends ActionSupport {
 
     public String subprojectById() {
         if (id == 0) {
-            subprojects = subprojectDao.getSubprojects();
+            subprojects = SubprojectManager.getAllSubprojects();
         } else {
             try {
                 subprojects = new ArrayList<Subproject>();
-                subprojects.add(subprojectDao.getSubproject(id));
+                subprojects.add(SubprojectManager.getSubproject(id));
             } catch (SubprojectNotFoundException e) {
                 return ERROR;
             }
@@ -298,8 +269,7 @@ public class VisualizationAction extends ActionSupport {
 
     private void entity2model(List<?> entities) {
         try {
-            city = glObjectManager.createGLObjects(entities, groupBy,
-                    profileFileName);
+            city = glObjectManager.createGLObjects(entities, groupBy, profileFileName);
         } catch (SecurityException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

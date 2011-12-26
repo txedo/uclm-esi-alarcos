@@ -1,33 +1,17 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.WordUtils;
-import org.springframework.web.context.ContextLoader;
-
-
-import util.AnnotationParser;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONNull;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import javax.xml.bind.JAXBException;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import es.uclm.inf_cr.alarcos.desglosa_web.model.Field;
-import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
+import es.uclm.inf_cr.alarcos.desglosa_web.control.ProfileManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
-import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
-import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MyHashMapType;
-import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyAnnotationParser;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper;
-import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
-import es.uclm.inf_cr.alarcos.desglosa_web.persistence.XMLAgent;
 
 public class ProfileAction extends ActionSupport implements
         GenericActionInterface {
@@ -47,19 +31,20 @@ public class ProfileAction extends ActionSupport implements
         private static final long serialVersionUID = 1443703980383438531L;
         {
             put("es.uclm.inf_cr.alarcos.desglosa_web.model.Company",
-                    getText("label.company"));
+                    getText("label.Company"));
             put("es.uclm.inf_cr.alarcos.desglosa_web.model.Factory",
-                    getText("label.factory"));
+                    getText("label.Factory"));
             put("es.uclm.inf_cr.alarcos.desglosa_web.model.Project",
-                    getText("label.project"));
+                    getText("label.Project"));
             put("es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject",
-                    getText("label.subproject"));
+                    getText("label.Subproject"));
         }
     };
     private Map<String, String> models = new HashMap<String, String>() {
         private static final long serialVersionUID = 6918186658085961722L;
         {
-            put("model.gl.knowledge.GLTower", getText("label.model.towers"));
+            put("model.gl.knowledge.GLTower",
+                    getText("label.model.towers"));
             put("model.gl.knowledge.GLAntennaBall",
                     getText("label.model.antennaballs"));
             put("model.gl.knowledge.GLFactory",
@@ -143,8 +128,7 @@ public class ProfileAction extends ActionSupport implements
     public String loadEntityAttributes() {
         if (entity != null) {
             try {
-                Class<?> c = Class.forName(entity);
-                entityAttributes = PropertyAnnotationParser.parse(c);
+                entityAttributes = ProfileManager.readEntityAttributes(entity);
             } catch (ClassNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -159,8 +143,7 @@ public class ProfileAction extends ActionSupport implements
     public String loadModelAttributes() {
         if (model != null) {
             try {
-                Class<?> c = Class.forName(model);
-                modelAttributes = AnnotationParser.parse(c);
+                modelAttributes = ProfileManager.readModelDimensions(model);
             } catch (ClassNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -188,124 +171,18 @@ public class ProfileAction extends ActionSupport implements
         // check type compatibility server side
     }
 
-    public String save() throws Exception {
-        Metaclass metaclass = new Metaclass();
-        // Add profile name and description
-        profileName = profileName.replace("-", " ");
-        profileName = WordUtils.capitalize(profileName);
-        profileName = profileName.replace(" ", "");
-        metaclass.setName(profileName);
-        metaclass.setDescription(profileDescription);
-        // Add table and class name
-        metaclass.setEntityName(entity);
-        metaclass.setModelName(model);
-        // Add mapping data to metaclass
-        List<Mapping> mappings = new ArrayList<Mapping>();
-        JSONArray mappingArray = (JSONArray) JSONSerializer
-                .toJSON(jsonMappings);
-        for (int i = 0; i < mappingArray.size(); i++) {
-            JSONObject mappingObject = mappingArray.getJSONObject(i);
-            JSONObject entityAttribute = mappingObject
-                    .getJSONObject("entityAttribute");
-            Field column = new Field(entityAttribute.getString("type"),
-                    entityAttribute.getString("name"));
-            JSONObject modelAttribute = mappingObject
-                    .getJSONObject("modelAttribute");
-            Field attribute = new Field(modelAttribute.getString("type"),
-                    modelAttribute.getString("name"));
-            Object ratio = mappingObject.get("ratio");
-            if (ratio instanceof JSONNull) {
-                ratio = null;
-            } else if (ratio instanceof Integer
-                    && attribute.getType().equals("float")) {
-                ratio = ((Integer) ratio).floatValue();
-            } else if (ratio instanceof Double
-                    && attribute.getType().equals("float")) {
-                ratio = ((Double) ratio).floatValue();
-            }
-            JSONArray jsonRules = mappingObject.getJSONArray("rules");
-            List<Rule> rules = new ArrayList<Rule>();
-            for (int j = 0; j < jsonRules.size(); j++) {
-                JSONObject ruleJSONObject = jsonRules.getJSONObject(j);
-                Object low = ruleJSONObject.get("low");
-                if (low instanceof JSONNull) {
-                    low = null;
-                } else if (low instanceof Integer
-                        && column.getType().equals("float")) {
-                    low = ((Integer) low).floatValue();
-                } else if (low instanceof Double
-                        && column.getType().equals("float")) {
-                    low = ((Double) low).floatValue();
-                }
-                Object high = ruleJSONObject.get("high");
-                if (high instanceof JSONNull) {
-                    high = null;
-                } else if (high instanceof Integer
-                        && column.getType().equals("float")) {
-                    high = ((Integer) high).floatValue();
-                } else if (high instanceof Double
-                        && column.getType().equals("float")) {
-                    high = ((Double) high).floatValue();
-                }
-                Object value = ruleJSONObject.get("value");
-                if (value instanceof JSONNull) {
-                    value = null;
-                } else if (value instanceof Integer
-                        && attribute.getType().equals("float_range")) {
-                    value = ((Integer) value).floatValue();
-                } else if (value instanceof Double
-                        && attribute.getType().equals("float_range")) {
-                    value = ((Double) value).floatValue();
-                }
-                rules.add(new Rule(low, high, value));
-            }
-            Mapping mapping = new Mapping(column, attribute, null, ratio, rules);
-            mappings.add(mapping);
+    public String save() {
+        String result = SUCCESS;
+        try {
+            Metaclass metaclass = ProfileManager.buildProfile(profileName, profileDescription, entity, model);
+            ProfileManager.addMappings(metaclass, jsonMappings);
+            ProfileManager.addConstants(metaclass, jsonConstants);
+            ProfileManager.addCaption(metaclass, jsonCaptionLines);
+            ProfileManager.saveProfile(metaclass, entity, profileName);
+        } catch (JAXBException e) {
+            result = ERROR;
         }
-        metaclass.setMappings(mappings);
-        // Add constants data to metaclass
-        List<Field> constants = new ArrayList<Field>();
-        JSONArray constantArray = (JSONArray) JSONSerializer
-                .toJSON(jsonConstants);
-        for (int i = 0; i < constantArray.size(); i++) {
-            JSONObject constantObject = constantArray.getJSONObject(i);
-            String name = constantObject.getString("name");
-            String type = constantObject.getString("type");
-            Object value = constantObject.get("value");
-            if (value instanceof Integer && type.equals("float")) {
-                value = ((Integer) value).floatValue();
-            } else if (value instanceof Double && type.equals("float")) {
-                value = ((Double) value).floatValue();
-            }
-            constants.add(new Field(type, name, value));
-        }
-        metaclass.setConstants(constants);
-        // Add caption data to metaclass
-        Map<String, String> captionLines = new HashMap<String, String>();
-        JSONArray captionArray = (JSONArray) JSONSerializer
-                .toJSON(jsonCaptionLines);
-        for (int i = 0; i < captionArray.size(); i++) {
-            JSONObject captionObject = captionArray.getJSONObject(i);
-            String label = captionObject.getString("label");
-            String color = captionObject.getString("color");
-            captionLines.put(label, color);
-        }
-        metaclass.setCaptionLines(new MyHashMapType(captionLines));
-        // Create XML from metaclass and place it in server
-        String[] entityParts = entity.split("\\.");
-        String filename = WordUtils
-                .uncapitalize(entityParts[entityParts.length - 1])
-                + "-"
-                + profileName
-                + "-"
-                + Calendar.getInstance().getTimeInMillis()
-                + ".xml";
-        String path = ContextLoader.getCurrentWebApplicationContext()
-                .getServletContext().getRealPath("profiles")
-                + "\\" + filename;
-        XMLAgent.marshal(path, Metaclass.class, metaclass);
-
-        return SUCCESS;
+        return result;
     }
 
     public String edit() throws Exception {
@@ -318,12 +195,26 @@ public class ProfileAction extends ActionSupport implements
         return null;
     }
 
-    public String get() throws Exception {
+    public String get() {
+        try {
         // entity o profileName
-        if (entity != null) {
-            profileNames = FileUtil.getProfiles(entity);
-        } else if (profileName != null) {
-            profile = FileUtil.getProfile(profileName);
+            if (entity != null) {
+                profileNames = ProfileManager.getProfilesForEntity(entity);
+            } else if (profileName != null) {
+                profile = ProfileManager.getProfileByName(profileName);
+            }
+        } catch (JAXBException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         return SUCCESS;
     }

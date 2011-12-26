@@ -1,6 +1,8 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.control;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.SubprojectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException;
@@ -41,6 +43,12 @@ public class SubprojectManager {
     
     public static void removeSubproject(int id) {
         subprojectDao.removeSubproject(id);
+    }
+    
+    public static List<Subproject> getDevelopingSubprojectsByCompanyId(int id) {
+        Map<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("id", id);
+        return subprojectDao.findByNamedQuery("findSubprojectsByCompanyId", queryParams);
     }
 
     /**

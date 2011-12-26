@@ -18,10 +18,6 @@ import org.springframework.web.context.ContextLoader;
 import model.gl.knowledge.GLObject;
 import model.util.City;
 import model.util.Neighborhood;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.MarketDAO;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProjectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.EntityNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.GroupByOperationNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
@@ -37,12 +33,8 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MyHashMapEntryType;
 import es.uclm.inf_cr.alarcos.desglosa_web.persistence.XMLAgent;
 
 public class GLObjectManager {
-    private CompanyDAO companyDao;
-    private FactoryDAO factoryDao;
-    private ProjectDAO projectDao;
-    private MarketDAO marketDao;
 
-    public City createGLObjects(List entities, String groupBy,
+    public City createGLObjects(List<?> entities, String groupBy,
             String profileName) throws JAXBException, IOException,
             InstantiationException, IllegalAccessException,
             ClassNotFoundException, SecurityException, NoSuchMethodException,
@@ -66,11 +58,10 @@ public class GLObjectManager {
                     .get(0).getClass(), entities, groupBy);
             // Iterate over each list creating GLObjects while creating
             // GLNeighborhoods and GLCity
-            Iterator it = neighborhoods.entrySet().iterator();
+            Iterator<?> it = neighborhoods.entrySet().iterator();
             while (it.hasNext()) {
                 List<GLObject> glObjects = new ArrayList<GLObject>();
-                Map.Entry<String, List<?>> pairs = (Map.Entry<String, List<?>>) it
-                        .next();
+                Map.Entry<String, List<?>> pairs = (Map.Entry<String, List<?>>) it.next();
                 for (Object e : pairs.getValue()) {
                     Object glObj = classModel.newInstance();
                     // Do mappings using java reflection
@@ -81,7 +72,7 @@ public class GLObjectManager {
                                         .getName());
                         // Look for the setter method through all the object
                         // hierarchy
-                        Class superClass = classModel;
+                        Class<?> superClass = classModel;
                         Method setterMethod = superClass.getMethod(setterName,
                                 mapping.getModelAttr().getParameterType());
 
@@ -100,10 +91,8 @@ public class GLObjectManager {
                                 getterPrefix = "is";
                             String parentGetterName = getterPrefix
                                     + WordUtils.capitalize(chainOfGetters[i]);
-                            Method parentGetterMethod = subClass.getMethod(
-                                    parentGetterName, null);
-                            entityAttrValue = parentGetterMethod.invoke(
-                                    entityAttrValue, null);
+                            Method parentGetterMethod = subClass.getMethod(parentGetterName, null);
+                            entityAttrValue = parentGetterMethod.invoke(entityAttrValue, null);
                             subClass = subClass.getDeclaredField(
                                     chainOfGetters[i]).getType();
                         }
@@ -121,35 +110,18 @@ public class GLObjectManager {
                                 // (low-high-value), float (low-high-value),
                                 // string (low-value), boolean (low-value)
                                 for (Rule r : mapping.getRules()) {
-                                    if (entityAttrType.equals("int")
-                                            || entityAttrType.equals("float")) {
-                                        String entityAttrValueType = entityAttrValue
-                                                .getClass().getName();
-                                        String ruleLowValueType = r.getLow()
-                                                .getClass().getName();
-                                        String ruleHighValueType = r.getHigh()
-                                                .getClass().getName();
-                                        if (entityAttrValueType
-                                                .equals(ruleLowValueType)
-                                                && ruleLowValueType
-                                                        .equals(ruleHighValueType)) {
-                                            if (entityAttrValueType
-                                                    .equals("java.lang.Integer")) {
-                                                if ((Integer) entityAttrValue >= (Integer) r
-                                                        .getLow()
-                                                        && (Integer) entityAttrValue <= (Integer) r
-                                                                .getHigh()) {
-                                                    finalValue = (Float) r
-                                                            .getValue();
+                                    if (entityAttrType.equals("int") || entityAttrType.equals("float")) {
+                                        String entityAttrValueType = entityAttrValue.getClass().getName();
+                                        String ruleLowValueType = r.getLow().getClass().getName();
+                                        String ruleHighValueType = r.getHigh().getClass().getName();
+                                        if (entityAttrValueType.equals(ruleLowValueType) && ruleLowValueType.equals(ruleHighValueType)) {
+                                            if (entityAttrValueType.equals("java.lang.Integer")) {
+                                                if ((Integer) entityAttrValue >= (Integer) r.getLow() && (Integer) entityAttrValue <= (Integer) r.getHigh()) {
+                                                    finalValue = (Float) r.getValue();
                                                 }
-                                            } else if (entityAttrValueType
-                                                    .equals("java.lang.Float")) {
-                                                if ((Float) entityAttrValue >= (Float) r
-                                                        .getLow()
-                                                        && (Float) entityAttrValue <= (Float) r
-                                                                .getHigh()) {
-                                                    finalValue = (Float) r
-                                                            .getValue();
+                                            } else if (entityAttrValueType.equals("java.lang.Float")) {
+                                                if ((Float) entityAttrValue >= (Float) r.getLow() && (Float) entityAttrValue <= (Float) r.getHigh()) {
+                                                    finalValue = (Float) r.getValue();
                                                 }
                                             }
                                         } else {
@@ -157,88 +129,57 @@ public class GLObjectManager {
                                             // incompatibles
                                         }
                                     } else if (entityAttrType.equals("string")) {
-                                        if (((String) entityAttrValue)
-                                                .equals((String) r.getLow())) {
+                                        if (((String) entityAttrValue).equals((String) r.getLow())) {
                                             finalValue = (String) r.getValue();
                                         }
                                     } else if (entityAttrType.equals("boolean")) {
-                                        if (Boolean.valueOf(
-                                                (String) entityAttrValue)
-                                                .equals(Boolean
-                                                        .valueOf((String) r
-                                                                .getLow()))) {
+                                        if (Boolean.valueOf((String) entityAttrValue).equals(Boolean.valueOf((String) r.getLow()))) {
                                             finalValue = (String) r.getValue();
                                         }
                                     }
                                 }
-                            } else if (!entityAttrType.equals("hexcolor")
-                                    && modelAttrType.equals("color")) {
+                            } else if (!entityAttrType.equals("hexcolor") && modelAttrType.equals("color")) {
                                 for (Rule r : mapping.getRules()) {
-                                    if (entityAttrType.equals("int")
-                                            || entityAttrType.equals("float")) {
-                                        String entityAttrValueType = entityAttrValue
-                                                .getClass().getName();
-                                        String ruleLowValueType = r.getLow()
-                                                .getClass().getName();
-                                        String ruleHighValueType = r.getHigh()
-                                                .getClass().getName();
-                                        if (ruleLowValueType
-                                                .equals(ruleHighValueType)) {
-                                            if (entityAttrValueType
-                                                    .equals("java.lang.Integer")) {
-                                                if ((Integer) entityAttrValue >= (Integer) r
-                                                        .getLow()
-                                                        && (Integer) entityAttrValue <= (Integer) r
-                                                                .getHigh()) {
-                                                    finalValue = (String) r
-                                                            .getValue();
+                                    if (entityAttrType.equals("int") || entityAttrType.equals("float")) {
+                                        String entityAttrValueType = entityAttrValue.getClass().getName();
+                                        String ruleLowValueType = r.getLow().getClass().getName();
+                                        String ruleHighValueType = r.getHigh().getClass().getName();
+                                        if (ruleLowValueType.equals(ruleHighValueType)) {
+                                            if (entityAttrValueType.equals("java.lang.Integer")) {
+                                                if ((Integer) entityAttrValue >= (Integer) r.getLow() && (Integer) entityAttrValue <= (Integer) r.getHigh()) {
+                                                    finalValue = (String) r.getValue();
                                                 }
-                                            } else if (entityAttrValueType
-                                                    .equals("java.lang.Float")) {
-                                                if ((Float) entityAttrValue >= (Float) r
-                                                        .getLow()
-                                                        && (Float) entityAttrValue <= (Float) r
-                                                                .getHigh()) {
-                                                    finalValue = (String) r
-                                                            .getValue();
+                                            } else if (entityAttrValueType.equals("java.lang.Float")) {
+                                                if ((Float) entityAttrValue >= (Float) r.getLow() && (Float) entityAttrValue <= (Float) r.getHigh()) {
+                                                    finalValue = (String) r.getValue();
                                                 }
                                             }
                                         } else {
                                             // TODO lanzar excepcion de tipos
                                             // incompatibles
                                         }
-                                    } else if (entityAttrType
-                                            .equals("hexcolor")) {
+                                    } else if (entityAttrType.equals("hexcolor")) {
 
                                     } else if (entityAttrType.equals("string")) {
-                                        if (((String) entityAttrValue)
-                                                .equals((String) r.getLow())) {
+                                        if (((String) entityAttrValue).equals((String) r.getLow())) {
                                             finalValue = (String) r.getValue();
                                         }
                                     } else if (entityAttrType.equals("boolean")) {
-                                        if (entityAttrValue.equals(Boolean
-                                                .valueOf((String) r.getLow()))) {
+                                        if (entityAttrValue.equals(Boolean.valueOf((String) r.getLow()))) {
                                             finalValue = (String) r.getValue();
                                         }
                                     }
                                 }
-                            } else if (entityAttrType.equals("int")
-                                    && modelAttrType.equals("float")) {
-                                finalValue = ((Integer) entityAttrValue)
-                                        .floatValue();
-                            } else if (entityAttrType.equals("int")
-                                    && modelAttrType.equals("string")) {
-                                finalValue = ((Integer) entityAttrValue)
-                                        .toString();
-                            } else if (entityAttrType.equals("float")
-                                    && modelAttrType.equals("string")) {
-                                finalValue = ((Float) entityAttrValue)
-                                        .toString();
+                            } else if (entityAttrType.equals("int") && modelAttrType.equals("float")) {
+                                finalValue = ((Integer) entityAttrValue).floatValue();
+                            } else if (entityAttrType.equals("int") && modelAttrType.equals("string")) {
+                                finalValue = ((Integer) entityAttrValue).toString();
+                            } else if (entityAttrType.equals("float") && modelAttrType.equals("string")) {
+                                finalValue = ((Float) entityAttrValue).toString();
                             } else {
                                 finalValue = entityAttrValue;
                             }
-                            setterMethod.invoke(classModel.cast(glObj),
-                                    finalValue);
+                            setterMethod.invoke(classModel.cast(glObj), finalValue);
                         } else {
                             // TODO El valor en la base de datos es null y va a
                             // lanzar IllegalArgumentException
@@ -247,13 +188,10 @@ public class GLObjectManager {
                     // Apply constant values using java reflection too
                     for (Field field : metaclass.getConstants()) {
                         // Build setter method using Java Reflective API
-                        String setterName = "set"
-                                + WordUtils.capitalize(field.getName());
-                        Method setterMethod = classModel.getMethod(setterName,
-                                field.getParameterType());
+                        String setterName = "set" + WordUtils.capitalize(field.getName());
+                        Method setterMethod = classModel.getMethod(setterName, field.getParameterType());
                         if (field.getValue() != null) {
-                            setterMethod.invoke(classModel.cast(glObj),
-                                    field.getValue());
+                            setterMethod.invoke(classModel.cast(glObj), field.getValue());
                         } else {
                             // TODO El valor de la constante es null y va a
                             // lanzar IllegalArgumentException
@@ -269,8 +207,7 @@ public class GLObjectManager {
             // Configure caption
             if (metaclass.getCaptionLines().getEntry().size() > 0) {
                 Map<String, String> captionLines = new HashMap<String, String>();
-                for (MyHashMapEntryType mhmet : metaclass.getCaptionLines()
-                        .getEntry()) {
+                for (MyHashMapEntryType mhmet : metaclass.getCaptionLines().getEntry()) {
                     captionLines.put(mhmet.getKey(), mhmet.getValue());
                 }
                 c.setCaptionLines(captionLines);
@@ -303,7 +240,7 @@ public class GLObjectManager {
             String groupBy) throws GroupByOperationNotSupportedException {
         Map<String, List<?>> neighborhoods = new HashMap<String, List<?>>();
         if (groupBy.equals("company")) {
-            List<Company> availableCompanies = companyDao.getAll();
+            List<Company> availableCompanies = CompanyManager.getAllCompanies();
             for (Company comp : availableCompanies) {
                 List<Factory> flats = new ArrayList<Factory>();
                 for (Object f : factories) {
@@ -315,7 +252,7 @@ public class GLObjectManager {
                     neighborhoods.put(comp.getName(), flats);
             }
         } else if (groupBy.equals("market")) {
-            List<Market> availableMarkets = marketDao.getAll();
+            List<Market> availableMarkets = MarketManager.getAllMarkets();
             for (Market m : availableMarkets) {
                 List<Factory> flats = new ArrayList<Factory>();
                 for (Object f : factories) {
@@ -326,13 +263,13 @@ public class GLObjectManager {
                     neighborhoods.put(m.getName(), flats);
             }
         } else if (groupBy.equals("project")) {
-            List<Project> availableProjects = projectDao.getAll();
+            List<Project> availableProjects = ProjectManager.getAllProjects();
             for (Project p : availableProjects) {
                 int factoryIndex = 0;
                 List<Factory> flats = new ArrayList<Factory>();
                 for (Object f : factories) {
                     boolean found = false;
-                    Iterator it = p.getSubprojects().iterator();
+                    Iterator<?> it = p.getSubprojects().iterator();
                     while (it.hasNext() && !found) {
                         Subproject spaux = (Subproject) it.next();
                         if (spaux.getFactory().getId() == ((Factory) f).getId()) {
@@ -356,12 +293,12 @@ public class GLObjectManager {
             String groupBy) throws GroupByOperationNotSupportedException {
         Map<String, List<?>> neighborhoods = new HashMap<String, List<?>>();
         if (groupBy.equals("company")) {
-            List<Company> availableCompanies = companyDao.getAll();
+            List<Company> availableCompanies = CompanyManager.getAllCompanies();
             for (Company comp : availableCompanies) {
                 List<Project> flats = new ArrayList<Project>();
                 for (Object p : projects) {
                     boolean found = false;
-                    Iterator it = ((Project) p).getSubprojects().iterator();
+                    Iterator<?> it = ((Project) p).getSubprojects().iterator();
                     while (it.hasNext() && !found) {
                         Subproject spaux = (Subproject) it.next();
                         if (spaux.getFactory().getCompany().getId() == comp
@@ -375,7 +312,7 @@ public class GLObjectManager {
                     neighborhoods.put(comp.getName(), flats);
             }
         } else if (groupBy.equals("market")) {
-            List<Market> availableMarkets = marketDao.getAll();
+            List<Market> availableMarkets = MarketManager.getAllMarkets();
             for (Market m : availableMarkets) {
                 List<Project> flats = new ArrayList<Project>();
                 for (Object p : projects) {
@@ -386,12 +323,12 @@ public class GLObjectManager {
                     neighborhoods.put(m.getName(), flats);
             }
         } else if (groupBy.equals("factory")) {
-            List<Factory> availableFactories = factoryDao.getAll();
+            List<Factory> availableFactories = FactoryManager.getAllFactories();
             for (Factory f : availableFactories) {
                 List<Project> flats = new ArrayList<Project>();
                 for (Object p : projects) {
                     boolean found = false;
-                    Iterator it = ((Project) p).getSubprojects().iterator();
+                    Iterator<?> it = ((Project) p).getSubprojects().iterator();
                     while (it.hasNext() && !found) {
                         Subproject spaux = (Subproject) it.next();
                         if (spaux.getFactory().getId() == f.getId()) {
@@ -426,22 +363,6 @@ public class GLObjectManager {
         } else
             throw new GroupByOperationNotSupportedException();
         return neighborhoods;
-    }
-
-    public void setCompanyDao(CompanyDAO companyDao) {
-        this.companyDao = companyDao;
-    }
-
-    public void setFactoryDao(FactoryDAO factoryDao) {
-        this.factoryDao = factoryDao;
-    }
-
-    public void setProjectDao(ProjectDAO projectDao) {
-        this.projectDao = projectDao;
-    }
-
-    public void setMarketDao(MarketDAO marketDao) {
-        this.marketDao = marketDao;
     }
 
 }
