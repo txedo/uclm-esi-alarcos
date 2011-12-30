@@ -4,41 +4,59 @@
 
 \section{Autenticación y control de acceso con Spring Security}
 
+Spring Security es el estándar \textit{de-facto} para la seguridad de aplicaciones basadas en Spring. Consiste en un \textit{framework} potente y configurable que proporciona mecanismos de autenticación y permite implementar políticas de control de acceso a directorios y recursos.
 
-\subsection{Clases Java diseñadas para un GBCA (Group-Based Access Control}
-Explicar que implementa cada clase blablabla
+El sistema de autenticación y control de acceso de este PFC se ha configurado e implementado de un modo muy genérico y satisfaciendo una política basa en grupos. Por tanto, dada la gran posibilidad de reutilización en mutitud de proyectos, se ha optado por incluir en este anexo los ficheros y clases más relevantes.
+
+\subsection{Clases Java diseñadas para un GBAC (Group-Based Access Control}
+
+El control de acceso basado en grupos (GBAC) extiende al modelo basado en roles (RBAC, en su acrónimo inglés Role-Base Access Control) y ofrece más flexibilidad para modelar políticas de acceso más complejas y exigentes. En este. En el caso del GBAC, los privilegios se otorgan al usuario en función de los grupos a los que pertenece. Un usuario puede pertenecer a uno o varios
+grupos, y un grupo puede tener asignados uno o varios roles. De aquí se deduce que son necesarias tres clases para representar los conceptos de usuario, grupo y rol.
 
 
 \subsubsection{Clase User.java}
 \label{anexo:user}
-Anotada con JPA (implementa UserDetails -Spring Security-)
+
+En la implementación de esta clase destacan sus anotaciones mediante JPA (Java Persistence API) y que implementa el \textit{interface} \textbf{UserDetails} provisto por Spring Security.
+
+Nótese la relación \textit{muchos-a-muchos} entre las clases \textit{User} y \textit{Group}.
 
 \lstinputlisting[language=Java,caption={Código fuente de la clase User.java},label=code:User.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//User.java}
 
 
 \subsubsection{Clase Group.java}
 \label{anexo:group}
-Anotada con JPA
+
+En la implementación de esta clase destacan nuevamente sus anotaciones mediante JPA y el método \textit{getAuthorities} que devuelve la lista de roles asignados al grupo.
+
+Nótese la relación \textit{muchos-a-muchos} entre las clases \textit{Group} y \textit{Role}.
 
 \lstinputlisting[language=Java,caption={Código fuente de la clase Group.java},label=code:Group.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//Group.java}
 
 
+
 \subsubsection{Clase Role.java}
 \label{anexo:role}
-Anotada con JPA (implementa GrantedAuthority -Spring Security-)
+
+En la implementación de esta clase destacan sus anotaciones mediante JPA (Java Persistence API) y que implementa el \textit{interface} \textbf{GrantedAuthority} provisto por Spring Security.
 
 \lstinputlisting[language=Java,caption={Código fuente de la clase Role.java},label=code:Role.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//Role.java}
 
 
+
 \subsubsection{Clase CustomUserDetailsService.java}
 \label{anexo:customuserdetailsservice}
-Implementa UserDetailsService -Spring Security- y extiende de HibernateDaoSupport -Spring-
+
+Esta clase implementa \textbf{UserDetailsService}, provisto por Spring Security, y extiende de HibernateDaoSupport, provisto por Spring. Es la clase responsable de indicar si el usuario se autentica correctamente y, en caso afirmativo, otorgarle los grupos y roles que le correspondan.
 
 \lstinputlisting[language=Java,caption={Código fuente de la clase CustomUserDetailsService.java},label=code:CustomUserDetailsService.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//security//CustomUserDetailsService.java}
 
 
+
 \subsection{Configuración de Spring Security}
 \label{anexo:applicationcontext}
+
+La configuración de Spring Security se lleva a cabo mediante el siguiente fichero XML. En él se indica qué recursos y páginas son accesibles por cada rol, así como el comportamiento de la aplicación web ante las distintas operaciones de autenticación, cierre de sesión o accesos denegados.
 
 \lstinputlisting[language=XML,caption={Fichero de configuración de Spring Security: applicationContext-security.xml},label=code:applicationcontext-security]{..//..//desglosa-web//src//main//resources//applicationContext-security.xml}
 

@@ -13,7 +13,7 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-5}) se aborda:
 
 Dada la estrecha relación que existe entre los casos de uso CdU1.3 y CdU1.7, el análisis de ambos se ha realizado de manera conjunta.
 
-En la figura \ref{fig:it5-selection-communication-diagram} se muestra un diagrama de comunicación que representa el paso de mensajes que se produce entre los distintos controladores del motor gráfico cuando el usuario ejecuta un \textit{clic} sobre una metáfora de visualización. Entre ellos destaca un nuevo elemento llamdo \textit{observador}. Este elemento, que se ha representado con una clase de control, en realidad consistirá en un \textbf{patrón observador}. Por medio de este patrón, será posible notificar el resultado de una operación de selección a la interfaz gráfica de usuario sin acoplar la capa de dominio con la capa de presentación.
+En la figura \ref{fig:it5-selection-communication-diagram} se muestra un diagrama de comunicación que representa el paso de mensajes que se produce entre los distintos controladores del motor gráfico cuando el usuario efectúa un \textit{clic} sobre un modelo gráfico. Entre ellos destaca un nuevo elemento llamado \textbf{observador}. Este elemento, que se ha representado con una clase de control, en realidad consistirá en un \textbf{patrón observador}. Por medio de este patrón, será posible notificar el resultado de una operación de selección a la interfaz gráfica de usuario sin acoplar la capa de dominio con la capa de presentación.
 
 \imagenBorde{Cap5//it5-selection-communication-diagram}{1.1}{Diagrama de comunicación para CdU1.3 y 1.7}{fig:it5-selection-communication-diagram}
 
@@ -38,7 +38,7 @@ Para que el motor gráfico pueda notificar el objeto seleccionado a la aplicación
 
 \imagenBorde{Cap5//it5-observer-class-diagram}{0.9}{Diagrama de clases de diseño para CdU1.3 y CdU1.7}{fig:it5-observer-class-diagram}
 
-El diagrama de secuencia que se muestra en la figura \ref{fig:it5-selection-sequence-diagram}, representa una vista dinámica del funcionamiento del mecanismo de selección de objetos. Para empezar, es necesario que el contenedor del motor gráfico se añada a la lista de observadores para que se le puedan notificar las operaciones de selección cuando sea requerido. A continuación, cuando el usuario efectúa un clic sobre una metáfora de visualización, se desencadena una serie de eventos y paso de mensajes. Finalmente, el gestor de vista activo \textbf{notificará al controlador NotifyUIManager} qué objeto ha sido seleccionado para que éste lo notifique a todos los observadores, entre los que se encuentra el contenedor del motor gráfico.
+El diagrama de secuencia que se muestra en la figura \ref{fig:it5-selection-sequence-diagram}, representa una vista dinámica del funcionamiento del mecanismo de selección de objetos. Para empezar, es necesario que el contenedor del motor gráfico se añada a la lista de observadores para que se le puedan notificar las operaciones de selección cuando sea requerido. A continuación, cuando el usuario efectúa un clic sobre un elemento de la escena, se desencadena una serie de eventos y paso de mensajes. Finalmente, el gestor de vista activo \textbf{notificará al controlador NotifyUIManager} qué objeto ha sido seleccionado para que éste lo notifique a todos los observadores, entre los que se encuentra el contenedor del motor gráfico.
 
 \imagenBorde{Cap5//it5-selection-sequence-diagram}{0.9}{Diagrama de secuencia para CdU1.3 y 1.7}{fig:it5-selection-sequence-diagram}
 
@@ -46,7 +46,7 @@ El diagrama de secuencia que se muestra en la figura \ref{fig:it5-selection-sequ
 \vspace{7mm}
 \textbf{Aplicación web}
 
-Tal y como se propusoen la disciplina de diseño de la tercera iteración (Seccion \ref{sec:iteracion-3-diseño}), el CdU2.7 y CdU2.8 se satisfará mediante alguno de los múltiples \textbf{Sistema de Información Geográfica} (SIG o GIS, en su acrónimo inglés Geographic Information System) que ofrecen un API para desarrolladores basada en JavaScript, como Bing Maps o Google Maps. Para concretar, en este PFC se utilizará Google Maps ya que dispone de un API bien documentada y su licencia se adapta a los requisitos del mismo.
+Tal y como se propuso en la disciplina de diseño de la tercera iteración (Seccion \ref{sec:iteracion-3-diseño}), el CdU2.7 y CdU2.8 se satisfará mediante alguno de los múltiples \textbf{Sistema de Información Geográfica} (SIG o GIS, en su acrónimo inglés Geographic Information System) que ofrecen un API para desarrolladores basada en JavaScript, como Bing Maps o Google Maps. Para concretar, en este PFC se utilizará Google Maps ya que dispone de un API bien documentada y su licencia se adapta a los requisitos del mismo.
 
 Por otro lado, surge la necesidad de integrar el motor gráfico en la aplicación web. Esta operación se llevará a cabo mediante un \textit{applet} ya que, desde la versión 1.6.0\_10 del JDK (Java Development Kit), su eficiencia se ha mejorado notablemente y hace muy factible el despliegue de grandes aplicaciones contenidas en los mismos. No obstante, persiste la problemática relacionada con la dependencia que posee el motor gráfico con múltiples librerías de propósito general -como \textit{jogl.jar} y \textit{gluegen-rt.jar}- y librerías nativas, es decir, que dependen de la arquitectura y del sistema operativo sobre el que se ejecuta la aplicación. 
 
@@ -74,8 +74,8 @@ Durante esta disciplina se ha llevado a cabo la implementación de los casos de u
 \subsubsection{Disciplina de pruebas}
 \label{sec:iteracion-5-pruebas}
 
-Las pruebas planificadas en esta iteración se han realizado nuevamente con la ayuda de un usuario experto. En este caso, el usuario debe validar la correcta configuración y visualización de la escena y las metáforas de visualización.
+Las pruebas planificadas en esta iteración se han realizado nuevamente con la ayuda de un usuario experto. En este caso, el usuario debe validar la correcta configuración y visualización de las metáforas de visualización y los elementos que las conforman.
 
-Al igual que en las pruebas de la disciplina anterior (Sección \ref{sec:iteracion-4-pruebas}), en esta disciplina se ha vuelto a emplear el método basado en \textit{checklists}. No obstante, en este caso el usuario ha detectado errores en la visualización a través de las transparencias de la metáfora de torres genéricas. Esto es debido a que las transparencias sólo se visualizan correctamente si los elementos son pintados en pantalla de manera ordenada desde las posiciones más lejanas hasta las más cercanas, respecto de la cámara. Además, ha hecho constar la falta de percepción de profundidad.
+Al igual que en las pruebas de la disciplina anterior (Sección \ref{sec:iteracion-4-pruebas}), en esta disciplina se ha vuelto a emplear el método basado en \textit{checklists}. No obstante, en este caso el usuario ha detectado errores en la visualización a través de las transparencias de los elementos de la metáfora de la ciudad. Esto es debido a que las transparencias sólo se visualizan correctamente si los elementos son pintados en pantalla de manera ordenada desde las posiciones más lejanas hasta las más cercanas, respecto de la cámara. Además, ha hecho constar la falta de percepción de profundidad.
 
 En conclusión, las pruebas planificadas para esta iteración \textbf{no} han sido superadas y la resolución de los problemas detectados será añadida a la siguiente iteración.

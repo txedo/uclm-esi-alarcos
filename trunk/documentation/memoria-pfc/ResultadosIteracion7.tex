@@ -9,7 +9,7 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-7}) se aborda:
 
 \subsubsection{Disciplina de análisis}
 
-El caso de uso CdU2.2 es una funcionalidad con cierta complejidad e importancia en la herramienta. Por esta razón se ha elaborado un diagrama de casos de uso más detallado (Fig. \ref{fig:it7-profile-usecase-diagram}). Además, se facilita la descripción del escenario general para facilitar el estudio del diagrama (Tabla \ref{table:cdu2.2-usecase-description}).
+El caso de uso CdU2.2 es una funcionalidad con cierta complejidad e importancia en la herramienta. Por esta razón se ha elaborado un diagrama de casos de uso más detallado (Fig. \ref{fig:it7-profile-usecase-diagram}). Además, se proporciona la descripción del escenario general para facilitar el estudio del diagrama (Tabla \ref{table:cdu2.2-usecase-description}).
 
 \imagenBorde{Cap5//it7-profile-usecase-diagram}{1.1}{Diagrama de casos de uso para CdU2.2}{fig:it7-profile-usecase-diagram}
 
@@ -34,12 +34,12 @@ El caso de uso CdU2.2 es una funcionalidad con cierta complejidad e importancia 
 	\setlength{\parsep}{-7.5pt}
 	\setlength{\partopsep}{\itemsep}
 	\setlength{\topsep}{0pt}
-		\item El sistema muestra al usuario una lista de entidades y una lista de metáforas de visualización.
+		\item El sistema muestra al usuario una lista de entidades y una lista de modelos gráficos.
 		\item El usuario selecciona una entidad.
 		\item El sistema muestra los atributos mapeables de la entidad.
-		\item El usuario selecciona una metáfora de visualización.
+		\item El usuario selecciona un modelo gráficos.
 		\item El sistema muestra las dimensiones mapeables de la metáfora.
-		\item El usuario configura los mapeos entre los atributos de la entidad y las dimensiones de la metáfora, y datos adicionales del perfil.
+		\item El usuario configura los mapeos entre los atributos de la entidad y las dimensiones del modelo, y datos adicionales del perfil.
 		\item El sistema guarda el perfil en formato XML.	\vspace{-6mm}
 	\end{enumerate} 
 	\\	
@@ -55,7 +55,7 @@ En la figura \ref{fig:it7-profile-communication-class-diagram} se muestra el dia
 
 \imagenBorde{Cap5//it7-profile-communication-class-diagram}{0.75}{Diagrama de comunicación para CdU2.2 (Crear perfil de visualización)}{fig:it7-profile-communication-class-diagram}
 
-También destaca la interacción con las clases de un paquete denominado \textit{motor gráfico}. Esto sucede porque la aplicación web, que actúa como contenedora del motor gráfico, debe tener cierto conocimiento sobre el mismo y, como consecuencia, dependencia. En este caso, la dependencia se encuentra sobre la clase \textit{DimensionAnnotationParser}, que proporcionará a la aplicación web la última versión de las dimensiones de las metáforas.
+También destaca la interacción con las clases de un paquete denominado \textit{motor gráfico}. Esto sucede porque la aplicación web, que actúa como contenedora del motor gráfico, debe tener cierto conocimiento sobre el mismo y, como consecuencia, dependencia. En este caso, la dependencia se encuentra sobre la clase \textit{DimensionAnnotationParser}, que proporcionará a la aplicación web la última versión de las dimensiones de los modelos gráficos.
 
 Con el estudio de análisis que se ha realizado durante esta disciplina, se modela el primer prototipo de la interfaz gráfica de usuario (Fig. \ref{fig:it7-configure-profile-ui}). Esta interfaz se ha diseñado siguiendo la idea del típico \textit{asistente de instalación} que permite aportar los datos de configuración paso a paso.
 
@@ -81,7 +81,7 @@ De entre todos los subpaquetes destacan los siguientes:
 
 Durante esta disciplina también se ha abordado el diseño de cuestiones más especificas, como la estructura de los perfiles de visualización. Para comenzar, se ha estudiado el tipo de información que se desea hacer persistente y la estructura del fichero XML que se escribirá cuando se cree un perfil. A continuación se detallan los nodos y atributos que conforman dicha estructura:
 \begin{itemize}
-	\item \textbf{profile}: es el nodo raíz de la estructura y contiene dos atributos: \textit{model}, que referencia a la metáfora de visualización, y \textit{entity}, que referencia a la entidad que se quiere visualizar.
+	\item \textbf{profile}: es el nodo raíz de la estructura y contiene dos atributos: \textit{model}, que referencia al modelo gráfico, y \textit{entity}, que referencia a la entidad que se quiere visualizar.
 	\item \textbf{name}: nombre del perfil.
 	\item \textbf{description}: cadena de texto que describe el tipo de información que podrá visualizar el usuario por medio de este perfil.
 	\item \textbf{mappings}: lista de asociaciones que contiene elementos de tipo \textit{mapping}.
@@ -96,13 +96,13 @@ En el listado \ref{lst:profile-snippet} se propone un ejemplo que cumple con la 
 
 \imagenBorde{Cap5//it7-profile-class-diagram}{1.1}{Diagrama de clases de dominio para CdU2.2}{fig:it7-profile-class-diagram}
 
-Para finalizar, cabe destacar que cuando se desee configurar una escena a partir de un perfil de visualización, primero habrá que \textit{deserializarlo}, es decir, instanciar la jerarquía de objetos definida por la estructura de clases de la figura \ref{fig:it7-profile-class-diagram}. Acto seguido, habrá que operar con dichos objetos e instanciar las metáforas de visualización por medio del método de \textbf{reflexión}. Por último, se construirá una cadena con formato JSON que será proporcionada al motor gráfico como dato de entrada para que éste genere los gráficos.
+Para finalizar, cabe destacar que cuando se desee configurar una escena a partir de un perfil de visualización, primero habrá que \textit{deserializarlo}, es decir, instanciar la jerarquía de objetos definida por la estructura de clases de la figura \ref{fig:it7-profile-class-diagram}. Acto seguido, habrá que operar con dichos objetos e instanciar los modelos gráficos por medio del método de \textbf{reflexión}. Por último, se construirá una cadena con formato JSON que será proporcionada al motor gráfico como dato de entrada para que éste genere los gráficos.
 
 
 \subsubsection{Disciplina de implementación}
 \label{sec:iteracion-7-implementacion}
 
-Para llevar a cabo la implementación del control de acceso, es necesario configurar Spring Security mediante un fichero de configuración. Se trata de un fichero XML que por convenio suele llamarse \textit{applicationContext-security.xml} (Véase Anexo \ref{anexo:applicationcontext}). Dada la gran cantidad de parámetros que se pueden incluir en este fichero, se recomienda consultar su manual de referencia \cite{homepage-spring-security-documentation} para profundizar en el tema y realizar una configuración precisa. En él destaca el bean \textit{userDetailsService}, que hace referencia a nuestra clase \textit{CustomUserDetailsService}. Además, es referenciado como \textit{proveedor de autenticación} en el bean \textit{authentication-provider}, donde se especifica la codificación de las contraseñas de usuario (md5 en este caso).
+Para llevar a cabo la implementación del control de acceso, es necesario configurar Spring Security mediante un fichero de configuración. Se trata de un fichero XML que por convenio suele llamarse \textit{applicationContext-security.xml} (Véase Anexo \ref{anexo:applicationcontext}). Dada la gran cantidad de parámetros que se pueden incluir en este fichero, se recomienda consultar su manual de referencia para profundizar en el tema y realizar una configuración precisa \cite{homepage-spring-security-documentation}. En él destaca el bean \textit{userDetailsService}, que hace referencia a nuestra clase \textit{CustomUserDetailsService}. Además, es referenciado como \textit{proveedor de autenticación} en el bean \textit{authentication-provider}, donde se especifica la codificación de las contraseñas de usuario (md5 en este caso).
 
 A continuación se implementan las clases correspondientes según el diseño elaborado en \ref{sec:iteracion-6-diseño}. Dada la importancia de estas clases por la inclusión de anotaciones JPA y su posibilidad de reutilización en otros proyectos, se incluye su código fuente en los anexos \ref{anexo:user}, \ref{anexo:group}, \ref{anexo:role} y \ref{anexo:customuserdetailsservice}.
 
@@ -110,7 +110,7 @@ El paso siguiente consiste en implementar el formulario de \textit{login} (Lista
 
 \lstinputlisting[language=Java,caption={Código fuente del fichero login.jsp para autenticación mediante Spring Security},label=lst:login.jsp]{snippets//login.txt}
 
-Por otro lado, los menús que se muestran al usuario en la interfaz gráfica son renderizados de forma automática en función de los privilegios que posee. Esta característica se ha implementado mediante la librería \textit{struts-menu}, cuya configuración se lleva a cabo con un fichero XML (Listado \ref{lst:struts-menu}). En este fichero se especifican distintos menús los elementos que los componen. Además, en el atributo \textit{roles} se indica qué roles debe tener el usuario autenticado para que dicho menú sea renderizado y mostrado.
+Por otro lado, los menús que se muestran al usuario en la interfaz gráfica son renderizados de forma automática en función de los privilegios que posee. Esta característica se ha implementado mediante la librería \textit{struts-menu}, cuya configuración se lleva a cabo con un fichero XML (Listado \ref{lst:struts-menu}). En este fichero se especifican los distintos menús y los elementos que los componen. Además, en el atributo \textit{roles} se indica qué roles debe tener el usuario autenticado para que dicho menú sea renderizado y mostrado. Cabe destacar que este framework es completamente compatible con Spring Security y, por tanto, los roles asignados al usuario mediante el sistema de autenticación serán los que se empleen para determinar qué menús serán mostrados al usuario.
 
 \lstinputlisting[language=XML,caption={Fichero de configuración de struts-menu (menu-config.xml)},label=lst:struts-menu]{..//..//desglosa-web//src//main//webapp//WEB-INF//menu-config.xml}
 
@@ -119,7 +119,16 @@ Por otro lado, los menús que se muestran al usuario en la interfaz gráfica son r
 \subsubsection{Disciplina de pruebas}
 \label{sec:iteracion-7-pruebas}
 
-A partir de esta iteración es cuando se comienza a abordar las pruebas de la aplicación web. Así pues, el primer paso consiste en configurar Maven para poder ejecutarlas y obtener los informes correspondientes. Para comenzar, se realizará la configuración para las pruebas unitarias y, a continuación, la configuración para las pruebas funcionales.
+A partir de esta iteración es cuando se comienza a abordar las pruebas de la aplicación web. Así pues, el primer paso consiste en diseñar una arquitectura de pruebas y configurar Maven para poder implementaras, ejecutarlas y obtener los informes correspondientes. 
+
+La arquitectura de pruebas debe permitir implementar, por un lado, las pruebas unitarias de las acciones de struts y, por otro, las pruebas relativas al resto de clases del sistema: controladores de la lógica de negocio, clases DAO, clases de dominio y clases de utilidades. Es necesario diseñar la arquitectura de este modo ya que las pruebas de las acciones de struts requieren de ciertas funcionalidades, como el acceso a los objetos \textit{HttpServletRequest} y \textit{HttpServletResponse}, que no son necesarias en otros tipos de pruebas.
+
+En la figura  \ref{fig:it7-testing-architecture} se muestra el diagrama de clases de la arquitectura de pruebas propuesta. En la parte superior del diagrama se muestran las librerías de terceros que serán utilizadas. En la parte central, enmarcado por el paquete \textit{test.util}, se muestran las clases que deberán ser implementadas para obtener los servicios requeridos de dichas librerías. Y en la parte inferior se muestran las clases que se corresponden con los \textit{test suites} de acciones, dominio, conocimiento y DAO que contienen los casos de prueba a implementar.
+
+\imagen{Cap5//it7-testing-architecture}{1.4}{Diagrama de clases de la arquitectura de pruebas unitarias}{fig:it7-testing-architecture}
+
+A continuación, se realizará la configuración para las pruebas unitarias y, posteriormente, la configuración para las pruebas funcionales.
+
 
 \vspace{10mm}
 \textbf{Configuración de Maven para la ejecución de pruebas unitarias}
@@ -139,82 +148,20 @@ Para llevar a cabo la implementación de pruebas es necesario editar el fichero d
 	<dependencies>
 \end{lstlisting}
 
-A continuación, y siguiendo el mismo proceso, se añadirá al proyecto la dependencia \textit{spring-test}. Gracias a esta librería, la implementación de pruebas se beneficiará de las ventajas que aporta \textit{Spring Framework}, como la \textit{inyección de dependencias}. Por tanto, de aquí en adelante, cada vez que sea necesario implementar un \textit{test suite} (Listado \ref{lst:snippet-test}), éste heredará de la clase \textit{AbstractDependencyInjectionSpringContextTests} y sobrescribirá el método \textit{getConfigLocations}, el cual devolverá un vector de cadenas en la que cada elemento se corresponde con la ruta los ficheros de configuración de Spring. De este modo, el programador podrá acceder al objeto \textit{applicationContext} desde cada uno de los \textit{test cases} y recuperar cualquier bean instanciado mediante Spring.
+A continuación y siguiendo el mismo proceso, se añadirán al proyecto el resto de dependencias reflejadas en el diagrama de clases de la arquitectura de pruebas (Fig. \ref{fig:it7-testing-architecture}):
+\begin{itemize}
+	\item \textbf{spring-test}. Gracias a esta librería, la implementación de pruebas se beneficiará de las ventajas que aporta \textit{Spring Framework}, tales como la \textit{inyección de dependencias} y el acceso a los \textit{beans} creados por el \textbf{Contenedor de Inversión de Control} (IoC, en su acrónimo inglés Inversion of Control). Por tanto, de aquí en adelante, cada vez que sea necesario implementar un \textit{test suite}, éste debería heredar de la clase \textit{AbstractDependencyInjectionSpringContextTests} y sobrescribir el método \textit{getConfigLocations}, el cual devolverá un vector de cadenas en la que cada elemento se corresponde con la ruta los ficheros de configuración de Spring. No obstante, para no duplicar código y fomentar la reutilización del mismo, se propone crear una capa intermedia mediante la clase \textbf{SpringTestCaseBase} que adoptará las características mencionadas. Así pues, todos los \textit{test suites} que se implementen serán especializaciones de esta clase. De este modo, el programador podrá acceder al objeto \textit{applicationContext} desde todos y cada uno de los \textit{test cases} y recuperar cualquier bean creado mediante el contenedor IoC de Spring.
+	
+	\item \textbf{struts2-junit-plugin}. Esta librería permite que los \textit{test cases} de las acciones de struts puedan acceder a un conjunto de \textit{mocks} o \textit{dummies} que simulan la funcionalidad de los objetos HttpServletRequest, HttpServletResponse, PageContext y ServletContext, utilizados en servlets y páginas JSP. De igual modo que en el caso anterior, se incorporará una capa intermedia mediante la clase \textbf{StrutsSpringTestCaseBase} que heredará de StrutsSpringTestCase para sobrescribir el método que establece la configuración de la librería. Así pues, todos los \textit{test suites} que se implementen serán especializaciones de esta clase. De este modo, el programador podrá acceder a los objetos mencionados desde todos y cada uno de los \textit{test cases}.
+	
+	\item \textbf{dbunit}. Esta librería permite establecer el estado de una base de datos a partir de un fichero XML y viceversa, es decir, generar un fichero XML a partir de los datos de una base de datos. De este modo, mediante la clase \textbf{DBUnitUtils}, es posible reestablecer el estado de la base de datos siempre que sea necesario.
+\end{itemize}
 
-\begin{lstlisting}[language=Java,caption={Snippet de un TestCase implementado mediante JUnit y Spring-Test},label=lst:snippet-test]
-public class ExampleActionTest extends AbstractDependencyInjectionSpringContextTests {
-
-	@Override
-	protected String[] getConfigLocations() {
-		return new String[] {
-			"classpath:applicationContext-resources.xml",
-			"classpath:applicationContext-dao.xml",
-			"classpath:applicationContext.xml"};
-	}
-
-	public void testExampleAction() throws Exception {
-		ExampleAction action = new ExampleAction();
-		action.setExampleDao((ExampleDAO) applicationContext.getBean("exampleDao"));
-		String result = action.execute();
-		assertEquals(Action.SUCCESS, result);
-	}
-}
-\end{lstlisting}
-
-Para que no sea necesario implementar los típicos métodos de pruebas \textit{setUp} y \textit{tearDown}, que usualmente se encargan de inicializar los datos de la base de datos con los que operarán los tests, se utilizará un plugin de Maven llamado \textbf{dbunit-maven-plugin}. Este plugin, que requiere una pequeña configuración (Listado \ref{lst:dbunit-configuration}), se encargará de conectar con la base de datos que utiliza la herramienta y volcar los datos de prueba que se hayan configurado en el fichero XML correspondiente. Este mismo proceso de inicialización se puede utilizar cuando la herramienta va a emplearse en producción.
-
-\begin{lstlisting}[language=XML,caption={Configuración de dbunit-maven-plugin para la inicialización de la base de datos en la fase de pruebas},label=lst:dbunit-configuration]
-<build>
-	...
-	<plugins>
-		...
-		<plugin>
-		  <groupId>org.codehaus.mojo</groupId>
-		  <artifactId>dbunit-maven-plugin</artifactId>
-		  <version>1.0-beta-1</version>
-		  <configuration>
-		    <dataTypeFactoryName>\${dbunit.dataTypeFactoryName}</dataTypeFactoryName>
-		    <driver>\${jdbc.driverClassName}</driver>
-		    <username>\${jdbc.username}</username>
-		    <password>\${jdbc.password}</password>
-		    <url>\${jdbc.url}</url>
-		    <src>src/test/resources/sample-data.xml</src>
-		    <type>\${dbunit.operation.type}</type>
-		    <schema>\${dbunit.schema}</schema>
-		    <skip>\${maven.test.skip}</skip>
-		  </configuration>
-		  <executions>
-		    <execution>
-		      <id>test-compile</id>
-		      <phase>test-compile</phase>
-		      <goals>
-		        <goal>operation</goal>
-		      </goals>
-		    </execution>
-		    <execution>
-		      <!-- Runs before integration tests and jetty:run-war -->
-		      <id>test</id>
-		      <phase>test</phase>
-		      <goals>
-		        <goal>operation</goal>
-		      </goals>
-		    </execution>
-		  </executions>
-		  <dependencies>
-		    <dependency>
-		      <groupId>\${jdbc.groupId}</groupId>
-		      <artifactId>\${jdbc.artifactId}</artifactId>
-		      <version>\${jdbc.version}</version>
-		    </dependency>
-		  </dependencies>
-		</plugin>
-	</plugins>
-</build>
-\end{lstlisting}
+Cabe destacar las dependencias de las clases StrutsSpringTestCaseBase y SpringTestCaseBase con la clase DBUnitUtils. Estas dependencias se deben a que ambas clases, que actúan como capas intermedias que abstraen al programador de ciertas tareas, restablecen el estado de la base de datos antes de ejecutar cada \textit{test case}. Esto permite que el programador de los casos de prueba siempre tenga consciencia de los datos que va a manejar y no se produzcan situaciones de error inesperadas. Por lo tanto, el programador no debe implementar los métodos \textit{setUp} y \textit{tearDown} que usualmente se encargan de inicializar y eliminar los datos de la base de datos con los que operaran los casos de prueba.
 
 Una vez que se han implementado los \textit{test suites} y sus correspondientes \textit{test cases}, Maven los ejecutará automáticamente durante el proceso de construcción del proyecto. Si algún test produce un error, el proceso de construcción será cancelado.
 
-Un aspecto importante de la etapa de pruebas consiste conocer cuánto código ha sido probado mediante la implementación de las mismas. Para conocer este aspecto se generará su correspondiente informe mediante un plugin de Maven denominado \textit{cobertura-maven-plugin}. Este plugin no requiere configuración y deberá ser añadido en la sección \textit{reporting} del fichero pom.xml (Listado \ref{lst:pom-cobertura}).
+Un aspecto importante de la etapa de pruebas consiste en conocer cuánto código ha sido probado mediante la implementación de las mismas. Para ello, es posible generar su correspondiente informe mediante un plugin de Maven denominado \textit{cobertura-maven-plugin}. Este plugin no requiere configuración y deberá ser añadido en la sección \textit{reporting} del fichero pom.xml (Listado \ref{lst:pom-cobertura}). Por otro lado, para obtener un informe de pruebas y conocer el resultado de ejecución de las mismas, así como diferentes estadísticas se utiliza \textit{maven-surefire-report-plugin}.
 
 \begin{lstlisting}[language=XML,caption={Configuración de pom.xml para añadir Cobertura como plugin de generación de informes},label=lst:pom-cobertura]
 <reporting>
@@ -229,7 +176,6 @@ Un aspecto importante de la etapa de pruebas consiste conocer cuánto código ha s
 </reporting>
 \end{lstlisting}
 
-Llegados a este punto, finaliza la configuración del entorno para la ejecución y generación de informes para las pruebas unitarias.
 
 
 \vspace{7mm}
@@ -239,15 +185,15 @@ Las pruebas funcionales son aquellas que verifican que se satisfacen los requisi
 
 Existen varias soluciones para realizar las pruebas funcionales de una aplicación web de un modo automatizado. En este PFC se utilizará Canoo Webtest \cite{homepage-webtest}, que permite simular la interacción del usuario con la interfaz gráfica de la aplicación y comprobar la respuesta del sistema.
 
-La implementación de los \textit{test suites} y \textit{test cases} de Canoo Webtest puede realizar mediante clases Java o ficheros XML. En caso de emplear ficheros XML, la automatización de su ejecución se realizará mediante tareas de \textbf{Ant}. No obstante, este método tiene una dificultad añadida ya que es necesario que la aplicación web se encuentre en un contenedor de servlets para que Canoo Webtest pueda comportarse como un usuario y analizar la respuesta del servidor. Para ello, será necesario realizar una compleja configuración de Maven (Véase Anexo \ref{anexo:integration-test-profile}) que instancie un contenedor de servlets (\textit{cargo-maven2-plugin}) y ejecute, mediante el plugin \textbf{maven-antrun-plugin}, las tareas que contienen las pruebas funcionales.
+La implementación de los \textit{test suites} y \textit{test cases} de Canoo Webtest se puede realizar mediante clases Java o ficheros XML. En caso de emplear ficheros XML, la automatización de su ejecución se realizará mediante tareas de \textbf{Ant}. No obstante, este método tiene una dificultad añadida ya que es necesario que la aplicación web se encuentre en un contenedor de servlets para que Canoo Webtest pueda comportarse como un usuario y analizar la respuesta del servidor. Para ello, será necesario realizar una compleja configuración de Maven (Véase Anexo \ref{anexo:integration-test-profile}) que instancie un contenedor de servlets (\textit{cargo-maven2-plugin}) y ejecute, mediante el plugin \textbf{maven-antrun-plugin}, las tareas que contienen las pruebas funcionales.
 
-Para la generación de informes de las pruebas funcionales se hará uso del plugin \textbf{webtest-maven-plugin}. Este plugin, del mismo modo el empleado para la generación de informes de las pruebas unitarias, no requiere configuración y deberá ser añadido en la sección \textit{reporting} del fichero pom.xml.
+Para la generación de informes de las pruebas funcionales se hará uso del plugin \textbf{webtest-maven-plugin}. Este plugin, del mismo modo que el empleado para la generación de informes de las pruebas unitarias, no requiere configuración y deberá ser añadido en la sección \textit{reporting} del fichero pom.xml.
 
 
 \vspace{7mm}
 \textbf{Diseño e implementación de pruebas unitarias y funcionales}
 
-Una vez que se ha configurado el entorno tal y como se ha descrito en esta sección, se procede a diseñar e implementar las pruebas unitarias y funcionales.
+Una vez que se ha configurado el entorno tal y como se ha descrito anteriormente, se procede a diseñar e implementar las pruebas unitarias y funcionales.
 
 Según la ficha de iteración (Tabla \ref{table:ficha-iteracion-7}), procede elaborar las pruebas de los CdU2.1, CdU2.9, CdU2.11 y CdU2.7. Para evitar que la sección se extienda demasiado, en este documento se sólo se incluye el proceso desarrollado en términos del CdU2.1 (control de acceso), que parte desde el diseño de los casos de prueba. En las tablas \ref{table:cdu2.1-testcase1-description}, \ref{table:cdu2.1-testcase2-description}, \ref{table:cdu2.1-testcase3-description} y \ref{table:cdu2.1-testcase4-description} se incluyen algunos de estos diseños, que se corresponden con los distintos escenarios de casos de uso definidos en la tabla \ref{table:login-usecase-description}.
 

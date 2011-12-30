@@ -14,7 +14,7 @@
 
 En este capítulo se detallan los resultados obtenidos como consecuencia de la aplicación del método de trabajo expuesto en las secciones \ref{sec:investigacion-preliminar} y \ref{sec:pud}, que consiste en una herramienta compuesta de dos componentes bien diferenciados: un motor encargado de generar gráficos 3D y una aplicación web que lo integra permitiendo realizar las tareas de gestión, configuración y visualización. Para su consecución, se han empleado todas y cada una de las herramientas, frameworks y tecnologías expuestas en la sección \ref{sec:marco}.
 
-Según la documentación aportada en la sección \ref{sec:pud} y la figura \ref{fig:mapa-conceptual-pud}, el ciclo de vida del software se lleva a cabo en ciclos. En este caso de estudio cada componente puede ser abordado en un ciclo distinto dado que constituyen productos software independientes. Sin embargo, dado que el único recurso del que se dispone es el alumno que realiza este PFC, ambos componentes se desarrollan de forma conjunta en un único ciclo. El producto resultante de este ciclo es la herramienta software desarrollada, así como su documentación, diagramas y manuales.
+Según la documentación aportada en la sección \ref{sec:pud} y la figura \ref{fig:mapa-conceptual-pud}, el ciclo de vida del software se lleva a cabo en ciclos. En este PFC cada componente puede ser abordado en un ciclo distinto dado que constituyen productos software independientes. No obstante, ya que todo el desarrollo se realiza por el alumno del presente PFC, ambos componentes se desarrollan de forma conjunta en un único ciclo. El producto resultante de este ciclo es la herramienta software desarrollada, así como su documentación, diagramas y manuales.
 
 Un ciclo consta de 4 fases: inicio, elaboración, construcción y transición. Estas fases conforman la estructura básica de este capítulo. Dentro de cada fase se desarrollan una o más iteraciones. En cada iteración se ejecuta el flujo de trabajo fundamental, compuesto por las disciplinas de requisitos, análisis, diseño, implementación y pruebas. La envergadura de cada disciplina, que en determinados casos será nula, está condicionada por la fase a la que pertenece la iteración que se está llevando a cabo.
 
@@ -31,27 +31,29 @@ Para evitar que este capítulo y, como consecuencia, todo el documento se prolong
 La fase de inicio goza de diferencias notables con respecto al resto de fases, ya que no se estructura en base a iteraciones y no produce resultados funcionales. Así pues, se centra en la captura e identificación de requisitos, el estudio de viabilidad del sistema y la realización del plan de iteraciones.
 
 
-\subsection{Arquitectura de la visualización de calidad en DGS}
+\subsection{Captura de requisitos}
 \label{sec:arquitectura-dgs}
 
 Dada la naturaleza de este PFC y su encuadre dentro de un proyecto de I+D+i, ha sido necesario realizar una serie de reuniones entre los investigadores del Grupo Alarcos y el responsable del proyecto en Indra Software Labs S.L.. El objetivo de estas reuniones se ha centrado tanto en identificar las necesidades que el sistema debe satisfacer como en cuestionar y tratar algunas decisiones de diseño. Así pues, esta sección se corresponde con una parte de la captura de requisitos.
 
-Tal y como se ha tratado en la sección \ref{sec:objetivos}, se desea construir una herramienta de visualización de medidas e indicadores software. Dichas medidas e indicadores representarán la información que se considere importante como -por ejemplo- la \textit{productividad} de las fábricas de software, las incidencias que han surgido a lo largo del ciclo de vida de un proyecto, o la \textit{portabilidad} de un proyecto determinado. Los datos relevantes y susceptibles de representación visual de cada entidad\footnote{Se entiende como entidad a aquellas clases que modelan el contexto del DGS: compañía, factoría, proyecto, etcétera.} pueden variar a lo largo del tiempo, es decir, puede producirse la adición de un conjunto de características para una o varias entidades. Además, puede suceder que en un futuro se deseen añadir más entidades para modelar un contexto más complejo. Por esta razón, es requisito indispensable que la interfaz de usuario se adapte automáticamente, en la medida de lo posible, a los cambios realizados en la lógica de dominio de la herramienta.
+Tal y como se ha tratado en la sección \ref{sec:objetivos}, se desea construir una herramienta de gestión organizacional del desarrollo global y de visualización de información relevante, tales como la geolocalización de las factorías donde se desarrollan las distintas partes de un proyecto o la representación gráfica de diversas medidas e indicadores de calidad y productividad del software. Dichas medidas e indicadores se corresponderán con la información que se considere importante como -por ejemplo- la \textit{productividad}, número de empleados o mercado de especialización de las fábricas de software; o el número de incidencias que han surgido a lo largo del ciclo de vida de un proyecto, cuántas de esas incidencias han sido resueltas, en qué factorías se está llevando a cabo o medidas de calidad tales como \textit{portabilidad}, \textit{usabilidad}, \textit{eficiencia}, etcétera. La cantidad de datos relevantes y susceptibles de representación visual de cada entidad\footnote{Se entiende como entidad a aquellas clases que modelan el contexto del DGS: compañía, factoría, proyecto y subproyecto.} puede variar a lo largo del tiempo, es decir, puede producirse la adición de características para una o varias entidades. Además, puede suceder que en un futuro se deseen añadir más entidades para modelar un contexto más complejo. Por esta razón, es requisito indispensable que la interfaz de usuario se adapte automáticamente, en la medida de lo posible, a los cambios realizados en la lógica de dominio de la herramienta.
 
-Por otro lado, se deberá proporcionar un conjunto de metáforas de visualización, capaces de escenificar las medidas e indicadores definidos previamente. Para ello se asociarán los atributos de una entidad con las \textit{dimensiones} de una metáfora. Una \textbf{dimensión} es aquella propiedad de la metáfora susceptible de asignarle un valor y que afecta a su forma o figura. Del mismo modo que en el caso de las entidades, las metáforas también pueden experimentar variaciones si la empresa lo requiere, así como puede ser necesario que se extienda el número de dimensiones de una metáfora existente. Por ello, y una vez más, es necesario que la interfaz gráfica de usuario vuelva a adaptarse a dichos cambios.
+Para mostrar la información relativa a medidas e indicadores de calidad y productividad, se emplearán \textbf{metáforas de visualización}. Las metáforas de visualización están compuestas por un conjunto de elementos o modelos gráficos, y cada modelo tiene múltiples propiedades denominadas \textbf{dimensiones}. De este modo, el usuario podrá seleccionar qué modelo gráfico desea emplear en la metáfora para representar la información de una entidad determinada. Acto seguido, se establecerán asociaciones entre las distintas características de la entidad (nombre, distintas medidas o indicadores, etcétera) y las dimensiones del modelo gráfico, haciendo que la escenificación del mismo varíe en función de los valores que almacenan los atributos de la entidad. Así pues, se deberá proporcionar un conjunto de modelos gráficos capaces de escenificar los datos, medidas e indicadores definidos previamente.
 
-Inicialmente se ha trabajado en tres metáforas de visualización:
+Del mismo modo que en el caso de las entidades, los modelos gráficos también pueden experimentar variaciones si la empresa lo requiere, así como puede ser necesario que se añadan dimensiones. Por ello, y una vez más, es necesario que la interfaz gráfica de usuario vuelva a adaptarse a dichos cambios.
+
+En este PFC se han elaborado tres modelos gráficos:
 \begin{itemize}
-	\item \textbf{Metáfora de fábricas}. Consiste en un modelo que representa una estructura semejante a una fábrica industrial (Fig. \ref{fig:metaphore-factory}). El modelo está formado por una base que sostiene un edificio y una chimenea. Las dimensiones \textit{mapeables} de este modelo serán la escala de la factoría (tamaño global), el color de la chimenea y la altura de la chimenea. Esta última dimensión también será reflejada en modo texto sobre el edificio. Inicialmente, este modelo ha sido diseñado para representar las asociaciones que se muestran en la tabla \ref{table:factory-mappings}.
+	\item \textbf{Modelo gráfico para factorías}. Consiste en un modelo que representa una estructura semejante a una fábrica industrial (Fig. \ref{fig:metaphore-factory}). Por esta razón, un conjunto de instancias de este modelo escenifican la \textbf{metáfora de un polígono industrial}. El modelo está formado por una base que sostiene un edificio y una chimenea. Las dimensiones \textit{mapeables} de este modelo serán la escala de la factoría (tamaño global), el color de la chimenea y la altura de la chimenea. Esta última dimensión también será reflejada en modo texto sobre el edificio. Inicialmente, este modelo ha sido diseñado para conocer el número de proyectos que se están desarrollando en una factoría, el número de empleados que trabajan en ella y el mercado de especialización de la misma (Tabla \ref{table:factory-mappings}).
 	
-	\imagenBorde{Cap5//metaphore-factory}{0.45}{Prototipo a mano alzada para diseñar la metáfora de fábricas software}{fig:metaphore-factory}
+	\imagenBorde{Cap5//metaphore-factory}{0.45}{Prototipo a mano alzada para diseñar el modelo gráfico de una factoría software}{fig:metaphore-factory}
 	
 	\begin{table}[!htbp]%
 	\centering
 	\begin{tabular}{| >{\centering\arraybackslash}m{7cm} | >{\centering\arraybackslash}m{7cm} |}
 		\hline
 			{\cellcolor[gray]{0.7}\textbf{Característica de la factoría}} &
-			{\cellcolor[gray]{0.7}\textbf{Dimensión de la metáfora}} \\
+			{\cellcolor[gray]{0.7}\textbf{Dimensión del modelo}} \\
 		\hline
 			Número de trabajadores (número) &
 			Escala \\
@@ -60,26 +62,23 @@ Inicialmente se ha trabajado en tres metáforas de visualización:
 			Color de la chimenea \\
 		\hline
 			Número de proyectos en desarrollo (número) &
-			Altura de la chimenea \\
-		\hline
-			Número de proyectos en desarrollo (número) &
-			Texto sobre el edificio \\
+			Altura de la chimenea y texto sobre el edificio \\
 		\hline
 	\end{tabular}
-	\caption{Mapeo inicial de una factoría software con la metáfora de factorías software}
+	\caption{Mapeo inicial de una factoría software con el modelo gráfico de factoría software}
 	\label{table:factory-mappings}
 	\end{table}
 	
-	\item \textbf{Metáfora de proyectos}. Consiste un modelo que representa una estructura que satisface las necesidades de visualización que los expertos del sector han especificado. La estructura (Fig. \ref{fig:metaphore-project}) está formada por una esfera inferior cuyo tamaño y color son variables. Además, presenta un espacio reservado para mostrar una marca. La marca consiste en el icono de un \textit{check} (\ding{'063}) verde o una cruz (\ding{'067}) roja. Por otro lado, dispone de dos antenas en la parte superior con una pequeña esfera en cada extremo. Estas pequeñas esferas serán de color verde y rojo respectivamente, y presentarán un número entero en modo texto en la parte superior. Por último, bajo la esfera inferior, se mostrará una cadena de texto. Inicialmente, este modelo ha sido diseñado para representar las asociaciones que se muestran en la tabla \ref{table:project-mappings}.
+	\item \textbf{Modelo gráfico para proyectos}. Dada la inexistencia de un objeto real que se asemeje al concepto de \textit{proyecto}, este modelo se ha diseñado para satisfacer las necesidades de visualización que los expertos del sector han especificado. La estructura (Fig. \ref{fig:metaphore-project}) está formada por una esfera inferior cuyo tamaño y color son variables. Además, presenta un espacio reservado para mostrar una marca. La marca consiste en el icono de un \textit{check} verde ({\color{green}\ding{'063}}) o una cruz roja ({\color{red}\ding{'067}}). Por otro lado, dispone de dos antenas en la parte superior con una pequeña esfera en cada extremo. Estas pequeñas esferas serán de color verde y rojo respectivamente, y presentarán un número entero en la parte superior. Por último, bajo la esfera inferior, se mostrará una cadena de texto. Inicialmente, este modelo ha sido diseñado para conocer el número de incidencias resueltas y sin resolver de un determinado proyecto, su tamaño en líneas de código, el tipo de mercado al que pertenece y si ha superado el proceso de auditoría (Tabla \ref{table:project-mappings}).
 	
-	\imagenBorde{Cap5//metaphore-project}{0.45}{Prototipo a mano alzada para diseñar la metáfora de proyectos software}{fig:metaphore-project}
+	\imagenBorde{Cap5//metaphore-project}{0.45}{Prototipo a mano alzada para diseñar la el modelo gráfico de un producto software}{fig:metaphore-project}
 	
 	\begin{table}[!htbp]%
 	\centering
 	\begin{tabular}{| >{\centering\arraybackslash}m{7cm} | >{\centering\arraybackslash}m{7cm} |}
 		\hline
 			{\cellcolor[gray]{0.7}\textbf{Característica del proyecto}} &
-			{\cellcolor[gray]{0.7}\textbf{Dimensión de la metáfora}} \\
+			{\cellcolor[gray]{0.7}\textbf{Dimensión del modelo}} \\
 		\hline
 			Líneas de código (número) &
 			Tamaño de la esfera inferior \\
@@ -100,20 +99,20 @@ Inicialmente se ha trabajado en tres metáforas de visualización:
 			Texto debajo del modelo gráfico \\
 		\hline
 	\end{tabular}
-	\caption{Mapeo inicial de un proyecto software con la metáfora de proyectos software}
+	\caption{Mapeo inicial de un proyecto software con el modelo gráfico de un proyecto software}
 	\label{table:project-mappings}
 	\end{table}
 	
-	\item \textbf{Metáfora genérica}. Consiste un modelo genérico que representa una estructura semejante a la de un rascacielos o una torre (Fig. \ref{fig:metaphore-generic}). Este modelo se ha diseñado para ser configurado a medida y representar cualquier entidad de un modo genérico. Sus dimensiones son la anchura, profundidad, altura total, altura del relleno y color. Un ejemplo de asociaciones se muestra en la tabla \ref{table:generic-mappings}.
+	\item \textbf{Modelo gráfico de torres}. Consiste un modelo genérico que representa una estructura semejante a la de un rascacielos o una torre (Fig. \ref{fig:metaphore-generic}). Por esta razón, un conjunto de instancias de este modelo escenifican la \textbf{metáfora de una ciudad}. Este modelo se ha diseñado para ser configurado a medida y representar cualquier entidad de un modo genérico. Sus dimensiones son la anchura, profundidad, altura total, altura del relleno y color. Inicialmente, este modelo ha sido diseñado para conocer los resultados de diversas mediciones de un proyecto software, tales como el fichaje de horas realizado, el fichaje de horas estimado, si se encuentra dentro de plazo y su número de líneas de código y comentarios (Tabla \ref{table:generic-mappings}).
 	
-	\imagenBorde{Cap5//metaphore-generic}{0.45}{Prototipo a mano alzada para diseñar la metáfora genérica}{fig:metaphore-generic}
+	\imagenBorde{Cap5//metaphore-generic}{0.45}{Prototipo a mano alzada para diseñar un modelo gráfico genérico mediante una torre}{fig:metaphore-generic}
 	
 	\begin{table}[!htbp]%
 	\centering
 	\begin{tabular}{| >{\centering\arraybackslash}m{7cm} | >{\centering\arraybackslash}m{7cm} |}
 		\hline
 			{\cellcolor[gray]{0.7}\textbf{Característica del subproyecto}} &
-			{\cellcolor[gray]{0.7}\textbf{Dimensión de la metáfora}} \\
+			{\cellcolor[gray]{0.7}\textbf{Dimensión del modelo}} \\
 		\hline
 			Líneas de código (número) &
 			Anchura \\
@@ -131,17 +130,22 @@ Inicialmente se ha trabajado en tres metáforas de visualización:
 			Color \\
 		\hline
 	\end{tabular}
-	\caption{Mapeo inicial de un subproyecto software con la metáfora genérica}
+	\caption{Mapeo inicial de un subproyecto software con el modelo gráfico de una torre}
 	\label{table:generic-mappings}
 	\end{table}
 	
 \end{itemize}
 
-Para maximizar la experiencia de la visualización y dado el alto grado de configuración del sistema en general, y de la metáfora genérica en particular, es necesario que la herramienta permita la creación de \textit{perfiles de visualización}. Un \textbf{perfil de visualización} definirá qué metáfora de visualización será utilizada para representar una entidad determinada. Además, deberá contener información relativa a las \textbf{asociaciones} que se desean establecer entre los atributos de la entidad y las dimensiones de la metáfora seleccionada (Fig. \ref{fig:mapeo}).
+Para maximizar la utilidad de la visualización y dado el alto grado de configuración del sistema, es necesario que la herramienta permita la creación de \textit{perfiles de visualización}. Un \textbf{perfil de visualización} definirá, como ya ha sido comentado, qué modelo gráfico será utilizado para representar una entidad determinada. Además, deberá contener información relativa a las \textbf{asociaciones} que se desean establecer entre los atributos de la entidad y las dimensiones del modelo (Fig. \ref{fig:mapeo}). Gracias a esta característica, la herramienta de visualización no estará cerrada en cuanto a personalización se refiere, y el usuario será capaz de representar cualquier tipo de información del modo que crea conveniente.
 
-Cabe destacar que para una misma entidad se pueden configurar múltiples perfiles de visualización para lograr configurar distintas vistas que muestren información más específica o relativa a una misma familia. Esta característica es útil cuando se quiere definir un perfil para cada característica de un modelo de calidad, representando sus subcaracterísticas sobre las dimensiones del modelo gráfico.
+\imagenBorde{Cap5//mapeo}{0.65}{Esquema de las asociaciones o \textit{mapeos} entre los atributos de una entidad y las dimensiones de un modelo gráfico}{fig:mapeo}
 
-\imagenBorde{Cap5//mapeo}{0.65}{Esquema de las asociaciones o \textit{mapeos} entre los atributos de una entidad y las dimensiones de una metáfora de visualización}{fig:mapeo}
+Cabe destacar la posibilidad de crear diversos perfiles de visualización para una misma entidad. De este modo se logra disponer de múltiples vistas que muestren distintos tipos de información. Por ejemplo, puede ser interesante una vista en la que cada torre representa los atributos que conforman la funcionalidad de los proyectos, otra vista para representar los atributos de la portabilidad, y así sucesivamente con cada una de las características que se proponen en los estándares de calidad del producto software.
+
+Para finalizar, se especifica la necesidad de navegar entre los distintos niveles organizacionales de un escenario de desarrollo global. En este caso, la empresa necesita obtener una vista global de sus factorías, a través de la cual podrá acceder a los proyectos que se desarrollan en cada una de ellas, y así poder realizar un seguimiento acerca de los mismos. Para satisfacer este requisito se propone una solución en la que el usuario podrá navegar entre las distintas metáforas de visualización seleccionando con el ratón los modelos gráficos que desee (Fig. \ref{fig:metaphore-visualization-levels}).
+
+\imagenBorde{Cap5//metaphore-visualization-levels}{0.45}{Prototipo a mano alzada para diseñar la navegación entre las distintas metáforas de visualización}{fig:metaphore-visualization-levels}
+
 
 
 \subsection{Identificación de requisitos}
@@ -154,6 +158,8 @@ Después de una serie importante de reuniones, se han identificado un conjunto de
 
 \subsubsection{Requisitos funcionales}
 \label{sec:requisitos-funcionales}
+
+Las funcionalidades que proporcione la herramienta al usuario dependerán de su rol. Así pues, en función del rol del usuario se tendrá acceso a un mayor o menor conjunto de funcionalidades destinadas a tareas de administración, gestión o análisis.
 
 En la tabla \ref{table:requisitos-funcionales} se especifican los requisitos funcionales detectados en la fase de inicio, una descripción en lenguaje natural de los mismos y qué usuarios pueden beneficiarse de cada una de las funcionalidades.
 
@@ -187,20 +193,20 @@ En la tabla \ref{table:requisitos-funcionales} se especifican los requisitos fun
 		Jefe de proyecto \\
 	\hline
 		Gestión de perfiles de visualización &
-		Engloba las funcionalidades de creación, consulta y supresión de perfiles de visualización. Un perfil de visualización establece un mapeo entre los atributos de una entidad de la lógica de dominio del DGS y las dimensiones de una metáfora de visualización. &
+		Engloba las funcionalidades de creación, consulta y supresión de perfiles de visualización. Un perfil de visualización establece las entidades a visualizar y la información que se desea mostrar de las mismas a través de las metáforas. &
 		Administrador \\
 	\hline
 		Selección de perfiles &
 		Permitirá que el usuario seleccione un perfil de visualización para configurar la información que desea analizar mediante la herramienta de visualización. &
-		Administrador y jefe de proyecto \\
+		Administrador, jefe de proyecto y usuario estándar autenticado \\
 	\hline
 		Geolocalización de factorías &
 		Muestra un mapa del mundo con un conjunto de factorías software geolocalizadas. &
-		Administrador y jefe de proyecto \\
+		Administrador, jefe de proyecto y usuario estándar autenticado \\
 	\hline
 		Visualización de medidas e indicadores &
-		Generación de gráficos 3D a partir de la información de las medidas e indicadores las entidades del DGS. &
-		Administrador y jefe de proyecto \\
+		Generación de gráficos 3D a partir de la información de las medidas e indicadores de las entidades del DGS. &
+		Administrador, jefe de proyecto y usuario estándar autenticado \\
 	\hline
 		Selección de objetos 3D &
 		El usuario debe ser capaz de seleccionar los objetos 3D de una escena mediante el puntero del ratón.  &
@@ -215,7 +221,7 @@ En la tabla \ref{table:requisitos-funcionales} se especifican los requisitos fun
 \end{longtable}
 \end{center}
 
-A modo de síntesis, en las tablas \ref{table:roles-webapp} y \ref{table:roles-graphics-engine} se muestran los roles identificados que harán uso de cada uno de los componentes que conforman el sistema. Nótese que el rol \textit{Usuario} de ambos componentes no se corresponde con el mismo ente, ya que en la aplicación web se refiere a una categoría dentro de la jerarquía de roles y, por otro lado, en el motor gráfico se refiere a la persona que interactúa con un entorno virtual.
+A modo de síntesis, en las tablas \ref{table:roles-webapp} y \ref{table:roles-graphics-engine} se muestran los roles identificados que harán uso de cada uno de los componentes que conforman el sistema. Nótese que el rol \textit{Usuario} de ambos componentes no se corresponde con el mismo actor, ya que el usuario del motor gráfico engloba a los administradores, jefes de proyecto y usuarios autenticados, en general, de la aplicación web.
 
 \begin{table}[!htbp]%
 	\centering
@@ -264,9 +270,17 @@ A modo de síntesis, en las tablas \ref{table:roles-webapp} y \ref{table:roles-gr
 
 Las empresas colaboradoras en este proyecto imponen como requisito que el lenguaje de programación sea Java. Por lo tanto, ambos componentes estarán basados en tecnología \textbf{Java} y su ciclo de vida será gestionado de forma separada mediante \textbf{Maven}.
 
-Por otro lado, para que la herramienta sea accesible desde cualquier parte del mundo, siempre y cuando se disponga de una conexión a Internet, será diseñada como una \textbf{aplicación web}. Así pues, y con el objetivo de romper con las diferencias idiomáticas, la aplicación web gozará de una característica de \textit{internacionalización}. En este PFC se incluirán los idiomas de Inglés (Americano) y Español (España), siendo únicamente necesario traducir un conjunto de ficheros en texto plano para añadir cuantos idiomas se deseen.
+Por otro lado, para que la herramienta sea accesible desde cualquier parte del mundo, siempre y cuando se disponga de una conexión a Internet, será diseñada como una \textbf{aplicación web}. Así pues, y con el objetivo de romper con las diferencias idiomáticas, la aplicación web gozará de una característica de \textit{internacionalización}. En este PFC se incluirán los idiomas de Inglés (Americano) y Español (España), siendo únicamente necesario traducir un conjunto de ficheros en texto plano para añadir cuantos idiomas se deseen. Esta característica es fundamental al ser una herramienta orientada al desarrollo global, ya que se podrá utilizar en distintos países.
 
-En cuanto a la generación de gráficos 3D, será necesario encontrar soluciones que abstraigan la generación de los mismos de la arquitectura de la máquina y del sistema operativo. Además, el entorno virtual generado deberá ser interactivo y permitir que el usuario realice distintas operaciones de desplazamiento y enfoque de la cámara, a fin de evitar que queden ocultas algunas zonas de interés.
+En cuanto a la generación de gráficos 3D, será necesario encontrar soluciones que abstraigan la generación de los mismos de la arquitectura de la máquina y del sistema operativo.
+
+Otras de las características de las que debe gozar el sistema son las siguientes:
+\begin{itemize}
+	\item \textbf{Intuitivo}. Para permitir que el análisis de los datos sea una tarea rápida y precisa, el sistema de visualización debe permitir vistas intuitivas y de fácil comprensión.
+	\item \textbf{Flexible}. Cabe la posibilidad de que las empresas que utilicen el sistema deseen mostrar información adicional a la seleccionada inicialmente. Por ello, es necesario que el sistema disponga de algún mecanismo que permita esta adición de conocimiento de un modo sencillo.
+	\item \textbf{Personalizable}. Algunos sistemas de visualización son efectivos y eficientes pero tienen un diseño muy específico y resulta costoso adaptarlos para manejar nuevos datos. Por ello, el sistema desarrollado debe diseñarse de un modo que permita la adición de nuevos requisitos de un modo sencillo. Acto seguido, los jefes de proyecto podrán crear distintas vistas personalizadas en función de sus preferencias.
+	\item \textbf{Extensible}. El sistema debe incorporar una arquitectura bien diseñada que permita, al equipo encargado del mantenimiento del software, la adición de nuevas metáforas de visualización de un modo rápido y fácil.
+\end{itemize}
 
 
 \subsection{Modelo de Casos de Uso}
@@ -318,9 +332,9 @@ Para finalizar, se facilita la tabla \ref{table:denominacion-priorizacion-cdu} q
 	\hline
 		Mostrar escena &
 		3 &
-		Mostrar metáfora de fábricas \newline
-		Mostrar metáfora de proyectos \newline
-		Mostrar metáfora genérica &
+		Mostrar metáfora de polígono industrial \newline
+		Mostrar escena con modelos de proyectos \newline
+		Mostrar metáfora de ciudad &
 		CdU1.5\\
 	\hline
 		Configurar escena &
@@ -341,14 +355,14 @@ Para finalizar, se facilita la tabla \ref{table:denominacion-priorizacion-cdu} q
 		Configuración de menús &
 		CdU2.1\\
 	\hline
-		Gestión de perfiles &
+		Gestionar perfiles &
 		13 &
 		Crear perfiles \newline
 		Ver perfiles \newline
 		Borrar perfiles &
 		CdU2.2\\
 	\hline
-		Gestión de compañías &
+		Gestionar compañías &
 		15 &
 		Crear compañías \newline
 		Ver compañías \newline
@@ -356,7 +370,7 @@ Para finalizar, se facilita la tabla \ref{table:denominacion-priorizacion-cdu} q
 		Borrar compañías &
 		CdU2.3\\
 	\hline
-		Gestión de factorías &
+		Gestionar factorías &
 		16 &
 		Crear factorías \newline
 		Ver factorías \newline
@@ -364,7 +378,7 @@ Para finalizar, se facilita la tabla \ref{table:denominacion-priorizacion-cdu} q
 		Borrar factorías &
 		CdU2.4\\
 	\hline
-		Gestión de proyectos &
+		Gestionar proyectos &
 		17 &
 		Crear proyectos \newline
 		Ver proyectos \newline
@@ -372,7 +386,7 @@ Para finalizar, se facilita la tabla \ref{table:denominacion-priorizacion-cdu} q
 		Borrar proyectos &
 		CdU2.5\\
 	\hline
-		Gestión de subproyectos &
+		Gestionar subproyectos &
 		18 &
 		Crear subproyectos \newline
 		Ver subproyectos \newline
@@ -422,15 +436,14 @@ Se ha elaborado un glosario que define y aclara el concepto de algunos de los té
 	
 	\item \textbf{Entidad}. Se hace referencia a este término en numerosas ocasiones a lo largo del documento, especialmente cuando se aborda la parte de perfiles de visualización. El término \textit{entidad} se refiere a las distintas unidades que se consideran en el contexto del desarrollo global, tales como las compañías, las factorías, los proyectos y los subproyectos. Cuando se trata de hacer referencia a las propiedades, medidas o indicadores de una entidad, se suele utilizar el término \textit{propiedad} o \textit{atributo}.
 
-	\item \textbf{Factoría}. En este PFC se utiliza el término \textit{factoría software} o \textit{fábrica software} para referirse a un lugar físico, tal como una oficina o edificio, en el que se ubican distintos equipos de trabajo dedicados a mantener o desarrollar software. Una factoría o fábrica software pertenece a una compañía. Por otro lado, una compañía puede disponer de varias fábricas o factorías software para llevar a cabo distintos proyectos o partes de ellos.
+	\item \textbf{Factoría}. En este PFC se utiliza el término \textit{factoría software} o \textit{fábrica software} para referirse a un lugar físico, tal como una oficina o edificio, en el que se ubican distintos equipos de trabajo dedicados a mantener o desarrollar software. Una factoría o fábrica software pertenece a una compañía. Por otro lado, una compañía puede disponer de varias fábricas o factorías software para llevar a cabo un mismo proyecto.
 	
-	\item \textbf{Metáfora de visualización}. Este término también se puede emplear cuando se trata de aludir a un modelo gráfico del motor gráfico. Una metáfora de visualización o un modelo gráfico es aquel objeto que será pintado en pantalla por el motor gráfico. Las propiedades de una metáfora de visualización, cuyo valor condiciona la representación visual de la metáfora, reciben el nombre de \textit{dimensiones}.
+	\item \textbf{Metáfora de visualización}. Una metáfora de visualización es una analogía que subyace en la representación gráfica de una entidad o un concepto abstracto. El objetivo de las metáforas de visualización consiste en transferir propiedades del dominio de la representación gráfica a esa entidad o concepto abstracto \cite{Diehl07}.
 
-	\item \textbf{Motor gráfico}. Se trata de un componente software desarrollado en este PFC cuya finalidad consiste en generar gráficos 3D. El motor gráfico dispone de distintos modelos gráficos o metáforas de visualización que serán utilizados para representar distintos tipos de información.
+	\item \textbf{Motor gráfico}. Se trata de un componente software desarrollado en este PFC cuya finalidad consiste en generar gráficos 3D. El motor gráfico dispone de distintos modelos gráficos y metáforas de visualización que serán utilizados para representar distintos tipos de información.
 	
 	\item \textbf{Subproyecto}. Este término se refiere a una de las partes de un proyecto, que puede ser una \textit{fase}, una \textit{funcionalidad} o un \textit{módulo} del mismo.
 
-	\item \textbf{Vista}. En ocasiones, los términos \textit{vista}, \textit{escena} o \textit{nivel de abstracción} pueden haber sido utilizados indistintamente. Todos ellos se refieren a un entorno virtual en tres dimensiones generado mediante el motor gráfico, sobre el cual se representarán una o varias instancias de una metáfora de visualización.
 \end{itemize}
 
 
@@ -446,7 +459,7 @@ Del conjunto de librerías basadas en Java que se han contemplado para generar gr
 
 \subsection{Plan de iteraciones}
 
-A partir de los estudios elaborados a lo largo de esta fase, es posible establecer un plan de iteraciones. El plan de iteraciones se ha elaborado como una serie de tablas (metáforas de fichas de papel), en la que cada tabla contiene la información relativa a una iteración: número de iteración, fase a la que pertenece, comentarios adicionales, objetivos, hitos a alcanzar y una pequeña gráfica que muestra el grado de participación en las disciplinas del flujo de trabajo fundamental en la iteración.
+A partir de los estudios elaborados a lo largo de esta fase, es posible establecer un plan de iteraciones. El plan de iteraciones se ha elaborado como una serie de tablas (metáforas de fichas de papel), en la que cada tabla contiene la información relativa a una iteración: número de iteración, fase a la que pertenece, comentarios adicionales, objetivos, hitos a alcanzar y una pequeña gráfica que muestra el grado de participación en las disciplinas del flujo de trabajo fundamental en la iteración (Tablas \ref{table:ficha-iteracion-preliminar} - \ref{table:ficha-iteracion-10}).
 
 \newlength{\altura}
 \settoheight{\altura}{A}
@@ -471,7 +484,7 @@ A partir de los estudios elaborados a lo largo de esta fase, es posible establec
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
 	\begin{itemize}
-		\item Estudio de la arquitectura de visualización de calidad en DGS.
+		\item Marco de investigación preliminar y captura de requisitos.
 		\item Identificación de requisitos funcionales y no funcionales.
 		\item Identificación de roles.
 		\item Modelo preliminar de casos de uso.
