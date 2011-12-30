@@ -44,11 +44,11 @@ Durante esta disciplina se abordan cuestiones de análisis de ambos componentes.
 \vspace{7mm}
 \textbf{Motor gráfico}
 
-Durante esta disciplina se analiza cómo resolver dos de las cuestiones que han surgido en referencia al motor gráfico: errores de visualización en las transparencias de las metáforas y cálculo de sombras en tiempo real. Ambos casos tienen una estrecha relación con la posición de la cámara en la escena.
+Durante esta disciplina se analiza cómo resolver dos de las cuestiones que han surgido en referencia al motor gráfico: errores de visualización en las transparencias de las torres de la metáfora de ciudad y cálculo de sombras en tiempo real. Ambos casos tienen una estrecha relación con la posición de la cámara en la escena.
 
-En primer lugar, para que el usuario perciba las transparencias correctamente, es necesario pintar los objetos de la escena desde los más lejanos a la cámara hasta los más cercanos. Por ello, es necesario diseñar algún algoritmo que, proporcionándole la lista de metáforas -con sus coordenadas en la escena- y la posición de la cámara, calcule las distancias y las ordene de forma descendente. Este algoritmo deberá ser aplicado cada vez que se ejecute cualquier tipo de movimiento sobre la cámara ya que las distancias pueden variar.
+En primer lugar, para que el usuario perciba las transparencias correctamente, es necesario pintar los objetos de la escena desde los más lejanos a la cámara hasta los más cercanos. Por ello, es necesario diseñar algún algoritmo que, proporcionándole la lista de elementos -con sus coordenadas en la escena- y la posición de la cámara, calcule las distancias y las ordene de forma descendente. Este algoritmo deberá ser aplicado cada vez que se ejecute cualquier tipo de movimiento sobre la cámara ya que las distancias pueden variar.
 
-En segundo lugar, para calcular las sombras en tiempo real será necesario realizar algunos cálculos en un espacio vectorial de tres dimensiones. Estos cálculos consisten en hallar el producto escalar entre el vector que indica la posición del foco de iluminación -que usualmente está junto a la cámara- y el vector normal del plano que representa el suelo de la escena. Este vector se calcula mediante el producto vectorial de dos vectores cualesquiera, teniendo en cuenta que el plano se encuentra en $y=0$. A partir de estos datos se calculará la matriz de proyección de las sombras, sobre la cual se volverán a pintar las metáforas que conforman la escena, pero esta vez en color negro semi-transparente.
+En segundo lugar, para calcular las sombras en tiempo real será necesario realizar algunos cálculos en un espacio vectorial de tres dimensiones. Estos cálculos consisten en hallar el producto escalar entre el vector que indica la posición del foco de iluminación -que usualmente está junto a la cámara- y el vector normal del plano que representa el suelo de la escena. Este vector se calcula mediante el producto vectorial de dos vectores cualesquiera, teniendo en cuenta que el plano se encuentra en $y=0$. A partir de estos datos se calculará la matriz de proyección de las sombras, sobre la cual se volverán a pintar los elementos que conforman la escena, pero esta vez en color negro semi-transparente.
 
 \vspace{7mm}
 \textbf{Aplicación web}
@@ -162,7 +162,7 @@ En la figura \ref{fig:it6-access-control-class-diagram-spring-security} se muest
 	
 	\item \textbf{Clase Group} (Véase Anexo \ref{anexo:group}). De un modo similar a la clase User, la clase Group presenta una asociación unidireccional múltiple con la clase Role que será implementada mediante un \textit{Set} de Java y se mapea mediante JPA con la tabla \textit{groups}. Una vez más, en este caso cabe destacar la implementación del método \textit{getAuthorities}.
 	
-	\item \textbf{Clase Role} (Véase Anexo \ref{anexo:role}). En este caso no se presenta ningún tipo de asociación, por lo que esta en esta clase sólo será necesario implementar el \textit{interface} GrantedAuthority de Spring Security y realizar su correspondiente mapeo con la tabla \textit{roles} mediante JPA.
+	\item \textbf{Clase Role} (Véase Anexo \ref{anexo:role}). En este caso no se presenta ningún tipo de asociación, por lo que en esta clase sólo será necesario implementar el \textit{interface} GrantedAuthority de Spring Security y realizar su correspondiente mapeo con la tabla \textit{roles} mediante JPA.
 	
 	\item \textbf{Clase CustomUserDetailsService} (Véase Anexo \ref{anexo:customuserdetailsservice}). Esta clase implementa el \textit{interface} UserDetailsService y su responsabilidad se basa en establecer el mecanismo de búsqueda y materialización de los datos del usuario. Este proceso se realiza mediante un DAO (Data Access Object) que hereda las funcionalidades proporcionadas por Spring mediante la clase \textbf{HibernateDaoSupport}.
 \end{itemize}
@@ -170,9 +170,9 @@ En la figura \ref{fig:it6-access-control-class-diagram-spring-security} se muest
 \imagenBorde{Cap5//it6-access-control-class-diagram-spring-security}{1.0}{Diagrama de clases de diseño para CdU2.1 (GBAC mediante Spring Security)}{fig:it6-access-control-class-diagram-spring-security}
 
 
-Para finalizar con la disciplina de diseño, en la figura \ref{fig:spring-security-database-schema} se aprecia un esquema minimalista de la base de datos que es necesario diseñar para implementar un GBAC mediante Spring Security. Tal y como se ha indicado, únicamente serán persistentes los usuarios, los grupos y los roles (y las relaciones muchos-a-muchos que los asocian). Si se desea añadir información adicional, es posible añadir nuevas columnas a las tablas del esquema propuesto.
+Para finalizar con la disciplina de diseño, en la figura \ref{fig:spring-security-database-schema} se aprecia un esquema básico de la base de datos que es necesario diseñar para implementar un GBAC mediante Spring Security. Tal y como se ha indicado, únicamente serán persistentes los usuarios, los grupos y los roles (y las relaciones muchos-a-muchos que los asocian). Si se desea añadir información adicional, es posible añadir nuevas columnas a las tablas del esquema propuesto.
 \begin{itemize}
-	\item \textbf{Tabla \textit{users}}. Contiene la información relativa a los usuarios de la aplicación web. Spring Security exige que los usuarios tengan un nombre de usuario, una contraseña y una serie de atributos que indiquen si la cuenta está habilitada, caducada, bloqueada o si las credenciales han caducado. Esto es debido porque la clase Java perteneciente a la entidad \textit{Usuario} deberá implementar un interfaz de Spring denominado \textit{UserDetails} (Fig. \ref{fig:it6-access-control-class-diagram-spring-security}).
+	\item \textbf{Tabla \textit{users}}. Contiene la información relativa a los usuarios de la aplicación web. Spring Security exige que los usuarios tengan un nombre de usuario, una contraseña y una serie de atributos que indiquen si la cuenta está habilitada, caducada, bloqueada o si las credenciales han caducado. Esto es debido a que la clase Java perteneciente a la entidad \textit{Usuario} deberá implementar un interfaz de Spring denominado \textit{UserDetails} (Fig. \ref{fig:it6-access-control-class-diagram-spring-security}).
 	\item \textbf{Tabla \textit{groups}}. Contiene el nombre y la descripción de los grupos de usuarios que se desean crear. Se establecerá una relación \textit{muchos-a-muchos} entre los usuarios y los grupos gracias a la tabla \textit{users\_groups}.
 	\item \textbf{Tabla \textit{roles}}. Contiene el nombre y la descripción de los roles disponibles en el sistema. En Spring Security, por defecto aunque configurable, el nombre de los roles debe comenzar con el prefijo ``\textit{ROLE\_}''. Se establecerá una relación \textit{muchos-a-muchos} entre los grupos y los roles gracias a la tabla \textit{groups\_roles}.
 \end{itemize}
@@ -189,13 +189,13 @@ Durante esta disciplina se abordan cuestiones de implementación de ambos compone
 \vspace{7mm}
 \textbf{Motor gráfico}
 
-Durante esta disciplina se lleva cabo la implementación del pintado de sombras en tiempo real, el \textit{skybox} que otorgará mayor sensación de profundidad y el algoritmo ordena las metáforas en función de la distancia con respecto de la cámara para que las transparencias sean dibujadas correctamente.
+Durante esta disciplina se lleva cabo la implementación del pintado de sombras en tiempo real, el \textit{skybox} que otorgará mayor sensación de profundidad y el algoritmo ordena los modelos gráficos en función de la distancia con respecto de la cámara para que las transparencias sean dibujadas correctamente.
 
 En las figuras \ref{fig:it6-fixed-tests-it5} y \ref{fig:it6-jogl-mixed-screenshot} se muestran dos capturas de pantalla en las que se aprecia la evolución y el resultado de los gráficos generados.
 
 \imagenBorde{Cap5//it6-fixed-tests-it5}{0.45}{Gráficos generados después de la disciplina de implementación de la sexta iteración: a la izquierda sin sombras ni \textit{skybox}; a la derecha con ambas características}{fig:it6-fixed-tests-it5}
 
-\imagenBorde{Cap5//it6-jogl-mixed-screenshot}{0.25}{Gráficos generados después de la disciplina de implementación de la sexta iteración. De izquierda a derecha se muestran las metáforas de torres genéricas, factorías y proyectos}{fig:it6-jogl-mixed-screenshot}
+\imagenBorde{Cap5//it6-jogl-mixed-screenshot}{0.25}{Gráficos generados después de la disciplina de implementación de la sexta iteración. De izquierda a derecha se muestran las metáforas de ciudad y polígono industrial y una representación de proyectos software}{fig:it6-jogl-mixed-screenshot}
 
 
 \vspace{7mm}
@@ -203,18 +203,20 @@ En las figuras \ref{fig:it6-fixed-tests-it5} y \ref{fig:it6-jogl-mixed-screensho
 
 En esta parte de la disciplina se han implementado aquellos casos de uso que estaban planificados. De aquí en adelante, la aplicación web proporciona las siguientes funcionalidades:
 \begin{itemize}
-	\item Muestra un mapa mundial basado en Google Maps y permite que el usuario navegue a través de ellos.
+	\item Muestra un mapa mundial basado en Google Maps y permite que el usuario navegue a través de él (Fig. \ref{fig:it6-google-maps}).
 	\item Integra el motor gráfico mediante JNLPAppletLauncher y permite que el usuario ejecute la última versión del motor gráfico sin la necesidad de realizar procesos de instalación o configuración complejos. La descarga de extensiones y librerías nativas se realiza automáticamente gracias a un fichero de configuración \textit{.jnlp} que indica dónde se encuentran disponibles los distintos recursos nativos.
-	\item El usuario puede seleccionar las distintas metáforas que genera el motor gráfico y obtiene un mensaje en el cual se indica el identificador de la misma.
-\end{itemize} 
+	\item El usuario puede seleccionar los distintos modelos que conforman las metáforas que genera el motor gráfico y obtiene un mensaje en el cual se indica el identificador del elemento seleccionado.
+\end{itemize}
+
+\imagenBorde{Cap5//it6-google-maps}{1.4}{Captura de pantalla de la integración de Google Maps en la aplicación web}{fig:it6-google-maps}
 
 
 
 \subsubsection{Disciplina de pruebas}
 \label{sec:iteracion-6-pruebas}
 
-Dada la naturaleza de los casos de uso a probar, esta disciplina de pruebas se ha llevado a cabo con la ayuda de un usuario experto y el método basado en \textit{checklists}. En ella se ha comprobado que el usuario es capaz de seleccionar las distintas metáforas de una escena generada mediante el motor gráfico, y que obtiene sus correspondientes identificadores.
+Dada la naturaleza de los casos de uso a probar, esta disciplina de pruebas se ha llevado a cabo con la ayuda de un usuario experto y el método basado en \textit{checklists}. En ella se ha comprobado que el usuario es capaz de seleccionar los distintos modelos de una escena generada mediante el motor gráfico, y que obtiene sus correspondientes identificadores.
 
 Además, se ha comprobado que el applet en el que se distribuye el motor gráfico carga correctamente en los siguientes navegadores: Google Chrome 15.0 o superior, Mozilla Firefox 4.0 o superior, Internet Explorer 7 o superior.
 
-Para finalizar con esta disciplina, se han repetido los casos de prueba de la quinta iteración (Sección \ref{sec:iteracion-5-pruebas} y se ha obtenido un resultado positivo.
+Para finalizar con esta disciplina, se han repetido los casos de prueba de la quinta iteración (Sección \ref{sec:iteracion-5-pruebas}) y se ha obtenido un resultado positivo.

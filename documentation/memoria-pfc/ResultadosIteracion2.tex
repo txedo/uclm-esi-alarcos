@@ -1,6 +1,5 @@
 En esta iteración (Tabla \ref{table:ficha-iteracion-1}) se aborda:
 \begin{itemize}
-	\item Especificación detallada de dos nuevos requisitos no funcionales que condicionan críticamente el diseño y funcionamiento del motor gráfico.
 	\item Análisis, diseño e implementación de la funcionalidad que permite que el usuario se desplace a través de la escena.
 	\item Diseño arquitectónico de una estructura que permita generar nuevas escenas y vistas en función de la metáfora de visualización que quiera mostrarse.
 	\item Implementación de un foco de luz que otorgue más realismo a la escena mostrada.
@@ -12,9 +11,9 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-1}) se aborda:
 \subsubsection{Disciplina de requisitos}
 \label{sec:iteracion-2-requisitos}
 
-El motor gráfico dispondrá de un conjunto de metáforas de visualización que serán emplazadas en una escena que tratará de emular el entorno de una ciudad. La arquitectura del proyecto deberá permitir que el equipo encargado del mantenimiento de la aplicación pueda añadir nuevos modelos y vistas de un modo sencillo.
+Inicialmente, el motor gráfico dispondrá de un conjunto de modelos gráficos que serán emplazados en un entorno virtual tratando de representar la metáfora de un polígono industrial o de una ciudad. Por razones de extensibilidad, la arquitectura del proyecto deberá permitir que el equipo encargado del mantenimiento de la aplicación pueda añadir nuevos modelos gráficos con el fin de generar nuevas metáforas.
 
-El aspecto visual de una metáfora de visualización estará condicionado por los valores que toman sus dimensiones. Se entiende como \textbf{dimensión} de una metáfora a aquel atributo cuyo valor afecta directamente en su representación visual. Estos atributos son los que se emplearán a la hora de crear los perfiles de visualización y asociarlos con los atributos de las entidades de dominio del DGS. Así pues, se debe encontrar un mecanismo que permita diferenciar qué atributos de la metáfora actúan como dimensiones y cuáles no.
+El aspecto visual de un modelo gráfico estará condicionado por los valores que toman sus dimensiones. Se entiende como \textbf{dimensión} de un un modelo a aquel atributo cuyo valor afecta directamente en su representación visual. Las dimensiones se emplearán a la hora de crear los perfiles de visualización para poder asociarlos con los atributos de las entidades de dominio del DGS. Así pues, se debe encontrar un mecanismo que permita diferenciar qué atributos de los elementos de una metáfora actúan como dimensiones y cuáles no.
 
 Por otro lado, el motor gráfico no debe tener ningún tipo de dependencia con la herramienta contenedora. Esta característica implica que se establezca algún mecanismo de comunicación con el motor gráfico para que éste genere los gráficos correspondientes.
 
@@ -122,9 +121,9 @@ En cuanto al diseño de CdU1.5 se propone una arquitectura de vistas basada en he
 Para terminar, debido a los requisitos que se han identificado en esta iteración, es necesario plantear y tomar una serie de decisiones que condicionan el diseño, implementación y funcionamiento del motor gráfico en iteraciones posteriores.
 
 \vspace{7mm}
-\textbf{Dimensiones de las metáforas de visualización}
+\textbf{Dimensiones de los modelos gráficos}
 
-Se plantea diseñar cada metáfora de visualización como una clase Java. Como es habitual, una clase Java contiene un conjunto de atributos que definen el estado de los objetos que se instancian. Para poder diferenciar qué atributos son auxiliares o de control de aquellos que podrán ser empleados como dimensiones, así como para dotar la dimensión de la semántica que se crea necesaria, se propone anotar los atributos de la clase con \textbf{anotaciones personalizadas de Java}.
+Se plantea diseñar cada modelo gráfico como una clase Java. Como es habitual, una clase Java contiene un conjunto de atributos que definen el estado de los objetos que se instancian. Para poder diferenciar qué atributos pueden ser empleados como dimensiones, así como para dotar la dimensión de la semántica que se crea necesaria, se propone anotar los atributos de la clase con \textbf{anotaciones personalizadas de Java}.
 
 El uso de anotaciones personalizadas también conlleva la implementación de un pequeño \textbf{analizador de anotaciones} basado en \textbf{Java API Reflection}. Gracias a este API se puede utilizar el método de \textbf{introspección} para analizar en tiempo de ejecución la clase anotada y proporcionar la información necesaria a la interfaz gráfica de usuario para que ésta se configure automáticamente. De este modo se satisfará el requisito de interfaz gráfica de usuario adaptable.
 
@@ -136,7 +135,7 @@ En la figura \ref{fig:it2-dimension-annotation-parser-class-diagram} se muestra 
 \vspace{7mm}
 \textbf{Motor gráfico independiente de la aplicación contenedora}
 
-Persiguiendo el objetivo por el cual el motor gráfico podrá ser empleado en cualquier tipo de aplicación, se plantea diseñar un mecanismo generación de gráficos a partir de una cadena de texto. Esta cadena de texto, de estructura predefinida, será utilizada como entrada de datos al motor gráfico. El motor gráfico la procesará según proceda y, finalmente, mostrará los resultados en forma de gráficos 3D.
+Persiguiendo el objetivo por el cual el motor gráfico podrá ser empleado en cualquier tipo de aplicación, se plantea diseñar un mecanismo de generación de gráficos a partir de una cadena de texto. Esta cadena de texto, de estructura predefinida, será utilizada como entrada de datos al motor gráfico. El motor gráfico la procesará según proceda y, finalmente, mostrará los resultados en forma de gráficos 3D.
 
 Para establecer el formato de la cadena de texto de entrada, se propone \textbf{JSON} (\textit{JavaScript Object Notation}) (Listado \ref{json-example}), cuya estructura de nodos será definida y detallada en sucesivas iteraciones.
 

@@ -9,9 +9,9 @@ En esta iteración (Tabla \ref{table:ficha-iteracion-8}) se aborda:
 \subsubsection{Disciplina de análisis}
 \label{sec:iteracion-8-analisis}
 
-Durante esta disciplina se aborda el análisis de las funcionalidades que permiten gestionar el conocimiento del sistema. Se trata de los requisitos de gestión de compañías, factorías, proyectos y subproyectos.
+Durante esta disciplina se aborda el análisis de las funcionalidades que permiten gestionar el conocimiento del sistema. Se trata de los requisitos de gestión de compañías, factorías, proyectos y subproyectos. El objetivo de estas funcionalidades es habilitar las tareas de creación, modificación y consulta de las distintas entidades que conforman la estructura organizacional del desarrollo global de software. Para comprender esta estructura se recomienda mirar la figura \ref{fig:hierarchy}, incluída en la sección \ref{sec:objetivo-principal}.
 
-Para comenzar, se modela un diagrama de casos de uso algo más detallado que el que se ofreció en un primer momento. En este diagrama (Fig. \ref{fig:it8-management-usecase-diagram} se muestran las tareas asociadas a cada caso de uso. Cabe destacar que sólo se han representado las tareas relativas a la gestión de compañías y factorías por no alagar la extensión de este documento.
+Para comenzar, se modela un diagrama de casos de uso algo más detallado que el que se ofreció en un primer momento. En este diagrama (Fig. \ref{fig:it8-management-usecase-diagram}) se muestran las tareas asociadas a cada caso de uso. Cabe destacar que sólo se han representado las tareas relativas a la gestión de compañías y factorías por no alagar la extensión de este documento.
 
 \imagenBorde{Cap5//it8-management-usecase-diagram}{0.9}{Diagrama de casos de uso para CdU2.3 y CdU2.4}{fig:it8-management-usecase-diagram}
 
@@ -45,7 +45,7 @@ Por la misma razón que en la disciplina de análisis, en este documento sólo se i
 
 En esta disciplina se lleva a cabo la implementación de una clase \textbf{GLObjectManager}. Esta clase utiliza métodos de \textbf{reflexión} para para generar las objetos de las metáforas de visualización en tiempo real y asignar los valores correspondientes a sus dimensiones. Gracias a la solución propuesta, es posible agregar nuevas metáforas de visualización al motor gráfico y utilizarlas desde la aplicación web sin la necesidad de hacer cambios en la clase.
 
-El procedimiento se basa en \textit{deserializar} el fichero XML del perfil seleccionado para obtener su jerarquía de objetos \ref{fig:it7-profile-class-diagram}. Una vez conocidos la entidad y la metáfora que asocia el perfil, se recupera de la base de datos todos los objetos del tipo de la instancia que se está tratando. Acto seguido, se construyen los métodos \textit{setters} y \textit{getters} de ambas instancias conforme se leen los datos del perfil. Finalmente, se crea una instancia de la clase \textbf{City}, que está contenida en el motor gráfico y es la única dependencia de la aplicación web con el mismo (junto con el analizador de dimensiones), a la cual se le añaden las metáforas de visualización con los valores asignados a sus dimensiones.
+El procedimiento se basa en \textit{deserializar} el fichero XML del perfil seleccionado para obtener su jerarquía de objetos (Fig. \ref{fig:it7-profile-class-diagram}). Una vez conocidos la entidad y el modelo gráfico que asocia el perfil, se recupera de la base de datos todos los objetos del tipo de la instancia que se está tratando. Acto seguido, se construyen los métodos \textit{setters} y \textit{getters} de ambas instancias conforme se leen los datos del perfil. Finalmente, se crea una instancia de la clase \textbf{City}, que está contenida en el motor gráfico y es la única dependencia de la aplicación web con el mismo (junto con el analizador de dimensiones), a la cual se le añaden los elementos de la escena con los valores asignados a sus dimensiones.
 
 Una vez que se tiene en memoria la ciudad completa, se obtiene su representación en formato JSON. La cadena de texto resultante será la que se le proporcione al motor gráfico como dato de entrada y a partir de la cual se generarán los gráficos en tres dimensiones.
 
@@ -64,6 +64,6 @@ Como resultado de esta disciplina, se facilita una cadena de texto en formato JS
 Durante esta disciplina se construyen los casos de prueba que sirven para
 comprobar la funcionalidad de los requisitos implementados la disciplina de implementación de esta misma iteración.
 
-Cabe destacar que uno de los casos de prueba consiste comprobar que los tipos de datos asociados los atributos de las entidades y las dimensiones de la metáfora sean compatibles.
+Cabe destacar que uno de los casos de prueba consiste verificar que los tipos de datos asociados entre los atributos de las entidades y las dimensiones de los modelos son compatibles.
 
 No se incorporan más detalles al documento para no alargar la extensión del mismo.
