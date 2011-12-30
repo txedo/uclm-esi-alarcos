@@ -3,8 +3,59 @@
 
 % Breve resumen de lo más destacable del PFC con la solución propuesta y posibles mejoras, ampliaciones o trabajos relacionados que quedan por hacer y que tienen interés para el tema tratado. Al final, firma del autor.
 
-Dos componentes que dan forma a un sistema de visualización adaptable, configurable y extensible.
+\subsection{Aspectos destacables de la solución propuesta}
 
-Motor gráfico completamente independiente de la aplicación que lo contiene, se puede apreciar en el diagrama de paquetes de la figura \ref{fig:conclusiones-package-diagram}. Las únicas dependencias existen, de manera \textbf{unidireccional} es para leer las dimensiones de los modelos gráficos y para construir la cadena JSON mediante el objeto City, ya que esa estructura es la que maneja el motor gráfico como cadena de entrada.
+Tras haber finalizado la elaboración de este PFC se han obtenido dos componentes cuyos ciclos de vida pueden ser llevados a cabo de forma independiente y que, integrados, conforman un sistema de gestión y visualización potente, configurable y extensible, adaptado a escenarios de desarrollo global.
 
-\imagenBorde{Cap5//conclusiones-package-diagram}{0.49}{Diagrama de paquetes de los dos componentes integrados}{fig:conclusiones-package-diagram}
+Esta afirmación se corrobora con la figura \ref{fig:conclusiones-package-diagram}. En ella se aprecia que el motor gráfico es completamente independiente de la aplicación que lo contiene, que en este PFC es una aplicación web. Por esta razón, y gracias al diseño y arquitectura con el que se ha dotado al motor gráfico, todo tipo de aplicación, cualquiera que sea su índole -escritorio, web o móvil- y área de aplicación -no sólo desarrollo global-, puede incluirlo y comunicarse con él mediante una cadena de texto bien formada para generar gráficos en tres dimensiones. Esta cadena de texto debe estar en formato JSON y con la estructura definida por la clase \textit{City} que integra el motor gráfico.
+
+Además, en dicha figura se muestran \textbf{dos dependencias unidireccionales} entre la aplicación web y el motor gráfico. Estas dependencias, completamente opcionales aunque recomendables, permiten que la aplicación web conozca la última versión de las dimensiones de los modelos gráficos y la estructura que debe seguir la cadena de texto de entrada al motor. No obstante, si estas características son conocidas por la aplicación contenedora, ambas dependencias pueden ser eliminadas.
+
+\imagen{Cap5//conclusiones-package-diagram}{1.80}{Diagrama de paquetes de los dos componentes integrados}{fig:conclusiones-package-diagram}
+
+Por otro lado, la arquitectura de ambos componentes ha sido diseñada en base a jerarquías de herencia e interfaces. De este modo, se facilita notablemente el mantenimiento del sistema en lo que a futuros requisitos se refiere, tales como la adición de nuevas metáforas de visualización, nuevos modelos gráficos, o una estructura organizacional del desarrollo global más compleja. Además, destacar que se han aplicado patrones de diseño y buenas prácticas de programación en todos aquellos lugares en los que ha sido necesario, tratando siempre de lograr un compromiso entre la complejidad de la arquitectura y los principios de alta cohesión y bajo acoplamiento entre clases.
+
+Otro punto importante es la naturaleza multiplataforma e independiente de la arquitectura de la que goza el motor gráfico. En este aspecto se ha invertido mucho esfuerzo para abstraer, tanto al desarrollador como al usuario final, de la dependencia de librerías nativas para poder generar gráficos en tres dimensiones. Así pues, se han provisto mecanismos que automatizan las labores de descarga, instalación e integración de este tipo de librerías tanto en el proceso de construcción del proyecto como en la puesta en producción y ejecución del mismo, haciendo posible su ejecución en sistemas basados en Windows, GNU/Linux y MacOS, en sus versiones de 32 y 64 bits. Esto es posible, en parte, gracias al uso de \textbf{Maven} y \textbf{Ant}.
+
+Para finalizar, cabe destacar el sistema de autenticación y control de acceso que se ha incorporado en la aplicación web. Se trata de un sistema basado en \textbf{Spring Security} que actualmente se implementa en sistemas gubernamentales, aplicaciones militares y bancos. Por tanto, dado que este sistema será implantado en empresas, la seguridad es un aspecto que se ha tenido muy en cuenta. Además, la solución que se aporta en este PFC implementa un caso complejo y a la vez potente: control de acceso basado en grupos y acceso integrado a la base de datos mediante \textbf{Hibernate}.
+
+
+
+\subsection{Trabajo actual y futuras mejoras}
+
+El desarrollo de este proyecto continúa su curso y actualmente se están implementando las siguientes características:
+
+\begin{itemize}
+	\item Gestión de usuarios, grupos y roles.
+	\item Configuración dinámica de los permisos necesarios para acceder a las funcionalidades del sistema.
+	\item Incorporación de distintos niveles de topografía en la escena. Esto permite agregar una nueva dimensión a las metáforas, con el objetivo de configurar la superficie del terreno y elevar determinados elementos o barrios.
+	\item Algoritmos de posicionamiento que permitan distribuir los elementos de la escena de un modo más eficiente para optimizar el espacio de la escena empleado y maximizar la eficiencia de las tareas de visualización.
+	\item Posibilidad de elegir entre distintos métodos de normalización en la generación de gráficos 3D. Esta característica permitirá que no haya elementos excesivamente grandes o excesivamente pequeños en la escena.
+\end{itemize}
+
+Por último, destacar que actualmente ya se encuentra publicada la primera versión de la especificación del API de WebGL. Por tanto, se realizará un estudio de viabilidad y eficiencia para comprobar las ventajas e inconvenientes que acarrearía migrar el motor gráfico a dicha tecnología.
+
+
+\subsection{Conocimientos adquiridos}
+
+Los conocimientos adquiridos son el mejor sabor de boca que se queda después de finalizar el desarrollo de este PFC. Cuestiones como la aplicación y seguimiento de una metodología de desarrollo en un caso real, así como abordar todas las fases del ciclo de vida de un proyecto, han sido experiencias muy importantes. No obstante, destaca el perfil profesional, basado en tecnologías Java que actualmente de utilizan en empresa, que se ha forjado durante todo este proceso.
+
+Las características más importantes más importantes de dicho perfil son las siguientes:
+
+\begin{itemize}
+	\item Gestión del ciclo de vida del proyecto mediante \textbf{Maven}.
+	
+	\item Uso de \textbf{Spring Framework} como capa de comunicación entre múltiples librerías basadas en Java, inyección de dependencias y creación de \textit{beans} mediante el contenedor IoC.
+	
+	\item Implementación de un sistema de autenticación y control de acceso mediante \textbf{Spring Security}, antes conocido como Acegi Security.
+	
+	\item Manejo de la persistencia mediante \textbf{Hibernate}, un framework de tipo ORM, y su integración en Spring.
+	
+	\item Incorporación del patrón MVC en la aplicación web mediante el framework \textbf{Struts2}.
+
+	\item Diseño e implementación de una arquitectura de pruebas extensible y reutilizable mediante \textbf{DBUnit}, \textbf{JUnit}, \textbf{Spring-Test} y \textbf{Canoo WebTest}.
+	
+	\item Experiencia en el diseño y desarrollo de páginas web dinámicas mediante \textbf{AJAX} y \textbf{JQuery}.
+	
+	\item Generación de gráficos en tres dimensiones mediante \textbf{OpenGL}.
+\end{itemize}
