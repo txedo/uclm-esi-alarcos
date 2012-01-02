@@ -10,13 +10,13 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.control.CompanyManager;
-import es.uclm.inf_cr.alarcos.desglosa_web.control.GenericManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Director;
 import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
 
 public class CompanyAction extends ActionSupport implements
         GenericActionInterface {
@@ -84,7 +84,7 @@ public class CompanyAction extends ActionSupport implements
     public void validateDoShowForm() {
         try {
             // Check id is valid
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             // Check there a company that exists with that id
             if (!CompanyManager.checkCompanyExists(id)) {
                 addActionError(getText("error.company.id"));
@@ -110,7 +110,7 @@ public class CompanyAction extends ActionSupport implements
     public void validateDoSave() {
         if (company != null) {
             // Check company name is not empty
-            if (GenericManager.isEmptyString(company.getName())) {
+            if (Utilities.isEmptyString(company.getName())) {
                 addFieldError("error.company.name", getText("error.company.name"));
             } else {
                 // Check if company name is available
@@ -119,10 +119,10 @@ public class CompanyAction extends ActionSupport implements
                 }
             }
             // Director data
-            if (GenericManager.isEmptyString(company.getDirector().getName())) {
+            if (Utilities.isEmptyString(company.getDirector().getName())) {
                 addFieldError("error.director.name", getText("error.director.name"));
             }
-            if (GenericManager.isEmptyString(company.getDirector().getLastName())) {
+            if (Utilities.isEmptyString(company.getDirector().getLastName())) {
                 addFieldError("error.director.last_name", getText("error.director.last_name"));
             }
         } else {
@@ -152,10 +152,10 @@ public class CompanyAction extends ActionSupport implements
         if (company != null) {
             try {
                 // Check if company id is valid
-                GenericManager.checkValidId(company.getId());
+                Utilities.checkValidId(company.getId());
                 cAux = CompanyManager.getCompany(company.getId());
                 // Check company name is not empty
-                if (GenericManager.isEmptyString(company.getName())) {
+                if (Utilities.isEmptyString(company.getName())) {
                     addFieldError("error.company.name", getText("error.company.name"));
                 } else {
                     try {
@@ -169,10 +169,10 @@ public class CompanyAction extends ActionSupport implements
                     }
                 }
                 // Director data
-                if (GenericManager.isEmptyString(company.getDirector().getName())) {
+                if (Utilities.isEmptyString(company.getDirector().getName())) {
                     addFieldError("error.director.name", getText("error.director.name"));
                 }
-                if (GenericManager.isEmptyString(company.getDirector().getLastName())) {
+                if (Utilities.isEmptyString(company.getDirector().getLastName())) {
                     addFieldError("error.director.last_name", getText("error.director.last_name"));
                 }
             } catch (NotValidIdParameterException e) {
@@ -207,7 +207,7 @@ public class CompanyAction extends ActionSupport implements
 
     public void validateDoDelete() {
         try {
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             if (!CompanyManager.checkCompanyExists(id)) {
                 addActionError(getText("error.company.id"));
             }
@@ -230,7 +230,7 @@ public class CompanyAction extends ActionSupport implements
 
     public void validateDoGet() {
         try {
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             if (!CompanyManager.checkCompanyExists(id)) {
                 addActionError(getText("error.company.id"));
             }

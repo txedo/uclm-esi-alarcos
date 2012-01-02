@@ -6,11 +6,11 @@ import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import es.uclm.inf_cr.alarcos.desglosa_web.control.GenericManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.control.MarketManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Market;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
 
 public class MarketAction extends ActionSupport {
     private static final long serialVersionUID = -7444770465628489923L;
@@ -68,7 +68,7 @@ public class MarketAction extends ActionSupport {
     
     public void validateDoGet() {
         try {
-            GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
         } catch (NullIdParameterException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

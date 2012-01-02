@@ -10,13 +10,18 @@ import javax.xml.bind.JAXBException;
 import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.control.ProfileManager;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.DeleteProfileException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Profile;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
 
 public class ProfileAction extends ActionSupport implements
         GenericActionInterface {
     static final long serialVersionUID = 6496919542324618999L;
+    private List<Profile> profiles;
     private Map<String, String> profileNames;
+    private String filename;
     private Metaclass profile;
     private String entity;
     private String model;
@@ -51,6 +56,10 @@ public class ProfileAction extends ActionSupport implements
                     getText("label.model.buildings"));
         }
     };
+    
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 
     public void setProfileName(String profileName) {
         this.profileName = profileName;
@@ -95,6 +104,10 @@ public class ProfileAction extends ActionSupport implements
     public void setModel(String model) {
         this.model = model;
     }
+    
+    public List<Profile> getProfiles() {
+        return profiles;
+    }
 
     public List<PropertyWrapper> getEntityAttributes() {
         return entityAttributes;
@@ -114,6 +127,7 @@ public class ProfileAction extends ActionSupport implements
 
     @Override
     public String execute() throws Exception {
+        profiles = ProfileManager.getProfiles();
         return SUCCESS;
     }
 
@@ -156,19 +170,18 @@ public class ProfileAction extends ActionSupport implements
     }
 
     public void validateDoSave() {
-        if (profileName == null || profileName.equals("")) {
-
+        if (Utilities.isEmptyString(profileName)) {
+            addFieldError("error.profile.name", "error.profile.name");
         }
-        if (profileDescription == null || profileDescription.equals("")) {
-
+        if (Utilities.isEmptyString(profileDescription)) {
+            addFieldError("error.profile.description", "error.profile.description");
         }
-        if (entity == null || entity.equals("")) {
-
+        if (Utilities.isEmptyString(model) || Utilities.isEmptyString(entity)) {
+            addActionError(getText("error.entity_model_required_fields"));
         }
-        if (model == null || model.equals("")) {
-
+        if (Utilities.getJsonArraySize(jsonMappings) == 0) {
+            addFieldError("error.nomappings", "error.nomappings");
         }
-        // check type compatibility server side
     }
 
     public String save() {
@@ -178,7 +191,8 @@ public class ProfileAction extends ActionSupport implements
             ProfileManager.addMappings(metaclass, jsonMappings);
             ProfileManager.addConstants(metaclass, jsonConstants);
             ProfileManager.addCaption(metaclass, jsonCaptionLines);
-            ProfileManager.saveProfile(metaclass, entity, profileName);
+            ProfileManager.saveProfile(metaclass, entity, profileName.trim());
+            addActionMessage(getText("message.profile.created_successfully"));
         } catch (JAXBException e) {
             result = ERROR;
         }
@@ -186,13 +200,34 @@ public class ProfileAction extends ActionSupport implements
     }
 
     public String edit() throws Exception {
-        // TODO Auto-generated method stub
         return null;
     }
 
-    public String delete() throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+    public String delete() {
+        String result = SUCCESS;
+        try {
+            ProfileManager.removeProfile(filename);
+            addActionMessage(getText("message.profile.delete_successfully"));
+        } catch (DeleteProfileException e) {
+            addActionError(getText("error.profile.notdeleted"));
+            result = ERROR;
+            try {
+                profiles = ProfileManager.getProfiles();
+            } catch (JAXBException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (InstantiationException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (IllegalAccessException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
+        return result;
     }
 
     public String get() {

@@ -44,5 +44,7 @@
     	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Market"/>
         <property name="hibernateTemplate" ref="hibernateTemplate" />  
 	</bean>
+	
+    <bean id="profileDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.ProfileDAO" />
 
 </beans>

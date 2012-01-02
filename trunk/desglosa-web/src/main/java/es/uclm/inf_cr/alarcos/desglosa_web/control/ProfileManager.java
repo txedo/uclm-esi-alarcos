@@ -15,21 +15,26 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
 import org.apache.commons.lang.WordUtils;
-import org.springframework.web.context.ContextLoader;
 
 import util.AnnotationParser;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProfileDAO;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.DeleteProfileException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Field;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Profile;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MyHashMapType;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyAnnotationParser;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper;
-import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
 import es.uclm.inf_cr.alarcos.desglosa_web.persistence.XMLAgent;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
 
 public class ProfileManager {
+    private static ProfileDAO profileDao;
+    public static final String PROFILE_FOLDER = "profiles";
+    
     private ProfileManager() {
     }
     
@@ -44,11 +49,11 @@ public class ProfileManager {
     }
     
     public static Map<String, String> getProfilesForEntity(String entity) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
-        return FileUtil.getProfiles(entity);
+        return profileDao.getProfiles(entity);
     }
     
     public static Metaclass getProfileByName(String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
-        return FileUtil.getProfile(profileName);
+        return profileDao.getProfile(profileName);
     }
 
     public static Metaclass buildProfile(String profileName, String profileDescription, String entity, String model) {
@@ -163,9 +168,23 @@ public class ProfileManager {
                 + "-"
                 + Calendar.getInstance().getTimeInMillis()
                 + ".xml";
-        String path = ContextLoader.getCurrentWebApplicationContext()
-                .getServletContext().getRealPath("profiles")
-                + "\\" + filename;
+        String path = Utilities.getRealPathToWebApplicationContext(PROFILE_FOLDER) + "\\" + filename;
         XMLAgent.marshal(path, Metaclass.class, metaclass);
+    }
+    
+    public static List<Profile> getProfiles() throws JAXBException, IOException, InstantiationException, IllegalAccessException {
+        return profileDao.getProfiles();
+    }
+    
+    public static String getLinkToXmlFile(String filename) {
+        return Utilities.getRealPathToWebApplicationContext(PROFILE_FOLDER) + "\\" + filename;
+    }
+    
+    public void setProfileDao (ProfileDAO profileDao) {
+       ProfileManager.profileDao = profileDao;
+    }
+
+    public static void removeProfile(String filename) throws DeleteProfileException {
+        profileDao.removeProfile(filename);
     }
 }

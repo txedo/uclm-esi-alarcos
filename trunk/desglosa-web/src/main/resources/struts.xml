@@ -51,6 +51,8 @@
 			<result name="input">/jsp/visualization.jsp</result>
 			<result name="error">/jsp/visualization.jsp</result>
 		</action>
+		
+		<!-- Profile related actions -->
 		<action name="listProfiles" class="profileAction">
 			<!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
 			<interceptor-ref name="redirectMessageAndParams"/>
@@ -72,6 +74,14 @@
 			<result name="input">/jsp/admin/formProfile.jsp</result>
 			<result name="success" type="redirectAction">listProfiles</result>
 		</action>
+        <action name="deleteProfile" class="profileAction" method="delete">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/admin/viewProfiles.jsp</result>
+            <result name="input">/jsp/admin/viewProfiles.jsp</result>
+            <result name="success" type="redirectAction">listProfiles</result>
+        </action>
+		<!-- End of Profile related actions -->
 		
 		<!-- Company related actions -->
 		<action name="listCompanies" class="companyAction">
@@ -206,6 +216,20 @@
             <result name="input">/jsp/viewProjects.jsp</result>
             <result name="success" type="redirectAction">listProjects</result>
         </action>
+        <action name="viewProjectData" class="projectAction" method="get">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/formProjectData.jsp</result>
+            <result name="input">/jsp/formProjectData.jsp</result>
+            <result name="success">/jsp/formProjectData.jsp</result>
+        </action>
+        <action name="editProjectData" class="projectAction" method="updateMeasures">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewProjects.jsp</result>
+            <result name="input">/jsp/formProjectData.jsp</result>
+            <result name="success" type="redirectAction">listProjects</result>
+        </action>
         <!-- End of Project related actions -->
         
         <!-- Subproject related actions -->
@@ -249,6 +273,20 @@
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewSubprojects.jsp</result>
             <result name="input">/jsp/viewSubprojects.jsp</result>
+            <result name="success" type="redirectAction">listSubprojects</result>
+        </action>
+        <action name="viewSubprojectData" class="subprojectAction" method="get">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/formSubprojectData.jsp</result>
+            <result name="input">/jsp/formSubprojectData.jsp</result>
+            <result name="success">/jsp/formSubprojectData.jsp</result>
+        </action>
+        <action name="editSubprojectData" class="subprojectAction" method="updateMeasures">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewSubprojects.jsp</result>
+            <result name="input">/jsp/formSubprojectData.jsp</result>
             <result name="success" type="redirectAction">listSubprojects</result>
         </action>
         <!-- End of Subproject related actions -->

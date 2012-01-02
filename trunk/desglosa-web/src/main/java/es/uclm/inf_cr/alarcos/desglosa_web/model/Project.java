@@ -20,6 +20,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Formula;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Measure;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 
 @Entity
@@ -40,43 +41,43 @@ public class Project {
     private Set<Subproject> subprojects = new HashSet<Subproject>();
     @Property(embedded = true)
     private Market market;
-    @Property
+    @Property @Measure
     private Boolean audited;
-    @Property
+    @Property @Measure
     private Integer totalIncidences;
-    @Property
+    @Property @Measure
     private Integer repairedIncidences;
-    @Property
+    @Property @Measure(base = false)
     private Integer nonRepairedIncidences;
-    @Property
+    @Property @Measure
     private Integer size;
-    @Property
+    @Property @Measure
     private Boolean delay;
-    @Property
+    @Property @Measure
     private Float fiabilidad;
-    @Property
+    @Property @Measure
     private Float usabilidad;
-    @Property
+    @Property @Measure
     private Float eficiencia;
-    @Property
+    @Property @Measure
     private Float mantenibilidad;
-    @Property
+    @Property @Measure
     private Float portabilidad;
-    @Property
-    private Float lineasDeCodigo;
-    @Property
-    private Float comentarios;
-    @Property
+    @Property @Measure
+    private Integer lineasDeCodigo;
+    @Property @Measure
+    private Integer comentarios;
+    @Property @Measure(base = false)
     private Float ratioComentariosLineasDeCodigo;
-    @Property
+    @Property @Measure
     private Float puntosFuncion;
-    @Property
+    @Property @Measure
     private Float fichajeCodigo;
-    @Property
+    @Property @Measure
     private Float fichajeTotal;
-    @Property
+    @Property @Measure(base = false)
     private Float ratioFichaje;
-    @Property
+    @Property @Measure
     private Float actividad;
 
     public Project() {
@@ -150,38 +151,38 @@ public class Project {
         return delay;
     }
 
-    @Column(name = "fiabilidad", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "fiabilidad", nullable = true, columnDefinition = "float default 0")
     public Float getFiabilidad() {
         return fiabilidad;
     }
 
-    @Column(name = "usabilidad", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "usabilidad", nullable = true, columnDefinition = "float default 0")
     public Float getUsabilidad() {
         return usabilidad;
     }
 
-    @Column(name = "eficiencia", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "eficiencia", nullable = true, columnDefinition = "float default 0")
     public Float getEficiencia() {
         return eficiencia;
     }
 
-    @Column(name = "mantenibilidad", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "mantenibilidad", nullable = true, columnDefinition = "float default 0")
     public Float getMantenibilidad() {
         return mantenibilidad;
     }
 
-    @Column(name = "portabilidad", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "portabilidad", nullable = true, columnDefinition = "float default 0")
     public Float getPortabilidad() {
         return portabilidad;
     }
 
-    @Column(name = "lineas_de_codigo", nullable = true, columnDefinition = "float default 0.0")
-    public Float getLineasDeCodigo() {
+    @Column(name = "lineas_de_codigo", nullable = true, columnDefinition = "int default 0")
+    public Integer getLineasDeCodigo() {
         return lineasDeCodigo;
     }
 
-    @Column(name = "comentarios", nullable = true, columnDefinition = "float default 0.0")
-    public Float getComentarios() {
+    @Column(name = "comentarios", nullable = true, columnDefinition = "int default 0")
+    public Integer getComentarios() {
         return comentarios;
     }
 
@@ -190,17 +191,17 @@ public class Project {
         return ratioComentariosLineasDeCodigo;
     }
 
-    @Column(name = "puntos_funcion", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "puntos_funcion", nullable = true, columnDefinition = "float default 0")
     public Float getPuntosFuncion() {
         return puntosFuncion;
     }
 
-    @Column(name = "fichaje_codigo", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "fichaje_codigo", nullable = true, columnDefinition = "float default 0")
     public Float getFichajeCodigo() {
         return fichajeCodigo;
     }
 
-    @Column(name = "fichaje_total", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "fichaje_total", nullable = true, columnDefinition = "float default 0")
     public Float getFichajeTotal() {
         return fichajeTotal;
     }
@@ -210,7 +211,7 @@ public class Project {
         return ratioFichaje;
     }
 
-    @Column(name = "actividad", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "actividad", nullable = true, columnDefinition = "float default 0")
     public Float getActividad() {
         return actividad;
     }
@@ -287,11 +288,11 @@ public class Project {
         this.portabilidad = portabilidad;
     }
 
-    public void setLineasDeCodigo(Float lineasDeCodigo) {
+    public void setLineasDeCodigo(Integer lineasDeCodigo) {
         this.lineasDeCodigo = lineasDeCodigo;
     }
 
-    public void setComentarios(Float comentarios) {
+    public void setComentarios(Integer comentarios) {
         this.comentarios = comentarios;
     }
 

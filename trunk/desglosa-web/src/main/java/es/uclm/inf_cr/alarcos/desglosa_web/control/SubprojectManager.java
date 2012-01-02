@@ -1,5 +1,6 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.control;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.SubprojectDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
 
 public class SubprojectManager {
     private static SubprojectDAO subprojectDao;
@@ -49,6 +51,12 @@ public class SubprojectManager {
         Map<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("id", id);
         return subprojectDao.findByNamedQuery("findSubprojectsByCompanyId", queryParams);
+    }
+    
+    public static void updateMeasures(int subprojectToUpdateId, Subproject subprojectWithUpdatedMeasures) throws SubprojectNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, Exception {
+        Subproject subprojectToUpdate = SubprojectManager.getSubproject(subprojectToUpdateId);
+        Utilities.updateFieldsByReflection(Subproject.class, subprojectToUpdate, subprojectWithUpdatedMeasures);
+        SubprojectManager.saveSubproject(subprojectToUpdate);
     }
 
     /**
