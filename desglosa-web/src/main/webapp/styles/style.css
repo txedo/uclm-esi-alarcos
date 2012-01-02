@@ -30,7 +30,7 @@ fieldset.formfieldset {
     border: none;
 }
 
-fieldset.viewingfieldset img, fieldset.formfieldset img {
+.framed {
     padding:1px;
     border:1px solid #000;
     background-color:#fff;
@@ -42,12 +42,24 @@ fieldset.viewingfieldset img, fieldset.formfieldset img {
     width: 100%;
 }
 
+img.icon {
+    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+    border: 0;
+    background-color: transparent;
+}
+
 span.icon {
 	width: 10px;
 	height: 10px;
 	display: inline-block;
 	border: 1px solid #000;
 	margin-right: 5px;
+}
+
+.displaytagTable {
+	margin-top: 15px;
 }
 
 .displaytagTable span.pagebanner {
@@ -180,7 +192,7 @@ h2 {
 	margin: 0;
 	margin-bottom: 20px;
 	padding: 5px 0;
-	width: 500px;
+	width: 600px;
 	color: #383939;
 	font: normal 30px Arial, Helvetica, sans-serif;
 	letter-spacing: 0px;

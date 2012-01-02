@@ -14,6 +14,7 @@
         <intercept-url pattern="/index" filters="none"/>
         <intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <intercept-url pattern="/logout" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
+<!--         <intercept-url pattern="/profiles/*" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/> -->
         <!-- <intercept-url pattern="/jsp/admin/*" access="ROLE_ADMIN"/> -->
         <!-- <intercept-url pattern="/jsp/viewCompanies.jsp" access="ROLE_ADMIN"/> -->
         <!-- <intercept-url pattern="/jsp/formCompany.jsp" access="ROLE_ADMIN"/> -->

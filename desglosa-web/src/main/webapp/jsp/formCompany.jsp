@@ -60,7 +60,7 @@
 						<c:if test="${not empty company.director.imagePath}">
 							<li>
 								<label for="company.director.image"><s:text name="label.configure.director.current_image"/></label>
-								<img src="<s:text name='company.director.imagePath'/>" width="128" height="128" title="<s:text name='label.configure.director.current_image'/>"/>
+								<img class="framed" src="<s:text name='company.director.imagePath'/>" width="128" height="128" title="<s:text name='label.configure.director.current_image'/>"/>
 							</li>
 						</c:if>
 					</li>

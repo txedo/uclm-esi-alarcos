@@ -6,7 +6,6 @@ public class PropertyWrapper {
     private String description;
 
     public PropertyWrapper(String name, String type, String description) {
-        super();
         this.name = name;
         this.type = type;
         this.description = description;

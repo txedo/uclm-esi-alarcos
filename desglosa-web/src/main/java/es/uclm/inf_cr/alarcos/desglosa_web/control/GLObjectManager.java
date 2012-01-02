@@ -73,8 +73,7 @@ public class GLObjectManager {
                         // Look for the setter method through all the object
                         // hierarchy
                         Class<?> superClass = classModel;
-                        Method setterMethod = superClass.getMethod(setterName,
-                                mapping.getModelAttr().getParameterType());
+                        Method setterMethod = superClass.getMethod(setterName, mapping.getModelAttr().getParameterType());
 
                         // Build getter method using Java Reflective API
                         // oneWord_otherWord_anotherWord must be parsed to

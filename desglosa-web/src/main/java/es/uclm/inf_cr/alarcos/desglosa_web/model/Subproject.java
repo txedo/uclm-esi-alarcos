@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Formula;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Measure;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 
 @Entity
@@ -30,31 +31,31 @@ public class Subproject {
     private Factory factory;
     @Property
     private String name;
-    @Property
+    @Property @Measure
     private Float fiabilidad;
-    @Property
+    @Property @Measure
     private Float usabilidad;
-    @Property
+    @Property @Measure
     private Float eficiencia;
-    @Property
+    @Property @Measure
     private Float mantenibilidad;
-    @Property
+    @Property @Measure
     private Float portabilidad;
-    @Property
-    private Float lineasDeCodigo;
-    @Property
-    private Float comentarios;
-    @Property
+    @Property @Measure
+    private Integer lineasDeCodigo;
+    @Property @Measure
+    private Integer comentarios;
+    @Property @Measure(base = false)
     private Float ratioComentariosLineasDeCodigo;
-    @Property
+    @Property @Measure
     private Float puntosFuncion;
-    @Property
+    @Property @Measure
     private Float fichajeCodigo;
-    @Property
+    @Property @Measure
     private Float fichajeTotal;
-    @Property
+    @Property @Measure(base = false)
     private Float ratioFichaje;
-    @Property
+    @Property @Measure
     private Float actividad;
 
     public Subproject() {
@@ -108,13 +109,13 @@ public class Subproject {
         return portabilidad;
     }
 
-    @Column(name = "lineas_de_codigo", nullable = true, columnDefinition = "float default 0.0")
-    public Float getLineasDeCodigo() {
+    @Column(name = "lineas_de_codigo", nullable = true, columnDefinition = "int default 0.0")
+    public Integer getLineasDeCodigo() {
         return lineasDeCodigo;
     }
 
-    @Column(name = "comentarios", nullable = true, columnDefinition = "float default 0.0")
-    public Float getComentarios() {
+    @Column(name = "comentarios", nullable = true, columnDefinition = "int default 0.0")
+    public Integer getComentarios() {
         return comentarios;
     }
 
@@ -184,11 +185,11 @@ public class Subproject {
         this.portabilidad = portabilidad;
     }
 
-    public void setLineasDeCodigo(Float lineasDeCodigo) {
+    public void setLineasDeCodigo(Integer lineasDeCodigo) {
         this.lineasDeCodigo = lineasDeCodigo;
     }
 
-    public void setComentarios(Float comentarios) {
+    public void setComentarios(Integer comentarios) {
         this.comentarios = comentarios;
     }
 

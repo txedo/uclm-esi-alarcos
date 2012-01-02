@@ -18,6 +18,7 @@
 	<fmt:message key="message.range.explanation" var="rangeExplanation"/>
 	<fmt:message key="message.range.expectedValueExplanation" var="expectedValueExplanation"/>
 	<fmt:message key="error.profileCreation" var="profileCreationErrors"/>
+	<fmt:message key="error.general" var="criticalError"/>
 
 	<meta name="menu" content="ManageProfiles"/>
 	
@@ -541,6 +542,8 @@
 			$("#mapping_messages").html("<p class='messageBox error'><s:text name='error.empty_mapping'/></p>");
 			toggleSteps(3,1);
 			noError = false;
+		} else {
+			$("#mapping_messages").html("");
 		}
 		// Comprobar que no quedan nonMappedModelAttributes sin valor por defecto y que el valor corresponde al tipo
 		var nonMappedAttributesError = false;
@@ -572,8 +575,11 @@
 			$("#nonMapped_dimensions tfoot").html("<tr>");
 			$("#nonMapped_dimensions tfoot tr:last").html("<td colspan='2'>");
 			$("#nonMapped_dimensions tfoot tr td:last").html("<p class='messageBox error'><s:text name='error.constant_attributes'/></p>");
+		} else {
+			$("#nonMapped_dimensions tfoot").html("");
 		}
 		// Comprobar que no hay caption lines sin texto
+		$("#added_captionLines tfoot").html("");
 		$("#added_captionLines tbody tr.cfg_line").each(function(index, element) {
 			var labelElement = $(element).children("td").children("#text");
 			var label = $(labelElement).val();
@@ -594,14 +600,23 @@
 		});
 		// Comprobar que profileName y profileDescription no están vacíos
 		if ($("#profileName").val() == "") {
-			$("#profileNameError").html("<span class='messageBox error'><s:text name='error.profileName.isMandatory'/></span>")
+			$("#profileNameError").html("<ul class='errorMessage'><li><span><s:text name='error.profileName.isMandatory'/></span></li></ul>")
 			noError = false;
+		} else {
+			$("#profileNameError").html("");
 		}
 		if ($("#profileDescription").val() == "") {
-			$("#profileDescriptionError").html("<span class='messageBox error'><s:text name='error.profileDescription.isMandatory'/></span>")
+			$("#profileDescriptionError").html("<ul class='errorMessage'><li><span><s:text name='error.profileDescription.isMandatory'/></span></li></ul>")
 			noError = false;
+		} else {
+			$("#profileDescriptionError").html("");
 		}
-
+	    if($("#entitySelect").val() == -1 || $("#modelSelect").val() == -1) {
+	    	$("#entityAndModelError").html("<p><ul class='errorMessage'><li><span><s:text name='error.entity_model_required_fields'/></span></li></ul></p>")
+	    	noError = false;
+	    } else {
+	    	$("#entityAndModelError").html("");
+	    }
 		return noError;
 	}
 	
@@ -626,6 +641,7 @@
 			var jsonCaptionLines = JSON.stringify(captionLines);
 			var jsonMappings = JSON.stringify(mappings);
 			var jsonConstants = JSON.stringify(constants);
+			$("#saveIndicator").toggle();
 			$.post ("/desglosa-web/saveProfile",
 				{ profileName: $("#profileName").val(),
 				  profileDescription: $("#profileDescription").val(),
@@ -637,9 +653,11 @@
 				},
 				function(data, status) {
 					if (status == "success") {
-						alert("success");
+						$(location).attr('pathname', '/listProfiles?add=success');
 					} else {
-						alert("error");
+						$('#errorDialogBody').html("<p class='messageBox error'><c:out value='${criticalError}'/></p>");
+			            $('#errorDialog').dialog('open');
+			            $("#saveIndicator").toggle();
 					}
 			});
 		} else {
@@ -688,79 +706,91 @@
 </head>
 
 <body>
+    <s:if test="!hasActionErrors()">
+        <p><s:actionerror /></p>
+    </s:if>
+    <s:if test="!hasActionMessages()">
+        <p><s:actionmessage /></p>
+    </s:if>
+    
 	<div id="first_step">
-		<s:url id="updateProfileURL" action="json_p_updateProfileForm"/>
-		<s:url id="refreshTableColumns" action="json_p_loadTableColumns"/>
-		
-		<div id="info">
-			<p><s:text name="label.general_information_about_mappings1"/></p>
-			<p><s:text name="label.general_information_about_mappings2"/></p>
-		</div>
-		
-		<div id="panes" class="pane">
-			<div id="leftPane">
-				<sj:select 	href="%{updateProfileURL}"
-							emptyOption="false"
-							headerKey="-1"
-							headerValue="-- %{getText('label.entity_selection')} --"
-							disabled="option:first"
-							id="entitySelect"
-							name="entity"
-							list="entities"
-							indicator="indicator1"
-							onAlwaysTopics="disableHeader"
-							onChangeTopics="reloadEntityAttributes"/>
-				<div><img id="indicator1" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none"/></div>
-				<sj:div id="entityAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
-			</div>
-			<div id="rightPane">
-				<sj:select 	href="%{updateProfileURL}"
-							emptyOption="false"
-							headerKey="-1"
-							headerValue="-- %{getText('label.model_selection')} --"
-							id="modelSelect"
-							name="model"
-							list="models"
-							indicator="indicator2"
-							onAlwaysTopics="disableHeader"
-							onChangeTopics="reloadModelAttributes"/>
-				<div><img id="indicator2" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none"/></div>
-				<sj:div id="modelAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
-			</div>
-		</div>
-		
-		<div id="mapping" class="pane">
-		
-			<!-- Table markup-->
-			<table id="mapping_added" class="default">
-				
-				<!-- Table header -->
-				<thead id="mapping_added_header">
-					<tr class="header">
-						<th colspan="7"><s:text name="label.configured_mappings"/></th>
-					</tr>
-					<tr class="subheader">
-						<th class="first"><s:text name="label.entity_attribute"/></th>
-						<th><s:text name="label.model_attribute"/></th>
-						<th><s:text name="label.range.low.abbr"/></th>
-						<th><s:text name="label.range.high.abbr"/></th>
-						<th><s:text name="label.range.value.abbr"/></th>
-						<th><s:text name="label.ratio"/></th>
-						<th class="last"></th>
-					</tr>
-				</thead>
-				
-				<!-- Table body --> 
-				<tbody id="mapping_added_body"></tbody>
-				
-				<!-- Table footer -->
-				<tfoot id="mapping_added_footer"></tfoot>
-			</table>
+	   <fieldset class="formfieldset">
+			<s:url id="updateProfileURL" action="json_p_updateProfileForm"/>
+			<s:url id="refreshTableColumns" action="json_p_loadTableColumns"/>
 			
-			<div id="mapping_messages"></div>
-			<div id="mapping_cfg"></div>
-			<div id="mapping_control"></div>
-		</div>
+			<div id="info">
+			    <h2><s:text name="label.general_information_about_mappings.title1"/></h2>
+				<p><s:text name="label.general_information_about_mappings1"/></p>
+				<p><s:text name="label.general_information_about_mappings2"/></p>
+				<span id="entityAndModelError"></span>
+			</div>
+			
+			<div id="panes" class="pane">
+				<div id="leftPane">
+					<sj:select 	href="%{updateProfileURL}"
+								emptyOption="false"
+								headerKey="-1"
+								headerValue="-- %{getText('label.entity_selection')} --"
+								disabled="option:first"
+								id="entitySelect"
+								name="entity"
+								list="entities"
+								indicator="indicator1"
+								onAlwaysTopics="disableHeader"
+								onChangeTopics="reloadEntityAttributes"/>
+					<div><img id="indicator1" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none"/></div>
+					<sj:div id="entityAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
+				</div>
+				<div id="rightPane">
+					<sj:select 	href="%{updateProfileURL}"
+								emptyOption="false"
+								headerKey="-1"
+								headerValue="-- %{getText('label.model_selection')} --"
+								id="modelSelect"
+								name="model"
+								list="models"
+								indicator="indicator2"
+								onAlwaysTopics="disableHeader"
+								onChangeTopics="reloadModelAttributes"/>
+					<div><img id="indicator2" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none"/></div>
+					<sj:div id="modelAttributesDiv" selectableOnStopTopics="onstop" selectable="true" selectableFilter="li"></sj:div>
+				</div>
+			</div>
+			
+			<div id="mapping" class="pane">
+			
+				<!-- Table markup-->
+				<table id="mapping_added" class="default">
+					
+					<!-- Table header -->
+					<thead id="mapping_added_header">
+						<tr class="header">
+							<th colspan="7"><s:text name="label.configured_mappings"/></th>
+						</tr>
+						<tr class="subheader">
+							<th class="first"><s:text name="label.entity_attribute"/></th>
+							<th><s:text name="label.model_attribute"/></th>
+							<th><s:text name="label.range.low.abbr"/></th>
+							<th><s:text name="label.range.high.abbr"/></th>
+							<th><s:text name="label.range.value.abbr"/></th>
+							<th><s:text name="label.ratio"/></th>
+							<th class="last"></th>
+						</tr>
+					</thead>
+					
+					<!-- Table body --> 
+					<tbody id="mapping_added_body"></tbody>
+					
+					<!-- Table footer -->
+					<tfoot id="mapping_added_footer"></tfoot>
+				</table>
+				
+				<div><s:fielderror><s:param>error.nomappings</s:param></s:fielderror></div>
+				<div id="mapping_messages"></div>
+				<div id="mapping_cfg"></div>
+				<div id="mapping_control"></div>
+			</div>
+		</fieldset>
 		<div class="clear"></div>
 		<div class="wizardSteps">
 			<a href="javascript:toggleSteps(1,2)" class="right"><s:text name="label.next"/> &gt;</a>
@@ -769,42 +799,47 @@
 	</div>
 	
 	<div id="second_step">
-		<div id="nonMappedPane" class="pane">
-			<table id="nonMapped_dimensions" class="default">
-				<thead>
-					<tr><th colspan="2"><s:text name="label.configure_nonMapped_Attributes"/></th></tr>
-					<tr>
-						<th>
-							<s:text name="label.model_attribute"/>
-						</th>
-						<th>
-							<s:text name="label.value"/>
-						</th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-				<tfoot></tfoot>
-			</table>
-		</div>
-		<div id="captionPane" class="pane">
-			<table id="added_captionLines" class="default">
-				<thead>
-					<tr>
-						<th colspan="3"><s:text name="label.configure_caption_lines"/></th>
-					</tr>
-					<tr>
-						<th><s:text name="label.caption.color"/></th>
-						<th><s:text name="label.caption.text"/></th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-				<tfoot>
-					<tr>
-						<td colspan="3"><a href="javascript:addCaptionLine()"><s:text name="label.add_caption_line"/></a></td>
-					</tr>
-				</tfoot>
-			</table>
-		</div>
+	   <fieldset class="formfieldset">
+	        <h2><s:text name="label.general_information_about_mappings.title2"/></h2>
+	        <p><s:text name="label.general_information_about_mappings3"/></p>
+	        
+			<div id="nonMappedPane" class="pane">
+				<table id="nonMapped_dimensions" class="default">
+					<thead>
+						<tr><th colspan="2"><s:text name="label.configure_nonMapped_Attributes"/></th></tr>
+						<tr>
+							<th>
+								<s:text name="label.model_attribute"/>
+							</th>
+							<th>
+								<s:text name="label.value"/>
+							</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+					<tfoot></tfoot>
+				</table>
+			</div>
+			<div id="captionPane" class="pane">
+				<table id="added_captionLines" class="default">
+					<thead>
+						<tr>
+							<th colspan="3"><s:text name="label.configure_caption_lines"/></th>
+						</tr>
+						<tr>
+							<th><s:text name="label.caption.color"/></th>
+							<th><s:text name="label.caption.text"/></th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+					<tfoot>
+						<tr>
+							<td colspan="3"><a href="javascript:addCaptionLine()"><s:text name="label.add_caption_line"/></a></td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</fieldset>
 		<div class="clear"></div>
 		<div class="wizardSteps">
 			<a href="javascript:toggleSteps(2,1)" class="left">&lt; <s:text name="label.back"/></a>
@@ -814,25 +849,28 @@
 	</div>
 	
 	<div id="third_step">
-		<div id="profilePane" class="form">
-			<span class="header"><s:text name="label.profile_info"></s:text></span>
-			<ul>
-				<li>
-					<label for="profileName"><s:text name="label.profile_name"/></label>
-					<input id="profileName" name="profileName" type="text"/>
-					<span id="profileNameError"></span>
-				</li>
-				<li>
-					<label for="profileDescription"><s:text name="label.profile_description"/></label>
-					<textarea id="profileDescription" name="profileDescription" rows="3" cols="15"></textarea>
-					<span id="profileDescriptionError"></span>
-				</li>
-			</ul>
-		</div>
+	   <fieldset class="formfieldset">
+			<div id="profilePane" class="form">
+				<h2><s:text name="label.profile_info.title" /></h2>
+				<p><s:text name="label.profile_info.text" /></p>
+				<ul>
+					<li>
+						<label for="profileName"><s:text name="label.profile_name"/> (*)</label>
+						<input id="profileName" name="profileName" type="text"/>
+						<span id="profileNameError"><s:fielderror><s:param>error.profile.name</s:param></s:fielderror></span>
+					</li>
+					<li>
+						<label for="profileDescription"><s:text name="label.profile_description"/> (*)</label>
+						<textarea id="profileDescription" name="profileDescription" rows="3" cols="15"></textarea>
+						<span id="profileDescriptionError"><s:fielderror><s:param>error.profile.description</s:param></s:fielderror></span>
+					</li>
+				</ul>
+			</div>
+		</fieldset>
 		<div class="clear"></div>
 		<div class="wizardSteps">
 			<a href="javascript:toggleSteps(3,2)" class="left">&lt; <s:text name="label.back"/></a>
-			<a href="javascript:saveProfile()" class="right"><s:text name="label.saveProfile"/></a>
+			<button class="minimal" style="float: right;" onclick="javascript:saveProfile()"><img id="saveIndicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none;" class="icon"/><fmt:message key="label.saveProfile"/></button>
 		</div>
 		<div class="clear"></div>
 	</div>

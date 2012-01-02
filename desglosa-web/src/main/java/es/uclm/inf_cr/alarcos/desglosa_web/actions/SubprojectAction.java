@@ -1,5 +1,6 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
@@ -7,7 +8,6 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.control.FactoryManager;
-import es.uclm.inf_cr.alarcos.desglosa_web.control.GenericManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.control.ProjectManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.control.SubprojectManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
@@ -18,6 +18,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
 
 public class SubprojectAction extends ActionSupport implements
         GenericActionInterface {
@@ -107,7 +108,7 @@ public class SubprojectAction extends ActionSupport implements
     public void validateDoShowForm() {
         try {
             // Check if id is valid
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             // Check that there is a project with such id
             if (!SubprojectManager.checkSubprojectExists(id)) {
                 addActionError(getText("error.subproject.id"));
@@ -158,7 +159,7 @@ public class SubprojectAction extends ActionSupport implements
                 addFieldError("error.factory_required", getText("error.subproject.factory.required"));
             }
             // Check that required fields are filled in
-            if (GenericManager.isEmptyString(subproject.getName())) {
+            if (Utilities.isEmptyString(subproject.getName())) {
                 addFieldError("error.subproject.name", getText("error.subproject.name"));
             }
         } else {
@@ -183,7 +184,7 @@ public class SubprojectAction extends ActionSupport implements
         if (subproject != null) {
             try {
                 // Check that project ID is valid
-                GenericManager.checkValidId(subproject.getId());
+                Utilities.checkValidId(subproject.getId());
                 // Check that the project exists
                 SubprojectManager.getSubproject(subproject.getId());
                 // Check that the project ID exists
@@ -210,7 +211,7 @@ public class SubprojectAction extends ActionSupport implements
                 addActionError(getText("error.subproject.id"));
             }
             // Check that required fields are filled in
-            if (GenericManager.isEmptyString(subproject.getName())) {
+            if (Utilities.isEmptyString(subproject.getName())) {
                 addFieldError("error.subproject.name", getText("error.subproject.name"));
             }
         } else {
@@ -232,19 +233,7 @@ public class SubprojectAction extends ActionSupport implements
     }
     
     public void validateDoDelete() {
-        try {
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
-            if (!SubprojectManager.checkSubprojectExists(id)) {
-                addActionError(getText("error.subproject.id"));
-            }
-        } catch (NullIdParameterException e1) {
-            addActionError(getText("error.subproject.id"));
-        } catch (NotValidIdParameterException e1) {
-            addActionError(getText("error.subproject.id"));
-        }
-        if (hasActionErrors()) {
-            subprojects = SubprojectManager.getAllSubprojects();
-        }
+        checkSubprojectExists();
     }
 
     public String delete() {
@@ -254,8 +243,44 @@ public class SubprojectAction extends ActionSupport implements
     }
     
     public void validateDoGet() {
+        checkSubprojectExists();
+    }
+
+    public String get() throws SubprojectNotFoundException {
+        subproject = SubprojectManager.getSubproject(id);
+        return SUCCESS;
+    }
+    
+    public void validateDoUpdateMeasures() {
+        checkSubprojectExists();
+    }
+    
+    public String updateMeasures() {
+        String result = SUCCESS;
         try {
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            SubprojectManager.updateMeasures(id, subproject);
+            addActionMessage(getText("message.subproject.measures_updated_successfully"));
+        } catch (SubprojectNotFoundException e) {
+            result = ERROR;
+        } catch (SecurityException e) {
+            result = ERROR;
+        } catch (IllegalArgumentException e) {
+            result = ERROR;
+        } catch (NoSuchMethodException e) {
+            result = ERROR;
+        } catch (IllegalAccessException e) {
+            result = ERROR;
+        } catch (InvocationTargetException e) {
+            result = ERROR;
+        } catch (Exception e) {
+            result = ERROR;
+        }
+        return result;
+    }
+    
+    private void checkSubprojectExists () {
+        try {
+            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             if (!SubprojectManager.checkSubprojectExists(id)) {
                 addActionError(getText("error.subproject.id"));
             }
@@ -267,11 +292,6 @@ public class SubprojectAction extends ActionSupport implements
         if (hasActionErrors()) {
             subprojects = SubprojectManager.getAllSubprojects();
         }
-    }
-
-    public String get() throws SubprojectNotFoundException {
-        subproject = SubprojectManager.getSubproject(id);
-        return SUCCESS;
     }
 
 }

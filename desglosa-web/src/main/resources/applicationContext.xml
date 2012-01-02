@@ -35,4 +35,7 @@
     <bean id="marketManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.MarketManager" singleton="true" >
         <property name="marketDao" ref="marketDao"/>
     </bean>
+    <bean id="profileManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.ProfileManager" singleton="true" >
+        <property name="profileDao" ref="profileDao"/>
+    </bean>
 </beans>

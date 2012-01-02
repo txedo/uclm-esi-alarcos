@@ -11,7 +11,6 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.control.CompanyManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.control.FactoryManager;
-import es.uclm.inf_cr.alarcos.desglosa_web.control.GenericManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
@@ -21,6 +20,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Director;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
 import es.uclm.inf_cr.alarcos.desglosa_web.persistence.FileUtil;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
 
 /* Experience shows that chaining should be used with care. If chaining is overused, 
  * an application can turn into "spaghetti code". Actions should be treated as a 
@@ -106,7 +106,7 @@ public class FactoryAction extends ActionSupport {
     public void validateDoShowForm() {
         try {
             // Check if id is valid
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             // Check if there is a factory that exists with that id
             if (!FactoryManager.checkFactoryExists(id)) {
                 addActionError(getText("error.factory.id"));
@@ -150,24 +150,24 @@ public class FactoryAction extends ActionSupport {
             }
             // Check that required fields are filled in
             // Factory data
-            if (GenericManager.isEmptyString(factory.getName())) {
+            if (Utilities.isEmptyString(factory.getName())) {
                 addFieldError("error.factory.name", getText("error.factory.name"));
             }
             // Director data
-            if (GenericManager.isEmptyString(factory.getDirector().getName())) {
+            if (Utilities.isEmptyString(factory.getDirector().getName())) {
                 addFieldError("error.director.name", getText("error.director.name"));
             }
-            if (GenericManager.isEmptyString(factory.getDirector().getLastName())) {
+            if (Utilities.isEmptyString(factory.getDirector().getLastName())) {
                 addFieldError("error.director.lastName", getText("error.director.last_name"));
             }
             // Address data
-            if (GenericManager.isEmptyString(factory.getAddress().getAddress())) {
+            if (Utilities.isEmptyString(factory.getAddress().getAddress())) {
                 addFieldError("error.factory.address.address", getText("error.address.address"));
             }
-            if (GenericManager.isEmptyString(factory.getAddress().getCity())) {
+            if (Utilities.isEmptyString(factory.getAddress().getCity())) {
                 addFieldError("error.factory.address.city", getText("error.address.city"));
             }
-            if (GenericManager.isEmptyString(factory.getAddress().getCountry())) {
+            if (Utilities.isEmptyString(factory.getAddress().getCountry())) {
                 addFieldError("error.factory.address.country", getText("error.address.country"));
             }
             // Location data
@@ -208,7 +208,7 @@ public class FactoryAction extends ActionSupport {
         if (factory != null) {
             try {
                 // Check if factory ID is valid
-                GenericManager.checkValidId(factory.getId());
+                Utilities.checkValidId(factory.getId());
                 fAux = FactoryManager.getFactory(factory.getId());
                 // Check that the company ID exists
                 if (factory.getCompany() != null) {
@@ -218,7 +218,7 @@ public class FactoryAction extends ActionSupport {
                     addFieldError("error.company_mandatory", getText("error.company.is_mandatory"));
                 }
                 // Check factory name is not empty
-                if (GenericManager.isEmptyString(factory.getName())) {
+                if (Utilities.isEmptyString(factory.getName())) {
                     addFieldError("error.factory.name", getText("error.factory.name"));
                 } else {
                     try {
@@ -240,30 +240,30 @@ public class FactoryAction extends ActionSupport {
             }
             // Check that required fields are filled in
             // Factory data
-            if (GenericManager.isEmptyString(factory.getName())) {
+            if (Utilities.isEmptyString(factory.getName())) {
                 addFieldError("error.factory.name", getText("error.factory.name"));
             }
-            if (GenericManager.isEmptyString(factory.getEmail())) {
+            if (Utilities.isEmptyString(factory.getEmail())) {
                 addFieldError("error.factory.email", getText("error.factory.email"));
             }
             if (factory.getEmployees() < 0) {
                 addFieldError("error.factory.employees", getText("error.factory.employees"));
             }
             // Director data
-            if (GenericManager.isEmptyString(factory.getDirector().getName())) {
+            if (Utilities.isEmptyString(factory.getDirector().getName())) {
                 addFieldError("error.director.name", getText("error.director.name"));
             }
-            if (GenericManager.isEmptyString(factory.getDirector().getLastName())) {
+            if (Utilities.isEmptyString(factory.getDirector().getLastName())) {
                 addFieldError("error.director.lastName", getText("error.director.last_name"));
             }
             // Address data
-            if (GenericManager.isEmptyString(factory.getAddress().getAddress())) {
+            if (Utilities.isEmptyString(factory.getAddress().getAddress())) {
                 addFieldError("error.factory.address.address", getText("error.address.address"));
             }
-            if (GenericManager.isEmptyString(factory.getAddress().getCity())) {
+            if (Utilities.isEmptyString(factory.getAddress().getCity())) {
                 addFieldError("error.factory.address.city", getText("error.address.city"));
             }
-            if (GenericManager.isEmptyString(factory.getAddress().getCountry())) {
+            if (Utilities.isEmptyString(factory.getAddress().getCountry())) {
                 addFieldError("error.factory.address.country", getText("error.address.country"));
             }
             // Location data
@@ -301,7 +301,7 @@ public class FactoryAction extends ActionSupport {
 
     public void validateDoDelete() {
         try {
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             if (!FactoryManager.checkFactoryExists(id)) {
                 addActionError(getText("error.factory.id"));
             }
@@ -323,7 +323,7 @@ public class FactoryAction extends ActionSupport {
     
     public void validateDoGet() {
         try {
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             if (!FactoryManager.checkFactoryExists(id)) {
                 addActionError(getText("error.factory.id"));
             }

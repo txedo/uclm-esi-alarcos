@@ -110,7 +110,7 @@
                         </li>
                         <li>
                             <label class="key" />
-                            <img style="float:left;" src="http://maps.google.com/maps/api/staticmap?zoom=10&size=256x256&maptype=roadmap&markers=color:red|color:red|<c:out value='${project.mainFactory.location.latitude}'/>,<c:out value='${project.mainFactory.location.longitude}'/>&sensor=false" width="256" height="256" title="<s:text name='label.configure.factory.address.image'/>"/>
+                            <img class="framed" style="float:left;" src="http://maps.google.com/maps/api/staticmap?zoom=10&size=256x256&maptype=roadmap&markers=color:red|color:red|<c:out value='${project.mainFactory.location.latitude}'/>,<c:out value='${project.mainFactory.location.longitude}'/>&sensor=false" width="256" height="256" title="<s:text name='label.configure.factory.address.image'/>"/>
                         </li>
                     </ul>
                     <div class="clear"></div>
@@ -151,10 +151,15 @@
 	                    <display:setProperty name="paging.banner.placement" value="top"/>
 	                    <display:setProperty name="paging.banner.item_name"><fmt:message key="label.subproject"/></display:setProperty>
 	                    <display:setProperty name="paging.banner.items_name"><fmt:message key="label.subprojects"/></display:setProperty>
-	                    <display:setProperty name="paging.banner.no_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.no_items_found"/></span></display:setProperty>
-	                    <display:setProperty name="paging.banner.one_item_found"><span class="pagebanner"><fmt:message key="table.paging.banner.one_item_found"/></span></display:setProperty>
-	                    <display:setProperty name="paging.banner.all_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.all_items_found"/></span></display:setProperty>
-	                    <display:setProperty name="paging.banner.some_items_found"><span class="pagebanner"><fmt:message key="table.paging.banner.some_items_found"/></span></display:setProperty>
+			            <display:setProperty name="paging.banner.page.separator"><fmt:message key="table.paging.banner.page.separator"/></display:setProperty>
+			            <display:setProperty name="basic.msg.empty_list"><fmt:message key="table.paging.banner.no_items_found_male"><fmt:param><fmt:message key="label.profile"/></fmt:param></fmt:message></display:setProperty>
+			            <display:setProperty name="paging.banner.no_items_found"><fmt:message key="table.paging.banner.no_items_found_male"/></display:setProperty>
+			            <display:setProperty name="paging.banner.one_item_found"><fmt:message key="table.paging.banner.one_item_found_male"/></display:setProperty>
+			            <display:setProperty name="paging.banner.all_items_found"><fmt:message key="table.paging.banner.all_items_found_male"/></display:setProperty>
+			            <display:setProperty name="paging.banner.some_items_found"><fmt:message key="table.paging.banner.some_items_found_male"/></display:setProperty>
+			            <display:setProperty name="paging.banner.full"><fmt:message key="table.paging.banner.full"/></display:setProperty>
+			            <display:setProperty name="paging.banner.first"><fmt:message key="table.paging.banner.first"/></display:setProperty>
+			            <display:setProperty name="paging.banner.last"><fmt:message key="table.paging.banner.last"/></display:setProperty>
 	                </display:table>
                 </div>
                 

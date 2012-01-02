@@ -1,5 +1,6 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
@@ -7,7 +8,6 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.control.FactoryManager;
-import es.uclm.inf_cr.alarcos.desglosa_web.control.GenericManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.control.ProjectManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
@@ -15,6 +15,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
 
 public class ProjectAction extends ActionSupport implements
         GenericActionInterface {
@@ -75,7 +76,7 @@ public class ProjectAction extends ActionSupport implements
     public void validateDoShowForm() {
         try {
             // Check if id is valid
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             // Check that there is a project with such id
             if (!ProjectManager.checkProjectExists(id)) {
                 addActionError(getText("error.project.id"));
@@ -114,17 +115,17 @@ public class ProjectAction extends ActionSupport implements
                 addFieldError("error.factory_required", getText("error.factory.required"));
             }
             // Check that required fields are filled in
-            if (GenericManager.isEmptyString(project.getName())) {
+            if (Utilities.isEmptyString(project.getName())) {
                 addFieldError("error.project.name", getText("error.project.name"));
             }
-            if (GenericManager.isEmptyString(project.getCode())) {
+            if (Utilities.isEmptyString(project.getCode())) {
                 addFieldError("error.project.code", getText("error.project.code"));
             }
-            if (GenericManager.isEmptyString(project.getPlan())) {
+            if (Utilities.isEmptyString(project.getPlan())) {
                 addFieldError("error.project.plan", getText("error.project.plan"));
             }
             try {
-                GenericManager.checkValidId(project.getMarket().getId());
+                Utilities.checkValidId(project.getMarket().getId());
             } catch (NotValidIdParameterException e) {
                 addFieldError("error.project.market", getText("error.project.market"));
             }
@@ -149,7 +150,7 @@ public class ProjectAction extends ActionSupport implements
         if (project != null) {
             try {
                 // Check that project ID is valid
-                GenericManager.checkValidId(project.getId());
+                Utilities.checkValidId(project.getId());
                 // Check that the project exists
                 ProjectManager.getProject(project.getId());
                 // Check that the factory ID exits
@@ -168,17 +169,17 @@ public class ProjectAction extends ActionSupport implements
                 addActionError(getText("error.project.id"));
             }
             // Check that required fields are filled in
-            if (GenericManager.isEmptyString(project.getName())) {
+            if (Utilities.isEmptyString(project.getName())) {
                 addFieldError("error.project.name", getText("error.project.name"));
             }
-            if (GenericManager.isEmptyString(project.getCode())) {
+            if (Utilities.isEmptyString(project.getCode())) {
                 addFieldError("error.project.code", getText("error.project.code"));
             }
-            if (GenericManager.isEmptyString(project.getPlan())) {
+            if (Utilities.isEmptyString(project.getPlan())) {
                 addFieldError("error.project.plan", getText("error.project.plan"));
             }
             try {
-                GenericManager.checkValidId(project.getMarket().getId());
+                Utilities.checkValidId(project.getMarket().getId());
             } catch (NotValidIdParameterException e) {
                 addFieldError("error.project.market", getText("error.project.market"));
             }
@@ -200,19 +201,7 @@ public class ProjectAction extends ActionSupport implements
     }
     
     public void validateDoDelete() {
-        try {
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
-            if (!ProjectManager.checkProjectExists(id)) {
-                addActionError(getText("error.project.id"));
-            }
-        } catch (NullIdParameterException e1) {
-            addActionError(getText("error.project.id"));
-        } catch (NotValidIdParameterException e1) {
-            addActionError(getText("error.project.id"));
-        }
-        if (hasActionErrors()) {
-            projects = ProjectManager.getAllProjects();
-        }
+        checkProjectExists();
     }
 
     public String delete() {
@@ -222,8 +211,44 @@ public class ProjectAction extends ActionSupport implements
     }
     
     public void validateDoGet() {
+        checkProjectExists();
+    }
+
+    public String get() throws ProjectNotFoundException {
+        project = ProjectManager.getProject(id);
+        return SUCCESS;
+    }
+    
+    public void validateDoUpdateMeasures() {
+        checkProjectExists();
+    }
+    
+    public String updateMeasures() {
+        String result = SUCCESS;
         try {
-            id = GenericManager.checkValidId(ServletActionContext.getRequest().getParameter("id"));
+            ProjectManager.updateMeasures(id, project);
+            addActionMessage(getText("message.project.measures_updated_successfully"));
+        } catch (ProjectNotFoundException e) {
+            result = ERROR;
+        } catch (SecurityException e) {
+            result = ERROR;
+        } catch (IllegalArgumentException e) {
+            result = ERROR;
+        } catch (NoSuchMethodException e) {
+            result = ERROR;
+        } catch (IllegalAccessException e) {
+            result = ERROR;
+        } catch (InvocationTargetException e) {
+            result = ERROR;
+        } catch (Exception e) {
+            result = ERROR;
+        }
+        return result;
+    }
+    
+    private void checkProjectExists () {
+        try {
+            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             if (!ProjectManager.checkProjectExists(id)) {
                 addActionError(getText("error.project.id"));
             }
@@ -235,11 +260,6 @@ public class ProjectAction extends ActionSupport implements
         if (hasActionErrors()) {
             projects = ProjectManager.getAllProjects();
         }
-    }
-
-    public String get() throws ProjectNotFoundException {
-        project = ProjectManager.getProject(id);
-        return SUCCESS;
     }
 
 }
