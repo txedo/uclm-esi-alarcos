@@ -48,7 +48,7 @@ function updateMeasures() {
 	        <p><s:text name="label.configure.project.measures.text"/></p>
 	        <span id="incorrectInputValues"></span>
 	        
-	        <%@ include file="/jsp/projectMeasures.jsp"%>
+	        <%@ include file="/jsp/generateProjectMeasureForm.jsp"%>
 	        
 	        <div class="buttonPane">
                 <button class="minimal" onclick="return updateMeasures();"><img id="saveIndicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none;" class="icon"/><fmt:message key="button.update_measures"/></button>

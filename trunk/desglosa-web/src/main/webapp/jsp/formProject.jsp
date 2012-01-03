@@ -134,7 +134,7 @@
 				</div>
 			</fieldset>
             <div style="display:none">
-                <%@ include file="/jsp/projectMeasures.jsp"%>
+                <%@ include file="/jsp/generateProjectMeasureForm.jsp"%>
             </div>
 			<s:submit onclick="formatFloatFields();return true;" value="%{getText(#attr.buttonLabel)}"/>
 		</form>

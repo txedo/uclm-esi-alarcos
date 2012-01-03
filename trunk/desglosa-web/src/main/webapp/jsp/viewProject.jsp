@@ -126,6 +126,13 @@
                 <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',false)"><fmt:message key="button.edit_project"/></button>
             </div>
             
+            <div class="form">
+                <fieldset class="viewingfieldset">
+                    <h2><s:text name="label.project.measures"/></h2>
+                    <%@ include file="/jsp/viewProjectData.jsp"%>
+                </fieldset>
+            </div>
+            
             <fieldset class="viewingfieldset">
                 <h2><s:text name="label.configure.subprojects"/></h2>
                 
