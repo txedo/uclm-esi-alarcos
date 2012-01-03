@@ -11,16 +11,15 @@ public class MeasureAnnotationParser {
         private MeasureAnnotationParser() {
         }
         
-        public static final List<PropertyWrapper> parseBaseMeasures(final Class<?> clazz) throws Exception {
+        public static final List<PropertyWrapper> parseBaseMeasures(final Class<?> clazz) throws SecurityException {
             return MeasureAnnotationParser.parse(clazz, true);
         }
         
-        public static final List<PropertyWrapper> parseAllMeasures(final Class<?> clazz) throws Exception {
+        public static final List<PropertyWrapper> parseAllMeasures(final Class<?> clazz) throws SecurityException {
             return MeasureAnnotationParser.parse(clazz, false);
         }
 
-        private static final List<PropertyWrapper> parse(final Class<?> clazz, boolean onlyBaseMeasures)
-                throws Exception {
+        private static final List<PropertyWrapper> parse(final Class<?> clazz, boolean onlyBaseMeasures) throws SecurityException {
             List<PropertyWrapper> measures = new ArrayList<PropertyWrapper>();
             // Get all methods from the class
             List<Field> fields = Arrays.asList(clazz.getDeclaredFields());

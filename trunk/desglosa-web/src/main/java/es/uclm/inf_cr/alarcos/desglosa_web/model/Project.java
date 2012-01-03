@@ -188,6 +188,10 @@ public class Project {
 
     @Formula("comentarios / lineas_de_codigo")
     public Float getRatioComentariosLineasDeCodigo() {
+        // This evaluation is done to return 0 in case of divide by 0 expressions
+        if (ratioComentariosLineasDeCodigo == null) {
+            ratioComentariosLineasDeCodigo = new Float(0);
+        }
         return ratioComentariosLineasDeCodigo;
     }
 
@@ -208,6 +212,10 @@ public class Project {
 
     @Formula("fichaje_codigo / fichaje_total")
     public Float getRatioFichaje() {
+        // This evaluation is done to return 0 in case of divide by 0 expressions
+        if (ratioFichaje == null) {
+            ratioFichaje = new Float(0);
+        }
         return ratioFichaje;
     }
 

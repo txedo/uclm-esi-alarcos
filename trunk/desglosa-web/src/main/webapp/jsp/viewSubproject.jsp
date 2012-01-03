@@ -127,14 +127,28 @@
                     <div class="clear"></div>
                 </fieldset>
                 
+	            <div class="buttonPane">
+	                <!-- TODO add security tag -->
+	                <c:url var="edit" value="/showSubprojectForm">
+	                    <c:param name="id">${param.id}</c:param>
+	                </c:url>
+	                <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',false)"><fmt:message key="button.edit_subproject"/></button>
+	            </div>
             </div>
             
-            <div class="buttonPane">
-                <!-- TODO add security tag -->
-                <c:url var="edit" value="/showSubprojectForm">
-                    <c:param name="id">${param.id}</c:param>
-                </c:url>
-                <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',false)"><fmt:message key="button.edit_subproject"/></button>
+            <div class="form">
+                <fieldset class="viewingfieldset">
+                    <h2><s:text name="label.subproject.measures"/></h2>
+                    <%@ include file="/jsp/viewSubprojectData.jsp"%>
+                </fieldset>
+                
+	            <div class="buttonPane">
+	                <!-- TODO add security tag -->
+	                <c:url var="updateMeasures" value="/viewSubprojectData">
+	                    <c:param name="id">${param.id}</c:param>
+	                </c:url>
+	                <button class="minimal" onclick="javascript:call('<c:out value="${updateMeasures}"/>',false)"><fmt:message key="button.configure_measures"/></button>
+	            </div>
             </div>
             
             <fieldset class="viewingfieldset">

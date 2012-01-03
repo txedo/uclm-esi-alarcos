@@ -70,11 +70,9 @@ public class MarketAction extends ActionSupport {
         try {
             Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
         } catch (NullIdParameterException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("error.general"));
         } catch (NotValidIdParameterException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("error.general"));
         }
     }
     
