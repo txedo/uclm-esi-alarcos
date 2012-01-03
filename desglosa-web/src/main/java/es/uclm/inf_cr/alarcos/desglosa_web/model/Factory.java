@@ -22,8 +22,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Formula;
-
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MarketDAOHibernate;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
@@ -118,7 +116,6 @@ public class Factory {
         return subprojects;
     }
 
-    //@Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f where p.id = sp.project_id and sp.factory_id = id)")
     @Transient
     public Integer getNumberOfLeadingProjects() {
         numberOfLeadingProjects = projects.size();

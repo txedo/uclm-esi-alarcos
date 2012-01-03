@@ -122,39 +122,42 @@ public class VisualizationAction extends ActionSupport {
     }
 
     public String factoryById() {
-        if (id == 0) {
-            factories = FactoryManager.getAllFactories();
-        } else {
-            try {
+        String result = SUCCESS;
+        try {
+            if (id == 0) {
+                factories = FactoryManager.getAllFactories();
+            } else {
                 factories = new ArrayList<Factory>();
                 factories.add(FactoryManager.getFactory(id));
-            } catch (FactoryNotFoundException e) {
-                return ERROR;
             }
+            if (generateGLObjects) {
+                result = entity2model(factories);
+            }
+        } catch (FactoryNotFoundException e) {
+            result = ERROR;
         }
-        if (generateGLObjects) {
-            entity2model(factories);
-        }
-        return SUCCESS;
+        return result;
     }
 
     public String factoriesByCompanyId() {
-        if (id == 0) {
-            factories = FactoryManager.getAllFactories();
-        } else {
-            try {
+        String result = SUCCESS;
+        try {
+            if (id == 0) {
+                factories = FactoryManager.getAllFactories();
+            } else {
                 factories = new ArrayList<Factory>(CompanyManager.getCompany(id).getFactories());
-            } catch (CompanyNotFoundException e) {
-                return ERROR;
             }
+            if (generateGLObjects) {
+                result = entity2model(factories);
+            }
+        } catch (CompanyNotFoundException e) {
+            result = ERROR;
         }
-        if (generateGLObjects) {
-            entity2model(factories);
-        }
-        return SUCCESS;
+        return result;
     }
 
     public String companyById() {
+        String result = SUCCESS;
         if (id == 0) {
             companies = CompanyManager.getAllCompanies();
         } else {
@@ -162,98 +165,105 @@ public class VisualizationAction extends ActionSupport {
                 companies = new ArrayList<Company>();
                 companies.add(CompanyManager.getCompany(id));
             } catch (CompanyNotFoundException e) {
-                return ERROR;
+                result = ERROR;
             }
         }
-        return SUCCESS;
+        return result;
     }
 
     public String projectsByCompanyId() {
+        String result = SUCCESS;
         if (id == 0) {
             projects = ProjectManager.getAllProjects();
         } else {
             projects = ProjectManager.getDevelopingProjectsByCompanyId(id);
         }
         if (generateGLObjects) {
-            entity2model(projects);
+            result = entity2model(projects);
         }
-        return SUCCESS;
+        return result;
     }
 
     public String projectsByFactoryId() {
+        String result = SUCCESS;
         if (id == 0) {
             projects = ProjectManager.getAllProjects();
         } else {
             projects = ProjectManager.getDevelopingProjectsByFactoryId(id);
         }
         if (generateGLObjects) {
-            entity2model(projects);
+            result = entity2model(projects);
         }
-        return SUCCESS;
+        return result;
     }
 
     public String projectById() {
-        if (id == 0) {
-            projects = ProjectManager.getAllProjects();
-        } else {
-            try {
+        String result = SUCCESS;
+        try {
+            if (id == 0) {
+                projects = ProjectManager.getAllProjects();
+            } else {
                 projects = new ArrayList<Project>();
                 projects.add(ProjectManager.getProject(id));
-            } catch (ProjectNotFoundException e) {
-                return ERROR;
             }
+            if (generateGLObjects) {
+                result = entity2model(projects);
+            }
+        } catch (ProjectNotFoundException e) {
+            result = ERROR;
         }
-        if (generateGLObjects) {
-            entity2model(projects);
-        }
-        return SUCCESS;
+        return result;
     }
 
     public String subprojectsByCompanyId() {
+        String result = SUCCESS;
         if (id == 0) {
             subprojects = SubprojectManager.getAllSubprojects();
         } else {
             subprojects = SubprojectManager.getDevelopingSubprojectsByCompanyId(id);
         }
         if (generateGLObjects) {
-            entity2model(subprojects);
+            result = entity2model(subprojects);
         }
-        return SUCCESS;
+        return result;
     }
 
     public String subprojectsByFactoryId() {
-        if (id == 0) {
-            subprojects = SubprojectManager.getAllSubprojects();
-        } else {
-            try {
+        String result = SUCCESS;
+        try {
+            if (id == 0) {
+                subprojects = SubprojectManager.getAllSubprojects();
+            } else {
                 subprojects = new ArrayList<Subproject>(FactoryManager.getFactory(id).getSubprojects());
-            } catch (FactoryNotFoundException e) {
-                return ERROR;
             }
+            if (generateGLObjects) {
+                result = entity2model(subprojects);
+            }
+        } catch (FactoryNotFoundException e) {
+            result = ERROR;
         }
-        if (generateGLObjects) {
-            entity2model(subprojects);
-        }
-        return SUCCESS;
+        return result;
     }
 
     public String subprojectsByProjectId() {
-        if (id == 0) {
-            subprojects = SubprojectManager.getAllSubprojects();
-        } else {
-            try {
+        String result = SUCCESS;
+        try {
+            if (id == 0) {
+                subprojects = SubprojectManager.getAllSubprojects();
+            } else {
                 subprojects = new ArrayList<Subproject>(ProjectManager.getProject(id).getSubprojects());
-            } catch (ProjectNotFoundException e) {
-                return ERROR;
             }
+            if (generateGLObjects) {
+                result = entity2model(subprojects);
+            }
+        } catch (ProjectNotFoundException e) {
+            result = ERROR;
         }
-        if (generateGLObjects) {
-            entity2model(subprojects);
-        }
-        return SUCCESS;
+        return result;
     }
 
     public String subprojectById() {
+        String result = SUCCESS;
         if (id == 0) {
             subprojects = SubprojectManager.getAllSubprojects();
         } else {
@@ -261,51 +271,42 @@ public class VisualizationAction extends ActionSupport {
                 subprojects = new ArrayList<Subproject>();
                 subprojects.add(SubprojectManager.getSubproject(id));
             } catch (SubprojectNotFoundException e) {
-                return ERROR;
+                result = ERROR;
             }
         }
-        return SUCCESS;
+        return result;
     }
 
-    private void entity2model(List<?> entities) {
+    private String entity2model(List<?> entities) {
+        String result = ERROR;
         try {
             city = glObjectManager.createGLObjects(entities, groupBy, profileFileName);
+            result = SUCCESS;
         } catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.security"));
         } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.illegal_argument"));
         } catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.jaxb"));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.io"));
         } catch (InstantiationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.instantiation"));
         } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.illegal_access"));
         } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.class_not_found"));
         } catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.no_such_method"));
         } catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.invocation_target"));
         } catch (EntityNotSupportedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.entity_not_supported"));
         } catch (GroupByOperationNotSupportedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.group_by_operation_not_supported"));
         } catch (NoSuchFieldException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.no_such_field"));
         }
+        return result;
     }
 }

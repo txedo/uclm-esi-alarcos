@@ -224,24 +224,25 @@ public class ProjectAction extends ActionSupport implements
     }
     
     public String updateMeasures() {
-        String result = SUCCESS;
+        String result = ERROR;
         try {
             ProjectManager.updateMeasures(id, project);
+            result = SUCCESS;
             addActionMessage(getText("message.project.measures_updated_successfully"));
         } catch (ProjectNotFoundException e) {
-            result = ERROR;
+            addActionError(getText("error.sproject.id"));
         } catch (SecurityException e) {
-            result = ERROR;
+            addActionError(getText("exception.security"));
         } catch (IllegalArgumentException e) {
-            result = ERROR;
+            addActionError(getText("exception.illegal_argument"));
         } catch (NoSuchMethodException e) {
-            result = ERROR;
+            addActionError(getText("exception.no_such_method"));
         } catch (IllegalAccessException e) {
-            result = ERROR;
+            addActionError(getText("exception.illegal_access"));
         } catch (InvocationTargetException e) {
-            result = ERROR;
+            addActionError(getText("exception.invocation_target"));
         } catch (Exception e) {
-            result = ERROR;
+            addActionError(getText("exception.generic"));
         }
         return result;
     }

@@ -140,33 +140,33 @@ public class ProfileAction extends ActionSupport implements
     }
 
     public String loadEntityAttributes() {
+        String result = ERROR;
         if (entity != null) {
             try {
                 entityAttributes = ProfileManager.readEntityAttributes(entity);
+                result = SUCCESS;
             } catch (ClassNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                addActionError(getText("exception.class_not_found"));
             } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                addActionError(getText("exception.generic"));
             }
         }
-        return SUCCESS;
+        return result;
     }
 
     public String loadModelAttributes() {
+        String result = ERROR;
         if (model != null) {
             try {
                 modelAttributes = ProfileManager.readModelDimensions(model);
+                result = SUCCESS;
             } catch (ClassNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                addActionError(getText("exception.class_not_found"));
             } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                addActionError(getText("exception.generic"));
             }
         }
-        return SUCCESS;
+        return result;
     }
 
     public void validateDoSave() {
@@ -194,6 +194,7 @@ public class ProfileAction extends ActionSupport implements
             ProfileManager.saveProfile(metaclass, entity, profileName.trim());
             addActionMessage(getText("message.profile.created_successfully"));
         } catch (JAXBException e) {
+            addActionError(getText("exception.jaxb"));
             result = ERROR;
         }
         return result;
@@ -214,44 +215,39 @@ public class ProfileAction extends ActionSupport implements
             try {
                 profiles = ProfileManager.getProfiles();
             } catch (JAXBException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+                addActionError(getText("exception.jaxb"));
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+                addActionError(getText("exception.io"));
             } catch (InstantiationException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+                addActionError(getText("exception.instantiation"));
             } catch (IllegalAccessException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+                addActionError(getText("exception.illegal_access"));
             }
         }
         return result;
     }
 
     public String get() {
+        String result = ERROR;
         try {
         // entity o profileName
             if (entity != null) {
                 profileNames = ProfileManager.getProfilesForEntity(entity);
+                result = SUCCESS;
             } else if (profileName != null) {
                 profile = ProfileManager.getProfileByName(profileName);
+                result = SUCCESS;
             }
         } catch (JAXBException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.jaxb"));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.io"));
         } catch (InstantiationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.instantiation"));
         } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            addActionError(getText("exception.illegal_access"));
         }
-        return SUCCESS;
+        return result;
     }
 
 }

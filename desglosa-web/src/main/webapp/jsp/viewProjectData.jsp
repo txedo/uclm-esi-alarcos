@@ -19,22 +19,14 @@
 	            <c:set var="measureName" value="project.${measure.name}"></c:set>
 	            <li>
 	                <label class="key"><fmt:message key="label.${measure.name}" /></label>
-	                <c:if test="${measure.type == 'Boolean'}">
-	                   <c:out value="${measureName}"></c:out>
-	                    <c:choose>
-	                        <c:when test="project.${measure.name} == 1">
-	                            <label class="value"><s:text name="label.Yes"/></label>
-	                        </c:when>
-	                        <c:otherwise>
-	                            <label class="value"><s:text name="label.No"/></label>
-	                        </c:otherwise>
-	                    </c:choose>
-	                </c:if>
-	                <c:if test="${measure.type == 'Integer' || measure.type== 'Float'}">
-                        <label class="value">
-                            <s:text name="%{#attr.measureName}"/>
-                        </label>
-	                </c:if>
+	                <label class="value">
+		                <c:if test="${measure.type == 'Boolean'}">
+		                   <s:checkbox name="%{#attr.measureName}" onclick="return false;"/>
+		                </c:if>
+		                <c:if test="${measure.type == 'Integer' || measure.type== 'Float'}">
+	                        <s:text name="%{#attr.measureName}"/>
+		                </c:if>
+	                </label>
 	            </li>
 	        </c:forEach>
 	    </ul>
