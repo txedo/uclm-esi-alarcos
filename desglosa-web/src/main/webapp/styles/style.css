@@ -30,6 +30,16 @@ fieldset.formfieldset {
     border: none;
 }
 
+fieldset.plainreportfieldset {
+    margin-top: 0px;
+    border: none;
+    padding-bottom: 0px;
+}
+
+fieldset.plainreportfieldset h3 {
+    margin-bottom: 0px;
+}
+
 .framed {
     padding:1px;
     border:1px solid #000;
@@ -244,6 +254,44 @@ ul.actionMessage li span {
     background-image: url("../images/icon_ok.png");
     border: 1px solid #008000;
     color: #008000;
+}
+
+#plainReport p.label {
+	margin: 0;
+	padding: 0;
+	color: black;
+}
+
+#plainReport ul {
+	list-style: none;	
+}
+
+#plainReport ul li {
+	padding-top: 0px;
+}
+
+#plainReport label {
+	margin: 0;
+	margin-right: 15px;
+	padding: 0;
+	color: black;
+	font: normal 12px/1.8em Arial, Helvetica, sans-serif;
+}
+
+#plainReport label.key {
+	font-weight: bold;
+}
+
+#plainReport div.displaytagTable {
+	margin-top: 0px;
+}
+
+#plainReport div.displaytagTable span.pagebanner{
+	text-align: left;
+}
+
+#plainReport div.displaytagTable span.pagelinks{
+	text-align: left;
 }
 
 .form span.errorMessage {

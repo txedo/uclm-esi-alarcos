@@ -23,6 +23,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MarketDAOHibernate;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Measure;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
 
@@ -46,9 +47,9 @@ public class Factory {
     private Location location;
     private Set<Project> projects = new HashSet<Project>();
     private Set<Subproject> subprojects = new HashSet<Subproject>();
-    @Property
+    @Property @Measure(base = false)
     private Integer numberOfLeadingProjects;
-    @Property
+    @Property @Measure(base = false)
     private Integer numberOfDevelopingSubprojects;
     @Property(embedded = true)
     private Market mostRepresentativeMarket;

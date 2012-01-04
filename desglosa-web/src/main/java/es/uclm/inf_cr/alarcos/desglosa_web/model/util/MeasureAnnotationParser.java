@@ -11,16 +11,16 @@ public class MeasureAnnotationParser {
         private MeasureAnnotationParser() {
         }
         
-        public static final List<PropertyWrapper> parseBaseMeasures(final Class<?> clazz) throws SecurityException {
+        public static final List<MeasureWrapper> parseBaseMeasures(final Class<?> clazz) throws SecurityException {
             return MeasureAnnotationParser.parse(clazz, true);
         }
         
-        public static final List<PropertyWrapper> parseAllMeasures(final Class<?> clazz) throws SecurityException {
+        public static final List<MeasureWrapper> parseAllMeasures(final Class<?> clazz) throws SecurityException {
             return MeasureAnnotationParser.parse(clazz, false);
         }
 
-        private static final List<PropertyWrapper> parse(final Class<?> clazz, boolean onlyBaseMeasures) throws SecurityException {
-            List<PropertyWrapper> measures = new ArrayList<PropertyWrapper>();
+        private static final List<MeasureWrapper> parse(final Class<?> clazz, boolean onlyBaseMeasures) throws SecurityException {
+            List<MeasureWrapper> measures = new ArrayList<MeasureWrapper>();
             // Get all methods from the class
             List<Field> fields = Arrays.asList(clazz.getDeclaredFields());
             for (Field field : fields) {
@@ -29,7 +29,7 @@ public class MeasureAnnotationParser {
                     // Read class attribute name and type, not column data
                     Measure measure = field.getAnnotation(Measure.class);
                     if ((measure.base() && onlyBaseMeasures) || !onlyBaseMeasures) {
-                        measures.add(new PropertyWrapper(field.getName(), field.getType().getSimpleName(), measure.description()));
+                        measures.add(new MeasureWrapper(field.getName(), field.getType().getSimpleName(), measure.base(), measure.description()));
                     }
                 }
             }

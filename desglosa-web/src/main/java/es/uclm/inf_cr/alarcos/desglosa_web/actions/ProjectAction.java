@@ -230,7 +230,7 @@ public class ProjectAction extends ActionSupport implements
             result = SUCCESS;
             addActionMessage(getText("message.project.measures_updated_successfully"));
         } catch (ProjectNotFoundException e) {
-            addActionError(getText("error.sproject.id"));
+            addActionError(getText("error.project.id"));
         } catch (SecurityException e) {
             addActionError(getText("exception.security"));
         } catch (IllegalArgumentException e) {

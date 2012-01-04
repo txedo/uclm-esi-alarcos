@@ -139,12 +139,12 @@
             <div class="form">
                 <fieldset class="viewingfieldset">
                     <h2><s:text name="label.subproject.measures"/></h2>
-                    <%@ include file="/jsp/viewSubprojectData.jsp"%>
+                    <%@ include file="/jsp/viewSubprojectMeasures.jsp"%>
                 </fieldset>
                 
 	            <div class="buttonPane">
 	                <!-- TODO add security tag -->
-	                <c:url var="updateMeasures" value="/viewSubprojectData">
+	                <c:url var="updateMeasures" value="/viewSubprojectMeasures">
 	                    <c:param name="id">${param.id}</c:param>
 	                </c:url>
 	                <button class="minimal" onclick="javascript:call('<c:out value="${updateMeasures}"/>',false)"><fmt:message key="button.configure_measures"/></button>
@@ -182,6 +182,7 @@
 			            <display:setProperty name="paging.banner.one_item_found"><fmt:message key="table.paging.banner.one_item_found_male"/></display:setProperty>
 			            <display:setProperty name="paging.banner.all_items_found"><fmt:message key="table.paging.banner.all_items_found_male"/></display:setProperty>
 			            <display:setProperty name="paging.banner.some_items_found"><fmt:message key="table.paging.banner.some_items_found_male"/></display:setProperty>
+			            <display:setProperty name="paging.banner.onepage"><fmt:message key="table.paging.banner.onepage"/></display:setProperty>
 			            <display:setProperty name="paging.banner.full"><fmt:message key="table.paging.banner.full"/></display:setProperty>
 			            <display:setProperty name="paging.banner.first"><fmt:message key="table.paging.banner.first"/></display:setProperty>
 			            <display:setProperty name="paging.banner.last"><fmt:message key="table.paging.banner.last"/></display:setProperty>

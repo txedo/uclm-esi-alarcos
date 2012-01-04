@@ -126,6 +126,20 @@
 			<result name="input">/jsp/viewCompanies.jsp</result>
 			<result name="success" type="redirectAction">listCompanies</result>
 		</action>
+		<action name="viewCompanyMeasures" class="companyAction" method="get">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/formCompanyMeasures.jsp</result>
+            <result name="input">/jsp/formCompanyMeasures.jsp</result>
+            <result name="success">/jsp/formCompanyMeasures.jsp</result>
+        </action>
+        <action name="editCompanyMeasures" class="companyAction" method="updateMeasures">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewCompanies.jsp</result>
+            <result name="input">/jsp/formCompanyMeasures.jsp</result>
+            <result name="success" type="redirectAction">listCompanies</result>
+        </action>
 		<!-- End of Company related actions -->
 		
 		<!-- Factory related actions -->
@@ -171,6 +185,20 @@
 			<result name="input">/jsp/viewFactories.jsp</result>
 			<result name="success" type="redirectAction">listFactories</result>
 		</action>
+		<action name="viewFactoryMeasures" class="factoryAction" method="get">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/formFactoryMeasures.jsp</result>
+            <result name="input">/jsp/formFactoryMeasures.jsp</result>
+            <result name="success">/jsp/formFactoryMeasures.jsp</result>
+        </action>
+        <action name="editFactoryMeasures" class="factoryAction" method="updateMeasures">
+            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/viewFactories.jsp</result>
+            <result name="input">/jsp/formFactoryMeasures.jsp</result>
+            <result name="success" type="redirectAction">listFactories</result>
+        </action>
 		<!-- End of Factory related actions -->
 		
         <!-- Project related actions -->
@@ -216,18 +244,18 @@
             <result name="input">/jsp/viewProjects.jsp</result>
             <result name="success" type="redirectAction">listProjects</result>
         </action>
-        <action name="viewProjectData" class="projectAction" method="get">
+        <action name="viewProjectMeasures" class="projectAction" method="get">
             <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
             <interceptor-ref name="redirectMessageAndParams"/>
-            <result name="error">/jsp/formProjectData.jsp</result>
-            <result name="input">/jsp/formProjectData.jsp</result>
-            <result name="success">/jsp/formProjectData.jsp</result>
+            <result name="error">/jsp/formProjectMeasures.jsp</result>
+            <result name="input">/jsp/formProjectMeasures.jsp</result>
+            <result name="success">/jsp/formProjectMeasures.jsp</result>
         </action>
-        <action name="editProjectData" class="projectAction" method="updateMeasures">
+        <action name="editProjectMeasures" class="projectAction" method="updateMeasures">
             <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewProjects.jsp</result>
-            <result name="input">/jsp/formProjectData.jsp</result>
+            <result name="input">/jsp/formProjectMeasures.jsp</result>
             <result name="success" type="redirectAction">listProjects</result>
         </action>
         <!-- End of Project related actions -->
@@ -275,18 +303,18 @@
             <result name="input">/jsp/viewSubprojects.jsp</result>
             <result name="success" type="redirectAction">listSubprojects</result>
         </action>
-        <action name="viewSubprojectData" class="subprojectAction" method="get">
+        <action name="viewSubprojectMeasures" class="subprojectAction" method="get">
             <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
             <interceptor-ref name="redirectMessageAndParams"/>
-            <result name="error">/jsp/formSubprojectData.jsp</result>
-            <result name="input">/jsp/formSubprojectData.jsp</result>
-            <result name="success">/jsp/formSubprojectData.jsp</result>
+            <result name="error">/jsp/formSubprojectMeasures.jsp</result>
+            <result name="input">/jsp/formSubprojectMeasures.jsp</result>
+            <result name="success">/jsp/formSubprojectMeasures.jsp</result>
         </action>
-        <action name="editSubprojectData" class="subprojectAction" method="updateMeasures">
+        <action name="editSubprojectMeasures" class="subprojectAction" method="updateMeasures">
             <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewSubprojects.jsp</result>
-            <result name="input">/jsp/formSubprojectData.jsp</result>
+            <result name="input">/jsp/formSubprojectMeasures.jsp</result>
             <result name="success" type="redirectAction">listSubprojects</result>
         </action>
         <!-- End of Subproject related actions -->

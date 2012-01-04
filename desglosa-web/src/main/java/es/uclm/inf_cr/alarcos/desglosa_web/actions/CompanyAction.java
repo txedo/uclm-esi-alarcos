@@ -2,6 +2,7 @@ package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
@@ -206,19 +207,7 @@ public class CompanyAction extends ActionSupport implements
     }
 
     public void validateDoDelete() {
-        try {
-            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
-            if (!CompanyManager.checkCompanyExists(id)) {
-                addActionError(getText("error.company.id"));
-            }
-        } catch (NullIdParameterException e1) {
-            addActionError(getText("error.company.id"));
-        } catch (NotValidIdParameterException e1) {
-            addActionError(getText("error.company.id"));
-        }
-        if (hasActionErrors()) {
-            companies = CompanyManager.getAllCompanies();
-        }
+        checkCompanyExists();
     }
 
     public String delete() {
@@ -229,6 +218,43 @@ public class CompanyAction extends ActionSupport implements
     }
 
     public void validateDoGet() {
+        checkCompanyExists();
+    }
+
+    public String get() throws Exception {
+        company = CompanyManager.getCompany(id);
+        return SUCCESS;
+    }
+    
+    public void validateDoUpdateMeasures() {
+        checkCompanyExists();
+    }
+    
+    public String updateMeasures() {
+        String result = ERROR;
+        try {
+            CompanyManager.updateMeasures(id, company);
+            result = SUCCESS;
+            addActionMessage(getText("message.company.measures_updated_successfully"));
+        } catch (CompanyNotFoundException e) {
+            addActionError(getText("error.company.id"));
+        } catch (SecurityException e) {
+            addActionError(getText("exception.security"));
+        } catch (IllegalArgumentException e) {
+            addActionError(getText("exception.illegal_argument"));
+        } catch (NoSuchMethodException e) {
+            addActionError(getText("exception.no_such_method"));
+        } catch (IllegalAccessException e) {
+            addActionError(getText("exception.illegal_access"));
+        } catch (InvocationTargetException e) {
+            addActionError(getText("exception.invocation_target"));
+        } catch (Exception e) {
+            addActionError(getText("exception.generic"));
+        }
+        return result;
+    }
+    
+    private void checkCompanyExists () {
         try {
             id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             if (!CompanyManager.checkCompanyExists(id)) {
@@ -242,11 +268,6 @@ public class CompanyAction extends ActionSupport implements
         if (hasActionErrors()) {
             companies = CompanyManager.getAllCompanies();
         }
-    }
-
-    public String get() throws Exception {
-        company = CompanyManager.getCompany(id);
-        return SUCCESS;
     }
 
 }

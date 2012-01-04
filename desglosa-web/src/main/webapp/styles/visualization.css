@@ -48,21 +48,18 @@ fieldset {
 	left:0;
 	width: 600px;
 	height: 400px;
+	float: left;
 }
 
 #joglCanvasControls {
 	float: right;
 }
 
-#charts {
-	position: relative;	
-}
-
 #tabs {
-	position: absolute;
 	top: 0;
 	right: 0;
 	width: 350px;
+	float: right;
 }
 
 #profileChooserDialogBody p {

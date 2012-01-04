@@ -2,6 +2,7 @@ package es.uclm.inf_cr.alarcos.desglosa_web.actions;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
@@ -300,19 +301,7 @@ public class FactoryAction extends ActionSupport {
     }
 
     public void validateDoDelete() {
-        try {
-            id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
-            if (!FactoryManager.checkFactoryExists(id)) {
-                addActionError(getText("error.factory.id"));
-            }
-        } catch (NullIdParameterException e1) {
-            addActionError(getText("error.factory.id"));
-        } catch (NotValidIdParameterException e1) {
-            addActionError(getText("error.factory.id"));
-        }
-        if (hasActionErrors()) {
-            factories = FactoryManager.getAllFactories();
-        }
+        checkFactoryExists();
     }
 
     public String delete() {
@@ -322,6 +311,43 @@ public class FactoryAction extends ActionSupport {
     }
     
     public void validateDoGet() {
+        checkFactoryExists();
+    }
+
+    public String get() throws Exception {
+        factory = FactoryManager.getFactory(id);
+        return SUCCESS;
+    }
+    
+    public void validateDoUpdateMeasures() {
+        checkFactoryExists();
+    }
+    
+    public String updateMeasures() {
+        String result = ERROR;
+        try {
+            FactoryManager.updateMeasures(id, factory);
+            result = SUCCESS;
+            addActionMessage(getText("message.factory.measures_updated_successfully"));
+        } catch (FactoryNotFoundException e) {
+            addActionError(getText("error.factory.id"));
+        } catch (SecurityException e) {
+            addActionError(getText("exception.security"));
+        } catch (IllegalArgumentException e) {
+            addActionError(getText("exception.illegal_argument"));
+        } catch (NoSuchMethodException e) {
+            addActionError(getText("exception.no_such_method"));
+        } catch (IllegalAccessException e) {
+            addActionError(getText("exception.illegal_access"));
+        } catch (InvocationTargetException e) {
+            addActionError(getText("exception.invocation_target"));
+        } catch (Exception e) {
+            addActionError(getText("exception.generic"));
+        }
+        return result;
+    }
+    
+    private void checkFactoryExists () {
         try {
             id = Utilities.checkValidId(ServletActionContext.getRequest().getParameter("id"));
             if (!FactoryManager.checkFactoryExists(id)) {
@@ -335,11 +361,6 @@ public class FactoryAction extends ActionSupport {
         if (hasActionErrors()) {
             factories = FactoryManager.getAllFactories();
         }
-    }
-
-    public String get() throws Exception {
-        factory = FactoryManager.getFactory(id);
-        return SUCCESS;
     }
 
 }

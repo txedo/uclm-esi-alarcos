@@ -71,7 +71,9 @@
 					</li>
 				</ul>
 			</fieldset>
-			
+			<div style="display:none">
+                <%@ include file="/jsp/generateCompanyMeasureForm.jsp"%>
+            </div>
 			<s:submit id="submit" value="%{getText(#attr.buttonLabel)}" tabindex="3"></s:submit>
 		</form>
 	</div>

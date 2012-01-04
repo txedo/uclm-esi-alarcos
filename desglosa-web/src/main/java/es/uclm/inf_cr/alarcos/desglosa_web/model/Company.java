@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Formula;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Measure;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 
 @Entity
@@ -30,11 +31,11 @@ public class Company {
     private String information;
     private Director director;
     private Set<Factory> factories = new HashSet<Factory>();
-    @Property
+    @Property @Measure(base = false)
     private Integer numberOfFactories;
-    @Property
+    @Property @Measure(base = false)
     private Integer numberOfProjects;
-    @Property
+    @Property @Measure(base = false)
     private Integer numberOfEmployees;
 
     public Company() {
