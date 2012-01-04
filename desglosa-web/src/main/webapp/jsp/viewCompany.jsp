@@ -87,14 +87,14 @@
 					</ul>
 					<div class="clear"></div>
 				</fieldset>
-			</div>
-			
-			<div class="buttonPane">
-				<!-- TODO add security tag -->
-				<c:url var="edit" value="/showCompanyForm">
-					<c:param name="id">${param.id}</c:param>
-				</c:url>
-				<button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',false)"><fmt:message key="button.edit_company"/></button>
+				
+				<div class="buttonPane">
+	                <!-- TODO add security tag -->
+	                <c:url var="edit" value="/showCompanyForm">
+	                    <c:param name="id">${param.id}</c:param>
+	                </c:url>
+	                <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',false)"><fmt:message key="button.edit_company"/></button>
+	            </div>
 			</div>
 			
 			<fieldset class="viewingfieldset">

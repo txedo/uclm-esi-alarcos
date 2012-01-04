@@ -12,14 +12,13 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.WordUtils;
-import org.springframework.web.context.ContextLoader;
-
 
 import model.gl.knowledge.GLObject;
 import model.util.City;
 import model.util.Neighborhood;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.EntityNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.GroupByOperationNotSupportedException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.IncompatibleTypesException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Field;
@@ -30,7 +29,6 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MyHashMapEntryType;
-import es.uclm.inf_cr.alarcos.desglosa_web.persistence.XMLAgent;
 
 public class GLObjectManager {
 
@@ -40,13 +38,10 @@ public class GLObjectManager {
             ClassNotFoundException, SecurityException, NoSuchMethodException,
             IllegalArgumentException, InvocationTargetException,
             EntityNotSupportedException, GroupByOperationNotSupportedException,
-            NoSuchFieldException {
+            NoSuchFieldException, IncompatibleTypesException {
         City c = new City();
         // Load selected profile
-        String path = ContextLoader.getCurrentWebApplicationContext()
-                .getServletContext().getRealPath("profiles")
-                + "\\" + profileName;
-        Metaclass metaclass = XMLAgent.unmarshal(path, Metaclass.class);
+        Metaclass metaclass = ProfileManager.getProfileByName(profileName);
 
         Class<?> classModel = Class.forName(metaclass.getModelName());
         c.setModel(metaclass.getModelName());
@@ -54,8 +49,7 @@ public class GLObjectManager {
         if (entities != null && entities.size() > 0) {
             // Create a map of list in which key is neighborhood name and value
             // is a list of flats
-            Map<String, List<?>> neighborhoods = groupEntitiesBy(entities
-                    .get(0).getClass(), entities, groupBy);
+            Map<String, List<?>> neighborhoods = groupEntitiesBy(entities.get(0).getClass(), entities, groupBy);
             // Iterate over each list creating GLObjects while creating
             // GLNeighborhoods and GLCity
             Iterator<?> it = neighborhoods.entrySet().iterator();
@@ -67,42 +61,33 @@ public class GLObjectManager {
                     // Do mappings using java reflection
                     for (Mapping mapping : metaclass.getMappings()) {
                         // Build setter method using Java Reflective API
-                        String setterName = "set"
-                                + WordUtils.capitalize(mapping.getModelAttr()
-                                        .getName());
-                        // Look for the setter method through all the object
-                        // hierarchy
+                        String setterName = "set" + WordUtils.capitalize(mapping.getModelAttr().getName());
+                        // Look for the setter method through all the object hierarchy
                         Class<?> superClass = classModel;
                         Method setterMethod = superClass.getMethod(setterName, mapping.getModelAttr().getParameterType());
 
                         // Build getter method using Java Reflective API
                         // oneWord_otherWord_anotherWord must be parsed to
                         // invoke getOneWord().getOtherWord().getAnotherWord()
-                        String[] chainOfGetters = mapping.getEntityAttr()
-                                .getName().split("_");
+                        String[] chainOfGetters = mapping.getEntityAttr().getName().split("_");
                         Class<?> subClass = e.getClass();
                         Object entityAttrValue = e;
-                        for (int i = 0; i < chainOfGetters.length
-                                && entityAttrValue != null; i++) {
+                        for (int i = 0; i < chainOfGetters.length && entityAttrValue != null; i++) {
                             String getterPrefix = "get";
-                            if (mapping.getEntityAttr().getType()
-                                    .equals("boolean"))
+                            if (mapping.getEntityAttr().getType().equals("boolean")) {
                                 getterPrefix = "is";
-                            String parentGetterName = getterPrefix
-                                    + WordUtils.capitalize(chainOfGetters[i]);
+                            }
+                            String parentGetterName = getterPrefix + WordUtils.capitalize(chainOfGetters[i]);
                             Method parentGetterMethod = subClass.getMethod(parentGetterName, null);
                             entityAttrValue = parentGetterMethod.invoke(entityAttrValue, null);
-                            subClass = subClass.getDeclaredField(
-                                    chainOfGetters[i]).getType();
+                            subClass = subClass.getDeclaredField(chainOfGetters[i]).getType();
                         }
                         if (entityAttrValue != null) {
                             // Check model attribute type and handle it in a
                             // special manner if its range or color
                             Object finalValue = null;
-                            String entityAttrType = mapping.getEntityAttr()
-                                    .getType();
-                            String modelAttrType = mapping.getModelAttr()
-                                    .getType();
+                            String entityAttrType = mapping.getEntityAttr().getType();
+                            String modelAttrType = mapping.getModelAttr().getType();
                             if (modelAttrType.equals("float_range")) {
                                 // leer las reglas y aplicarlas
                                 // entityAttrType puede ser int
@@ -124,8 +109,7 @@ public class GLObjectManager {
                                                 }
                                             }
                                         } else {
-                                            // TODO lanzar excepcion de tipos
-                                            // incompatibles
+                                            throw new IncompatibleTypesException();
                                         }
                                     } else if (entityAttrType.equals("string")) {
                                         if (((String) entityAttrValue).equals((String) r.getLow())) {
@@ -154,8 +138,7 @@ public class GLObjectManager {
                                                 }
                                             }
                                         } else {
-                                            // TODO lanzar excepcion de tipos
-                                            // incompatibles
+                                            throw new IncompatibleTypesException();
                                         }
                                     } else if (entityAttrType.equals("hexcolor")) {
 
@@ -180,8 +163,8 @@ public class GLObjectManager {
                             }
                             setterMethod.invoke(classModel.cast(glObj), finalValue);
                         } else {
-                            // TODO El valor en la base de datos es null y va a
-                            // lanzar IllegalArgumentException
+                            // El valor en la base de datos es null y se lanzaria IllegalArgumentException, por eso aplicamos un valor por defecto
+                            setterMethod.invoke(classModel.cast(glObj), mapping.getModelAttr().generateDefaultValue());
                         }
                     }
                     // Apply constant values using java reflection too
@@ -192,8 +175,8 @@ public class GLObjectManager {
                         if (field.getValue() != null) {
                             setterMethod.invoke(classModel.cast(glObj), field.getValue());
                         } else {
-                            // TODO El valor de la constante es null y va a
-                            // lanzar IllegalArgumentException
+                            // El valor de la constante es null y se lanzaria IllegalArgumentException, por eso aplicamos un valor por defecto
+                            setterMethod.invoke(classModel.cast(glObj), field.generateDefaultValue());
                         }
                     }
                     glObjects.add((GLObject) glObj);

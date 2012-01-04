@@ -20,7 +20,8 @@
 	<fmt:message key="label.available_profiles" var="availableProfiles"/>
 	<fmt:message key="label.group_by_option" var="groupByOption"/>
 	<fmt:message key="error.profile_selection_error" var="profileSelectionError"/>
-	<fmt:message key="error.json_string_webapp_applet_malformed" var="malformedJSONStrnig"/>
+	<fmt:message key="error.json_string_webapp_applet_malformed" var="malformedJSONString"/>
+	<fmt:message key="error.outdated_profile" var="outdatedProfile"/>
 	<fmt:message key="error.general" var="generalError"/>
 	<fmt:message key="label.global_info" var="globalInformation"/>
 	<fmt:message key="label.show_global_info" var="showGlobalInformation"/>
@@ -35,7 +36,6 @@
 	<link href="<s:url value='/styles/visualization.css?version=1'/>" rel="stylesheet" type="text/css" />
 	
 	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=en-US"></script>
-	<script type="text/javascript" src="js/desglosa-facade.js?version=1"></script>
 
 	<script type="text/javascript">
 	var map;
@@ -494,6 +494,210 @@
 		
 		initializeTabs();
 	});
+	
+///////////////////////////////////////////////////////
+//////////BEGINING OF DESGLOSA-FACADE.JS /////////////
+///////////////////////////////////////////////////////
+
+var currentEntity = null;
+var currentEntityId;
+
+function getNextLevel () {
+	var nextLevel = null;
+	if (currentEntity == null) nextLevel = "company";
+	else if (currentEntity == "company") nextLevel = "factory";
+	else if (currentEntity == "factory") nextLevel = "project";
+	else if (currentEntity == "project") nextLevel = "subproject";
+	else if (currentEntity == "subproject") nextLevel = null;
+	return nextLevel;
+}
+
+function selectTower(id, clickButton, clickCount) {
+    handleSelectionEvent(id, clickButton, clickCount);
+}
+
+function selectBuilding(id, clickButton, clickCount) {
+    handleSelectionEvent(id, clickButton, clickCount);
+}
+
+function selectAntennaBall(id, clickButton, clickCount) {
+    handleSelectionEvent(id, clickButton, clickCount);
+}
+
+function selectionError(message) {
+    alert(message);
+}
+
+function getQueryActionForCurrentEntity() {
+	var action = null;
+	if (currentEntity == "company") {
+		action = '/desglosa-web/getCompanyPlainReport';
+	} else if (currentEntity == "factory") {
+		action = '/desglosa-web/getFactoryPlainReport';
+    } else if (currentEntity == "project") {
+    	action = '/desglosa-web/getProjectPlainReport';
+    } else if (currentEntity == "subproject") {
+    	action = '/desglosa-web/getSubprojectPlainReport';
+    }
+	return action;
+}
+
+function handleSelectionEvent(id, clickButton, clickCount) {
+	// This function will handle the selection event on any 3D model, so it will handle navigation too
+	currentEntityId = id;
+	// Show popup to allow groupBy and next level profile selection
+	switch (clickButton) {
+	 case 1:     // Left button
+	     switch (clickCount) {
+	         case 1:     // Click
+	        	showLoadingIndicator(true);
+	        	var action = getQueryActionForCurrentEntity();
+	        	if (action != null) {
+					$("#infoPanelDivContent").load(action + "?id=" + currentEntityId + " #plainReport", function() {
+						showLoadingIndicator(false);
+					});
+				} else {
+					$('#errorDialogBody').html("<p class='messageBox error'><c:out value='${generalError}'/></p>");
+					$('#errorDialog').dialog('open');
+					showLoadingIndicator(false);
+				}
+				break;
+	         case 2:     // Double click
+	             $('#profileChooserDialogMessages').html("Navigate to " + getNextLevel() + " from " + currentEntity + " (" + currentEntityId + ") information.");
+	             $('#profileChooserDialog').dialog('open');
+	             var nextLevel = getNextLevel();
+	             if (currentEntity == "company" && nextLevel == "factory") {
+	                 // load factory profiles
+	                 openDialog("desglosa_showFactoriesByCompanyId", nextLevel, id, true, false, true, true, true);
+	             } else if (currentEntity == "factory" && nextLevel == "project") {
+	                 // load project profiles
+	                 openDialog("desglosa_showProjectsByFactoryId", nextLevel, id, true, true, false, true, true);
+	             } else if (currentEntity == "project" && nextLevel == "subproject") {
+	                 // load subproject profiles
+	                 openDialog("desglosa_showSubprojectsByProjectId", nextLevel, id, true, true, true, false, true);
+	             } else {
+	                 // No further navigation
+	             }
+	             break;
+	         default:    // Ignore multiple clicks but double click
+	             break;
+	     }
+	     break;
+	 case 2:     // Middle button
+	     break;
+	 case 3:     // Right button
+	     break;
+	 default:    // Any other button
+	     break;
+	}
+}
+
+function desglosa_showCompaniesById(id, groupBy, profileFilename){
+    currentEntity = "company";
+    desglosa_launchDesglosaEngine("/desglosa-web/json_companyById.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showFactoriesByCompanyId(id, groupBy, profileFilename) {
+    currentEntity = "factory";
+    desglosa_launchDesglosaEngine("/desglosa-web/json_factoriesByCompanyId.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showFactoriesById(id, groupBy, profileFilename) {
+    currentEntity = "factory";
+    desglosa_launchDesglosaEngine("/desglosa-web/json_factoryById.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showProjectsByCompanyId(id, groupBy, profileFilename) {
+    currentEntity = "project";
+    desglosa_launchDesglosaEngine("/desglosa-web/json_projectsByCompanyId.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showProjectsByFactoryId(id, groupBy, profileFilename) {
+    currentEntity = "project";
+    desglosa_launchDesglosaEngine("/desglosa-web/json_projectsByFactoryId.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showProjectsById(id, groupBy, profileFilename) {
+    currentEntity = "project";
+    desglosa_launchDesglosaEngine("/desglosa-web/json_projectById.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showSubprojectsByCompanyId(id, groupBy, profileFilename) {
+    currentEntity = "subproject";
+    desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByCompanyId.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showSubprojectsByFactoryId(id, groupBy, profileFilename) {
+    currentEntity = "subproject";
+    desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByFactoryId.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showSubprojectsByProjectId(id, groupBy, profileFilename) {
+    currentEntity = "subproject";
+    desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByFactoryId.action", id, groupBy, profileFilename);
+}
+
+function desglosa_showSubprojectsById(id, groupBy, profileFilename) {
+    currentEntity = "subproject";
+    desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectById.action", id, groupBy, profileFilename);
+}
+
+function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
+    showLoadingIndicator(true);
+    // Hide map canvas
+    //if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
+    // Hide jogl canvas if it is shown
+    //if (document.getElementById("jogl_canvas").style.display == '') $('#jogl_canvas').css('display','none');
+    $.getJSON(action,
+    	 {
+            id: id,
+            generateGLObjects: true,
+            groupBy: groupBy,
+            profileFileName: filename
+         },
+	     function (data, status) {
+	         if (status == "success") {
+	             var city = JSON.stringify(data.city);
+	             if (city != "null" && city != undefined) {
+	            	 $('#map_canvas').css('display','none');
+	            	 if ($('#jogl_canvas').css('display') == '') {
+	            		 $('#jogl_canvas').css('display','none');
+                     }
+	            	 $('#jogl_canvas').css('display','');
+	                 desglosa_handleVisualization(data.city.model, city);
+	             } else if (city == "null") {
+	                 $('#jogl_canvas').css('display','none');
+	                 $('#map_canvas').css('display','');
+	                 $('#errorDialogBody').html("<p class='messageBox error'><c:out value='${malformedJSONString}'/></p>");
+	                 $('#errorDialog').dialog('open');
+	             } else if (city == undefined) {
+	                 $('#errorDialogBody').html("<p class='messageBox error'><c:out value='${outdatedProfile}'/></p>");
+	                 $('#errorDialog').dialog('open');
+	             }
+	         } else {
+	             $('#jogl_canvas').css('display','none');
+	             $('#map_canvas').css('display','');
+	             $('#errorDialogBody').html("<p class='messageBox error'><c:out value='${generalError}'/></p>");
+	             $('#errorDialog').dialog('open');
+	         }
+	         showLoadingIndicator(false);
+         });
+}
+
+function desglosa_handleVisualization(model, city) {
+	if (model == "model.gl.knowledge.GLTower") {
+		   document.DesglosaApplet.visualizeTowers(city);
+	} else if (model == "model.gl.knowledge.GLAntennaBall") {
+		   document.DesglosaApplet.visualizeAntennaBalls(city);
+	} else if (model == "model.gl.knowledge.GLFactory") {
+		   document.DesglosaApplet.visualizeBuildings(city);
+	}
+}
+
+
+///////////////////////////////////////////////////////
+////////////END OF DESGLOSA-FACADE.JS ////////////////
+///////////////////////////////////////////////////////
 
 	</script>
 </head>

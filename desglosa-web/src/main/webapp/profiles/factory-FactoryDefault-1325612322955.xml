@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <profile model="model.gl.knowledge.GLFactory" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Factory">
     <name>FactoryDefault</name>
-    <description>default factory profile</description>
+    <description>Este es un perfil predefinido para representar las factorías de software.</description>
     <mappings>
         <mapping>
             <entityAttr name="id" type="int"/>
@@ -12,7 +12,7 @@
             <modelAttr name="smokestackColor" type="color"/>
         </mapping>
         <mapping>
-            <entityAttr name="numberOfProjects" type="int"/>
+            <entityAttr name="numberOfDevelopingSubprojects" type="int"/>
             <modelAttr name="smokestackHeight" type="int"/>
         </mapping>
         <mapping>
@@ -21,17 +21,17 @@
             <rule>
                 <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">0</low>
                 <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">20</high>
-                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.0</value>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.75</value>
             </rule>
             <rule>
                 <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">20</low>
-                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">50</high>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">100</high>
                 <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">1.0</value>
             </rule>
             <rule>
-                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">50</low>
-                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">5000</high>
-                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">1.0</value>
+                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">100</low>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1000</high>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">1.5</value>
             </rule>
         </mapping>
     </mappings>
@@ -41,8 +41,8 @@
         </constant>
     </constants>
     <caption>
-        <entry color="00649a" label="Arquitectura"/>
-        <entry color="2a8400" label="Defensa"/>
-        <entry color="ff8c00" label="Sanidad"/>
+        <entry color="000000" label="Smokestack color: Market"/>
+        <entry color="000000" label="Smokestack height: Projects under development"/>
+        <entry color="000000" label="Scale size: Number of employees"/>
     </caption>
 </profile>
