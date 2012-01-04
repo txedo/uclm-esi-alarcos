@@ -120,20 +120,17 @@ public class GLProjectViewManager extends GLViewManager {
             else {
                 ((GLObject3D) glo).draw();
                 // Write the project label
-                Vector3f cameraViewDir = this.drawer.getCamera().getViewDir()
-                        .clone();
+                Vector3f cameraViewDir = this.drawer.getCamera().getViewDir().clone();
                 cameraViewDir.setY(0.0f);
                 cameraViewDir.normalize();
-                Vector3f normalizedOppositeCameraViewDir = cameraViewDir
-                        .mult(-1);
-                Vector3f objectPosition = new Vector3f(glo.getPositionX(),
-                        0.0f, glo.getPositionZ());
+                Vector3f normalizedOppositeCameraViewDir = cameraViewDir .mult(-1);
+                Vector3f objectPosition = new Vector3f(glo.getPositionX(), 0.0f, glo.getPositionZ());
                 float offset = ((GLAntennaBall) glo).getParentBallRadius();
-                Vector3f offsetPosition = objectPosition
-                        .add(normalizedOppositeCameraViewDir.mult(offset));
-                GLUtils.renderBitmapString(offsetPosition.getX(), 0.1f,
-                        offsetPosition.getZ(), 4,
-                        ((GLAntennaBall) glo).getLabel());
+                if (offset == 0.0f) {
+                    offset = 1.0f;
+                }
+                Vector3f offsetPosition = objectPosition.add(normalizedOppositeCameraViewDir.mult(offset));
+                GLUtils.renderBitmapString(offsetPosition.getX(), 0.1f, offsetPosition.getZ(), 4, ((GLAntennaBall) glo).getLabel());
             }
         }
     }

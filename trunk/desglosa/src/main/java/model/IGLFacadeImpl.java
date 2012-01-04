@@ -122,9 +122,11 @@ public class IGLFacadeImpl implements IGLFacade {
         }
 
         // Normalize
-        for (GLObject glAB : antennaBalls) {
-            ((GLAntennaBall) glAB).setParentBallRadius(((GLAntennaBall) glAB)
-                    .getParentBallRadius() * GLAntennaBall.MAX_SIZE / maxSize);
+        if (maxSize != 0.0) {
+            for (GLObject glAB : antennaBalls) {
+                ((GLAntennaBall) glAB).setParentBallRadius(((GLAntennaBall) glAB)
+                        .getParentBallRadius() * GLAntennaBall.MAX_SIZE / maxSize);
+            }
         }
 
         // Place flats and neighborhoods once normalized
