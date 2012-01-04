@@ -68,7 +68,12 @@ public class GLAntennaBall extends GLObject3D {
         // Move to the parent ball center
         GLSingleton.getGL().glTranslatef(this.positionX, this.parentBallRadius,
                 this.positionY);
-
+        // if parentBallRadius == 0.0f, make a copy and use 1.0f in order to draw child balls and shadows
+        float parentBallRadiusBackup = this.parentBallRadius;
+        if (this.parentBallRadius == 0.0f) {
+            this.parentBallRadius = 0.1f;
+        }
+        
         // Draw the child balls
         if (shadow) {
             this.drawChildBall(true, super.SHADOW_COLOR, "");
@@ -100,6 +105,9 @@ public class GLAntennaBall extends GLObject3D {
         } else {
             GLSingleton.getGL().glColor4fv(super.SHADOW_COLOR.getColorFB());
         }
+        
+        // Set parentBallRadius back to its real value
+        this.parentBallRadius = parentBallRadiusBackup;
         // Now we draw the sphere
         GLSingleton.getGLU().gluSphere(this.quadric, this.parentBallRadius,
                 this.subdivisions, this.subdivisions);
