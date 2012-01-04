@@ -23,32 +23,24 @@ function updateMeasures() {
 <s:actionmessage />
 
 <s:if test="!hasActionErrors()">
-	<form id="formProject" class="form" method="post" action="<c:url value='/editProjectData'/>" enctype="multipart/form-data">
-	    <c:set var="projectId" value="${param.id}"/>
-	    <s:hidden name="id" value="%{#attr.projectId}"/>
+	<form id="formFactory" class="form" method="post" action="<c:url value='/editFactoryMeasures'/>" enctype="multipart/form-data">
+	    <c:set var="factoryId" value="${param.id}"/>
+	    <s:hidden name="id" value="%{#attr.factoryId}"/>
 	
 	    <fieldset class="formfieldset">
-	        <h2><s:text name="label.configure.project.measures.title"/></h2>
+	        <h2><s:text name="label.configure.factory.measures.title"/></h2>
             <fieldset class="viewingfieldset">
                 <ul>
                     <li>
-                        <label class="key"><s:text name="label.project.name"/></label>
-                        <label class="value"><s:text name="project.name"/></label>
-                    </li>
-                    <li>
-                        <label class="key"><s:text name="label.project.code"/></label>
-                        <label class="value"><s:text name="project.code"/></label>
-                    </li>
-                    <li>
-                        <label class="key"><s:text name="label.project.plan"/></label>
-                        <label class="value"><s:text name="project.plan"/></label>
+                        <label class="key"><s:text name="label.factory.name"/></label>
+                        <label class="value"><s:text name="factory.name"/></label>
                     </li>
                 </ul>
             </fieldset>
-	        <p><s:text name="label.configure.project.measures.text"/></p>
+	        <p><s:text name="label.configure.factory.measures.text"/></p>
 	        <span id="incorrectInputValues"></span>
 	        
-	        <%@ include file="/jsp/generateProjectMeasureForm.jsp"%>
+	        <%@ include file="/jsp/generateFactoryMeasureForm.jsp"%>
 	        
 	        <div class="buttonPane">
                 <button class="minimal" onclick="return updateMeasures();"><img id="saveIndicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none;" class="icon"/><fmt:message key="button.update_measures"/></button>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<%@page import="es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper"%>
 <%@page import="java.util.List"%>
 <%@page import="es.uclm.inf_cr.alarcos.desglosa_web.model.util.MeasureAnnotationParser"%>
 <%@page import="es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject"%>
@@ -15,7 +14,8 @@
 <fmt:message key="label.tooltip.float" var="labelFloat"/>
 
 <c:set var="measures" value="<%= MeasureAnnotationParser.parseBaseMeasures(Subproject.class) %>"></c:set>
-<c:if test="${fn:length(measures) gt 0}">
+<c:choose>
+	<c:when test="${fn:length(measures) gt 0}">
     <ul>
         <c:forEach var="measure" items="${measures}">
             <c:set var="measureName" value="subproject.${measure.name}"></c:set>
@@ -36,7 +36,11 @@
             </li>
         </c:forEach>
     </ul>
-</c:if>
+	</c:when>
+    <c:otherwise>
+        <p><s:text name="label.subproject.base_measures.lt0"></s:text></p>
+    </c:otherwise>
+</c:choose>
 
 <!-- javascript coding -->
 <script>

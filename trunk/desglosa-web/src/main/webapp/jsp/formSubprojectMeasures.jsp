@@ -23,7 +23,7 @@ function updateMeasures() {
 <s:actionmessage />
 
 <s:if test="!hasActionErrors()">
-    <form id="formSubproject" class="form" method="post" action="<c:url value='/editSubprojectData'/>" enctype="multipart/form-data">
+    <form id="formSubproject" class="form" method="post" action="<c:url value='/editSubprojectMeasures'/>" enctype="multipart/form-data">
         <c:set var="subprojectId" value="${param.id}"/>
         <s:hidden name="id" value="%{#attr.subprojectId}"/>
     

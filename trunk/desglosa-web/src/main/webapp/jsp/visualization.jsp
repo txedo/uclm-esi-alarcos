@@ -884,9 +884,7 @@ function desglosa_handleVisualization(model, city) {
 				</sj:accordionItem>
 			</sj:accordion>
 		</div>
-		
-		<div id="charts"></div>
-	
+
 		<div id="tabs">
 			<s:text name='label.detailed_info'/>:
 			<sj:tabbedpanel id="infoTabs" animate="true">

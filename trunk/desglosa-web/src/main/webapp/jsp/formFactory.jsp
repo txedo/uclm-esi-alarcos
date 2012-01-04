@@ -254,6 +254,7 @@
 		            <display:setProperty name="paging.banner.one_item_found"><fmt:message key="table.paging.banner.one_item_found"/></display:setProperty>
 		            <display:setProperty name="paging.banner.all_items_found"><fmt:message key="table.paging.banner.all_items_found"/></display:setProperty>
 		            <display:setProperty name="paging.banner.some_items_found"><fmt:message key="table.paging.banner.some_items_found"/></display:setProperty>
+		            <display:setProperty name="paging.banner.onepage"><fmt:message key="table.paging.banner.onepage"/></display:setProperty>
 		            <display:setProperty name="paging.banner.full"><fmt:message key="table.paging.banner.full"/></display:setProperty>
 		            <display:setProperty name="paging.banner.first"><fmt:message key="table.paging.banner.first"/></display:setProperty>
 		            <display:setProperty name="paging.banner.last"><fmt:message key="table.paging.banner.last"/></display:setProperty>
@@ -384,6 +385,9 @@
             </ul>
           </fieldset>
           <div class="clear"></div>
+          <div style="display:none">
+                <%@ include file="/jsp/generateFactoryMeasureForm.jsp"%>
+            </div>
           <div class="wizardSteps">
 			<a href="javascript:void(0)" class="left" onclick="swapDivVisibility('#fillAddress','#fillDirector')">&lt; <s:text name="label.back"/></a>
 			<s:submit value="%{getText(#attr.buttonLabel)}"/>

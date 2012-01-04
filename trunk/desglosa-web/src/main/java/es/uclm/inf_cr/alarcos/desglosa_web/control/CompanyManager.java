@@ -1,10 +1,12 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.control;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.CompanyDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
+import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
 
 public class CompanyManager {
     private static CompanyDAO companyDao;
@@ -52,6 +54,12 @@ public class CompanyManager {
     
     public static void removeCompany(int id) {
         companyDao.removeCompany(id);
+    }
+    
+    public static void updateMeasures(int companyToUpdateId, Company companyWithUpdatedMeasures) throws CompanyNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, Exception {
+        Company companyToUpdate = CompanyManager.getCompany(companyToUpdateId);
+        Utilities.updateFieldsByReflection(Company.class, companyToUpdate, companyWithUpdatedMeasures);
+        CompanyManager.saveCompany(companyToUpdate);
     }
     
     public void setCompanyDao(CompanyDAO companyDao) {

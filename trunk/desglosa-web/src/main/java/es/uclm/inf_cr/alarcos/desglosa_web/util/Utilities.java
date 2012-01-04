@@ -13,7 +13,7 @@ import net.sf.json.JSONSerializer;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MeasureAnnotationParser;
-import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MeasureWrapper;
 
 public class Utilities {
     public static final String ID = "id";
@@ -82,8 +82,8 @@ public class Utilities {
     }
     
     public static void updateFieldsByReflection(Class<?> clazz, Object objectToUpdate, Object objectWithUpdatedFields) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, Exception {
-        List<PropertyWrapper> measures = MeasureAnnotationParser.parseBaseMeasures(clazz);
-        for (PropertyWrapper pw : measures) {
+        List<MeasureWrapper> measures = MeasureAnnotationParser.parseBaseMeasures(clazz);
+        for (MeasureWrapper pw : measures) {
             String prefix = "get";
             if (pw.getType().equals("Boolean")) {
                 prefix = "is";
