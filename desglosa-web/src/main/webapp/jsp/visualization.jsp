@@ -29,6 +29,14 @@
 	<fmt:message key="label.Factories" var="factoryInformation"/>
 	<fmt:message key="label.Projects" var="projectInformation"/>
 	<fmt:message key="label.Subprojects" var="subprojectInformation"/>
+	<fmt:message key="label.further_info_about_company" var="companyFurtherInformation"/>
+	<fmt:message key="label.further_info_about_factory" var="factoryFurtherInformation"/>
+	<fmt:message key="label.further_info_about_project" var="projectFurtherInformation"/>
+	<fmt:message key="label.further_info_about_subproject" var="subprojectFurtherInformation"/>
+	<fmt:message key="label.numberOfEmployees" var="numberOfEmployees"/>
+	<fmt:message key="label.numberOfLeadingProjects" var="numberOfLeadingProjects"/>
+	<fmt:message key="label.numberOfDevelopingSubprojects" var="numberOfDevelopingSubprojects"/>
+	<fmt:message key="label.factory.email" var="factoryEmail"/>
 	
 	<meta name="menu" content="Visualization"/>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -90,8 +98,13 @@
 	}
 	
 	function createInfoWindow(factoryJSON) {
-		var resultHTML = "<b>" + factoryJSON.name + "</b> (" + factoryJSON.company.name + ")<br />";
-		resultHTML += "<i>" + factoryJSON.company.information + "</i><br />";
+		var resultHTML = "<b>" + factoryJSON.name + "</b><br />";
+		resultHTML += "<i>" + factoryJSON.information + "</i><br />";
+		resultHTML += "<c:out value='${labelCompany}'/>" + ": " + factoryJSON.company.name + "<br />";
+		resultHTML += "<c:out value='${factoryEmail}'/>" + ": " + factoryJSON.email + "<br /><br />";
+		resultHTML += "<c:out value='${numberOfEmployees}'/>" + ": " + factoryJSON.employees + "<br />";
+		resultHTML += "<c:out value='${numberOfLeadingProjects}'/>" + ": " + factoryJSON.numberOfLeadingProjects + "<br />";
+		resultHTML += "<c:out value='${numberOfDevelopingSubprojects}'/>" + ": " + factoryJSON.numberOfDevelopingSubprojects + "<br />";
 
 		var infoWindow = new google.maps.InfoWindow();
 		infoWindow.setContent(resultHTML);
@@ -100,7 +113,7 @@
 		return infoWindow;
 	}
 	
-	function addMarkerEvents(marker, infoWindow) {
+	function addMarkerEvents(marker, infoWindow, factoryId) {
 		// show infowindow
 		google.maps.event.addListener(marker, 'click', function(event) {
 			closeAllInfoWindows();
@@ -113,8 +126,13 @@
 		
 		// show graphics engine
 		google.maps.event.addListener(marker, 'dblclick', function(event) {
-			$("#map_canvas").css("display", "none");
-			$("#jogl_canvas").css("display", "");
+			showLoadingIndicator(true);
+			$("#infoPanelDiv").css('display', 'none');
+            $("#infoPanelDivHeader").html("<c:out value='${factoryFurtherInformation}'/>");
+            $("#infoPanelDivContent").load("/desglosa-web/getFactoryPlainReport?id=" + factoryId + " #plainReport", function() {
+                $('#infoPanelDiv').css('display','');
+                showLoadingIndicator(false);
+            });
 	    });
 	}
 	
@@ -129,7 +147,7 @@
 							var marker = placeMarker(item.location.latitude, item.location.longitude);
 							marker.setTitle(item.name);
 							var infoWindow = createInfoWindow(item);
-							addMarkerEvents(marker, infoWindow);
+							addMarkerEvents(marker, infoWindow, item.id);
 							$("#factoryInformation").append(formatFactoryInformation(item));
 						});
 					}
@@ -161,7 +179,7 @@
 							var marker = placeMarker(item.location.latitude, item.location.longitude);
 							marker.setTitle(item.name);
 							var infoWindow = createInfoWindow(item);
-							addMarkerEvents(marker, infoWindow);
+							addMarkerEvents(marker, infoWindow, item.id);
 							if (fillFactorySelect) {
 								$(selector).append($("<option></option>").attr("value", item.id).text(item.name));
 							}
@@ -243,7 +261,10 @@
 								$("#projectInformation").html("");
 								$("#projectInformation").append("<br /><a href='#' onclick='javascript:desglosa_showProjectsById(0)'><s:text name='label.show_more'/></a>");
 								$.each(item.subprojects, function (j, subproject) {
-									placeMarker(subproject.factory.location.latitude, subproject.factory.location.longitude);
+									var marker = placeMarker(subproject.factory.location.latitude, subproject.factory.location.longitude);
+									marker.setTitle(subproject.factory.name);
+		                            var infoWindow = createInfoWindow(subproject.factory);
+		                            addMarkerEvents(marker, infoWindow, subproject.factory.id);
 								});
 							});
 						} else {
@@ -251,7 +272,10 @@
 							$.each(data.projects, function (i, item) {
 								$("#projectInformation").append(formatProjectInformation(item));
 								$.each(item.subprojects, function (j, subproject) {
-									placeMarker(subproject.factory.location.latitude, subproject.factory.location.longitude);
+									var marker = placeMarker(subproject.factory.location.latitude, subproject.factory.location.longitude);
+									marker.setTitle(subproject.factory.name);
+                                    var infoWindow = createInfoWindow(subproject.factory);
+                                    addMarkerEvents(marker, infoWindow, subproject.factory.id);
 								});
 							});
 						}
@@ -274,6 +298,7 @@
 			// http://viralpatel.net/blogs/2009/01/calling-javascript-function-from-string.html
 			var funcCall = visualizationCallback + "(" + visualizationEntityId + ",\"" + visualizationGroupBy + "\",\"" + filename + "\")";
 			$("#profileChooserDialog").dialog('close');
+			currentEntityBackup = currentEntity;
 			showLoadingIndicator(false);
 			eval(funcCall);
 		} else {
@@ -500,6 +525,7 @@
 ///////////////////////////////////////////////////////
 
 var currentEntity = null;
+var currentEntityBackup = null;
 var currentEntityId;
 
 function getNextLevel () {
@@ -550,10 +576,24 @@ function handleSelectionEvent(id, clickButton, clickCount) {
 	 case 1:     // Left button
 	     switch (clickCount) {
 	         case 1:     // Click
+	            // Hide infoDiv Panel if visible (it will be shown when new data is loaded)
+	        	$('#infoPanelDiv').css('display','none');
 	        	showLoadingIndicator(true);
 	        	var action = getQueryActionForCurrentEntity();
 	        	if (action != null) {
+	        		var title = "";
+	        	    if (currentEntity == "company") {
+	        	        title = "<c:out value='${companyFurtherInformation}'/>";
+	        	    } else if (currentEntity == "factory") {
+	        	    	title = "<c:out value='${factoryFurtherInformation}'/>";
+	        	    } else if (currentEntity == "project") {
+	        	    	title = "<c:out value='${projectFurtherInformation}'/>";
+	        	    } else if (currentEntity == "subproject") {
+	        	    	title = "<c:out value='${subprojectFurtherInformation}'/>";
+	        	    }
+	        		$("#infoPanelDivHeader").html(title);
 					$("#infoPanelDivContent").load(action + "?id=" + currentEntityId + " #plainReport", function() {
+						$('#infoPanelDiv').css('display','');
 						showLoadingIndicator(false);
 					});
 				} else {
@@ -563,6 +603,9 @@ function handleSelectionEvent(id, clickButton, clickCount) {
 				}
 				break;
 	         case 2:     // Double click
+	        	 // Hide infoDiv Panel
+	        	 $('#infoPanelDiv').css('display','none');
+	             // Show profile chooser dialog
 	             $('#profileChooserDialogMessages').html("Navigate to " + getNextLevel() + " from " + currentEntity + " (" + currentEntityId + ") information.");
 	             $('#profileChooserDialog').dialog('open');
 	             var nextLevel = getNextLevel();
@@ -643,6 +686,7 @@ function desglosa_showSubprojectsById(id, groupBy, profileFilename) {
 }
 
 function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
+	$("#infoPanelDiv").css('display', 'none');
     showLoadingIndicator(true);
     // Hide map canvas
     //if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
@@ -666,11 +710,13 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 	            	 $('#jogl_canvas').css('display','');
 	                 desglosa_handleVisualization(data.city.model, city);
 	             } else if (city == "null") {
+	            	 currentEntity = currentEntityBackup;
 	                 $('#jogl_canvas').css('display','none');
 	                 $('#map_canvas').css('display','');
 	                 $('#errorDialogBody').html("<p class='messageBox error'><c:out value='${malformedJSONString}'/></p>");
 	                 $('#errorDialog').dialog('open');
 	             } else if (city == undefined) {
+	            	 currentEntity = currentEntityBackup;
 	                 $('#errorDialogBody').html("<p class='messageBox error'><c:out value='${outdatedProfile}'/></p>");
 	                 $('#errorDialog').dialog('open');
 	             }
@@ -796,7 +842,7 @@ function desglosa_handleVisualization(model, city) {
 				   <s:text name="error.no_JRE"/>
 			</applet>
 			
-			<a href="javascript:void(0)" onclick="$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');"><s:text name="label.back_to_map"/></a>
+			<a href="javascript:void(0)" onclick="$('#infoPanelDiv').css('display','none');$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');"><s:text name="label.back_to_map"/></a>
 			
 			<sj:accordion id="joglCanvasControls" autoHeight="false" collapsible="true" active="false">
 				<sj:accordionItem title="%{getText('label.navigation_controls')}" >
@@ -900,7 +946,7 @@ function desglosa_handleVisualization(model, city) {
 				<div id="subprojectInformation" class="default"></div>
 			</sj:tabbedpanel>
 			
-			<div id="infoPanelDiv" class="ui-widget ui-widget-content ui-corner-all container">
+			<div id="infoPanelDiv" style="display:none;" class="ui-widget ui-widget-content ui-corner-all container">
 				<div id="infoPanelDivHeader" class="ui-widget ui-corner-all ui-widget-header default container-header">header test</div>
 				<div id="infoPanelDivContent" class="default container-content">content test</div>
 			</div>
