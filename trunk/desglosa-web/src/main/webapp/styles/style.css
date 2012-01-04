@@ -364,6 +364,10 @@ table.default th {
 	padding: 5px;	
 }
 
+table.default tbody tr {
+	border-top: 1px solid black;
+}
+
 table.default thead tr {
 	border-bottom: 2px solid #1e557a;
 }
@@ -375,7 +379,7 @@ table.default thead tr th {
 }
 
 table.default td {
-	padding: 5px 10px;	
+	padding: 2px 5px;	
 }
 
 table.default tfoot tr td {

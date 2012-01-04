@@ -20,6 +20,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.EntityNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.GroupByOperationNotSupportedException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.IncompatibleTypesException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
@@ -306,6 +307,8 @@ public class VisualizationAction extends ActionSupport {
             addActionError(getText("exception.group_by_operation_not_supported"));
         } catch (NoSuchFieldException e) {
             addActionError(getText("exception.no_such_field"));
+        } catch (IncompatibleTypesException e) {
+            addActionError(getText("exception.incompatible_types"));
         }
         return result;
     }

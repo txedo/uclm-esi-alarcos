@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile model="model.gl.knowledge.GLAntennaBall" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Project">
+    <name>DeprecatedAntennaProfile</name>
+    <description>Este es un ejemplo de un perfil obsoleto. La aplicación web debería mostrar un mensaje de error cuando se seleccione.</description>
+    <mappings>
+        <mapping>
+            <entityAttr name="id" type="int"/>
+            <modelAttr name="id" type="int"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="audited" type="boolean"/>
+            <modelAttr name="progressionMark" type="boolean"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="repairedIncidences" type="int"/>
+            <modelAttr name="leftChildBallValue" type="int"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="nonRepairedIncidences" type="int"/>
+            <modelAttr name="rightChildBallValue" type="int"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="name" type="string"/>
+            <modelAttr name="label" type="string"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="market_color" type="hexcolor"/>
+            <modelAttr name="color" type="color"/>
+        </mapping>
+    </mappings>
+    <constants>
+        <constant name="scale" type="float">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">1.0</value>
+        </constant>
+        <constant name="parentBallRadius" type="float">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">1.0</value>
+        </constant>
+    </constants>
+    <caption>
+        <entry color="000000" label="Ejemplo de línea informativa"/>
+    </caption>
+</profile>

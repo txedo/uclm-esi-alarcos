@@ -24,9 +24,9 @@ public class ProfileDAO {
     
     public Metaclass getProfile(String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
         // Get profile folder full path
-        String fullFileName = Utilities.getRealPathToWebApplicationContext(ProfileManager.PROFILE_FOLDER);
+        String path = Utilities.getRealPathToWebApplicationContext(ProfileManager.PROFILE_FOLDER);
         // Return unmarshaled metaclass
-        return XMLAgent.unmarshal(fullFileName + "\\" + profileName, Metaclass.class);
+        return XMLAgent.unmarshal(path + "\\" + profileName, Metaclass.class);
     }
     
     public Map<String, String> getProfiles(String entity) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
