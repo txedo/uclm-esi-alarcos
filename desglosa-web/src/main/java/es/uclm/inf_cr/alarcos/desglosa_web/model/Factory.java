@@ -29,7 +29,10 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
 
 @Entity
 @Table(name = "factories")
-@NamedQueries({ @NamedQuery(name = "findFactoriesByCompanyId", query = "select f from Factory f where f.company.id = :id ") })
+@NamedQueries({
+    @NamedQuery(name = "findFactoriesByCompanyId", query = "select f from Factory f where f.company.id = :id "),
+    @NamedQuery(name = "findFactoriesInvolvedInProjectId", query = "select distinct f from Factory f, Project p, Subproject sp where p.id = :id and sp.project.id = p.id and f.id = sp.factory.id")
+})
 public class Factory {
     @Property
     private int id;

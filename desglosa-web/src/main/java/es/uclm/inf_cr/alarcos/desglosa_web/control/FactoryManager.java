@@ -1,7 +1,9 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.control;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.FactoryDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
@@ -56,6 +58,12 @@ public class FactoryManager {
         factoryDao.removeFactory(id);
     }
     
+    public static List<Factory> getFactoriesInvolvedInProject(int id) {
+        Map<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("id", id);
+        return factoryDao.findByNamedQuery("findFactoriesInvolvedInProjectId", queryParams);
+    }
+    
     public static void updateMeasures(int factoryToUpdateId, Factory factoryWithUpdatedMeasures) throws FactoryNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, Exception {
         Factory factoryToUpdate = FactoryManager.getFactory(factoryToUpdateId);
         Utilities.updateFieldsByReflection(Factory.class, factoryToUpdate, factoryWithUpdatedMeasures);
@@ -65,4 +73,5 @@ public class FactoryManager {
     public void setFactoryDao(FactoryDAO factoryDao) {
         FactoryManager.factoryDao = factoryDao;
     }
+
 }
