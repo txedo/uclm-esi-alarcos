@@ -157,6 +157,20 @@ public class VisualizationAction extends ActionSupport {
         }
         return result;
     }
+    
+    public String factoriesByProjectId() {
+        // This action returns involved factories in a project
+        String result = SUCCESS;
+        if (id == 0) {
+            factories = FactoryManager.getAllFactories();
+        } else {
+            factories = new ArrayList<Factory>(FactoryManager.getFactoriesInvolvedInProject(id));
+        }
+        if (generateGLObjects) {
+            result = entity2model(factories);
+        }
+        return result;
+    }
 
     public String companyById() {
         String result = SUCCESS;
