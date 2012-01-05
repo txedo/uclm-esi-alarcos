@@ -225,5 +225,10 @@ public class Subproject {
     public void setActividad(Float actividad) {
         this.actividad = actividad;
     }
+    
+    @Override
+    public String toString() {
+        return this.name;
+    }
 
 }

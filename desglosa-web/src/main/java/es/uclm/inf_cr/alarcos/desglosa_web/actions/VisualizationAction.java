@@ -119,6 +119,7 @@ public class VisualizationAction extends ActionSupport {
         factories = FactoryManager.getAllFactories();
         companies = CompanyManager.getAllCompanies();
         projects = ProjectManager.getAllProjects();
+        subprojects = SubprojectManager.getAllSubprojects();
         return SUCCESS;
     }
 

@@ -169,7 +169,6 @@
 						// The user has selected all factories of a given company (this company must have already been selected)
 						$(infoSelector).append("<ul><li><a href='javascript:openDialog(\"desglosa_showProjectsByCompanyId\",\"project\"," + $("#companySelect").val() + ", true, true, false, true, true)'><s:text name='label.show_more_about_projects'/></a></li></ul>");
 						if (fillFactorySelect) {
-							$(selector).attr("disabled", "");
 							$(selector).empty();
 							$(selector).append($("<option></option>").attr("value", 0).text("Todas"));
 							$(selector + " option:first").attr('selected','selected');
@@ -232,11 +231,13 @@
 	}
 	
 	function configureProjectSelect(action, id, selectElement) {
+		// Configure companyProjectSelect or factoryProjectSelect, whatever is selectElement
 		showLoadingIndicator(true);
 		$.getJSON(action,
 				{ id: id },
 				function (data, status) {
 					if (status == "success") {
+						// Clear both selects
 						$(selectElement).html("");
 						$.each(data.projects, function (i, project) {
 							var foo = "";
@@ -244,9 +245,27 @@
 							$("<option value='"+project.id+"'>"+project.name+foo+"</option>").appendTo(selectElement);
 						});
 					}
-					else alert('An error has occurred while trying to retrieve company information: ' + status);
+					else alert('An error has occurred while trying to retrieve project information: ' + status);
 					showLoadingIndicator(false);
 		});
+	}
+	
+	function configureSubprojectsByProjectId(idProject) {
+	      // Configure companyProjectSelect or factoryProjectSelect, whatever is selectElement
+        showLoadingIndicator(true);
+        $.getJSON("/desglosa-web/json_subprojectsByProjectId.action",
+                { id: idProject },
+                function (data, status) {
+                    if (status == "success") {
+                        // Clear both selects
+                        $("#projectSubprojectSelect").html("");
+                        $.each(data.subprojects, function (i, subproject) {
+                            $("<option value='"+subproject.id+"'>"+subproject.name+"</option>").appendTo("#projectSubprojectSelect");
+                        });
+                    }
+                    else alert('An error has occurred while trying to retrieve subproject information: ' + status);
+                    showLoadingIndicator(false);
+        });
 	}
 	
 	function configureProjectById(idProject) {
@@ -255,20 +274,11 @@
 				{ id: idProject	},
 				function (data, status) {
 					if (status == "success") {
-						if (idProject == 0) {
-							// All projects
-							$.each(data.projects, function (i, item) {
-								$("#projectInformation").html("");
-								$("#projectInformation").append("<br /><a href='#' onclick='javascript:desglosa_showProjectsById(0)'><s:text name='label.show_more'/></a>");
-								$.each(item.subprojects, function (j, subproject) {
-									var marker = placeMarker(subproject.factory.location.latitude, subproject.factory.location.longitude);
-									marker.setTitle(subproject.factory.name);
-		                            var infoWindow = createInfoWindow(subproject.factory);
-		                            addMarkerEvents(marker, infoWindow, subproject.factory.id);
-								});
-							});
-						} else {
+						// for idProject == 0, do nothing
+						if (idProject > 0) {
 							// A fixed project
+							$("#projectInformation").html("");
+							// this bucle will iterate only once
 							$.each(data.projects, function (i, item) {
 								$("#projectInformation").append(formatProjectInformation(item));
 								$.each(item.subprojects, function (j, subproject) {
@@ -280,9 +290,34 @@
 							});
 						}
 					}
-					else alert('An error has occurred while trying to retrieve company information: ' + status);
+					else alert('An error has occurred while trying to retrieve project information: ' + status);
 					showLoadingIndicator(false);
 		});
+	}
+	
+	function configureSubprojectById(idSubproject) {
+        showLoadingIndicator(true);
+        $.getJSON("/desglosa-web/json_subprojectById.action",
+                { id: idSubproject },
+                function (data, status) {
+                    if (status == "success") {
+                    	// for idSubproject == 0, do nothing
+                        if (idSubproject > 0) {
+                            // A fixed subproject
+                            $("#subprojectInformation").html("");
+                            // this bucle will iterate only once
+                            $.each(data.subprojects, function (i, item) {
+                                $("#subprojectInformation").append(formatSubprojectInformation(item));
+                                var marker = placeMarker(item.factory.location.latitude, item.factory.location.longitude);
+                                marker.setTitle(item.factory.name);
+                                var infoWindow = createInfoWindow(item.factory);
+                                addMarkerEvents(marker, infoWindow, item.factory.id);
+                            });
+                        }
+                    }
+                    else alert('An error has occurred while trying to retrieve subproject information: ' + status);
+                    showLoadingIndicator(false);
+        });
 	}
 	
 	var visualizationCallback = null;
@@ -436,11 +471,16 @@
 		$("#projectInformation").html("<i><s:text name='message.select_project'/></i>");
 	}
 	
+	function initializeSubprojectTab() {
+        $("#subprojectInformation").html("<i><s:text name='message.select_subproject'/></i>");
+    }
+	
 	function initializeTabs(){
 		initializeGeneralTab();
 		initializeCompanyTab();
 		initializeFactoryTab();
 		initializeProjectTab();
+		initializeSubprojectTab();
 	}
 
 	$(document).ready(function() {    	
@@ -448,14 +488,15 @@
 		initializeMap();
 		
 		// Initialize companySelect select
-		$("#companySelect option:first").attr('selected','selected');
 		$("#companySelect").change( function() {
 			// When a new company is selected
 			clearAllMarkers(); // clear all markers in the map
-			$("#factoryProjectSelect").val(-1); // unselect any selected factory
+			$("#companyProjectSelect").val(-1);
+			$("#factoryProjectSelect").val(-1); // unselect any selected project from factory filter
+			$("#projectSubprojectSelect").val(-1); // unselect any selected subproject from project filter
 			// concurrent functions
 			configureFactoriesByCompanyId($("#companySelect").val(), true), // Place map locations and fill factorySelect in
-			configureProjectsByCompanyId($("#companySelect").val()), // fill projectSelect in
+			configureProjectsByCompanyId($("#companySelect").val()), // fill companyProjectSelect in
 			// show info in company info div
 			configureCompanyById($("#companySelect").val());
 			// Indicator will be hidden inside configureCompanyById() when the action finishes.
@@ -463,33 +504,50 @@
 		
 		$("#factorySelect").change( function() {
 			clearAllMarkers();
-			if ($("#factorySelect").hasClass('disabled')){
-				$("#factorySelect").removeAttr('disabled');
-				$("#factorySelect").removeClass('disabled');
-			}
-			if ($("#factoryProjectSelect").hasClass('disabled')) {
-				$("#factoryProjectSelect").removeAttr('disabled');
-				$("#factoryProjectSelect").removeClass('disabled');
-			}
+			$("#companyProjectSelect").val(-1);
 			$("#factoryProjectSelect").val(-1);
+			$("#projectSubprojectSelect").val(-1);
 			if ($("#factorySelect").val() == 0) {
 				// concurrent functions
 				// If "all factories" is selected, place company factories location
 				configureFactoriesByCompanyId($("#companySelect").val(), false), // Place map locations and fill factorySelect in
-				configureProjectsByFactoryId($("#factorySelect").val());
+				configureProjectsByFactoryId($("#factorySelect").val()); // fill factoryProjectSelect in
 				// Indicator will be hidden inside configureFactoryById() when the action finishes.
 			} else {
 				// concurrent functions
 				// show info in factory info div
-				configureFactoryById($("#factorySelect").val()),
-				configureProjectsByFactoryId($("#factorySelect").val());
+				configureFactoryById($("#factorySelect").val()), // place map locations
+				configureProjectsByFactoryId($("#factorySelect").val()); // fill factoryProjectSelect in
 				// Indicator will be hidden inside configureFactoryById() when the action finishes.
 			}
-		});
+		});		
+		
+		$("#projectSelect").change( function() {
+            clearAllMarkers();
+            $("#companyProjectSelect").val(-1);
+            $("#factoryProjectSelect").val(-1);
+            $("#projectSubprojectSelect").val(-1);
+            if ($("#projectSelect").val() < 0) {
+            	// reset project info div
+                initializeProjectTab();
+            } else {
+                // concurrent functions
+                // If "all projects" is selected, show all subprojects in projectSubprojectSelect
+                // else show project subprojects in projectSubprojectSelect
+                configureSubprojectsByProjectId($("#projectSelect").val()),
+                // show info in project info div
+                $("#projectInformation").text(""),
+                // place factory locations in which subprojects are being developed
+                // show info in project info div
+                configureProjectById($("#projectSelect").val());
+                // Indicator will be hidden inside configureSubprojectsByProjectId() when the action finishes.
+            }
+        });
 		
 		$("#companyProjectSelect").change( function() {
 			clearAllMarkers();
 			$("#factoryProjectSelect").val(-1);
+			$("#projectSubprojectSelect").val(-1);
 			if ($("#companyProjectSelect").val() < 0) {
 				// reset project info div
 				initializeProjectTab();
@@ -501,11 +559,10 @@
 			}
 		});
 		
-		$("#factoryProjectSelect").html("");
-		$("#factoryProjectSelect").attr('disabled','disabled');
 		$("#factoryProjectSelect").change( function() {
 			clearAllMarkers();
 			$("#companyProjectSelect").val(-1);
+			$("#projectSubprojectSelect").val(-1);
 			if ($("#factoryProjectSelect").val() < 0) {
 				// reset project info div
 				initializeProjectTab();
@@ -513,9 +570,24 @@
 				// show info in project info div
 				$("#projectInformation").text("");
 				configureProjectById($("#factoryProjectSelect").val());
-				// Indicator will be hidden inside configureFactoryById() when the action finishes.
+				// Indicator will be hidden inside configureProjectById() when the action finishes.
 			}
 		});
+		
+		$("#projectSubprojectSelect").change( function() {
+            clearAllMarkers();
+            $("#companyProjectSelect").val(-1);
+            $("#factoryProjectSelect").val(-1);
+            if ($("#projectSubprojectSelect").val() < 0) {
+                // reset project info div
+                initializeSubprojectTab();
+            } else {
+                // show info in project info div
+                $("#subprojectInformation").text("");
+                configureSubprojectById($("#projectSubprojectSelect").val());
+                // Indicator will be hidden inside configureSubprojectById() when the action finishes.
+            }
+        });
 		
 		initializeTabs();
 	});
@@ -779,7 +851,7 @@ function desglosa_handleVisualization(model, city) {
 					<s:label for="companySelect" value="%{getText('label.select.company')}:"/>
 					<select id="companySelect">
 						<option value="-1" disabled="disabled">-- <fmt:message key="label.select.choose_company"/> --</option>
-						<option value="0"><fmt:message key="label.all_female"/></option>
+						<option value="0" selected="selected"><fmt:message key="label.all_female"/></option>
 						<s:iterator var="company" value="companies">
 							<option value="<s:property value='id'/>"><s:property value="name"/></option>
 						</s:iterator>
@@ -794,13 +866,36 @@ function desglosa_handleVisualization(model, city) {
 			<div id="factoryFilter" class="filter form">
 				<span style="margin-left: 15px;">
 				    <s:label for="factorySelect" value="%{getText('label.select.factory')}:"/>
-				    <select id="factorySelect" disabled="disabled" class="disabled"></select>
+				    <select id="factorySelect">
+				        <option value="-1" disabled="disabled">-- <fmt:message key="label.select.choose_factory"/> --</option>
+                        <option value="0" selected="selected"><fmt:message key="label.all_female"/></option>
+                        <s:iterator var="factory" value="factories">
+                            <option value="<s:property value='id'/>"><s:property value="name"/></option>
+                        </s:iterator>
+				    </select>
 				</span>
 				<span style="margin-left: 15px;">
 				    <s:label for="factoryProjectSelect" value="%{getText('label.select.project')}:"/>
-				    <s:select id="factoryProjectSelect" name="factoryProjectSelect" listKey="id" list="projects" size="5" cssClass="disabled"></s:select>
+				    <s:select id="factoryProjectSelect" name="factoryProjectSelect" listKey="id" list="projects" size="5"></s:select>
 				</span>
 			</div>
+			
+			<div id="projectFilter" class="filter form">
+                <span style="margin-left: 15px;">
+                    <s:label for="projectSelect" value="%{getText('label.select.project')}:"/>
+                    <select id="projectSelect">
+                        <option value="-1" disabled="disabled">-- <fmt:message key="label.select.choose_project"/> --</option>
+                        <option value="0" selected="selected"><fmt:message key="label.all_male"/></option>
+                        <s:iterator var="project" value="projects">
+                            <option value="<s:property value='id'/>"><s:property value="name"/></option>
+                        </s:iterator>
+                    </select>
+                </span>
+                <span style="margin-left: 15px;">
+                    <s:label for="projectSubprojectSelect" value="%{getText('label.select.subproject')}:"/>
+                    <s:select id="projectSubprojectSelect" name="projectSubprojectSelect" listKey="id" list="subprojects" size="5"></s:select>
+                </span>
+            </div>
 			
 			<div id="legend">
 				<p class="label"><s:text name="label.mark.global_project"/></p>

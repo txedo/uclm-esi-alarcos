@@ -26,8 +26,8 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 @Entity
 @Table(name = "projects")
 @NamedQueries({
-        @NamedQuery(name = "findProjectsByCompanyId", query = "select p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = f.id and f.company.id = :id "),
-        @NamedQuery(name = "findProjectsByFactoryId", query = "select p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = :id group by p") })
+        @NamedQuery(name = "findProjectsByCompanyId", query = "select distinct p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = f.id and f.company.id = :id "),
+        @NamedQuery(name = "findProjectsByFactoryId", query = "select distinct p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = :id group by p") })
 public class Project {
     @Property
     private int id;
