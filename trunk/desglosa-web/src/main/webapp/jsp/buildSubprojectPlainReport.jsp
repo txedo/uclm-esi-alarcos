@@ -89,7 +89,6 @@
                 <display:table name="subproject.project.subprojects" uid="subproject" defaultsort="1" class="" pagesize="10" requestURI="">
                     <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.subproject.name" sortable="true"/>
                     <display:column property="factory.name" escapeXml="true" style="width: 15%" titleKey="table.header.factory.name" sortable="true"/>
-                    <display:column property="factory.mostRepresentativeMarket.name" escapeXml="true" style="width: 15%" titleKey="table.header.factory.market" sortable="true"/>
                     <display:column property="factory.address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="true"/>
                     <display:column property="factory.address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="true"/>
                     <display:column property="factory.company.name" escapeXml="true" style="width: 15%" titleKey="table.header.company.name" sortable="true"/>
