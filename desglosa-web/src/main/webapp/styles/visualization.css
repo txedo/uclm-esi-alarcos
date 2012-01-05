@@ -18,7 +18,7 @@ fieldset {
 #projectFilter {
     float: left;
     margin-left: 15px;
-    border-left: 1px solid black;
+    border-left: 1px solid #848484;
 }
 
 .filter {
@@ -54,6 +54,10 @@ fieldset {
 	width: 600px;
 	height: 400px;
 	float: left;
+}
+
+#jogl_canvas {
+	height: auto;
 }
 
 #joglCanvasControls {

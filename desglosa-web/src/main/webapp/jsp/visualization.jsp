@@ -7,6 +7,16 @@
 
 <html lang="en">
 <head>
+	<!-- http://docs.jquery.com/Using_jQuery_with_Other_Libraries -->
+	<!-- This is done to be able to work with both versions of jQuery:
+		* a custom one, via $j(...)
+		* the one included in struts2-jquery-plugin, via $(...)
+	 -->
+	<script type="text/javascript" src="js/jquery-1.7.js?version=1"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js?version=1"></script>
+	<script>
+     var $j = jQuery.noConflict();
+   	</script>
 	<sj:head jqueryui="true"/>
 	
 	<!-- These variables are defined in the head of the html document in order to localize JavaScript messages 
@@ -126,45 +136,48 @@
 		
 		// show graphics engine
 		google.maps.event.addListener(marker, 'dblclick', function(event) {
-			showLoadingIndicator(true);
+			showLoadingIndicator(true, "placing markers");
 			$("#infoPanelDiv").css('display', 'none');
             $("#infoPanelDivHeader").html("<c:out value='${factoryFurtherInformation}'/>");
             $("#infoPanelDivContent").load("/desglosa-web/getFactoryPlainReport?id=" + factoryId + " #plainReport", function() {
                 $('#infoPanelDiv').css('display','');
-                showLoadingIndicator(false);
+                showLoadingIndicator(false, "placing markers");
             });
 	    });
 	}
 	
 	function configureFactoryById(idFactory) {
-		showLoadingIndicator(true);
+		showLoadingIndicator(true, "configurefactorybyid");
 		$.getJSON("/desglosa-web/json_factoryById.action",
 				{ id: idFactory	},
 				function (data, status) {
 					if (status == "success") {
-						$("#factoryInformation").text("");
+						if (idFactory > 0) {
+							$("#factoryInformation div.content2").html("");
+							formatEntityInformation("factory", idFactory, "#factoryInformation > div.content2");
+						}
 						$.each(data.factories, function (i, item) {
 							var marker = placeMarker(item.location.latitude, item.location.longitude);
 							marker.setTitle(item.name);
 							var infoWindow = createInfoWindow(item);
 							addMarkerEvents(marker, infoWindow, item.id);
-							$("#factoryInformation").append(formatFactoryInformation(item));
 						});
 					}
 					else alert('An error has occurred while trying to retrieve factory information: ' + status);
-					showLoadingIndicator(false);
+					showLoadingIndicator(false, "configurefactorybyid");
 		});
 	}
 	
 	function configureFactoriesByCompanyId(idCompany, fillFactorySelect) {
-		showLoadingIndicator(true);
+		showLoadingIndicator(true, "configurefactorybycompanyid");
 		$.getJSON("/desglosa-web/json_factoriesByCompanyId.action",
 				{ id: idCompany },
 				function (data, status) {
+					showLoadingIndicator(false);
 					if (status == "success") {
-						var infoSelector = "#factoryInformation";
+						var infoSelector = "#factoryInformation div.content1";
 						var selector = "#factorySelect";
-						$(infoSelector).text("");
+						$(infoSelector).html("");
 						$(infoSelector).append("<s:text name='label.generic_info_about_factories'/><br />");
 						// The user has selected all factories of a given company (this company must have already been selected)
 						$(infoSelector).append("<ul><li><a href='javascript:openDialog(\"desglosa_showProjectsByCompanyId\",\"project\"," + $("#companySelect").val() + ", true, true, false, true, true)'><s:text name='label.show_more_about_projects'/></a></li></ul>");
@@ -184,18 +197,21 @@
 							}
 						});
 					}
-					else alert('An error has occurred while trying to retrieve factory information: ' + status);
-					showLoadingIndicator(false);
+					else {
+						alert('An error has occurred while trying to retrieve factory information: ' + status);
+					}
+					
 		});
 	}
 	
 	function configureCompanyById(idCompany) {
-		showLoadingIndicator(true);
+		showLoadingIndicator(true, "configurecompanybyid");
 		$.getJSON("/desglosa-web/json_companyById.action",
 				{ id: idCompany	},
 				function (data, status) {
+					showLoadingIndicator(false);
 					if (status == "success") {
-						var infoSelector = "#companyInformation";
+						var infoSelector = "#companyInformation div.content1";
 						$(infoSelector).text("");
 						if (idCompany == 0) {
 							$(infoSelector).append("<s:text name='label.generic_info_about_companies'/><br />");
@@ -206,12 +222,13 @@
 						} else {
 							// This bucle only iterates once
 							$.each(data.companies, function (i, item) {
-								$(infoSelector).append(formatCompanyInformation(item));
+								formatEntityInformation("company", item.id, "#companyInformation > div.content2");
 							});
 						}
 					}
-					else alert('An error has occurred while trying to retrieve company information: ' + status);
-					showLoadingIndicator(false);
+					else {
+						alert('An error has occurred while trying to retrieve company information: ' + status);
+					}
 		});
 	}
 	
@@ -232,10 +249,11 @@
 	
 	function configureProjectSelect(action, id, selectElement) {
 		// Configure companyProjectSelect or factoryProjectSelect, whatever is selectElement
-		showLoadingIndicator(true);
+		showLoadingIndicator(true, "configureprojectselect");
 		$.getJSON(action,
 				{ id: id },
 				function (data, status) {
+					showLoadingIndicator(false);
 					if (status == "success") {
 						// Clear both selects
 						$(selectElement).html("");
@@ -245,17 +263,19 @@
 							$("<option value='"+project.id+"'>"+project.name+foo+"</option>").appendTo(selectElement);
 						});
 					}
-					else alert('An error has occurred while trying to retrieve project information: ' + status);
-					showLoadingIndicator(false);
+					else {
+						alert('An error has occurred while trying to retrieve project information: ' + status);
+					}
 		});
 	}
 	
 	function configureSubprojectsByProjectId(idProject) {
 	      // Configure companyProjectSelect or factoryProjectSelect, whatever is selectElement
-        showLoadingIndicator(true);
+        showLoadingIndicator(true, "configuresubprojectbyprojectid");
         $.getJSON("/desglosa-web/json_subprojectsByProjectId.action",
                 { id: idProject },
                 function (data, status) {
+                	showLoadingIndicator(false);
                     if (status == "success") {
                         // Clear both selects
                         $("#projectSubprojectSelect").html("");
@@ -263,24 +283,27 @@
                             $("<option value='"+subproject.id+"'>"+subproject.name+"</option>").appendTo("#projectSubprojectSelect");
                         });
                     }
-                    else alert('An error has occurred while trying to retrieve subproject information: ' + status);
-                    showLoadingIndicator(false);
+                    else {
+                    	alert('An error has occurred while trying to retrieve subproject information: ' + status);
+                    }
         });
 	}
 	
 	function configureProjectById(idProject) {
-		showLoadingIndicator(true);
+		showLoadingIndicator(true, "configureprojectbyid");
 		$.getJSON("/desglosa-web/json_projectById.action",
 				{ id: idProject	},
 				function (data, status) {
+					showLoadingIndicator(false);
 					if (status == "success") {
 						// for idProject == 0, do nothing
 						if (idProject > 0) {
 							// A fixed project
-							$("#projectInformation").html("");
+							$("#projectInformation div.content2").html("");
 							// this bucle will iterate only once
 							$.each(data.projects, function (i, item) {
-								$("#projectInformation").append(formatProjectInformation(item));
+								formatEntityInformation("project", item.id, "#projectInformation > div.content2");
+								// this bucle will iterate as many times as subprojects under the selected project
 								$.each(item.subprojects, function (j, subproject) {
 									var marker = placeMarker(subproject.factory.location.latitude, subproject.factory.location.longitude);
 									marker.setTitle(subproject.factory.name);
@@ -290,33 +313,37 @@
 							});
 						}
 					}
-					else alert('An error has occurred while trying to retrieve project information: ' + status);
-					showLoadingIndicator(false);
+					else {
+						alert('An error has occurred while trying to retrieve project information: ' + status);
+					}
 		});
 	}
 	
 	function configureSubprojectById(idSubproject) {
-        showLoadingIndicator(true);
+        showLoadingIndicator(true, "configuresubprojectbyid");
         $.getJSON("/desglosa-web/json_subprojectById.action",
                 { id: idSubproject },
                 function (data, status) {
+                    showLoadingIndicator(false);
                     if (status == "success") {
                     	// for idSubproject == 0, do nothing
                         if (idSubproject > 0) {
                             // A fixed subproject
-                            $("#subprojectInformation").html("");
+                            $("#subprojectInformation div.content2").html("");
                             // this bucle will iterate only once
                             $.each(data.subprojects, function (i, item) {
-                                $("#subprojectInformation").append(formatSubprojectInformation(item));
+                            	formatEntityInformation("subproject", item.id, "#subprojectInformation > div.content2");
                                 var marker = placeMarker(item.factory.location.latitude, item.factory.location.longitude);
                                 marker.setTitle(item.factory.name);
                                 var infoWindow = createInfoWindow(item.factory);
                                 addMarkerEvents(marker, infoWindow, item.factory.id);
+                                
                             });
                         }
                     }
-                    else alert('An error has occurred while trying to retrieve subproject information: ' + status);
-                    showLoadingIndicator(false);
+                    else {
+                    	alert('An error has occurred while trying to retrieve subproject information: ' + status);
+                    }
         });
 	}
 	
@@ -329,7 +356,7 @@
 		visualizationGroupBy = $("input:radio[name=showGroupBy]:checked").val();
 		var filename = $("#profileChooserDialogBody").children('ul').children('li.ui-selected').attr('id');
 		if (visualizationGroupBy != null && filename != undefined) {
-			showLoadingIndicator(true);
+			showLoadingIndicator(true, "chooseprofile");
 			// http://viralpatel.net/blogs/2009/01/calling-javascript-function-from-string.html
 			var funcCall = visualizationCallback + "(" + visualizationEntityId + ",\"" + visualizationGroupBy + "\",\"" + filename + "\")";
 			$("#profileChooserDialog").dialog('close');
@@ -350,7 +377,7 @@
 		visualizationCallback = callback;
 		visualizationGroupBy = null;
 		visualizationEntityId = id;
-		showLoadingIndicator(true);
+		showLoadingIndicator(true, "opendialog");
 		$("#profileChooserDialogMessages").html("");
 		$("#profileChooserDialogBody").html("");
 		$("#profibleChooserDialogGroupBy").html("");
@@ -360,6 +387,7 @@
 					entity: entity
 				},
 				function (data, status) {
+					showLoadingIndicator(false);
 					if (status == "success") {
 						var mapSize = Object.keys(data.profileNames).length;
 						if (mapSize > 0) {
@@ -397,55 +425,62 @@
 						$('#errorDialogBody').html("<p class='messageBox error'><c:out value='${generalError}'/></p>");
 						$('#errorDialog').dialog('open');
 					}
-					showLoadingIndicator(false);
 		});
 	}
 	
-	function formatCompanyInformation(companyJSON) {
-		var result = "";
-		result += "<b>" + companyJSON.name + "</b><br />";
-		result += "<i>" + companyJSON.information + "</i><br />";
-// 		result += "<br />";
-// 		result += formatDirectorInformation(companyJSON.director);
-		return result;
+	function getPlainReportGenerationAction(entity) {
+		var action = null;
+		if (entity == "company") {
+			action = '/desglosa-web/getCompanyPlainReport';
+		} else if (entity == "factory") {
+			action = '/desglosa-web/getFactoryPlainReport';
+	    } else if (entity == "project") {
+	    	action = '/desglosa-web/getProjectPlainReport';
+	    } else if (entity == "subproject") {
+	    	action = '/desglosa-web/getSubprojectPlainReport';
+	    }
+		return action;
 	}
 	
-	function formatFactoryInformation(factoryJSON) {
-		var result = "<b>" + factoryJSON.name + "</b> (" + factoryJSON.company.name + ")<br />";
-		result += "<i>" + factoryJSON.information + "</i><br />";
-		result += "Número de empleados: " + factoryJSON.employees + "<br />"
-// 		result += "<br />";
-// 		result += formatDirectorInformation(factoryJSON.director);
-		return result;
-	}
-	
-	function formatDirectorInformation(directorJSON) {
-		var result = directorJSON.lastName + ", " + directorJSON.name + "<br />";
-		if (directorJSON.imagePath != null)
-			result += "<img src='" + directorJSON.imagePath + "' width='64' height='64'/><br />";
-		return result;
-	}
-	
-	function formatProjectInformation(projectJSON) {
-		var result = "";
-		result += "<br />";
-		return result;
-	}
-	
-	function formatSubprojectInformation(subprojectJSON) {
-		var result = "";
-		result += subprojectJSON.name;
-		return result;
+	function formatEntityInformation(entity, entityId, selector) {
+    	showLoadingIndicator(true, "formatentityinformation");
+    	var action = getPlainReportGenerationAction(entity);
+    	if (action != null) {
+			$(selector).load(action + "?id=" + entityId + " #plainReport", function() {
+				showLoadingIndicator(false);
+			});
+    	} else {
+			$('#errorDialogBody').html("<p class='messageBox error'><c:out value='${generalError}'/></p>");
+			$('#errorDialog').dialog('open');
+			showLoadingIndicator(false);
+		}
 	}
 	
 	var operationPool = new Array();
-	function showLoadingIndicator(value) {
+	function showLoadingIndicator(value, title) {
+		var auxTitle = "";
+		if (title != undefined) {
+			auxTitle = title;
+		}
 		if (value) {
-			if (operationPool.length == 0) $("#indicator").css("display","");
-			operationPool.push(1);
+			// add the element to the beginning of the array
+			if (operationPool.unshift(auxTitle) == 1) {
+				// if it is the first element, display the spinner
+				$("#indicator").css("display","");
+				// and the text just added
+				$("#indicatorText").text(auxTitle);
+			}
 		} else {
+			// Remove last element of the array
 			operationPool.pop();
-			if (operationPool.length == 0) $("#indicator").css("display","none");	
+			if (operationPool.length == 0) {
+				// if the array is empty, hide the spinner
+				$("#indicator").css("display","none");	
+				$("#indicatorText").text("");
+			} else {
+				// update the feedback text
+				$("#indicatorText").text(operationPool[operationPool.length-1]);
+			}
 		}
 	}
 	
@@ -460,19 +495,23 @@
 	}
 	
 	function initializeCompanyTab() {
-		$("#companyInformation").html("<i><s:text name='message.select_company'/></i>");
+		$("#companyInformation div.content1").html("<i><s:text name='message.select_company'/></i>");
+		$("#companyInformation div.content2").html("");
 	}
 	
 	function initializeFactoryTab() {
-		$("#factoryInformation").html("<i><s:text name='message.select_factory'/></i>");
+		$("#factoryInformation div.content1").html("<i><s:text name='message.select_factory'/></i>");
+		$("#factoryInformation div.content2").html("");
 	}
 	
 	function initializeProjectTab() {
-		$("#projectInformation").html("<i><s:text name='message.select_project'/></i>");
+		$("#projectInformation div.content1").html("<i><s:text name='message.select_project'/></i>");
+		$("#projectInformation div.content2").html("");
 	}
 	
 	function initializeSubprojectTab() {
-        $("#subprojectInformation").html("<i><s:text name='message.select_subproject'/></i>");
+        $("#subprojectInformation div.content1").html("<i><s:text name='message.select_subproject'/></i>");
+        $("#subprojectInformation div.content2").html("");
     }
 	
 	function initializeTabs(){
@@ -490,10 +529,10 @@
 		// Initialize companySelect select
 		$("#companySelect").change( function() {
 			// When a new company is selected
-			clearAllMarkers(); // clear all markers in the map
-			$("#companyProjectSelect").val(-1);
-			$("#factoryProjectSelect").val(-1); // unselect any selected project from factory filter
-			$("#projectSubprojectSelect").val(-1); // unselect any selected subproject from project filter
+			clearAllMarkers(), // clear all markers in the map
+			$("#companyProjectSelect").val(-1),
+			$("#factoryProjectSelect").val(-1), // unselect any selected project from factory filter
+			$("#projectSubprojectSelect").val(-1), // unselect any selected subproject from project filter
 			// concurrent functions
 			configureFactoriesByCompanyId($("#companySelect").val(), true), // Place map locations and fill factorySelect in
 			configureProjectsByCompanyId($("#companySelect").val()), // fill companyProjectSelect in
@@ -503,11 +542,14 @@
 		});
 		
 		$("#factorySelect").change( function() {
-			clearAllMarkers();
-			$("#companyProjectSelect").val(-1);
-			$("#factoryProjectSelect").val(-1);
+			clearAllMarkers(),
+			$("#companyProjectSelect").val(-1),
+			$("#factoryProjectSelect").val(-1),
 			$("#projectSubprojectSelect").val(-1);
-			if ($("#factorySelect").val() == 0) {
+			if ($("#factorySelect").val() < 0 || $("#factorySelect").val() == null) {
+				// reset factory info div
+                initializeFactoryTab();
+			} else if ($("#factorySelect").val() == 0) {
 				// concurrent functions
 				// If "all factories" is selected, place company factories location
 				configureFactoriesByCompanyId($("#companySelect").val(), false), // Place map locations and fill factorySelect in
@@ -524,9 +566,10 @@
 		
 		$("#projectSelect").change( function() {
             clearAllMarkers();
-            $("#companyProjectSelect").val(-1);
-            $("#factoryProjectSelect").val(-1);
-            $("#projectSubprojectSelect").val(-1);
+            $("#companyProjectSelect").val(-1),
+            $("#factoryProjectSelect").val(-1),
+            $("#projectSubprojectSelect").val(-1),
+            $("#projectSubprojectSelect").trigger('change');
             if ($("#projectSelect").val() < 0) {
             	// reset project info div
                 initializeProjectTab();
@@ -536,7 +579,6 @@
                 // else show project subprojects in projectSubprojectSelect
                 configureSubprojectsByProjectId($("#projectSelect").val()),
                 // show info in project info div
-                $("#projectInformation").text(""),
                 // place factory locations in which subprojects are being developed
                 // show info in project info div
                 configureProjectById($("#projectSelect").val());
@@ -545,51 +587,61 @@
         });
 		
 		$("#companyProjectSelect").change( function() {
-			clearAllMarkers();
-			$("#factoryProjectSelect").val(-1);
+			clearAllMarkers(),
+			$("#factoryProjectSelect").val(-1),
 			$("#projectSubprojectSelect").val(-1);
-			if ($("#companyProjectSelect").val() < 0) {
+			if ($("#companyProjectSelect").val() < 0 || $("#companyProjectSelect").val() == null) {
 				// reset project info div
 				initializeProjectTab();
 			} else {
 				// show info in project info div
-				$("#projectInformation").text("");
 				configureProjectById($("#companyProjectSelect").val());
 				// Indicator will be hidden inside configureFactoryById() when the action finishes.
 			}
 		});
 		
 		$("#factoryProjectSelect").change( function() {
-			clearAllMarkers();
-			$("#companyProjectSelect").val(-1);
+			clearAllMarkers(),
+			$("#companyProjectSelect").val(-1),
 			$("#projectSubprojectSelect").val(-1);
-			if ($("#factoryProjectSelect").val() < 0) {
+			if ($("#factoryProjectSelect").val() < 0 || $("#factoryProjectSelect").val() == null) {
 				// reset project info div
 				initializeProjectTab();
 			} else {
 				// show info in project info div
-				$("#projectInformation").text("");
 				configureProjectById($("#factoryProjectSelect").val());
 				// Indicator will be hidden inside configureProjectById() when the action finishes.
 			}
 		});
 		
 		$("#projectSubprojectSelect").change( function() {
-            clearAllMarkers();
-            $("#companyProjectSelect").val(-1);
+            clearAllMarkers(),
+            $("#companyProjectSelect").val(-1),
             $("#factoryProjectSelect").val(-1);
-            if ($("#projectSubprojectSelect").val() < 0) {
+            if ($("#projectSubprojectSelect").val() < 0 || $("#projectSubprojectSelect").val() == null) {
                 // reset project info div
                 initializeSubprojectTab();
             } else {
                 // show info in project info div
-                $("#subprojectInformation").text("");
                 configureSubprojectById($("#projectSubprojectSelect").val());
                 // Indicator will be hidden inside configureSubprojectById() when the action finishes.
             }
         });
 		
 		initializeTabs();
+		
+		// Initialize control accordion
+		$j("#joglCanvasControls").accordion();
+		$j("#joglCanvasControls").accordion({
+			collapsible: true,
+			active: true,
+			autoHeight: false,
+			navigation: true,
+			changestart: function(event, ui) {
+				ui.newContent.css('height', 'auto');
+			}
+		});
+		$j("#joglCanvasControls").children().eq(1).css('height', 'auto'); 
 	});
 	
 ///////////////////////////////////////////////////////
@@ -626,20 +678,6 @@ function selectionError(message) {
     alert(message);
 }
 
-function getQueryActionForCurrentEntity() {
-	var action = null;
-	if (currentEntity == "company") {
-		action = '/desglosa-web/getCompanyPlainReport';
-	} else if (currentEntity == "factory") {
-		action = '/desglosa-web/getFactoryPlainReport';
-    } else if (currentEntity == "project") {
-    	action = '/desglosa-web/getProjectPlainReport';
-    } else if (currentEntity == "subproject") {
-    	action = '/desglosa-web/getSubprojectPlainReport';
-    }
-	return action;
-}
-
 function handleSelectionEvent(id, clickButton, clickCount) {
 	// This function will handle the selection event on any 3D model, so it will handle navigation too
 	currentEntityId = id;
@@ -650,8 +688,8 @@ function handleSelectionEvent(id, clickButton, clickCount) {
 	         case 1:     // Click
 	            // Hide infoDiv Panel if visible (it will be shown when new data is loaded)
 	        	$('#infoPanelDiv').css('display','none');
-	        	showLoadingIndicator(true);
-	        	var action = getQueryActionForCurrentEntity();
+	        	showLoadingIndicator(true, "handleselectionevent");
+	        	var action = getPlainReportGenerationAction(currentEntity);
 	        	if (action != null) {
 	        		var title = "";
 	        	    if (currentEntity == "company") {
@@ -666,12 +704,12 @@ function handleSelectionEvent(id, clickButton, clickCount) {
 	        		$("#infoPanelDivHeader").html(title);
 					$("#infoPanelDivContent").load(action + "?id=" + currentEntityId + " #plainReport", function() {
 						$('#infoPanelDiv').css('display','');
-						showLoadingIndicator(false);
+						showLoadingIndicator(false, "handleselectionevent");
 					});
 				} else {
 					$('#errorDialogBody').html("<p class='messageBox error'><c:out value='${generalError}'/></p>");
 					$('#errorDialog').dialog('open');
-					showLoadingIndicator(false);
+					showLoadingIndicator(false, "handleselectionevent");
 				}
 				break;
 	         case 2:     // Double click
@@ -759,7 +797,7 @@ function desglosa_showSubprojectsById(id, groupBy, profileFilename) {
 
 function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 	$("#infoPanelDiv").css('display', 'none');
-    showLoadingIndicator(true);
+    showLoadingIndicator(true, "launchengine");
     // Hide map canvas
     //if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
     // Hide jogl canvas if it is shown
@@ -798,7 +836,7 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 	             $('#errorDialogBody').html("<p class='messageBox error'><c:out value='${generalError}'/></p>");
 	             $('#errorDialog').dialog('open');
 	         }
-	         showLoadingIndicator(false);
+	         showLoadingIndicator(false, "launchengine");
          });
 }
 
@@ -939,8 +977,9 @@ function desglosa_handleVisualization(model, city) {
 			
 			<a href="javascript:void(0)" onclick="$('#infoPanelDiv').css('display','none');$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');"><s:text name="label.back_to_map"/></a>
 			
-			<sj:accordion id="joglCanvasControls" autoHeight="false" collapsible="true" active="false">
-				<sj:accordionItem title="%{getText('label.navigation_controls')}" >
+			<div id="joglCanvasControls">
+				<h3><a href="#"><s:text name="label.navigation_controls"/></a></h3>
+				<div>
 					<table class="default">
 						<thead>
 							<tr class="header">
@@ -1022,8 +1061,8 @@ function desglosa_handleVisualization(model, city) {
 							</tr>
 						</tbody>
 					</table>
-				</sj:accordionItem>
-			</sj:accordion>
+				</div>
+			</div>
 		</div>
 
 		<div id="tabs">
@@ -1035,10 +1074,22 @@ function desglosa_handleVisualization(model, city) {
 				<sj:tab id="projectInfoTab" target="projectInformation" label="%{getText('label.Project')}"/>
 				<sj:tab id="subprojectInfoTab" target="subprojectInformation" label="%{getText('label.Subproject')}"/>
 				<div id="generalInformation" class="default"></div>
-				<div id="companyInformation" class="default"></div>
-				<div id="factoryInformation" class="default"></div>
-				<div id="projectInformation" class="default"></div>
-				<div id="subprojectInformation" class="default"></div>
+				<div id="companyInformation" class="default">
+					<div class="content1"></div>
+					<div class="content2"></div>
+				</div>
+				<div id="factoryInformation" class="default">
+					<div class="content1"></div>
+					<div class="content2"></div>
+				</div>
+				<div id="projectInformation" class="default">
+					<div class="content1"></div>
+					<div class="content2"></div>
+				</div>
+				<div id="subprojectInformation" class="default">
+					<div class="content1"></div>
+					<div class="content2"></div>
+				</div>
 			</sj:tabbedpanel>
 			
 			<div id="infoPanelDiv" style="display:none;" class="ui-widget ui-widget-content ui-corner-all container">
@@ -1047,7 +1098,7 @@ function desglosa_handleVisualization(model, city) {
 			</div>
 			
 			<div id="indicatorDiv">
-				<img id="indicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none"/>
+				<img id="indicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none; margin-top:10px;"/><span id="indicatorText" style="margin-left:10px; position:relative; top:-10px;"></span>
 			</div>
 		</div>
 		
