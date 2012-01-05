@@ -15,8 +15,14 @@ fieldset {
 	margin-left: 15px;
 }
 
+#projectFilter {
+    float: left;
+    margin-left: 15px;
+    border-left: 1px solid black;
+}
+
 .filter {
-	width: 40%;
+	width: 30%;
 }
 
 .filter select {
@@ -34,7 +40,6 @@ fieldset {
 #legend {
 	clear: left;
 	float: right;
-	margin-top: -30px;
 }
 
 #workingArea {
