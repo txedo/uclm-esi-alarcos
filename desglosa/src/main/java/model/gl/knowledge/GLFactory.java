@@ -51,7 +51,7 @@ public class GLFactory extends GLObject3D {
 
     public GLFactory(float pos_x, float pos_y) {
         this.positionX = pos_x;
-        this.positionY = pos_y;
+        this.positionZ = pos_y;
         this.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
         this.baseLength = this.BASE_LENGTH;
@@ -94,7 +94,7 @@ public class GLFactory extends GLObject3D {
 
         GLSingleton.getGL().glPushMatrix();
         // Base
-        GLSingleton.getGL().glTranslatef(this.positionX, 0.0f, this.positionY);
+        GLSingleton.getGL().glTranslatef(this.positionX, 0.0f, this.positionZ);
         GLSingleton.getGL().glPushMatrix();//
         GLSingleton.getGL().glScalef(this.scale, this.scale, this.scale);//
         this.drawBase();

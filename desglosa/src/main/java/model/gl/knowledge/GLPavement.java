@@ -16,7 +16,7 @@ public class GLPavement extends GLObject3D {
 
     public GLPavement() {
         this.positionX = 0.0f;
-        this.positionY = 0.0f;
+        this.positionZ = 0.0f;
         this.width = 0.0f;
         this.depth = 0.0f;
         this.texture = -1;
@@ -37,7 +37,7 @@ public class GLPavement extends GLObject3D {
         GLSingleton.getGL().glNormal3f(0.0f, 1.0f, 0.0f);
         GLSingleton.getGL().glColor3f(1.0f, 1.0f, 1.0f);
         GLSingleton.getGL()
-                .glTranslatef(this.positionX, 0.001f, this.positionY);
+                .glTranslatef(this.positionX, 0.001f, this.positionZ);
         GLSingleton.getGL().glBegin(GL2.GL_QUADS);
         GLSingleton.getGL().glTexCoord2f(0.0f, depth);
         GLSingleton.getGL().glVertex3f(0.0f, 0.0f, this.depth);

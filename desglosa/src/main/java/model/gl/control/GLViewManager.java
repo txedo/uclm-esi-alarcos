@@ -78,9 +78,9 @@ public abstract class GLViewManager {
     public abstract void manageView()
             throws GLSingletonNotInitializedException, IOException;
 
-    public abstract void setItems(List objs);
+    public abstract void setItems(List<GLObject> objs);
 
-    public abstract void addItems(List objs);
+    public abstract void addItems(List<GLObject> objs);
 
     public abstract void drawItems() throws GLSingletonNotInitializedException;
 

@@ -42,7 +42,7 @@ public class GLAntennaBall extends GLObject3D {
 
     public GLAntennaBall(float pos_x, float pos_y) {
         this.positionX = pos_x;
-        this.positionY = pos_y;
+        this.positionZ = pos_y;
         this.color = new Color(0.0f, 0.0f, 1.0f); // This will be used for the
         // parent ball color
 
@@ -67,7 +67,7 @@ public class GLAntennaBall extends GLObject3D {
         GLSingleton.getGL().glPushMatrix();
         // Move to the parent ball center
         GLSingleton.getGL().glTranslatef(this.positionX, this.parentBallRadius,
-                this.positionY);
+                this.positionZ);
         // if parentBallRadius == 0.0f, make a copy and use 1.0f in order to draw child balls and shadows
         float parentBallRadiusBackup = this.parentBallRadius;
         if (this.parentBallRadius == 0.0f) {

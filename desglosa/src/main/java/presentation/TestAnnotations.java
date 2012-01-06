@@ -19,10 +19,9 @@ public class TestAnnotations {
         try {
             System.out.println("Processing class " + clazz);
             Map<String, String> attr = AnnotationParser.parse(clazz);
-            Iterator it = attr.entrySet().iterator();
+            Iterator<?> it = attr.entrySet().iterator();
             while (it.hasNext()) {
-                Map.Entry<String, String> pairs = (Map.Entry<String, String>) it
-                        .next();
+                Map.Entry<String, String> pairs = (Map.Entry<String, String>) it.next();
                 System.out.println(pairs.getKey() + " - " + pairs.getValue());
             }
             System.out.println();
@@ -32,14 +31,13 @@ public class TestAnnotations {
         }
     }
 
-    public static void processClass(Class clazz) {
+    public static void processClass(Class<?> clazz) {
         try {
             System.out.println("Processing class " + clazz.getName());
             Map<String, String> attr = AnnotationParser.parse(clazz);
-            Iterator it = attr.entrySet().iterator();
+            Iterator<?> it = attr.entrySet().iterator();
             while (it.hasNext()) {
-                Map.Entry<String, String> pairs = (Map.Entry<String, String>) it
-                        .next();
+                Map.Entry<String, String> pairs = (Map.Entry<String, String>) it.next();
                 System.out.println(pairs.getKey() + " - " + pairs.getValue());
             }
             System.out.println();

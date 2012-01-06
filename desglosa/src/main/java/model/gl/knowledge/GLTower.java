@@ -39,7 +39,7 @@ public class GLTower extends GLObject3D {
     public GLTower(float pos_x, float pos_y, float width, float depth,
             float height, Color color) {
         this.positionX = pos_x;
-        this.positionY = pos_y;
+        this.positionZ = pos_y;
         this.color = color;
         // Base rectangular
         this.width = width;
@@ -137,7 +137,7 @@ public class GLTower extends GLObject3D {
          * gl.glFrontFace(GL2.GL_CW) podriamos especificarlo al contrario
          */
         GLSingleton.getGL().glPushMatrix();
-        GLSingleton.getGL().glTranslatef(this.positionX, 0, this.positionY);
+        GLSingleton.getGL().glTranslatef(this.positionX, 0, this.positionZ);
         GLSingleton.getGL().glBegin(GL2.GL_QUADS);
         // Frente
         GLSingleton.getGL().glNormal3f(0.0f, 0.0f, 1.0f);
