@@ -174,15 +174,18 @@ public class VisualizationAction extends ActionSupport {
 
     public String companyById() {
         String result = SUCCESS;
-        if (id == 0) {
-            companies = CompanyManager.getAllCompanies();
-        } else {
-            try {
+        try {
+            if (id == 0) {
+                companies = CompanyManager.getAllCompanies();
+            } else {
                 companies = new ArrayList<Company>();
                 companies.add(CompanyManager.getCompany(id));
-            } catch (CompanyNotFoundException e) {
-                result = ERROR;
             }
+            if (generateGLObjects) {
+                result = entity2model(companies);
+            }
+        } catch (CompanyNotFoundException e) {
+            result = ERROR;
         }
         return result;
     }
@@ -280,15 +283,18 @@ public class VisualizationAction extends ActionSupport {
 
     public String subprojectById() {
         String result = SUCCESS;
-        if (id == 0) {
-            subprojects = SubprojectManager.getAllSubprojects();
-        } else {
-            try {
+        try {
+            if (id == 0) {
+                subprojects = SubprojectManager.getAllSubprojects();
+            } else {
                 subprojects = new ArrayList<Subproject>();
                 subprojects.add(SubprojectManager.getSubproject(id));
-            } catch (SubprojectNotFoundException e) {
-                result = ERROR;
             }
+            if (generateGLObjects) {
+                result = entity2model(subprojects);
+            }
+        } catch (SubprojectNotFoundException e) {
+            result = ERROR;
         }
         return result;
     }
