@@ -62,15 +62,16 @@ public class GLTowerViewManager extends GLViewManager {
     }
 
     @Override
-    public void setItems(List objs) {
+    public void setItems(List<GLObject> objs) {
         towers = new ArrayList<GLObject>();
         towers.addAll(objs);
     }
 
     @Override
-    public void addItems(List objs) {
-        if (towers == null)
+    public void addItems(List<GLObject> objs) {
+        if (towers == null) {
             towers = new ArrayList<GLObject>();
+        }
         towers.addAll(objs);
     }
 
@@ -85,8 +86,7 @@ public class GLTowerViewManager extends GLViewManager {
                     - glo.getPositionZ())).getLength();
             sortedTowers.put(glo, distance);
         }
-        sortedTowers = GLUtils.sortHashMap(
-                (HashMap<GLObject, Float>) sortedTowers, true);
+        sortedTowers = GLUtils.sortHashMap((HashMap<GLObject, Float>) sortedTowers, true);
         if (selectionMode) {
             // Load names and "draw" towers in their native order if it is
             // selection mode

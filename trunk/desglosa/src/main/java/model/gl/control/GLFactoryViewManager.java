@@ -88,15 +88,16 @@ public class GLFactoryViewManager extends GLViewManager {
     }
 
     @Override
-    public void setItems(List objs) {
+    public void setItems(List<GLObject> objs) {
         glFactories = new ArrayList<GLObject>();
         glFactories.addAll(objs);
     }
 
     @Override
-    public void addItems(List objs) {
-        if (glFactories == null)
+    public void addItems(List<GLObject> objs) {
+        if (glFactories == null) {
             glFactories = new ArrayList<GLObject>();
+        }
         glFactories.addAll(objs);
     }
 

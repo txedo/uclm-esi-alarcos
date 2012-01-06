@@ -122,10 +122,9 @@ public class IGLFacadeImpl implements IGLFacade {
         }
 
         // Normalize
-        if (maxSize != 0.0) {
+        if (maxSize > 0.0) {
             for (GLObject glAB : antennaBalls) {
-                ((GLAntennaBall) glAB).setParentBallRadius(((GLAntennaBall) glAB)
-                        .getParentBallRadius() * GLAntennaBall.MAX_SIZE / maxSize);
+                ((GLAntennaBall) glAB).setParentBallRadius(((GLAntennaBall) glAB).getParentBallRadius() * GLAntennaBall.MAX_SIZE / maxSize);
             }
         }
 
@@ -188,14 +187,16 @@ public class IGLFacadeImpl implements IGLFacade {
 
         // Normalize
         for (GLObject glTower : towers) {
-            ((GLTower) glTower).setHeight(((GLTower) glTower).getHeight()
-                    * GLTower.MAX_HEIGHT / maxHeight);
-            ((GLTower) glTower).setInnerHeight(((GLTower) glTower)
-                    .getInnerHeight() * GLTower.MAX_HEIGHT / maxHeight);
-            ((GLTower) glTower).setWidth(((GLTower) glTower).getWidth()
-                    * GLTower.MAX_WIDTH / maxWidth);
-            ((GLTower) glTower).setDepth(((GLTower) glTower).getDepth()
-                    * GLTower.MAX_DEPTH / maxDepth);
+            if (maxHeight > 0.0) {
+                ((GLTower) glTower).setHeight(((GLTower) glTower).getHeight() * GLTower.MAX_HEIGHT / maxHeight);
+                ((GLTower) glTower).setInnerHeight(((GLTower) glTower).getInnerHeight() * GLTower.MAX_HEIGHT / maxHeight);
+            }
+            if (maxWidth > 0.0) {
+                ((GLTower) glTower).setWidth(((GLTower) glTower).getWidth() * GLTower.MAX_WIDTH / maxWidth);
+            }
+            if (maxDepth > 0.0) {
+                ((GLTower) glTower).setDepth(((GLTower) glTower).getDepth() * GLTower.MAX_DEPTH / maxDepth);
+            }
         }
 
         // Place flats and neighborhoods once normalized
@@ -217,10 +218,9 @@ public class IGLFacadeImpl implements IGLFacade {
         Caption caption = null;
         if (jsonCaptionLines != null) {
             caption = new Caption();
-            Iterator it = jsonCaptionLines.entrySet().iterator();
+            Iterator<?> it = jsonCaptionLines.entrySet().iterator();
             while (it.hasNext()) {
-                Map.Entry<String, String> pairs = (Map.Entry<String, String>) it
-                        .next();
+                Map.Entry<String, String> pairs = (Map.Entry<String, String>) it.next();
                 caption.addLine(new Color((String) pairs.getValue()),
                         (String) pairs.getKey());
             }

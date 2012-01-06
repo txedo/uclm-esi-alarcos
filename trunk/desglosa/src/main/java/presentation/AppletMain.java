@@ -22,6 +22,7 @@ import model.gl.GLDrawer;
 import model.util.Synchronizer;
 
 public class AppletMain extends Applet implements IObserverUI, IGLFacade {
+    private static final long serialVersionUID = -8016293827472817335L;
     private GLAnimatorControl animator;
     private GLDrawer drawer = null;
 

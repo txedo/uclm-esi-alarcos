@@ -27,7 +27,7 @@ public class Caption extends GLObject {
 
     public Caption(float pos_x, float pos_y) {
         this.positionX = pos_x;
-        this.positionY = pos_y;
+        this.positionZ = pos_y;
         this.lines = new ArrayList<Line>();
         this.width = 0.0f;
         this.height = 0.0f;
@@ -47,7 +47,7 @@ public class Caption extends GLObject {
      */
     public void addLines(Map<String, String> lines) {
         // Configure caption lines
-        Iterator it = lines.entrySet().iterator();
+        Iterator<?> it = lines.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
             this.addLine(new Color((String) pairs.getValue()),
@@ -74,7 +74,7 @@ public class Caption extends GLObject {
         }
 
         GLSingleton.getGL().glPushMatrix();
-        GLSingleton.getGL().glTranslatef(this.positionX, this.positionY, 0.0f);
+        GLSingleton.getGL().glTranslatef(this.positionX, this.positionZ, 0.0f);
         frame.draw();
         GLSingleton.getGL().glPopMatrix();
 
@@ -85,7 +85,7 @@ public class Caption extends GLObject {
         GLSingleton.getGL().glPopMatrix();
         GLSingleton.getGL().glPushMatrix();
         GLSingleton.getGL().glTranslatef(this.positionX + oglGAP.getX(),
-                this.positionY - oglGAP.getY() * 2, 0.0f);
+                this.positionZ - oglGAP.getY() * 2, 0.0f);
         for (int i = 0; i < lines.size(); i++) {
             if (i == 0)
                 GLSingleton.getGL().glTranslatef(0.0f, 0.0f, 0.0f);

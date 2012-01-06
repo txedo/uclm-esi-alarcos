@@ -97,15 +97,16 @@ public class GLProjectViewManager extends GLViewManager {
     }
 
     @Override
-    public void setItems(List objs) {
+    public void setItems(List<GLObject> objs) {
         antennaBalls = new ArrayList<GLObject>();
         antennaBalls.addAll(objs);
     }
 
     @Override
-    public void addItems(List objs) {
-        if (antennaBalls == null)
+    public void addItems(List<GLObject> objs) {
+        if (antennaBalls == null){
             antennaBalls = new ArrayList<GLObject>();
+        }
         antennaBalls.addAll(objs);
     }
 
