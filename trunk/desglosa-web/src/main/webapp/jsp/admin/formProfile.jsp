@@ -706,6 +706,8 @@
 </head>
 
 <body>
+    <a href="javascript:void(0)" onclick="javascript:goBack()" title="<s:text name='label.go_back'/>">&lt; <s:text name='label.go_back'/></a>
+    
     <s:if test="!hasActionErrors()">
         <p><s:actionerror /></p>
     </s:if>

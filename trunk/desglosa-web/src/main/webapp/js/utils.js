@@ -38,6 +38,14 @@ function getMarketSpan (color, name) {
 	return result;
 }
 
+function goTo(url) {
+    $(location).attr('href',url);
+}
+
+function goBack() {
+	window.history.back()
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///// This check methods are designed in order to format float fields in measure forms ////

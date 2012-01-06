@@ -26,7 +26,9 @@ function updateMeasures() {
 	<form id="formProject" class="form" method="post" action="<c:url value='/editProjectMeasures'/>" enctype="multipart/form-data">
 	    <c:set var="projectId" value="${param.id}"/>
 	    <s:hidden name="id" value="%{#attr.projectId}"/>
-	
+	    
+	    <a href="javascript:void(0)" onclick="javascript:goBack()" title="<s:text name='label.go_back'/>">&lt; <s:text name='label.go_back'/></a>
+	    
 	    <fieldset class="formfieldset">
 	        <h2><s:text name="label.configure.project.measures.title"/></h2>
             <fieldset class="viewingfieldset">

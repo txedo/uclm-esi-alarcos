@@ -10,6 +10,8 @@
 	<meta name="menu" content="Error"/>
 </head>
 <body>
-	error 500
+    <H1>ERROR 500</H1>
+    <H2><s:text name="error.500.title"></s:text></H2>
+    <p><s:text name="error.500.text"></s:text></p>
 </body>
 </html>

@@ -68,7 +68,7 @@
     
         <fieldset class="plainreportfieldset">
             <h3><s:text name="label.project.measures"/></h3>
-            <%@ include file="/jsp/viewProjectMeasures.jsp"%>
+            <%@ include file="/jsp/generateProjectMeasureView.jsp"%>
         </fieldset>
 	    
 	    <fieldset class="plainreportfieldset">

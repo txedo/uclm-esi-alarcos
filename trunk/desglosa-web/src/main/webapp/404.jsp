@@ -10,6 +10,8 @@
 	<meta name="menu" content="Error"/>
 </head>
 <body>
-	error 404
+    <H1>ERROR 404</H1>
+    <H2><s:text name="error.404.title"></s:text></H2>
+    <p><s:text name="error.404.text"></s:text></p>
 </body>
 </html>

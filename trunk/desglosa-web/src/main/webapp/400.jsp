@@ -7,11 +7,11 @@
 
 <html lang="en">
 <head>
-	<meta name="menu" content="Error"/>
+    <meta name="menu" content="Error"/>
 </head>
 <body>
-    <H1>ERROR 401</H1>
-    <H2><s:text name="error.401.title"></s:text></H2>
-    <p><s:text name="error.401.text"></s:text></p>
+    <H1>ERROR 400</H1>
+    <H2><s:text name="error.400.title"></s:text></H2>
+    <p><s:text name="error.400.text"></s:text></p>
 </body>
 </html>

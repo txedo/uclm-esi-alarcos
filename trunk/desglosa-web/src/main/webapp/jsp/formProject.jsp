@@ -44,6 +44,8 @@
 </head>
 <body id="showProject" class="">
 	<div>
+	    <a href="javascript:void(0)" onclick="javascript:goBack()" title="<s:text name='label.go_back'/>">&lt; <s:text name='label.go_back'/></a>
+	    
 		<h1><s:text name="management.project.add.title" /></h1>
 		<p><s:text name="management.project.add.text" /></p>
 	
