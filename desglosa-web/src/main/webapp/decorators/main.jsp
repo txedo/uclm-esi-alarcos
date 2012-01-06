@@ -68,21 +68,32 @@
 		<div class="fbg">
 			<div class="fbg_resize">
 				<div class="col c1">
-					<h2><span>Escuela Superior de Informática</span></h2>
-					<p>Paseo de la Universidad, 4<br />
-					13071, Ciudad Real<br />
-					Teléfono: 926 29 53 00<br />
-					Fax: 926 29 53 54<br />
-					esi@uclm.es</p>
+                    <h2><span>Información de contacto</span></h2>
+                    <p>Jose Domingo L&oacute;pez L&oacute;pez<br />
+                    Ingeniero Técnico en Informática de Sistemas<br />
+                    <br />
+					Grupo de Investigación Alarcos<br />
+					Escuela Superior de Informática. Ciudad Real<br />
+					Teléfono:  (+34) 926 295300 ext.6480<br />
+					lopez.josedomingo [AT] gmail [DOT] com
+					</p>
 				</div>
 				<div class="col c2">
-					<h2><span>Mapa del sitio</span></h2>
-					<p>more subsections</p>
+                    <h2><span>Escuela Superior de Informática</span></h2>
+                    <p>Paseo de la Universidad, 4<br />
+                    13071, Ciudad Real<br />
+                    Teléfono: 926 29 53 00<br />
+                    Fax: 926 29 53 54<br />
+                    esi [AT] uclm [DOT] es</p>
 				</div>
 				<div class="col c3">
 					<h2><span>Destacados</span></h2>
 					<p><a href="http://innovation-labs.com/origin/" target="_blank">Proyecto ORIGIN</a><br />
-					<a href="http://www.indracompany.com/sostenibilidad-e-innovacion/proyectos-innovacion/origin-organizaciones-inteligentes-globales-innovad" target="_blank">Proyectos de Innovación</a>
+					<a href="http://www.indracompany.com/sostenibilidad-e-innovacion/proyectos-innovacion/origin-organizaciones-inteligentes-globales-innovad" target="_blank">Proyectos de Innovación</a><br />
+					<a href="http://alarcos.uclm.es" target="_blank">Grupo de investigación Alarcos</a><br />
+					<a href="http://www.esi.uclm.es" target="_blank">Escuela Superior de Informática (UCLM)</a><br />
+					<a href="http://www.uclm.es" target="_blank">Universidad de Castilla-La Mancha</a><br />
+					</p>
 				</div>
 				<div class="clr"></div>
 			</div>

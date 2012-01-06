@@ -52,6 +52,7 @@
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
+        <dispatcher>ERROR</dispatcher> 
     </filter-mapping>
     <filter-mapping>
         <filter-name>sitemesh</filter-name>
@@ -59,12 +60,14 @@
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher> 
     </filter-mapping>
     <filter-mapping>
         <filter-name>action2</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
+        <dispatcher>ERROR</dispatcher> 
     </filter-mapping>
 
 	<!-- Listeners -->

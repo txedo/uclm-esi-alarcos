@@ -65,6 +65,10 @@
 	</div>
 	
 	<div class="buttonPane">
+	    <!-- TODO add security tag -->
+        <c:url var="viewMeasures" value="/viewCompanyMeasures"/>
+        <button class="minimal" onclick="javascript:call('<c:out value="${viewMeasures}"/>',true)"><fmt:message key="button.view_measures"/></button>
+	    <!-- TODO add security tag -->
 		<c:url var="view" value="/viewCompany"/>
 		<button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_company"/></button>
 		<!-- TODO add security tag -->

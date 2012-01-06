@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<%@page import="java.util.List"%>
-<%@page import="es.uclm.inf_cr.alarcos.desglosa_web.model.util.MeasureAnnotationParser"%>
-<%@page import="es.uclm.inf_cr.alarcos.desglosa_web.model.Factory"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
 
-<c:set var="measures" value="<%= MeasureAnnotationParser.parseAllMeasures(Factory.class) %>"></c:set>
+<script type="text/javascript" src="js/utils.js?version=1"></script>
 
-<c:choose>
-	<c:when test="${fn:length(measures) gt 0}">
-	    <ul>
-	       <s:set name="factory" value="factory" scope="request"/>
-	       
-	        <c:forEach var="measure" items="${measures}">
-	            <c:set var="measureName" value="factory.${measure.name}"></c:set>
-	            <li>
-	                <label class="key">
-	                	<fmt:message key="label.${measure.name}" />
-	                	<c:if test="${measure.base == false}">
-	                		<c:out value=" (*)"></c:out>
-	                	</c:if>
-	                </label>
-	                <label class="value">
-		                <c:if test="${measure.type == 'Boolean'}">
-		                   <s:checkbox name="%{#attr.measureName}" onclick="return false;"/>
-		                </c:if>
-		                <c:if test="${measure.type == 'Integer' || measure.type== 'Float'}">
-	                        <s:text name="%{#attr.measureName}"/>
-		                </c:if>
-	                </label>
-	            </li>
-	        </c:forEach>
-	    </ul>
-	    <div class="clear"><p><s:text name="label.base_measure_mark"></s:text></p></div>
-	</c:when>
-    <c:otherwise>
-        <p><s:text name="label.factory.measures.lt0"></s:text></p>
-    </c:otherwise>
-</c:choose>
+<s:actionerror />
+<s:actionmessage />
+
+<s:url var="goBack" value="/listFactories"></s:url>
+        <a href="<c:out value='${goBack}'/> " title="<s:text name='management.factory.list.title'/>">&lt; <s:text name='management.factory.list.title'/></a>
+
+<s:if test="!hasActionErrors()">
+    <c:set var="factoryId" value="${param.id}"/>
+    <s:hidden name="id" value="%{#attr.factoryId}"/>
+
+    <div class="form">
+        <fieldset class="formfieldset">
+            <h2><s:text name="label.view.factory.measures.title"/></h2>
+            <fieldset class="viewingfieldset">
+                <ul>
+                    <li>
+                        <label class="key"><s:text name="label.factory.name"/></label>
+                        <label class="value"><s:text name="factory.name"/></label>
+                    </li>
+                </ul>
+            </fieldset>
+            <p><s:text name="label.view.factory.measures.text"/></p>
+            
+            <%@ include file="/jsp/generateFactoryMeasureView.jsp"%>
+            
+            <div class="buttonPane">
+                <!-- TODO add security tag -->
+                <c:url var="configureMeasures" value="/configureFactoryMeasures">
+                    <c:param name="id">${param.id}</c:param>
+                </c:url>
+                <button class="minimal" onclick="javascript:goTo('<c:out value="${configureMeasures}"/>')"><img id="saveIndicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none;" class="icon"/><fmt:message key="button.configure_measures"/></button>
+            </div>
+        </fieldset>
+    </div>
+</s:if>

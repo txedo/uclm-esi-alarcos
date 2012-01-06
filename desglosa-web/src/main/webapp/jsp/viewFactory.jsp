@@ -45,6 +45,9 @@
         </SCRIPT>
     </head>
     <body id="viewFactory">
+        <s:url var="goBack" value="/listFactories"></s:url>
+        <a href="<c:out value='${goBack}'/> " title="<s:text name='management.factory.list.title'/>">&lt; <s:text name='management.factory.list.title'/></a>
+        
         <div id="factoryView">
 	        <h1><s:text name="management.factory.view.title" /></h1>
 	<%--         <p><s:text name="management.factory.view.text" /></p> --%>
@@ -159,15 +162,15 @@
 	            <div class="form">
 	                <fieldset class="viewingfieldset">
 	                    <h2><s:text name="label.factory.measures"/></h2>
-	                    <%@ include file="/jsp/viewFactoryMeasures.jsp"%>
+	                    <%@ include file="/jsp/generateFactoryMeasureView.jsp"%>
 	                </fieldset>
 	                
 		            <div class="buttonPane">
 		                <!-- TODO add security tag -->
-		                <c:url var="updateMeasures" value="/viewFactoryMeasures">
+		                <c:url var="configureMeasures" value="/configureFactoryMeasures">
 		                    <c:param name="id">${param.id}</c:param>
 		                </c:url>
-		                <button class="minimal" onclick="javascript:call('<c:out value="${updateMeasures}"/>',false)"><fmt:message key="button.configure_measures"/></button>
+		                <button class="minimal" onclick="javascript:call('<c:out value="${configureMeasures}"/>',false)"><fmt:message key="button.configure_measures"/></button>
 		            </div>
 	            </div>
 	            

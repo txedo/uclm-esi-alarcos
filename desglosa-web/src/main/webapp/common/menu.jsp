@@ -11,5 +11,4 @@
 	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER">
 		<menu:displayMenu name="Logout"/>
 	</security:authorize>
-	<menu:displayMenu name="Contact"/>
 </menu:useMenuDisplayer>

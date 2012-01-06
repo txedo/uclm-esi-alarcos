@@ -8,8 +8,11 @@
 <head>
 	<meta name="menu" content="ManageCompanies"/>
 	<link href="<s:url value='/styles/knowledgeForms.css?version=1'/>" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/utils.js?version=1"></script>
 </head>
 <body id="showCompany" class="">
+    <a href="javascript:void(0)" onclick="javascript:goBack()" title="<s:text name='label.go_back'/>">&lt; <s:text name='label.go_back'/></a>
+    
 	<div>
 		<h1><s:text name="management.company.add.title" /></h1>
 		<p><s:text name="management.company.add.text" /></p>

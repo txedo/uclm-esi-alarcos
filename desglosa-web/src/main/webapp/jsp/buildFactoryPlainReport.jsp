@@ -83,6 +83,11 @@
         </fieldset>
         
         <fieldset class="plainreportfieldset">
+            <h3><s:text name="label.factory.measures"/></h3>
+            <%@ include file="/jsp/generateFactoryMeasureView.jsp"%>
+        </fieldset>
+        
+        <fieldset class="plainreportfieldset">
             <h3><s:text name="label.factory.projects.title"/></h3>
             
             <div class="displaytagTable">

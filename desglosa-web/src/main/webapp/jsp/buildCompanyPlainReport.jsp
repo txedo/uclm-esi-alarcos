@@ -41,6 +41,11 @@
         </fieldset>
         
         <fieldset class="plainreportfieldset">
+            <h3><s:text name="label.company.measures"/></h3>
+            <%@ include file="/jsp/generateCompanyMeasureView.jsp"%>
+        </fieldset>
+        
+        <fieldset class="plainreportfieldset">
             <h3><s:text name="label.configure.factories"/></h3>
             
             <div class="displaytagTable">

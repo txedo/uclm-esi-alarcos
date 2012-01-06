@@ -44,6 +44,9 @@
         </SCRIPT>
     </head>
     <body id="viewCompany">
+        <s:url var="goBack" value="/listSubprojects"></s:url>
+        <a href="<c:out value='${goBack}'/> " title="<s:text name='management.subproject.list.title'/>">&lt; <s:text name='management.subproject.list.title'/></a>
+        
         <h1><s:text name="management.subproject.view.title" /></h1>
 <%--         <p><s:text name="management.subproject.view.text" /></p> --%>
         <s:actionerror />
@@ -139,15 +142,15 @@
             <div class="form">
                 <fieldset class="viewingfieldset">
                     <h2><s:text name="label.subproject.measures"/></h2>
-                    <%@ include file="/jsp/viewSubprojectMeasures.jsp"%>
+                    <%@ include file="/jsp/generateSubprojectMeasureView.jsp"%>
                 </fieldset>
                 
 	            <div class="buttonPane">
 	                <!-- TODO add security tag -->
-	                <c:url var="updateMeasures" value="/viewSubprojectMeasures">
+	                <c:url var="configureMeasures" value="/configureSubprojectMeasures">
 	                    <c:param name="id">${param.id}</c:param>
 	                </c:url>
-	                <button class="minimal" onclick="javascript:call('<c:out value="${updateMeasures}"/>',false)"><fmt:message key="button.configure_measures"/></button>
+	                <button class="minimal" onclick="javascript:call('<c:out value="${configureMeasures}"/>',false)"><fmt:message key="button.configure_measures"/></button>
 	            </div>
             </div>
             
