@@ -451,13 +451,13 @@
             } else if (entity == "project") {
                 $(selector +  "> div.content1").append("<s:text name='label.project_selected'/><br />");
                 $(selector +  "> div.content1").append("<ul>");
-                $(selector +  "> div.content1" + " ul").append("<li><a href='javascript:openDialog(\"desglosa_showProyectById\",\"project\"," + entityId + ", true, true, false, true, true)'><s:text name='label.visualization_over_project'/></a></li>");
+                $(selector +  "> div.content1" + " ul").append("<li><a href='javascript:openDialog(\"desglosa_showProjectsById\",\"project\"," + entityId + ", true, true, false, true, true)'><s:text name='label.visualization_over_project'/></a></li>");
                 $(selector +  "> div.content1" + " ul").append("<li><a href='javascript:openDialog(\"desglosa_showSubprojectsByProjectId\",\"subproject\"," + entityId + ", true, true, true, true, true)'><s:text name='label.visualization_over_project_subprojects'/></a></li>");
                 $(selector +  "> div.content1").append("</ul>");
             } else if (entity == "subproject") {
                 $(selector +  "> div.content1").append("<s:text name='label.subproject_selected'/><br />");
                 $(selector +  "> div.content1").append("<ul>");
-                $(selector +  "> div.content1" + " ul").append("<li><a href='javascript:openDialog(\"desglosa_showSubproyectsById\",\"subproject\"," + entityId + ", true, true, true, true, true)'><s:text name='label.visualization_over_subproject'/></a></li>");
+                $(selector +  "> div.content1" + " ul").append("<li><a href='javascript:openDialog(\"desglosa_showSubprojectsById\",\"subproject\"," + entityId + ", true, true, true, true, true)'><s:text name='label.visualization_over_subproject'/></a></li>");
                 $(selector +  "> div.content1").append("</ul>");
             }
             // get plain report to fill div content 2
@@ -522,7 +522,7 @@
 		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showCompaniesById\",\"company\", 0, false, true, true, true, true)'><c:out value='${companyInformation}'/></a></li>");
 		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showFactoriesById\",\"factory\", 0, true, false, true, true, true)'><c:out value='${factoryInformation}'/></a></li>");
 		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showProjectsById\",\"project\", 0, true, true, false, true, true)'><c:out value='${projectInformation}'/></a></li>");
-		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showSubprojectsById\",\"subproject\", 0, true, true, true, false, true)'><c:out value='${subprojectInformation}'/></a></li>");
+		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showSubprojectsById\",\"subproject\", 0, true, true, true, true, true)'><c:out value='${subprojectInformation}'/></a></li>");
 		$("#generalInformation").append("</ul>");
 	}
 	
