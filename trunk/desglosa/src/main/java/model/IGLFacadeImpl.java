@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +41,9 @@ public class IGLFacadeImpl implements IGLFacade {
     }
 
     @Override
-    public void visualizeBuildings(String jsonCity)
-            throws ViewManagerNotInstantiatedException {
+    public void visualizeBuildings(String jsonCity) throws ViewManagerNotInstantiatedException {
+        int maxHeight = 0;
+        
         City city = new City();
         JSONObject json = (JSONObject) JSONSerializer.toJSON(jsonCity);
         List<GLObject> buildings = new ArrayList<GLObject>();
@@ -54,15 +56,29 @@ public class IGLFacadeImpl implements IGLFacade {
                 JSONObject jobj = jsonFlats.getJSONObject(j);
                 GLFactory building = new GLFactory();
                 readJSONGLObjectProperties(jobj, building);
-                building.setSmokestackHeight(jobj.getInt("smokestackHeight"));
-                building.setSmokestackColor(readJSONColor(jobj,
-                        "smokestackColor"));
+                int height = jobj.getInt("smokestackHeight");
+                if (maxHeight < height) {
+                    maxHeight = height;
+                }
+                building.setSmokestackHeight(height);
+                building.setLabel(new Integer(height).toString());
+                building.setSmokestackColor(readJSONColor(jobj, "smokestackColor"));
                 buildings.add(building);
                 tmpBuildings.add(building);
             }
             city.getNeighborhoods().add(
-                    new Neighborhood(jsonFlatsObject.getString("name"),
-                            tmpBuildings));
+                    new Neighborhood(jsonFlatsObject.getString("name"), tmpBuildings));
+        }
+        
+        // Read ratios from json city
+        Map<String, Object> ratios = readRatios(json.getJSONObject("ratios"));
+        float normHeight = (Float) (ratios.get("smokestackHeight") != null? new Float(ratios.get("smokestackHeight").toString()) : maxHeight);
+        
+        // Normalize smokestack heights
+        if (normHeight > 0) {
+            for (GLObject glF : buildings) {
+                ((GLFactory) glF).setSmokestackHeight(((GLFactory) glF).getSmokestackHeight() * GLFactory.SMOKESTACK_MAX_HEIGHT / normHeight);
+            }
         }
 
         // Place flats and neighborhoods once normalized
@@ -99,32 +115,33 @@ public class IGLFacadeImpl implements IGLFacade {
                 GLAntennaBall antennaBall = new GLAntennaBall();
                 readJSONGLObjectProperties(jobj, antennaBall);
                 antennaBall.setLabel(jobj.getString("label"));
-                antennaBall.setProgressionMark(jobj
-                        .getBoolean("progressionMark"));
-                antennaBall.setLeftChildBallValue(jobj
-                        .getString("rightChildBallValue"));
-                antennaBall.setRightChildBallValue(jobj
-                        .getString("leftChildBallValue"));
+                antennaBall.setProgressionMark(jobj.getBoolean("progressionMark"));
+                antennaBall.setLeftChildBallValue(jobj.getString("rightChildBallValue"));
+                antennaBall.setRightChildBallValue(jobj.getString("leftChildBallValue"));
                 antennaBall.setColor(readJSONColor(jobj, "color"));
                 float size = (float) jobj.getDouble("parentBallRadius");
                 antennaBall.setParentBallRadius(size);
-                if (maxSize < size)
+                if (maxSize < size) {
                     maxSize = size;
+                }
                 antennaBalls.add(antennaBall);
                 tmpAntennaBalls.add(antennaBall);
                 // Get some dimension values for later normalization
-                if (antennaBall.getParentBallRadius() > maxSize)
+                if (antennaBall.getParentBallRadius() > maxSize) {
                     maxSize = antennaBall.getParentBallRadius();
+                }
             }
             city.getNeighborhoods().add(
-                    new Neighborhood(jsonFlatsObject.getString("name"),
-                            tmpAntennaBalls));
+                    new Neighborhood(jsonFlatsObject.getString("name"), tmpAntennaBalls));
         }
 
+        // Read ratios from json city
+        Map<String, Object> ratios = readRatios(json.getJSONObject("ratios"));
+        float normParentRadius = (Float) (ratios.get("parentBallRadius") != null? new Float(ratios.get("parentBallRadius").toString()) : maxSize);
         // Normalize
-        if (maxSize > 0.0) {
+        if (normParentRadius > 0.0) {
             for (GLObject glAB : antennaBalls) {
-                ((GLAntennaBall) glAB).setParentBallRadius(((GLAntennaBall) glAB).getParentBallRadius() * GLAntennaBall.MAX_SIZE / maxSize);
+                ((GLAntennaBall) glAB).setParentBallRadius(((GLAntennaBall) glAB).getParentBallRadius() * GLAntennaBall.MAX_SIZE / normParentRadius);
             }
         }
 
@@ -171,31 +188,43 @@ public class IGLFacadeImpl implements IGLFacade {
                 towers.add(tower);
                 tmpTowers.add(tower);
                 // Get some dimension values for later normalization
-                if (tower.getDepth() > maxDepth)
+                if (tower.getDepth() > maxDepth) {
                     maxDepth = tower.getDepth();
-                if (tower.getWidth() > maxWidth)
+                }
+                if (tower.getWidth() > maxWidth) {
                     maxWidth = tower.getWidth();
-                if (tower.getHeight() > maxHeight)
+                }
+                if (tower.getHeight() > maxHeight) {
                     maxHeight = tower.getHeight();
-                if (tower.getInnerHeight() > maxInnerHeight)
+                }
+                if (tower.getInnerHeight() > maxInnerHeight) {
                     maxInnerHeight = tower.getInnerHeight();
+                }
             }
             city.getNeighborhoods().add(
                     new Neighborhood(jsonFlatsObject.getString("name"),
                             tmpTowers));
         }
 
+        // Read ratios from json city
+        Map<String, Object> ratios = readRatios(json.getJSONObject("ratios"));
+        float normHeight = (Float) (ratios.get("height") != null? new Float(ratios.get("height").toString()) : maxHeight);
+        float normInnerHeight = ratios.get("innerHeight") != null? new Float(ratios.get("innerHeight").toString()) : maxHeight;
+        float normWidth = (Float) (ratios.get("width") != null? new Float(ratios.get("width").toString()) : maxWidth);
+        float normDepth = ratios.get("depth") != null? new Float(ratios.get("depth").toString()) : maxDepth;
         // Normalize
         for (GLObject glTower : towers) {
-            if (maxHeight > 0.0) {
-                ((GLTower) glTower).setHeight(((GLTower) glTower).getHeight() * GLTower.MAX_HEIGHT / maxHeight);
-                ((GLTower) glTower).setInnerHeight(((GLTower) glTower).getInnerHeight() * GLTower.MAX_HEIGHT / maxHeight);
+            if (normHeight > 0.0) {
+                ((GLTower) glTower).setHeight(((GLTower) glTower).getHeight() * GLTower.MAX_HEIGHT / normHeight);
             }
-            if (maxWidth > 0.0) {
-                ((GLTower) glTower).setWidth(((GLTower) glTower).getWidth() * GLTower.MAX_WIDTH / maxWidth);
+            if (normInnerHeight > 0.0) {
+                ((GLTower) glTower).setInnerHeight(((GLTower) glTower).getInnerHeight() * GLTower.MAX_HEIGHT / normInnerHeight);
             }
-            if (maxDepth > 0.0) {
-                ((GLTower) glTower).setDepth(((GLTower) glTower).getDepth() * GLTower.MAX_DEPTH / maxDepth);
+            if (normWidth > 0.0) {
+                ((GLTower) glTower).setWidth(((GLTower) glTower).getWidth() * GLTower.MAX_WIDTH / normWidth);
+            }
+            if (normDepth > 0.0) {
+                ((GLTower) glTower).setDepth(((GLTower) glTower).getDepth() * GLTower.MAX_DEPTH / normDepth);
             }
         }
 
@@ -210,8 +239,7 @@ public class IGLFacadeImpl implements IGLFacade {
         // Change the active view to TowerLevel
         GLTowerViewManager.getInstance().setPavements(city.getPavements());
         GLTowerViewManager.getInstance().setItems(towers);
-        GLTowerViewManager.getInstance().getDrawer()
-                .setViewLevel(EViewLevels.TowerLevel);
+        GLTowerViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.TowerLevel);
     }
 
     private Caption configureCaption(JSONObject jsonCaptionLines) {
@@ -243,6 +271,18 @@ public class IGLFacadeImpl implements IGLFacade {
         Color color = new Color(r, g, b);
         color.setAlpha(alpha);
         return color;
+    }
+    
+    private Map<String, Object> readRatios(JSONObject jsonRatios) {
+        Map<String, Object> ratios = new HashMap<String, Object>();
+        if (jsonRatios != null) {
+            Iterator<?> it = jsonRatios.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, Object> pairs = (Map.Entry<String, Object>) it.next();
+                ratios.put(pairs.getKey(), pairs.getValue());
+            }
+        }
+        return ratios;
     }
 
 }

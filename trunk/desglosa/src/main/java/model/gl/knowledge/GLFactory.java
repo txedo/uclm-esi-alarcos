@@ -12,6 +12,7 @@ import exceptions.GLSingletonNotInitializedException;
 
 public class GLFactory extends GLObject3D {
     public static final float MAX_HEIGHT = 2.5f;
+    public static final float SMOKESTACK_MAX_HEIGHT = 14.0f;
 
     // Constants to define object dimensions
     private final float BASE_LENGTH = 2.0f;
@@ -31,8 +32,9 @@ public class GLFactory extends GLObject3D {
     private float baseWidth;
     private float baseHeight;
     // Smokestack radius and building length will depend on base dimensions
-    @GLDimension(name = "smokestackHeight", type = "int")
-    private int smokestackHeight; // The number of projects assigned to this
+    @GLDimension(name = "smokestackHeight", type = "float")
+    private float smokestackHeight; // The number of projects assigned to this
+    private String label;
     // factory
     private float smokestackRadius;
     @GLDimension(name = "smokestackColor", type = "color")
@@ -50,6 +52,7 @@ public class GLFactory extends GLObject3D {
     }
 
     public GLFactory(float pos_x, float pos_y) {
+        super();
         this.positionX = pos_x;
         this.positionZ = pos_y;
         this.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -62,7 +65,7 @@ public class GLFactory extends GLObject3D {
         this.buildingWidth = this.baseWidth;
         this.buildingHeight = this.BUILDING_HEIGHT;
 
-        this.smokestackHeight = 0;
+        this.smokestackHeight = 0.0f;
         if (this.baseLength / 2 > this.baseWidth)
             this.smokestackRadius = this.baseWidth / 4
                     * SMOKESTACK_BUILDING_GAP;
@@ -71,6 +74,8 @@ public class GLFactory extends GLObject3D {
                     * SMOKESTACK_BUILDING_GAP;
 
         this.roofHeight = this.ROOF_HEIGHT;
+        
+        this.label = "";
 
         super.maxWidth = this.baseLength * GLFactory.BIG;
         super.maxDepth = this.baseWidth * GLFactory.BIG;
@@ -119,7 +124,7 @@ public class GLFactory extends GLObject3D {
             GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);
         // Smokestack
         GLSingleton.getGL().glPushMatrix();
-        GLSingleton.getGL().glScalef(this.scale, this.scale, this.scale);//
+        GLSingleton.getGL().glScalef(this.scale, 1.0f, this.scale);//
         GLSingleton.getGL().glTranslatef(-this.baseLength * 1 / 4,
                 this.baseHeight, 0.0f);
         GLSingleton.getGL().glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
@@ -134,7 +139,7 @@ public class GLFactory extends GLObject3D {
                     (this.baseHeight + this.buildingHeight + this.roofHeight)
                             * this.scale, 0.0f);
             GLUtils.renderBitmapString(0.0f, 0.0f, 0, 2, ""
-                    + this.smokestackHeight, "ffffff");
+                    + this.label, "ffffff");
             GLSingleton.getGL().glPopMatrix();
         }
         GLSingleton.getGL().glPopMatrix();
@@ -345,11 +350,11 @@ public class GLFactory extends GLObject3D {
                 this.smokestackHeight / 5.0, 32, 32);
     }
 
-    public int getSmokestackHeight() {
+    public float getSmokestackHeight() {
         return smokestackHeight;
     }
 
-    public void setSmokestackHeight(int smokestackHeight) {
+    public void setSmokestackHeight(float smokestackHeight) {
         this.smokestackHeight = smokestackHeight;
     }
 
@@ -371,6 +376,14 @@ public class GLFactory extends GLObject3D {
 
     public Color getSmokestackColor() {
         return smokestackColor;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
 }

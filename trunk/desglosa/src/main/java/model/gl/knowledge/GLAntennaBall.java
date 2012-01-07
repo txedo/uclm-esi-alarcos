@@ -41,6 +41,7 @@ public class GLAntennaBall extends GLObject3D {
     }
 
     public GLAntennaBall(float pos_x, float pos_y) {
+        super();
         this.positionX = pos_x;
         this.positionZ = pos_y;
         this.color = new Color(0.0f, 0.0f, 1.0f); // This will be used for the
@@ -65,9 +66,11 @@ public class GLAntennaBall extends GLObject3D {
             throws GLSingletonNotInitializedException {
         GLUtils.enableMultisample();
         GLSingleton.getGL().glPushMatrix();
-        // Move to the parent ball center
-        GLSingleton.getGL().glTranslatef(this.positionX, this.parentBallRadius,
-                this.positionZ);
+        
+        // Move to the parent ball center by doing the scale in two steps, so the ball keeps at floor and moves in correctly plane XZ
+        GLSingleton.getGL().glScalef(1.0f, this.scale, 1.0f);
+        GLSingleton.getGL().glTranslatef(this.positionX, this.parentBallRadius, this.positionZ);
+        GLSingleton.getGL().glScalef(this.scale, 1.0f, this.scale);
         // if parentBallRadius == 0.0f, make a copy and use 1.0f in order to draw child balls and shadows
         float parentBallRadiusBackup = this.parentBallRadius;
         if (this.parentBallRadius == 0.0f) {

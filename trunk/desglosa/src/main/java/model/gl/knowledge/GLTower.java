@@ -38,6 +38,7 @@ public class GLTower extends GLObject3D {
 
     public GLTower(float pos_x, float pos_y, float width, float depth,
             float height, Color color) {
+        super();
         this.positionX = pos_x;
         this.positionZ = pos_y;
         this.color = color;
