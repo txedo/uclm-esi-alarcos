@@ -16,6 +16,7 @@ public class City {
     private List<Neighborhood> neighborhoods;
     private List<GLObject> pavements;
     private Map<String, String> captionLines;
+    private Map<String, Object> ratios;
 
     protected int cols;
     protected int rows;
@@ -24,6 +25,7 @@ public class City {
     public City() {
         this.model = "";
         this.neighborhoods = new ArrayList<Neighborhood>();
+        this.ratios = new HashMap<String, Object>();
         this.cols = 0;
         this.rows = 0;
         this.captionLines = new HashMap<String, String>();
@@ -120,5 +122,14 @@ public class City {
     public void setPavements(List<GLObject> pavements) {
         this.pavements = pavements;
     }
+
+    public Map<String, Object> getRatios() {
+        return ratios;
+    }
+
+    public void setRatios(Map<String, Object> ratios) {
+        this.ratios = ratios;
+    }
+    
 
 }
