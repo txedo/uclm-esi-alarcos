@@ -1,3 +1,31 @@
+function isFieldValueFloat(selector) {
+	var result = false;
+	// Reemplazamos la coma por el punto (para separar la parte entera de los decimales)
+	$(selector).val($(selector).val().replace(",", "."));
+	if (!isNaN($(selector).val()) && $(selector).val().trim() != "") {
+		if (isFloat($(selector).val())) {
+			handleFieldStyle(selector, false);
+			result = true;
+		} else {
+			handleFieldStyle(selector, true);
+		}
+	} else {
+		handleFieldStyle(selector, true);
+	}
+	return result;
+}
+
+function isFieldValueInt(selector) {
+	var result = false;
+	if (isInt($(selector).val()) && !isNaN($(selector).val())) {
+		handleFieldStyle(selector, false);
+		result = true;
+	} else {
+		handleFieldStyle(selector, true);
+	}
+	return result;
+}
+
 function isFloat(val) {
 	var result = false;
 	if (getType(val) == "float") result = true;

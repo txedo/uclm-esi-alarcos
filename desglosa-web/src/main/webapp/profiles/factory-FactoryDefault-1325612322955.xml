@@ -13,7 +13,8 @@
         </mapping>
         <mapping>
             <entityAttr name="numberOfDevelopingSubprojects" type="int"/>
-            <modelAttr name="smokestackHeight" type="int"/>
+            <modelAttr name="smokestackHeight" type="float"/>
+			<ratio xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">100.0</ratio>
         </mapping>
         <mapping>
             <entityAttr name="employees" type="int"/>

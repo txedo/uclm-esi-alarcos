@@ -32,8 +32,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MyHashMapEntryType;
 
 public class GLObjectManager {
 
-    public City createGLObjects(List<?> entities, String groupBy,
-            String profileName) throws JAXBException, IOException,
+    public City createGLObjects(List<?> entities, String groupBy, String profileName) throws JAXBException, IOException,
             InstantiationException, IllegalAccessException,
             ClassNotFoundException, SecurityException, NoSuchMethodException,
             IllegalArgumentException, InvocationTargetException,
@@ -113,11 +112,11 @@ public class GLObjectManager {
                                         }
                                     } else if (entityAttrType.equals("string")) {
                                         if (((String) entityAttrValue).equals((String) r.getLow())) {
-                                            finalValue = (String) r.getValue();
+                                            finalValue = (Float) r.getValue();
                                         }
                                     } else if (entityAttrType.equals("boolean")) {
-                                        if (Boolean.valueOf((String) entityAttrValue).equals(Boolean.valueOf((String) r.getLow()))) {
-                                            finalValue = (String) r.getValue();
+                                        if (entityAttrValue == r.getLow()) {
+                                            finalValue = (Float) r.getValue();
                                         }
                                     }
                                 }
@@ -147,7 +146,7 @@ public class GLObjectManager {
                                             finalValue = (String) r.getValue();
                                         }
                                     } else if (entityAttrType.equals("boolean")) {
-                                        if (entityAttrValue.equals(Boolean.valueOf((String) r.getLow()))) {
+                                        if (entityAttrValue == r.getLow()) {
                                             finalValue = (String) r.getValue();
                                         }
                                     }
@@ -162,6 +161,14 @@ public class GLObjectManager {
                                 finalValue = entityAttrValue;
                             }
                             setterMethod.invoke(classModel.cast(glObj), finalValue);
+                            if (entityAttrType.equals("float") && modelAttrType.equals("float")) {
+                                // Si la asociacion mapea dos floats, puede definirse un ratio para la dimension
+                                // este ratio indica el valor maximo que tomara la dimension en la visualizacion, pero es opcional
+                                // Comprobar si el ratio es distinto de null, en caso afirmativo anadirlo a la city
+                                if (mapping.getRatio() != null) {
+                                    c.getRatios().put(mapping.getModelAttr().getName(), (Float)mapping.getRatio());
+                                }
+                            }
                         } else {
                             // El valor en la base de datos es null y se lanzaria IllegalArgumentException, por eso aplicamos un valor por defecto
                             setterMethod.invoke(classModel.cast(glObj), mapping.getModelAttr().generateDefaultValue());
@@ -181,9 +188,9 @@ public class GLObjectManager {
                     }
                     glObjects.add((GLObject) glObj);
                 }
-                if (glObjects.size() > 0)
-                    c.getNeighborhoods().add(
-                            new Neighborhood(pairs.getKey(), glObjects));
+                if (glObjects.size() > 0) {
+                    c.getNeighborhoods().add(new Neighborhood(pairs.getKey(), glObjects));
+                }
             }
 
             // Configure caption
