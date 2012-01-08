@@ -29,9 +29,20 @@
 	
 	<sj:head jqueryui="true"/>
 	
+	<script type="text/javascript" src="js/jquery.tools-1.2.6.min.js?version=1"></script>
+    <link href="<s:url value='/styles/tooltip.css?version=1'/>" rel="stylesheet" type="text/css" />
+    <fmt:message key="label.tooltip.int" var="labelInteger"/>
+    <fmt:message key="label.tooltip.float" var="labelFloat"/>
+    <fmt:message key="label.tooltip.string" var="labelString"/>
+    <fmt:message key="label.tooltip.boolean" var="labelBoolean"/>
+    <fmt:message key="label.tooltip.defaultInt" var="labelDefaultInteger"/>
+    <fmt:message key="label.tooltip.defaultFloat" var="labelDefaultFloat"/>
+    <fmt:message key="label.tooltip.defaultString" var="labelDefaultString"/>
+    <fmt:message key="label.tooltip.defaultBoolean" var="labelDefaultBoolean"/>
+	
 	<script type="text/javascript" src="<s:url value='/js/colorpicker/js/colorpicker.js'/>"></script>
 	<script type="text/javascript" src="js/json2.js"></script>
-	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/utils.js?version=1"></script>
 	
 	<script type="text/javascript">
 	var mappings = new Array();
@@ -153,6 +164,34 @@
 		checkMapping();
 	});
 	
+	function getValueClass(valueType) {
+		var valueClass = null;
+		if (valueType == "string") {
+			valueClass = "stringValue";
+		} else if (valueType == "boolean") {
+			valueClass = "booleanValue";
+		} else if (valueType == "int") {
+			valueClass = "intNumber";
+		} else if (valueType == "float" || valueType == "float_range") {
+            valueClass = "floatNumber";
+        }
+		return valueClass;
+	}
+	
+   function getTitleForValueClass(valueClass) {
+        var title = "";
+        if (valueClass == "stringValue") {
+            title = "<c:out value='${labelString}'/>";
+        } else if (valueClass == "booleanValue") {
+            title = "<c:out value='${labelBoolean}'/>";
+        } else if (valueClass == "intNumber") {
+            title = "<c:out value='${labelInteger}'/>";
+        } else if (valueClass == "floatNumber") {
+            title = "<c:out value='${labelFloat}'/>";
+        }
+        return title;
+    }
+	
 	function checkMapping() {
 		resetMessageAndControlDivs();
 		selectedEntityAttribute = $("#entityAttributesDiv").children('ul').children('li.ui-selected');
@@ -178,8 +217,10 @@
 						range = true;
 						$("#mapping_cfg").html("<p><c:out value='${rangeExplanation}'/></p>");
 					}
-					addRangeConfigurationLine(range);
-					$("#mapping_control").append("<a href='javascript:addRangeConfigurationLine(" + range + ")' class='clrright'><s:text name='label.add_configuration_line'/></a>");
+					var expectedValueClass = getValueClass(entityAttrType);
+					var assignedValueClass = getValueClass(modelAttrType);
+					addRangeConfigurationLine(range, expectedValueClass, assignedValueClass);
+					$("#mapping_control").append("<a href='javascript:void(0)' onclick='javascript:addRangeConfigurationLine(" + range + ",\"" + expectedValueClass + "\",\"" + assignedValueClass + "\")' class='clrright'><s:text name='label.add_configuration_line'/></a>");
 				} else if (modelAttrType == "color") {
 					// if entity attr type is color in hex format, it is a direct mapping
 					if (entityAttrType != "hexcolor") {
@@ -191,8 +232,9 @@
 							range = true;
 							$("#mapping_cfg").html("<p><c:out value='${rangeExplanation}'/></p>");
 						}
-						addColorConfigurationLine(range);
-						$("#mapping_control").append("<a href='javascript:addColorConfigurationLine(" + range + ")' class='clrright'><s:text name='label.add_configuration_line'/></a>");	
+						var expectedValueClass = getValueClass(entityAttrType);
+						addColorConfigurationLine(range, expectedValueClass);
+						$("#mapping_control").append("<a href='javascript:void(0)' onclick='javascript:addColorConfigurationLine(" + range + ",\"" + expectedValueClass + "\")' class='clrright'><s:text name='label.add_configuration_line'/></a>");	
 					} else {
 						// Si es mapeo directo no hay que hacer nada más
 						$("#mapping_cfg").html("<p><c:out value='${noExplanation}'/></p>");
@@ -205,12 +247,13 @@
 					$("#mapping_cfg .cfg_line:last").append("<ul>");
 					$("#mapping_cfg .cfg_line:last ul").append("<li>");
 					$("#mapping_cfg .cfg_line:last ul li:last").append("<label><c:out value='${ratioValue}'/></label>");
-					$("#mapping_cfg .cfg_line:last ul li:last").append("<input id='ratio' type='text' value=''/>");
+					$("#mapping_cfg .cfg_line:last ul li:last").append("<input id='ratio' class='floatNumber' type='text' value='' title='" + getTitleForValueClass('floatNumber') + "'/>");
+					addTooltips();
 				} else {
 					// Si es mapeo directo no hay que hacer nada más
 					$("#mapping_cfg").html("<p><c:out value='${noExplanation}'/></p>");
 				}
-				$("#mapping_control").append("<a href='javascript:saveMapping()' class='clrright'><s:text name='label.save_mapping'/></a>");
+				$("#mapping_control").append("<a href='javascript:void(0)' onclick='javascript:saveMapping()' class='clrright'><s:text name='label.save_mapping'/></a>");
 			}
 		}
 	}
@@ -231,45 +274,87 @@
 			// if entityAttrType == "hexcolor" then direct mapping because it is in hex format
 			if (entityAttrType != "hexcolor" && (modelAttrType == "float_range" || modelAttrType == "color")) {
 				$("#mapping_cfg").children(".cfg_line").each(function(index, element) {
-					var low = $(element).children('ul').children('li').children('#low').val();
-					var high = $(element).children('ul').children('li').children('#high').val();
+					// Pick the values up from textfields
+					var lowSelector = $(element).children('ul').children('li').children('#low');
+					var low = $(lowSelector).val();
+					var highSelector = $(element).children('ul').children('li').children('#high');
+					var high = $(highSelector).val();
+					if (entityAttrType == "boolean") {
+						low = $(lowSelector).is(':checked');
+						high = "";
+					}
+					var valueSelector = null;
 					var value = null;
 					if (modelAttrType == "color") {
-						value = rgb2hex($(element).children('ul').children('li').children('.colorSelector').children('div').css('backgroundColor'));
+						valueSelector = $(element).children('ul').children('li').children('.colorSelector').children('div');
+						value = rgb2hex($(valueSelector).css('backgroundColor'));
 					} else if (modelAttrType == "float_range") {
-						value = $(element).children('ul').children('li').children('#value').val();
+						valueSelector = $(element).children('ul').children('li').children('#value');
+						value = $(valueSelector).val();
 					}
+					// Now check that the data is correct with its type
+					// first check the low and high range values
 					if (entityAttrType == "int") {
-						low = parseInt(low, 10);
-						high = parseInt(high, 10);
-						if (modelAttrType == "float_range") value = parseInt(value, 10);
+						var validLowValue = isFieldValueInt(lowSelector);
+						var validHighValue = isFieldValueInt(highSelector);
+						if (validLowValue && validHighValue) {
+							low = parseInt(low, 10);
+							high = parseInt(high, 10);
+						} else {
+							error = true;
+						}
 					} else if (entityAttrType == "float") {
-						low = parseFloat(low);
-						high = parseFloat(high);
-						if (modelAttrType == "float_range") value = parseFloat(value);
+						var validLowValue = isFieldValueFloat(lowSelector);
+                        var validHighValue = isFieldValueFloat(highSelector);
+                        if (validLowValue && validHighValue) {
+                            low = parseFloat(low.replace(",", "."));
+                            high = parseFloat(high.replace(",", "."));
+                        } else {
+                            error = true;
+                        }
 					} else if (entityAttrType == "string") {
 						high = low;
 					}
-					if ((((entityAttrType == "int" || entityAttrType == "float") && modelAttrType == "color") && (isNaN(low) || isNaN(high)))
-							|| (((entityAttrType == "int" || entityAttrType == "float") && modelAttrType == "float_range") && (isNaN(low) || isNaN(high) || isNaN(value)))) {
-						$("#mapping_messages").html("<p class='messageBox error'><s:text name='error.field_isNaN'/></p>");
-						error = true;
-						// Resetear tablas de valores
-						rules = new Array();
-					} else {
+					// then check the assigned value
+					if (modelAttrType == "int") {
+						if (isFieldValueInt(valueSelector)) {
+							value = parseInt(value, 10);
+						} else {
+							error = true;
+						}
+					} else if (modelAttrType == "float_range") {
+						if (isFieldValueFloat(valueSelector)) {
+							value = parseFloat(value.replace(",", "."));
+						} else {
+							error = true;
+						}
+					}
+					if (!error) {
 						// Actualizar tablas de valores para construir el fichero XML
 						rule = new Rule(low, high, value);
 						rules.push(rule);
+					} else {
+						$("#mapping_messages").html("<p class='messageBox error'><s:text name='error.field_isNaN'/></p>");
+                        error = true;
+                        // Resetear tablas de valores
+                        rules = new Array();
 					}
 				});
 			} else if (modelAttrType == "float") {
 				if ($("#ratio").val() != "") {
-					ratio = parseFloat($("#ratio").val());
-					if (isNaN(ratio)) {
-						$("#mapping_messages").html("<p class='messageBox error'><s:text name='error.field_isNaN'/></p>");
-						error = true;
+					// Si se configura un ratio, este valor sera utilizado como el maximo para la normaliacion
+					var ratioSelector = $("#ratio");
+					var ratio = $(ratioSelector).val();
+					if (isFieldValueFloat(ratioSelector)) {
+						ratio = parseFloat(ratio.replace(",", "."));
+					} else {
+	                    $("#mapping_messages").html("<p class='messageBox error'><s:text name='error.field_isNaN'/></p>");
+	                    error = true;
 					}
-				} else ratio = null;
+				} else {
+					// Si el ratio es null, se tomara el maximo valor de las medidas para normalizar
+					ratio = null;
+				}
 			}
 			if (!error) {
 				$("#mapping_added tfoot").html("");
@@ -376,7 +461,7 @@
 		return hexString;
 	}
 	
-	function addRangeConfigurationLine(range) {
+	function addRangeConfigurationLine(range, expectedValueClass, assignedValueClass) {
 		$("#mapping_cfg").append("<fieldset class='cfg_line form'>");
 		$(".cfg_line:last").append("<legend><s:text name='label.rule_configuration'/>:</legend>");
 		$(".cfg_line:last").append("<ul>");
@@ -386,17 +471,21 @@
 		} else {
 			$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeLow}'/></label>");
 		}
-		$(".cfg_line:last ul li:last").append("<input type='text' id='low' name='low'/>");
-		$(".cfg_line:last ul").append("<li>");
-		if (!range) {
-			$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high' style='display: none;'/>");
+		if (expectedValueClass == "booleanValue") {
+			$(".cfg_line:last ul li:last").append("<input type='checkbox' id='low' name='low' class='" + expectedValueClass + "' title='" + getTitleForValueClass(expectedValueClass) + "'/>");
 		} else {
-			$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeHigh}'/></label>");
-			$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high'/>");
+		    $(".cfg_line:last ul li:last").append("<input type='text' id='low' name='low' class='" + expectedValueClass + "' title='" + getTitleForValueClass(expectedValueClass) + "'/>");
+	        $(".cfg_line:last ul").append("<li>");
+	        if (!range) {
+	            $(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high' style='display: none;'/>");
+	        } else {
+	            $(".cfg_line:last ul li:last").append("<label><c:out value='${rangeHigh}'/></label>");
+	            $(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high' class='" + expectedValueClass + "' title='" + getTitleForValueClass(expectedValueClass) + "'/>");
+	        }
 		}
 		$(".cfg_line:last ul").append("<li>");
 		$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeValue}'/></label>");
-		$(".cfg_line:last ul li:last").append("<input type='text' id='value' name='value'/>");
+		$(".cfg_line:last ul li:last").append("<input type='text' id='value' name='value' class='" + assignedValueClass + "' title='" + getTitleForValueClass(assignedValueClass) + "'/>");
 		$(".cfg_line:last").append("<span><a href='javascript:void(0)' class='removeRangeConfigurationLine rightclr'><s:text name='label.remove_configuration_line'/></a></span>");
 		$(".cfg_line:last").append("<div class='clear'></div>");
 		
@@ -404,9 +493,11 @@
 			$(this).parent().parent().slideUp('slow');
 			$(this).parent().parent().remove();
 		});
+		
+		addTooltips();
 	}
 	
-	function addColorConfigurationLine(range) {
+	function addColorConfigurationLine(range, expectedValueClass) {
 		$("#mapping_cfg").append("<fieldset class='cfg_line form'>");
 		$(".cfg_line:last").append("<legend><s:text name='label.rule_configuration'/>:</legend>");
 		$(".cfg_line:last").append("<ul>");
@@ -416,14 +507,18 @@
 		} else {
 			$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeLow}'/></label>");
 		}
-		$(".cfg_line:last ul li:last").append("<input type='text' id='low' name='low'/>");
-		$(".cfg_line:last ul").append("<li>");
-		if (!range) {
-			$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high' style='display: none;'/>");
-		} else {
-			$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeHigh}'/></label>");
-			$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high'/>");
-		}
+	    if (expectedValueClass == "booleanValue") {
+	        $(".cfg_line:last ul li:last").append("<input type='checkbox' id='low' name='low' class='" + expectedValueClass + "' title='" + getTitleForValueClass(expectedValueClass) + "'/>");
+	    } else {
+			$(".cfg_line:last ul li:last").append("<input type='text' id='low' name='low' class='" + expectedValueClass + "' title='" + getTitleForValueClass(expectedValueClass) + "'/>");
+			$(".cfg_line:last ul").append("<li>");
+			if (!range) {
+				$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high' style='display: none;'/>");
+			} else {
+				$(".cfg_line:last ul li:last").append("<label><c:out value='${rangeHigh}'/></label>");
+				$(".cfg_line:last ul li:last").append("<input type='text' id='high' name='high' class='" + expectedValueClass + "' title='" + getTitleForValueClass(expectedValueClass) + "'/>");
+			}
+	    }
 		$(".cfg_line:last ul").append("<li>");
 		$(".cfg_line:last ul li:last").append("<label><c:out value='${color}'/></label>");
 		buildColorPicker(".cfg_line:last ul li:last", "");
@@ -434,6 +529,23 @@
 			$(this).parent().parent().slideUp('slow');
 			$(this).parent().parent().remove();
 		});
+		
+		addTooltips();
+	}
+	
+	function addTooltips() {
+		// select all desired input fields and attach tooltips to them
+	    $("input.floatNumber[type=text],input.intNumber[type=text],input.stringValue[type=text],input.booleanValue[type=checkbox]").tooltip({
+	        tipClass: "inputtooltip",
+	        // place tooltip on the right edge
+	        position: "center right",
+	        // a little tweaking of the position
+	        offset: [-2, 10],
+	        // use the built-in fadeIn/fadeOut effect
+	        effect: "fade",
+	        // custom opacity setting
+	        opacity: 0.7
+	    });
 	}
 	
 	function checkTypeCompatibility(type1, type2) {
@@ -501,6 +613,20 @@
 		});
 	}
 	
+	function getTitleForValueClassConstant(valueClass) {
+	     var title = getTitleForValueClass(valueClass);
+	     if (valueClass == "stringValue") {
+	         title += " <c:out value='${labelDefaultString}'/>";
+	     } else if (valueClass == "booleanValue") {
+	         title += " <c:out value='${labelDefaultBoolean}'/>";
+	     } else if (valueClass == "intNumber") {
+	         title += " <c:out value='${labelDefaultInteger}'/>";
+	     } else if (valueClass == "floatNumber") {
+	         title += " <c:out value='${labelDefaultFloat}'/>";
+	     }
+	     return title;
+	}
+	
 	function configureNonMappedModelAttributes() {
 		// Clean non mapped model attributes array
 		nonMappedModelAttributesArray = new Array();
@@ -523,9 +649,16 @@
 				if (modelAttributesArray[this] == "color") {
 					buildColorPicker("#nonMapped_dimensions tbody tr:last td:last", "constant_" + this);
 				} else {
-					$("#nonMapped_dimensions tbody tr:last td:last").append("<input id='constant_" + this + "' type='text' value='' />");
+					var type = "text";
+					if (modelAttributesArray[this] == "boolean") {
+						type = "checkbox";
+					}
+					var valueClass = getValueClass(modelAttributesArray[this]);
+					var title = getTitleForValueClassConstant(valueClass);
+					$("#nonMapped_dimensions tbody tr:last td:last").append("<input id='constant_" + this + "' type='" + type + "' value='' class='" + valueClass + "' title='" + title + "'/>");
 				}
 			});
+			addTooltips();
 		} else {
 			$("#nonMapped_dimensions tfoot").html("<tr>");
 			$("#nonMapped_dimensions tfoot tr:last").append("<td colspan='2'>");
@@ -550,24 +683,26 @@
 		$("#nonMapped_dimensions tbody tr").each(function(index, element) {
 			var attrName = $(element).children(".attr").children().attr('id').replace("constant_", "");
 			var attrType = modelAttributesArray[attrName];
+			var attrValueSelector = null;
 			var attrValue = null;
 			if (attrType == "color") {
 				attrValue = rgb2hex($(element).children(".attr").children('div').children('div').css('backgroundColor'));
+			} else if (attrType == "boolean") {
+				attrValue = $(element).children(".attr").children("input[type=checkbox]").is(':checked');
 			} else {
-				attrValue = $(element).children(".attr").children("input").val();
-			}
-			// Check types if no empty value (empty value means using default graphic model constants)
-			if (attrValue != "") {
-				if (((attrType == "float_range" || attrType == "float") && !isFloat(attrValue))
-						|| (attrType == "int" && !isInt(attrValue))) {
-					// Add class error if incorrect types
-					$(element).children(".attr").children().addClass("error");
-					nonMappedAttributesError = true;
-				} else {
-					// Remove class error if already added and types are correct
-					if ($(element).children(".attr").children().hasClass("error")) {
-						$(element).children(".attr").children().removeClass("error");
+				attrValueSelector = $(element).children(".attr").children("input");
+				attrValue = $(attrValueSelector).val();
+				// Check types if no empty value (empty value means using maximun dimension value to normalize)
+				if (attrValue != "" && (attrType == "float_range" || attrType == "float")) {
+					var isValid = isFieldValueFloat(attrValueSelector);
+					if (!isValid) {
+						nonMappedAttributesError = true;
 					}
+				} else if (attrValue != "" && attrType == "int") {
+					var isValid = !isFieldValueInt(attrValueSelector);
+                    if (!isValid) {
+                        nonMappedAttributesError = true;
+                    }
 				}
 			}
 		});
@@ -617,7 +752,7 @@
 	    } else {
 	    	$("#entityAndModelError").html("");
 	    }
-		return noError;
+		return (!nonMappedAttributesError && noError);
 	}
 	
 	function saveProfile() {
@@ -635,6 +770,7 @@
 					if (attr.type == "float_range") attr.type = "float";
 					if (attr.type == "int") attr.value = parseInt(attr.value, 10);
 					else if (attr.type == "float") attr.value = parseFloat(attr.value);
+					else if (attr.type == "boolean") attr.value = $("#constant_"+item).is(':checked');
 				}
 				constants.push(attr);
 			});
@@ -834,11 +970,10 @@
 						</tr>
 					</thead>
 					<tbody></tbody>
-					<tfoot>
-						<tr>
-							<td colspan="3"><a href="javascript:addCaptionLine()"><s:text name="label.add_caption_line"/></a></td>
-						</tr>
-					</tfoot>
+					<tfoot></tfoot>
+                    <caption align="bottom">
+						<a href='javascript:void(0)' onclick="javascript:addCaptionLine()"><s:text name="label.add_caption_line"/></a>
+					</caption>
 				</table>
 			</div>
 		</fieldset>

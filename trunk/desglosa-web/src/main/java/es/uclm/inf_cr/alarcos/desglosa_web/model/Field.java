@@ -49,16 +49,14 @@ public class Field {
         Object defaultValue = null;
         if (this.type.equals("int")) {
             defaultValue = new Integer(0);
-        } else if (this.type.equals("float")) {
-            defaultValue = new Float(0);
+        } else if (this.type.equals("float") || this.type.equals("float_range")) {
+            defaultValue = new Float(1);
         } else if (this.type.equals("string")) {
             defaultValue = new String("");
         } else if (this.type.equals("boolean")) {
             defaultValue = new Boolean(false);
         } else if (this.type.equals("color")) {
             defaultValue = new String("ffffff"); // hexCode
-        } else if (this.type.equals("float_range")) {
-            defaultValue = new Float(0);
         } else {
             defaultValue = new Object();
         }

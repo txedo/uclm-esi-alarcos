@@ -840,9 +840,9 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 	$("#infoPanelDiv").css('display', 'none');
     showLoadingIndicator(true, "<c:out value='${generating3dGraphics}'/>");
     // Hide map canvas
-    //if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
+    if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
     // Hide jogl canvas if it is shown
-    //if (document.getElementById("jogl_canvas").style.display == '') $('#jogl_canvas').css('display','none');
+    if (document.getElementById("jogl_canvas").style.display == '') $('#jogl_canvas').css('display','none');
     $.getJSON(action,
     	 {
             id: id,
@@ -851,13 +851,10 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
             profileFileName: filename
          },
 	     function (data, status) {
+        	 showLoadingIndicator(false);
 	         if (status == "success") {
 	             var city = JSON.stringify(data.city);
 	             if (city != "null" && city != undefined) {
-	            	 $('#map_canvas').css('display','none');
-	            	 if ($('#jogl_canvas').css('display') == '') {
-	            		 $('#jogl_canvas').css('display','none');
-                     }
 	            	 $('#jogl_canvas').css('display','');
 	                 desglosa_handleVisualization(data.city.model, city);
 	             } else if (city == "null") {
@@ -877,7 +874,6 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 	             $('#errorDialogBody').html("<p class='messageBox error'><c:out value='${generalError}'/></p>");
 	             $('#errorDialog').dialog('open');
 	         }
-	         showLoadingIndicator(false);
          });
 }
 
