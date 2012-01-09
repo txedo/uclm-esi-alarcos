@@ -35,7 +35,6 @@ public class VisualizationAction extends ActionSupport {
     private String groupBy = ""; // company, market, factory, project
     private String profileFileName;
     private City city;
-    private GLObjectManager glObjectManager;
 
     private List<Factory> factories;
     private List<Company> companies;
@@ -92,10 +91,6 @@ public class VisualizationAction extends ActionSupport {
 
     public void setCity(City city) {
         this.city = city;
-    }
-
-    public void setGlObjectManager(GLObjectManager glObjectManager) {
-        this.glObjectManager = glObjectManager;
     }
 
     public void setFactories(List<Factory> factories) {
@@ -302,7 +297,7 @@ public class VisualizationAction extends ActionSupport {
     private String entity2model(List<?> entities) {
         String result = ERROR;
         try {
-            city = glObjectManager.createGLObjects(entities, groupBy, profileFileName);
+            city = GLObjectManager.createGLObjects(entities, groupBy, profileFileName);
             result = SUCCESS;
         } catch (SecurityException e) {
             addActionError(getText("exception.security"));

@@ -15,6 +15,7 @@ public class CompanyActionTest extends StrutsSpringTestCaseBase {
         configureProxy("/", "listCompanies", "admin");
         assertTrue(action instanceof CompanyAction);
         assertEquals(Action.SUCCESS, proxy.execute());
+        assertEquals(2, ((CompanyAction) action).getCompanies().size());
     }
 
     public void testShowForm() throws Exception {
@@ -66,6 +67,7 @@ public class CompanyActionTest extends StrutsSpringTestCaseBase {
         company = testUtils.generateRandomCompany();
         ((CompanyAction)action).setCompany(company);
         assertEquals(Action.SUCCESS, proxy.execute());
+        assertEquals(3, CompanyManager.getAllCompanies().size());
     }
     
     public void testSaveError() throws Exception {
@@ -163,6 +165,7 @@ public class CompanyActionTest extends StrutsSpringTestCaseBase {
         assertEquals(Action.SUCCESS, proxy.execute());
         // Check that the company does not exist
         assertFalse(CompanyManager.checkCompanyExists(Integer.parseInt(sId)));
+        assertEquals(1, CompanyManager.getAllCompanies().size());
     }
     
     public void testDeleteError() throws Exception {
@@ -188,6 +191,7 @@ public class CompanyActionTest extends StrutsSpringTestCaseBase {
         configureProxy("/", "viewCompany", "admin");
         assertTrue(action instanceof CompanyAction);
         assertEquals(Action.SUCCESS, proxy.execute());
+        assertEquals(2, CompanyManager.getAllCompanies().size());
     }
     
     public void testGetError() throws Exception {
@@ -207,4 +211,13 @@ public class CompanyActionTest extends StrutsSpringTestCaseBase {
         assertEquals(Action.INPUT, proxy.execute());
     }
     
+    public void testUpdateMeasures() throws Exception {
+        request.setParameter("id", "1");
+        configureProxy("/", "editCompanyMeasures", "admin");
+        assertTrue(action instanceof CompanyAction);
+        company = CompanyManager.getCompany(1);
+        // Here we should update any base measure, but at the moment Company does not have any
+        ((CompanyAction) action).setCompany(company);
+        assertEquals(Action.SUCCESS, proxy.execute());
+    }
 }

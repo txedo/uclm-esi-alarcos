@@ -31,8 +31,17 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MyHashMapEntryType;
 
 public class GLObjectManager {
+    
+    public static final String GROUP_BY_COMPANY = "company";
+    public static final String GROUP_BY_FACTORY = "factory";
+    public static final String GROUP_BY_PROJECT = "project";
+    public static final String GROUP_BY_MARKET = "market";
+    public static final String NO_GROUP_BY = "";
+    
+    private GLObjectManager() {
+    }
 
-    public City createGLObjects(List<?> entities, String groupBy, String profileName) throws JAXBException, IOException,
+    public static City createGLObjects(List<?> entities, String groupBy, String profileName) throws JAXBException, IOException,
             InstantiationException, IllegalAccessException,
             ClassNotFoundException, SecurityException, NoSuchMethodException,
             IllegalArgumentException, InvocationTargetException,
@@ -206,7 +215,7 @@ public class GLObjectManager {
         return c;
     }
 
-    private Map<String, List<?>> groupEntitiesBy(Class<?> clazz, List<?> entities, String groupBy) throws EntityNotSupportedException, GroupByOperationNotSupportedException {
+    private static Map<String, List<?>> groupEntitiesBy(Class<?> clazz, List<?> entities, String groupBy) throws EntityNotSupportedException, GroupByOperationNotSupportedException {
         String className = clazz.getSimpleName();
         Map<String, List<?>> neighborhoods = new HashMap<String, List<?>>();
         if (className.equals("Factory")) {
@@ -221,9 +230,9 @@ public class GLObjectManager {
         return neighborhoods;
     }
 
-    private Map<String, List<?>> groupFactoriesBy(List<?> factories, String groupBy) throws GroupByOperationNotSupportedException {
+    private static Map<String, List<?>> groupFactoriesBy(List<?> factories, String groupBy) throws GroupByOperationNotSupportedException {
         Map<String, List<?>> neighborhoods = new HashMap<String, List<?>>();
-        if (groupBy.equals("company")) {
+        if (groupBy.equals(GROUP_BY_COMPANY)) {
             List<Company> availableCompanies = CompanyManager.getAllCompanies();
             for (Company comp : availableCompanies) {
                 List<Factory> flats = new ArrayList<Factory>();
@@ -235,18 +244,32 @@ public class GLObjectManager {
                 if (flats.size() > 0)
                     neighborhoods.put(comp.getName(), flats);
             }
-        } else if (groupBy.equals("market")) {
+        } else if (groupBy.equals(GROUP_BY_MARKET)) {
             List<Market> availableMarkets = MarketManager.getAllMarkets();
             for (Market m : availableMarkets) {
                 List<Factory> flats = new ArrayList<Factory>();
                 for (Object f : factories) {
-                    if (((Factory) f).getMostRepresentativeMarket().equals(m))
+                    Market market = ((Factory) f).getMostRepresentativeMarket();
+                    if (market != null && market.equals(m)) {
                         flats.add((Factory) f);
+                    }
                 }
-                if (flats.size() > 0)
+                if (flats.size() > 0) {
                     neighborhoods.put(m.getName(), flats);
+                }
             }
-        } else if (groupBy.equals("project")) {
+            // Hago una segunda pasada para crear un barrio sin nombre en caso de que haya factorias sin mercado de especializacion
+            List<Factory> orphanFactories = new ArrayList<Factory>();
+            for (Object f : factories) {
+                Market market = ((Factory) f).getMostRepresentativeMarket();
+                if (market == null) {
+                    orphanFactories.add((Factory) f);
+                }
+            }
+            if (orphanFactories.size() > 0) {
+                neighborhoods.put("", orphanFactories);
+            }
+        } else if (groupBy.equals(GROUP_BY_PROJECT)) {
             List<Project> availableProjects = ProjectManager.getAllProjects();
             for (Project p : availableProjects) {
                 int factoryIndex = 0;
@@ -266,7 +289,7 @@ public class GLObjectManager {
                 if (flats.size() > 0)
                     neighborhoods.put(p.getName(), flats);
             }
-        } else if (groupBy.equals("")) {
+        } else if (groupBy.equals(NO_GROUP_BY)) {
             neighborhoods.put("", factories);
         } else {
             throw new GroupByOperationNotSupportedException();
@@ -274,9 +297,9 @@ public class GLObjectManager {
         return neighborhoods;
     }
 
-    private Map<String, List<?>> groupProjectsBy(List<?> projects, String groupBy) throws GroupByOperationNotSupportedException {
+    private static Map<String, List<?>> groupProjectsBy(List<?> projects, String groupBy) throws GroupByOperationNotSupportedException {
         Map<String, List<?>> neighborhoods = new HashMap<String, List<?>>();
-        if (groupBy.equals("company")) {
+        if (groupBy.equals(GROUP_BY_COMPANY)) {
             List<Company> availableCompanies = CompanyManager.getAllCompanies();
             for (Company comp : availableCompanies) {
                 List<Project> flats = new ArrayList<Project>();
@@ -295,7 +318,7 @@ public class GLObjectManager {
                     neighborhoods.put(comp.getName(), flats);
                 }
             }
-        } else if (groupBy.equals("market")) {
+        } else if (groupBy.equals(GROUP_BY_MARKET)) {
             List<Market> availableMarkets = MarketManager.getAllMarkets();
             for (Market m : availableMarkets) {
                 List<Project> flats = new ArrayList<Project>();
@@ -307,7 +330,7 @@ public class GLObjectManager {
                     neighborhoods.put(m.getName(), flats);
                 }
             }
-        } else if (groupBy.equals("factory")) {
+        } else if (groupBy.equals(GROUP_BY_FACTORY)) {
             List<Factory> availableFactories = FactoryManager.getAllFactories();
             for (Factory f : availableFactories) {
                 List<Project> flats = new ArrayList<Project>();
@@ -326,7 +349,7 @@ public class GLObjectManager {
                     neighborhoods.put(f.getName(), flats);
                 }
             }
-        } else if (groupBy.equals("")) {
+        } else if (groupBy.equals(NO_GROUP_BY)) {
             neighborhoods.put("", projects);
         } else {
             throw new GroupByOperationNotSupportedException();
@@ -334,9 +357,9 @@ public class GLObjectManager {
         return neighborhoods;
     }
 
-    private Map<String, List<?>> groupSubprojectsBy(List<?> subprojects, String groupBy) throws GroupByOperationNotSupportedException {
+    private static Map<String, List<?>> groupSubprojectsBy(List<?> subprojects, String groupBy) throws GroupByOperationNotSupportedException {
         Map<String, List<?>> neighborhoods = new HashMap<String, List<?>>();
-        if (groupBy.equals("company")) {
+        if (groupBy.equals(GROUP_BY_COMPANY)) {
             List<Company> availableCompanies = CompanyManager.getAllCompanies();
             for (Company comp : availableCompanies) {
                 List<Subproject> flats = new ArrayList<Subproject>();
@@ -348,7 +371,7 @@ public class GLObjectManager {
                 if (flats.size() > 0)
                     neighborhoods.put(comp.getName(), flats);
             }
-        } else if (groupBy.equals("market")) {
+        } else if (groupBy.equals(GROUP_BY_MARKET)) {
             List<Market> availableMarkets = MarketManager.getAllMarkets();
             for (Market m : availableMarkets) {
                 List<Subproject> flats = new ArrayList<Subproject>();
@@ -360,7 +383,7 @@ public class GLObjectManager {
                     neighborhoods.put(m.getName(), flats);
                 }
             }
-        } else if (groupBy.equals("factory")) {
+        } else if (groupBy.equals(GROUP_BY_FACTORY)) {
             List<Factory> availableFactories = FactoryManager.getAllFactories();
             for (Factory f : availableFactories) {
                 List<Subproject> flats = new ArrayList<Subproject>();
@@ -373,7 +396,7 @@ public class GLObjectManager {
                     neighborhoods.put(f.getName(), flats);
                 }
             }
-        } else if (groupBy.equals("project")) {
+        } else if (groupBy.equals(GROUP_BY_PROJECT)) {
             List<Project> availableProjects = ProjectManager.getAllProjects();
             for (Project p : availableProjects) {
                 List<Subproject> flats = new ArrayList<Subproject>();
@@ -386,7 +409,7 @@ public class GLObjectManager {
                     neighborhoods.put(p.getName(), flats);
                 }
             }
-        } else if (groupBy.equals("")) {
+        } else if (groupBy.equals(NO_GROUP_BY)) {
             neighborhoods.put("", subprojects);
         } else {
             throw new GroupByOperationNotSupportedException();

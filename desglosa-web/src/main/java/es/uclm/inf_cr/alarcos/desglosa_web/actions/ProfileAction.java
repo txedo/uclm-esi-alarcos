@@ -135,10 +135,6 @@ public class ProfileAction extends ActionSupport implements
         return SUCCESS;
     }
 
-    public String updateProfileForm() {
-        return SUCCESS;
-    }
-
     public String loadEntityAttributes() {
         String result = ERROR;
         if (entity != null) {

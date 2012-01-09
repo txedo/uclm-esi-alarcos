@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile model="model.gl.knowledge.GLAntennaBall" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Project">
+    <name>TestProjectProfile</name>
+    <description>This profile is just for testing purposes and let ProfileManagerTest execute some test cases.</description>
+    <mappings>
+        <mapping>
+            <entityAttr name="id" type="int"/>
+            <modelAttr name="id" type="int"/>
+        </mapping>
+    </mappings>
+    <constants>
+        <constant name="scale" type="float"/>
+        <constant name="progressionMark" type="boolean">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:boolean">false</value>
+        </constant>
+        <constant name="leftChildBallValue" type="string">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string"></value>
+        </constant>
+        <constant name="color" type="color">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ffffff</value>
+        </constant>
+        <constant name="rightChildBallValue" type="string">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string"></value>
+        </constant>
+        <constant name="label" type="string">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string"></value>
+        </constant>
+        <constant name="parentBallRadius" type="float"/>
+    </constants>
+    <caption/>
+</profile>

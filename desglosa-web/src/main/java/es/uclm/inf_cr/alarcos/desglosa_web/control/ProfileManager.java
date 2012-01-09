@@ -2,7 +2,6 @@ package es.uclm.inf_cr.alarcos.desglosa_web.control;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,12 +27,10 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MyHashMapType;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyAnnotationParser;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper;
-import es.uclm.inf_cr.alarcos.desglosa_web.persistence.XMLAgent;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
 
 public class ProfileManager {
     private static ProfileDAO profileDao;
-    public static final String PROFILE_FOLDER = "profiles";
     
     private ProfileManager() {
     }
@@ -157,19 +154,17 @@ public class ProfileManager {
         }
         metaclass.setCaptionLines(new MyHashMapType(captionLines));
     }
+    
+    public static String saveProfile(String profileName, String profileDescription, String entity, String model, String jsonMappings, String jsonConstants, String jsonCaptionLines) throws JAXBException {
+        Metaclass metaclass = ProfileManager.buildProfile(profileName, profileDescription, entity, model);
+        ProfileManager.addMappings(metaclass, jsonMappings);
+        ProfileManager.addConstants(metaclass, jsonConstants);
+        ProfileManager.addCaption(metaclass, jsonCaptionLines);
+        return ProfileManager.saveProfile(metaclass, entity, profileName.trim());
+    }
 
-    public static void saveProfile(Metaclass metaclass, String entity, String profileName) throws JAXBException {
-        // Create XML from metaclass and place it in server
-        String[] entityParts = entity.split("\\.");
-        String filename = WordUtils
-                .uncapitalize(entityParts[entityParts.length - 1])
-                + "-"
-                + profileName
-                + "-"
-                + Calendar.getInstance().getTimeInMillis()
-                + ".xml";
-        String path = Utilities.getRealPathToWebApplicationContext(PROFILE_FOLDER) + "\\" + filename;
-        XMLAgent.marshal(path, Metaclass.class, metaclass);
+    public static String saveProfile(Metaclass metaclass, String entity, String profileName) throws JAXBException {
+        return profileDao.saveProfile(metaclass, entity, profileName);
     }
     
     public static List<Profile> getProfiles() throws JAXBException, IOException, InstantiationException, IllegalAccessException {
@@ -177,7 +172,7 @@ public class ProfileManager {
     }
     
     public static String getLinkToXmlFile(String filename) {
-        return Utilities.getRealPathToWebApplicationContext(PROFILE_FOLDER) + "\\" + filename;
+        return Utilities.getRealPathToWebApplicationContext(ProfileDAO.PROFILE_FOLDER) + "\\" + filename;
     }
     
     public void setProfileDao (ProfileDAO profileDao) {
