@@ -451,6 +451,7 @@
             } else if (entity == "project") {
                 $(selector +  "> div.content1").append("<s:text name='label.project_selected'/><br />");
                 $(selector +  "> div.content1").append("<ul>");
+                $(selector +  "> div.content1" + " ul").append("<li><a href='javascript:openDialog(\"desglosa_showFactoriesByProjectId\",\"factory\"," + entityId + ", true, false, true, true, true)'><s:text name='label.visualization_factories_by_project'/></a></li>");
                 $(selector +  "> div.content1" + " ul").append("<li><a href='javascript:openDialog(\"desglosa_showProjectsById\",\"project\"," + entityId + ", true, true, false, true, true)'><s:text name='label.visualization_over_project'/></a></li>");
                 $(selector +  "> div.content1" + " ul").append("<li><a href='javascript:openDialog(\"desglosa_showSubprojectsByProjectId\",\"subproject\"," + entityId + ", true, true, true, true, true)'><s:text name='label.visualization_over_project_subprojects'/></a></li>");
                 $(selector +  "> div.content1").append("</ul>");
@@ -796,6 +797,11 @@ function desglosa_showFactoriesByCompanyId(id, groupBy, profileFilename) {
     desglosa_launchDesglosaEngine("/desglosa-web/json_factoriesByCompanyId.action", id, groupBy, profileFilename);
 }
 
+function desglosa_showFactoriesByProjectId(id, groupBy, profileFilename) {
+    currentEntity = "factory";
+    desglosa_launchDesglosaEngine("/desglosa-web/json_factoriesByProjectId.action", id, groupBy, profileFilename);
+}
+
 function desglosa_showFactoriesById(id, groupBy, profileFilename) {
     currentEntity = "factory";
     desglosa_launchDesglosaEngine("/desglosa-web/json_factoryById.action", id, groupBy, profileFilename);
@@ -828,7 +834,7 @@ function desglosa_showSubprojectsByFactoryId(id, groupBy, profileFilename) {
 
 function desglosa_showSubprojectsByProjectId(id, groupBy, profileFilename) {
     currentEntity = "subproject";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByFactoryId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByProjectId.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showSubprojectsById(id, groupBy, profileFilename) {
