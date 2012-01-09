@@ -1,20 +1,12 @@
-package es.uclm.inf_cr.alarcos.desglosa_web.control;
+package es.uclm.inf_cr.alarcos.desglosa_web.util;
 
-import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NotValidIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.NullIdParameterException;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
+import es.uclm.inf_cr.alarcos.desglosa_web.utils.SpringTestCaseBase;
 
-public class GenericManagerTest extends
-AbstractDependencyInjectionSpringContextTests {
-    
-    @Override
-    protected String[] getConfigLocations() {
-        return new String[] { "classpath:applicationContext-resources.xml",
-                "classpath:applicationContext-dao.xml",
-                "classpath:applicationContext.xml" };
-    }
+public class UtilitiesTest extends SpringTestCaseBase {
     
     public void testIsEmptyString() {
         String nullString = null;

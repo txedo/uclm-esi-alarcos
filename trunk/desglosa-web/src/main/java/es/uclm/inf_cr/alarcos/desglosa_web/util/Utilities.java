@@ -63,7 +63,15 @@ public class Utilities {
     }
     
     public static String getRealPathToWebApplicationContext(String dir) {
-        return ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath(dir);
+        String path = null;
+        if (ContextLoader.getCurrentWebApplicationContext() != null) {
+            path = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath(dir);
+        } else {
+            // This line is just for testing purposes because there is no current web application context, so it should be deleted in production
+            path = System.getProperty("user.dir") + "\\src\\main\\webapp\\" + dir;
+        }
+        
+        return path;
     }
     
     public static Class<?> getParameterType(String simpleTypeName) {

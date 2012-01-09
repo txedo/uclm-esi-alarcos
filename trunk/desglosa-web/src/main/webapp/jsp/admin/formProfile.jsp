@@ -699,7 +699,7 @@
 						nonMappedAttributesError = true;
 					}
 				} else if (attrValue != "" && attrType == "int") {
-					var isValid = !isFieldValueInt(attrValueSelector);
+					var isValid = isFieldValueInt(attrValueSelector);
                     if (!isValid) {
                         nonMappedAttributesError = true;
                     }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,6 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.WordUtils;
 
-import es.uclm.inf_cr.alarcos.desglosa_web.control.ProfileManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.DeleteProfileException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Profile;
@@ -21,10 +21,11 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Profile.ProfileFilter;
 
 public class ProfileDAO {
+    public static final String PROFILE_FOLDER = "profiles";
     
     public Metaclass getProfile(String profileName) throws JAXBException, IOException, InstantiationException, IllegalAccessException {
         // Get profile folder full path
-        String path = Utilities.getRealPathToWebApplicationContext(ProfileManager.PROFILE_FOLDER);
+        String path = Utilities.getRealPathToWebApplicationContext(ProfileDAO.PROFILE_FOLDER);
         // Return unmarshaled metaclass
         return XMLAgent.unmarshal(path + "\\" + profileName, Metaclass.class);
     }
@@ -34,7 +35,7 @@ public class ProfileDAO {
         // Create a filename filter
         FilenameFilter filter = new ProfileFilter(entity);
         // Get profile folder full path
-        String fullFileName = Utilities.getRealPathToWebApplicationContext(ProfileManager.PROFILE_FOLDER);
+        String fullFileName = Utilities.getRealPathToWebApplicationContext(ProfileDAO.PROFILE_FOLDER);
         File directory = new File(fullFileName);
         // Get all filenames in directory that applies filename filter
         // restrictions
@@ -53,7 +54,7 @@ public class ProfileDAO {
     public List<Profile> getProfiles() throws JAXBException, IOException, InstantiationException, IllegalAccessException {
         List<Profile> profiles = new ArrayList<Profile>();
         // Get profile folder full path
-        String fullFileName = Utilities.getRealPathToWebApplicationContext(ProfileManager.PROFILE_FOLDER);
+        String fullFileName = Utilities.getRealPathToWebApplicationContext(ProfileDAO.PROFILE_FOLDER);
         File directory = new File(fullFileName);
         // Get all filenames in directory that applies filename filter
         // restrictions
@@ -67,7 +68,7 @@ public class ProfileDAO {
     }
 
     public void removeProfile(String filename) throws DeleteProfileException {
-        String path = Utilities.getRealPathToWebApplicationContext(ProfileManager.PROFILE_FOLDER);
+        String path = Utilities.getRealPathToWebApplicationContext(ProfileDAO.PROFILE_FOLDER);
         String fullPath = path + "\\" + filename;
         File file = new File(fullPath);
         if (!file.delete()) {
@@ -75,5 +76,19 @@ public class ProfileDAO {
         }
     }
     
+    public String saveProfile(Metaclass metaclass, String entity, String profileName) throws JAXBException {
+        // Create XML from metaclass and place it in server
+        String[] entityParts = entity.split("\\.");
+        String filename = WordUtils
+                .uncapitalize(entityParts[entityParts.length - 1])
+                + "-"
+                + profileName
+                + "-"
+                + Calendar.getInstance().getTimeInMillis()
+                + ".xml";
+        String path = Utilities.getRealPathToWebApplicationContext(ProfileDAO.PROFILE_FOLDER) + "\\" + filename;
+        XMLAgent.marshal(path, Metaclass.class, metaclass);
+        return filename;
+    }
 
 }
