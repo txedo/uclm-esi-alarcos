@@ -108,6 +108,11 @@ public class VisualizationAction extends ActionSupport {
     public void setSubprojects(List<Subproject> subprojects) {
         this.subprojects = subprojects;
     }
+    
+    public String updateProfileForm() {
+        // This function is auxiliary for ajax purposes
+        return SUCCESS;
+    }
 
     @Override
     public String execute() throws Exception {

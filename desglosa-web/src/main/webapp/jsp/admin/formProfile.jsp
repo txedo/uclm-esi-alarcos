@@ -853,8 +853,7 @@
     
 	<div id="first_step">
 	   <fieldset class="formfieldset">
-			<s:url id="updateProfileURL" action="json_p_updateProfileForm"/>
-			<s:url id="refreshTableColumns" action="json_p_loadTableColumns"/>
+			<s:url id="updateProfileURL" action="json_p_showForm"/>
 			
 			<div id="info">
 			    <h2><s:text name="label.general_information_about_mappings.title1"/></h2>
