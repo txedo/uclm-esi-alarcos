@@ -2,6 +2,7 @@ package es.uclm.inf_cr.alarcos.desglosa_web.control;
 
 import java.lang.reflect.InvocationTargetException;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException;
@@ -54,8 +55,12 @@ public class SubprojectManagerTest extends SpringTestCaseBase {
     }
     
     public void testGetDevelopingSubprojectsByCompanyId() {
-        assertTrue(SubprojectManager.getDevelopingSubprojectsByCompanyId(1).size() == 5);
-        assertTrue(SubprojectManager.getDevelopingSubprojectsByCompanyId(2).size() == 0);
+        try {
+            assertTrue(SubprojectManager.getDevelopingSubprojectsByCompanyId(1).size() == 5);
+            assertTrue(SubprojectManager.getDevelopingSubprojectsByCompanyId(2).size() == 0);
+        } catch (CompanyNotFoundException e) {
+            fail("Company should exists in database");
+        }
     }
     
     public void testUpdateMeasures() {

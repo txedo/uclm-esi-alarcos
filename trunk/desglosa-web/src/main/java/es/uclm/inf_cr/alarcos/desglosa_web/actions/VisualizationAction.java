@@ -21,6 +21,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.EntityNotSupportedException
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.GroupByOperationNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.IncompatibleTypesException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.MarketNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
@@ -124,6 +125,9 @@ public class VisualizationAction extends ActionSupport {
     }
 
     public String factoryById() {
+        // La agrupacion puede ser por company, market o project
+        // Se utilizara el groupById=0
+        // En el caso de GROUP_BY_COMPANY se podria utilizar groupById=factory.company.id, pero no es necesario
         String result = SUCCESS;
         try {
             if (id == 0) {
@@ -133,7 +137,7 @@ public class VisualizationAction extends ActionSupport {
                 factories.add(FactoryManager.getFactory(id));
             }
             if (generateGLObjects) {
-                result = entity2model(factories);
+                result = entity2model(factories, 0);
             }
         } catch (FactoryNotFoundException e) {
             result = ERROR;
@@ -144,13 +148,17 @@ public class VisualizationAction extends ActionSupport {
     public String factoriesByCompanyId() {
         String result = SUCCESS;
         try {
+            int groupById = 0;
             if (id == 0) {
                 factories = FactoryManager.getAllFactories();
             } else {
+                if (groupBy.equals(GLObjectManager.GROUP_BY_COMPANY)) {
+                    groupById = id;
+                }
                 factories = new ArrayList<Factory>(CompanyManager.getCompany(id).getFactories());
             }
             if (generateGLObjects) {
-                result = entity2model(factories);
+                result = entity2model(factories, groupById);
             }
         } catch (CompanyNotFoundException e) {
             result = ERROR;
@@ -161,13 +169,17 @@ public class VisualizationAction extends ActionSupport {
     public String factoriesByProjectId() {
         // This action returns involved factories in a project
         String result = SUCCESS;
+        int groupById = 0;
         if (id == 0) {
             factories = FactoryManager.getAllFactories();
         } else {
+            if (groupBy.equals(GLObjectManager.GROUP_BY_PROJECT)) {
+                groupById = id;
+            }
             factories = new ArrayList<Factory>(FactoryManager.getFactoriesInvolvedInProject(id));
         }
         if (generateGLObjects) {
-            result = entity2model(factories);
+            result = entity2model(factories, groupById);
         }
         return result;
     }
@@ -182,7 +194,7 @@ public class VisualizationAction extends ActionSupport {
                 companies.add(CompanyManager.getCompany(id));
             }
             if (generateGLObjects) {
-                result = entity2model(companies);
+                result = entity2model(companies, 0);
             }
         } catch (CompanyNotFoundException e) {
             result = ERROR;
@@ -191,27 +203,51 @@ public class VisualizationAction extends ActionSupport {
     }
 
     public String projectsByCompanyId() {
+        // La agruacion puede ser por company, market o factory
+        // Por defecto groupById=0, excepto si consultamos proyectos de una company especifica y agrupamos por company
+        // en este caso solo se usara dicha company
+        // Si se agrupa por factory, se mostraran todas las factorias (de todas las companies) que colaboran en los proyectos de la companyId
         String result = SUCCESS;
-        if (id == 0) {
-            projects = ProjectManager.getAllProjects();
-        } else {
-            projects = ProjectManager.getDevelopingProjectsByCompanyId(id);
-        }
-        if (generateGLObjects) {
-            result = entity2model(projects);
+        try {
+            int groupById = 0;
+            if (groupBy.equals(GLObjectManager.GROUP_BY_COMPANY)) {
+                groupById = id;
+            }
+            if (id == 0) {
+                projects = ProjectManager.getAllProjects();
+            } else {
+                projects = ProjectManager.getDevelopingProjectsByCompanyId(id);
+            }
+            if (generateGLObjects) {
+                result = entity2model(projects, groupById);
+            }
+        } catch (CompanyNotFoundException e) {
+            result = ERROR;
         }
         return result;
     }
 
     public String projectsByFactoryId() {
+        // La agruacion puede ser por company, market o factory
+        // Por defecto groupById=0, excepto si consultamos los proyectos de una factoria especifica y agrupamos por factory
+        // en este caso solo se usara dicha factory
+        // Si se agrupa por company, se muestran las colaboraciones entre las distintas factorias de las companies
         String result = SUCCESS;
-        if (id == 0) {
-            projects = ProjectManager.getAllProjects();
-        } else {
-            projects = ProjectManager.getDevelopingProjectsByFactoryId(id);
-        }
-        if (generateGLObjects) {
-            result = entity2model(projects);
+        try {
+            int groupById = 0;
+            if (groupBy.equals(GLObjectManager.GROUP_BY_FACTORY)) {
+                groupById = id;
+            }
+            if (id == 0) {
+                projects = ProjectManager.getAllProjects();
+            } else {
+                projects = ProjectManager.getDevelopingProjectsByFactoryId(id);
+            }
+            if (generateGLObjects) {
+                result = entity2model(projects, groupById);
+            }
+        } catch (FactoryNotFoundException e) {
+            result = ERROR;
         }
         return result;
     }
@@ -226,7 +262,7 @@ public class VisualizationAction extends ActionSupport {
                 projects.add(ProjectManager.getProject(id));
             }
             if (generateGLObjects) {
-                result = entity2model(projects);
+                result = entity2model(projects, 0);
             }
         } catch (ProjectNotFoundException e) {
             result = ERROR;
@@ -235,19 +271,25 @@ public class VisualizationAction extends ActionSupport {
     }
 
     public String subprojectsByCompanyId() {
+        // Se puede agrupar por company, factory, project o market
         String result = SUCCESS;
-        if (id == 0) {
-            subprojects = SubprojectManager.getAllSubprojects();
-        } else {
-            subprojects = SubprojectManager.getDevelopingSubprojectsByCompanyId(id);
-        }
-        if (generateGLObjects) {
-            result = entity2model(subprojects);
+        try {
+            if (id == 0) {
+                subprojects = SubprojectManager.getAllSubprojects();
+            } else {
+                subprojects = SubprojectManager.getDevelopingSubprojectsByCompanyId(id);
+            }
+            if (generateGLObjects) {
+                result = entity2model(subprojects,0);
+            }
+        } catch (CompanyNotFoundException e) {
+            result = ERROR;
         }
         return result;
     }
 
     public String subprojectsByFactoryId() {
+        // Se puede agrupar por company, factory, project o market
         String result = SUCCESS;
         try {
             if (id == 0) {
@@ -256,7 +298,7 @@ public class VisualizationAction extends ActionSupport {
                 subprojects = new ArrayList<Subproject>(FactoryManager.getFactory(id).getSubprojects());
             }
             if (generateGLObjects) {
-                result = entity2model(subprojects);
+                result = entity2model(subprojects,0);
             }
         } catch (FactoryNotFoundException e) {
             result = ERROR;
@@ -265,6 +307,7 @@ public class VisualizationAction extends ActionSupport {
     }
 
     public String subprojectsByProjectId() {
+        // Se puede agrupar por company, factory, project o market
         String result = SUCCESS;
         try {
             if (id == 0) {
@@ -273,7 +316,7 @@ public class VisualizationAction extends ActionSupport {
                 subprojects = new ArrayList<Subproject>(ProjectManager.getProject(id).getSubprojects());
             }
             if (generateGLObjects) {
-                result = entity2model(subprojects);
+                result = entity2model(subprojects,0);
             }
         } catch (ProjectNotFoundException e) {
             result = ERROR;
@@ -291,7 +334,7 @@ public class VisualizationAction extends ActionSupport {
                 subprojects.add(SubprojectManager.getSubproject(id));
             }
             if (generateGLObjects) {
-                result = entity2model(subprojects);
+                result = entity2model(subprojects, 0);
             }
         } catch (SubprojectNotFoundException e) {
             result = ERROR;
@@ -299,10 +342,10 @@ public class VisualizationAction extends ActionSupport {
         return result;
     }
 
-    private String entity2model(List<?> entities) {
+    private String entity2model(List<?> entities, int groupById) {
         String result = ERROR;
         try {
-            city = GLObjectManager.createGLObjects(entities, groupBy, profileFileName);
+            city = GLObjectManager.createGLObjects(entities, groupBy, groupById, profileFileName);
             result = SUCCESS;
         } catch (SecurityException e) {
             addActionError(getText("exception.security"));
@@ -330,6 +373,14 @@ public class VisualizationAction extends ActionSupport {
             addActionError(getText("exception.no_such_field"));
         } catch (IncompatibleTypesException e) {
             addActionError(getText("exception.incompatible_types"));
+        } catch (CompanyNotFoundException e) {
+            addActionError(getText("error.company.id"));
+        } catch (MarketNotFoundException e) {
+            addActionError(getText("error.factory.id"));
+        } catch (ProjectNotFoundException e) {
+            addActionError(getText("error.project.id"));
+        } catch (FactoryNotFoundException e) {
+            addActionError(getText("error.subproject.id"));
         }
         return result;
     }
