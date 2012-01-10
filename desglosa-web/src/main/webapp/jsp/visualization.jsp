@@ -675,6 +675,8 @@
 			}
 		});
 		$j("#joglCanvasControls").children().eq(1).css('height', 'auto'); 
+		
+		$("#factorySelect").trigger('change');
 	});
 	
 	function setTitleToInfoPanel(title) {

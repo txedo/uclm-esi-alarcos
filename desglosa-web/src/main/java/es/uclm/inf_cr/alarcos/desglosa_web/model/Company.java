@@ -85,6 +85,9 @@ public class Company {
 
     @Formula("(select sum(f.employees) from companies c, factories f where c.id = id and c.id = f.company_id)")
     public Integer getNumberOfEmployees() {
+        if (numberOfEmployees == null) {
+            numberOfEmployees = 0;
+        }
         return numberOfEmployees;
     }
 

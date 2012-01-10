@@ -95,7 +95,7 @@
 				<div class="displaytagTable">
 					<s:set name="factories" value="factories" scope="request"/>  
 					<s:set name="project" value="project" scope="request"/>
-					<display:table name="factories" id="factory"defaultsort="1" pagesize="10" requestURI="">
+					<display:table name="factories" id="factory" defaultsort="3" pagesize="10" requestURI="">
 						<display:column style="width: 5%; text-align: center;">
 						<c:choose>
 							<c:when test="${project.mainFactory.id == factory.id or factory.id == param.factoryId}">

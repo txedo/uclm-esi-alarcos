@@ -26,7 +26,7 @@ public class DBUnitUtils extends DBTestCase {
     private final static String USERNAME = "desglosaadmin";
     private final static String PASSWORD = "nimdaasolgsed";
     
-    private final static String FILE = "src/test/resources/sample-data.xml";
+    private final static String FILE = "src/test/resources/demo-data.xml";
     private final static String CHARSET = "UTF8";
     
     private final static String TABLE_NAMES[] = { "roles", "groups", "users", 
