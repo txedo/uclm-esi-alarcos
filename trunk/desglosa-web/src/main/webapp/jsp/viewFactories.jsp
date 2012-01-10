@@ -53,7 +53,7 @@
 	
 	<div class="displaytagTable">
 		<s:set name="factories" value="factories" scope="request"/>  
-		<display:table name="factories" uid="factory" defaultsort="1" class="" pagesize="10" requestURI="">
+		<display:table name="factories" uid="factory" defaultsort="3" class="" pagesize="10" requestURI="">
 	        <display:column  style="width: 5%; text-align: center;">
 	            <input type="radio" id="factoryIdRadio" name="factoryIds" value="${factory.id}">
 	        </display:column>

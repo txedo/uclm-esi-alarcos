@@ -51,7 +51,7 @@
     
     <div class="displaytagTable">
 	    <s:set name="subprojects" value="subprojects" scope="request"/>  
-	    <display:table name="subprojects" uid="subproject" defaultsort="1" class="" pagesize="10" requestURI="">
+	    <display:table name="subprojects" uid="subproject" defaultsort="2" class="" pagesize="15" requestURI="">
 	        <display:column  style="width: 5%; text-align: center;">
 	            <input type="radio" id="subprojectIdRadio" name="subprojectIds" value="${subproject.id}">
 	        </display:column>

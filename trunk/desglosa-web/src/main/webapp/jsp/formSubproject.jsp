@@ -54,7 +54,54 @@
 					</li>
 				</ul>
 			</fieldset>
-        
+			
+			<fieldset class="formfieldset">
+				<h2><s:text name="label.configure.subproject.project"/></h2>
+				<s:fielderror><s:param>error.project_required</s:param></s:fielderror>
+				<p>(*) <s:text name="label.configure.subproject.choose_project"/></p>
+				<div class="displaytagTable">
+					<s:set name="projects" value="projects" scope="request"/>  
+					<s:set name="subproject" value="subproject" scope="request"/>
+					<display:table name="projects" id="project" defaultsort="1" pagesize="10" requestURI="">
+						<display:column style="width: 5%; text-align: center;">
+						<c:choose>
+							<c:when test="${subproject.project.id == project.id or project.id == param.projectId}">
+								<input type="radio" name="subproject.project.id" value="${project.id}" checked/>
+							</c:when>
+							<c:otherwise>
+								<input type="radio" name="subproject.project.id" value="${project.id}" />
+							</c:otherwise>
+						</c:choose>
+						</display:column>
+						<display:column property="name" escapeXml="true" style="width: 12%" titleKey="table.header.project.name" sortable="true"/>
+						<display:column property="code" escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.project.code" sortable="true"/>
+				        <display:column property="plan" escapeXml="true" style="width: 8%" titleKey="table.header.project.plan" sortable="true"/>
+				        <display:column escapeXml="false" style="width: 15%" titleKey="table.header.project.market" sortable="true">
+				            <span class="icon" style="background-color:#<c:out value='${project.market.color}' />"></span><c:out value='${project.market.name}' />
+				        </display:column>
+				        <display:column escapeXml="false" style="width: 15%" titleKey="table.header.factory.name" sortable="true">
+							<div class="tooltipstyle" title="<img src='http://maps.google.com/maps/api/staticmap?zoom=10&size=170x130&maptype=roadmap&markers=color:red|color:red|<c:out value='${project.mainFactory.location.latitude}'/>,<c:out value='${project.mainFactory.location.longitude}'/>&sensor=false' width='170' height='130' title='<s:text name='label.configure.factory.address.image'/>'/>"><img class="searchIcon" src="images/world_search.png" height="16" width="16" /><c:out value="${project.mainFactory.name}"/></div>
+						</display:column>
+        				<display:column property="mainFactory.address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="true"/>
+						<display:column property="mainFactory.address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="true"/>
+						
+						<display:setProperty name="paging.banner.placement" value="top"/>
+						<display:setProperty name="paging.banner.item_name"><fmt:message key="label.project"/></display:setProperty>
+						<display:setProperty name="paging.banner.items_name"><fmt:message key="label.projects"/></display:setProperty>
+			            <display:setProperty name="paging.banner.page.separator"><fmt:message key="table.paging.banner.page.separator"/></display:setProperty>
+			            <display:setProperty name="basic.msg.empty_list"><fmt:message key="table.paging.banner.no_items_found_male"><fmt:param><fmt:message key="label.profile"/></fmt:param></fmt:message></display:setProperty>
+			            <display:setProperty name="paging.banner.no_items_found"><fmt:message key="table.paging.banner.no_items_found_male"/></display:setProperty>
+			            <display:setProperty name="paging.banner.one_item_found"><fmt:message key="table.paging.banner.one_item_found_male"/></display:setProperty>
+			            <display:setProperty name="paging.banner.all_items_found"><fmt:message key="table.paging.banner.all_items_found_male"/></display:setProperty>
+			            <display:setProperty name="paging.banner.some_items_found"><fmt:message key="table.paging.banner.some_items_found_male"/></display:setProperty>
+			            <display:setProperty name="paging.banner.onepage"><fmt:message key="table.paging.banner.onepage"/></display:setProperty>
+			            <display:setProperty name="paging.banner.full"><fmt:message key="table.paging.banner.full"/></display:setProperty>
+			            <display:setProperty name="paging.banner.first"><fmt:message key="table.paging.banner.first"/></display:setProperty>
+			            <display:setProperty name="paging.banner.last"><fmt:message key="table.paging.banner.last"/></display:setProperty>
+					</display:table>
+				</div>
+			</fieldset>
+			
 			<fieldset class="formfieldset">
 				<h2><s:text name="label.configure.subproject.factory"/></h2>
 				<s:fielderror><s:param>error.factory_required</s:param></s:fielderror>
@@ -104,52 +151,6 @@
 				</div>
 			</fieldset>
 			
-			<fieldset class="formfieldset">
-				<h2><s:text name="label.configure.subproject.project"/></h2>
-				<s:fielderror><s:param>error.project_required</s:param></s:fielderror>
-				<p>(*) <s:text name="label.configure.subproject.choose_project"/></p>
-				<div class="displaytagTable">
-					<s:set name="projects" value="projects" scope="request"/>  
-					<s:set name="subproject" value="subproject" scope="request"/>
-					<display:table name="projects" id="project" defaultsort="1" pagesize="10" requestURI="">
-						<display:column style="width: 5%; text-align: center;">
-						<c:choose>
-							<c:when test="${subproject.project.id == project.id or project.id == param.projectId}">
-								<input type="radio" name="subproject.project.id" value="${project.id}" checked/>
-							</c:when>
-							<c:otherwise>
-								<input type="radio" name="subproject.project.id" value="${project.id}" />
-							</c:otherwise>
-						</c:choose>
-						</display:column>
-						<display:column property="name" escapeXml="true" style="width: 12%" titleKey="table.header.project.name" sortable="true"/>
-						<display:column property="code" escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.project.code" sortable="true"/>
-				        <display:column property="plan" escapeXml="true" style="width: 8%" titleKey="table.header.project.plan" sortable="true"/>
-				        <display:column escapeXml="false" style="width: 15%" titleKey="table.header.project.market" sortable="true">
-				            <span class="icon" style="background-color:#<c:out value='${project.market.color}' />"></span><c:out value='${project.market.name}' />
-				        </display:column>
-				        <display:column escapeXml="false" style="width: 15%" titleKey="table.header.factory.name" sortable="true">
-							<div class="tooltipstyle" title="<img src='http://maps.google.com/maps/api/staticmap?zoom=10&size=170x130&maptype=roadmap&markers=color:red|color:red|<c:out value='${project.mainFactory.location.latitude}'/>,<c:out value='${project.mainFactory.location.longitude}'/>&sensor=false' width='170' height='130' title='<s:text name='label.configure.factory.address.image'/>'/>"><img class="searchIcon" src="images/world_search.png" height="16" width="16" /><c:out value="${project.mainFactory.name}"/></div>
-						</display:column>
-        				<display:column property="mainFactory.address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="true"/>
-						<display:column property="mainFactory.address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="true"/>
-						
-						<display:setProperty name="paging.banner.placement" value="top"/>
-						<display:setProperty name="paging.banner.item_name"><fmt:message key="label.project"/></display:setProperty>
-						<display:setProperty name="paging.banner.items_name"><fmt:message key="label.projects"/></display:setProperty>
-			            <display:setProperty name="paging.banner.page.separator"><fmt:message key="table.paging.banner.page.separator"/></display:setProperty>
-			            <display:setProperty name="basic.msg.empty_list"><fmt:message key="table.paging.banner.no_items_found_male"><fmt:param><fmt:message key="label.profile"/></fmt:param></fmt:message></display:setProperty>
-			            <display:setProperty name="paging.banner.no_items_found"><fmt:message key="table.paging.banner.no_items_found_male"/></display:setProperty>
-			            <display:setProperty name="paging.banner.one_item_found"><fmt:message key="table.paging.banner.one_item_found_male"/></display:setProperty>
-			            <display:setProperty name="paging.banner.all_items_found"><fmt:message key="table.paging.banner.all_items_found_male"/></display:setProperty>
-			            <display:setProperty name="paging.banner.some_items_found"><fmt:message key="table.paging.banner.some_items_found_male"/></display:setProperty>
-			            <display:setProperty name="paging.banner.onepage"><fmt:message key="table.paging.banner.onepage"/></display:setProperty>
-			            <display:setProperty name="paging.banner.full"><fmt:message key="table.paging.banner.full"/></display:setProperty>
-			            <display:setProperty name="paging.banner.first"><fmt:message key="table.paging.banner.first"/></display:setProperty>
-			            <display:setProperty name="paging.banner.last"><fmt:message key="table.paging.banner.last"/></display:setProperty>
-					</display:table>
-				</div>
-			</fieldset>
             <div style="display:none">
                 <%@ include file="/jsp/generateSubprojectMeasureForm.jsp"%>
             </div>
