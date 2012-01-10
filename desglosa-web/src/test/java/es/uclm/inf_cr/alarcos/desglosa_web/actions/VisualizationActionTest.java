@@ -266,8 +266,8 @@ public class VisualizationActionTest extends StrutsSpringTestCaseBase {
         assertEquals(2, ((VisualizationAction) action).getProjects().size());
         // Check that GL city is not null
         assertNotNull(((VisualizationAction) action).getCity());
-        // The city has 2 neighborhood (2 companies and group by company)
-        assertEquals(2, ((VisualizationAction) action).getCity().getNeighborhoods().size());
+        // The city has 1 neighborhood (1 companies and group by company), we only select projects on company 1
+        assertEquals(1, ((VisualizationAction) action).getCity().getNeighborhoods().size());
         
         // get projects from only one company
         configureProxy("/", "json_projectsByCompanyId", "admin");
@@ -338,11 +338,10 @@ public class VisualizationActionTest extends StrutsSpringTestCaseBase {
         assertEquals(2, ((VisualizationAction) action).getProjects().size());
         // Check that GL city is not null
         assertNotNull(((VisualizationAction) action).getCity());
-        // The city has 2 neighborhood (2 projects and group by factory, but 2 factories works in both projects)
-        assertEquals(2, ((VisualizationAction) action).getCity().getNeighborhoods().size());
-        // The both neighborhood has 2 projects
+        // The city has 1 neighborhood (2 projects and group by factory, but so we pick only one factory up
+        assertEquals(1, ((VisualizationAction) action).getCity().getNeighborhoods().size());
+        // The neighborhood has 2 projects
         assertEquals(2, ((VisualizationAction) action).getCity().getNeighborhoods().get(0).getFlats().size());
-        assertEquals(2, ((VisualizationAction) action).getCity().getNeighborhoods().get(1).getFlats().size());
     }
     
     public void testProjectsByFactoryIdError() throws Exception {
@@ -378,7 +377,7 @@ public class VisualizationActionTest extends StrutsSpringTestCaseBase {
         ((VisualizationAction) action).setProfileFileName("project-ProjectDefault-1325631634846.xml");
         assertEquals(Action.SUCCESS, proxy.execute());
         // Check there are 2 projects in projects array
-        assertEquals(3, ((VisualizationAction) action).getProjects().size());
+        assertEquals(2, ((VisualizationAction) action).getProjects().size());
         // Check that GL city is not null
         assertNotNull(((VisualizationAction) action).getCity());
         // The city has 1 neighborhood (no group by)
@@ -604,7 +603,7 @@ public class VisualizationActionTest extends StrutsSpringTestCaseBase {
     
     public void testSubprojectById() throws Exception {
         // get all subprojects
-        configureProxy("/", "json_subprojectsById", "admin");
+        configureProxy("/", "json_subprojectById", "admin");
         assertTrue(action instanceof VisualizationAction);
         ((VisualizationAction) action).setId(0);
         ((VisualizationAction) action).setGenerateGLObjects(true);
@@ -612,7 +611,7 @@ public class VisualizationActionTest extends StrutsSpringTestCaseBase {
         ((VisualizationAction) action).setProfileFileName("subproject-SubprojectDefault-1326106098741.xml");
         assertEquals(Action.SUCCESS, proxy.execute());
         // Check there are 5 subprojects in subprojects array
-        assertEquals(5, ((VisualizationAction) action).getProjects().size());
+        assertEquals(5, ((VisualizationAction) action).getSubprojects().size());
         // Check that GL city is not null
         assertNotNull(((VisualizationAction) action).getCity());
         // The city has 1 neighborhood (no group by)
@@ -621,7 +620,7 @@ public class VisualizationActionTest extends StrutsSpringTestCaseBase {
         assertEquals(5, ((VisualizationAction) action).getCity().getNeighborhoods().get(0).getFlats().size());
         
         // get only one project
-        configureProxy("/", "json_subprojectsById", "admin");
+        configureProxy("/", "json_subprojectById", "admin");
         assertTrue(action instanceof VisualizationAction);
         ((VisualizationAction) action).setId(1);
         ((VisualizationAction) action).setGenerateGLObjects(true);

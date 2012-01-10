@@ -2,6 +2,7 @@ package es.uclm.inf_cr.alarcos.desglosa_web.control;
 
 import java.lang.reflect.InvocationTargetException;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Project;
@@ -48,14 +49,22 @@ public class ProjectManagerTest extends SpringTestCaseBase {
     }
     
     public void testGetDevelopingProjectsByCompanyId() {
-        assertTrue(ProjectManager.getDevelopingProjectsByCompanyId(1).size() == 2);
-        assertTrue(ProjectManager.getDevelopingProjectsByCompanyId(2).size() == 0);
+        try {
+            assertTrue(ProjectManager.getDevelopingProjectsByCompanyId(1).size() == 2);
+            assertTrue(ProjectManager.getDevelopingProjectsByCompanyId(2).size() == 0);
+        } catch (CompanyNotFoundException e) {
+            fail("Company should exists in database");
+        }
     }
     
     public void testGetDevelopingProjectsByFactoryId() {
-        assertTrue(ProjectManager.getDevelopingProjectsByFactoryId(1).size() == 2);
-        assertTrue(ProjectManager.getDevelopingProjectsByFactoryId(2).size() == 2);
-        assertTrue(ProjectManager.getDevelopingProjectsByFactoryId(3).size() == 0);
+        try {
+            assertTrue(ProjectManager.getDevelopingProjectsByFactoryId(1).size() == 2);
+            assertTrue(ProjectManager.getDevelopingProjectsByFactoryId(2).size() == 2);
+            assertTrue(ProjectManager.getDevelopingProjectsByFactoryId(3).size() == 0);
+        } catch (FactoryNotFoundException e) {
+            fail("Factory should exists in database");
+        }
     }
     
     public void testUpdateMeasures() {

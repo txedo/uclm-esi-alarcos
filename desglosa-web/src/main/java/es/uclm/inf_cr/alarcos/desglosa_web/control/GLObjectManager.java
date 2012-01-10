@@ -16,9 +16,13 @@ import org.apache.commons.lang.WordUtils;
 import model.gl.knowledge.GLObject;
 import model.util.City;
 import model.util.Neighborhood;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.EntityNotSupportedException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.FactoryNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.GroupByOperationNotSupportedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.IncompatibleTypesException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.MarketNotFoundException;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.ProjectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Company;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Factory;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Field;
@@ -41,12 +45,12 @@ public class GLObjectManager {
     private GLObjectManager() {
     }
 
-    public static City createGLObjects(List<?> entities, String groupBy, String profileName) throws JAXBException, IOException,
+    public static City createGLObjects(List<?> entities, String groupBy, int groupById, String profileName) throws JAXBException, IOException,
             InstantiationException, IllegalAccessException,
             ClassNotFoundException, SecurityException, NoSuchMethodException,
             IllegalArgumentException, InvocationTargetException,
             EntityNotSupportedException, GroupByOperationNotSupportedException,
-            NoSuchFieldException, IncompatibleTypesException {
+            NoSuchFieldException, IncompatibleTypesException, CompanyNotFoundException, MarketNotFoundException, ProjectNotFoundException, FactoryNotFoundException {
         City c = new City();
         // Load selected profile
         Metaclass metaclass = ProfileManager.getProfileByName(profileName);
@@ -57,7 +61,7 @@ public class GLObjectManager {
         if (entities != null && entities.size() > 0) {
             // Create a map of list in which key is neighborhood name and value
             // is a list of flats
-            Map<String, List<?>> neighborhoods = groupEntitiesBy(entities.get(0).getClass(), entities, groupBy);
+            Map<String, List<?>> neighborhoods = groupEntitiesBy(entities.get(0).getClass(), entities, groupBy, groupById);
             // Iterate over each list creating GLObjects while creating
             // GLNeighborhoods and GLCity
             Iterator<?> it = neighborhoods.entrySet().iterator();
@@ -215,25 +219,34 @@ public class GLObjectManager {
         return c;
     }
 
-    private static Map<String, List<?>> groupEntitiesBy(Class<?> clazz, List<?> entities, String groupBy) throws EntityNotSupportedException, GroupByOperationNotSupportedException {
+    private static Map<String, List<?>> groupEntitiesBy(Class<?> clazz, List<?> entities, String groupBy, int groupById) throws EntityNotSupportedException, GroupByOperationNotSupportedException, CompanyNotFoundException, MarketNotFoundException, ProjectNotFoundException, FactoryNotFoundException {
         String className = clazz.getSimpleName();
         Map<String, List<?>> neighborhoods = new HashMap<String, List<?>>();
-        if (className.equals("Factory")) {
-            neighborhoods = groupFactoriesBy(entities, groupBy);
+        if (className.equals("Company")) {
+            neighborhoods = new HashMap<String, List<?>>();
+            neighborhoods.put("", entities);
+        } else if (className.equals("Factory")) {
+            neighborhoods = groupFactoriesBy(entities, groupBy, groupById);
         } else if (className.equals("Project")) {
-            neighborhoods = groupProjectsBy(entities, groupBy);
+            neighborhoods = groupProjectsBy(entities, groupBy, groupById);
         } else if (className.equals("Subproject")) {
-            neighborhoods = groupSubprojectsBy(entities, groupBy);
+            neighborhoods = groupSubprojectsBy(entities, groupBy, groupById);
         } else {
             throw new EntityNotSupportedException();
         }
         return neighborhoods;
     }
 
-    private static Map<String, List<?>> groupFactoriesBy(List<?> factories, String groupBy) throws GroupByOperationNotSupportedException {
+    private static Map<String, List<?>> groupFactoriesBy(List<?> factories, String groupBy, int groupById) throws GroupByOperationNotSupportedException, CompanyNotFoundException, MarketNotFoundException, ProjectNotFoundException {
         Map<String, List<?>> neighborhoods = new HashMap<String, List<?>>();
         if (groupBy.equals(GROUP_BY_COMPANY)) {
-            List<Company> availableCompanies = CompanyManager.getAllCompanies();
+            List<Company> availableCompanies;
+            if (groupById == 0) {
+                availableCompanies = CompanyManager.getAllCompanies();
+            } else {
+                availableCompanies = new ArrayList<Company>();
+                availableCompanies.add(CompanyManager.getCompany(groupById));
+            }
             for (Company comp : availableCompanies) {
                 List<Factory> flats = new ArrayList<Factory>();
                 for (Object f : factories) {
@@ -245,7 +258,13 @@ public class GLObjectManager {
                     neighborhoods.put(comp.getName(), flats);
             }
         } else if (groupBy.equals(GROUP_BY_MARKET)) {
-            List<Market> availableMarkets = MarketManager.getAllMarkets();
+            List<Market> availableMarkets;
+            if (groupById == 0) {
+                availableMarkets = MarketManager.getAllMarkets();
+            } else {
+                availableMarkets = new ArrayList<Market>();
+                availableMarkets.add(MarketManager.getMarket(groupById));
+            }
             for (Market m : availableMarkets) {
                 List<Factory> flats = new ArrayList<Factory>();
                 for (Object f : factories) {
@@ -270,7 +289,13 @@ public class GLObjectManager {
                 neighborhoods.put("", orphanFactories);
             }
         } else if (groupBy.equals(GROUP_BY_PROJECT)) {
-            List<Project> availableProjects = ProjectManager.getAllProjects();
+            List<Project> availableProjects;
+            if (groupById == 0) {
+                availableProjects = ProjectManager.getAllProjects();
+            } else {
+                availableProjects = new ArrayList<Project>();
+                availableProjects.add(ProjectManager.getProject(groupById));
+            }
             for (Project p : availableProjects) {
                 int factoryIndex = 0;
                 List<Factory> flats = new ArrayList<Factory>();
@@ -297,10 +322,16 @@ public class GLObjectManager {
         return neighborhoods;
     }
 
-    private static Map<String, List<?>> groupProjectsBy(List<?> projects, String groupBy) throws GroupByOperationNotSupportedException {
+    private static Map<String, List<?>> groupProjectsBy(List<?> projects, String groupBy, int groupById) throws GroupByOperationNotSupportedException, CompanyNotFoundException, MarketNotFoundException, FactoryNotFoundException {
         Map<String, List<?>> neighborhoods = new HashMap<String, List<?>>();
         if (groupBy.equals(GROUP_BY_COMPANY)) {
-            List<Company> availableCompanies = CompanyManager.getAllCompanies();
+            List<Company> availableCompanies;
+            if (groupById == 0) {
+                availableCompanies = CompanyManager.getAllCompanies();
+            } else {
+                availableCompanies = new ArrayList<Company>();
+                availableCompanies.add(CompanyManager.getCompany(groupById));
+            }
             for (Company comp : availableCompanies) {
                 List<Project> flats = new ArrayList<Project>();
                 for (Object p : projects) {
@@ -319,7 +350,13 @@ public class GLObjectManager {
                 }
             }
         } else if (groupBy.equals(GROUP_BY_MARKET)) {
-            List<Market> availableMarkets = MarketManager.getAllMarkets();
+            List<Market> availableMarkets;
+            if (groupById == 0) {
+                availableMarkets = MarketManager.getAllMarkets();
+            } else {
+                availableMarkets = new ArrayList<Market>();
+                availableMarkets.add(MarketManager.getMarket(groupById));
+            }
             for (Market m : availableMarkets) {
                 List<Project> flats = new ArrayList<Project>();
                 for (Object p : projects) {
@@ -331,7 +368,13 @@ public class GLObjectManager {
                 }
             }
         } else if (groupBy.equals(GROUP_BY_FACTORY)) {
-            List<Factory> availableFactories = FactoryManager.getAllFactories();
+            List<Factory> availableFactories;
+            if (groupById == 0) {
+                availableFactories = FactoryManager.getAllFactories();
+            } else {
+                availableFactories = new ArrayList<Factory>();
+                availableFactories.add(FactoryManager.getFactory(groupById));
+            }
             for (Factory f : availableFactories) {
                 List<Project> flats = new ArrayList<Project>();
                 for (Object p : projects) {
@@ -357,10 +400,16 @@ public class GLObjectManager {
         return neighborhoods;
     }
 
-    private static Map<String, List<?>> groupSubprojectsBy(List<?> subprojects, String groupBy) throws GroupByOperationNotSupportedException {
+    private static Map<String, List<?>> groupSubprojectsBy(List<?> subprojects, String groupBy, int groupById) throws GroupByOperationNotSupportedException, CompanyNotFoundException, MarketNotFoundException, FactoryNotFoundException, ProjectNotFoundException {
         Map<String, List<?>> neighborhoods = new HashMap<String, List<?>>();
         if (groupBy.equals(GROUP_BY_COMPANY)) {
-            List<Company> availableCompanies = CompanyManager.getAllCompanies();
+            List<Company> availableCompanies;
+            if (groupById == 0) {
+                availableCompanies = CompanyManager.getAllCompanies();
+            } else {
+                availableCompanies = new ArrayList<Company>();
+                availableCompanies.add(CompanyManager.getCompany(groupById));
+            }
             for (Company comp : availableCompanies) {
                 List<Subproject> flats = new ArrayList<Subproject>();
                 for (Object sp : subprojects) {
@@ -372,7 +421,13 @@ public class GLObjectManager {
                     neighborhoods.put(comp.getName(), flats);
             }
         } else if (groupBy.equals(GROUP_BY_MARKET)) {
-            List<Market> availableMarkets = MarketManager.getAllMarkets();
+            List<Market> availableMarkets;
+            if (groupById == 0) {
+                availableMarkets = MarketManager.getAllMarkets();
+            } else {
+                availableMarkets = new ArrayList<Market>();
+                availableMarkets.add(MarketManager.getMarket(groupById));
+            }
             for (Market m : availableMarkets) {
                 List<Subproject> flats = new ArrayList<Subproject>();
                 for (Object sp : subprojects) {
@@ -384,7 +439,13 @@ public class GLObjectManager {
                 }
             }
         } else if (groupBy.equals(GROUP_BY_FACTORY)) {
-            List<Factory> availableFactories = FactoryManager.getAllFactories();
+            List<Factory> availableFactories;
+            if (groupById == 0) {
+                availableFactories = FactoryManager.getAllFactories();
+            } else {
+                availableFactories = new ArrayList<Factory>();
+                availableFactories.add(FactoryManager.getFactory(groupById));
+            }
             for (Factory f : availableFactories) {
                 List<Subproject> flats = new ArrayList<Subproject>();
                 for (Object sp : subprojects) {
@@ -397,7 +458,13 @@ public class GLObjectManager {
                 }
             }
         } else if (groupBy.equals(GROUP_BY_PROJECT)) {
-            List<Project> availableProjects = ProjectManager.getAllProjects();
+            List<Project> availableProjects;
+            if (groupById == 0) {
+                availableProjects = ProjectManager.getAllProjects();
+            } else {
+                availableProjects = new ArrayList<Project>();
+                availableProjects.add(ProjectManager.getProject(groupById));
+            }
             for (Project p : availableProjects) {
                 List<Subproject> flats = new ArrayList<Subproject>();
                 for (Object sp : subprojects) {

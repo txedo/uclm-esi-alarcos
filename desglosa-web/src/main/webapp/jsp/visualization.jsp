@@ -520,7 +520,7 @@
 	function initializeGeneralTab() {
 		$("#generalInformation").html("<p class='label'><c:out value='${showGlobalInformation}'/>:</p>");
 		$("#generalInformation").append("<ul>");
-		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showCompaniesById\",\"company\", 0, false, true, true, true, true)'><c:out value='${companyInformation}'/></a></li>");
+		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showCompaniesById\",\"company\", 0, false, false, false, false, true)'><c:out value='${companyInformation}'/></a></li>");
 		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showFactoriesById\",\"factory\", 0, true, false, true, true, true)'><c:out value='${factoryInformation}'/></a></li>");
 		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showProjectsById\",\"project\", 0, true, true, false, true, true)'><c:out value='${projectInformation}'/></a></li>");
 		$("#generalInformation ul").append("<li><a href='javascript:openDialog(\"desglosa_showSubprojectsById\",\"subproject\", 0, true, true, true, true, true)'><c:out value='${subprojectInformation}'/></a></li>");

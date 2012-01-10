@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.SubprojectDAO;
+import es.uclm.inf_cr.alarcos.desglosa_web.exception.CompanyNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.SubprojectNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.Utilities;
@@ -47,7 +48,10 @@ public class SubprojectManager {
         subprojectDao.removeSubproject(id);
     }
     
-    public static List<Subproject> getDevelopingSubprojectsByCompanyId(int id) {
+    public static List<Subproject> getDevelopingSubprojectsByCompanyId(int id) throws CompanyNotFoundException {
+        if (!CompanyManager.checkCompanyExists(id)) {
+            throw new CompanyNotFoundException();
+        }
         Map<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("id", id);
         return subprojectDao.findByNamedQuery("findSubprojectsByCompanyId", queryParams);
