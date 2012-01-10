@@ -1,0 +1,648 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<title>Test results for: </title>
+<link href="../resources/images/favicon.ico" type="image/x-icon" rel="shortcut icon">
+<link href="../resources/images/favicon.ico" type="image/x-icon" rel="icon">
+<link rel="contents up" title="Test Report Overview" href="../index.html">
+<link rel="stylesheet" type="text/css" href="../resources/report.css">
+<script type="text/javascript" src="../resources/showHide.js"></script><script type="text/javascript" src="../resources/responseBrowser.js" id="scriptResponseBrowser"></script>
+</head>
+<body onload="initExpandCollapse('expandPlus.png','expandMinus.png')">
+<blockquote>
+<h4>
+<img src="../resources/images/ok.gif" alt="ok">&nbsp;incorrect username or password</h4>Test started at Thu Dec 01 13:37:00 CET 2011, lasting 00:01:24 (84131 ms).<br>Source: <span class="location">D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\web-tests.xml:52: </span>
+<br>Base URL (used by <b>invoke</b> steps with a relative URL): <a target="_blank" href="http://localhost:8081/desglosa-web/" class="baseUrl">http://localhost:8081/desglosa-web/</a>
+</blockquote>
+<table cellpadding="3" border="0" cellspacing="0" width="100%" class="expanded">
+<tr>
+<th>#</th><th>Result</th><th>Name</th><th>Parameter</th><th>Duration</th>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    1</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>storeProperty</b>
+<br>
+</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">username</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue"></td>
+</tr>
+<tr>
+<td class="parameterName">=&gt; value</td><td class="parameterValue"></td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">0</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    2</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>storeProperty</b>
+<br>
+</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">password</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue"></td>
+</tr>
+<tr>
+<td class="parameterName">=&gt; value</td><td class="parameterValue"></td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    3</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>invoke</b>
+<br>get Login Page<br>
+<a target="_blank" href="001_response_invoke.html">Resulting page</a></td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">-&gt; complete url</td><td class="parameterValue">http://localhost:8081/desglosa-web/login</td>
+</tr>
+<tr>
+<td class="parameterName">url</td><td class="parameterValue">/login</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">00:00:19</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    4</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytitle</b>
+<br>we should see the login title</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Inicio de sesi&oacute;n.*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    5</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>setinputfield</b>
+<br>set user name</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">j_username</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue"></td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    6</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>setinputfield</b>
+<br>set password</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">j_password</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue"></td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    7</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>clickbutton</b>
+<br>Click the submit button<br>
+<a target="_blank" href="002_response_clickbutton.html">Resulting page</a></td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">label</td><td class="parameterValue">Iniciar Sesi&oacute;n</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">4</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    8</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytitle</b>
+<br>we should see the login title yet</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Inicio de sesi&oacute;n.*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    9</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytext</b>
+<br>Username is a required field</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Usuario {0} es un campo obligatorio..*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    10</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytext</b>
+<br>Password is a required field</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Contrase&ntilde;a {0} es un campo obligatorio..*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    11</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>storeProperty</b>
+<br>
+</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">username</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue">aaaa</td>
+</tr>
+<tr>
+<td class="parameterName">=&gt; value</td><td class="parameterValue">aaaa</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">0</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    12</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>storeProperty</b>
+<br>
+</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">password</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue"></td>
+</tr>
+<tr>
+<td class="parameterName">=&gt; value</td><td class="parameterValue"></td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    13</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>invoke</b>
+<br>get Login Page<br>
+<a target="_blank" href="003_response_invoke.html">Resulting page</a></td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">-&gt; complete url</td><td class="parameterValue">http://localhost:8081/desglosa-web/login</td>
+</tr>
+<tr>
+<td class="parameterName">url</td><td class="parameterValue">/login</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">00:00:17</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    14</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytitle</b>
+<br>we should see the login title</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Inicio de sesi&oacute;n.*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    15</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>setinputfield</b>
+<br>set user name</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">j_username</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue">aaaa</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">2</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    16</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>setinputfield</b>
+<br>set password</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">j_password</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue"></td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">0</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    17</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>clickbutton</b>
+<br>Click the submit button<br>
+<a target="_blank" href="004_response_clickbutton.html">Resulting page</a></td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">label</td><td class="parameterValue">Iniciar Sesi&oacute;n</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">5</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    18</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytitle</b>
+<br>we should see the login title yet</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Inicio de sesi&oacute;n.*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    19</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytext</b>
+<br>Password is a required field</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Contrase&ntilde;a {0} es un campo obligatorio..*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    20</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>storeProperty</b>
+<br>
+</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">username</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue"></td>
+</tr>
+<tr>
+<td class="parameterName">=&gt; value</td><td class="parameterValue"></td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">0</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    21</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>storeProperty</b>
+<br>
+</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">password</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue">aaaa</td>
+</tr>
+<tr>
+<td class="parameterName">=&gt; value</td><td class="parameterValue">aaaa</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">0</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    22</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>invoke</b>
+<br>get Login Page<br>
+<a target="_blank" href="005_response_invoke.html">Resulting page</a></td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">-&gt; complete url</td><td class="parameterValue">http://localhost:8081/desglosa-web/login</td>
+</tr>
+<tr>
+<td class="parameterName">url</td><td class="parameterValue">/login</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">00:00:16</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    23</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytitle</b>
+<br>we should see the login title</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Inicio de sesi&oacute;n.*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    24</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>setinputfield</b>
+<br>set user name</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">j_username</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue"></td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    25</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>setinputfield</b>
+<br>set password</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">j_password</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue">aaaa</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    26</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>clickbutton</b>
+<br>Click the submit button<br>
+<a target="_blank" href="006_response_clickbutton.html">Resulting page</a></td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">label</td><td class="parameterValue">Iniciar Sesi&oacute;n</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">4</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    27</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytitle</b>
+<br>we should see the login title yet</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Inicio de sesi&oacute;n.*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    28</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytext</b>
+<br>Username is a required field</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Usuario {0} es un campo obligatorio..*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    29</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>storeProperty</b>
+<br>
+</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">username</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue">aaaa</td>
+</tr>
+<tr>
+<td class="parameterName">=&gt; value</td><td class="parameterValue">aaaa</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">0</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    30</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>storeProperty</b>
+<br>
+</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">password</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue">aaaa</td>
+</tr>
+<tr>
+<td class="parameterName">=&gt; value</td><td class="parameterValue">aaaa</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    31</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>invoke</b>
+<br>get Login Page<br>
+<a target="_blank" href="007_response_invoke.html">Resulting page</a></td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">-&gt; complete url</td><td class="parameterValue">http://localhost:8081/desglosa-web/login</td>
+</tr>
+<tr>
+<td class="parameterName">url</td><td class="parameterValue">/login</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">00:00:16</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    32</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytitle</b>
+<br>we should see the login title</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Inicio de sesi&oacute;n.*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">0</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    33</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>setinputfield</b>
+<br>set user name</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">j_username</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue">aaaa</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">2</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    34</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>setinputfield</b>
+<br>set password</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">name</td><td class="parameterValue">j_password</td>
+</tr>
+<tr>
+<td class="parameterName">value</td><td class="parameterValue">aaaa</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">2</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    35</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>clickbutton</b>
+<br>Click the submit button<br>
+<a target="_blank" href="008_response_clickbutton.html">Resulting page</a></td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">label</td><td class="parameterValue">Iniciar Sesi&oacute;n</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">00:00:16</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    36</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytitle</b>
+<br>we should see the login title yet</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Inicio de sesi&oacute;n.*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+<tr>
+<td class="light" style="border-bottom:1px inset black;"><b>&nbsp;
+                    37</b></td><td style="border-bottom:1px inset black;" class="light" align="center"><img src="../resources/images/ok.gif" alt="ok"></td><td style="border-bottom:1px inset black;" valign="top" class="light"><b>verifytext</b>
+<br>Either username or password is incorrect</td><td style="border-bottom:1px inset black;" valign="top" class="light">
+<div class="parameterWrapper">
+<table cellpadding="2" cellspacing="0">
+<tr>
+<td class="parameterName">regex</td><td class="parameterValue">true</td>
+</tr>
+<tr>
+<td class="parameterName">text</td><td class="parameterValue">.*Usuario y/o contrase&ntilde;a incorrectos.*</td>
+</tr>
+</table>
+</div>
+</td><td style="border-bottom:1px inset black;" valign="top" align="right" class="light">1</td>
+</tr>
+</table>
+<br>
+<div style="text-align: center">
+<a href="../index.html">Back to Test Report Overview</a>
+</div>
+</body>
+</html>
