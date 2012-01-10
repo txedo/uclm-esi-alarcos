@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<overview Implementation-Title="Canoo WebTest" Implementation-Version="R_1810"><folder name="001_Normal"><summary successful="yes" name="normal" duration="32717" starttime="Thu Dec 01 13:34:38 CET 2011"><topsteps total="10" successful="10" failed="0" notexecuted="0"/><steps total="10" successful="10" failed="0" notexecuted="0"/><timingprofile average="24830" number="1">
+<range from="0" to="1" number="0"/>
+<range from="1" to="3" number="0"/>
+<range from="3" to="5" number="1"/>
+<range from="5" to="10" number="1"/>
+<range from="10" to="30" number="1"/>
+<range from="30" number="0"/>
+</timingprofile></summary></folder><folder name="002_CredentialsExpired"><summary successful="yes" name="credentials expired" duration="36074" starttime="Thu Dec 01 13:35:12 CET 2011"><topsteps total="9" successful="9" failed="0" notexecuted="0"/><steps total="9" successful="9" failed="0" notexecuted="0"/><timingprofile average="19132" number="1">
+<range from="0" to="1" number="0"/>
+<range from="1" to="3" number="0"/>
+<range from="3" to="5" number="1"/>
+<range from="5" to="10" number="1"/>
+<range from="10" to="30" number="1"/>
+<range from="30" number="0"/>
+</timingprofile></summary></folder><folder name="003_DisabledAccount"><summary successful="yes" name="disabled account" duration="36007" starttime="Thu Dec 01 13:35:48 CET 2011"><topsteps total="9" successful="9" failed="0" notexecuted="0"/><steps total="9" successful="9" failed="0" notexecuted="0"/><timingprofile average="19109" number="1">
+<range from="0" to="1" number="0"/>
+<range from="1" to="3" number="0"/>
+<range from="3" to="5" number="1"/>
+<range from="5" to="10" number="1"/>
+<range from="10" to="30" number="1"/>
+<range from="30" number="0"/>
+</timingprofile></summary></folder><folder name="004_ExpiredAccount"><summary successful="yes" name="expired account" duration="35977" starttime="Thu Dec 01 13:36:24 CET 2011"><topsteps total="9" successful="9" failed="0" notexecuted="0"/><steps total="9" successful="9" failed="0" notexecuted="0"/><timingprofile average="19066" number="1">
+<range from="0" to="1" number="0"/>
+<range from="1" to="3" number="0"/>
+<range from="3" to="5" number="1"/>
+<range from="5" to="10" number="1"/>
+<range from="10" to="30" number="1"/>
+<range from="30" number="0"/>
+</timingprofile></summary></folder><folder name="005_IncorrectUsernameOrPassword"><summary successful="yes" name="incorrect username or password" duration="84131" starttime="Thu Dec 01 13:37:00 CET 2011"><topsteps total="37" successful="37" failed="0" notexecuted="0"/><steps total="37" successful="37" failed="0" notexecuted="0"/><timingprofile average="16948" number="4">
+<range from="0" to="1" number="0"/>
+<range from="1" to="3" number="0"/>
+<range from="3" to="5" number="4"/>
+<range from="5" to="10" number="4"/>
+<range from="10" to="30" number="4"/>
+<range from="30" number="0"/>
+</timingprofile></summary></folder><folder name="006_LockedUser"><summary successful="yes" name="locked user" duration="35944" starttime="Thu Dec 01 13:38:24 CET 2011"><topsteps total="9" successful="9" failed="0" notexecuted="0"/><steps total="9" successful="9" failed="0" notexecuted="0"/><timingprofile average="19067" number="1">
+<range from="0" to="1" number="0"/>
+<range from="1" to="3" number="0"/>
+<range from="3" to="5" number="1"/>
+<range from="5" to="10" number="1"/>
+<range from="10" to="30" number="1"/>
+<range from="30" number="0"/>
+</timingprofile></summary></folder><folder name="007_Logout"><summary successful="yes" name="logout" duration="33523" starttime="Thu Dec 01 13:39:00 CET 2011"><topsteps total="12" successful="12" failed="0" notexecuted="0"/><steps total="12" successful="12" failed="0" notexecuted="0"/><timingprofile average="13056" number="2">
+<range from="0" to="1" number="0"/>
+<range from="1" to="3" number="0"/>
+<range from="3" to="5" number="2"/>
+<range from="5" to="10" number="2"/>
+<range from="10" to="30" number="1"/>
+<range from="30" number="0"/>
+</timingprofile></summary></folder></overview>

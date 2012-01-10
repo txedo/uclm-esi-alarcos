@@ -1,0 +1,18 @@
+#;Method;URL;Response code;Response Message;Content Type;Duration
+1;GET;http://localhost:8081/desglosa-web/login;200;OK;text/html;16027
+2;GET;http://localhost:8081/desglosa-web/struts/js/base/jquery-1.5.2.min.js;200;OK;text/javascript;241
+3;GET;http://localhost:8081/desglosa-web/struts/js/base/jquery.ui.core.min.js;200;OK;text/javascript;219
+4;GET;http://localhost:8081/desglosa-web/struts/js/plugins/jquery.subscribe.min.js;200;OK;text/javascript;255
+5;GET;http://localhost:8081/desglosa-web/struts/js/struts2/jquery.struts2-3.1.0.min.js;200;OK;text/javascript;255
+6;GET;http://localhost:8081/desglosa-web/js/cufon-yui.js;200;OK;text/javascript;215
+7;GET;http://localhost:8081/desglosa-web/js/arial.js;200;OK;text/javascript;224
+8;GET;http://localhost:8081/desglosa-web/js/cuf_run.js;200;OK;text/javascript;199
+9;GET;http://localhost:8081/desglosa-web/js/global.js?version=1;200;OK;text/javascript;238
+10;GET;http://localhost:8081/desglosa-web/struts/themes/cupertino/jquery-ui.css;200;OK;text/css;235
+11;GET;http://localhost:8081/desglosa-web/styles/style.css;jsessionid=E09828B3F94F901538120A5032E0FB28?version=1;200;OK;text/css;209
+12;GET;http://localhost:8081/desglosa-web/styles/messages.css?version=1;200;OK;text/css;222
+13;GET;http://localhost:8081/desglosa-web/styles/login.css;jsessionid=E09828B3F94F901538120A5032E0FB28?version=1;200;OK;text/css;235
+14;POST;http://localhost:8081/desglosa-web/j_spring_security_check;jsessionid=E09828B3F94F901538120A5032E0FB28;302;Movido temporalmente;;294
+15;GET;http://localhost:8081/desglosa-web/login?result=failed;200;OK;text/html;16073
+16;GET;http://localhost:8081/desglosa-web/styles/style.css?version=1;200;OK;text/css;209
+17;GET;http://localhost:8081/desglosa-web/styles/login.css?version=1;200;OK;text/css;210

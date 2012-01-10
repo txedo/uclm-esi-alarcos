@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<summary Implementation-Title="Canoo Webtest" Implementation-Version="R_1812">
+    <testresult endtime="Thu Dec 01 13:39:34 CET 2011"
+        location="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\web-tests.xml:68: "
+        starttime="Thu Dec 01 13:39:00 CET 2011" successful="yes" testspecname="logout">
+        <config>
+            <parameter name="port" value="8081"/>
+            <parameter name="protocol" value="http"/>
+            <parameter name="host" value="localhost"/>
+            <parameter name="resultpath" value="D:\Repositorios\uclm-esi-alarcos\desglosa-web\target\webtest\webtest-results"/>
+            <parameter name="saveprefix" value="response"/>
+            <parameter name="basepath" value="desglosa-web"/>
+            <parameter name="resultfile" value="WebTestReport.xml"/>
+            <parameter name="haltonerror" value="no"/>
+            <parameter name="browser" value="IE6"/>
+            <parameter name="saveresponse" value="yes"/>
+            <parameter name="haltonfailure" value="no"/>
+            <parameter name="autorefresh" value="false"/>
+            <parameter name="timeout" value="300"/>
+            <parameter name="showhtmlparseroutput" value="no"/>
+        </config>
+        <results>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\login\loginAdmin.xml"
+                _line="1" duration="0" result="completed" taskName="storeProperty">
+                <parameter name="=> value" value="admin"/>
+                <parameter name="name" value="username"/>
+                <parameter name="value" value="admin"/>
+            </step>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\login\loginAdmin.xml"
+                _line="2" duration="0" result="completed" taskName="storeProperty">
+                <parameter name="=> value" value="admin"/>
+                <parameter name="name" value="password"/>
+                <parameter name="value" value="admin"/>
+            </step>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\login\goToLoginPage.xml"
+                _line="1" description="get Login Page" duration="19026" result="completed" taskName="invoke">
+                <parameter name="-> complete url" value="http://localhost:8081/desglosa-web/login"/>
+                <parameter name="url" value="/login"/>
+                <resultFile name="001_response_invoke.html"/>
+            </step>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\login\goToLoginPage.xml"
+                _line="2" description="we should see the login title" duration="0"
+                result="completed" taskName="verifytitle">
+                <parameter name="regex" value="true"/>
+                <parameter name="text" value=".*Inicio de sesión.*"/>
+            </step>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\login\submitLoginData.xml"
+                _line="1" description="set user name" duration="1" result="completed" taskName="setinputfield">
+                <parameter name="name" value="j_username"/>
+                <parameter name="value" value="admin"/>
+            </step>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\login\submitLoginData.xml"
+                _line="2" description="set password" duration="2" result="completed" taskName="setinputfield">
+                <parameter name="name" value="j_password"/>
+                <parameter name="value" value="admin"/>
+            </step>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\login\submitLoginData.xml"
+                _line="3" description="Click the submit button" duration="7406" result="completed" taskName="clickbutton">
+                <parameter name="label" value="Iniciar Sesión"/>
+                <resultFile name="002_response_clickbutton.html"/>
+            </step>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\login\checkLoginSuccess.xml"
+                _line="1" description="Login is ok" duration="1" result="completed" taskName="verifytext">
+                <parameter name="regex" value="true"/>
+                <parameter name="text" value=".*Ha iniciado sesión correctamente..*"/>
+            </step>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\login\checkLoginSuccess.xml"
+                _line="2" description="Home Page follows if login ok" duration="0"
+                result="completed" taskName="verifytitle">
+                <parameter name="regex" value="true"/>
+                <parameter name="text" value=".*:: DESGLOSA :: Soporte para proyectos de Desarrollo Global de Software.*"/>
+            </step>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\login\loginAdmin.xml"
+                _line="6" description="Logged in as desired user" duration="1" result="completed" taskName="verifytext">
+                <parameter name="regex" value="true"/>
+                <parameter name="text" value=".*Sesión iniciada como: admin.*"/>
+            </step>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\web-tests.xml"
+                _line="72" description="get Logout Page" duration="7086" result="completed" taskName="invoke">
+                <parameter name="-> complete url" value="http://localhost:8081/desglosa-web/logout"/>
+                <parameter name="url" value="/logout"/>
+                <resultFile name="003_response_invoke.html"/>
+            </step>
+            <step
+                _filename="D:\Repositorios\uclm-esi-alarcos\desglosa-web\src\test\resources\web-tests.xml"
+                _line="73" description="we should see the Home Page again" duration="0"
+                result="completed" taskName="verifytitle">
+                <parameter name="regex" value="true"/>
+                <parameter name="text" value=".*:: DESGLOSA :: Soporte para proyectos de Desarrollo Global de Software.*"/>
+            </step>
+        </results>
+    </testresult>
+</summary>

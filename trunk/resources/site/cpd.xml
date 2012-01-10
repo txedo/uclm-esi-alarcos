@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd-cpd>
+<duplication lines="36" tokens="264">
+<file line="155" path="D:\uclm-esi-alarcos\desglosa-web\src\main\java\es\uclm\inf_cr\alarcos\desglosa_web\actions\FactoryAction.java"/>
+<file line="251" path="D:\uclm-esi-alarcos\desglosa-web\src\main\java\es\uclm\inf_cr\alarcos\desglosa_web\actions\FactoryAction.java"/>
+<codefragment>
+<![CDATA[
+                addFieldError("error.factory.employees", getText("error.factory.employees"));
+            }
+            // Director data
+            if (Utilities.isEmptyString(factory.getDirector().getName())) {
+                addFieldError("error.director.name", getText("error.director.name"));
+            }
+            if (Utilities.isEmptyString(factory.getDirector().getLastName())) {
+                addFieldError("error.director.lastName", getText("error.director.last_name"));
+            }
+            // Address data
+            if (Utilities.isEmptyString(factory.getAddress().getAddress())) {
+                addFieldError("error.factory.address.address", getText("error.address.address"));
+            }
+            if (Utilities.isEmptyString(factory.getAddress().getCity())) {
+                addFieldError("error.factory.address.city", getText("error.address.city"));
+            }
+            if (Utilities.isEmptyString(factory.getAddress().getCountry())) {
+                addFieldError("error.factory.address.country", getText("error.address.country"));
+            }
+            // Location data
+            if (factory.getLocation().getLatitude() == null || factory.getLocation().getLatitude().equals("") ||
+                factory.getLocation().getLongitude() == null || factory.getLocation().getLongitude().equals("")) {
+                addFieldError("error.factory.location", getText("error.location"));
+            }
+        } else {
+            addActionError(getText("error.general"));
+        }
+        if (hasActionErrors() || hasErrors() || hasFieldErrors()) {
+            companies = CompanyManager.getAllCompanies();
+        }
+        if (hasFieldErrors()) {
+            addFieldError("error.required_fields", getText("error.required_fields"));
+        }
+    }
+
+    public String edit() {
+]]>
+</codefragment>
+</duplication>
+<duplication lines="57" tokens="191">
+<file line="277" path="D:\uclm-esi-alarcos\desglosa-web\src\main\java\es\uclm\inf_cr\alarcos\desglosa_web\model\Project.java"/>
+<file line="174" path="D:\uclm-esi-alarcos\desglosa-web\src\main\java\es\uclm\inf_cr\alarcos\desglosa_web\model\Subproject.java"/>
+<codefragment>
+<![CDATA[
+    }
+
+    public void setFiabilidad(Float fiabilidad) {
+        this.fiabilidad = fiabilidad;
+    }
+
+    public void setUsabilidad(Float usabilidad) {
+        this.usabilidad = usabilidad;
+    }
+
+    public void setEficiencia(Float eficiencia) {
+        this.eficiencia = eficiencia;
+    }
+
+    public void setMantenibilidad(Float mantenibilidad) {
+        this.mantenibilidad = mantenibilidad;
+    }
+
+    public void setPortabilidad(Float portabilidad) {
+        this.portabilidad = portabilidad;
+    }
+
+    public void setLineasDeCodigo(Integer lineasDeCodigo) {
+        this.lineasDeCodigo = lineasDeCodigo;
+    }
+
+    public void setComentarios(Integer comentarios) {
+        this.comentarios = comentarios;
+    }
+
+    public void setRatioComentariosLineasDeCodigo(
+            Float ratioComentariosLineasDeCodigo) {
+        this.ratioComentariosLineasDeCodigo = ratioComentariosLineasDeCodigo;
+    }
+
+    public void setPuntosFuncion(Float puntosFuncion) {
+        this.puntosFuncion = puntosFuncion;
+    }
+
+    public void setFichajeCodigo(Float fichajeCodigo) {
+        this.fichajeCodigo = fichajeCodigo;
+    }
+
+    public void setFichajeTotal(Float fichajeTotal) {
+        this.fichajeTotal = fichajeTotal;
+    }
+
+    public void setRatioFichaje(Float ratioFichaje) {
+        this.ratioFichaje = ratioFichaje;
+    }
+
+    public void setActividad(Float actividad) {
+        this.actividad = actividad;
+    }
+    
+    @Override
+    public String toString() {
+]]>
+</codefragment>
+</duplication>
+<duplication lines="29" tokens="162">
+<file line="115" path="D:\uclm-esi-alarcos\desglosa-web\src\main\java\es\uclm\inf_cr\alarcos\desglosa_web\actions\ProjectAction.java"/>
+<file line="169" path="D:\uclm-esi-alarcos\desglosa-web\src\main\java\es\uclm\inf_cr\alarcos\desglosa_web\actions\ProjectAction.java"/>
+<codefragment>
+<![CDATA[
+                addActionError(getText("error.project.id"));
+            }
+            // Check that required fields are filled in
+            if (Utilities.isEmptyString(project.getName())) {
+                addFieldError("error.project.name", getText("error.project.name"));
+            }
+            if (Utilities.isEmptyString(project.getCode())) {
+                addFieldError("error.project.code", getText("error.project.code"));
+            }
+            if (Utilities.isEmptyString(project.getPlan())) {
+                addFieldError("error.project.plan", getText("error.project.plan"));
+            }
+            try {
+                Utilities.checkValidId(project.getMarket().getId());
+            } catch (NotValidIdParameterException e) {
+                addFieldError("error.project.market", getText("error.project.market"));
+            }
+        } else {
+            addActionError(getText("error.general"));
+        }
+        if (hasActionErrors() || hasErrors() || hasFieldErrors()) {
+            factories = FactoryManager.getAllFactories();
+        }
+        if (hasFieldErrors()) {
+            addFieldError("error.required_fields", getText("error.required_fields"));
+        }
+    }
+
+    public String edit() {
+]]>
+</codefragment>
+</duplication>
+<duplication lines="28" tokens="102">
+<file line="56" path="D:\uclm-esi-alarcos\desglosa-web\src\main\java\es\uclm\inf_cr\alarcos\desglosa_web\model\Project.java"/>
+<file line="34" path="D:\uclm-esi-alarcos\desglosa-web\src\main\java\es\uclm\inf_cr\alarcos\desglosa_web\model\Subproject.java"/>
+<codefragment>
+<![CDATA[
+    @Property @Measure
+    private Float fiabilidad;
+    @Property @Measure
+    private Float usabilidad;
+    @Property @Measure
+    private Float eficiencia;
+    @Property @Measure
+    private Float mantenibilidad;
+    @Property @Measure
+    private Float portabilidad;
+    @Property @Measure
+    private Integer lineasDeCodigo;
+    @Property @Measure
+    private Integer comentarios;
+    @Property @Measure(base = false)
+    private Float ratioComentariosLineasDeCodigo;
+    @Property @Measure
+    private Float puntosFuncion;
+    @Property @Measure
+    private Float fichajeCodigo;
+    @Property @Measure
+    private Float fichajeTotal;
+    @Property @Measure(base = false)
+    private Float ratioFichaje;
+    @Property @Measure
+    private Float actividad;
+
+    public Subproject() {
+]]>
+</codefragment>
+</duplication>
+</pmd-cpd>
