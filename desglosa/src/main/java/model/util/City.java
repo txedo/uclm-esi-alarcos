@@ -9,8 +9,8 @@ import model.gl.knowledge.GLObject;
 import model.gl.knowledge.GLPavement;
 
 public class City {
-    private final float X_GAP = 2.5f;
-    private final float Y_GAP = 2.5f;
+    private final float X_GAP = 4.0f;
+    private final float Y_GAP = 4.0f;
 
     private String model;
     private List<Neighborhood> neighborhoods;
@@ -70,20 +70,17 @@ public class City {
                 if (neighborhoods.size() > index) {
                     // Configure Pavement
                     GLPavement pavement = new GLPavement();
-                    pavement.setPositionX(placePoint.getX()
-                            - neighborhoods.get(0).getFlats().get(0)
-                                    .getMaxWidth() / 2 - this.X_GAP / 3);
-                    pavement.setPositionZ(placePoint.getY()
-                            - neighborhoods.get(0).getFlats().get(0)
-                                    .getMaxDepth() / 2 - this.Y_GAP / 3);
+                    pavement.setPositionX(placePoint.getX() - neighborhoods.get(0).getFlats().get(0).getMaxWidth() / 2 - this.X_GAP / 3);
+                    pavement.setPositionZ(placePoint.getY() - neighborhoods.get(0).getFlats().get(0).getMaxDepth() / 2 - this.Y_GAP / 3);
                     // The neighborhood place its flats by itself
                     dimensions = neighborhoods.get(index).doLayout(placePoint);
-                    placePoint.setX(dimensions.getX() + this.X_GAP);
-                    if (maxDepth < dimensions.getY())
+                    placePoint.setX(placePoint.getX() + dimensions.getX() + this.X_GAP);
+                    if (maxDepth < dimensions.getY()) {
                         maxDepth = dimensions.getY();
+                    }
                     // Continue configuring pavement
-                    pavement.setWidth(dimensions.getX() + 2 * this.X_GAP / 3);
-                    pavement.setDepth((float) maxDepth + 2 * this.Y_GAP / 3);
+                    pavement.setWidth(dimensions.getX() + this.X_GAP/3);
+                    pavement.setDepth((float) maxDepth + this.Y_GAP/3);
                     pavement.setTitle(neighborhoods.get(index).getName());
                     pavement.setTitleHeight(maxHeight + GLPavement.TITLE_GAP);
                     pavements.add(pavement);
@@ -91,7 +88,7 @@ public class City {
             }
             placePoint.setX(x);
             if (dimensions != null)
-                placePoint.setY((float) maxDepth + this.Y_GAP);
+                placePoint.setY(placePoint.getY() + (float) maxDepth + this.Y_GAP);
         }
     }
 

@@ -5,8 +5,8 @@ import java.util.List;
 import model.gl.knowledge.GLObject;
 
 public class Neighborhood extends City {
-    private final float X_GAP = 0.8f;
-    private final float Y_GAP = 0.7f;
+    private final float X_GAP = 2.0f;
+    private final float Y_GAP = 2.0f;
 
     private float width;
     private float depth;
@@ -54,20 +54,20 @@ public class Neighborhood extends City {
                     obj.setPositionX(x);
                     obj.setPositionZ(y);
                     x += obj.getMaxWidth() + this.X_GAP;
-                } else
+                } else {
                     done = true;
+                }
             }
             if (!done) {
                 x = point.getX();
-                if (obj != null)
+                if (obj != null) {
                     y += obj.getMaxDepth() + this.Y_GAP;
+                }
             }
 
         }
-        this.width = this.cols * obj.getMaxWidth() + (this.cols - 1)
-                * this.X_GAP;
-        this.depth = this.rows * obj.getMaxDepth() + (this.rows - 1)
-                * this.Y_GAP;
+        this.width = this.cols * obj.getMaxWidth() + (this.cols) * this.X_GAP;
+        this.depth = this.rows * obj.getMaxDepth() + (this.rows) * this.Y_GAP;
 
         return new Vector2f(this.width, this.depth);
     }

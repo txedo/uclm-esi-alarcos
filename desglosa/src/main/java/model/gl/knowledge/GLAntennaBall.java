@@ -13,7 +13,8 @@ import exceptions.GLSingletonNotInitializedException;
 public class GLAntennaBall extends GLObject3D {
     private int[] textures;
 
-    private int subdivisions;
+    private final int LOW_SUBDIVISIONS = 8;
+    private final int HIGH_SUBDIVISIONS = 16;
     @GLDimension(type = "string")
     private String label;
     @GLDimension
@@ -47,7 +48,6 @@ public class GLAntennaBall extends GLObject3D {
         this.color = new Color(0.0f, 0.0f, 1.0f); // This will be used for the
         // parent ball color
 
-        this.subdivisions = 32;
         this.parentBallRadius = 1.0f;
         this.progressionMark = true;
         this.childBallRadius = 0.5f;
@@ -82,10 +82,8 @@ public class GLAntennaBall extends GLObject3D {
             this.drawChildBall(true, super.SHADOW_COLOR, "");
             this.drawChildBall(false, super.SHADOW_COLOR, "");
         } else {
-            this.drawChildBall(true, this.leftChildBallColor,
-                    this.leftChildBallValue);
-            this.drawChildBall(false, this.rightChildBallColor,
-                    this.rightChildBallValue);
+            this.drawChildBall(true, this.leftChildBallColor, this.leftChildBallValue);
+            this.drawChildBall(false, this.rightChildBallColor, this.rightChildBallValue);
         }
 
         // Drawing the parent ball
@@ -95,14 +93,13 @@ public class GLAntennaBall extends GLObject3D {
             GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_GEN_S);
             GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_GEN_T);
             // Set Up Sphere Mapping
-            GLSingleton.getGL().glTexGeni(GL2.GL_S, GL2.GL_TEXTURE_GEN_MODE,
-                    GL2.GL_SPHERE_MAP);
-            GLSingleton.getGL().glTexGeni(GL2.GL_T, GL2.GL_TEXTURE_GEN_MODE,
-                    GL2.GL_SPHERE_MAP);
+            GLSingleton.getGL().glTexGeni(GL2.GL_S, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_SPHERE_MAP);
+            GLSingleton.getGL().glTexGeni(GL2.GL_T, GL2.GL_TEXTURE_GEN_MODE, GL2.GL_SPHERE_MAP);
             // Bind the APPLY(0) or CANCEL(1) texture
             int texture = this.textures[0];
-            if (!this.progressionMark)
+            if (!this.progressionMark) {
                 texture = this.textures[1];
+            }
             GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, texture);
             GLSingleton.getGL().glColor4fv(this.color.getColorFB());
         } else {
@@ -112,8 +109,7 @@ public class GLAntennaBall extends GLObject3D {
         // Set parentBallRadius back to its real value
         this.parentBallRadius = parentBallRadiusBackup;
         // Now we draw the sphere
-        GLSingleton.getGLU().gluSphere(this.quadric, this.parentBallRadius,
-                this.subdivisions, this.subdivisions);
+        GLSingleton.getGLU().gluSphere(this.quadric, this.parentBallRadius, this.HIGH_SUBDIVISIONS, this.HIGH_SUBDIVISIONS);
 
         if (!shadow) {
             // Disable everything we enabled before
@@ -161,7 +157,7 @@ public class GLAntennaBall extends GLObject3D {
                         * (float) Math.sin(ANTENNA_ANGLE), 0.0f);
         GLSingleton.getGL().glColor4fv(color.getColorFB());
         GLSingleton.getGLU().gluSphere(this.quadric, this.childBallRadius,
-                this.subdivisions, this.subdivisions);
+                this.LOW_SUBDIVISIONS, this.LOW_SUBDIVISIONS);
         // Draw its value
         GLSingleton.getGL().glColor3f(0.0f, 0.0f, 0.0f);
         GLUtils.renderBitmapString(0, this.childBallRadius * 1.10f, 0, 4, "" + value);
