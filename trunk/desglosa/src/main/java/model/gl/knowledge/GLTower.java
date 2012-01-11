@@ -11,9 +11,9 @@ import model.util.Color;
 import exceptions.GLSingletonNotInitializedException;
 
 public class GLTower extends GLObject3D {
-    public static final float MAX_WIDTH = 3.0f;
-    public static final float MAX_HEIGHT = 12.0f;
-    public static final float MAX_DEPTH = 3.0f;
+    public static final float MAX_WIDTH = 1.5f;
+    public static final float MAX_HEIGHT = 4.0f;
+    public static final float MAX_DEPTH = 1.5f;
     /*
      * El origen de coordenadas se toma en una esquina de la base (0, 0, 0) La
      * base se encuentra en el plano ZX, sera cuadrada y tendra de lado el valor
@@ -49,9 +49,9 @@ public class GLTower extends GLObject3D {
         this.innerHeight = this.height;
         this.edgeWidth = 1.0f;
 
-        this.maxWidth = GLTower.MAX_WIDTH;
-        this.maxDepth = GLTower.MAX_DEPTH;
-        this.maxHeight = GLTower.MAX_HEIGHT;
+        super.maxWidth = GLTower.MAX_WIDTH;
+        super.maxDepth = GLTower.MAX_DEPTH;
+        super.maxHeight = GLTower.MAX_HEIGHT;
     }
 
     @Override

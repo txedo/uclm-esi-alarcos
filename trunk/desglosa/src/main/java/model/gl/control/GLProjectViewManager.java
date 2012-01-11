@@ -35,8 +35,7 @@ public class GLProjectViewManager extends GLViewManager {
      * @return The unique instance of this class.
      * @throws ViewManagerNotInstantiatedException
      */
-    static public GLProjectViewManager getInstance()
-            throws ViewManagerNotInstantiatedException {
+    static public GLProjectViewManager getInstance() throws ViewManagerNotInstantiatedException {
         if (null == _instance) {
             throw new ViewManagerNotInstantiatedException();
         }
@@ -63,13 +62,11 @@ public class GLProjectViewManager extends GLViewManager {
             // Enable Texture Coords For The Quad
             GLSingleton.getGLU().gluQuadricTexture(quadric, true);
             GLSingleton.getGLU().gluQuadricDrawStyle(quadric, GLU.GLU_FILL);
-            GLSingleton.getGLU()
-                    .gluQuadricOrientation(quadric, GLU.GLU_OUTSIDE);
+            GLSingleton.getGLU().gluQuadricOrientation(quadric, GLU.GLU_OUTSIDE);
 
             for (GLObject ball : antennaBalls) {
                 ((GLAntennaBall) ball).setQuadric(quadric);
-                ((GLAntennaBall) ball).setTextures(textureLoader
-                        .getTextureNames());
+                ((GLAntennaBall) ball).setTextures(textureLoader.getTextureNames());
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -90,8 +87,7 @@ public class GLProjectViewManager extends GLViewManager {
         super.drawSkybox();
         super.drawFloor();
         super.drawPavements();
-        GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV,
-                GL2.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
+        GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
         this.drawItems();
         super.drawCaption();
     }

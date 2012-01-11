@@ -82,7 +82,7 @@ public class IGLFacadeImpl implements IGLFacade {
         }
 
         // Place flats and neighborhoods once normalized
-        city.placeNeighborhoods(GLFactory.MAX_HEIGHT);
+        city.placeNeighborhoods(GLFactory.MAX_HEIGHT + 1.0f);
 
         // Configure caption lines
         Caption caption = configureCaption(json.getJSONObject("captionLines"));
@@ -229,7 +229,7 @@ public class IGLFacadeImpl implements IGLFacade {
         }
 
         // Place flats and neighborhoods once normalized
-        city.placeNeighborhoods(GLTower.MAX_HEIGHT);
+        city.placeNeighborhoods(GLTower.MAX_HEIGHT + 1.0f);
 
         // Configure caption lines
         Caption caption = configureCaption(json.getJSONObject("captionLines"));
