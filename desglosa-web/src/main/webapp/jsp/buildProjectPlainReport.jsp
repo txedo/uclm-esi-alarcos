@@ -76,11 +76,11 @@
 	        
 	        <div class="displaytagTable">
 	            <display:table name="project.subprojects" uid="subproject" defaultsort="1" class="" pagesize="10" requestURI="">
-	                <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.subproject.name" sortable="true"/>
-	                <display:column property="factory.name" escapeXml="true" style="width: 15%" titleKey="table.header.factory.name" sortable="true"/>
-	                <display:column property="factory.address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="true"/>
-	                <display:column property="factory.address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="true"/>
-	                <display:column property="factory.company.name" escapeXml="true" style="width: 15%" titleKey="table.header.company.name" sortable="true"/>
+	                <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.subproject.name" sortable="false"/>
+	                <display:column property="factory.name" escapeXml="true" style="width: 15%" titleKey="table.header.factory.name" sortable="false"/>
+	                <display:column property="factory.address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="false"/>
+	                <display:column property="factory.address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="false"/>
+	                <display:column property="factory.company.name" escapeXml="true" style="width: 15%" titleKey="table.header.company.name" sortable="false"/>
 	                
 	                <display:setProperty name="paging.banner.placement" value="top"/>
 	                <display:setProperty name="paging.banner.item_name"><fmt:message key="label.subproject"/></display:setProperty>

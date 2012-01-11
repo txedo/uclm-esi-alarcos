@@ -16,6 +16,7 @@
         <meta name="menu" content="ManageFactories"/>
         
         <fmt:message key="error.subproject_not_selected" var="noSubprojectSelected"/>
+        <fmt:message key="message.delete_subproject_confirmation" var="deleteSubprojectConfirmation"/>
 
         <SCRIPT type="text/javascript">
         function getSelectedRadioButton() {
@@ -30,7 +31,13 @@
                 $("#errorDialog").dialog("open");
             } else {
                 var url = urlAction+"?id="+getSelectedRadioButton();
-                $(location).attr('href',url);
+                if (urlAction.indexOf('delete') != -1) {
+                    if (confirm("<c:out value='${deleteSubprojectConfirmation}'/>")) {
+                        $(location).attr('href',url);
+                    }
+                } else {
+                    $(location).attr('href',url);
+                }
             }
         }
         

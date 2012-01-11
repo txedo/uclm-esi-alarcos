@@ -17,6 +17,7 @@
 	<meta name="menu" content="ManageFactories"/>
 	
     <fmt:message key="error.factory_not_selected" var="noFactorySelected"/>
+    <fmt:message key="message.delete_factory_confirmation" var="deleteFactoryConfirmation"/>
 
     <SCRIPT type="text/javascript">
         function getSelectedRadioButton() {
@@ -31,7 +32,13 @@
                 $("#errorDialog").dialog("open");
             } else {
                 var url = urlAction+"?id="+getSelectedRadioButton();
-                $(location).attr('href',url);
+                if (urlAction.indexOf('delete') != -1) {
+                	if (confirm("<c:out value='${deleteFactoryConfirmation}'/>")) {
+                		$(location).attr('href',url);
+                	}
+                } else {
+                	$(location).attr('href',url);
+                }
             }
         }
         
@@ -53,11 +60,10 @@
 	
 	<div class="displaytagTable">
 		<s:set name="factories" value="factories" scope="request"/>  
-		<display:table name="factories" uid="factory" defaultsort="3" class="" pagesize="10" requestURI="">
+		<display:table name="factories" uid="factory" defaultsort="2" class="" pagesize="10" requestURI="">
 	        <display:column  style="width: 5%; text-align: center;">
 	            <input type="radio" id="factoryIdRadio" name="factoryIds" value="${factory.id}">
 	        </display:column>
-	        <display:column property="company.name" escapeXml="true" style="width: 15%" titleKey="table.header.company.name" sortable="true"/>
 		    <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.factory.name" sortable="true"/>
 		    <display:column property="information" escapeXml="true" style="width: 22%" titleKey="table.header.factory.information" sortable="false"/>
 	        <display:column escapeXml="false" style="width: 12%" titleKey="table.header.market.name" sortable="true">
@@ -72,6 +78,7 @@
 		    <display:column escapeXml="false" style="width: 10%; text-align: center;" titleKey="table.header.location" sortable="false">
 	            <div class="tooltipstyle" title="<img src='http://maps.google.com/maps/api/staticmap?zoom=10&size=170x130&maptype=roadmap&markers=color:red|color:red|<%=((Factory)factory).getLocation().getLatitude()%>,<%=((Factory)factory).getLocation().getLongitude()%>&sensor=false' width='170' height='130' title='<s:text name='label.configure.factory.address.image'/>'/>"><img src="images/world_search.png" height="16" width="16" /></div>
 	        </display:column>
+	        <display:column property="company.name" escapeXml="true" style="width: 15%" titleKey="table.header.company.name" sortable="true"/>
 		    
 		    <display:setProperty name="paging.banner.placement" value="top"/>
 		    <display:setProperty name="paging.banner.item_name"><fmt:message key="label.factory"/></display:setProperty>

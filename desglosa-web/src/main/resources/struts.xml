@@ -402,23 +402,111 @@
 		<action name="json_p_*" class="profileAction" method="{1}">
 			<result name="success" type="json">
 				<param name="noCache">true</param>
-				<!-- <param name="excludeProperties">companies, projects</param> -->
-				<!-- <param name="excludeNullProperties">true</param> -->
 			</result>
 		</action>
         <action name="json_m_*" class="marketAction" method="{1}">
             <result name="success" type="json">
                 <param name="noCache">true</param>
-                <!-- <param name="excludeProperties">companies, projects</param> -->
-                <!-- <param name="excludeNullProperties">true</param> -->
+            </result>
+        </action>
+        <action name="json_factoryById" class="visualizationAction" method="factoryById">
+            <result name="success" type="json">
+                <param name="noCache">true</param>
+                <param name="includeProperties">
+                    factories\[\d+\]\.id,
+                    factories\[\d+\]\.company\.name,
+                    factories\[\d+\]\.name,
+                    factories\[\d+\]\.information,
+                    factories\[\d+\]\.director.*,
+                    factories\[\d+\]\.email,
+                    factories\[\d+\]\.employees,
+                    factories\[\d+\]\.address.*,
+                    factories\[\d+\]\.location.*,
+                    factories\[\d+\]\.numberOfLeadingProjects,
+                    factories\[\d+\]\.numberOfDevelopingSubprojects,
+                    factories\[\d+\]\.projects\[\d+\]\.id,
+                    factories\[\d+\]\.projects\[\d+\]\.name
+                </param>
+            </result>
+        </action>
+        <action name="json_factoriesByCompanyId" class="visualizationAction" method="factoriesByCompanyId">
+            <result name="success" type="json">
+                <param name="noCache">true</param>
+                <param name="includeProperties">
+                    factories\[\d+\]\.id,
+                    factories\[\d+\]\.company\.name,
+                    factories\[\d+\]\.name,
+                    factories\[\d+\]\.information,
+                    factories\[\d+\]\.director.*,
+                    factories\[\d+\]\.email,
+                    factories\[\d+\]\.employees,
+                    factories\[\d+\]\.address.*,
+                    factories\[\d+\]\.location.*,
+                    factories\[\d+\]\.numberOfLeadingProjects,
+                    factories\[\d+\]\.numberOfDevelopingSubprojects,
+                    factories\[\d+\]\.projects\[\d+\]\.id,
+                    factories\[\d+\]\.projects\[\d+\]\.name
+                </param>
+            </result>
+        </action>
+        <action name="json_projectsBy*yId" class="visualizationAction" method="projectsBy{1}yId">
+            <result name="success" type="json">
+                <param name="noCache">true</param>
+                <param name="includeProperties">
+                    projects\[\d+\]\.id,
+                    projects\[\d+\]\.name,
+                    projects\[\d+\]\.subprojects\[\d+\]\.id,
+                </param>
+            </result>
+        </action>
+        <action name="json_projectById" class="visualizationAction" method="projectById">
+            <result name="success" type="json">
+                <param name="noCache">true</param>
+                <param name="includeProperties">
+                    projects\[\d+\]\.subprojects\[\d+\]\.id,
+                    projects\[\d+\]\.subprojects\[\d+\]\.name,
+                    projects\[\d+\]\.subprojects\[\d+\]\.factory\.id,
+                    projects\[\d+\]\.subprojects\[\d+\]\.factory\.company\.name,
+                    projects\[\d+\]\.subprojects\[\d+\]\.factory\.name,
+                    projects\[\d+\]\.subprojects\[\d+\]\.factory\.information,
+                    projects\[\d+\]\.subprojects\[\d+\]\.factory\.director.*,
+                    projects\[\d+\]\.subprojects\[\d+\]\.factory\.email,
+                    projects\[\d+\]\.subprojects\[\d+\]\.factory\.employees,
+                    projects\[\d+\]\.subprojects\[\d+\]\.factory\.address.*,
+                    projects\[\d+\]\.subprojects\[\d+\]\.factory\.location.*,
+                    projects\[\d+\]\.subprojects\[\d+\]\.factory\.numberOfLeadingProjects,
+                    projects\[\d+\]\.subprojects\[\d+\]\.factory\.numberOfDevelopingSubprojects
+                </param>
+            </result>
+        </action>
+        <action name="json_subprojectById" class="visualizationAction" method="subprojectById">
+            <result name="success" type="json">
+                <param name="noCache">true</param>
+                <param name="includeProperties">
+                    subprojects\[\d+\]\.factory\.id,
+                    subprojects\[\d+\]\.factory\.company\.name,
+                    subprojects\[\d+\]\.factory\.name,
+                    subprojects\[\d+\]\.factory\.information,
+                    subprojects\[\d+\]\.factory\.director.*,
+                    subprojects\[\d+\]\.factory\.email,
+                    subprojects\[\d+\]\.factory\.employees,
+                    subprojects\[\d+\]\.factory\.address.*,
+                    subprojects\[\d+\]\.factory\.location.*,
+                    subprojects\[\d+\]\.factory\.numberOfLeadingProjects,
+                    subprojects\[\d+\]\.factory\.numberOfDevelopingSubprojects
+                </param>
             </result>
         </action>
 		<action name="json_*" class="visualizationAction" method="{1}">
 			<result name="success" type="json">
 				<param name="noCache">true</param>
-				<!-- <param name="excludeProperties">companies, projects</param> -->
-				<!-- <param name="excludeNullProperties">true</param> -->
 			</result>
 		</action>
+        <action name="desglosa_*" class="visualizationAction" method="{1}">
+            <result name="success" type="json">
+                <param name="noCache">true</param>
+                <param name="includeProperties">city.*</param>
+            </result>
+        </action>
 	</package>
 </struts>

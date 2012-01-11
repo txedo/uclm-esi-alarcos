@@ -134,20 +134,6 @@ public class Factory {
     
     @Transient
     public Market getMostRepresentativeMarket() {
-        MarketDAOHibernate marketDao = (MarketDAOHibernate) ApplicationContextProvider.getBean("marketDao");
-        Map<String, Object> queryParams = new HashMap<String, Object>();
-        queryParams.put("id", id);
-        List<Market> markets = marketDao.findByNamedQuery("findMostRepresentativeMarketByFactoryId", queryParams);
-        if (markets.size() > 0) {
-            mostRepresentativeMarket = markets.get(0);
-        } else {
-            markets = marketDao.findByNamedQuery("findMostLeadedMarketByFactoryId", queryParams);
-            if (markets.size() > 0) {
-                mostRepresentativeMarket = markets.get(0);
-            } else {
-                mostRepresentativeMarket = null;
-            }
-        }
         return mostRepresentativeMarket;
     }
 
@@ -205,6 +191,23 @@ public class Factory {
 
     public void setMostRepresentativeMarket(Market mostRepresentativeMarket) {
         this.mostRepresentativeMarket = mostRepresentativeMarket;
+    }
+    
+    public void updateMostRepresentativeMarket() {
+        MarketDAOHibernate marketDao = (MarketDAOHibernate) ApplicationContextProvider.getBean("marketDao");
+        Map<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("id", id);
+        List<Market> markets = marketDao.findByNamedQuery("findMostRepresentativeMarketByFactoryId", queryParams);
+        if (markets.size() > 0) {
+            mostRepresentativeMarket = markets.get(0);
+        } else {
+            markets = marketDao.findByNamedQuery("findMostLeadedMarketByFactoryId", queryParams);
+            if (markets.size() > 0) {
+                mostRepresentativeMarket = markets.get(0);
+            } else {
+                mostRepresentativeMarket = null;
+            }
+        }
     }
 
     @Override

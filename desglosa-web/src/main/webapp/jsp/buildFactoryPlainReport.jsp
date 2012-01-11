@@ -92,11 +92,11 @@
             
             <div class="displaytagTable">
                 <display:table name="factory.projects" uid="project" defaultsort="1" class="" pagesize="10" requestURI="">
-                    <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.project.name" sortable="true"/>
-                    <display:column property="code" escapeXml="true" style="width: 10%; text-align: center;" titleKey="table.header.project.code" sortable="true"/>
-                    <display:column property="plan" escapeXml="true" style="width: 10%; text-align: center;" titleKey="table.header.project.plan" sortable="true"/>
-                    <display:column property="market.name" escapeXml="true" style="width: 10%; text-align: center;" titleKey="table.header.market.name" sortable="true"/>
-                    <display:column escapeXml="true" style="width: 10%; text-align: center;" titleKey="table.header.project.subprojects" sortable="true"><%=((Project)project).getSubprojects().size()%></display:column>
+                    <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.project.name" sortable="false"/>
+                    <display:column property="code" escapeXml="true" style="width: 10%; text-align: center;" titleKey="table.header.project.code" sortable="false"/>
+                    <display:column property="plan" escapeXml="true" style="width: 10%; text-align: center;" titleKey="table.header.project.plan" sortable="false"/>
+                    <display:column property="market.name" escapeXml="true" style="width: 10%; text-align: center;" titleKey="table.header.market.name" sortable="false"/>
+                    <display:column escapeXml="true" style="width: 10%; text-align: center;" titleKey="table.header.project.subprojects" sortable="false"><%=((Project)project).getSubprojects().size()%></display:column>
                     
                     <display:setProperty name="paging.banner.placement" value="top"/>
                     <display:setProperty name="paging.banner.item_name"><fmt:message key="label.project"/></display:setProperty>

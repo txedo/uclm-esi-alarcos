@@ -50,16 +50,16 @@
             
             <div class="displaytagTable">
                 <display:table name="company.factories" uid="factory" defaultsort="1" class="" pagesize="10" requestURI="">
-                    <display:column property="name" escapeXml="true" style="width: 20%" titleKey="table.header.factory.name" sortable="true"/>
-                    <display:column escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.factory.projects" sortable="true">
+                    <display:column property="name" escapeXml="true" style="width: 20%" titleKey="table.header.factory.name" sortable="false"/>
+                    <display:column escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.factory.projects" sortable="false">
                     	<%=((Factory)factory).getProjects().size()%>
                     </display:column>
-					<display:column escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.factory.subprojects" sortable="true">
+					<display:column escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.factory.subprojects" sortable="false">
                     	<%=((Factory)factory).getSubprojects().size()%>
                     </display:column>
-                    <display:column property="mostRepresentativeMarket.name" escapeXml="true" style="width: 11%" titleKey="table.header.market.name" sortable="true"/>
-                    <display:column property="address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="true"/>
-                    <display:column property="address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="true"/>
+                    <display:column property="mostRepresentativeMarket.name" escapeXml="true" style="width: 11%" titleKey="table.header.market.name" sortable="false"/>
+                    <display:column property="address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="false"/>
+                    <display:column property="address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="false"/>
                     
                     <display:setProperty name="paging.banner.placement" value="top"/>
                     <display:setProperty name="paging.banner.item_name"><fmt:message key="label.factory"/></display:setProperty>
