@@ -36,7 +36,7 @@
 	
 		<c:set var="form" value="/editSubproject"/>
 		<c:set var="buttonLabel" value="button.edit_subproject"/>
-		<c:if test="${(empty param.id and not fn:contains(header.referer,'/editSubproject') and not fn:contains(header.referer,'id=')) or fn:contains(header.referer,'factoryId=') or fn:contains(header.referer,'projectId=')}">
+		<c:if test="${(empty param.id and not fn:contains(header.referer,'/editSubproject') and not fn:contains(header.referer,'id=')) or fn:contains(header.referer,'factoryId=') or not empty param.projectId}">
 			<c:set var="form" value="/saveSubproject"/>
 			<c:set var="buttonLabel" value="button.add_subproject"/>
 		</c:if>

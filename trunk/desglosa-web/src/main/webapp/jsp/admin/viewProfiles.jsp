@@ -14,6 +14,7 @@
     <meta name="menu" content="ViewProfiles"/>
     
     <fmt:message key="error.profile_not_selected" var="noProfileSelected"/>
+    <fmt:message key="message.delete_profile_confirmation" var="deleteProfiletConfirmation"/>
     
     <SCRIPT type="text/javascript">
         function getSelectedRadioButton() {
@@ -28,7 +29,13 @@
                 $("#errorDialog").dialog("open");
             } else {
                 var url = urlAction+"?filename="+getSelectedRadioButton();
-                $(location).attr('href',url);
+                if (urlAction.indexOf('delete') != -1) {
+                    if (confirm("<c:out value='${deleteProfiletConfirmation}'/>")) {
+                        $(location).attr('href',url);
+                    }
+                } else {
+                    $(location).attr('href',url);
+                }
             }
         }
         

@@ -16,6 +16,7 @@
         <meta name="menu" content="ManageFactories"/>
         
         <fmt:message key="error.subproject_not_selected" var="noSubprojectSelected"/>
+        <fmt:message key="message.delete_project_confirmation" var="deleteProjectConfirmation"/>
 
         <SCRIPT type="text/javascript">
         function getSelectedRadioButton() {
@@ -30,7 +31,13 @@
                 $("#errorDialog").dialog("open");
             } else {
                 var url = urlAction+"?id="+getSelectedRadioButton();
-                $(location).attr('href',url);
+                if (urlAction.indexOf('delete') != -1) {
+                    if (confirm("<c:out value='${deleteProjectConfirmation}'/>")) {
+                        $(location).attr('href',url);
+                    }
+                } else {
+                    $(location).attr('href',url);
+                }
             }
         }
         
@@ -189,7 +196,7 @@
                     <c:url var="edit" value="/showSubprojectForm"/>
                     <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_subproject"/></button>
                     <!-- TODO add security tag -->
-                    <c:url var="delete" value="/deleteSubprojecty"/>
+                    <c:url var="delete" value="/deleteSubproject"/>
                     <button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_subproject"/></button>
                     <!-- TODO add security tag -->
                     <c:url var="add" value="/showSubprojectForm">

@@ -17,6 +17,7 @@
 		<meta name="menu" content="ManageCompanies"/>
 		
 		<fmt:message key="error.factory_not_selected" var="noFactorySelected"/>
+		<fmt:message key="message.delete_factory_confirmation" var="deleteFactoryConfirmation"/>
 		
 		<SCRIPT type="text/javascript">
 		function getSelectedRadioButton() {
@@ -31,7 +32,13 @@
 				$("#errorDialog").dialog("open");
 			} else {
 				var url = urlAction+"?id="+getSelectedRadioButton();
-				$(location).attr('href',url);
+				if (urlAction.indexOf('delete') != -1) {
+                    if (confirm("<c:out value='${deleteFactoryConfirmation}'/>")) {
+                        $(location).attr('href',url);
+                    }
+                } else {
+                    $(location).attr('href',url);
+                }
 			}
 		}
 		

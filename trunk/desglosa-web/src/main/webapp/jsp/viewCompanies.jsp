@@ -13,6 +13,7 @@
 	<meta name="menu" content="ManageCompanies"/>
 	
 	<fmt:message key="error.company_not_selected" var="noCompanySelected"/>
+	<fmt:message key="message.delete_company_confirmation" var="deleteCompanyConfirmation"/>
 	
 	<SCRIPT type="text/javascript">
 		function getSelectedRadioButton() {
@@ -27,7 +28,13 @@
 				$("#errorDialog").dialog("open");
 			} else {
 				var url = urlAction+"?id="+getSelectedRadioButton();
-				$(location).attr('href',url);
+				if (urlAction.indexOf('delete') != -1) {
+                    if (confirm("<c:out value='${deleteCompanyConfirmation}'/>")) {
+                        $(location).attr('href',url);
+                    }
+                } else {
+                    $(location).attr('href',url);
+                }
 			}
 		}
 	</SCRIPT>

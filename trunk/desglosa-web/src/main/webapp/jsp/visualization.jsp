@@ -791,57 +791,57 @@ function handleSelectionEvent(id, clickButton, clickCount) {
 
 function desglosa_showCompaniesById(id, groupBy, profileFilename){
     currentEntity = "company";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_companyById.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_companyById.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showFactoriesByCompanyId(id, groupBy, profileFilename) {
     currentEntity = "factory";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_factoriesByCompanyId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_factoriesByCompanyId.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showFactoriesByProjectId(id, groupBy, profileFilename) {
     currentEntity = "factory";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_factoriesByProjectId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_factoriesByProjectId.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showFactoriesById(id, groupBy, profileFilename) {
     currentEntity = "factory";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_factoryById.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_factoryById.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showProjectsByCompanyId(id, groupBy, profileFilename) {
     currentEntity = "project";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_projectsByCompanyId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_projectsByCompanyId.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showProjectsByFactoryId(id, groupBy, profileFilename) {
     currentEntity = "project";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_projectsByFactoryId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_projectsByFactoryId.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showProjectsById(id, groupBy, profileFilename) {
     currentEntity = "project";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_projectById.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_projectById.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showSubprojectsByCompanyId(id, groupBy, profileFilename) {
     currentEntity = "subproject";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByCompanyId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectsByCompanyId.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showSubprojectsByFactoryId(id, groupBy, profileFilename) {
     currentEntity = "subproject";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByFactoryId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectsByFactoryId.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showSubprojectsByProjectId(id, groupBy, profileFilename) {
     currentEntity = "subproject";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectsByProjectId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectsByProjectId.action", id, groupBy, profileFilename);
 }
 
 function desglosa_showSubprojectsById(id, groupBy, profileFilename) {
     currentEntity = "subproject";
-    desglosa_launchDesglosaEngine("/desglosa-web/json_subprojectById.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectById.action", id, groupBy, profileFilename);
 }
 
 function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {

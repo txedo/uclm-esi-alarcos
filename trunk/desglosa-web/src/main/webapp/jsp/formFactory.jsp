@@ -13,6 +13,7 @@
 	<script type="text/javascript" src="js/utils.js?version=1"></script>
 	
 	<fmt:message key="label.configure.factory.location.not_found" var="locationError"/>
+	<fmt:message key="label.configure.factory.location.found" var="locationFound"/>
 	
 	<script type="text/javascript">	
 	/** Reset address fields.
@@ -82,7 +83,7 @@
 	        	switch(status)
 	        	{
 	        	case google.maps.GeocoderStatus.OK:
-	        		if (infoDiv != null) document.getElementById(infoDiv).innerHTML="Address found.";
+	        		if (infoDiv != null) document.getElementById(infoDiv).innerHTML="<c:out value='${locationFound}'/>";
 		            map.setCenter(results[0].geometry.location);
 		            placeMark(results[0].geometry.location, true);
 	        		break;
@@ -146,7 +147,7 @@
 		            }
 		          } else {
 		        	  var message = "<c:out value='${locationError}'/>";
-		        	  document.getElementById(infoDiv).innerHTML=message;
+		        	  document.getElementById('infoDiv').innerHTML=message;
 		          }
 		        });
 
@@ -216,7 +217,7 @@
 	
 	<c:set var="form" value="/editFactory"/>
 	<c:set var="buttonLabel" value="button.edit_factory"/>
-	<c:if test="${(empty param.id and not fn:contains(header.referer,'/editFactory') and not fn:contains(header.referer,'id=')) or fn:contains(header.referer,'companyId=')}">
+	<c:if test="${(empty param.id and not fn:contains(header.referer,'/editFactory') and not fn:contains(header.referer,'id=')) or not empty param.companyId}">
 		<c:set var="form" value="/saveFactory"/>
 		<c:set var="buttonLabel" value="button.add_factory"/>
 	</c:if>
