@@ -59,6 +59,8 @@
 	<fmt:message key="loading.fetching_entity_information" var="fetchingEntityInformation"/>
 	<fmt:message key="loading.handling_selection_event" var="handlingSelectionEvent"/>
 	<fmt:message key="loading.generating_3d_graphics" var="generating3dGraphics"/>
+    <fmt:message key="label.chosen_profileName" var="profileName"/>
+	<fmt:message key="label.chosen_profileDescription" var="profileDescription"/>
 	
 	<meta name="menu" content="Visualization"/>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -343,6 +345,15 @@
 		visualizationGroupBy = $("input:radio[name=showGroupBy]:checked").val();
 		var filename = $("#profileChooserDialogBody").children('ul').children('li.ui-selected').attr('id');
 		if (visualizationGroupBy != null && filename != undefined) {
+			// Feedback about chosen profile
+			$("#feedback").html("");
+			$("#feedback").append("<ul>");
+			$("#feedback ul").append("<li>");
+			$("#feedback ul li:last").append("<label class='key'><c:out value='${profileName}'/></label>");
+			$("#feedback ul li:last").append("<label class='value' style='width:4250px; margin:0;'>" + $("#profileChooserDialogBody").children('ul').children('li.ui-selected').html() + "</label>");
+			$("#feedback ul").append("<li>");
+			$("#feedback ul li:last").append("<label class='key'><c:out value='${profileDescription}'/></label>");
+			$("#feedback ul li:last").append("<label class='value' style='width:4250px; margin:0;'>" + $("#profileChooserDialogBody").children('ul').children('li.ui-selected').attr('title') + "</label>");
 			// http://viralpatel.net/blogs/2009/01/calling-javascript-function-from-string.html
 			var funcCall = visualizationCallback + "(" + visualizationEntityId + ",\"" + visualizationGroupBy + "\",\"" + filename + "\")";
 			$("#profileChooserDialog").dialog('close');
@@ -1021,6 +1032,8 @@ function desglosa_handleVisualization(model, city) {
 			</applet>
 			
 			<a href="javascript:void(0)" onclick="$('#infoPanelDiv').css('display','none');$('#jogl_canvas').css('display','none');$('#map_canvas').css('display','');"><s:text name="label.back_to_map"/></a>
+			
+			<div id="feedback" class="form"></div>
 			
 			<div id="joglCanvasControls">
 				<h3><a href="#"><s:text name="label.navigation_controls"/></a></h3>
