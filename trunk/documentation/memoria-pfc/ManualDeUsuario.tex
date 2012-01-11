@@ -4,3 +4,54 @@
 % Utilización de la herramienta
 % ANEXO II: Manual de configuración del entorno (secundario)
 % ANEXO III: Manual de despliegue
+
+DESGLOSA es una herramienta cuyo objetivo es facilitar la gestión organizacional, en el contexto del desarrollo global, y el seguimiento de los proyectos globalizados. Para lograrlo, trata de dar soporte a las distintas actividades que se llevan a cabo en este tipo de escenarios y se ofrece distintos mecanismos de representación gráfica para la información que se considera relevante, como pueden ser las medidas e indicadores de calidad y productividad utilizados en este paradigma. Gracias a esta característica es posible predecir y detectar distintos riesgos y anomalías, así como ofrecer ayuda en la toma de decisiones de las actividades de la organización, con el objetivo de incrementar la competitividad de las organizaciones a nivel internacional.
+
+Cuando el usuario escribe la dirección URL del sistema en su navegador web, obtiene una página tal y como la que se muestra en la figura \ref{fig:usermanual-index}.
+
+\imagen{UserManual//usermanual-index}{1.0}{Página de inicio de DESGLOSA}{fig:usermanual-index}
+
+
+\section{Acceso al sistema}
+
+Las funcionalidades de la aplicación están condicionadas en función del tipo de usuario que va a utilizarla. Por defecto, el sistema reconoce tres tipos de usuarios: administrador, jefe de proyecto y usuario estándar.
+
+Para llevar a cabo el proceso de autenticación, el usuario deberá acceder a la funcionalidad por medio del botón \textit{``iniciar sesión''} que se encuentra en la parte superior derecha de la página. En el formulario que se proporciona (Fig. \ref{fig:usermanual-login-form}) deberá introducir su nombre de usuario y su contraseña.
+
+\imagen{UserManual//usermanual-login-form}{1.0}{Formulario de autenticación}{fig:usermanual-login-form}
+
+El resultado del proceso de autenticación será notificado al usuario, tanto si es satisfactorio como si se ha producido algún error. En este último los distintos tipos de error son los siguientes (Fig. \ref{fig:usermanual-login-errors}):
+\begin{itemize}
+	\item Usuario y/o contraseña incorrectos.
+	\item La cuenta del usuario está bloqueada.
+	\item El usuario está deshabilitado.
+	\item La cuenta del usuario ha caducado.
+\end{itemize}
+
+\imagen{UserManual//usermanual-login-errors}{1.0}{Errores obtenidos en el proceso de autenticación}{fig:usermanual-login-errors}
+
+Si el proceso de autenticación se lleva a cabo con normalidad, el usuario será redirigido a la página principal. En ella podrá observar que el nombre de usuario con el que se ha autenticado aparece en la parte inferior izquierda y que los menús de la parte superior izquierda se han configurado automáticamente para permitir el acceso a las funcionalidades que puede desempeñar (Fig. \ref{fig:usermanual-index-logged}).
+
+\imagen{UserManual//usermanual-index-logged}{1.0}{Página de inicio para un usuario autenticado. En la parte inferior izquierda se muestra su nombre de usuario y en la parte superior derecha los menús configurados para su rol}{fig:usermanual-index-logged}
+
+
+\section{Visualización}
+
+La funcionalidad de visualización consta de dos partes: una basada en un \textbf{Sistema de Información Geográfica} (SIG o GIS, en su acrónimo inglés Geographic Information System) -en concreto Google Maps-, y otra basada en un generador de gráficos en 3D.
+
+\subsubsection{Visualización mediante el Sistema de Información Geográfica}
+
+El \textbf{sistema de información geográfica} permite conocer las ubicaciones de las factorías que participan en diferentes escenarios. El escenario por defecto muestra las ubicaciones de todas las factorías que se encuentran registradas en el sistema. Los distintos escenarios que se pueden obtener se configuran mediante el \textit{filtro organizacional} que se muestra en la parte superior del mapa (Fig. \ref{fig:usermanual-gis}). En dicho filtro, dividido en tres columnas, muestra la siguiente información:
+\begin{itemize}
+	\item La primera columna representa las compañías dadas de alta y los proyectos en los que éstas colaboran. Cuando se selecciona una compañía específica, la lista de proyectos se actualizará y mostrará únicamente los proyectos en los que colabora la compañía seleccionada. Además, se actualizará la lista de factorías y se emplazarán en el mapa todas sus ubicaciones.
+	\item La segunda columna muestra las factorías que pertenecen a la compañía seleccionada en la primera columna y los proyectos en los que colaboran dichas factorías. Cuando se selecciona una factoría, la lista de proyectos será actualizada y su ubicación será emplazada en el mapa.
+	\item La tercera columna muestra los proyectos y subproyectos que hay registrados en el sistema. Si el usuario selecciona un proyecto, se actualizará la lista de subproyectos con los subproyectos que lo conforman.
+\end{itemize}
+
+\imagen{UserManual//usermanual-gis}{1.0}{Página de visualización basada en Google Maps}{fig:usermanual-gis}
+
+Cada vez que el usuario seleccione un proyecto, cualquiera que 
+
+
+\subsection{Visualización de medidas mediante gráficos en 3D}
+
