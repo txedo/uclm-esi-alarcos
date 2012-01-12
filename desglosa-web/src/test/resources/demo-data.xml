@@ -514,20 +514,20 @@
     <column>employees</column>
     <column>information</column>
     <column>name</column>
-    <column>location_id</column>
     <column>director_id</column>
     <column>address_id</column>
     <column>company_id</column>
+    <column>location_id</column>
     <row>
       <value description="id">1</value>
       <value description="contact_email">factory1@company1.com</value>
       <value description="employees">10</value>
       <value description="information">Factor&#237;a de ejemplo 1.1</value>
       <value description="name">Factor&#237;a 1.1</value>
-      <value description="location_id">4</value>
       <value description="director_id">11</value>
       <value description="address_id">4</value>
       <value description="company_id">3</value>
+      <value description="location_id">4</value>
     </row>
     <row>
       <value description="id">2</value>
@@ -535,10 +535,10 @@
       <value description="employees">30</value>
       <value description="information">Factor&#237;a de ejemplo 1.2</value>
       <value description="name">Factor&#237;a 1.2</value>
-      <value description="location_id">5</value>
       <value description="director_id">12</value>
       <value description="address_id">5</value>
       <value description="company_id">3</value>
+      <value description="location_id">5</value>
     </row>
     <row>
       <value description="id">3</value>
@@ -546,10 +546,10 @@
       <value description="employees">95</value>
       <value description="information">Factor&#237;a de ejemplo 1.3</value>
       <value description="name">Factor&#237;a 1.3</value>
-      <value description="location_id">6</value>
       <value description="director_id">13</value>
       <value description="address_id">6</value>
       <value description="company_id">3</value>
+      <value description="location_id">6</value>
     </row>
     <row>
       <value description="id">4</value>
@@ -557,10 +557,10 @@
       <value description="employees">63</value>
       <value description="information">Factor&#237;a de ejemplo 1.4</value>
       <value description="name">Factor&#237;a 1.4</value>
-      <value description="location_id">7</value>
       <value description="director_id">14</value>
       <value description="address_id">7</value>
       <value description="company_id">3</value>
+      <value description="location_id">7</value>
     </row>
     <row>
       <value description="id">5</value>
@@ -568,10 +568,10 @@
       <value description="employees">57</value>
       <value description="information">Factor&#237;a de ejemplo 2.1</value>
       <value description="name">Factor&#237;a 2.1</value>
-      <value description="location_id">20</value>
       <value description="director_id">27</value>
       <value description="address_id">20</value>
       <value description="company_id">4</value>
+      <value description="location_id">20</value>
     </row>
     <row>
       <value description="id">6</value>
@@ -579,10 +579,10 @@
       <value description="employees">44</value>
       <value description="information">Factor&#237;a de ejemplo 2.2</value>
       <value description="name">Factor&#237;a 2.2</value>
-      <value description="location_id">21</value>
       <value description="director_id">28</value>
       <value description="address_id">21</value>
       <value description="company_id">4</value>
+      <value description="location_id">21</value>
     </row>
     <row>
       <value description="id">7</value>
@@ -590,10 +590,10 @@
       <value description="employees">32</value>
       <value description="information">Factor&#237;a de ejemplo 2.3</value>
       <value description="name">Factor&#237;a 2.3</value>
-      <value description="location_id">10</value>
       <value description="director_id">17</value>
       <value description="address_id">10</value>
       <value description="company_id">4</value>
+      <value description="location_id">10</value>
     </row>
     <row>
       <value description="id">8</value>
@@ -601,10 +601,10 @@
       <value description="employees">115</value>
       <value description="information">Factor&#237;a de ejemplo 2.4</value>
       <value description="name">Factor&#237;a 2.4</value>
-      <value description="location_id">11</value>
       <value description="director_id">18</value>
       <value description="address_id">11</value>
       <value description="company_id">4</value>
+      <value description="location_id">11</value>
     </row>
     <row>
       <value description="id">9</value>
@@ -612,10 +612,10 @@
       <value description="employees">7</value>
       <value description="information">Factor&#237;a de ejemplo 3.1</value>
       <value description="name">Factor&#237;a 3.1</value>
-      <value description="location_id">12</value>
       <value description="director_id">19</value>
       <value description="address_id">12</value>
       <value description="company_id">5</value>
+      <value description="location_id">12</value>
     </row>
     <row>
       <value description="id">10</value>
@@ -623,10 +623,10 @@
       <value description="employees">21</value>
       <value description="information">Factor&#237;a de ejemplo 3.2</value>
       <value description="name">Factor&#237;a 3.2</value>
-      <value description="location_id">13</value>
       <value description="director_id">20</value>
       <value description="address_id">13</value>
       <value description="company_id">5</value>
+      <value description="location_id">13</value>
     </row>
     <row>
       <value description="id">11</value>
@@ -634,10 +634,10 @@
       <value description="employees">43</value>
       <value description="information">Factor&#237;a de ejemplo 3,3</value>
       <value description="name">Factor&#237;a 3.3</value>
-      <value description="location_id">14</value>
       <value description="director_id">21</value>
       <value description="address_id">14</value>
       <value description="company_id">5</value>
+      <value description="location_id">14</value>
     </row>
   </table>
   <table name="markets">
@@ -676,11 +676,6 @@
     </row>
     <row>
       <value description="id">7</value>
-      <value description="color">ff4747</value>
-      <value description="name">Internet</value>
-    </row>
-    <row>
-      <value description="id">8</value>
       <value description="color">7d7676</value>
       <value description="name">No definido</value>
     </row>

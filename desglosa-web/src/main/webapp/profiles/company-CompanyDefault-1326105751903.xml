@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <profile model="model.gl.knowledge.GLFactory" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Company">
     <name>CompanyDefault</name>
-    <description>This is a default profile for companies.</description>
+    <description>Este perfil se facilita por defecto para la representación de la entidad compañía. La altura de la chimenea y el número entero situado en la parte superior del edificio representa el número de factorías que posee. El color de la chimenea indica el tamaño de la compañía, en cuanto al número de empleados se refiere.</description>
     <mappings>
         <mapping>
             <entityAttr name="id" type="int"/>
@@ -16,17 +16,17 @@
             <modelAttr name="smokestackColor" type="color"/>
             <rule>
                 <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">0</low>
-                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">20</high>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">100</high>
                 <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ff4c4c</value>
             </rule>
             <rule>
-                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">20</low>
-                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">50</high>
+                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">101</low>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">200</high>
                 <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">457dff</value>
             </rule>
             <rule>
-                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">50</low>
-                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">10000</high>
+                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">201</low>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">100000</high>
                 <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">53ff40</value>
             </rule>
         </mapping>
@@ -38,8 +38,8 @@
         </constant>
     </constants>
     <caption>
-        <entry color="53ff40" label="Big company"/>
-        <entry color="ff4c4c" label="Small company"/>
-        <entry color="457dff" label="Medium company"/>
+        <entry color="53ff40" label="Compañía con más de 200 empleados"/>
+		<entry color="457dff" label="Compañía con 100-200 empleados"/>
+        <entry color="ff4c4c" label="Compañía con menos de 100 empleados"/>
     </caption>
 </profile>

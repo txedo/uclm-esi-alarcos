@@ -15,9 +15,10 @@ public class CompanyDAOHibernate extends GenericDAOHibernate<Company, Long>
 
     public Company getCompany(int id) throws CompanyNotFoundException {
         Company c = (Company) getHibernateTemplate().get(Company.class, id);
-        if (c == null)
-            throw new CompanyNotFoundException("company '" + id
-                    + "' not found...");
+        if (c == null) {
+            throw new CompanyNotFoundException("company '" + id + "' not found...");
+        }
+                    
         return c;
     }
 
