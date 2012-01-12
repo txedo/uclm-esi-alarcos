@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +26,7 @@ import javax.persistence.Transient;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MarketDAOHibernate;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Measure;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.TransientAttributesListener;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
 
 @Entity
@@ -33,6 +35,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
     @NamedQuery(name = "findFactoriesByCompanyId", query = "select f from Factory f where f.company.id = :id "),
     @NamedQuery(name = "findFactoriesInvolvedInProjectId", query = "select distinct f from Factory f, Project p, Subproject sp where p.id = :id and sp.project.id = p.id and f.id = sp.factory.id")
 })
+@EntityListeners({TransientAttributesListener.class})
 public class Factory {
     @Property
     private int id;
@@ -122,13 +125,17 @@ public class Factory {
 
     @Transient
     public Integer getNumberOfLeadingProjects() {
-        numberOfLeadingProjects = projects.size();
+        if (projects != null) {
+            numberOfLeadingProjects = projects.size();
+        }
         return numberOfLeadingProjects;
     }
     
     @Transient
     public Integer getNumberOfDevelopingSubprojects() {
-        numberOfDevelopingSubprojects = subprojects.size();
+        if (subprojects != null) {
+            numberOfDevelopingSubprojects = subprojects.size();
+        }
         return numberOfDevelopingSubprojects;
     }
     

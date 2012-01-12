@@ -350,10 +350,10 @@
 			$("#feedback").append("<ul>");
 			$("#feedback ul").append("<li>");
 			$("#feedback ul li:last").append("<label class='key'><c:out value='${profileName}'/></label>");
-			$("#feedback ul li:last").append("<label class='value' style='width:4250px; margin:0;'>" + $("#profileChooserDialogBody").children('ul').children('li.ui-selected').html() + "</label>");
+			$("#feedback ul li:last").append("<label class='value' style='width:425px; margin:0;'>" + $("#profileChooserDialogBody").children('ul').children('li.ui-selected').html() + "</label>");
 			$("#feedback ul").append("<li>");
 			$("#feedback ul li:last").append("<label class='key'><c:out value='${profileDescription}'/></label>");
-			$("#feedback ul li:last").append("<label class='value' style='width:4250px; margin:0;'>" + $("#profileChooserDialogBody").children('ul').children('li.ui-selected').attr('title') + "</label>");
+			$("#feedback ul li:last").append("<label class='value' style='width:425px; margin:0; text-align:justify;'>" + $("#profileChooserDialogBody").children('ul').children('li.ui-selected').attr('title') + "</label>");
 			// http://viralpatel.net/blogs/2009/01/calling-javascript-function-from-string.html
 			var funcCall = visualizationCallback + "(" + visualizationEntityId + ",\"" + visualizationGroupBy + "\",\"" + filename + "\")";
 			$("#profileChooserDialog").dialog('close');

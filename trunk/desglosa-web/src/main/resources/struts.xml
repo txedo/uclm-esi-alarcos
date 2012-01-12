@@ -497,6 +497,15 @@
                 </param>
             </result>
         </action>
+        <action name="json_subprojectsByProjectId" class="visualizationAction" method="subprojectsByProjectId">
+            <result name="success" type="json">
+                <param name="noCache">true</param>
+                <param name="includeProperties">
+                    subprojects\[\d+\]\.id,
+                    subprojects\[\d+\]\.name
+                </param>
+            </result>
+        </action>
 		<action name="json_*" class="visualizationAction" method="{1}">
 			<result name="success" type="json">
 				<param name="noCache">true</param>
