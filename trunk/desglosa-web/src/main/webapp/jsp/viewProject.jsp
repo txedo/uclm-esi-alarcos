@@ -13,7 +13,7 @@
 	    
 	    <script type="text/javascript" src="js/utils.js?version=1"></script>
     
-        <meta name="menu" content="ManageFactories"/>
+        <meta name="menu" content="ManageProjects"/>
         
         <fmt:message key="error.subproject_not_selected" var="noSubprojectSelected"/>
         <fmt:message key="message.delete_project_confirmation" var="deleteProjectConfirmation"/>

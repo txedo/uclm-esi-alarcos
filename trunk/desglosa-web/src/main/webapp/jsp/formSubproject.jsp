@@ -10,7 +10,7 @@
     <script type="text/javascript" src="js/jquery.tools-1.2.6.min.js?version=1"></script>
     <link href="<s:url value='/styles/tooltip.css?version=1'/>" rel="stylesheet" type="text/css" />
 
-	<meta name="menu" content="ManageProjects"/>
+	<meta name="menu" content="ManageSubprojects"/>
 
 	<script type="text/javascript" src="js/utils.js?version=1"></script>
 

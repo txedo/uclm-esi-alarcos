@@ -9,7 +9,7 @@
     	<Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN">
             <Item name="ManageCompanies" title="menu.manage.companies" page="/listCompanies" />
             <Item name="ManageFactories" title="menu.manage.factories" page="/listFactories" />
-            <Item name="ManageProjects" title="menu.manage.profiles" page="/listProfiles" />
+            <Item name="ManageProfiles" title="menu.manage.profiles" page="/listProfiles" />
     	</Menu>
     	<Menu name="ManagerMenu" title="menu.manager" description="Manager Menu" roles="ROLE_ADMIN,ROLE_MANAGER">
     		<Item name="ManageProjects" title="menu.manage.projects" page="/listProjects" />
