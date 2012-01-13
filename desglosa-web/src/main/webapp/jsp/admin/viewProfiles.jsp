@@ -11,7 +11,7 @@
 <head>
     <sj:head jqueryui="true"/>
     
-    <meta name="menu" content="ViewProfiles"/>
+    <meta name="menu" content="ManageProfiles"/>
     
     <fmt:message key="error.profile_not_selected" var="noProfileSelected"/>
     <fmt:message key="message.delete_profile_confirmation" var="deleteProfiletConfirmation"/>
@@ -66,15 +66,15 @@
         <s:set name="entities" value="entities" scope="request"/>
         <s:set name="models" value="models" scope="request"/>
         <display:table name="profiles" uid="profile" defaultsort="1" class="" pagesize="10" requestURI="" >
-            <display:column style="width: 5%; text-align: center;">
+            <display:column style="width: 3%; text-align: center;">
                 <input type="radio" id="profileFilenameRadio" name="profileFilename" value='${profile.filename}'>
             </display:column>
             <display:column property="profile.name" escapeXml="true" style="width: 20%" titleKey="table.header.profile.name" sortable="true"/>
-            <display:column property="profile.description" escapeXml="true" style="width: 30%" titleKey="table.header.profile.description" sortable="false"/>
-            <display:column escapeXml="false" style="width: 25%" titleKey="table.header.profile.entity" sortable="true">
+            <display:column property="profile.description" escapeXml="true" style="width: 45%" titleKey="table.header.profile.description" sortable="false"/>
+            <display:column escapeXml="false" style="width: 15%" titleKey="table.header.profile.entity" sortable="true">
                 <c:out value="${entities[profile.profile.entityName]}"></c:out>
             </display:column>
-            <display:column escapeXml="false" style="width: 25%" titleKey="table.header.profile.model" sortable="true">
+            <display:column escapeXml="false" style="width: 15%" titleKey="table.header.profile.model" sortable="true">
                 <c:out value="${models[profile.profile.modelName]}"></c:out>
             </display:column>
             

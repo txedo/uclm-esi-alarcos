@@ -58,6 +58,7 @@ function toggleRadio(elementId, index) {
 function openPopup(url, winTitle, winParams) {
     winName = window.open(url, winTitle, winParams);
     winName.focus();
+    return winName;
 }
 
 

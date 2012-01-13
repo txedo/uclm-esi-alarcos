@@ -193,6 +193,7 @@
     }
 	
 	function checkMapping() {
+		clearTooltips();
 		resetMessageAndControlDivs();
 		selectedEntityAttribute = $("#entityAttributesDiv").children('ul').children('li.ui-selected');
 		selectedModelAttribute = $("#modelAttributesDiv").children('ul').children('li.ui-selected');
@@ -412,6 +413,7 @@
 				}
 				// Feedback en mapping_messages
 				$("#mapping_messages").html("<p class='messageBox ok'><s:text name='message.mapping_successful'/></p>");
+				clearTooltips();
 			}
 		} else {
 			// TODO show message error no 2 side mappings
@@ -535,17 +537,30 @@
 	
 	function addTooltips() {
 		// select all desired input fields and attach tooltips to them
-	    $("input.floatNumber[type=text],input.intNumber[type=text],input.stringValue[type=text],input.booleanValue[type=checkbox]").tooltip({
-	        tipClass: "inputtooltip",
-	        // place tooltip on the right edge
-	        position: "center right",
-	        // a little tweaking of the position
-	        offset: [-2, 10],
-	        // use the built-in fadeIn/fadeOut effect
-	        effect: "fade",
-	        // custom opacity setting
-	        opacity: 0.7
-	    });
+		$("input.floatNumber[type=text],input.intNumber[type=text],input.stringValue[type=text],input.booleanValue[type=checkbox]").live("mouseover", function() {
+			var me = $(this);
+			if (!me.hasClass('tooltiped')) {
+				me.tooltip({
+		            tipClass: "inputtooltip",
+		            // place tooltip on the right edge
+		            position: "center right",
+		            // a little tweaking of the position
+		            offset: [-2, 10],
+		            // use the built-in fadeIn/fadeOut effect
+		            effect: "fade",
+		            // custom opacity setting
+		            opacity: 0.7,
+		            cancelDefault: false,
+		            lazy: false, 
+		            api: true
+		        });
+				me.addClass('tooltiped');
+			}
+		});
+	}
+	
+	function clearTooltips() {
+		$("div").remove(".inputtooltip");
 	}
 	
 	function checkTypeCompatibility(type1, type2) {
@@ -803,6 +818,7 @@
 	}
 	
 	function toggleSteps(from, to) {
+	    clearTooltips();
 		var fromStep = null;
 		switch (from) {
 		case 1:
