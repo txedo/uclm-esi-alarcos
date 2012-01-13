@@ -1,2 +1,65 @@
 \chapter{Manual de Instalación y Configuración del Entorno de Desarrollo}
 \label{ch:manualentorno}
+
+La construcción y configuración del entorno de desarrollo que se ha empleado durante la elaboración de este PFC no es trivial. Por esta razón, y con el propósito de facilitar las labores de mantenimiento, se facilita este manual en el cual se indica cómo abordar la instalación y configuración del mismo.
+
+El proceso se divide en los siguientes pasos:
+\begin{itemize}
+	\item Instalación del JRE (Java Runtime Environment) y JDK (Java Development Kit) de Java. Este paso no se detalla en este manual ya que es trivial.
+	\item Instalación y configuración de Maven.
+	\item Instalación de Eclipse EE Helios. Este paso no se detalla en este manual ya que es trivial.
+	\item Instalación y configuración de \textit{m2eclipse}.
+	\item Instalación de las librerías de JOGL (Java Binding for OpenGL) en el repositorio local de Maven.
+	\item Integración de Maven en eclipse para facilitar tareas de depuración.
+\end{itemize}
+
+
+\section{Instalación y configuración de Maven}
+
+Para comenzar, deberá dirigirse al sitio web de Maven y descargar la versión 2.2.1, que es la que se ha utilizado en el desarrollo de este PFC.
+
+Descomprima el fichero \textit{.zip} en el directorio que desee (se recomienda una ruta de directorios que no contenga espacios) y proceda a configurar las variables de entorno -M2, M2\_HOME y MAVEN\_OPTS- que se muestran en la figura \ref{fig:environment-variables}.
+
+\imagen{EnvironmentManual//environment-variables}{2.2}{Variables de entorno de Maven}{fig:environment-variables}
+
+Si ha realizado la configuración correctamente y ejecuta el comando \textit{mvn -v} en un terminal, obtendrá una salida similar a la que se muestra en la figura \ref{fig:mvn-version}.
+
+\imagen{EnvironmentManual//mvn-version}{2.1}{Resultado positivo de la ejecución del comando \textit{mvn -v} en un terminal}{fig:mvn-version}
+
+
+
+\section{Instalación y configuración de \textit{m2eclipse}}
+
+
+
+\section{Instalación de las librerías de JOGL en el repositorio local de Maven}
+
+La versión de JOGL empleada en este PFC es la 2.0. Esta versión no se encuentra disponible en los repositorios oficiales de Maven, por lo que deberá ser descargada de la página oficial de JOGL \cite{site:jogl} (también se proporcionan en el DVD adjunto a este PFC) e instalada en el repositorio local de Maven.
+
+Para comenzar el proceso abra un terminal, diríjase a la ruta en la que se encuentre el proyecto \textbf{desglosa} (motor gráfico)y navegue a través de la ruta de directorios \textit{builds, jogamp, deployment, webstart, archive}. En este directorio encontrará numerosos archivos cuyos nombres se corresponden con la estructura \textit{librería-versión-plataforma-arquitectura.7z}. Por ejemplo, el fichero \textit{jogl-2.0-b20-20110302-windows-amd64.7z} se corresponde con la librería jogl, versión 2.0, plataforma Microsoft Windows y arquitectura de 64 bits.
+
+Descomprima el fichero \textit{jogl-2.0-b23-20110303-x-y.7z}, donde \textit{x} se corresponde con su sistema operativo y \textit{y} se corresponde con la arquitectura de su máquina, y copie el contenido del directorio \textit{lib} al directorio raíz del directorio del motor gráfico. Después de realizar esta operación, el directorio raíz del proyecto \textbf{desglosa} debe contener las librerías \textit{gluegen-rt.*}, \textit{jogl\_desktop.*}, \textit{jogl\_es1.*}, \textit{jogl\_es2.*}, \textit{nativewindow\_awt.*}, \textit{nativewindow\_win32.*} y \textit{newt.*}.
+
+Acto seguido, para que Eclipse tenga conocimiento de la existencia de librerías nativas, será necesario añadir esta ruta en la variable \textit{``Native library location''} de Java \textit{Build Path -> Libraries -> Maven Dependencies} (Fig. \ref{fig:eclipse-java-build-path}).
+
+\imagen{EnvironmentManual//eclipse-java-build-path}{2.0}{Configuración de librerías nativas en Eclipse}{fig:eclipse-java-build-path}
+
+A continuación, se añadirán al repositorio local de Maven las librerías necesarias contenidas en el directorio \textit{jar} del fichero descomprimido. Para ello se ejecutarán los siguientes comandos del listado \ref{lst:mvn-install} en un terminal.
+
+\begin{lstlisting}[caption={Comandos para la instalación de librerías en el repositorio local de Maven)},label=lst:mvn-install]
+mvn install:install-file -Dfile=gluegen-rt.jar -DgroupId=com.jogamp.gluegen -DartifactId=gluegen-rt -Dversion=2.0-b23-20110303 -Dpackaging=jar
+
+mvn install:install-file -Dfile=jogl.all.jar -DgroupId=com.jogamp.jogl -DartifactId=jogl.all -Dversion=2.0-b23-20110303 -Dpackaging=jar
+
+mvn install:install-file -Dfile=nativewindow.all.jar -DgroupId=com.jogamp.nativewindow -DartifactId=nativewindow.all -Dversion=2.0-b23-20110303 -Dpackaging=jar
+
+mvn install:install-file -Dfile=newt.all.jar -DgroupId=com.jogamp.newt -DartifactId=newt.all -Dversion=2.0-b23-20110303 -Dpackaging=jar
+\end{lstlisting}
+
+Para finalizar, es necesario actualizar el índice de librerías de Maven. Para ello, dentro de Eclipse mostramos la vista ``maven repositories'' \textit{(Window -> Show view -> Other... -> Maven -> Maven repositories)}, se efectúa un clic derecho sobre \textit{local repository} y se lanza la operación \textit{rebuild index}.
+
+\imagen{EnvironmentManual//mvn-rebuild-index}{2.0}{Actualización del índice de librerías de Maven}{fig:mvn-rebuild-index}
+
+
+
+\section{Integración de Maven en eclipse para facilitar tareas de depuración}

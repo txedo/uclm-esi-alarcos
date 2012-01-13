@@ -9,7 +9,9 @@ DESGLOSA es una herramienta cuyo objetivo es facilitar la gestión organizacional
 
 Cuando el usuario escribe la dirección URL del sistema en su navegador web, obtiene una página tal y como la que se muestra en la figura \ref{fig:usermanual-index}.
 
-\imagen{UserManual//usermanual-index}{1.0}{Página de inicio de DESGLOSA}{fig:usermanual-index}
+\imagen{UserManual//usermanual-index}{1.3}{Página de inicio de la aplicación web}{fig:usermanual-index}
+
+Nótese que todos los datos que se muestran a lo largo de este manual, tales como ubicaciones, nombres propios, nombres de entidades y datos de medidas, son ficticios y con propósito informativo. Cualquier parecido con la realidad es pura coincidencia.
 
 
 \section{Acceso al sistema}
@@ -18,7 +20,7 @@ Las funcionalidades de la aplicación están condicionadas en función del tipo de 
 
 Para llevar a cabo el proceso de autenticación, el usuario deberá acceder a la funcionalidad por medio del botón \textit{``iniciar sesión''} que se encuentra en la parte superior derecha de la página. En el formulario que se proporciona (Fig. \ref{fig:usermanual-login-form}) deberá introducir su nombre de usuario y su contraseña.
 
-\imagen{UserManual//usermanual-login-form}{1.0}{Formulario de autenticación}{fig:usermanual-login-form}
+\imagen{UserManual//usermanual-login-form}{1.3}{Formulario de autenticación}{fig:usermanual-login-form}
 
 El resultado del proceso de autenticación será notificado al usuario, tanto si es satisfactorio como si se ha producido algún error. En este último los distintos tipos de error son los siguientes (Fig. \ref{fig:usermanual-login-errors}):
 \begin{itemize}
@@ -28,30 +30,325 @@ El resultado del proceso de autenticación será notificado al usuario, tanto si e
 	\item La cuenta del usuario ha caducado.
 \end{itemize}
 
-\imagen{UserManual//usermanual-login-errors}{1.0}{Errores obtenidos en el proceso de autenticación}{fig:usermanual-login-errors}
+\imagen{UserManual//usermanual-login-errors}{1.6}{Errores obtenidos en el proceso de autenticación: (a) El usuario o la contraseña intorducidos son incorrectos (b) La cuenta de usuario ha sido deshabilitada (c) La cuenta de usuario ha sido bloqueada (d) La cuenta de usuario ha caducado}{fig:usermanual-login-errors}
 
 Si el proceso de autenticación se lleva a cabo con normalidad, el usuario será redirigido a la página principal. En ella podrá observar que el nombre de usuario con el que se ha autenticado aparece en la parte inferior izquierda y que los menús de la parte superior izquierda se han configurado automáticamente para permitir el acceso a las funcionalidades que puede desempeñar (Fig. \ref{fig:usermanual-index-logged}).
 
-\imagen{UserManual//usermanual-index-logged}{1.0}{Página de inicio para un usuario autenticado. En la parte inferior izquierda se muestra su nombre de usuario y en la parte superior derecha los menús configurados para su rol}{fig:usermanual-index-logged}
+\imagen{UserManual//usermanual-index-logged}{1.3}{Página de inicio para un usuario autenticado. En la parte inferior izquierda se muestra su nombre de usuario y en la parte superior derecha los menús configurados para su rol}{fig:usermanual-index-logged}
 
 
 \section{Visualización}
 
 La funcionalidad de visualización consta de dos partes: una basada en un \textbf{Sistema de Información Geográfica} (SIG o GIS, en su acrónimo inglés Geographic Information System) -en concreto Google Maps-, y otra basada en un generador de gráficos en 3D.
 
-\subsubsection{Visualización mediante el Sistema de Información Geográfica}
+\subsection{Visualización mediante el Sistema de Información Geográfica}
 
-El \textbf{sistema de información geográfica} permite conocer las ubicaciones de las factorías que participan en diferentes escenarios. El escenario por defecto muestra las ubicaciones de todas las factorías que se encuentran registradas en el sistema. Los distintos escenarios que se pueden obtener se configuran mediante el \textit{filtro organizacional} que se muestra en la parte superior del mapa (Fig. \ref{fig:usermanual-gis}). En dicho filtro, dividido en tres columnas, muestra la siguiente información:
+El \textbf{sistema de información geográfica} permite conocer las ubicaciones de las factorías que participan en diferentes escenarios. El escenario por defecto muestra las ubicaciones de todas las factorías que se encuentran registradas en el sistema. Los distintos escenarios que se pueden obtener se configuran mediante el \textit{filtro organizacional} que se muestra en la parte superior del mapa (Fig. \ref{fig:usermanual-gis}). En dicho filtro, dividido en tres columnas, se muestra la siguiente información:
 \begin{itemize}
-	\item La primera columna representa las compañías dadas de alta y los proyectos en los que éstas colaboran. Cuando se selecciona una compañía específica, la lista de proyectos se actualizará y mostrará únicamente los proyectos en los que colabora la compañía seleccionada. Además, se actualizará la lista de factorías y se emplazarán en el mapa todas sus ubicaciones.
-	\item La segunda columna muestra las factorías que pertenecen a la compañía seleccionada en la primera columna y los proyectos en los que colaboran dichas factorías. Cuando se selecciona una factoría, la lista de proyectos será actualizada y su ubicación será emplazada en el mapa.
-	\item La tercera columna muestra los proyectos y subproyectos que hay registrados en el sistema. Si el usuario selecciona un proyecto, se actualizará la lista de subproyectos con los subproyectos que lo conforman.
+	\item La primera columna representa las compañías dadas de alta y los proyectos en los que colaboran. Cuando se selecciona una compañía, la lista de proyectos se actualiza y muestra únicamente los proyectos en los que colabora dicha compañía. Además, se actualiza la lista de factorías y se emplazan en el mapa todas sus ubicaciones.
+	\item La segunda columna muestra las factorías que pertenecen a la compañía seleccionada en la primera columna y los proyectos en los que colaboran dichas factorías. Cuando se selecciona una factoría, la lista de proyectos es actualizada y su ubicación emplazada en el mapa.
+	\item La tercera columna muestra los proyectos y subproyectos que hay registrados en el sistema. Si el usuario selecciona un proyecto, se actualiza la lista de subproyectos con los subproyectos que lo conforman. Al seleccionar un subproyecto, se muestra en el mapa la ubicación de la factoría que lo desarrolla.
 \end{itemize}
 
-\imagen{UserManual//usermanual-gis}{1.0}{Página de visualización basada en Google Maps}{fig:usermanual-gis}
+De modo común a las tres columnas, cuando el usuario selecciona un proyecto se ubican en el mapa todas las factorías que participan en su desarrollo.
 
-Cada vez que el usuario seleccione un proyecto, cualquiera que 
+\imagen{UserManual//usermanual-gis}{1.3}{Página de visualización basada en Google Maps}{fig:usermanual-gis}
+
+Por otro lado, en el panel \textit{``más información''} que se encuentra a la derecha del mapa se muestra información detallada del elemento seleccionado en el \textit{filtro organizacional}. Por ejemplo, en la figura \ref{fig:usermanual-moreinfo-project} se muestra información detallada acerca del proyecto \textit{Althea}, previamente seleccionado en el filtro de proyectos de la tercera columna.
+
+\imagen{UserManual//usermanual-moreinfo-project}{1.3}{Panel que muestra información detallada del proyecto seleccionado}{fig:usermanual-moreinfo-project}
+
+El panel de \textit{más información} es muy útil ya que no sólo proporciona información detallada acerca del elemento que se esté analizando, sino que también es una puerta de acceso a la visualización de gráficos 3D sobre las medidas e indicadores del elemento.
+
 
 
 \subsection{Visualización de medidas mediante gráficos en 3D}
 
+El acceso a la funcionalidad de visualización de medidas e indicadores mediante gráficos 3D se realiza mediante el panel \textit{más información} que se encuentra a la izquierda del mapa del mundo. Este panel consta de 5 pestañas: información global, compañía, factoría, proyecto y subproyecto. Por un lado, desde la pestaña \textit{informacón global} se facilita la visualización de medidas de toda la estructura organizacional, comenzando en el nivel de abstracción que se desee (Fig. \ref{fig:usermanual-moreinfo}).
+
+\imagen{UserManual//usermanual-moreinfo}{2.0}{Pestaña de \textit{información global} que ofrece acceso a la visualización de datos globalizados}{fig:usermanual-moreinfo}
+
+Por otro lado, en el resto de pestañas se permite consultar información detallada acerca del elemento seleccionado, entre la que se incluyen los valores de sus distintas medidas e indicadores. Además permite acceder a la visualización de medidas basada en gráficos 3D en distintos niveles de abstracción (Fig. \ref{fig:usermanual-moreinfo-company}).
+	
+\imagen{UserManual//usermanual-moreinfo-company}{2.0}{Pestaña \textit{compañía} del panel \textit{más información} que ofrece acceso a la visualización de datos globalizados}{fig:usermanual-moreinfo-company}
+
+La primera vez que el usuario trate de lanzar el motor gráfico, el navegador web tratará de instalar las librerías necesarias para la generación de gráficos 3D. En la figura \ref{fig:usermanual-jogl-install} se muestra en mensaje emergente que debe ser confirmado por el usuario.
+
+\imagen{UserManual//usermanual-jogl-install}{2.0}{Mensaje de confirmación para la instalación de librerías de JOGL y librerías nativas}{fig:usermanual-jogl-install}
+
+Si el usuario decide visualizar las medidas de un elemento mediante las distintas opciones de visualización que se muestran en el panel \textit{más información}, se abrirá una nueva ventana en la que se deberá seleccionar un perfil de visualización y un método de agrupación.
+\begin{itemize}
+	\item Los perfiles de visualización, cuyo proceso de configuración se mostrará en la sección \ref{sec:configuracion-perfil-visualizacion}, definen determinadas características de configuración que condicionan la forma en la que los gráficos 3D que van a ser generados. Cualidades como el modelo gráfico que se utilizará en la representación y la relación entre los distintos atributos de las entidades y las dimensiones de los modelos son especificados en dicho perfil.
+	\item El método de agrupación define bajo qué criterio se agruparán los distintos elementos que se representarán en la escena 3D. De este modo, será posible agrupar proyectos pertenecientes al mismo tipo de mercado o mostrar qué factorías colaboran para desarrollar los subproyectos que conforman un proyecto.
+\end{itemize}
+
+En la figura \ref{fig:usermanual-popup-global-company-visualization} se muestra la ventana de selección de perfil y método de agrupación que se muestra al usuario cuando éste desea visualizar las medidas de toda la estructura organizacional a nivel de \textit{compañía}. Al seleccionar ambas opciones y hacer \textit{clic} sobre el botón \textit{OK}, se lanzará el motor gráfico y éste generará la escena en base al perfil seleccionado y la información que se disponga acerca de las compañías.
+
+\imagen{UserManual//usermanual-popup-global-company-visualization}{1.5}{Ventana de selección de perfil y método de agrupación para la visualización de medidas e indicadores a nivel de compañía}{fig:usermanual-popup-global-company-visualization}
+
+En la figura \ref{fig:usermanual-global-company-visualization} se muestra la escena generada a partir de un perfil predefinido. A continuación el usuario puede seleccionar un edificio -mediante un clic de ratón- para obtener información detallada acerca de la compañía que representa o descender al nivel de factoría de dicha compañía -mediante doble clic de ratón-.
+
+\imagen{UserManual//usermanual-global-company-visualization}{1.5}{Visualización de compañías mediante la metáfora de un polígono industrial. Cada industria representa una compañía}{fig:usermanual-global-company-visualization}
+
+Otro elemento a destacar de la figura \ref{fig:usermanual-global-company-visualization} son las etiquetas que se muestran bajo la escena 3D. Estas etiquetas indican qué perfil de visualización se ha seleccionado y la descripción del mismo. Bajo las etiquetas relativas al perfil seleccionado se encuentra un elemento titulado \textit{``controles de navegación''}. Al seleccionar este elemento se muestra una tabla informativa que contiene las distintas operaciones que puede realizar el usuario para interaccionar con la escena 3D \ref{fig:usermanual-navigation-controls}. Preste especial atención a las teclas del teclado y alas acciones del ratón que permiten desplazar y rotar la cámara, ya que así es posible maximizar la eficiencia de la visualización.
+
+\imagen{UserManual//usermanual-navigation-controls}{2.0}{Componente que muestra los controles que pueden emplearse para interaccionar con la escena 3D}{fig:usermanual-navigation-controls}
+
+Al hacer doble clic sobre alguno de los elementos que representan las compañías, se descenderá al nivel de factoría de dicha compañía. Para ello será necesario seleccionar el perfil de visualización mediante el cual se configurarán los elementos que representan las factorías y el método de agrupación de las mismas. En la figura \ref{fig:usermanual-factory-visualization} se muestra uno de los posibles resultados generados a partir de un perfil de factoría predefinido. En este caso, al haber descendido desde una compañía concreta y hacer la agrupación por \textit{factoría}, se muestran en qué proyectos están trabajando las factorías de la compañía seleccionada.
+
+\imagen{UserManual//usermanual-factory-visualization}{1.5}{Visualización, mediante la metáfora de un polígono industrial, de los proyectos en los que trabajan las factorías de una determinada compañía}{fig:usermanual-factory-visualization}
+
+De manera análoga al nivel de compañía, en este nivel se puede obtener información detallada de una factoría -mediante un clic de ratón sobre el elemento deseado- o visualizar las medidas e indicadores de los proyectos en los que una factoría participa. Para realizar esta última operación habrá que hacer doble clic sobre la factoría y seleccionar el perfil de visualización mediante el cual se configurarán los proyectos y su método de agrupamiento. En la figura \ref{fig:usermanual-project-visualization} se muestra uno de los posibles resultados generados a partir de un perfil de proyecto predefinido.
+
+\imagen{UserManual//usermanual-project-visualization}{1.5}{Visualización, mediante un modelo diseñado para representar proyectos software, de los proyectos en los que participa una factoría determinada}{fig:usermanual-project-visualization}
+
+Una vez más, y con un funcionamiento similar al de todos los niveles anteriores, es posible analizar los subproyectos que conforman un proyecto. Nótese que la elección del método de agrupamiento es una característica importante ya que nos permite conocer con un golpe de vista las medidas e indicadores de los subproyectos y en qué factorías se están desarrollando (Fig. \ref{fig:usermanual-subproject-visualization}
+
+\imagen{UserManual//usermanual-subproject-visualization}{1.5}{Visualización, mediante la metáfora de ciudad, de los subproyectos que conforma un proyecto. La agrupación se muestra en base a la factoría que desarrolla cada subproyecto}{fig:usermanual-subproject-visualization}
+
+En el ejemplo que se ha seguido a lo largo de esta sección se ha mostrado cómo descender a través de los distintos elementos de la escena para mostrar información cada vez más específica. En otras palabras, se ha mostrado cómo acceder a las factorías de una compañía específica, a los proyectos en los que participa una factoría determinada y a los subproyectos que conforman un proyecto concreto. No obstante, mediante las opciones facilitadas en la pestaña \textit{información global} es posible acceder a todo este tipo de información comenzando a nivel global de toda la estructura organizacional. En la figura \ref{fig:usermanual-global-subproject-visualization} se muestran, agrupados por proyecto, todos los subproyectos dados de alta en el sistema.
+
+\imagen{UserManual//usermanual-global-subproject-visualization}{1.5}{Visualización, mediante la metáfora de ciudad, de todos los subproyectos dados de alta en el sistema. La agrupación se muestra en base a al proyecto al que pertenecen}{fig:usermanual-global-subproject-visualization}
+
+
+\section{Perfiles de visualización}
+
+Los perfiles de configuración son ficheros en formato XML que definen qué modelo gráfico será empleado para representar cada entidad. Además, establecen un conjunto de asociaciones entre los atributos de la entidad y las dimensiones del modelo que condicionan la información que se percibirá en el proceso de visualización.
+
+Para gestionar los perfiles de visualización el usuario deberá autenticarse y pertenecer al grupo de administradores. Sólo así, podrá acceder al \textit{panel de control de perfiles de visualización} por medio del menú que se encuentra en la parte superior izquierda de la aplicación web. Este panel de control se muestra en la figura \ref{fig:usermanual-listprofiles}. En él se observa la lista de perfiles de visualización que se encuentran registrados en el sistema. En dicha lista se especifica el nombre del perfil, una descripción del mismo, y la entidad y el modelo gráfico que asocia. En la parte inferior se observan tres botones que permiten consultar el fichero XML del perfil, eliminarlo o crear un nuevo perfil.
+
+\imagen{UserManual//usermanual-listprofiles}{1.8}{Panel de control para la gestión de perfiles de visualización}{fig:usermanual-listprofiles}
+
+
+\subsection{Configuración de perfiles de visualización}
+\label{sec:configuracion-perfil-visualizacion}
+
+La configuración de perfiles de visualización se lleva a cabo mediante un asistente compuesto por tres pasos: elección y configuración de la entidad y el modelo gráfico de representación, configuración de dimensiones constantes y leyenda informativa y, por último, nombre y descripción del perfil de visualización.
+
+\subsubsection{Primero paso: configuración de las asociaciones del perfil}
+
+En este primer paso se selecciona qué entidad se desea representar -compañía, factoría, proyecto o subproyecto- y qué modelo gráfico se utilizará para su representación -torres, fábricas o bolas con antenas-. Acto seguido, se deberá configurar las asociaciones entre los atributos de la entidad y las dimensiones del modelo gráfico (Fig. \ref{fig:usermanual-mappings-step1}.
+
+\imagen{UserManual//usermanual-mappings-step1}{1.5}{Primer paso del asistente de configuración de perfiles de visualización}{fig:usermanual-mappings-step1}
+
+Los tipos de datos que se manejan en los atributos de las entidades y las dimensiones de los modelos son números enteros (\textit{int}), números en punto flotante (\textit{float}), intervalos en punto flotante (\textit{float\_range}), cadenas de texto (\textit{string}), valores booleanos (\textit{boolean}) y colores (\textit{color} y \textit{hexcolor}). En la tabla \ref{table:asociaciones-compatibles} se muestran las compatibilidades entre tipos de datos. De manera análoga, en la tabla \ref{table:asociaciones-incompatibles} se muestran las asociaciones que son incompatibles y, por lo tanto, no se pueden establecer.
+
+\begin{table}[!htbp]%
+\begin{tabular}{| >{\centering\arraybackslash}m{4cm} | >{\centering\arraybackslash}m{3cm} | >{\centering\arraybackslash}m{7cm} |}
+	\hline
+		{\cellcolor[gray]{0.7}\textbf{Tipo del atributo}} &
+		{\cellcolor[gray]{0.7}\textbf{Tipo de la dimensión}} &
+		{\cellcolor[gray]{0.7}\textbf{Aclaración}} \\
+	\hline
+		Entero &
+		Entero &
+		No requiere configuración adicional \\
+	\hline
+		Entero &
+		Intervalos en punto flotante &
+		Requiere configurar reglas para especificar intervalos \\
+	\hline
+		Entero &
+		Número en punto flotante &
+		Requiere la configuración de un valor que será utilizado en el proceso de normalización (opcional) \\
+	\hline
+		Entero &
+		Color &
+		Requiere configurar reglas para especificar intervalos \\
+	\hline
+		Entero &
+		Cadena de texto &
+		No requiere configuración adicional \\
+	\hline
+		Número en punto flotante &
+		Número en punto flotante &
+		Requiere la configuración de un valor que será utilizado en el proceso de normalización (opcional) \\
+	\hline
+		Número en punto flotante &
+		Intervalos en punto flotante &
+		Requiere configurar reglas para especificar intervalos \\
+	\hline
+		Número en punto flotante &
+		Color &
+		Requiere configurar reglas \\
+	\hline
+		Número en punto flotante &
+		Cadena de texto &
+		No requiere configuración adicional  \\
+	\hline
+		Booleano &
+		Booleano &
+		No requiere configuración adicional \\
+	\hline
+		Booleano &
+		Intervalos en punto flotante &
+		Requiere configurar reglas para especificar intervalos \\
+	\hline
+		Booleano &
+		Color &
+		Requiere configurar reglas \\
+	\hline
+		Cadena de texto &
+		Cadena de texto &
+		No requiere configuración adicional \\
+	\hline
+		Cadena de texto &
+		Intervalos en punto flotante &
+		Requiere configurar reglas \\
+	\hline
+		Cadena de texto &
+		Color &
+		Requiere configurar reglas \\
+	\hline
+		Color en formato hexadecimal &
+		Color &
+		No requiere configuración adicional \\
+	\hline
+\end{tabular}
+\caption{Compatibilidades entre tipos de atributo de las entidades y tipos de dimensión de los modelos gráficos}
+\label{table:asociaciones-compatibles}
+\end{table}
+
+Cuando el usuario trate de realizar una asociación que requiera configuración, se mostrará un mensaje de ayuda y se irá indicando con \textit{tooltips} los tipos de datos que debe introducir en cada campo. De este modo, la configuración queda perfectamente guiada y asistida. Esta característica es muy efectiva a la hora de configurar las reglas de intervalos y valores.
+
+\begin{table}[!htbp]%
+\centering
+\begin{tabular}{| >{\centering\arraybackslash}m{7cm} | >{\centering\arraybackslash}m{5cm} |}
+	\hline
+		{\cellcolor[gray]{0.7}\textbf{Tipo del atributo}} &
+		{\cellcolor[gray]{0.7}\textbf{Tipo de la dimensión}} \\
+	\hline
+		Entero &
+		Booleano \\
+	\hline
+		Número en punto flotante &
+		Entero \\
+	\hline
+		Número en punto flotante &
+		Booleano \\
+	\hline
+		Booleano &
+		Entero \\
+	\hline
+		Booleano &
+		Número en punto flotante \\
+	\hline
+		Booleano &
+		Cadena de texto \\
+	\hline
+		Cadena de texto &
+		Entero \\
+	\hline
+		Cadena de texto &
+		Número en punto flotante \\
+	\hline
+		Cadena de texto &
+		Booleano \\
+	\hline
+		Color en formato hexadecimal &
+		Entero \\
+	\hline
+		Color en formato hexadecimal &
+		Número en punto flotante \\
+	\hline
+		Color en formato hexadecimal &
+		Intervalos en punto flotante \\
+	\hline
+		Color en formato hexadecimal &
+		Booleano \\
+	\hline
+		Color en formato hexadecimal &
+		Cadena de texto \\
+	\hline
+\end{tabular}
+\caption{Tipos de atributos y dimensiones incompatibles}
+\label{table:asociaciones-incompatibles}
+\end{table}
+
+
+Las reglas de intervalos y valores son características que indican qué valores puede tomar un atributo de una entidad y qué valor se le desea asociar en la dimensión del modelo gráfico. En la figura \ref{fig:usermanual-rule-configuration1} se muestra un ejemplo en el que se desean configurar dos reglas en la asociación \textit{employees} - \textit{scale}, que representan, respectivamente, el número de empleados de una factoría y la escala del modelo gráfico. Mediante dichas reglas se define que si la factoría tiene de 0 a 20 empleados, la escala del modelo será 1,0 (escala normal). Sin embargo, si el número de empleados de la factoría se sitúa entre 21 y 100, la escala del modelo será de 1,5.
+
+\imagen{UserManual//usermanual-rule-configuration1}{1.8}{Ejemplo para la configuración de reglas mediante las cuales se asignan valores en punto flotante a intervalos de números enteros}{fig:usermanual-rule-configuration1}
+
+De un modo similar, se pueden definir distintos tipos de reglas. En la figura \ref{fig:usermanual-rule-configuration2} se muestran dos reglas que definen que el color del modelo será verde si el proyecto ha sido auditado, y rojo en caso contrario.
+
+\imagen{UserManual//usermanual-rule-configuration2}{1.6}{Ejemplo para la configuración de reglas mediante las cuales se asignan colores a valores booleanos}{fig:usermanual-rule-configuration2}
+
+Por último, destacar que para un correcto funcionamiento de la visualización, es necesario asociar los campos \textit{id} de la entidad y del modelo gráfico, ya que sólo de este modo será posible identificar qué elemento de la escena representa a una determinada entidad.
+
+
+\subsubsection{Segundo paso: configuración de las dimensiones no asociadas y la leyenda informativa}
+
+En el segundo paso del asistente se configuran dos características. En la figura \ref{fig:usermanual-constants-caption} se muestra una captura de pantalla.
+
+\imagen{UserManual//usermanual-constants-caption}{1.8}{Segundo paso del asistente de configuración de perfiles de visualización}{fig:usermanual-constants-caption}
+
+Por un lado, las dimensiones del modelo que no han sido asociadas con ningún atributo de la entidad podrán tomar valores constantes. Si no se configura ningún valor, éstas tomarán por defecto un conjunto de valores predefinidos.
+
+Por otro lado, se puede configurar una leyenda informativa que será mostrada en la escena. Esta característica es opcional y se pueden añadir tantas líneas informativas como se desee. Cada línea se compone de un color y una cadena de texto. En la figura \ref{fig:usermanual-subproject-visualization} se puede observar un ejemplo de esta característica.
+
+\subsubsection{Tercer paso: datos básicos del perfil}
+
+En el tercer y último paso de configuración del perfil el usuario aportar el nombre del perfil y una descripción tan clara y precisa como sea posible. Sólo de este modo, los usuarios que hagan uso de la funcionalidad de visualización podrán saber qué beneficios de aporta un perfil determinado.
+
+
+
+\section{Gestión de la estructura organizacional del DGS}
+
+La gestión organizacional del Desarrollo Global de Software (DGS) se refiere a la gestión de las entidades que conforman su estructura, tales com las compañías, factorías, proyectos y subproyectos. Esta gestión incluye tanto las tareas de consulta, edición, eliminación y creación de este tipo de entidades, así como las operaciones de consulta y edición de diversas medidas e indicadores.
+
+En este manual de usuario, con el propósito de no extenderlo en exceso, únicamente se mostrará la gestión de factorías software y la gestión de medidas e indicadores de proyectos software. Con todo ello, aunque cada entidad goza de sus particularidades, no es necesario entrar en detalle en todas las tareas de gestión ya que se ha seguido el mismo estilo y formato para que el usuario se adapte a la interfaz de un modo rápido y sin esfuerzo.
+
+
+
+\subsection{Gestión de factorías software}
+\label{sec:factory-management}
+
+La gestión de factorías software, así como la gestión de compañías, sólo está disponible para aquellos usuarios que pertenezcan al grupo de administradores. Por esta razón, para acceder a esta funcionalidad a través del menú de la aplicación, el usuario deberá autenticarse previamente.
+
+Cuando el usuario selecciona la opción de \textit{gestión de factorías} obtiene una pantalla similar a la que se muestra en la figura \ref{fig:usermanual-listfactories}. En ella se pueden consultar las distintas factorías que se encuentran dadas de alta en el sistema así como diferentes características, tales como el tipo de mercado en el que se están especializadas, el número de empleados que alberga, los proyectos que lidera, etcétera. Además, si se pasar el cursor del ratón sobre los iconos del mundo se muestra un \textit{tooltip} emergente con una imagen que indica su posición en el mapa.
+
+\imagen{UserManual//usermanual-listfactories}{1.8}{Panel de control para la gestión de factorías software}{fig:usermanual-listfactories}
+
+Siguiendo el formato empleado en la gestión de perfiles de visualización, en la parte inferior del panel de control se muestra un conjunto de botones que permiten realizar distintas operaciones. En esta sección se abordan las funcionalidades de consulta, edición, eliminación y creación de factorías, de las cuales las tres primeras requieren la selección previa de una de las factorías de la tabla.
+
+Al seleccionar una factoría y acceder a la funcionalidad \textit{ver factoría} se obtiene una página en la que se muestra información detallada de la factoría, entre la que destaca la lista de proyectos que lidera y la lista de subproyectos que desarrolla (Fig. \ref{fig:usermanual-viewfactory}).
+
+\imagen{UserManual//usermanual-viewfactory}{1.8}{Fragmento de la página de consulta de una factoría software}{fig:usermanual-viewfactory}
+
+El usuario también puede decidir eliminar una factoría, para lo cual deberá confirmar la operación a través del mensaje emergente que se muestra (Fig. \ref{fig:usermanual-deletefactory}).
+
+\imagen{UserManual//usermanual-deletefactory}{1.8}{Mensaje de confirmación para la eliminación de una factoría software}{fig:usermanual-deletefactory}
+
+La edición y creación de nuevas factorías utilizan el mismo formulario, por lo tanto sólo es necesario abordar una de ellas en este manual. Este formulario se basa en un asistente compuesto por 3 pasos.
+
+\begin{itemize}
+	\item Primer paso: se deberá seleccionar a qué compañía pertenece e introducir los datos básicos de la factoría, tales como el nombre, información adicional, un email de contacto y el número de empleados que tiene (Fig. \ref{fig:usermanual-new-factory-step1}).
+		\imagen{UserManual//usermanual-new-factory-step1}{1.8}{Primer paso del asistente de creación de una factoría software}{fig:usermanual-new-factory-step1}
+	
+	\item Segundo paso: se deberán aportar el nombre y apellidos del director de la factoría. De forma opcional se podrá aportar una fotografía del mismo (Fig. \ref{fig:usermanual-new-factory-step2}).
+	
+\imagen{UserManual//usermanual-new-factory-step2}{1.8}{Segundo paso del asistente de creación de una factoría software}{fig:usermanual-new-factory-step2}
+
+	\item Tercer paso: se deberá indicar la ubicación de la factoría en el mapa. Para realizar esta operación se puede escribir la dirección en los campos facilitados y hacer clic sobre el botón \textit{localizar}, o buscar la ubicación directamente sobre el mapa y hacer clic sobre ella para que el sistema averigüe su dirección (Fig. \ref{fig:usermanual-new-factory-step3}).
+	
+\imagen{UserManual//usermanual-new-factory-step3}{1.8}{Tercer paso del asistente de creación de una factoría software}{fig:usermanual-new-factory-step3}
+\end{itemize}
+
+
+
+\subsection{Gestión de medidas}
+
+Existen dos tipos de medidas: medidas base y medidas derivadas. Por un lado, las medidas base toman un valor que debe ser aportado por el usuario y, por otro, las medidas derivadas obtienen su valor realizando una serie de cálculos sobre las medidas base.
+
+Si el usuario se encuentra autenticado como administrador o jefe de proyecto podrá acceder a la \textit{gestión de proyectos} y obtener una página como la que se muestra en la figura \ref{fig:usermanual-listprojects}. Como se puede observar, el estilo y el formato es similar al utilizado en la gestión de factorías (Sección \ref{sec:factory-management}). En esta página el usuario puede seleccionar un proyecto y acceder a la funcionalidad \textit{ver medidas}.
+
+\imagen{UserManual//usermanual-listprojects}{1.8}{Panel de control para la gestión de proyectos software}{fig:usermanual-listprojects}
+
+En la página de \textit{ver medidas} se obtiene una pantalla como la que se muestra en la figura \ref{fig:usermanual-project-viewmeasures}. En ella se pueden estudiar los valores que toman las medidas base y las medidas derivadas -estas últimas se marcan con un asterisco (*)-.
+
+\imagen{UserManual//usermanual-project-viewmeasures}{1.8}{Página para la consulta de medidas de un proyecto software}{fig:usermanual-project-viewmeasures}
+
+Cuando el usuario hace clic en el botón \textit{configurar medidas base} que se encuentra en la parte inferior de la página, accede a un formulario que le permite introducir los valores correspondientes a dichas medidas (Fig. \ref{fig:usermanual-project-updatemeasures}).
+
+\imagen{UserManual//usermanual-project-updatemeasures}{1.8}{Formulario para la configuración de valores de las medidas de un proyecto software}{fig:usermanual-project-updatemeasures}
