@@ -25,13 +25,13 @@ En la figura \ref{fig:it1-jogl-usecase} se muestra el diagrama de casos de uso q
 
 Dado el nivel de abstracción en el que se encuentra el proyecto, se ha modelado el hilo de ejecución de JOGL como un actor del sistema. Este \textit{pseudo-actor} desaparecerá en futuros diagramas de casos de uso y, de hecho, no se ha considerado en el diagrama general de casos de uso del motor gráfico (Fig. \ref{fig:cdu-graphics-engine}) que se obtuvo en la fase de inicio (Sección \ref{sec:modelo-cdu}). Su representación en este nivel tiene como único objetivo modelar un productor de información (el usuario que realiza acciones para desencadenar el cálculo de determinados parámetros de rotación del cubo) y un consumidor (el hilo de ejecución de JOGL que pinta el cubo a partir de los parámetros calculados).
 
-\imagenBorde{Cap5//it1-jogl-usecase}{2.0}{Diagrama de casos de uso para un mini-proyecto de funcionalidad reducida, basado en JOGL}{fig:it1-jogl-usecase}
+\imagenBorde{Cap5//it1-jogl-usecase}{0.75}{Diagrama de casos de uso para un mini-proyecto de funcionalidad reducida, basado en JOGL}{fig:it1-jogl-usecase}
 
 El siguiente paso consiste en modelar el diagrama de clases de análisis que permitirá comprender el funcionamiento del sistema con un poco más de detalle (Fig. \ref{fig:it1-analysis-class-diagram}). En él se observa que el usuario interactúa con el contenedor de gráficos, cuyas características serán definidas en un futuro, que a su vez se encarga de iniciar el hilo de ejecución de JOGL. Este hilo es el responsable de pintar los cubos y poner a la escucha un \textit{listener} de eventos de teclado que permitirá que el usuario rote los poliedros. Esta misma explicación se proporciona gráficamente en el diagrama de comunicación asociado (Fig. \ref{fig:it1-communication-class-diagram}), donde se indica el paso de los distintos mensajes y señales.
 
-\imagenBorde{Cap5//it1-analysis-class-diagram}{1.2}{Diagrama de clases de análisis para un mini-proyecto de funcionalidad reducida, basado en JOGL}{fig:it1-analysis-class-diagram}
+\imagenBorde{Cap5//it1-analysis-class-diagram}{0.7}{Diagrama de clases de análisis para un mini-proyecto de funcionalidad reducida, basado en JOGL}{fig:it1-analysis-class-diagram}
 
-\imagenBorde{Cap5//it1-communication-class-diagram}{1.1}{Diagrama de comunicación para un mini-proyecto de funcionalidad reducida, basado en JOGL}{fig:it1-communication-class-diagram}
+\imagenBorde{Cap5//it1-communication-class-diagram}{0.6}{Diagrama de comunicación para un mini-proyecto de funcionalidad reducida, basado en JOGL}{fig:it1-communication-class-diagram}
 
 
 
@@ -47,17 +47,17 @@ Como fruto del estudio de la librería JOGL y de los diagramas de análisis elabor
 	\item \textbf{dominio}. Paquete propio con dos subpaquetes para una mejor organización de las clases del proyecto: \textbf{control}, que contendrá distintas clases de control, y \textbf{conocimiento}, que proporcionará las distintas clases de conocimiento.
 \end{itemize}
 
-\imagenBorde{Cap5//it1-jogl-class-diagram}{0.8}{Diagrama de clases de diseño  para un mini-proyecto de funcionalidad reducida, basado en JOGL}{fig:it1-jogl-class-diagram}
+\imagenBorde{Cap5//it1-jogl-class-diagram}{0.5}{Diagrama de clases de diseño  para un mini-proyecto de funcionalidad reducida, basado en JOGL}{fig:it1-jogl-class-diagram}
 
 El diagrama de clases de diseño describe una vista estática del sistema, pero para comprender el funcionamiento del mismo es necesario especificar una vista dinámica que muestre cómo se crean los distintos objetos y cómo interactúan entre ellos. Para una mejor comprensión, esta vista se ha divido en dos diagramas de secuencia: inicialización y ejecución.
 
 En el diagrama de secuencia de inicialización (Fig. \ref{fig:it1-jogl-initialization-sequence-diagram}) se observa qué llamadas se producen entre los distintos objetos hasta que el hilo de ejecución de JOGL entra en el bucle que le permite repintar la escena constantemente.
 
-\imagenBorde{Cap5//it1-jogl-initialization-sequence-diagram}{1.3}{Diagrama de secuencia de la inicialización del hilo de JOGL}{fig:it1-jogl-initialization-sequence-diagram}
+\imagenBorde{Cap5//it1-jogl-initialization-sequence-diagram}{0.65}{Diagrama de secuencia de la inicialización del hilo de JOGL}{fig:it1-jogl-initialization-sequence-diagram}
 
-En el diagrama de secuencia de ejecución (Fig. \ref{fig:it1-jogl-execution-sequence-diagram}) se asume la parte de inicialización y se centra en la interacción entre objetos que se produce para pintar la escena.
+En el diagrama de secuencia de ejecución (Fig. \ref{fig:it1-jogl-execution-sequence-diagram}) se asume la parte de inicialización y se centra en la interacción entre objetos que se produce para pintar la escena. Ello conlleva omitir la parte que se corresponde con la figura \ref{fig:it1-jogl-initialization-sequence-diagram} y el actor que inicia la acción.
 
-\imagenBorde{Cap5//it1-jogl-execution-sequence-diagram}{1.1}{Diagrama de secuencia de ejecución del hilo de JOGL}{fig:it1-jogl-execution-sequence-diagram}
+\imagenBorde{Cap5//it1-jogl-execution-sequence-diagram}{0.6}{Diagrama de secuencia de ejecución del hilo de JOGL}{fig:it1-jogl-execution-sequence-diagram}
 
 
 
@@ -67,7 +67,7 @@ En el diagrama de secuencia de ejecución (Fig. \ref{fig:it1-jogl-execution-seque
 
 La disciplina de implementación del mini-proyecto que se aborda en esta iteración comienza con la configuración del entorno y la creación del proyecto.
 
-En esta primera parte se ha instalado y configurado Eclipse IDE, Maven y el plugin m2eclipse en sus versiones especificadas en la sección \ref{sec:marco}. A continuación se ha creado un proyecto Maven de tipo \textbf{maven-archetype-quickstart} y se han añadido las dependencias de JOGL necesarias (Listado \ref{lst:pom-jogl}). Puesto que estas dependencias no se encuentran alojadas en los repositorios generales de Maven, es necesario añadirlas manualmente al repositorio local. Para evitar conflictos de versiones, las dependencias que se han utilizado en este PFC se proporcionan en el DVD adjunto bajo el directorio \textit{desglosa\textbackslash{}builds\textbackslash{}jogamp\textbackslash{}eployment\textbackslash{}webstart\textbackslash{}archive}, junto con un pequeño fichero de texto que detalla cómo realizar la operación.
+En esta primera parte se ha instalado y configurado Eclipse IDE, Maven y el plugin m2eclipse en sus versiones especificadas en la sección \ref{sec:marco}. A continuación se ha creado un proyecto Maven de tipo \textbf{maven-archetype-quickstart} y se han añadido las dependencias de JOGL necesarias (Listado \ref{lst:pom-jogl}). Puesto que estas dependencias no se encuentran alojadas en los repositorios generales de Maven, es necesario añadirlas manualmente al repositorio local. Para evitar conflictos de versiones, las dependencias que se han utilizado en este PFC se proporcionan en el DVD adjunto bajo el directorio \textit{desglosa\textbackslash{}builds\textbackslash{}jogamp\textbackslash{}deployment\textbackslash{}webstart\textbackslash{}archive}, junto con un pequeño fichero de texto que detalla cómo realizar la operación.
 
 \lstinputlisting[language=XML,caption={Configuración de pom.xml para añadir JOGL como dependencia del proyecto},label=lst:pom-jogl]{snippets//maven-jogl.txt}
 

@@ -5,18 +5,23 @@
 % ANEXO II: Manual de configuración del entorno (secundario)
 % ANEXO III: Manual de despliegue
 
-DESGLOSA es una herramienta cuyo objetivo es facilitar la gestión organizacional, en el contexto del desarrollo global, y el seguimiento de los proyectos globalizados. Para lograrlo, trata de dar soporte a las distintas actividades que se llevan a cabo en este tipo de escenarios y se ofrece distintos mecanismos de representación gráfica para la información que se considera relevante, como pueden ser las medidas e indicadores de calidad y productividad utilizados en este paradigma. Gracias a esta característica es posible predecir y detectar distintos riesgos y anomalías, así como ofrecer ayuda en la toma de decisiones de las actividades de la organización, con el objetivo de incrementar la competitividad de las organizaciones a nivel internacional.
+DESGLOSA es una herramienta de visualización cuyo objetivo es facilitar la gestión organizacional, en el contexto del desarrollo global, y el seguimiento de los proyectos globalizados. Para lograrlo, trata de dar soporte a las distintas actividades que se llevan a cabo en este tipo de escenarios y se ofrece distintos mecanismos de representación gráfica para la información que se considera relevante, como pueden ser las medidas e indicadores de calidad y productividad utilizados en este paradigma. Gracias a esta característica es posible predecir y detectar distintos riesgos y anomalías, así como ofrecer ayuda en la toma de decisiones de las actividades de la organización, con el objetivo de incrementar la competitividad de las organizaciones a nivel internacional.
 
 Cuando el usuario escribe la dirección URL del sistema en su navegador web, obtiene una página tal y como la que se muestra en la figura \ref{fig:usermanual-index}.
 
 \imagen{UserManual//usermanual-index}{1.3}{Página de inicio de la aplicación web}{fig:usermanual-index}
 
-Nótese que todos los datos que se muestran a lo largo de este manual, tales como ubicaciones, nombres propios, nombres de entidades y datos de medidas, son ficticios y con propósito informativo. Cualquier parecido con la realidad es pura coincidencia.
+Por razones de confidencialidad, todos los datos que se muestran a lo largo de este manual, tales como ubicaciones, nombres propios, nombres de entidades y datos de medidas e indicadores, son ficticios y con propósito meramente ilustrativo. Cualquier parecido con la realidad es pura coincidencia.
 
 
 \section{Acceso al sistema}
 
-Las funcionalidades de la aplicación están condicionadas en función del tipo de usuario que va a utilizarla. Por defecto, el sistema reconoce tres tipos de usuarios: administrador, jefe de proyecto y usuario estándar.
+Las funcionalidades de la aplicación están condicionadas en función del tipo de usuario que va a utilizarla. Por defecto, el sistema reconoce tres tipos de usuarios: administrador, jefe de proyecto y usuario estándar. Según el \textit{dataset} que se incorpora por defecto, los usuarios que pueden emplearse son los siguientes:
+\begin{itemize}
+	\item Usuario perteneciente al grupo de administradores: usuario \textit{admin} y contraseña \textit{admin}.
+	\item Usuario perteneciente al grupo de jefes de proyecto: usuario \textit{manager} y contraseña \textit{manager}.
+	\item Usuario perteneciente al grupo de usuarios usuario \textit{user} y contraseña \textit{user}.
+\end{itemize}
 
 Para llevar a cabo el proceso de autenticación, el usuario deberá acceder a la funcionalidad por medio del botón \textit{``iniciar sesión''} que se encuentra en la parte superior derecha de la página. En el formulario que se proporciona (Fig. \ref{fig:usermanual-login-form}) deberá introducir su nombre de usuario y su contraseña.
 
@@ -32,7 +37,7 @@ El resultado del proceso de autenticación será notificado al usuario, tanto si e
 
 \imagen{UserManual//usermanual-login-errors}{1.6}{Errores obtenidos en el proceso de autenticación: (a) El usuario o la contraseña intorducidos son incorrectos (b) La cuenta de usuario ha sido deshabilitada (c) La cuenta de usuario ha sido bloqueada (d) La cuenta de usuario ha caducado}{fig:usermanual-login-errors}
 
-Si el proceso de autenticación se lleva a cabo con normalidad, el usuario será redirigido a la página principal. En ella podrá observar que el nombre de usuario con el que se ha autenticado aparece en la parte inferior izquierda y que los menús de la parte superior izquierda se han configurado automáticamente para permitir el acceso a las funcionalidades que puede desempeñar (Fig. \ref{fig:usermanual-index-logged}).
+Si el proceso de autenticación se lleva a cabo con normalidad, el usuario será redirigido a la página principal. En ella podrá observar que el nombre de usuario con el que se ha autenticado aparece en la parte inferior izquierda y que los menús de la parte superior izquierda se han configurado automáticamente para permitir el acceso a las funcionalidades que puede desempeñar (Fig. \ref{fig:usermanual-index-logged}). En este ejemplo se ha utilizado el usuario \textit{admin}.
 
 \imagen{UserManual//usermanual-index-logged}{1.3}{Página de inicio para un usuario autenticado. En la parte inferior izquierda se muestra su nombre de usuario y en la parte superior derecha los menús configurados para su rol}{fig:usermanual-index-logged}
 
@@ -54,7 +59,11 @@ De modo común a las tres columnas, cuando el usuario selecciona un proyecto se u
 
 \imagen{UserManual//usermanual-gis}{1.3}{Página de visualización basada en Google Maps}{fig:usermanual-gis}
 
-Por otro lado, en el panel \textit{``más información''} que se encuentra a la derecha del mapa se muestra información detallada del elemento seleccionado en el \textit{filtro organizacional}. Por ejemplo, en la figura \ref{fig:usermanual-moreinfo-project} se muestra información detallada acerca del proyecto \textit{Althea}, previamente seleccionado en el filtro de proyectos de la tercera columna.
+Por ejemplo, si se selecciona la denominada \textit{Compañía 1}, se observa que participa en dos proyectos (Vitrubio y Valdelvira) y que dispone de cuatro factorías en Argentina, Brasil, México y Portugal (Fig. \ref{fig:demo-select-company1}).
+
+\imagen{UserManual//demo-select-company1}{1.5}{Resultado de seleccionar la compañía \textit{Compañía 1} en el filtro organizacional}{fig:demo-select-company1}
+
+Por otro lado, en el panel \textit{``más información''} que se encuentra a la derecha del mapa se muestra información detallada del elemento seleccionado en el \textit{filtro organizacional}. Por ejemplo, en la figura \ref{fig:usermanual-moreinfo-project} se muestra información detallada acerca del proyecto \textit{Althea}, previamente seleccionado en el filtro de proyectos de la tercera columna. Otros datos como las medidas software del proyecto y sus subproyectos asociados también son mostrados, pero no se incluyen en la figura por no extender el manual en exceso. Nótese que esta funcionalidad también está disponible si se selecciona una compañía, una factoría o un subproyecto.
 
 \imagen{UserManual//usermanual-moreinfo-project}{1.3}{Panel que muestra información detallada del proyecto seleccionado}{fig:usermanual-moreinfo-project}
 
@@ -64,7 +73,7 @@ El panel de \textit{más información} es muy útil ya que no sólo proporciona info
 
 \subsection{Visualización de medidas mediante gráficos en 3D}
 
-El acceso a la funcionalidad de visualización de medidas e indicadores mediante gráficos 3D se realiza mediante el panel \textit{más información} que se encuentra a la izquierda del mapa del mundo. Este panel consta de 5 pestañas: información global, compañía, factoría, proyecto y subproyecto. Por un lado, desde la pestaña \textit{informacón global} se facilita la visualización de medidas de toda la estructura organizacional, comenzando en el nivel de abstracción que se desee (Fig. \ref{fig:usermanual-moreinfo}).
+El acceso a la funcionalidad de visualización de medidas e indicadores mediante gráficos 3D se realiza mediante el panel \textit{más información} que se encuentra a la derecha del mapa del mundo. Este panel consta de 5 pestañas: información global, compañía, factoría, proyecto y subproyecto. Por un lado, desde la pestaña \textit{informacón global} se facilita la visualización de medidas de toda la estructura organizacional, comenzando en el nivel de abstracción que se desee (Fig. \ref{fig:usermanual-moreinfo}).
 
 \imagen{UserManual//usermanual-moreinfo}{2.0}{Pestaña de \textit{información global} que ofrece acceso a la visualización de datos globalizados}{fig:usermanual-moreinfo}
 
@@ -79,36 +88,77 @@ La primera vez que el usuario trate de lanzar el motor gráfico, el navegador web
 Si el usuario decide visualizar las medidas de un elemento mediante las distintas opciones de visualización que se muestran en el panel \textit{más información}, se abrirá una nueva ventana en la que se deberá seleccionar un perfil de visualización y un método de agrupación.
 \begin{itemize}
 	\item Los perfiles de visualización, cuyo proceso de configuración se mostrará en la sección \ref{sec:configuracion-perfil-visualizacion}, definen determinadas características de configuración que condicionan la forma en la que los gráficos 3D que van a ser generados. Cualidades como el modelo gráfico que se utilizará en la representación y la relación entre los distintos atributos de las entidades y las dimensiones de los modelos son especificados en dicho perfil.
-	\item El método de agrupación define bajo qué criterio se agruparán los distintos elementos que se representarán en la escena 3D. De este modo, será posible agrupar proyectos pertenecientes al mismo tipo de mercado o mostrar qué factorías colaboran para desarrollar los subproyectos que conforman un proyecto.
+	\item El método de agrupación define bajo qué criterio se agruparán los distintos elementos que se representarán en la escena 3D, es decir, cómo se formarán los barrios de la escena. De este modo, será posible agrupar proyectos pertenecientes al mismo tipo de mercado o mostrar qué factorías colaboran para desarrollar los subproyectos que conforman un proyecto.
 \end{itemize}
 
 En la figura \ref{fig:usermanual-popup-global-company-visualization} se muestra la ventana de selección de perfil y método de agrupación que se muestra al usuario cuando éste desea visualizar las medidas de toda la estructura organizacional a nivel de \textit{compañía}. Al seleccionar ambas opciones y hacer \textit{clic} sobre el botón \textit{OK}, se lanzará el motor gráfico y éste generará la escena en base al perfil seleccionado y la información que se disponga acerca de las compañías.
 
 \imagen{UserManual//usermanual-popup-global-company-visualization}{1.5}{Ventana de selección de perfil y método de agrupación para la visualización de medidas e indicadores a nivel de compañía}{fig:usermanual-popup-global-company-visualization}
 
-En la figura \ref{fig:usermanual-global-company-visualization} se muestra la escena generada a partir de un perfil predefinido. A continuación el usuario puede seleccionar un edificio -mediante un clic de ratón- para obtener información detallada acerca de la compañía que representa o descender al nivel de factoría de dicha compañía -mediante doble clic de ratón-.
+En la figura \ref{fig:usermanual-global-company-visualization} se muestra la escena generada a partir de un perfil predefinido. En ella, tal y como está configurado dicho perfil, se muestran tres elementos que se corresponden con cada una de las compañías. En cada elemento se representan las siguientes características:
+\begin{itemize}
+	\item La altura de la chimenea y el número sobre el edificio indican el número de factorías que posee la compañía.
+	\item El color de la chimenea indica el número de empleados de la compañía: menos de 100 empleados (rojo), entre 100 y 200 empleados (azul), y más de 200 empleados (verde).
+\end{itemize}
+
+A continuación el usuario puede seleccionar un edificio -mediante un clic de ratón- para obtener información detallada acerca de la compañía que representa o descender al nivel de factoría de dicha compañía -mediante doble clic de ratón-.
 
 \imagen{UserManual//usermanual-global-company-visualization}{1.5}{Visualización de compañías mediante la metáfora de un polígono industrial. Cada industria representa una compañía}{fig:usermanual-global-company-visualization}
 
-Otro elemento a destacar de la figura \ref{fig:usermanual-global-company-visualization} son las etiquetas que se muestran bajo la escena 3D. Estas etiquetas indican qué perfil de visualización se ha seleccionado y la descripción del mismo. Bajo las etiquetas relativas al perfil seleccionado se encuentra un elemento titulado \textit{``controles de navegación''}. Al seleccionar este elemento se muestra una tabla informativa que contiene las distintas operaciones que puede realizar el usuario para interaccionar con la escena 3D \ref{fig:usermanual-navigation-controls}. Preste especial atención a las teclas del teclado y alas acciones del ratón que permiten desplazar y rotar la cámara, ya que así es posible maximizar la eficiencia de la visualización.
+Otros elementos a destacar de la figura \ref{fig:usermanual-global-company-visualization} son las etiquetas que se muestran bajo la escena 3D. Estas etiquetas indican qué perfil de visualización se ha seleccionado y la descripción del mismo. También, sobre la escena 3D se encuentra un elemento titulado \textit{``controles de navegación''}. Al seleccionar este elemento se muestra una tabla informativa que contiene las distintas operaciones que puede realizar el usuario para interaccionar con la escena 3D (Fig. \ref{fig:usermanual-navigation-controls}). Preste especial atención a las teclas del teclado y a las acciones del ratón que permiten desplazar y rotar la cámara, ya que así es posible maximizar la eficiencia de la visualización.
 
 \imagen{UserManual//usermanual-navigation-controls}{2.0}{Componente que muestra los controles que pueden emplearse para interaccionar con la escena 3D}{fig:usermanual-navigation-controls}
 
-Al hacer doble clic sobre alguno de los elementos que representan las compañías, se descenderá al nivel de factoría de dicha compañía. Para ello será necesario seleccionar el perfil de visualización mediante el cual se configurarán los elementos que representan las factorías y el método de agrupación de las mismas. En la figura \ref{fig:usermanual-factory-visualization} se muestra uno de los posibles resultados generados a partir de un perfil de factoría predefinido. En este caso, al haber descendido desde una compañía concreta y hacer la agrupación por \textit{factoría}, se muestran en qué proyectos están trabajando las factorías de la compañía seleccionada.
+Para continuar con el ejemplo se hará doble clic sobre la compañía con más de 200 empleados (la de la chimenea verde). Esta operación permitirá descender al nivel de factoría de dicha compañía. Para ello será necesario seleccionar el perfil de visualización mediante el cual se configurarán los elementos que representan las factorías y el método de agrupación de las mismas.
 
-\imagen{UserManual//usermanual-factory-visualization}{1.5}{Visualización, mediante la metáfora de un polígono industrial, de los proyectos en los que trabajan las factorías de una determinada compañía}{fig:usermanual-factory-visualization}
+En la figura \ref{fig:usermanual-factory-visualization} se muestra el resultado de utilizar un perfil predefinido de factoría y la agrupación por proyectos. Esta vista permite conocer qué factorías de la compañía \textit{Compañía 1} están colaborando en un mismo proyecto, ya que cada elemento representa una factoría y cada barrio un proyecto. Según la descripción del perfil, en esta ocasión se representan las siguientes características:
+\begin{itemize}
+	\item La altura de la chimenea y el número sobre el edificio representa el número de subproyectos que la factoría está desarrollando.
+	\item El color de la chimenea indica el mercado de especialización de la factoría.
+	\item El tamaño del modelo indica el número de empleados de la factoría.
+\end{itemize}
 
-De manera análoga al nivel de compañía, en este nivel se puede obtener información detallada de una factoría -mediante un clic de ratón sobre el elemento deseado- o visualizar las medidas e indicadores de los proyectos en los que una factoría participa. Para realizar esta última operación habrá que hacer doble clic sobre la factoría y seleccionar el perfil de visualización mediante el cual se configurarán los proyectos y su método de agrupamiento. En la figura \ref{fig:usermanual-project-visualization} se muestra uno de los posibles resultados generados a partir de un perfil de proyecto predefinido.
+Como se puede apreciar, en esta ocasión, aunque se emplea el mismo modelo que en el nivel de compañía, se está utilizando una dimensión adicional (tamaño del modelo). Además, en la figura \ref{fig:usermanual-factory-visualization} destaca que la factoría con menos empleados es la que tiene asignados más subproyectos y que el tipo mercado de especialización que prevalece sobre todas las factorías es \textit{sanitario}.
+
+\imagen{UserManual//usermanual-factory-visualization}{1.5}{Visualización, mediante la metáfora de un polígono industrial, de los proyectos en los que trabajan las factorías de la compañía \textit{Compañía 1}}{fig:usermanual-factory-visualization}
+
+De manera análoga al nivel de compañía, en este nivel se puede obtener información detallada de una factoría -mediante un clic de ratón sobre el elemento deseado- o visualizar las medidas e indicadores de los proyectos en los que una factoría participa. Si se efectúa un clic sobre ella, se obtendrá el panel que aparece a la derecha de la figura \ref{fig:usermanual-factory-visualization} y se podrá analizar, entre otros, qué proyectos lidera (2) y qué subproyectos tiene en desarrollo (4).
+
+Para continuar con el ejemplo, se hará doble clic sobre esta misma factoría, se seleccionará el perfil predefinido para proyectos y el método de agrupación por \textit{mercado}. En la figura \ref{fig:usermanual-project-visualization} se muestra el resultado de esta operación. En la escena se observan los cuatro proyectos en los que participa la factoría seleccionada y un conjunto de características definidas por el perfil:
+\begin{itemize}
+	\item El número de la esfera superior verde indica las incidencias que se han resuelto en el proyecto.
+	\item El número de la esfera superior roja indica las incidencias que quedan por resolver.
+	\item El icono de la esfera inferior representa si el proyecto ha superado la auditoría.
+	\item El tamaño de la esfera inferior indica el tamaño del proyecto en número de trabajadores.
+	\item El color de la esfera inferior indica el tipo de mercado al que pertenece el proyecto.
+\end{itemize}
+
+Si además se efectúa un clic sobre el proyecto \textit{Vandelvira}, se obtiene la información que aparece en el panel de la derecha. En él se pueden analizar, entre otros, las medidas e indicadores del proyecto y sus subproyectos asociados.
 
 \imagen{UserManual//usermanual-project-visualization}{1.5}{Visualización, mediante un modelo diseñado para representar proyectos software, de los proyectos en los que participa una factoría determinada}{fig:usermanual-project-visualization}
 
-Una vez más, y con un funcionamiento similar al de todos los niveles anteriores, es posible analizar los subproyectos que conforman un proyecto. Nótese que la elección del método de agrupamiento es una característica importante ya que nos permite conocer con un golpe de vista las medidas e indicadores de los subproyectos y en qué factorías se están desarrollando (Fig. \ref{fig:usermanual-subproject-visualization}
+Una vez más, y con un funcionamiento similar al de todos los niveles anteriores, es posible analizar los subproyectos que conforman un proyecto. Nótese que la elección del método de agrupamiento es una característica importante ya que nos permite conocer con un golpe de vista las medidas e indicadores de los subproyectos y en qué factorías se están desarrollando.
+
+Para continuar con el ejemplo se efectuará un doble clic sobre el proyecto \textit{Vandelvira}, se seleccionará el perfil predefinido y el método de agrupamiento por factoría. El resultado se muestra en la figura \ref{fig:usermanual-subproject-visualization}. En ella, y gracias al método de agrupamiento, se puede comprobar qué factorías desarrollan cada uno de los subproyectos que conforman \textit{Vandelvira}. Destaca que la factoría llamada \textit{Factoría 1.3} está llevando desarrollando dos subproyectos de Vandelvira y uno de ellos parece que muestra alguna anomalía.
+
+Primero analizaremos las características del perfil:
+\begin{itemize}
+	\item El color de la torre indica el rango de valores en el que se encuentra el ratio de fichaje de código y fichaje total estimado: aceptable (verde), marginal (azul) y no aceptable (rojo).
+	\item La altura de la torre indica la fiabilidad.
+	\item El ancho de la torre indica la usabilidad.
+	\item El relleno de la torre indica la portabilidad.
+	\item La profundidad de la torre indica la mantenibilidad.
+\end{itemize}
+
+Con todo ello, se deduce que el ratio de fichaje y la portabilidad de uno de los subproyectos que desarrolla la factoría 1.3 presenta algún tipo de anomalía. Si se selecciona esa torre, se corroboran estas deducciones ya que la portabilidad del subproyecto es de 9.8 (sobre 100.0) y el ratio de fichaje 0.9 sobre (1.0).
 
 \imagen{UserManual//usermanual-subproject-visualization}{1.5}{Visualización, mediante la metáfora de ciudad, de los subproyectos que conforma un proyecto. La agrupación se muestra en base a la factoría que desarrolla cada subproyecto}{fig:usermanual-subproject-visualization}
 
 En el ejemplo que se ha seguido a lo largo de esta sección se ha mostrado cómo descender a través de los distintos elementos de la escena para mostrar información cada vez más específica. En otras palabras, se ha mostrado cómo acceder a las factorías de una compañía específica, a los proyectos en los que participa una factoría determinada y a los subproyectos que conforman un proyecto concreto. No obstante, mediante las opciones facilitadas en la pestaña \textit{información global} es posible acceder a todo este tipo de información comenzando a nivel global de toda la estructura organizacional. En la figura \ref{fig:usermanual-global-subproject-visualization} se muestran, agrupados por proyecto, todos los subproyectos dados de alta en el sistema.
 
 \imagen{UserManual//usermanual-global-subproject-visualization}{1.5}{Visualización, mediante la metáfora de ciudad, de todos los subproyectos dados de alta en el sistema. La agrupación se muestra en base a al proyecto al que pertenecen}{fig:usermanual-global-subproject-visualization}
+
+Para finalizar, destacar que se pueden definir tantos perfiles de visualización como sea necesario para cada tipo de entidad (compañía, factoría, proyecto o subproyecto) y emplear en cada situación el modelo gráfico que se estime más oportuno.
 
 
 \section{Perfiles de visualización}
@@ -125,9 +175,9 @@ Para gestionar los perfiles de visualización el usuario deberá autenticarse y pe
 
 La configuración de perfiles de visualización se lleva a cabo mediante un asistente compuesto por tres pasos: elección y configuración de la entidad y el modelo gráfico de representación, configuración de dimensiones constantes y leyenda informativa y, por último, nombre y descripción del perfil de visualización.
 
-\subsubsection{Primero paso: configuración de las asociaciones del perfil}
+\subsubsection{Primer paso: configuración de las asociaciones del perfil}
 
-En este primer paso se selecciona qué entidad se desea representar -compañía, factoría, proyecto o subproyecto- y qué modelo gráfico se utilizará para su representación -torres, fábricas o bolas con antenas-. Acto seguido, se deberá configurar las asociaciones entre los atributos de la entidad y las dimensiones del modelo gráfico (Fig. \ref{fig:usermanual-mappings-step1}.
+En este primer paso se selecciona qué entidad se desea representar -compañía, factoría, proyecto o subproyecto- y qué modelo gráfico se utilizará para su representación -torres, fábricas o bolas con antenas-. Acto seguido, se deberá configurar las asociaciones entre los atributos de la entidad y las dimensiones del modelo gráfico (Fig. \ref{fig:usermanual-mappings-step1}).
 
 \imagen{UserManual//usermanual-mappings-step1}{1.5}{Primer paso del asistente de configuración de perfiles de visualización}{fig:usermanual-mappings-step1}
 
@@ -211,7 +261,7 @@ Los tipos de datos que se manejan en los atributos de las entidades y las dimens
 
 Cuando el usuario trate de realizar una asociación que requiera configuración, se mostrará un mensaje de ayuda y se irá indicando con \textit{tooltips} los tipos de datos que debe introducir en cada campo. De este modo, la configuración queda perfectamente guiada y asistida. Esta característica es muy efectiva a la hora de configurar las reglas de intervalos y valores.
 
-\begin{table}[!htbp]%
+\begin{table}[!ht]%
 \centering
 \begin{tabular}{| >{\centering\arraybackslash}m{7cm} | >{\centering\arraybackslash}m{5cm} |}
 	\hline
