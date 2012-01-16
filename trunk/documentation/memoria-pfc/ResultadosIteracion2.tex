@@ -23,7 +23,7 @@ Por otro lado, el motor gráfico no debe tener ningún tipo de dependencia con la 
 \subsubsection{Disciplina de análisis}
 \label{sec:iteracion-2-analisis}
 
-El usuario debe ser capaz de manipular la cámara a través de la cual visualiza la escena. Mediante un diagrama de casos de uso (Fig. \ref{fig:it2-camera-usecase}) es posible especificar de un modo general qué movimientos y operaciones se encuentran disponibles: desplazamiento y rotación (en distintas direcciones y ejes de coordenadas). Para poder concretar un poco más, se han modelado los distintos tipos de desplazamiento y rotación como puntos de extensión (\textit{extension points}) pero, aún así, es necesario completar el diagrama con la descripción de los casos de uso. En este documento sólo se incluye la descripción del CDU ``Desplazar'' y algunos de sus puntos de extensión (Tabla \ref{table:move-usecase-description}).
+El usuario debe ser capaz de manipular la cámara a través de la cual visualiza la escena. Mediante un diagrama de casos de uso (Fig. \ref{fig:it2-camera-usecase}) es posible especificar de un modo general qué movimientos y operaciones se encuentran disponibles: desplazamiento y rotación (en distintas direcciones y ejes de coordenadas). Para concretar los distintos tipos de desplazamiento y rotación se adjunta la descripción de ambos casos de uso en las tablas \ref{table:move-usecase-description} y \ref{table:rotate-usecase-description}.
 
 \imagenBorde{Cap5//it2-camera-usecase}{1.1}{Diagrama de casos de uso para CdU1.1 y CdU1.2}{fig:it2-camera-usecase}
 
@@ -41,7 +41,7 @@ El usuario debe ser capaz de manipular la cámara a través de la cual visualiza l
 	\hline
 	\textbf{Post-condiciones}: La cámara se desplaza. \\
 	\hline 
-	\textbf{Punto de extensión:} Pulsar W o Clic izq. + arrastrar delante
+	\textbf{Escenario 1:}
 	\vspace{-4mm}
 	\begin{enumerate}
 	\setlength{\itemsep}{-7.5pt}
@@ -49,12 +49,25 @@ El usuario debe ser capaz de manipular la cámara a través de la cual visualiza l
 	\setlength{\partopsep}{\itemsep}
 	\setlength{\topsep}{0pt}
 	\item El usuario pulsa la tecla W del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia delante.
-	\item La cámara cambia su posición a un lugar más adelantado en dirección frontal y el usuario percibe la sensación de desplazamiento.
+	\item La cámara se desplaza hacia delante.
 	\vspace{-6mm}
 	\end{enumerate} 
 	\\	
 	\hline
-	\textbf{Punto de extensión:} Pulsar Q o Clic izq. + arrastrar izquierda
+	\textbf{Escenario 2:}
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+	\item El usuario pulsa la tecla S del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia atrás.
+	\item La cámara se desplaza hacia atrás.
+	\vspace{-6mm}
+	\end{enumerate} 
+	\\	
+	\hline
+	\textbf{Escenario 3:}
 	\vspace{-4mm}
 	\begin{enumerate}
 	\setlength{\itemsep}{-7.5pt}
@@ -62,11 +75,25 @@ El usuario debe ser capaz de manipular la cámara a través de la cual visualiza l
 	\setlength{\partopsep}{\itemsep}
 	\setlength{\topsep}{0pt}
 	\item El usuario pulsa la tecla Q del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia la izquierda.
-	\item La cámara cambia su posición a un lugar situado más a su izquierda y el usuario percibe la sensación de desplazamiento lateral.
+	\item La cámara se desplaza en dirección lateral hacia la izquierda.
 	\vspace{-6mm}
 	\end{enumerate} 
-	\\	
-	\textbf{Punto de extensión:} Pulsar C
+	\\
+	\hline
+	\textbf{Escenario 4:}
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+	\item El usuario pulsa la tecla E del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia la derecha.
+	\item La cámara se desplaza en dirección lateral hacia la derecha.
+	\vspace{-6mm}
+	\end{enumerate} 
+	\\
+	\hline
+	\textbf{Escenario 5:}
 	\vspace{-4mm}
 	\begin{enumerate}
 	\setlength{\itemsep}{-7.5pt}
@@ -74,7 +101,20 @@ El usuario debe ser capaz de manipular la cámara a través de la cual visualiza l
 	\setlength{\partopsep}{\itemsep}
 	\setlength{\topsep}{0pt}
 	\item El usuario pulsa la tecla C del teclado.
-	\item La cámara cambia su posición a un lugar más elevado y el usuario percibe la sensación de desplazamiento vertical.
+	\item La cámara se desplaza en sentido vertical hacia abajo.
+	\vspace{-6mm}
+	\end{enumerate} 
+	\\	
+	\hline
+	\textbf{Escenario 6:}
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+	\item El usuario pulsa la barra de espacio del teclado.
+	\item La cámara se desplaza en sentido vertical hacia arriba.
 	\vspace{-6mm}
 	\end{enumerate} 
 	\\	
@@ -82,6 +122,77 @@ El usuario debe ser capaz de manipular la cámara a través de la cual visualiza l
 \end{tabular}
 \caption{Descripción del caso de uso CdU1.1}
 \label{table:move-usecase-description}
+\end{table}
+
+\begin{table}[!h]%
+\centering
+\begin{tabular}{| >{\arraybackslash}m{15cm} |}
+	\hline
+	\textbf{Identificador}: CdU1.2 \\
+	\hline
+	\textbf{Nombre}: Rotar (Cámara) \\
+	\hline
+	\textbf{Descripción}: Funcionalidad para que un usuario pueda rotar la cámara y cambiar la dirección de enfoque en un entorno 3D. \\
+	\hline
+	\textbf{Precondiciones}: Ninguna. \\
+	\hline
+	\textbf{Post-condiciones}: La cámara cambia la dirección de enfoque. \\
+	\hline 
+	\textbf{Escenario 1:}
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+	\item El usuario pulsa la tecla \textit{RePag} del teclado o hace clic derecho con el ratón mientras lo arrastra hacia arriba.
+	\item La cámara rota cambiando su dirección de enfoque hacia arriba.
+	\vspace{-6mm}
+	\end{enumerate} 
+	\\	
+	\hline
+	\textbf{Escenario 2:}
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+	\item El usuario pulsa la tecla \textit{AvPag} del teclado o hace clic derecho con el ratón mientras lo arrastra hacia abajo.
+	\item La cámara rota cambiando su dirección de enfoque hacia abajo.
+	\vspace{-6mm}
+	\end{enumerate} 
+	\\	
+	\hline
+	\textbf{Escenario 3:}
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+	\item El usuario pulsa la tecla A del teclado o hace clic derecho con el ratón mientras lo arrastra hacia la izquierda.
+	\item La cámara rota cambiando su dirección de enfoque hacia la izquierda.
+	\vspace{-6mm}
+	\end{enumerate} 
+	\\
+	\hline
+	\textbf{Escenario 4:}
+	\vspace{-4mm}
+	\begin{enumerate}
+	\setlength{\itemsep}{-7.5pt}
+	\setlength{\parsep}{-7.5pt}
+	\setlength{\partopsep}{\itemsep}
+	\setlength{\topsep}{0pt}
+	\item El usuario pulsa la tecla D del teclado o hace clic derecho con el ratón mientras lo arrastra hacia la derecha.
+	\item La cámara rota cambiando su dirección de enfoque hacia la derecha.
+	\vspace{-6mm}
+	\end{enumerate} 
+	\\
+	\hline
+\end{tabular}
+\caption{Descripción del caso de uso CdU1.2}
+\label{table:rotate-usecase-description}
 \end{table}
 
 Para tratar la cámara como un objeto que se puede situar en cualquier lugar de la escena y enfocar a cualquier punto de la misma, se propone una solución basada en vectores. Esta solución requiere un conjunto de vectores en un espacio de coordenadas \textit{(x, y, z)} de las siguientes características:
@@ -111,11 +222,11 @@ De la disciplina de análisis de esta iteración se entiende que para abordar el d
 
 Los \textit{listeners} de teclado y ratón podrán manipular el estado y comportamiento de la cámara gracias a la referencia que mantienen del objeto de tipo \textit{GLDrawer}, que a su vez tiene una referencia a la cámara y es el encargado de pintar la escena (Fig. \ref{fig:it2-camera-spotlight-class-diagram}).
 
-\imagenBorde{Cap5//it2-camera-spotlight-class-diagram}{1.15}{Diagrama de clases de diseño para CdU1.1 y CdU1.2}{fig:it2-camera-spotlight-class-diagram}
+\imagenBorde{Cap5//it2-camera-spotlight-class-diagram}{0.7}{Diagrama de clases de diseño para CdU1.1 y CdU1.2}{fig:it2-camera-spotlight-class-diagram}
 
 En cuanto al diseño de CdU1.5 se propone una arquitectura de vistas basada en herencia y polimorfismo. Así pues, se define una clase abstracta de tipo \textit{GLViewManager} (Gestor de Vistas GL) que implementará un conjunto de operaciones comunes a todas las vistas (por ejemplo, dibujar el suelo de la escena) y definirá una plantilla con métodos que deberán ser implementados por cada vista especializada, es decir, las clases que la extiendan. Además, por medio del patrón de diseño \textbf{Factory Method} -formado por la clase IViewManagerFactoryImpl y la interfaz IViewManagerFactory- se abstrae a la clase \textit{GLDrawer} de la creación específica de cada vista (Fig. \ref{fig:it2-scene-class-diagram}). Por otro lado, para evitar crear múltiples instancias de un mismo gestor de vistas, se utilizará el patrón \textbf{Singleton}.
 
-\imagenBorde{Cap5//it2-scene-class-diagram}{0.8}{Diagrama de clases de diseño para CdU1.5}{fig:it2-scene-class-diagram}
+\imagenBorde{Cap5//it2-scene-class-diagram}{0.5}{Diagrama de clases de diseño para CdU1.5}{fig:it2-scene-class-diagram}
 
 
 Para terminar, debido a los requisitos que se han identificado en esta iteración, es necesario plantear y tomar una serie de decisiones que condicionan el diseño, implementación y funcionamiento del motor gráfico en iteraciones posteriores.
@@ -129,7 +240,7 @@ El uso de anotaciones personalizadas también conlleva la implementación de un pe
 
 En la figura \ref{fig:it2-dimension-annotation-parser-class-diagram} se muestra un breve diagrama de clases en la que se define la estructura de la anotación y su correspondiente analizador.
 
-\imagenBorde{Cap5//it2-dimension-annotation-parser-class-diagram}{1.4}{Clases que definen la estructura de la anotación GLDimension y su correspondiente analizador}{fig:it2-dimension-annotation-parser-class-diagram}
+\imagenBorde{Cap5//it2-dimension-annotation-parser-class-diagram}{0.8}{Diagrama de clases de la anotación GLDimension y su correspondiente analizador}{fig:it2-dimension-annotation-parser-class-diagram}
 
 
 \vspace{7mm}

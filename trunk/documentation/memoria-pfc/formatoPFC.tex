@@ -98,7 +98,19 @@ format=hang]{caption} % Personalización de títulos de figuras y tablas
 \def\imagen#1#2#3#4{
  \floatstyle{plain} % plain, boxed,ruled
  \restylefloat{figure}
- \begin{figure}[!htb]
+ \begin{figure}[!ht]
+ \begin{center}
+   \includegraphics[keepaspectratio,scale=#2]{#1}
+ \caption {#3}
+ \label{#4}
+ \end{center}
+ \end{figure}
+}
+
+\def\imagenH#1#2#3#4{
+ \floatstyle{plain} % plain, boxed,ruled
+ \restylefloat{figure}
+ \begin{figure}[H]
  \begin{center}
    \includegraphics[keepaspectratio,scale=#2]{#1}
  \caption {#3}
@@ -113,6 +125,16 @@ format=hang]{caption} % Personalización de títulos de figuras y tablas
  \floatstyle{boxed} % plain, boxed,ruled
  \restylefloat{figure}
  \begin{figure}[!ht]
+ \centering
+ 	\includegraphics[keepaspectratio,scale=#2]{#1}
+ \caption{#3}
+ \label{#4}
+\end{figure}}
+
+\def\imagenBordeH#1#2#3#4{
+ \floatstyle{boxed} % plain, boxed,ruled
+ \restylefloat{figure}
+ \begin{figure}[H]
  \centering
  	\includegraphics[keepaspectratio,scale=#2]{#1}
  \caption{#3}

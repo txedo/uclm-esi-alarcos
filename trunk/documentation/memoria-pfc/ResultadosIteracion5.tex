@@ -15,11 +15,11 @@ Dada la estrecha relación que existe entre los casos de uso CdU1.3 y CdU1.7, el 
 
 En la figura \ref{fig:it5-selection-communication-diagram} se muestra un diagrama de comunicación que representa el paso de mensajes que se produce entre los distintos controladores del motor gráfico cuando el usuario efectúa un \textit{clic} sobre un modelo gráfico. Entre ellos destaca un nuevo elemento llamado \textbf{observador}. Este elemento, que se ha representado con una clase de control, en realidad consistirá en un \textbf{patrón observador}. Por medio de este patrón, será posible notificar el resultado de una operación de selección a la interfaz gráfica de usuario sin acoplar la capa de dominio con la capa de presentación.
 
-\imagenBorde{Cap5//it5-selection-communication-diagram}{1.1}{Diagrama de comunicación para CdU1.3 y 1.7}{fig:it5-selection-communication-diagram}
+\imagenBorde{Cap5//it5-selection-communication-diagram}{0.6}{Diagrama de comunicación para CdU1.3 y 1.7}{fig:it5-selection-communication-diagram}
 
 Por otro lado, el cambio de vistas o niveles de visualización no es una tarea trivial debido a las limitaciones de implementación que presenta JOGL en lo que a múltiples hilos de ejecución se refiere. Como Java implementa los \textit{listeners} de teclado y ratón como hilos separados del hilo principal, no es posible cambiar la vista directamente desde ellos. Así pues, dichos hilos cambiarán una variable de control que será examinada por el hilo principal de ejecución que será el encargado de hacer el cambio de vista efectivo. Para comprender mejor esta idea se proporciona un diagrama de flujo (Fig. \ref{fig:it5-change-level-flow-diagram}).
 
-\imagenBorde{Cap5//it5-change-level-flow-diagram}{1.0}{Diagrama de flujo para CdU1.4}{fig:it5-change-level-flow-diagram}
+\imagenBorde{Cap5//it5-change-level-flow-diagram}{0.7}{Diagrama de flujo para CdU1.4}{fig:it5-change-level-flow-diagram}
 
 
 
@@ -36,11 +36,11 @@ La selección de objetos es una funcionalidad similar en todas las vistas. Por el
 
 Para que el motor gráfico pueda notificar el objeto seleccionado a la aplicación contenedora, cualesquiera que sea la tecnología en la que se implemente su interfaz gráfica de usuario (jsp, swing, awt, etcétera), se ha diseñado el sistema de notificación mediante un \textbf{patrón observador} (Fig. \ref{fig:it5-observer-class-diagram}). El uso de este patrón permite que la notificación de selección de objetos no tenga ningún tipo de dependencia con la capa de presentación del motor gráfico ni con la aplicación contenedora. La única dependencia de uso se da entre la capa de presentación del motor gráfico con la capa de presentación de la aplicación contenedora. Aún así, esta dependencia puede reducirse casi al completo mediante un patrón \textbf{Adapter}.
 
-\imagenBorde{Cap5//it5-observer-class-diagram}{0.9}{Diagrama de clases de diseño para CdU1.3 y CdU1.7}{fig:it5-observer-class-diagram}
+\imagenBorde{Cap5//it5-observer-class-diagram}{0.5}{Diagrama de clases de diseño para CdU1.3 y CdU1.7}{fig:it5-observer-class-diagram}
 
 El diagrama de secuencia que se muestra en la figura \ref{fig:it5-selection-sequence-diagram}, representa una vista dinámica del funcionamiento del mecanismo de selección de objetos. Para empezar, es necesario que el contenedor del motor gráfico se añada a la lista de observadores para que se le puedan notificar las operaciones de selección cuando sea requerido. A continuación, cuando el usuario efectúa un clic sobre un elemento de la escena, se desencadena una serie de eventos y paso de mensajes. Finalmente, el gestor de vista activo \textbf{notificará al controlador NotifyUIManager} qué objeto ha sido seleccionado para que éste lo notifique a todos los observadores, entre los que se encuentra el contenedor del motor gráfico.
 
-\imagenBorde{Cap5//it5-selection-sequence-diagram}{0.9}{Diagrama de secuencia para CdU1.3 y 1.7}{fig:it5-selection-sequence-diagram}
+\imagenBorde{Cap5//it5-selection-sequence-diagram}{0.5}{Diagrama de secuencia para CdU1.3 y 1.7}{fig:it5-selection-sequence-diagram}
 
 
 \vspace{7mm}
@@ -54,7 +54,7 @@ Persiguiendo el objetivo de desplegar el motor gráfico mediante algún mecanismo 
 
 JNLPAppletLauncher \cite{jogamp-jnlpappletlauncher} es un componente de propósito general basado en la tecnología JNLP\footnote{\textbf{JNLP (Java Network Launching Protocol)} es un protocolo en formato XML que define el procedimiento a seguir para ejecutar una aplicación Java. Este protocolo incluye información sobre el paquete JAR que se distribuye, el nombre de la clase principal de la aplicación y parámetros adicionales. Con esta información JNLP hace posible la ejecución de aplicaciones Java directamente desde Internet mediante un navegador web, sin la necesidad de instalarlas en el sistema del usuario, y asegura que el cliente siempre ejecute la última versión de la aplicación.}, utilizado para desplegar applets que utilizan extensiones que contienen código nativo como Java3D, JOGL (Java binding for OpenGL -Graphics Library- API) o JOAL (Java binding for OpenAL -Audio Library- API).
 
-\imagenBorde{Cap5//it5-component-diagram}{0.9}{Diagrama de componentes del sistema}{fig:it5-component-diagram}
+\imagenBorde{Cap5//it5-component-diagram}{0.55}{Diagrama de componentes del sistema}{fig:it5-component-diagram}
 
 Para finalizar, y debido a la integración de ambos componentes mediante un applet, cabe destacar que el paso de mensajes, en ambas direcciones, se realizará mediante JavaScript.
 
@@ -78,4 +78,4 @@ Las pruebas planificadas en esta iteración se han realizado nuevamente con la ay
 
 Al igual que en las pruebas de la disciplina anterior (Sección \ref{sec:iteracion-4-pruebas}), en esta disciplina se ha vuelto a emplear el método basado en \textit{checklists}. No obstante, en este caso el usuario ha detectado errores en la visualización a través de las transparencias de los elementos de la metáfora de la ciudad. Esto es debido a que las transparencias sólo se visualizan correctamente si los elementos son pintados en pantalla de manera ordenada desde las posiciones más lejanas hasta las más cercanas, respecto de la cámara. Además, ha hecho constar la falta de percepción de profundidad.
 
-En conclusión, las pruebas planificadas para esta iteración \textbf{no} han sido superadas y la resolución de los problemas detectados será añadida a la siguiente iteración.
+En conclusión, las pruebas planificadas para esta iteración \textbf{no} han sido superada. Esto supone, tal y como indica el Proceso Unificado de Desarrollo, la repetición de esta iteración antes de pasar a la siguiente.

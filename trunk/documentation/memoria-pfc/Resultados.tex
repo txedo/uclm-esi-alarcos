@@ -14,11 +14,11 @@
 
 En este capítulo se detallan los resultados obtenidos como consecuencia de la aplicación del método de trabajo expuesto en las secciones \ref{sec:investigacion-preliminar} y \ref{sec:pud}, que consiste en una herramienta compuesta de dos componentes bien diferenciados: un motor encargado de generar gráficos 3D y una aplicación web que lo integra permitiendo realizar las tareas de gestión, configuración y visualización. Para su consecución, se han empleado todas y cada una de las herramientas, frameworks y tecnologías expuestas en la sección \ref{sec:marco}.
 
-Según la documentación aportada en la sección \ref{sec:pud} y la figura \ref{fig:mapa-conceptual-pud}, el ciclo de vida del software se lleva a cabo en ciclos. En este PFC cada componente puede ser abordado en un ciclo distinto dado que constituyen productos software independientes. No obstante, ya que todo el desarrollo se realiza por el alumno del presente PFC, ambos componentes se desarrollan de forma conjunta en un único ciclo. El producto resultante de este ciclo es la herramienta software desarrollada, así como su documentación, diagramas y manuales.
+Según la documentación aportada en la sección \ref{sec:pud} y la figura \ref{fig:mapa-conceptual-pud}, el desarrollo del software se lleva a cabo en ciclos. En este PFC cada componente puede ser abordado en un ciclo distinto dado que constituyen productos software independientes. No obstante, ya que todo el desarrollo se realiza por el alumno del presente PFC, ambos componentes se desarrollan de forma conjunta en un único ciclo. El producto resultante de este ciclo es la herramienta software desarrollada, así como su documentación, diagramas y manuales.
 
 Un ciclo consta de 4 fases: inicio, elaboración, construcción y transición. Estas fases conforman la estructura básica de este capítulo. Dentro de cada fase se desarrollan una o más iteraciones. En cada iteración se ejecuta el flujo de trabajo fundamental, compuesto por las disciplinas de requisitos, análisis, diseño, implementación y pruebas. La envergadura de cada disciplina, que en determinados casos será nula, está condicionada por la fase a la que pertenece la iteración que se está llevando a cabo.
 
-Para evitar que este capítulo y, como consecuencia, todo el documento se prolongue en exceso, no se ha profundiza del mismo modo en todas las iteraciones y sus disciplinas del flujo de trabajo ni se incluyen todos los diagramas e informes obtenidos. Por otro lado, sí se incorporan algunos ejemplos de ficheros de configuración y fragmentos de código fuente que pueden resultar de especial interés en la elaboración de futuros proyectos o el mantenimiento de este mismo proyecto.
+Para evitar que este capítulo y, como consecuencia, todo el documento se prolongue en exceso, no se profundiza del mismo modo en todas las iteraciones y sus disciplinas del flujo de trabajo ni se incluyen todos los diagramas e informes obtenidos. Por otro lado, sí se incorporan algunos ejemplos de ficheros de configuración y fragmentos de código fuente que pueden resultar de especial interés en la elaboración de futuros proyectos o el mantenimiento de este mismo proyecto.
 
 
 
@@ -151,7 +151,7 @@ Para finalizar, se especifica la necesidad de navegar entre los distintos nivele
 \subsection{Identificación de requisitos}
 \label{sec:identificacion-requisitos}
 
-Para lograr obtener un sistema que satisfaga los requisitos descritos anteriormente, se propone la creación de dos componentes: \textit{Desglosa Graphics Engine}, que se corresponde con un motor de gráficos 3D, y \textit{Desglosa Web}, que se corresponde con una aplicación web. Esta decisión toma fuerza y es aceptada dado el gran potencia de generación de gráficos que aporta un componente específico de visualización y su capacidad de reutilización en otros proyectos de visualización.
+Para lograr obtener un sistema que satisfaga los requisitos descritos anteriormente, se propone la creación de dos componentes: \textit{Desglosa Graphics Engine}, que se corresponde con un motor de gráficos 3D, y \textit{Desglosa Web}, que se corresponde con una aplicación web. Esta decisión toma fuerza y es aceptada dado el gran potencial de generación de gráficos que aporta un componente específico de visualización y su capacidad de reutilización en otros proyectos de visualización.
 
 Después de una serie importante de reuniones, se han identificado un conjunto de requisitos que serán expuestos en las dos siguientes subsecciones y que dan paso al modelado del diagrama de casos de uso \ref{sec:modelo-cdu}.
 
@@ -193,27 +193,27 @@ En la tabla \ref{table:requisitos-funcionales} se especifican los requisitos fun
 		Administrador y jefe de proyecto \\
 	\hline
 		Gestión de perfiles de visualización &
-		Engloba las funcionalidades de creación, consulta y supresión de perfiles de visualización. Un perfil de visualización establece las entidades a visualizar y la información que se desea mostrar de las mismas a través de las metáforas. &
+		Engloba las funcionalidades de creación, consulta y supresión de perfiles de visualización, que configuran la información que se desea mostrar mediante gráficos 3D. &
 		Administrador \\
 	\hline
 		Selección de perfiles &
 		Permitirá que el usuario seleccione un perfil de visualización para configurar la información que desea analizar mediante la herramienta de visualización. &
-		Administrador, jefe de proyecto y usuario estándar autenticado \\
+		Administrador, jefe de proyecto y usuario autenticado \\
 	\hline
 		Geolocalización de factorías &
 		Muestra un mapa del mundo con un conjunto de factorías software geolocalizadas. &
-		Administrador, jefe de proyecto y usuario estándar autenticado \\
+		Administrador, jefe de proyecto y usuario autenticado \\
 	\hline
 		Visualización de medidas e indicadores &
 		Generación de gráficos 3D a partir de la información de las medidas e indicadores de las entidades del DGS. &
-		Administrador, jefe de proyecto y usuario estándar autenticado \\
+		Administrador, jefe de proyecto y usuario autenticado \\
 	\hline
 		Selección de objetos 3D &
 		El usuario debe ser capaz de seleccionar los objetos 3D de una escena mediante el puntero del ratón.  &
 		Usuario de la herramienta de visualización \\
 	\hline
 		Navegabilidad entre niveles de abstracción &
-		El usuario debe ser capaz de navegar, siguiendo un enfoque \textit{top-down}, entre los distintos niveles de abstracción que representan el paradigma del DGS con la ayuda del puntero del ratón. &
+		Capacidad de navegar, siguiendo un enfoque \textit{top-down}, entre los distintos niveles de abstracción que representan el paradigma del DGS con la ayuda del puntero del ratón. &
 		Usuario de la herramienta de visualización \\
 	\hline
 \caption{Requisitos funcionales del sistema}
@@ -290,11 +290,11 @@ A continuación se muestran los diagramas de casos de uso que se han modelado par
 
 La figura \ref{fig:cdu-webapp} muestra el modelo de casos de uso de la aplicación web. En este componente se observan cuatro actores, de los cuales tres (usuario, administrador y jefe de proyecto) representan personas físicas y uno (contenedor de gráficos) representa un subsistema software. En la tabla \ref{table:roles-webapp} se incluye una descripción acerca de cada actor.
 
-\imagenBorde{Cap5//cdu1-webapp}{0.85}{Modelo de casos de uso de la aplicación web}{fig:cdu-webapp}
+\imagenBorde{Cap5//cdu1-webapp}{0.50}{Modelo de casos de uso de la aplicación web}{fig:cdu-webapp}
 
 Por otro lado, la figura \ref{fig:cdu-graphics-engine} presenta dos actores (Tabla \ref{table:roles-graphics-engine}): el usuario que interactúa con la escena, que es una persona física y se corresponde con el usuario al que la aplicación contenedora le haya concedido el privilegio de ejecutar el componente de visualización; y la aplicación contenedora que será la encargada de aportar los parámetros de configuración necesarios para configurar y visualizar la escena deseada.
 
-\imagenBorde{Cap5//cdu1-graphics-engine}{0.5}{Modelo de casos de uso del motor gráfico}{fig:cdu-graphics-engine}
+\imagenBorde{Cap5//cdu1-graphics-engine}{0.50}{Modelo de casos de uso del motor gráfico}{fig:cdu-graphics-engine}
 
 Para finalizar, se facilita la tabla \ref{table:denominacion-priorizacion-cdu} que muestra los casos de uso identificados, sus tareas asociadas -en caso de existir-, la prioridad de realización y un código identificativo que será utilizado para denominar las funcionalidades de aquí en adelante. Cabe destacar que los códigos identificativos de formato \textit{CdU\textbf{1}.x} se refieren a casos de uso del motor gráfico y los de \textit{CdU\textbf{2}.x} se refieren a los de la aplicación web.
 
@@ -461,12 +461,18 @@ Del conjunto de librerías basadas en Java que se han contemplado para generar gr
 
 A partir de los estudios elaborados a lo largo de esta fase, es posible establecer un plan de iteraciones. El plan de iteraciones se ha elaborado como una serie de tablas (metáforas de fichas de papel), en la que cada tabla contiene la información relativa a una iteración: número de iteración, fase a la que pertenece, comentarios adicionales, objetivos, hitos a alcanzar y una pequeña gráfica que muestra el grado de participación en las disciplinas del flujo de trabajo fundamental en la iteración (Tablas \ref{table:ficha-iteracion-preliminar} - \ref{table:ficha-iteracion-10}).
 
+A modo de síntesis, y para facilitar el análisis del plan de iteraciones se facilitan las figuras \ref{fig:carga-fases-lineas3d}, \ref{fig:importancia-disciplinas-iteraciones-barras3d} y \ref{fig:importancia-disciplinas-iteraciones-areas3d}. La figura \ref{fig:carga-fases-lineas3d} es una gráfica de líneas que muestra cuántas iteraciones conlleva cada una de las fases del ciclo de vida. Como se puede observar, las fases de inicio y transición son las más livianas (una sola iteración) y, por el contrario, la fase de construcción es la más laboriosa (seis iteraciones).
+
+En las figuras \ref{fig:importancia-disciplinas-iteraciones-barras3d} y \ref{fig:importancia-disciplinas-iteraciones-areas3d} se muestra un diagrama de barras y de áreas, respectivamente. Ambos diagramas muestran el grado de participación de las iteraciones en cada disciplina del flujo de trabajo fundamental. Nótese cómo las disciplinas de requisitos, análisis y diseño toman fuerza al inicio del ciclo de vida y van cediendo el papel protagonista a las disciplinas de implementación y pruebas.
+
+\clearpage
+
 \newlength{\altura}
 \settoheight{\altura}{A}
 \newlength{\anchura}
 \settowidth{\anchura}{Implementación}
 
-\begin{table}[!htbp]%
+\begin{table}[!ht]%
 \centering
 \begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
 	\hline
@@ -507,7 +513,7 @@ A partir de los estudios elaborados a lo largo de esta fase, es posible establec
 \end{table}
 
 
-\begin{table}[!htbp]%
+\begin{table}[!ht]%
 \centering
 \begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
 	\hline
@@ -545,7 +551,7 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 \end{table}
 
 
-\begin{table}[!htbp]%
+\begin{table}[!ht]%
 \centering
 \begin{tabular}{| >{\arraybackslash}m{4.5cm} | >{\arraybackslash}m{10cm} |}
 	\hline
@@ -561,8 +567,8 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
 	\begin{itemize}
 		\item Análisis y diseño de CdU1.1, CdU1.2 y CdU1.5.
-		\item Implementación de CdU1.1 y CdU1.2
-		\item Implementación de un foco de luz para iluminar la escena (requisito no funcional)
+		\item Implementación de CdU1.1 y CdU1.2.
+		\item Implementación de un foco de luz para iluminar la escena.
 	\end{itemize}\\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
@@ -632,7 +638,7 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 	Construcción \\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
-	Dada la gran dificultad para implementar una \textit{suite} de pruebas que confirmen que la cámara se desplaza correctamente en el entorno virtual, éstas serán llevadas a cabo y validadas por un usuario experto.\\
+	Dada la gran dificultad para implementar los casos de prueba que confirmen que la cámara se desplaza correctamente en el entorno virtual, éstas serán llevadas a cabo y validadas por un usuario experto.\\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
 	\begin{itemize}
@@ -674,7 +680,7 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 	Construcción \\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
-	Dada la dificultad para implementar una \textit{suite} de pruebas que confirmen que los gráficos generados mediante los CdU1.5 y 1.6 son correctos, éstas serán llevadas a cabo y validadas por un usuario experto.\\
+	Dada la dificultad para implementar los casos de prueba que confirmen que los gráficos generados mediante los CdU1.5 y 1.6 se visualizan correctamente, éstas serán llevadas a cabo y validadas por un usuario experto.\\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
 	\begin{itemize}
@@ -715,7 +721,7 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 	Construcción \\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
-	Dada la dificultad para implementar una \textit{suite} de pruebas que confirmen la correcta integración del motor gráfico en una página web, así como el mecanismos de selección de objetos 3D, las pruebas de CdU1.3, CdU1.4 y CdU1.7 serán llevadas a cabo y validadas por un usuario experto.\\
+	Dada la dificultad para implementar los casos de prueba que confirmen la correcta integración del motor gráfico en una página web, así como el mecanismos de selección de objetos 3D, las pruebas de CdU1.3, CdU1.4 y CdU1.7 serán llevadas a cabo y validadas por un usuario experto.\\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
 	\begin{itemize}
@@ -876,7 +882,7 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 	Transición \\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Comentarios}} &
-	La fase de transición estará formada únicamente por esta iteración. En esta fase, que produce como resultado una versión entregable del software, se corregirán los fallos que hayan podido suceder al ejecutar las distintas \textit{suites} de pruebas unitarias y funcionales.\\
+	La fase de transición estará formada únicamente por esta iteración. En esta fase, que produce como resultado una versión entregable del software, se corregirán los fallos que hayan podido suceder al ejecutar las distintas pruebas unitarias y funcionales.\\
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Objetivos}} &
 	\begin{itemize}
@@ -887,8 +893,8 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 	\hline
 	{\cellcolor[gray]{0.7}\textbf{Hitos}} &
 	\begin{itemize}
+		\item Manual de instalación y despliegue.
 		\item Manual de usuario.
-		\item Documentación del proyecto.
 		\item Versión entregable del software.
 	\end{itemize}\\
 	\hline
@@ -904,12 +910,9 @@ Requisitos\makebox[\dimexpr \anchura-\width+1em]{\phantom{Requisitos}}\rule[1pt]
 \label{table:ficha-iteracion-10}
 \end{table}
 
-
-A modo de síntesis, y para facilitar el análisis del plan de iteraciones se facilitan las figuras \ref{fig:carga-fases-lineas3d}, \ref{fig:importancia-disciplinas-iteraciones-barras3d} y \ref{fig:importancia-disciplinas-iteraciones-areas3d}. La figura \ref{fig:carga-fases-lineas3d} es una gráfica de líneas que muestra cuántas iteraciones conlleva cada una de las fases del ciclo de vida. Como se puede observar, las fases de inicio y transición son las más livianas (una sola iteración) y, por el contrario, la fase de construcción es la más laboriosa (seis iteraciones).
+\clearpage
 
 \imagenBorde{Cap5//carga-fases-lineas3d}{0.45}{Gráfica de líneas que representa la duración de cada fase en iteraciones}{fig:carga-fases-lineas3d}
-
-En las figuras \ref{fig:importancia-disciplinas-iteraciones-barras3d} y \ref{fig:importancia-disciplinas-iteraciones-areas3d} se muestra un diagrama de barras y de áreas, respectivamente. Ambos diagramas muestran el grado de participación de las iteraciones en cada disciplina del flujo de trabajo fundamental. Nótese cómo las disciplinas de requisitos, análisis y diseño toman fuerza al inicio del ciclo de vida y van cediendo el papel protagonista a las disciplinas de implementación y pruebas.
 
 \imagenBorde{Cap5//importancia-disciplinas-iteraciones-barras3d}{0.45}{Gráfica de barras que representa el grado de participación de las iteraciones en cada disciplina}{fig:importancia-disciplinas-iteraciones-barras3d}
 
@@ -948,6 +951,9 @@ La fase de construcción, conformada por un total de 6 iteraciones, es la más ext
 
 \subsection{Iteración 5}
 \input{ResultadosIteracion5}
+
+\subsection{Iteración 5 (repetición)}
+\input{ResultadosIteracion5Bis}
 
 \subsection{Iteración 6}
 \input{ResultadosIteracion6}

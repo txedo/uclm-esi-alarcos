@@ -2,54 +2,54 @@
 \label{ch:codigofuente}
 
 
-\section{Autenticación y control de acceso con Spring Security}
-
-Spring Security es el estándar \textit{de-facto} para la seguridad de aplicaciones basadas en Spring. Consiste en un \textit{framework} potente y configurable que proporciona mecanismos de autenticación y permite implementar políticas de control de acceso a directorios y recursos.
-
-El sistema de autenticación y control de acceso de este PFC se ha configurado e implementado de un modo muy genérico y satisfaciendo una política basa en grupos. Por tanto, dada la gran posibilidad de reutilización en mutitud de proyectos, se ha optado por incluir en este anexo los ficheros y clases más relevantes.
-
-\subsection{Clases Java diseñadas para un GBAC (Group-Based Access Control}
-
-El control de acceso basado en grupos (GBAC) extiende al modelo basado en roles (RBAC, en su acrónimo inglés Role-Base Access Control) y ofrece más flexibilidad para modelar políticas de acceso más complejas y exigentes. En este. En el caso del GBAC, los privilegios se otorgan al usuario en función de los grupos a los que pertenece. Un usuario puede pertenecer a uno o varios
-grupos, y un grupo puede tener asignados uno o varios roles. De aquí se deduce que son necesarias tres clases para representar los conceptos de usuario, grupo y rol.
-
-
-\subsubsection{Clase User.java}
-\label{anexo:user}
-
-En la implementación de esta clase destacan sus anotaciones mediante JPA (Java Persistence API) y que implementa el \textit{interface} \textbf{UserDetails} provisto por Spring Security.
-
-Nótese la relación \textit{muchos-a-muchos} entre las clases \textit{User} y \textit{Group}.
-
-\lstinputlisting[language=Java,caption={Código fuente de la clase User.java},label=code:User.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//User.java}
-
-
-\subsubsection{Clase Group.java}
-\label{anexo:group}
-
-En la implementación de esta clase destacan nuevamente sus anotaciones mediante JPA y el método \textit{getAuthorities} que devuelve la lista de roles asignados al grupo.
-
-Nótese la relación \textit{muchos-a-muchos} entre las clases \textit{Group} y \textit{Role}.
-
-\lstinputlisting[language=Java,caption={Código fuente de la clase Group.java},label=code:Group.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//Group.java}
-
-
-
-\subsubsection{Clase Role.java}
-\label{anexo:role}
-
-En la implementación de esta clase destacan sus anotaciones mediante JPA (Java Persistence API) y que implementa el \textit{interface} \textbf{GrantedAuthority} provisto por Spring Security.
-
-\lstinputlisting[language=Java,caption={Código fuente de la clase Role.java},label=code:Role.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//Role.java}
-
-
-
-\subsubsection{Clase CustomUserDetailsService.java}
-\label{anexo:customuserdetailsservice}
-
-Esta clase implementa \textbf{UserDetailsService}, provisto por Spring Security, y extiende de HibernateDaoSupport, provisto por Spring. Es la clase responsable de indicar si el usuario se autentica correctamente y, en caso afirmativo, otorgarle los grupos y roles que le correspondan.
-
-\lstinputlisting[language=Java,caption={Código fuente de la clase CustomUserDetailsService.java},label=code:CustomUserDetailsService.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//security//CustomUserDetailsService.java}
+%\section{Autenticación y control de acceso con Spring Security}
+%
+%Spring Security es el estándar \textit{de-facto} para la seguridad de aplicaciones basadas en Spring. Consiste en un \textit{framework} potente y configurable que proporciona mecanismos de autenticación y permite implementar políticas de control de acceso a directorios y recursos.
+%
+%El sistema de autenticación y control de acceso de este PFC se ha configurado e implementado de un modo muy genérico y satisfaciendo una política basa en grupos. Por tanto, dada la gran posibilidad de reutilización en multitud de proyectos, se ha optado por incluir en este anexo los ficheros y clases más relevantes.
+%
+%\subsection{Clases Java diseñadas para un GBAC (Group-Based Access Control}
+%
+%El control de acceso basado en grupos (GBAC) extiende al modelo basado en roles (RBAC, en su acrónimo inglés Role-Base Access Control) y ofrece más flexibilidad para modelar políticas de acceso más complejas y exigentes. En este. En el caso del GBAC, los privilegios se otorgan al usuario en función de los grupos a los que pertenece. Un usuario puede pertenecer a uno o varios
+%grupos, y un grupo puede tener asignados uno o varios roles. De aquí se deduce que son necesarias tres clases para representar los conceptos de usuario, grupo y rol.
+%
+%
+%\subsubsection{Clase User.java}
+%\label{anexo:user}
+%
+%En la implementación de esta clase destacan sus anotaciones mediante JPA (Java Persistence API) y que implementa el \textit{interface} \textbf{UserDetails} provisto por Spring Security.
+%
+%Nótese la relación \textit{muchos-a-muchos} entre las clases \textit{User} y \textit{Group}.
+%
+%\lstinputlisting[language=Java,caption={Código fuente de la clase User.java},label=code:User.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//User.java}
+%
+%
+%\subsubsection{Clase Group.java}
+%\label{anexo:group}
+%
+%En la implementación de esta clase destacan nuevamente sus anotaciones mediante JPA y el método \textit{getAuthorities} que devuelve la lista de roles asignados al grupo.
+%
+%Nótese la relación \textit{muchos-a-muchos} entre las clases \textit{Group} y \textit{Role}.
+%
+%\lstinputlisting[language=Java,caption={Código fuente de la clase Group.java},label=code:Group.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//Group.java}
+%
+%
+%
+%\subsubsection{Clase Role.java}
+%\label{anexo:role}
+%
+%En la implementación de esta clase destacan sus anotaciones mediante JPA (Java Persistence API) y que implementa el \textit{interface} \textbf{GrantedAuthority} provisto por Spring Security.
+%
+%\lstinputlisting[language=Java,caption={Código fuente de la clase Role.java},label=code:Role.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//model//Role.java}
+%
+%
+%
+%\subsubsection{Clase CustomUserDetailsService.java}
+%\label{anexo:customuserdetailsservice}
+%
+%Esta clase implementa \textbf{UserDetailsService}, provisto por Spring Security, y extiende de HibernateDaoSupport, provisto por Spring. Es la clase responsable de indicar si el usuario se autentica correctamente y, en caso afirmativo, otorgarle los grupos y roles que le correspondan.
+%
+%\lstinputlisting[language=Java,caption={Código fuente de la clase CustomUserDetailsService.java},label=code:CustomUserDetailsService.java]{..//..//desglosa-web//src//main//java//es//uclm//inf_cr//alarcos//desglosa_web//security//CustomUserDetailsService.java}
 
 
 
@@ -63,7 +63,14 @@ La configuración de Spring Security se lleva a cabo mediante el siguiente ficher
 
 
 
+\section{Automatización de pruebas funcionales de una aplicación web mediante Maven}
 
-\section{Creación de un perfil para ejecutar pruebas funcionales de una aplicación web mediante Maven}
+La automatización de las pruebas funcionales para una aplicación web requiere algún método que simule la interacción del usuario con el sistema. Esto precisa, entre otros, de un servidor web que mantenga alojada dicha aplicación. La puesta en marcha del servidor web puede realizarse de forma manual o automatizada. Si se desea automatizar, la complejidad de configuración de Maven aumenta considerablemente.
+
+Para automatizar la puesta en marcha de un servidor web mediante Maven es necesario crear un perfil que indique, antes de la fase de pruebas, cómo descargar, instalar y ejecutar algún contenedor de servlets tipo Apache Tomcat. De este modo, cuando Maven ejecute las pruebas, la aplicación web estará disponible en \textit{host} y puerto que se indique en dicha configuración.
+
+Acto seguido, se indicará al sistema mediante el cual se ejecutan las pruebas funcionales -Canoo WebTest en este caso- en qué servidor se encuentra la aplicación web sobre la que tiene que lanzar los casos de prueba implementados.
+
+La configuración que se ha llevado a cabo para lograr este comportamiento se muestra en el listado \ref{anexo:integration-test-profile}.
 
 \lstinputlisting[language=XML,caption={Snippet para la automatización de pruebas funcionales de la aplicación web mediante Maven},label=anexo:integration-test-profile]{snippets/integration-test-profile.txt}
