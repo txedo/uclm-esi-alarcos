@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <beans:beans xmlns="http://www.springframework.org/schema/security"
     xmlns:beans="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -13,16 +12,35 @@
 	<http auto-config="true" access-denied-page="/401.jsp">
         <intercept-url pattern="/index" filters="none"/>
         <intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-        <intercept-url pattern="/logout" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
-<!--         <intercept-url pattern="/profiles/*" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/> -->
-        <!-- <intercept-url pattern="/jsp/admin/*" access="ROLE_ADMIN"/> -->
-        <!-- <intercept-url pattern="/jsp/viewCompanies.jsp" access="ROLE_ADMIN"/> -->
-        <!-- <intercept-url pattern="/jsp/formCompany.jsp" access="ROLE_ADMIN"/> -->
-        <!-- <intercept-url pattern="/jsp/viewFactories.jsp" access="ROLE_ADMIN"/> -->
-        <!-- <intercept-url pattern="/jsp/formFactory.jsp" access="ROLE_ADMIN"/> -->
-        <!-- <intercept-url pattern="/jsp/myAccount.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/> -->
-        <!-- <intercept-url pattern="/jsp/visualization.jsp" access="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/> -->
-        <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <intercept-url pattern="/logout" access="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER"/>
+        <intercept-url pattern="/profiles/*" access="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER"/>
+        <intercept-url pattern="/jsp/admin/*" access="ROLE_ADMIN"/>
+        <!-- companies -->
+        <intercept-url pattern="/jsp/viewCompanies.jsp" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/jsp/viewCompany*.jsp" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/jsp/formCompany*.jsp" access="ROLE_ADMIN"/>
+        <!-- factories -->
+        <intercept-url pattern="/jsp/viewFactories.jsp" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/jsp/viewFactory*.jsp" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/jsp/formFactory*.jsp" access="ROLE_ADMIN"/>
+        <!-- projects -->
+        <intercept-url pattern="/jsp/viewProjects.jsp" access="ROLE_ADMIN,ROLE_MANAGER"/>
+        <intercept-url pattern="/jsp/viewProject*.jsp" access="ROLE_ADMIN,ROLE_MANAGER"/>
+        <intercept-url pattern="/jsp/formProject*.jsp" access="ROLE_ADMIN,ROLE_MANAGER"/>
+        <!-- subprojects -->
+        <intercept-url pattern="/jsp/viewSubprojects.jsp" access="ROLE_ADMIN,ROLE_MANAGER"/>
+        <intercept-url pattern="/jsp/viewSubproject*.jsp" access="ROLE_ADMIN,ROLE_MANAGER"/>
+        <intercept-url pattern="/jsp/formSubproject*.jsp" access="ROLE_ADMIN,ROLE_MANAGER"/>
+        
+        <intercept-url pattern="/jsp/generate*MeasureView.jsp" access="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER"/>
+        <intercept-url pattern="/jsp/generateCompanyMeasureForm.jsp" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/jsp/generateFactoryMeasureForm.jsp" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/jsp/generateProjectMeasureForm.jsp" access="ROLE_ADMIN,ROLE_MANAGER"/>
+        <intercept-url pattern="/jsp/generateSubprojectMeasureForm.jsp" access="ROLE_ADMIN,ROLE_MANAGER"/>
+        
+        <intercept-url pattern="/jsp/visualization.jsp" access="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER"/>
+        <intercept-url pattern="/jsp/build*" access="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER"/>
+        <!-- <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/> -->
     	<form-login login-page="/login" default-target-url="/login?result=success"  always-use-default-target="true" authentication-failure-url="/login?result=failed" />
 	</http>
 	
@@ -34,5 +52,4 @@
 		<!-- userDao bean is defined in applicationContext-dao.xml -->
 		<beans:property name="userDao" ref="userDao"/>
 	</beans:bean>
-	
 </beans:beans>
