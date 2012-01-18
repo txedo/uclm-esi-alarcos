@@ -20,6 +20,10 @@
 	<!-- These variables are defined in the head of the html document in order to localize JavaScript messages 
 	by using <c:out value='${varName}'/> -->
 	<fmt:message key="message.no_profiles" var="noProfiles"/>
+	<fmt:message key="message.descend.to.company" var="goToCompanyLevel"/>
+	<fmt:message key="message.descend.to.factory" var="goToFactoryLevel"/>
+	<fmt:message key="message.descend.to.project" var="goToProjectLevel"/>
+	<fmt:message key="message.descend.to.subproject" var="goToSubprojectLevel"/>
 	<fmt:message key="label.Company" var="labelCompany"/>
 	<fmt:message key="label.Factory" var="labelFactory"/>
 	<fmt:message key="label.Project" var="labelProject"/>
@@ -367,6 +371,20 @@
 		}
 	};
 	
+	function goDownToLevel(entity) {
+		var message = "";
+		if (entity == "company") {
+			message = "<c:out value='${goToCompanyLevel}'/>"
+        } else if (entity == "factory") {
+        	message = "<c:out value='${goToFactoryLevel}'/>"
+        } else if (entity == "project") {
+        	message = "<c:out value='${goToProjectLevel}'/>"
+        } else if (entity == "subproject") {
+        	message = "<c:out value='${goToSubprojectLevel}'/>"
+        }
+		return message;
+	}
+	
 	function openDialog(callback, entity, id, groupByCompany, groupByFactory, groupByProject, groupByMarket, noGroupBy) {
 		visualizationCallback = callback;
 		visualizationGroupBy = null;
@@ -386,27 +404,28 @@
 						var mapSize = Object.keys(data.profileNames).length;
 						if (mapSize > 0) {
 							noProfilesConfigured = false;
+							$("#profileChooserDialogBody").append("<p>" + goDownToLevel(entity) + "</p>");
 							// Available profiles for selected entity
 							$("#profileChooserDialogBody").append("<p><c:out value='${availableProfiles}'/>:</p>");
 							$("#profileChooserDialogBody").append("<ul>");
 							$.each(data.profileNames, function(filename, description) {
 								var parts = filename.split('-');
-								$("#profileChooserDialogBody ul:last").append("<li id='" + filename + "' class='selectablelist ui-corner-all' title='" + description + "'>" + parts[1] + "</li>");
+								$("#profileChooserDialogBody ul:last").append("<li id='" + filename + "' class='selectablelist ui-corner-all' title='" + description + "'><p style='margin:0;padding:0'>" + parts[1] + "</p></li>");
 							});
 							$("#profileChooserDialogBody").append("</ul>");
 							// Group by option (default is noGroupBy)
 							$("#profibleChooserDialogGroupBy").append("<p><c:out value='${groupByOption}'/>:</p>");
 							$("#profibleChooserDialogGroupBy").append("<ul class='groupBy'>");
 							if (groupByCompany)
-								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><input type='radio' name='showGroupBy' value='company'/><c:out value='${labelCompany}'/></li>");
+								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><p style='margin:0;padding:0'><input type='radio' name='showGroupBy' value='company'/><c:out value='${labelCompany}'/></p></li>");
 							if (groupByFactory)
-								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><input type='radio' name='showGroupBy' value='factory'/><c:out value='${labelFactory}'/></li>");
+								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><p style='margin:0;padding:0'><input type='radio' name='showGroupBy' value='factory'/><c:out value='${labelFactory}'/></p></li>");
 							if (groupByProject)
-								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><input type='radio' name='showGroupBy' value='project'/><c:out value='${labelProject}'/></li>");
+								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><p style='margin:0;padding:0'><input type='radio' name='showGroupBy' value='project'/><c:out value='${labelProject}'/></p></li>");
 							if (groupByMarket)
-								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><input type='radio' name='showGroupBy' value='market'/><c:out value='${labelMarket}'/></li>");
+								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><p style='margin:0;padding:0'><input type='radio' name='showGroupBy' value='market'/><c:out value='${labelMarket}'/></p></li>");
 							if (noGroupBy)
-								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><input type='radio' name='showGroupBy' value='' checked/><c:out value='${labelNoGroupBy}'/></li>");
+								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><p style='margin:0;padding:0'><input type='radio' name='showGroupBy' value='' checked/><c:out value='${labelNoGroupBy}'/></p></li>");
 							$("#profibleChooserDialogGroupBy").append("</ul>");
 							$("#profileChooserDialog").dialog('open');
 						} else {
@@ -677,35 +696,47 @@
 		$j("#joglCanvasControls").accordion({
 			collapsible: true,
 			active: false,
-			autoHeight: false,
+			autoHeight: true,
 			navigation: true,
 			changestart: function(event, ui) {
 				ui.newContent.css('height', 'auto');
+			},
+			change: function() {
+				fbgTop = $(".fbg").position().top,
+				joglCanvasTop = $("#jogl_canvas").position().top,
+				joglCanvasHeight = $("#jogl_canvas").height(),
+				workingAreaTop = $("#workingArea").position().top;
+				x = (scrollTop + joglCanvasHeight) - fbgTop;
+				if (x > 0) {
+					foo = scrollTop - $("#workingArea").position().top - x;
+					$sidebar.stop().animate({'top':foo},500);
+				}
 			}
 		});
 		
-		//$("#map_canvas").scrollToFixed({ marginTop: 10 });
 		$j("#joglCanvasControls").children().eq(1).css('height', 'auto');
 		
-	   /** The code starts here **/
-	   $window = $(window),
-	   $sidebar1 = $("#map_canvas"),
-	   $sidebar2 = $("#jogl_canvas"),
-	   sidebarTop = $("#workingArea").position().top;
-	
-	   $window.scroll(function(event) {
-           scrollTop = $window.scrollTop(),
-           topPosition = Math.max(0, scrollTop - sidebarTop);
-           if (topPosition > 0 ) {
-               $sidebar1.stop().animate({'top':topPosition+10},500),
-               $sidebar2.stop().animate({'top':topPosition+10},500);
-           } else {
-               $sidebar1.stop().animate({'top':topPosition},500),
-               $sidebar2.stop().animate({'top':topPosition},500);
-           }
-	   });
+		/** The code starts here **/
+		$document = $(document),
+		$window = $(window),
+		sidebarTop = $("#workingArea").position().top,
+		$footer = $(".fbg"),
+		footerTop = $footer.position().top;
+		
+		$window.scroll(function(event) {
+			$sidebar = $("#jogl_canvas");
+			if ($("#jogl_canvas").css('display') == 'none') {
+			    $sidebar = $("#map_canvas");
+			}
+			scrollTop = $window.scrollTop(),
+			footerTop = $footer.position().top,
+			sidebarHeight = $sidebar.height(),
+			topPosition = Math.max(0, scrollTop - sidebarTop);
+			if (footerTop > (scrollTop + sidebarHeight)) {
+	            $sidebar.stop().animate({'top':topPosition},500);
+			}
+		});
 	   /** The code ends here **/
-
 		
 		$("#factorySelect").trigger('change');
 	});
@@ -723,6 +754,7 @@
 		$('#infoPanelDiv').css('display','none');
 		$('#jogl_canvas').css('display','none');
 		$('#map_canvas').css('display','');
+		$window.trigger('scroll');
 	}
 	
 ///////////////////////////////////////////////////////
@@ -739,7 +771,7 @@ function getNextLevel () {
 	else if (currentEntity == "company") nextLevel = "factory";
 	else if (currentEntity == "factory") nextLevel = "project";
 	else if (currentEntity == "project") nextLevel = "subproject";
-	else if (currentEntity == "subproject") nextLevel = null;
+	else if (currentEntity == "subproject") nextLevel = "subproject";
 	return nextLevel;
 }
 
@@ -796,22 +828,24 @@ function handleSelectionEvent(id, clickButton, clickCount) {
 	         case 2:     // Double click
 	        	 // Hide infoDiv Panel
 	        	 $('#infoPanelDiv').css('display','none');
-	             // Show profile chooser dialog
-	             $('#profileChooserDialogMessages').html("Navigate to " + getNextLevel() + " from " + currentEntity + " (" + currentEntityId + ") information.");
-	             $('#profileChooserDialog').dialog('open');
-	             var nextLevel = getNextLevel();
-	             if (currentEntity == "company" && nextLevel == "factory") {
-	                 // load factory profiles
-	                 openDialog("desglosa_showFactoriesByCompanyId", nextLevel, id, true, false, true, true, true);
-	             } else if (currentEntity == "factory" && nextLevel == "project") {
-	                 // load project profiles
-	                 openDialog("desglosa_showProjectsByFactoryId", nextLevel, id, true, true, false, true, true);
-	             } else if (currentEntity == "project" && nextLevel == "subproject") {
-	                 // load subproject profiles
-	                 openDialog("desglosa_showSubprojectsByProjectId", nextLevel, id, true, true, true, false, true);
-	             } else {
-	                 // No further navigation
-	             }
+	        	 var nextLevel = getNextLevel();
+	        	 if (nextLevel != null) {
+	                 if (currentEntity == "company" && nextLevel == "factory") {
+	                     // load factory profiles
+	                     openDialog("desglosa_showFactoriesByCompanyId", nextLevel, id, true, false, true, true, true);
+	                 } else if (currentEntity == "factory" && nextLevel == "project") {
+	                     // load project profiles
+	                     openDialog("desglosa_showProjectsByFactoryId", nextLevel, id, true, true, false, true, true);
+	                 } else if (currentEntity == "project" && nextLevel == "subproject") {
+	                     // load subproject profiles
+	                     openDialog("desglosa_showSubprojectsByProjectId", nextLevel, id, true, true, true, false, true);
+	                 } else if (currentEntity == "subproject" && nextLevel == "subproject") {
+                         // load subproject profiles
+                         openDialog("desglosa_showSubprojectsById", nextLevel, id, true, true, true, false, true);
+	                 } else {
+	                     // No further navigation
+	                 }
+	        	 }
 	             break;
 	         default:    // Ignore multiple clicks but double click
 	             break;
