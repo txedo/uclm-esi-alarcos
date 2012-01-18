@@ -154,6 +154,12 @@ public class FactoryAction extends ActionSupport {
             if (Utilities.isEmptyString(factory.getName())) {
                 addFieldError("error.factory.name", getText("error.factory.name"));
             }
+            if (!Utilities.validateEmail(factory.getEmail())) {
+                addFieldError("error.factory.email", getText("error.factory.email"));
+            }
+            if (factory.getEmployees() == null || factory.getEmployees() < 0) {
+                addFieldError("error.factory.employees", getText("error.factory.employees"));
+            }
             // Director data
             if (Utilities.isEmptyString(factory.getDirector().getName())) {
                 addFieldError("error.director.name", getText("error.director.name"));
@@ -247,7 +253,10 @@ public class FactoryAction extends ActionSupport {
             if (Utilities.isEmptyString(factory.getEmail())) {
                 addFieldError("error.factory.email", getText("error.factory.email"));
             }
-            if (factory.getEmployees() < 0) {
+            if (!Utilities.validateEmail(factory.getEmail())) {
+                addFieldError("error.factory.email", getText("error.factory.email"));
+            }
+            if (factory.getEmployees() == null || factory.getEmployees() < 0) {
                 addFieldError("error.factory.employees", getText("error.factory.employees"));
             }
             // Director data

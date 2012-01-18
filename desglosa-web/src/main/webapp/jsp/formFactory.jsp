@@ -14,6 +14,9 @@
 	
 	<fmt:message key="label.configure.factory.location.not_found" var="locationError"/>
 	<fmt:message key="label.configure.factory.location.found" var="locationFound"/>
+	<fmt:message key="label.map.initializing" var="initializingMap"/>
+	<fmt:message key="label.map.initialized" var="mapInitialized"/>
+	<fmt:message key="label.map.searchingAddress" var="searcingAddress"/>
 	
 	<script type="text/javascript">	
 	/** Reset address fields.
@@ -24,6 +27,9 @@
 		document.getElementById("factory.address.province").value = '';
 		document.getElementById("factory.address.country").value = '';
 		document.getElementById("factory.address.postalCode").value = '';
+		
+		document.getElementById('factory.location.latitude').value = '';
+		document.getElementById('factory.location.longitude').value = '';
 	}
 	
 	/** Format address fields into a long address name.
@@ -70,9 +76,8 @@
 	
 	/** Code a full address into LatLng object in order to create a marker.
 	 * @param fullAddress A string containing the full address that will be coded into a LatLng object.
-	 * @param infoDiv Optional param. This is a HTML div ID in which feedback information will be printed in.
 	 */
-	function codeAddress (fullAddress, infoDiv) {
+	function codeAddress (fullAddress) {
 		// Set a default latlng (Madrid, km. 0) that will be used if geocoder can find a latlng value for the address
 		var defaultLatLng = new google.maps.LatLng(40.41663944983577,-3.703686048961572);
 		// if a marker is already set, remove it. This will allow only one marker in the map because of configuration reasons.
@@ -83,13 +88,12 @@
 	        	switch(status)
 	        	{
 	        	case google.maps.GeocoderStatus.OK:
-	        		if (infoDiv != null) document.getElementById(infoDiv).innerHTML="<c:out value='${locationFound}'/>";
+	        		$("#map_info").html("<c:out value='${locationFound}'/>");
 		            map.setCenter(results[0].geometry.location);
 		            placeMark(results[0].geometry.location, true);
 	        		break;
 	        	case google.maps.GeocoderStatus.ZERO_RESULTS:
-	        		var message = "<c:out value='${locationError}'/>";
-	        		if (infoDiv != null) document.getElementById(infoDiv).innerHTML=message;
+	        		$("#map_info").html("<c:out value='${locationError}'/>");
 	        		map.setZoom(1);
 	        		map.setCenter(defaultLatLng);
 	        		break;
@@ -139,15 +143,42 @@
 		            			if (type == "postal_code") postal_code = component.long_name;
 		            		}
 		            	}
-	            		document.getElementById("factory.address.address").value = street_address + ", " + street_number;
-	            		document.getElementById("factory.address.city").value = city;
-	            		document.getElementById("factory.address.province").value = province;
-	            		document.getElementById("factory.address.country").value = country;
-	            		document.getElementById("factory.address.postalCode").value = postal_code;
+		            	if (street_address != undefined && street_number != undefined) {
+		            		document.getElementById("factory.address.address").value = street_address + ", " + street_number;
+		            	} else if (street_address != undefined && street_number == undefined) {
+		            		document.getElementById("factory.address.address").value = street_address;
+		            	} else {
+		            		document.getElementById("factory.address.address").value = '';
+		            	}
+	            		if (city != undefined) {
+	            			document.getElementById("factory.address.city").value = city;
+	            		} else {
+	            			document.getElementById("factory.address.city").value = '';
+                        }
+	            		if (province != undefined) {
+	            			document.getElementById("factory.address.province").value = province;
+	            		} else {
+	            			document.getElementById("factory.address.province").value = '';
+                        }
+	            		if (country != undefined) {
+	            			document.getElementById("factory.address.country").value = country;
+	            		} else {
+	            			document.getElementById("factory.address.country").value = '';
+                        }
+	            		if (postal_code != undefined) {
+	            			document.getElementById("factory.address.postalCode").value = postal_code;
+	            		} else {
+	            			document.getElementById("factory.address.postalCode").value = '';
+                        }
+	            		$("#map_info").html("<c:out value='${locationFound}'/>");
 		            }
 		          } else {
-		        	  var message = "<c:out value='${locationError}'/>";
-		        	  document.getElementById('infoDiv').innerHTML=message;
+		        	  document.getElementById("factory.address.address").value = '';
+		        	  document.getElementById("factory.address.city").value = '';
+		        	  document.getElementById("factory.address.province").value = '';
+		        	  document.getElementById("factory.address.country").value = '';
+		        	  document.getElementById("factory.address.postalCode").value = '';
+		        	  $("#map_info").html("<c:out value='${locationError}'/>");
 		          }
 		        });
 
@@ -178,13 +209,13 @@
 	/** This function initiates Google objects, prints feedback and places a marker by coding the address fields.
 	 */
 	function searchAddress() {
-		document.getElementById('map_info').innerHTML="Initializing maps...";
-		document.getElementById('map_canvas').style.display='';
+		$("#map_info").html("<c:out value='${initializingMap}'/>");
+		$("#map_canvas").css('display', '');
 		initializeGMaps();
-		document.getElementById('map_info').innerHTML="Map initialized.";
+		$("#map_info").html("<c:out value='${mapInitialized}'/>");
 		var fullAddress = getFullAddress();
-		document.getElementById('map_info').innerHTML="Searching address...";
-		codeAddress(fullAddress, 'map_info');
+		$("#map_info").html("<c:out value='${searchingAddress}'/>");
+		codeAddress(fullAddress);
 	}
 	
 	/** This function initiates Google objects and places a marker if a latitude and longitude values are set.
@@ -279,12 +310,12 @@
 		            <s:fielderror><s:param>error.factory.information</s:param></s:fielderror>
 	            </li>
                 <li>
-		            <label for="factory.email"><s:text name="label.configure.factory.data.email"/></label>
+		            <label for="factory.email"><s:text name="label.configure.factory.data.email"/> (*)</label>
 		            <s:textfield id="factory.email" name="factory.email" tabindex="3"/>
 		            <s:fielderror><s:param>error.factory.email</s:param></s:fielderror>
 	            </li>
                 <li>
-		            <label for="factory.employees"><s:text name="label.configure.factory.data.employees"/></label>
+		            <label for="factory.employees"><s:text name="label.configure.factory.data.employees"/> (*)</label>
 		            <s:textfield id="factory.employees" name="factory.employees" tabindex="4"/>
 		            <s:fielderror><s:param>error.factory.employees</s:param></s:fielderror>
 	            </li>
