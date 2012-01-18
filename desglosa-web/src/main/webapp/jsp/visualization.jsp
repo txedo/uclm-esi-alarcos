@@ -19,6 +19,7 @@
 	
 	<!-- These variables are defined in the head of the html document in order to localize JavaScript messages 
 	by using <c:out value='${varName}'/> -->
+	<fmt:message key="message.loading_applet" var="loadingApplet"/>
 	<fmt:message key="message.no_profiles" var="noProfiles"/>
 	<fmt:message key="message.descend.to.company" var="goToCompanyLevel"/>
 	<fmt:message key="message.descend.to.factory" var="goToFactoryLevel"/>
@@ -427,10 +428,14 @@
 							if (noGroupBy)
 								$("#profibleChooserDialogGroupBy ul.groupBy").append("<li><p style='margin:0;padding:0'><input type='radio' name='showGroupBy' value='' checked/><c:out value='${labelNoGroupBy}'/></p></li>");
 							$("#profibleChooserDialogGroupBy").append("</ul>");
+							$("#profileChooserDialog").dialog("option", "draggable", true);
+							$("#profileChooserDialog").dialog("option", "zIndex", 3999);
 							$("#profileChooserDialog").dialog('open');
 						} else {
 							// Error: No profiles for selected entity
 							noProfilesConfigured = true;
+							$("#profileChooserDialog").dialog("option", "draggable", true);
+                            $("#profileChooserDialog").dialog("option", "zIndex", 3999);
 							$("#profileChooserDialogMessages").html("<p class='messageBox error'><c:out value='${noProfiles}'/></p>");
 							$('#profileChooserDialog').dialog('open');
 						}
@@ -826,8 +831,6 @@ function handleSelectionEvent(id, clickButton, clickCount) {
 				}
 				break;
 	         case 2:     // Double click
-	        	 // Hide infoDiv Panel
-	        	 $('#infoPanelDiv').css('display','none');
 	        	 var nextLevel = getNextLevel();
 	        	 if (nextLevel != null) {
 	                 if (currentEntity == "company" && nextLevel == "factory") {
@@ -916,11 +919,16 @@ function desglosa_showSubprojectsById(id, groupBy, profileFilename) {
 }
 
 function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
+	showLoadingIndicator(true, "<c:out value='${generating3dGraphics}'/>");
+	// The next line and if statement are for usability things
 	$("#infoPanelDiv").css('display', 'none');
-    showLoadingIndicator(true, "<c:out value='${generating3dGraphics}'/>");
+    if (($("#workingArea").position().top - $window.scrollTop()) < 0) {
+        $window.scrollTop($("#workingArea").position().top);
+    }
+	
     // Hide map canvas
     if (document.getElementById("map_canvas").style.display == '') $('#map_canvas').css('display','none');
-    // Hide jogl canvas if it is shown
+    // Hide jogl canvas if it is shown, this is to prevent the applet be frozen. We will show it later. Dunno why this work, but it does
     if (document.getElementById("jogl_canvas").style.display == '') $('#jogl_canvas').css('display','none');
     $.getJSON(action,
     	 {
@@ -934,8 +942,17 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 	         if (status == "success") {
 	             var city = JSON.stringify(data.city);
 	             if (city != "null" && city != undefined) {
+	            	 
 	            	 $('#jogl_canvas').css('display','');
-	                 desglosa_handleVisualization(data.city.model, city);
+	            	 if ($.browser.mozilla) {
+	            		 showLoadingIndicator(true, "<c:out value='${loadingApplet}'/>");
+	            		 desglosa_handleVisualization(data.city.model, city);
+	            		 showLoadingIndicator(false);
+	            	 } else { // chrome, IE and opera
+	            		 showLoadingIndicator(true, "<c:out value='${loadingApplet}'/>");
+	            		 setTimeout(function () { desglosa_handleVisualization(data.city.model, city); showLoadingIndicator(false); }, 100);
+	            	 }
+	            	 // safari does not work with jnlpappletlauncher
 	             } else if (city == "null") {
 	            	 currentEntity = currentEntityBackup;
 	                 $('#jogl_canvas').css('display','none');
@@ -944,6 +961,8 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 	                 $('#errorDialog').dialog('open');
 	             } else if (city == undefined) {
 	            	 currentEntity = currentEntityBackup;
+	            	 $('#jogl_canvas').css('display','none');
+	                 $('#map_canvas').css('display','');
 	                 $('#errorDialogBody').html("<p class='messageBox error'><c:out value='${outdatedProfile}'/></p>");
 	                 $('#errorDialog').dialog('open');
 	             }
@@ -958,11 +977,11 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 
 function desglosa_handleVisualization(model, city) {
 	if (model == "model.gl.knowledge.GLTower") {
-		   document.DesglosaApplet.visualizeTowers(city);
+		document.DesglosaApplet.visualizeTowers(city);
 	} else if (model == "model.gl.knowledge.GLAntennaBall") {
-		   document.DesglosaApplet.visualizeAntennaBalls(city);
+		document.DesglosaApplet.visualizeAntennaBalls(city);
 	} else if (model == "model.gl.knowledge.GLFactory") {
-		   document.DesglosaApplet.visualizeBuildings(city);
+		document.DesglosaApplet.visualizeBuildings(city);
 	}
 }
 

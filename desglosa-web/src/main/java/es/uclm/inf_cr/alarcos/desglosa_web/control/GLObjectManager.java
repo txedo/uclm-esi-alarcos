@@ -173,6 +173,10 @@ public class GLObjectManager {
                             } else {
                                 finalValue = entityAttrValue;
                             }
+                            // if finalValue == null here (it could have not matched any rule pattern), apply a default value
+                            if (finalValue == null) {
+                                finalValue = mapping.getModelAttr().generateDefaultValue();
+                            }
                             setterMethod.invoke(classModel.cast(glObj), finalValue);
                             if (entityAttrType.equals("float") && modelAttrType.equals("float")) {
                                 // Si la asociacion mapea dos floats, puede definirse un ratio para la dimension
