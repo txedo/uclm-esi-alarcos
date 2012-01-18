@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import model.NotifyUIManager;
 import model.gl.GLDrawer;
@@ -17,6 +18,7 @@ import exceptions.GLSingletonNotInitializedException;
 import exceptions.ViewManagerNotInstantiatedException;
 
 public class GLTowerViewManager extends GLViewManager {
+    private final static Logger log = Logger.getAnonymousLogger();
     static private GLTowerViewManager _instance = null;
 
     private List<GLObject> towers;
@@ -108,10 +110,8 @@ public class GLTowerViewManager extends GLViewManager {
     @Override
     protected void selectedObjectHandler(int selectedObject) {
         int GLObjectId = towers.get(selectedObject - 1).getId();
-        System.err.println("Selected tower: " + GLObjectId + "\tButton: "
-                + clickButton + "\tNumber of clicks: " + clickCount);
-        NotifyUIManager
-                .notifySelectedTower(GLObjectId, clickButton, clickCount);
+        log.info("Selected tower: " + GLObjectId + "\tButton: " + clickButton + "\tNumber of clicks: " + clickCount);
+        NotifyUIManager.notifySelectedTower(GLObjectId, clickButton, clickCount);
     }
 
 }

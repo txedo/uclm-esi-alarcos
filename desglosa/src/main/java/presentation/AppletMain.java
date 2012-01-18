@@ -4,6 +4,7 @@ import java.applet.*;
 import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Logger;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -25,10 +26,12 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
     private static final long serialVersionUID = -8016293827472817335L;
     private GLAnimatorControl animator;
     private GLDrawer drawer = null;
+    
+    private final static Logger log = Logger.getAnonymousLogger();
 
     @Override
     public void init() {
-        System.err.println("DesglosaApplet: init() - begin");
+        log.info("DesglosaApplet: init() - begin");
         // Creating an object to manipulate OpenGL parameters.
         GLProfile.initSingleton(false);
         GLProfile profile = GLProfile.getDefault();
@@ -53,12 +56,12 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 
         animator.start();
 
-        System.err.println("DesglosaApplet: init() - end");
+        log.info("DesglosaApplet: init() - end");
     }
 
     @Override
     public void start() {
-        System.err.println("DesglosaApplet: start() - begin");
+        log.info("DesglosaApplet: start() - begin");
 
 //         try {
 //             Synchronizer.getInstance().solicitar();
@@ -67,18 +70,18 @@ public class AppletMain extends Applet implements IObserverUI, IGLFacade {
 //             e.printStackTrace();
 //         }
 
-        System.err.println("DesglosaApplet: start() - end");
+        log.info("DesglosaApplet: start() - end");
     }
 
     @Override
     public void stop() {
-        System.err.println("DesglosaApplet: stop() - begin");
+        log.info("DesglosaApplet: stop() - begin");
         animator.stop();
-        System.err.println("DesglosaApplet: stop() - end");
+        log.info("DesglosaApplet: stop() - end");
     }
 
     public void destroy() {
-        System.err.println("DesglosaApplet: destroy() - X");
+        log.info("DesglosaApplet: destroy() - X");
     }
 
     @Override

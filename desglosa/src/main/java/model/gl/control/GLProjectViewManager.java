@@ -3,6 +3,7 @@ package model.gl.control;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
@@ -22,6 +23,7 @@ import exceptions.GLSingletonNotInitializedException;
 import exceptions.ViewManagerNotInstantiatedException;
 
 public class GLProjectViewManager extends GLViewManager {
+    private final static Logger log = Logger.getAnonymousLogger();
     static private GLProjectViewManager _instance = null;
 
     private final String APPLY = "textures/gtk-apply.png";
@@ -135,10 +137,8 @@ public class GLProjectViewManager extends GLViewManager {
     @Override
     protected void selectedObjectHandler(int selectedObject) {
         int GLObjectId = antennaBalls.get(selectedObject - 1).getId();
-        System.err.println("Selected project: " + GLObjectId + "\tButton: "
-                + clickButton + "\tNumber of clicks: " + clickCount);
-        NotifyUIManager.notifySelectedAntennaBall(GLObjectId, clickButton,
-                clickCount);
+        log.info("Selected project: " + GLObjectId + "\tButton: " + clickButton + "\tNumber of clicks: " + clickCount);
+        NotifyUIManager.notifySelectedAntennaBall(GLObjectId, clickButton, clickCount);
     }
 
 }

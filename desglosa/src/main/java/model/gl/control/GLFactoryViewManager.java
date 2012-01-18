@@ -3,6 +3,7 @@ package model.gl.control;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
@@ -19,6 +20,7 @@ import exceptions.GLSingletonNotInitializedException;
 import exceptions.ViewManagerNotInstantiatedException;
 
 public class GLFactoryViewManager extends GLViewManager {
+    private final static Logger log = Logger.getAnonymousLogger();
     static private GLFactoryViewManager _instance = null;
     private List<GLObject> glFactories;
     private TextureLoader textureLoader;
@@ -117,9 +119,7 @@ public class GLFactoryViewManager extends GLViewManager {
     @Override
     protected void selectedObjectHandler(int selectedObject) {
         int GLObjectId = glFactories.get(selectedObject - 1).getId();
-        System.err.println("Selected factory: " + GLObjectId + "\tButton: "
-                + clickButton + "\tNumber of clicks: " + clickCount);
-        NotifyUIManager.notifySelectedBuilding(GLObjectId, clickButton,
-                clickCount);
+        log.info("Selected factory: " + GLObjectId + "\tButton: " + clickButton + "\tNumber of clicks: " + clickCount);
+        NotifyUIManager.notifySelectedBuilding(GLObjectId, clickButton, clickCount);
     }
 }
