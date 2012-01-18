@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import exceptions.ViewManagerNotInstantiatedException;
 
@@ -25,6 +26,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
 public class IGLFacadeImpl implements IGLFacade {
+    private final static Logger log = Logger.getAnonymousLogger();
     static private IGLFacadeImpl _instance = null;
 
     protected IGLFacadeImpl() {
@@ -42,12 +44,15 @@ public class IGLFacadeImpl implements IGLFacade {
 
     @Override
     public void visualizeBuildings(String jsonCity) throws ViewManagerNotInstantiatedException {
+        log.info("VisualizeBuildings() - begin");
         int maxHeight = 0;
         
         City city = new City();
+        log.info("Serializing json string to json object");
         JSONObject json = (JSONObject) JSONSerializer.toJSON(jsonCity);
         List<GLObject> buildings = new ArrayList<GLObject>();
         JSONArray jsonNeighborhoods = json.getJSONArray("neighborhoods");
+        log.info("creating metaphore elements");
         for (int i = 0; i < jsonNeighborhoods.size(); i++) {
             List<GLObject> tmpBuildings = new ArrayList<GLObject>();
             JSONObject jsonFlatsObject = jsonNeighborhoods.getJSONObject(i);
@@ -66,10 +71,10 @@ public class IGLFacadeImpl implements IGLFacade {
                 buildings.add(building);
                 tmpBuildings.add(building);
             }
-            city.getNeighborhoods().add(
-                    new Neighborhood(jsonFlatsObject.getString("name"), tmpBuildings));
+            city.getNeighborhoods().add(new Neighborhood(jsonFlatsObject.getString("name"), tmpBuildings));
         }
         
+        log.info("applying normalization process");
         // Read ratios from json city
         Map<String, Object> ratios = readRatios(json.getJSONObject("ratios"));
         float normHeight = (Float) (ratios.get("smokestackHeight") != null? new Float(ratios.get("smokestackHeight").toString()) : maxHeight);
@@ -81,9 +86,11 @@ public class IGLFacadeImpl implements IGLFacade {
             }
         }
 
+        log.info("processing neighborhood and flat positions");
         // Place flats and neighborhoods once normalized
         city.placeNeighborhoods(GLFactory.MAX_HEIGHT + 1.0f);
 
+        log.info("configure caption");
         // Configure caption lines
         Caption caption = configureCaption(json.getJSONObject("captionLines"));
         if (caption != null)
@@ -92,20 +99,22 @@ public class IGLFacadeImpl implements IGLFacade {
         // Change the active view to BuildingLevel
         GLFactoryViewManager.getInstance().setPavements(city.getPavements());
         GLFactoryViewManager.getInstance().setItems(buildings);
-        GLFactoryViewManager.getInstance().getDrawer()
-                .setViewLevel(EViewLevels.BuildingLevel);
+        log.info("Setting view level to BuildingLevel");
+        GLFactoryViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.BuildingLevel);
+        log.info("VisualizeBuildings() - end");
     }
 
     @Override
-    public void visualizeAntennaBalls(String jsonCity)
-            throws ViewManagerNotInstantiatedException {
+    public void visualizeAntennaBalls(String jsonCity) throws ViewManagerNotInstantiatedException {
+        log.info("VisualizeAntennaBalls() - begin");
         float maxSize = 0.0f;
 
         City city = new City();
+        log.info("Serializing json string to json object");
         JSONObject json = (JSONObject) JSONSerializer.toJSON(jsonCity);
         List<GLObject> antennaBalls = new ArrayList<GLObject>();
-
         JSONArray jsonNeighborhoods = json.getJSONArray("neighborhoods");
+        log.info("creating metaphore elements");
         for (int i = 0; i < jsonNeighborhoods.size(); i++) {
             List<GLObject> tmpAntennaBalls = new ArrayList<GLObject>();
             JSONObject jsonFlatsObject = jsonNeighborhoods.getJSONObject(i);
@@ -131,10 +140,10 @@ public class IGLFacadeImpl implements IGLFacade {
                     maxSize = antennaBall.getParentBallRadius();
                 }
             }
-            city.getNeighborhoods().add(
-                    new Neighborhood(jsonFlatsObject.getString("name"), tmpAntennaBalls));
+            city.getNeighborhoods().add(new Neighborhood(jsonFlatsObject.getString("name"), tmpAntennaBalls));
         }
 
+        log.info("applying normalization process");
         // Read ratios from json city
         Map<String, Object> ratios = readRatios(json.getJSONObject("ratios"));
         float normParentRadius = (Float) (ratios.get("parentBallRadius") != null? new Float(ratios.get("parentBallRadius").toString()) : maxSize);
@@ -145,33 +154,39 @@ public class IGLFacadeImpl implements IGLFacade {
             }
         }
 
+        log.info("processing neighborhood and flat positions");
         // Place flats and neighborhoods once normalized
         city.placeNeighborhoods(GLAntennaBall.MAX_HEIGHT * 2);
 
-        // Configure caption lines
+
+        log.info("configure caption");// Configure caption lines
         Caption caption = configureCaption(json.getJSONObject("captionLines"));
-        if (caption != null)
+        if (caption != null) {
             GLProjectViewManager.getInstance().setCaption(caption);
+        }
 
         // Change the active view to AntennaBallLevel
         GLProjectViewManager.getInstance().setPavements(city.getPavements());
         GLProjectViewManager.getInstance().setItems(antennaBalls);
-        GLProjectViewManager.getInstance().getDrawer()
-                .setViewLevel(EViewLevels.AntennaBallLevel);
+        log.info("Setting view level to AntennaBallLevel");
+        GLProjectViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.AntennaBallLevel);
+        log.info("VisualizeAntennaBalls() - end");
     }
 
     @Override
-    public void visualizeTowers(String jsonCity)
-            throws ViewManagerNotInstantiatedException {
+    public void visualizeTowers(String jsonCity) throws ViewManagerNotInstantiatedException {
+        log.info("VisualizeTowers() - begin");
         float maxDepth = 0.0f;
         float maxWidth = 0.0f;
         float maxHeight = 0.0f;
         float maxInnerHeight = 0.0f;
 
         City city = new City();
+        log.info("Serializing json string to json object");
         List<GLObject> towers = new ArrayList<GLObject>();
         JSONObject json = (JSONObject) JSONSerializer.toJSON(jsonCity);
         JSONArray jsonNeighborhoods = json.getJSONArray("neighborhoods");
+        log.info("creating metaphore elements");
         for (int i = 0; i < jsonNeighborhoods.size(); i++) {
             List<GLObject> tmpTowers = new ArrayList<GLObject>();
             JSONObject jsonFlatsObject = jsonNeighborhoods.getJSONObject(i);
@@ -201,11 +216,10 @@ public class IGLFacadeImpl implements IGLFacade {
                     maxInnerHeight = tower.getInnerHeight();
                 }
             }
-            city.getNeighborhoods().add(
-                    new Neighborhood(jsonFlatsObject.getString("name"),
-                            tmpTowers));
+            city.getNeighborhoods().add(new Neighborhood(jsonFlatsObject.getString("name"), tmpTowers));
         }
 
+        log.info("applying normalization process");
         // Read ratios from json city
         Map<String, Object> ratios = readRatios(json.getJSONObject("ratios"));
         float normHeight = (Float) (ratios.get("height") != null? new Float(ratios.get("height").toString()) : maxHeight);
@@ -228,18 +242,23 @@ public class IGLFacadeImpl implements IGLFacade {
             }
         }
 
+        log.info("processing neighborhood and flat positions");
         // Place flats and neighborhoods once normalized
         city.placeNeighborhoods(GLTower.MAX_HEIGHT + 1.0f);
 
+        log.info("configure caption");
         // Configure caption lines
         Caption caption = configureCaption(json.getJSONObject("captionLines"));
-        if (caption != null)
+        if (caption != null) {
             GLTowerViewManager.getInstance().setCaption(caption);
+        }
 
         // Change the active view to TowerLevel
         GLTowerViewManager.getInstance().setPavements(city.getPavements());
         GLTowerViewManager.getInstance().setItems(towers);
+        log.info("Setting view level to TowerLevel");
         GLTowerViewManager.getInstance().getDrawer().setViewLevel(EViewLevels.TowerLevel);
+        log.info("VisualizeTowers() - end");
     }
 
     private Caption configureCaption(JSONObject jsonCaptionLines) {

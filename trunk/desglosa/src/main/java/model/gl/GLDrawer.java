@@ -3,6 +3,7 @@ package model.gl;
 import java.awt.Component;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.util.logging.Logger;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
@@ -28,6 +29,7 @@ import model.util.Vector3f;
 import exceptions.GLSingletonNotInitializedException;
 
 public class GLDrawer implements GLEventListener, IGLConstants {
+    private final static Logger log = Logger.getAnonymousLogger();
     /*
      * A GLViewManager must be declared for each view manager available. When
      * adding a new view manager, it has to be added and configured to the
@@ -45,7 +47,7 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 
     private GLCamera camera;
     private GLSpotlight spotlight;
-    private GLLogger log;
+    private GLLogger glLogger;
 
     private boolean debugMode;
     private boolean renderShadow;
@@ -75,22 +77,19 @@ public class GLDrawer implements GLEventListener, IGLConstants {
                 // http://staff.www.ltu.se/~mjt/ComputerGraphics/jogl-doc/jogl_usersguide/index.html
                 if (!oldViewLevel.equals(viewLevel)) {
                     this.updateProjection();
-                    if (!oldViewLevel.equals(EViewLevels.UnSetLevel))
+                    if (!oldViewLevel.equals(EViewLevels.UnSetLevel)) {
                         getViewManager(oldViewLevel).deconfigureView();
+                    }
                     getViewManager(viewLevel).configureView();
                     oldViewLevel = viewLevel;
                 }
                 // If the active view supports shadows, the stencil buffer is
                 // cleared in order to draw them
-                if (this.stencilShadow && this.renderShadow
-                        && this.getViewManager(viewLevel).isShadowSupport()) {
-                    GLSingleton.getGL().glClear(
-                            GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT
-                                    | GL2.GL_STENCIL_BUFFER_BIT);
+                if (this.stencilShadow && this.renderShadow && this.getViewManager(viewLevel).isShadowSupport()) {
+                    GLSingleton.getGL().glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT | GL2.GL_STENCIL_BUFFER_BIT);
                 } else {
                     /* Avoid clearing stencil when not using it. */
-                    GLSingleton.getGL().glClear(
-                            GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+                    GLSingleton.getGL().glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
                 }
                 GLSingleton.getGL().glLoadIdentity();
                 // Render the new camera and spotlight position if the active
@@ -105,20 +104,16 @@ public class GLDrawer implements GLEventListener, IGLConstants {
                     Vector3f lightSource = this.camera.getPosition().clone();
                     lightSource.setX(lightSource.getX() - 1.0f);
                     lightSource.setY(lightSource.getY() + 1.0f);
-                    floorShadowBuf = GLUtils.doShadowCalculations(
-                            this.renderShadow, this.stencilShadow, lightSource);
+                    floorShadowBuf = GLUtils.doShadowCalculations(this.renderShadow, this.stencilShadow, lightSource);
                 }
                 // Render the normal scene
                 this.getViewManager(viewLevel).manageView();
                 // Render the scene shadow if shadows are enabled
                 if (this.getViewManager(viewLevel).isShadowSupport()) {
-                    GLUtils.renderProjectedShadow(this.renderShadow,
-                            this.stencilShadow, floorShadowBuf,
-                            this.getViewManager(viewLevel));
+                    GLUtils.renderProjectedShadow(this.renderShadow, this.stencilShadow, floorShadowBuf, this.getViewManager(viewLevel));
                 }
                 if (this.debugMode) {
-                    this.log.printToGL(this.screenHeight,
-                            this.screenWidth - 100, this.DIM);
+                    this.glLogger.printToGL(this.screenHeight, this.screenWidth - 100, this.DIM);
                 }
                 glDrawable.swapBuffers();
                 GLSingleton.getGL().glFlush();
@@ -156,6 +151,7 @@ public class GLDrawer implements GLEventListener, IGLConstants {
      *            The GLAutoDrawable object.
      */
     public void init(GLAutoDrawable glDrawable) {
+        log.info("Entering GLDrawer.init()...");
         GLSingleton.getInstance();
         GLSingleton.init(glDrawable);
 
@@ -166,30 +162,21 @@ public class GLDrawer implements GLEventListener, IGLConstants {
         this.oldViewLevel = null;
         this.viewLevel = EViewLevels.UnSetLevel;
 
-        this.towerView = IViewManagerFactoryImpl.getInstance()
-                .createTowerViewManager(this);
-        this.antennaBallView = IViewManagerFactoryImpl.getInstance()
-                .createProjectViewManager(this);
-        this.buildingView = IViewManagerFactoryImpl.getInstance()
-                .createFactoryViewManager(this);
+        this.towerView = IViewManagerFactoryImpl.getInstance().createTowerViewManager(this);
+        this.antennaBallView = IViewManagerFactoryImpl.getInstance().createProjectViewManager(this);
+        this.buildingView = IViewManagerFactoryImpl.getInstance().createFactoryViewManager(this);
 
         try {
-            GLSingleton.getGL().glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT,
-                    GL2.GL_NICEST); // Really Nice Perspective Calculations
-            GLSingleton.getGL().glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // White
-                                                                      // Background
-            GLSingleton.getGL().glEnable(GL2.GL_DEPTH_TEST); // Enables Depth
-                                                             // Testing
+            GLSingleton.getGL().glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST); // Really Nice Perspective Calculations
+            GLSingleton.getGL().glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // White Background
+            GLSingleton.getGL().glEnable(GL2.GL_DEPTH_TEST); // Enables Depth Testing
             GLSingleton.getGL().glClearDepth(1.0f); // Depth Buffer Setup
             GLSingleton.getGL().glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-            GLSingleton.getGL().glDepthFunc(GL2.GL_LESS); // The Type Of Depth
-                                                          // Testing To Do
-            GLSingleton.getGL().glShadeModel(GL2.GL_SMOOTH); // Enable Smooth
-                                                             // Shading
+            GLSingleton.getGL().glDepthFunc(GL2.GL_LESS); // The Type Of Depth Testing To Do
+            GLSingleton.getGL().glShadeModel(GL2.GL_SMOOTH); // Enable Smooth Shading
             // Enable blending
             GLSingleton.getGL().glEnable(GL2.GL_BLEND);
-            GLSingleton.getGL().glBlendFunc(GL2.GL_SRC_ALPHA,
-                    GL2.GL_ONE_MINUS_SRC_ALPHA);
+            GLSingleton.getGL().glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
             // Point antialiasing
             GLSingleton.getGL().glEnable(GL2.GL_POINT_SMOOTH);
             GLSingleton.getGL().glHint(GL2.GL_POINT_SMOOTH_HINT, GL2.GL_NICEST);
@@ -199,8 +186,7 @@ public class GLDrawer implements GLEventListener, IGLConstants {
             // Polygon antialiasing (in case this does not work, use
             // GLUtils.enableMultisample())
             GLSingleton.getGL().glEnable(GL2.GL_POLYGON_SMOOTH);
-            GLSingleton.getGL().glHint(GL2.GL_POLYGON_SMOOTH_HINT,
-                    GL2.GL_NICEST);
+            GLSingleton.getGL().glHint(GL2.GL_POLYGON_SMOOTH_HINT, GL2.GL_NICEST);
             // Textures are enabled and its environment configured just before
             // mapping them, not here
 
@@ -227,16 +213,14 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 
             // GLFontBuilder.getInstance().buildFont();
 
-            log = new GLLogger();
-            System.err.print(log.toString());
+            glLogger = new GLLogger();
+            log.info(glLogger.toString());
             Synchronizer.getInstance().conceder();
         } catch (GLSingletonNotInitializedException e) {
             GLSingleton.init(glDrawable);
             this.init(glDrawable);
-            // } catch (IOException e) {
-            // // TODO Auto-generated catch block
-            // e.printStackTrace();
         }
+        log.info("Leaving GLDrawer.init()...");
     }
 
     /**
@@ -258,8 +242,7 @@ public class GLDrawer implements GLEventListener, IGLConstants {
      * @param height
      *            The new height of the window.
      */
-    public void reshape(GLAutoDrawable glDrawable, int x, int y, int width,
-            int height) {
+    public void reshape(GLAutoDrawable glDrawable, int x, int y, int width, int height) {
         try {
             // Action to do when window is resized
             GLSingleton.getGL().setSwapInterval(1);
@@ -277,20 +260,18 @@ public class GLDrawer implements GLEventListener, IGLConstants {
 
     @Override
     public void dispose(GLAutoDrawable glDrawable) {
-        System.err.println("Desglosa: Dispose");
+        log.info("Desglosa: Dispose");
     }
 
     private void updateProjection() throws GLSingletonNotInitializedException {
         if (!viewLevel.equals(EViewLevels.UnSetLevel)) {
-            if (this.getViewManager(viewLevel).isThreeDimensional())
-                GLUtils.setPerspectiveProjection(this.screenHeight,
-                        this.screenWidth);
-            else
-                GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth,
-                        this.DIM);
+            if (this.getViewManager(viewLevel).isThreeDimensional()) {
+                GLUtils.setPerspectiveProjection(this.screenHeight, this.screenWidth);
+            } else {
+                GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth, this.DIM);
+            }
         } else {
-            GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth,
-                    this.DIM);
+            GLUtils.setOrthoProjection(this.screenHeight, this.screenWidth, this.DIM);
         }
     }
 
@@ -337,8 +318,7 @@ public class GLDrawer implements GLEventListener, IGLConstants {
     public void setSelectionMode(boolean b, int clickButton, int clickCount) {
         GLViewManager vm = getViewManager(viewLevel);
         if (vm != null)
-            getViewManager(viewLevel).setSelectionMode(true, clickButton,
-                    clickCount);
+            getViewManager(viewLevel).setSelectionMode(true, clickButton, clickCount);
     }
 
     public GLCamera getCamera() {

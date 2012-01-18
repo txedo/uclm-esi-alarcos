@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.media.opengl.GL2;
 
@@ -21,6 +22,7 @@ import model.gl.knowledge.caption.Caption;
 import model.util.Vector3f;
 
 public abstract class GLViewManager {
+    private final static Logger log = Logger.getAnonymousLogger();
 
     protected final int BUFFSIZE = 512;
     /* http://www.cgtextures.com/ */
@@ -187,7 +189,7 @@ public abstract class GLViewManager {
      */
     protected void handleHits(int hits, int[] data) {
         int offset = 0;
-        System.out.println("Number of hits = " + hits);
+        log.info("Number of hits = " + hits);
         if (hits > 0) { // If There Were More Than 0 Hits
             int choose = data[3]; // Make Our Selection The First Object
             int depth = data[1]; // Store How Far Away It Is
