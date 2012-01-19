@@ -40,11 +40,12 @@
             <%@ include file="/jsp/generateProjectMeasureView.jsp"%>
             
             <div class="buttonPane">
-                <!-- TODO add security tag -->
-                <c:url var="configureMeasures" value="/configureProjectMeasures">
-                    <c:param name="id">${param.id}</c:param>
-                </c:url>
-                <button class="minimal" onclick="javascript:goTo('<c:out value="${configureMeasures}"/>')"><img id="saveIndicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none;" class="icon"/><fmt:message key="button.configure_measures"/></button>
+                <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER">
+	                <c:url var="configureMeasures" value="/configureProjectMeasures">
+	                    <c:param name="id">${param.id}</c:param>
+	                </c:url>
+	                <button class="minimal" onclick="javascript:goTo('<c:out value="${configureMeasures}"/>')"><img id="saveIndicator" src="images/indicator.gif" alt="<s:text name="label.loading"/>" title="<s:text name="label.loading"/>" style="display:none;" class="icon"/><fmt:message key="button.configure_measures"/></button>
+	            </security:authorize>
             </div>
         </fieldset>
     </div>

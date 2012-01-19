@@ -163,11 +163,12 @@
 	                </fieldset>
 	                
 	                <div class="buttonPane">
-	                    <!-- TODO add security tag -->
-	                    <c:url var="edit" value="/showFactoryForm">
-	                        <c:param name="id">${param.id}</c:param>
-	                    </c:url>
-	                    <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',false)"><fmt:message key="button.edit_factory"/></button>
+	                    <security:authorize ifAnyGranted="ROLE_ADMIN">
+		                    <c:url var="edit" value="/showFactoryForm">
+		                        <c:param name="id">${param.id}</c:param>
+		                    </c:url>
+		                    <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',false)"><fmt:message key="button.edit_factory"/></button>
+		                </security:authorize>
 	                </div>
 	            </div>
 	            
@@ -178,11 +179,12 @@
 	                </fieldset>
 	                
 		            <div class="buttonPane">
-		                <!-- TODO add security tag -->
-		                <c:url var="configureMeasures" value="/configureFactoryMeasures">
-		                    <c:param name="id">${param.id}</c:param>
-		                </c:url>
-		                <button class="minimal" onclick="javascript:call('<c:out value="${configureMeasures}"/>',false)"><fmt:message key="button.configure_measures"/></button>
+		                <security:authorize ifAnyGranted="ROLE_ADMIN">
+			                <c:url var="configureMeasures" value="/configureFactoryMeasures">
+			                    <c:param name="id">${param.id}</c:param>
+			                </c:url>
+			                <button class="minimal" onclick="javascript:call('<c:out value="${configureMeasures}"/>',false)"><fmt:message key="button.configure_measures"/></button>
+			            </security:authorize>
 		            </div>
 	            </div>
 	            
@@ -198,7 +200,7 @@
 		                    <display:column property="name" escapeXml="true" style="width: 15%" titleKey="table.header.project.name" sortable="true"/>
 		                    <display:column property="code" escapeXml="true" style="width: 10%; text-align: center;" titleKey="table.header.project.code" sortable="true"/>
 		                    <display:column property="plan" escapeXml="true" style="width: 10%; text-align: center;" titleKey="table.header.project.plan" sortable="true"/>
-		                    <display:column escapeXml="false" style="width: 10%; text-align: center;" titleKey="table.header.market.name" sortable="true">
+		                    <display:column escapeXml="false" style="width: 10%;" titleKey="table.header.market.name" sortable="true">
 	                            <script>
 	                            var span = getMarketSpan('${project.market.color}', '${project.market.name}');
 	                            $("td:last").append(span);
@@ -223,20 +225,24 @@
 	                </div>
 	                
 	                <div class="buttonPane">
-	                    <!-- TODO add security tag -->
-	                    <c:url var="view" value="/viewProject"/>
-	                    <button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_project"/></button>
-	                    <!-- TODO add security tag -->
-	                    <c:url var="edit" value="/showProjectForm"/>
-	                    <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_project"/></button>
-	                    <!-- TODO add security tag -->
-	                    <c:url var="delete" value="/deleteProject"/>
-	                    <button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_project"/></button>
-	                    <!-- TODO add security tag -->
-	                    <c:url var="add" value="/showProjectForm">
-	                        <c:param name="companyId">${param.id}</c:param>
-	                    </c:url>
-	                    <button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_project"/></button>
+	                    <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER">
+		                    <c:url var="view" value="/viewProject"/>
+		                    <button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_project"/></button>
+	                    </security:authorize>
+	    				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER">
+		                    <c:url var="edit" value="/showProjectForm"/>
+		                    <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_project"/></button>
+	                    </security:authorize>
+	    				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER">
+		                    <c:url var="delete" value="/deleteProject"/>
+		                    <button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_project"/></button>
+	                    </security:authorize>
+	    				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER">
+		                    <c:url var="add" value="/showProjectForm">
+		                        <c:param name="factoryId">${param.id}</c:param>
+		                    </c:url>
+		                    <button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_project"/></button>
+		                </security:authorize>
 	                </div>
 	            </fieldset>
 	            
@@ -283,20 +289,24 @@
 	                </div>
 	                
 	                <div class="buttonPane">
-	                    <!-- TODO add security tag -->
-	                    <c:url var="view" value="/viewSubproject"/>
-	                    <button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_subproject"/></button>
-	                    <!-- TODO add security tag -->
-	                    <c:url var="edit" value="/showSubprojectForm"/>
-	                    <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_subproject"/></button>
-	                    <!-- TODO add security tag -->
-	                    <c:url var="delete" value="/deleteSubproject"/>
-	                    <button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_subproject"/></button>
-	                    <!-- TODO add security tag -->
-	                    <c:url var="add" value="/showSubprojectForm">
-	                        <c:param name="companyId">${param.id}</c:param>
-	                    </c:url>
-	                    <button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_subproject"/></button>
+	                    <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER">
+		                    <c:url var="view" value="/viewSubproject"/>
+		                    <button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_subproject"/></button>
+	                    </security:authorize>
+	    				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER">
+		                    <c:url var="edit" value="/showSubprojectForm"/>
+		                    <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_subproject"/></button>
+	                    </security:authorize>
+	    				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER">
+		                    <c:url var="delete" value="/deleteSubproject"/>
+		                    <button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_subproject"/></button>
+	                    </security:authorize>
+	    				<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER">
+		                    <c:url var="add" value="/showSubprojectForm">
+		                        <c:param name="factoryId">${param.id}</c:param>
+		                    </c:url>
+		                    <button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_subproject"/></button>
+		                </security:authorize>
 	                </div>
 	            </fieldset>
 	        </s:if>

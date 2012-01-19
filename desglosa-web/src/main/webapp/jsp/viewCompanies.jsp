@@ -72,21 +72,26 @@
 	</div>
 	
 	<div class="buttonPane">
-	    <!-- TODO add security tag -->
-        <c:url var="viewMeasures" value="/viewCompanyMeasures"/>
-        <button class="minimal" onclick="javascript:call('<c:out value="${viewMeasures}"/>',true)"><fmt:message key="button.view_measures"/></button>
-	    <!-- TODO add security tag -->
-		<c:url var="view" value="/viewCompany"/>
-		<button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_company"/></button>
-		<!-- TODO add security tag -->
-		<c:url var="edit" value="/showCompanyForm"/>
-		<button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_company"/></button>
-		<!-- TODO add security tag -->
-		<c:url var="delete" value="/deleteCompany"/>
-		<button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_company"/></button>
-		<!-- TODO add security tag -->
-		<c:url var="add" value="/showCompanyForm"/>
-		<button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_company"/></button>
+	    <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER">
+        	<c:url var="viewMeasures" value="/viewCompanyMeasures"/>
+        	<button class="minimal" onclick="javascript:call('<c:out value="${viewMeasures}"/>',true)"><fmt:message key="button.view_measures"/></button>
+	    </security:authorize>
+	    <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER">
+			<c:url var="view" value="/viewCompany"/>
+			<button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_company"/></button>
+		</security:authorize>
+	    <security:authorize ifAnyGranted="ROLE_ADMIN">
+			<c:url var="edit" value="/showCompanyForm"/>
+			<button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_company"/></button>
+		</security:authorize>
+	    <security:authorize ifAnyGranted="ROLE_ADMIN">
+			<c:url var="delete" value="/deleteCompany"/>
+			<button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_company"/></button>
+		</security:authorize>
+	    <security:authorize ifAnyGranted="ROLE_ADMIN">
+			<c:url var="add" value="/showCompanyForm"/>
+			<button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_company"/></button>
+		</security:authorize>
 	</div>
 </body>
 </html>
