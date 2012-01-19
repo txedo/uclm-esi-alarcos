@@ -93,21 +93,26 @@
 	</div>
     
     <div class="buttonPane">
-        <!-- TODO add security tag -->
-        <c:url var="viewMeasures" value="/viewSubprojectMeasures"/>
-        <button class="minimal" onclick="javascript:call('<c:out value="${viewMeasures}"/>',true)"><fmt:message key="button.view_measures"/></button>
-        <!-- TODO add security tag -->
-        <c:url var="view" value="/viewSubproject"/>
-        <button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_subproject"/></button>
-        <!-- TODO add security tag -->
-        <c:url var="edit" value="/showSubprojectForm"/>
-        <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_subproject"/></button>
-        <!-- TODO add security tag -->
-        <c:url var="delete" value="/deleteSubproject"/>
-        <button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_subproject"/></button>
-        <!-- TODO add security tag -->
-        <c:url var="add" value="/showSubprojectForm"/>
-        <button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_subproject"/></button>
+	    <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER">
+	        <c:url var="viewMeasures" value="/viewSubprojectMeasures"/>
+	        <button class="minimal" onclick="javascript:call('<c:out value="${viewMeasures}"/>',true)"><fmt:message key="button.view_measures"/></button>
+        </security:authorize>
+	    <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER">
+	        <c:url var="view" value="/viewSubproject"/>
+	        <button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_subproject"/></button>
+        </security:authorize>
+	    <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER">
+	        <c:url var="edit" value="/showSubprojectForm"/>
+	        <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_subproject"/></button>
+        </security:authorize>
+	    <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER">
+	        <c:url var="delete" value="/deleteSubproject"/>
+	        <button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_subproject"/></button>
+        </security:authorize>
+	    <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER">
+	        <c:url var="add" value="/showSubprojectForm"/>
+	        <button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_subproject"/></button>
+    	</security:authorize>
     </div>
 </body>
 </html>

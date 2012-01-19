@@ -99,11 +99,12 @@
 				</fieldset>
 				
 				<div class="buttonPane">
-	                <!-- TODO add security tag -->
-	                <c:url var="edit" value="/showCompanyForm">
-	                    <c:param name="id">${param.id}</c:param>
-	                </c:url>
-	                <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',false)"><fmt:message key="button.edit_company"/></button>
+	                <security:authorize ifAnyGranted="ROLE_ADMIN">
+		                <c:url var="edit" value="/showCompanyForm">
+		                    <c:param name="id">${param.id}</c:param>
+		                </c:url>
+		                <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',false)"><fmt:message key="button.edit_company"/></button>
+		            </security:authorize>
 	            </div>
 			</div>
 			
@@ -114,11 +115,12 @@
                 </fieldset>
                 
 	            <div class="buttonPane">
-	                <!-- TODO add security tag -->
-	                <c:url var="configureMeasures" value="/configureCompanyMeasures">
-	                    <c:param name="id">${param.id}</c:param>
-	                </c:url>
-	                <button class="minimal" onclick="javascript:call('<c:out value="${configureMeasures}"/>',false)"><fmt:message key="button.configure_measures"/></button>
+	                <security:authorize ifAnyGranted="ROLE_ADMIN">
+		                <c:url var="configureMeasures" value="/configureCompanyMeasures">
+		                    <c:param name="id">${param.id}</c:param>
+		                </c:url>
+		                <button class="minimal" onclick="javascript:call('<c:out value="${configureMeasures}"/>',false)"><fmt:message key="button.configure_measures"/></button>
+		            </security:authorize>
 	            </div>
             </div>
 			
@@ -162,20 +164,24 @@
 				</div>
 				
 				<div class="buttonPane">
-					<!-- TODO add security tag -->
-					<c:url var="view" value="/viewFactory"/>
-					<button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_factory"/></button>
-					<!-- TODO add security tag -->
-					<c:url var="edit" value="/showFactoryForm"/>
-					<button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_factory"/></button>
-					<!-- TODO add security tag -->
-					<c:url var="delete" value="/deleteFactory"/>
-					<button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_factory"/></button>
-					<!-- TODO add security tag -->
-					<c:url var="add" value="/showFactoryForm">
-						<c:param name="companyId">${param.id}</c:param>
-					</c:url>
-					<button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_factory"/></button>
+					<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER">
+						<c:url var="view" value="/viewFactory"/>
+						<button class="minimal" onclick="javascript:call('<c:out value="${view}"/>',true)"><fmt:message key="button.view_factory"/></button>
+					</security:authorize>
+	    			<security:authorize ifAnyGranted="ROLE_ADMIN">
+						<c:url var="edit" value="/showFactoryForm"/>
+						<button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_factory"/></button>
+					</security:authorize>
+	    			<security:authorize ifAnyGranted="ROLE_ADMIN">
+						<c:url var="delete" value="/deleteFactory"/>
+						<button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_factory"/></button>
+					</security:authorize>
+	    			<security:authorize ifAnyGranted="ROLE_ADMIN">
+						<c:url var="add" value="/showFactoryForm">
+							<c:param name="companyId">${param.id}</c:param>
+						</c:url>
+						<button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_factory"/></button>
+					</security:authorize>
 				</div>
 			</fieldset>
 		</s:if>

@@ -11,16 +11,20 @@
         <property name="authorizedRoles" value="ROLE_ADMIN"/>
     </bean>
     
-    <bean id="executiveInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
-        <property name="authorizedRoles" value="ROLE_EXECUTIVE"/>
-    </bean>
-    
     <bean id="managerInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
         <property name="authorizedRoles" value="ROLE_MANAGER"/>
     </bean>
     
+    <bean id="userInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_USER"/>
+    </bean>
+    
+    <bean id="adminManagerInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_ADMIN,ROLE_MANAGER"/>
+    </bean>
+    
     <bean id="allUsersInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
-        <property name="authorizedRoles" value="ROLE_ADMIN,ROLE_EXECUTIVE,ROLE_MANAGER,ROLE_USER"/>
+        <property name="authorizedRoles" value="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER"/>
     </bean>
     
 </beans>

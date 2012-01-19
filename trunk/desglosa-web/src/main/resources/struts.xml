@@ -16,16 +16,22 @@
             	<interceptor-ref name="paramsPrepareParamsStack"/>
             </interceptor-stack>
             <!-- Interceptor to handle roles and actions -->
-            <interceptor name="adminOnly" class="adminInterceptor"/>
-            <interceptor name="executiveOnly" class="executiveInterceptor"/>
-            <interceptor name="managerOnly" class="managerInterceptor"/>
-            <interceptor name="allUsers" class="allUsersInterceptor"/>
-            <interceptor-stack name="allButUsers">
-            	<interceptor-ref name="adminOnly"/>
-            	<interceptor-ref name="executiveOnly"/>
-            	<interceptor-ref name="managerOnly"/>
+            <interceptor name="adminInterceptor" class="adminInterceptor"/>
+            <interceptor name="managerInterceptor" class="managerInterceptor"/>
+            <interceptor name="adminManagerInterceptor" class="adminManagerInterceptor"/>
+            <interceptor name="allUsersInterceptor" class="allUsersInterceptor"/>
+			<interceptor-stack name="AdminInterceptor">
+            	<interceptor-ref name="adminInterceptor"/>
             	<interceptor-ref name="defaultStack" />
             </interceptor-stack>
+            <interceptor-stack name="AdminManagerInterceptor">
+            	<interceptor-ref name="adminManagerInterceptor"/>
+            	<interceptor-ref name="defaultStack" />
+            </interceptor-stack>
+			<interceptor-stack name="AllUsersInterceptor">
+            	<interceptor-ref name="allUsersInterceptor"/>
+            	<interceptor-ref name="defaultStack" />
+            </interceptor-stack>            
         </interceptors>
         
         <!-- Actions -->
@@ -41,11 +47,8 @@
 		<action name="logout">
 			<result>/logout.jsp</result>
 		</action>
-		<action name="contactUs">
-			<result>/contactUs.jsp</result>
-		</action>
 		<action name="visualization" class="visualizationAction">
-			<!-- <interceptor-ref name="allButUsers"/> -->
+			<interceptor-ref name="AllUsersInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="success">/jsp/visualization.jsp</result>
 			<result name="input">/jsp/visualization.jsp</result>
@@ -54,28 +57,28 @@
 		
 		<!-- Profile related actions -->
 		<action name="listProfiles" class="profileAction">
-			<!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
+			<interceptor-ref name="AdminInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/admin/viewProfiles.jsp</result>
 			<result name="input">/jsp/admin/viewProfiles.jsp</result>
 			<result name="success">/jsp/admin/viewProfiles.jsp</result>
 		</action>
 		<action name="showProfileForm" class="profileAction" method="showForm">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="AdminInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/admin/viewProfiles.jsp</result>
 			<result name="input">/jsp/admin/formProfile.jsp</result>
 			<result name="success">/jsp/admin/formProfile.jsp</result>
 		</action>
 		<action name="saveProfile" class="profileAction" method="save">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="AdminInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/admin/formProfile.jsp</result>
 			<result name="input">/jsp/admin/formProfile.jsp</result>
 			<result name="success" type="redirectAction">listProfiles</result>
 		</action>
         <action name="deleteProfile" class="profileAction" method="delete">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/admin/viewProfiles.jsp</result>
             <result name="input">/jsp/admin/viewProfiles.jsp</result>
@@ -85,63 +88,63 @@
 		
 		<!-- Company related actions -->
 		<action name="listCompanies" class="companyAction">
-			<!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
+			<interceptor-ref name="AllUsersInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewCompanies.jsp</result>
 			<result name="input">/jsp/viewCompanies.jsp</result>
 			<result name="success">/jsp/viewCompanies.jsp</result>
 		</action>
 		<action name="showCompanyForm" class="companyAction" method="showForm">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="AdminInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewCompanies.jsp</result>
 			<result name="input">/jsp/formCompany.jsp</result>
 			<result name="success">/jsp/formCompany.jsp</result>
 		</action>
 		<action name="viewCompany" class="companyAction" method="get">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="AllUsersInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewCompany.jsp</result>
 			<result name="input">/jsp/viewCompany.jsp</result>
 			<result name="success">/jsp/viewCompany.jsp</result>
 		</action>
 		<action name="saveCompany" class="companyAction" method="save">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="AdminInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/formCompany.jsp</result>
 			<result name="input">/jsp/formCompany.jsp</result>
 			<result name="success" type="redirectAction">listCompanies</result>
 		</action>
 		<action name="editCompany" class="companyAction" method="edit">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="AdminInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewCompanies.jsp</result>
 			<result name="input">/jsp/formCompany.jsp</result>
 			<result name="success" type="redirectAction">listCompanies</result>
 		</action>
 		<action name="deleteCompany" class="companyAction" method="delete">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="AdminInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewCompanies.jsp</result>
 			<result name="input">/jsp/viewCompanies.jsp</result>
 			<result name="success" type="redirectAction">listCompanies</result>
 		</action>
 		<action name="viewCompanyMeasures" class="companyAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewCompanyMeasures.jsp</result>
             <result name="input">/jsp/viewCompanyMeasures.jsp</result>
             <result name="success">/jsp/viewCompanyMeasures.jsp</result>
         </action>
         <action name="configureCompanyMeasures" class="companyAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/formCompanyMeasures.jsp</result>
             <result name="input">/jsp/formCompanyMeasures.jsp</result>
             <result name="success">/jsp/formCompanyMeasures.jsp</result>
         </action>
         <action name="editCompanyMeasures" class="companyAction" method="updateMeasures">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewCompanies.jsp</result>
             <result name="input">/jsp/formCompanyMeasures.jsp</result>
@@ -151,63 +154,63 @@
 		
 		<!-- Factory related actions -->
 		<action name="listFactories" class="factoryAction">
-			<!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
+			<interceptor-ref name="AllUsersInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewFactories.jsp</result>
 			<result name="input">/jsp/viewFactories.jsp</result>
 			<result name="success">/jsp/viewFactories.jsp</result>
 		</action>
 		<action name="showFactoryForm" class="factoryAction" method="showForm">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="AdminInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/formFactory.jsp</result>
 			<result name="input">/jsp/formFactory.jsp</result>
 			<result name="success">/jsp/formFactory.jsp</result>
 		</action>
         <action name="viewFactory" class="factoryAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewFactory.jsp</result>
             <result name="input">/jsp/viewFactory.jsp</result>
             <result name="success">/jsp/viewFactory.jsp</result>
         </action>
 		<action name="saveFactory" class="factoryAction" method="save">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="AdminInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/formFactory.jsp</result>
 			<result name="input">/jsp/formFactory.jsp</result>
 			<result name="success" type="redirectAction">listFactories</result>
 		</action>
 		<action name="editFactory" class="factoryAction" method="edit">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="AdminInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewFactories.jsp</result>
 			<result name="input">/jsp/formFactory.jsp</result>
 			<result name="success" type="redirectAction">listFactories</result>
 		</action>
 		<action name="deleteFactory" class="factoryAction" method="delete">
-			<!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+			<interceptor-ref name="AdminInterceptor"/>
 			<interceptor-ref name="redirectMessageAndParams"/>
 			<result name="error">/jsp/viewFactories.jsp</result>
 			<result name="input">/jsp/viewFactories.jsp</result>
 			<result name="success" type="redirectAction">listFactories</result>
 		</action>
         <action name="viewFactoryMeasures" class="factoryAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewFactoryMeasures.jsp</result>
             <result name="input">/jsp/viewFactoryMeasures.jsp</result>
             <result name="success">/jsp/viewFactoryMeasures.jsp</result>
         </action>
         <action name="configureFactoryMeasures" class="factoryAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/formFactoryMeasures.jsp</result>
             <result name="input">/jsp/formFactoryMeasures.jsp</result>
             <result name="success">/jsp/formFactoryMeasures.jsp</result>
         </action>
         <action name="editFactoryMeasures" class="factoryAction" method="updateMeasures">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewFactories.jsp</result>
             <result name="input">/jsp/formFactoryMeasures.jsp</result>
@@ -217,63 +220,63 @@
 		
         <!-- Project related actions -->
         <action name="listProjects" class="projectAction">
-            <!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewProjects.jsp</result>
             <result name="input">/jsp/viewProjects.jsp</result>
             <result name="success">/jsp/viewProjects.jsp</result>
         </action>
         <action name="showProjectForm" class="projectAction" method="showForm">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/formProject.jsp</result>
             <result name="input">/jsp/formProject.jsp</result>
             <result name="success">/jsp/formProject.jsp</result>
         </action>
         <action name="viewProject" class="projectAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewProject.jsp</result>
             <result name="input">/jsp/viewProject.jsp</result>
             <result name="success">/jsp/viewProject.jsp</result>
         </action>
         <action name="saveProject" class="projectAction" method="save">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/formProject.jsp</result>
             <result name="input">/jsp/formProject.jsp</result>
             <result name="success" type="redirectAction">listProjects</result>
         </action>
         <action name="editProject" class="projectAction" method="edit">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewProjects.jsp</result>
             <result name="input">/jsp/formProject.jsp</result>
             <result name="success" type="redirectAction">listProjects</result>
         </action>
         <action name="deleteProject" class="projectAction" method="delete">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewProjects.jsp</result>
             <result name="input">/jsp/viewProjects.jsp</result>
             <result name="success" type="redirectAction">listProjects</result>
         </action>
         <action name="viewProjectMeasures" class="projectAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewProjectMeasures.jsp</result>
             <result name="input">/jsp/viewProjectMeasures.jsp</result>
             <result name="success">/jsp/viewProjectMeasures.jsp</result>
         </action>
         <action name="configureProjectMeasures" class="projectAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/formProjectMeasures.jsp</result>
             <result name="input">/jsp/formProjectMeasures.jsp</result>
             <result name="success">/jsp/formProjectMeasures.jsp</result>
         </action>
         <action name="editProjectMeasures" class="projectAction" method="updateMeasures">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewProjects.jsp</result>
             <result name="input">/jsp/formProjectMeasures.jsp</result>
@@ -283,63 +286,63 @@
         
         <!-- Subproject related actions -->
         <action name="listSubprojects" class="subprojectAction">
-            <!-- <interceptor-ref name="allUsers"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewSubprojects.jsp</result>
             <result name="input">/jsp/viewSubprojects.jsp</result>
             <result name="success">/jsp/viewSubprojects.jsp</result>
         </action>
         <action name="showSubprojectForm" class="subprojectAction" method="showForm">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/formSubproject.jsp</result>
             <result name="input">/jsp/formSubproject.jsp</result>
             <result name="success">/jsp/formSubproject.jsp</result>
         </action>
         <action name="viewSubproject" class="subprojectAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewSubproject.jsp</result>
             <result name="input">/jsp/viewSubproject.jsp</result>
             <result name="success">/jsp/viewSubproject.jsp</result>
         </action>
         <action name="saveSubproject" class="subprojectAction" method="save">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/formSubproject.jsp</result>
             <result name="input">/jsp/formSubproject.jsp</result>
             <result name="success" type="redirectAction">listSubprojects</result>
         </action>
         <action name="editSubproject" class="subprojectAction" method="edit">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewSubprojects.jsp</result>
             <result name="input">/jsp/formSubproject.jsp</result>
             <result name="success" type="redirectAction">listSubprojects</result>
         </action>
         <action name="deleteSubproject" class="subprojectAction" method="delete">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewSubprojects.jsp</result>
             <result name="input">/jsp/viewSubprojects.jsp</result>
             <result name="success" type="redirectAction">listSubprojects</result>
         </action>
         <action name="viewSubprojectMeasures" class="subprojectAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewSubprojectMeasures.jsp</result>
             <result name="input">/jsp/viewSubprojectMeasures.jsp</result>
             <result name="success">/jsp/viewSubprojectMeasures.jsp</result>
         </action>
         <action name="configureSubprojectMeasures" class="subprojectAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/formSubprojectMeasures.jsp</result>
             <result name="input">/jsp/formSubprojectMeasures.jsp</result>
             <result name="success">/jsp/formSubprojectMeasures.jsp</result>
         </action>
         <action name="editSubprojectMeasures" class="subprojectAction" method="updateMeasures">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AdminManagerInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/viewSubprojects.jsp</result>
             <result name="input">/jsp/formSubprojectMeasures.jsp</result>
@@ -349,28 +352,28 @@
         
         <!-- Plain report builders -->
         <action name="getCompanyPlainReport" class="companyAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/buildCompanyPlainReport.jsp</result>
             <result name="input">/jsp/buildCompanyPlainReport.jsp</result>
             <result name="success">/jsp/buildCompanyPlainReport.jsp</result>
         </action>
         <action name="getFactoryPlainReport" class="factoryAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/buildFactoryPlainReport.jsp</result>
             <result name="input">/jsp/buildFactoryPlainReport.jsp</result>
             <result name="success">/jsp/buildFactoryPlainReport.jsp</result>
         </action>
         <action name="getProjectPlainReport" class="projectAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/buildProjectPlainReport.jsp</result>
             <result name="input">/jsp/buildProjectPlainReport.jsp</result>
             <result name="success">/jsp/buildProjectPlainReport.jsp</result>
         </action>
         <action name="getSubprojectPlainReport" class="subprojectAction" method="get">
-            <!-- <interceptor-ref name="adminOnly"></interceptor-ref> -->
+            <interceptor-ref name="AllUsersInterceptor"/>
             <interceptor-ref name="redirectMessageAndParams"/>
             <result name="error">/jsp/buildSubprojectPlainReport.jsp</result>
             <result name="input">/jsp/buildSubprojectPlainReport.jsp</result>
@@ -380,7 +383,16 @@
 	</package>
 	
 	<package name="json" extends="json-default">
-	
+		<!-- Interceptors -->
+	    <interceptors>
+            <!-- Interceptor to handle roles and actions -->
+            <interceptor name="allUsersInterceptor" class="allUsersInterceptor"/>
+			<interceptor-stack name="AllUsersInterceptor">
+            	<interceptor-ref name="allUsersInterceptor"/>
+            	<interceptor-ref name="defaultStack" />
+            </interceptor-stack>            
+        </interceptors>
+        
 		<global-results>
 		    <result name="input" type="json">
 		        <param name="ignoreHierarchy">false</param>
@@ -400,16 +412,19 @@
 		</global-exception-mappings>
 	
 		<action name="json_p_*" class="profileAction" method="{1}">
+			<interceptor-ref name="AllUsersInterceptor"/>
 			<result name="success" type="json">
 				<param name="noCache">true</param>
 			</result>
 		</action>
         <action name="json_m_*" class="marketAction" method="{1}">
+        	<interceptor-ref name="AllUsersInterceptor"/>
             <result name="success" type="json">
                 <param name="noCache">true</param>
             </result>
         </action>
         <action name="json_factoryById" class="visualizationAction" method="factoryById">
+        	<interceptor-ref name="AllUsersInterceptor"/>
             <result name="success" type="json">
                 <param name="noCache">true</param>
                 <param name="includeProperties">
@@ -430,6 +445,7 @@
             </result>
         </action>
         <action name="json_factoriesByCompanyId" class="visualizationAction" method="factoriesByCompanyId">
+        	<interceptor-ref name="AllUsersInterceptor"/>
             <result name="success" type="json">
                 <param name="noCache">true</param>
                 <param name="includeProperties">
@@ -450,6 +466,7 @@
             </result>
         </action>
         <action name="json_projectsBy*yId" class="visualizationAction" method="projectsBy{1}yId">
+        	<interceptor-ref name="AllUsersInterceptor"/>
             <result name="success" type="json">
                 <param name="noCache">true</param>
                 <param name="includeProperties">
@@ -460,6 +477,7 @@
             </result>
         </action>
         <action name="json_projectById" class="visualizationAction" method="projectById">
+        	<interceptor-ref name="AllUsersInterceptor"/>
             <result name="success" type="json">
                 <param name="noCache">true</param>
                 <param name="includeProperties">
@@ -480,6 +498,7 @@
             </result>
         </action>
         <action name="json_subprojectById" class="visualizationAction" method="subprojectById">
+        	<interceptor-ref name="AllUsersInterceptor"/>
             <result name="success" type="json">
                 <param name="noCache">true</param>
                 <param name="includeProperties">
@@ -498,6 +517,7 @@
             </result>
         </action>
         <action name="json_subprojectsByProjectId" class="visualizationAction" method="subprojectsByProjectId">
+        	<interceptor-ref name="AllUsersInterceptor"/>
             <result name="success" type="json">
                 <param name="noCache">true</param>
                 <param name="includeProperties">
@@ -507,11 +527,13 @@
             </result>
         </action>
 		<action name="json_*" class="visualizationAction" method="{1}">
+			<interceptor-ref name="AllUsersInterceptor"/>
 			<result name="success" type="json">
 				<param name="noCache">true</param>
 			</result>
 		</action>
         <action name="desglosa_*" class="visualizationAction" method="{1}">
+        	<interceptor-ref name="AllUsersInterceptor"/>
             <result name="success" type="json">
                 <param name="noCache">true</param>
                 <param name="includeProperties">city.*</param>

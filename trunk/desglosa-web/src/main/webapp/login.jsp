@@ -43,7 +43,7 @@
 			    	<p><fmt:message key="message.login.sucess"/>
 			    	<br /><fmt:message key="message.redirect.index"/></p>
 			    	<c:url var="url" value="/"></c:url>
-			    	<script> setTimeout("window.location.href='<c:out value="${url}"/>'",5000); </script> 
+			    	<script> setTimeout("window.location.href='<c:out value="${url}"/>'",3000); </script> 
 				</c:when>
 				<c:otherwise>
 					<c:if test="${param.result == 'failed'}">
