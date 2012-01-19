@@ -92,8 +92,7 @@ public class GLFactory extends GLObject3D {
         } else {
             GLSingleton.getGL().glColor4fv(this.color.getColorFB());
             GLSingleton.getGL().glEnable(GL2.GL_TEXTURE_2D);
-            GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV,
-                    GL2.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE);
+            GLSingleton.getGL().glTexEnvf(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_MODULATE);
             GLSingleton.getGL().glBindTexture(GL2.GL_TEXTURE_2D, texture);
         }
 
@@ -107,39 +106,35 @@ public class GLFactory extends GLObject3D {
         // Building
         GLSingleton.getGL().glPushMatrix();
         GLSingleton.getGL().glScalef(this.scale, this.scale, this.scale);//
-        GLSingleton.getGL().glTranslatef(this.baseLength * 1 / 4,
-                this.baseHeight, 0.0f);
+        GLSingleton.getGL().glTranslatef(this.baseLength * 1 / 4, this.baseHeight, 0.0f);
         this.drawBuilding();
         GLSingleton.getGL().glPopMatrix();
         // Roof
         GLSingleton.getGL().glPushMatrix();
-        GLSingleton.getGL().glScalef(this.scale, this.scale, this.scale);//
-        GLSingleton.getGL().glTranslatef(0.0f,
-                this.baseHeight + this.buildingHeight, 0.0f);
+        GLSingleton.getGL().glScalef(this.scale, this.scale, this.scale);
+        GLSingleton.getGL().glTranslatef(0.0f, this.baseHeight + this.buildingHeight, 0.0f);
         this.drawBuildingRoof();
         GLSingleton.getGL().glPopMatrix();
         // If we enabled textures before, we disable them now to draw the
         // smokestack
-        if (!shadow)
+        if (!shadow) {
             GLSingleton.getGL().glDisable(GL2.GL_TEXTURE_2D);
+        }
         // Smokestack
         GLSingleton.getGL().glPushMatrix();
         GLSingleton.getGL().glScalef(this.scale, 1.0f, this.scale);//
-        GLSingleton.getGL().glTranslatef(-this.baseLength * 1 / 4,
-                this.baseHeight, 0.0f);
+        GLSingleton.getGL().glTranslatef(-this.baseLength * 1 / 4, this.scale*this.baseHeight, 0.0f);
         GLSingleton.getGL().glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
         this.drawSmokestack(shadow);
         GLSingleton.getGL().glPopMatrix();
         if (!shadow) {
-            // Draw the smokestack value (only if we are drawing the real
-            // object)
+            // Draw the smokestack value (only if we are drawing the real object)
             GLSingleton.getGL().glPushMatrix();
             GLSingleton.getGL().glTranslatef(
                     this.baseLength * 1 / 4,
                     (this.baseHeight + this.buildingHeight + this.roofHeight)
                             * this.scale, 0.0f);
-            GLUtils.renderBitmapString(0.0f, 0.0f, 0, 2, ""
-                    + this.label, "ffffff");
+            GLUtils.renderBitmapString(0.0f, 0.0f, 0, 2, "" + this.label, "ffffff");
             GLSingleton.getGL().glPopMatrix();
         }
         GLSingleton.getGL().glPopMatrix();
