@@ -785,7 +785,7 @@
       </build>
     </profile>
 
-    <!-- ================= Production Settings Profile ================= -->
+    <!-- ============== Local Production Settings Profile ============== -->
     <!-- Use "-P prod" when you want to use the settings in this profile -->
     <!-- =============================================================== -->
     <profile>
@@ -803,6 +803,103 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <!-- ============== Remote Production Settings Profile =========== -->
+    <!-- mvn clean -DskipTests -Pdeploy -Dmaven.test.skip=true package -->
+    <!-- ============================================================= -->
+    <profile>
+        <id>deploy</id>
+        <properties>
+            <jdbc.host>infalarcosbd.esi.uclm.es</jdbc.host>
+        </properties>
+    </profile>
+    <!-- ======================= Remote Deployment Settings Profile ======================== -->
+    <!-- ======= http://docs.codehaus.org/display/CARGO/Maven2+Plugin+Getting+Started ====== -->
+    <!-- This profile does not build WAR file, only deploys it -->
+    <!-- In order to build WAR file use "Remote Production Settings Profile" -->
+    <!-- If the webapp is NOT already deployed, use this command -->
+    <!-- mvn -DskipTests -Pdeploy-war -Dmaven.test.skip=true cargo:deploy -->
+    <!-- If the webapp is already deployed, use this command in order to undeploy and deploy -->
+    <!-- mvn -DskipTests -Pdeploy-war -Dmaven.test.skip=true cargo:redeploy -->
+    <!-- =================================================================================== -->
+    <profile>
+        <id>deploy-war</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.cargo</groupId>
+                    <artifactId>cargo-maven2-plugin</artifactId>
+<!--                     <version>1.0</version> -->
+                    <configuration>
+                        <wait>true</wait>
+                        <container>
+                            <containerId>tomcat7x</containerId>
+                            <type>remote</type>
+                        </container>
+                        <configuration>
+                            <type>runtime</type>
+                            <properties>
+                                <cargo.remote.username>admin</cargo.remote.username>
+                                <cargo.remote.password>viriato</cargo.remote.password>
+                                <cargo.remote.uri>http://alarcosj.esi.uclm.es/manager/html</cargo.remote.uri>
+                            </properties>
+                        </configuration>
+                       <deployer>
+                           <type>remote</type>
+                           <deployables>
+                               <deployable>
+                                   <artifactId>desglosa-web</artifactId>
+                                   <groupId>es.uclm.inf-cr.alarcos</groupId>
+                                   <type>war</type>
+                                   <properties>
+                                       <context>desglosa-web</context>
+                                   </properties>
+                               </deployable>
+                           </deployables>
+                       </deployer>
+                    </configuration>
+		            <executions>
+		                <execution>
+		                    <id>start-container</id>
+		                    <phase>pre-integration-test</phase>
+		                    <goals>
+		                        <goal>deployer-deploy</goal>
+		                        <!--  Only local containers can be started  
+		                        <goal>start</goal>
+		                        -->
+		                    </goals>
+		                </execution>
+		                <execution>
+		                    <id>stop-container</id>
+		                    <phase>post-integration-test</phase>
+		                    <goals>
+		                        <goal>deployer-undeploy</goal>
+		                        <!--  Only local containers can be started  
+		                        <goal>stop</goal>
+		                        -->
+		                    </goals>
+		                </execution>
+		                <execution>
+		                    <id>verify-deploy</id>
+		                    <phase>install</phase>
+		                    <goals>
+		                        <goal>deployer-deploy</goal>
+		                    </goals>
+		                </execution> 
+		                <execution>
+		                    <id>clean-undeploy</id>
+		                    <phase>pre-clean</phase>
+		                    <goals>
+		                        <goal>deployer-undeploy</goal>
+		                        <!--  Only local containers can be started  
+		                        <goal>stop</goal>
+		                        -->
+		                    </goals>
+		                </execution> 
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
     </profile>
   </profiles>
 
