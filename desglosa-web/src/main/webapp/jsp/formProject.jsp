@@ -19,7 +19,7 @@
 	<script type="text/javascript">
 	$(document).ready(function() {
 	    // Initialize select of markets
-	    $.getJSON("/json_m_execute",
+	    $.getJSON("/desglosa-web/json_m_execute",
 	            { },
 	            function (data, status) {
 	                if (status == "success") {

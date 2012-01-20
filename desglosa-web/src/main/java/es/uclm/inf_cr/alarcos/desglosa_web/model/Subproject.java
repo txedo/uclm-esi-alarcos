@@ -67,13 +67,13 @@ public class Subproject {
         return id;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "project_id")
     public Project getProject() {
         return project;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "factory_id")
     public Factory getFactory() {
         return factory;
@@ -84,37 +84,37 @@ public class Subproject {
         return name;
     }
 
-    @Column(name = "fiabilidad", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "fiabilidad", insertable = false, columnDefinition = "float default 0.0")
     public Float getFiabilidad() {
         return fiabilidad;
     }
 
-    @Column(name = "usabilidad", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "usabilidad", insertable = false, columnDefinition = "float default 0.0")
     public Float getUsabilidad() {
         return usabilidad;
     }
 
-    @Column(name = "eficiencia", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "eficiencia", insertable = false, columnDefinition = "float default 0.0")
     public Float getEficiencia() {
         return eficiencia;
     }
 
-    @Column(name = "mantenibilidad", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "mantenibilidad", insertable = false, columnDefinition = "float default 0.0")
     public Float getMantenibilidad() {
         return mantenibilidad;
     }
 
-    @Column(name = "portabilidad", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "portabilidad", insertable = false, columnDefinition = "float default 0.0")
     public Float getPortabilidad() {
         return portabilidad;
     }
 
-    @Column(name = "lineas_de_codigo", nullable = true, columnDefinition = "int default 0.0")
+    @Column(name = "lineas_de_codigo", insertable = false, columnDefinition = "int default 0.0")
     public Integer getLineasDeCodigo() {
         return lineasDeCodigo;
     }
 
-    @Column(name = "comentarios", nullable = true, columnDefinition = "int default 0.0")
+    @Column(name = "comentarios", insertable = false, columnDefinition = "int default 0.0")
     public Integer getComentarios() {
         return comentarios;
     }
@@ -128,17 +128,17 @@ public class Subproject {
         return ratioComentariosLineasDeCodigo;
     }
 
-    @Column(name = "puntos_funcion", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "puntos_funcion", insertable = false, columnDefinition = "float default 0.0")
     public Float getPuntosFuncion() {
         return puntosFuncion;
     }
 
-    @Column(name = "fichaje_codigo", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "fichaje_codigo", insertable = false, columnDefinition = "float default 0.0")
     public Float getFichajeCodigo() {
         return fichajeCodigo;
     }
 
-    @Column(name = "fichaje_total", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "fichaje_total", insertable = false, columnDefinition = "float default 0.0")
     public Float getFichajeTotal() {
         return fichajeTotal;
     }
@@ -152,7 +152,7 @@ public class Subproject {
         return ratioFichaje;
     }
 
-    @Column(name = "actividad", nullable = true, columnDefinition = "float default 0.0")
+    @Column(name = "actividad", insertable = false, columnDefinition = "float default 0.0")
     public Float getActividad() {
         return actividad;
     }

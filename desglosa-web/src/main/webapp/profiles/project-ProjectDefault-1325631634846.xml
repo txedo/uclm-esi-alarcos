@@ -12,11 +12,11 @@
             <modelAttr name="label" type="string"/>
         </mapping>
         <mapping>
-            <entityAttr name="repairedIncidences" type="int"/>
+			<entityAttr name="nonRepairedIncidences" type="int"/>
             <modelAttr name="leftChildBallValue" type="string"/>
         </mapping>
         <mapping>
-            <entityAttr name="nonRepairedIncidences" type="int"/>
+            <entityAttr name="repairedIncidences" type="int"/>
             <modelAttr name="rightChildBallValue" type="string"/>
         </mapping>
         <mapping>

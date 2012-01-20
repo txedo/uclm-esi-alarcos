@@ -18,33 +18,53 @@
         <meta name="menu" content="ManageFactories"/>
         
         <fmt:message key="error.project_not_selected" var="noProjectSelected"/>
+        <fmt:message key="error.subproject_not_selected" var="noSubprojectSelected"/>
         <fmt:message key="message.delete_project_confirmation" var="deleteProjectConfirmation"/>
         <fmt:message key="message.delete_subproject_confirmation" var="deleteSubprojectConfirmation"/>
         
         <SCRIPT type="text/javascript">
-        function getSelectedRadioButton() {
+        function getSelectedProjectRadioButton() {
             return $("input:radio[name=projectIds]:checked").val();
+        }
+        
+        function getSelectedSubprojectRadioButton() {
+            return $("input:radio[name=subprojectIds]:checked").val();
         }
         
         function call(urlAction,selectionRequired) {
             if (!selectionRequired) {
                 $(location).attr('href',urlAction);
-            } else if (selectionRequired && isUndefined(getSelectedRadioButton())) {
-                $("#errorDialogBody").html("<p class='messageBox error'><c:out value='${noProjectSelected}'/></p>");
-                $("#errorDialog").dialog("open");
             } else {
-                var url = urlAction+"?id="+getSelectedRadioButton();
-                if (urlAction.indexOf('deleteProject') != -1) {
-                    if (confirm("<c:out value='${deleteProjectConfirmation}'/>")) {
-                        $(location).attr('href',url);
-                    }
-                } else if (urlAction.indexOf('deleteSubproject') != -1) {
-                    if (confirm("<c:out value='${deleteSubprojectConfirmation}'/>")) {
-                        $(location).attr('href',url);
-                    }
-                } else {
-                    $(location).attr('href',url);
-                }
+            	var url = urlAction+"?id=";
+            	if (urlAction.indexOf('Subproject') != -1) {
+            		if (isUndefined(getSelectedSubprojectRadioButton())) {
+            			$("#errorDialogBody").html("<p class='messageBox error'><c:out value='${noSubprojectSelected}'/></p>");
+                        $("#errorDialog").dialog("open");
+            		} else {
+            			url += getSelectedSubprojectRadioButton();
+            			if (urlAction.indexOf('deleteSubproject') != -1) {
+                            if (confirm("<c:out value='${deleteSubprojectConfirmation}'/>")) {
+                                $(location).attr('href',url);
+                            }
+                        } else {
+                            $(location).attr('href',url);
+                        }
+            		}
+            	} else if (urlAction.indexOf('Project') != -1) {
+            		if (isUndefined(getSelectedProjectRadioButton())) {
+            			$("#errorDialogBody").html("<p class='messageBox error'><c:out value='${noProjectSelected}'/></p>");
+                        $("#errorDialog").dialog("open");
+            		} else {
+            			url += getSelectedProjectRadioButton();
+            			if (urlAction.indexOf('deleteSubproject') != -1) {
+            				if (confirm("<c:out value='${deleteProjectConfirmation}'/>")) {
+                                $(location).attr('href',url);
+                            }
+            			} else {
+                        	$(location).attr('href',url);
+                        }
+            		}
+            	}
             }
         }
         

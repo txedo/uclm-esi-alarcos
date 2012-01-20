@@ -62,7 +62,7 @@
 				<div class="displaytagTable">
 					<s:set name="projects" value="projects" scope="request"/>  
 					<s:set name="subproject" value="subproject" scope="request"/>
-					<display:table name="projects" id="project" defaultsort="1" pagesize="10" requestURI="">
+					<display:table name="projects" id="project" defaultsort="2" pagesize="10" requestURI="">
 						<display:column style="width: 5%; text-align: center;">
 						<c:choose>
 							<c:when test="${subproject.project.id == project.id or project.id == param.projectId}">
@@ -109,7 +109,7 @@
 				<div class="displaytagTable">
 					<s:set name="factories" value="factories" scope="request"/>  
 					<s:set name="subproject" value="subproject" scope="request"/>
-					<display:table name="factories" id="factory" defaultsort="1" pagesize="10" requestURI="">
+					<display:table name="factories" id="factory" defaultsort="2" pagesize="10" requestURI="">
 						<display:column style="width: 5%; text-align: center;">
 						<c:choose>
 							<c:when test="${subproject.factory.id == factory.id or factory.id == param.factoryId}">

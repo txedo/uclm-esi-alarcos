@@ -75,6 +75,7 @@
 		    <display:column property="employees" escapeXml="true" style="width: 5%; text-align: center;" titleKey="table.header.factory.employees" sortable="true"/>
 		    <display:column property="email" escapeXml="true" style="width: 15%" titleKey="table.header.factory.email" sortable="false"/>
 		    <display:column escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.factory.projects" sortable="true"><%=((Factory)factory).getProjects().size()%></display:column>
+		    <display:column escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.factory.subprojects" sortable="true"><%=((Factory)factory).getSubprojects().size()%></display:column>
 		    <display:column escapeXml="false" style="width: 10%; text-align: center;" titleKey="table.header.location" sortable="false">
 	            <div class="tooltipstyle" title="<img src='http://maps.google.com/maps/api/staticmap?zoom=10&size=170x130&maptype=roadmap&markers=color:red|color:red|<%=((Factory)factory).getLocation().getLatitude()%>,<%=((Factory)factory).getLocation().getLongitude()%>&sensor=false' width='170' height='130' title='<s:text name='label.configure.factory.address.image'/>'/>"><img src="images/world_search.png" height="16" width="16" /></div>
 	        </display:column>

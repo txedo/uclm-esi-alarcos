@@ -34,9 +34,13 @@ public class Company {
     @Property @Measure(base = false)
     private Integer numberOfFactories;
     @Property @Measure(base = false)
-    private Integer numberOfProjects;
-    @Property @Measure(base = false)
     private Integer numberOfEmployees;
+    @Property @Measure(base = false)
+    private Integer numberOfLeadedProjects;
+    @Property @Measure(base = false)
+    private Integer numberOfSharedProjects;
+    @Property @Measure(base = false)
+    private Integer numberOfDevelopingSubprojects;
 
     public Company() {
     }
@@ -78,17 +82,27 @@ public class Company {
         return numberOfFactories;
     }
 
-    @Formula("(select count(distinct(p.name)) from projects p, subprojects sp, factories f, companies c where p.id = sp.project_id and sp.factory_id = f.id and f.company_id = c.id and c.id = id)")
-    public Integer getNumberOfProjects() {
-        return numberOfProjects;
-    }
-
     @Formula("(select sum(f.employees) from companies c, factories f where c.id = id and c.id = f.company_id)")
     public Integer getNumberOfEmployees() {
         if (numberOfEmployees == null) {
             numberOfEmployees = 0;
         }
         return numberOfEmployees;
+    }
+
+    @Formula("(select count(p.id) from companies c, factories f, projects p where c.id = id and c.id = f.company_id and f.id = p.mainFactory_id)")
+    public Integer getNumberOfLeadedProjects() {
+        return numberOfLeadedProjects;
+    }
+
+    @Formula("(select count(distinct p.name) from companies c, factories f, projects p, subprojects sp where p.id = sp.project_id and sp.factory_id = f.id and f.company_id = id)")
+    public Integer getNumberOfSharedProjects() {
+        return numberOfSharedProjects;
+    }
+
+    @Formula("(select count(distinct sp.name) from companies c, factories f, projects p, subprojects sp where sp.factory_id = f.id and f.company_id = id)")
+    public Integer getNumberOfDevelopingSubprojects() {
+        return numberOfDevelopingSubprojects;
     }
 
     public void setId(int id) {
@@ -115,12 +129,20 @@ public class Company {
         this.numberOfFactories = numberOfFactories;
     }
 
-    public void setNumberOfProjects(Integer numberOfProjects) {
-        this.numberOfProjects = numberOfProjects;
-    }
-
     public void setNumberOfEmployees(Integer numberOfEmployees) {
         this.numberOfEmployees = numberOfEmployees;
+    }
+
+    public void setNumberOfLeadedProjects(Integer numberOfLeadedProjects) {
+        this.numberOfLeadedProjects = numberOfLeadedProjects;
+    }
+
+    public void setNumberOfSharedProjects(Integer numberOfSharedProjects) {
+        this.numberOfSharedProjects = numberOfSharedProjects;
+    }
+
+    public void setNumberOfDevelopingSubprojects(Integer numberOfDevelopingSubprojects) {
+        this.numberOfDevelopingSubprojects = numberOfDevelopingSubprojects;
     }
 
     @Override

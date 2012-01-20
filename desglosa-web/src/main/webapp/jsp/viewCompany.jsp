@@ -135,6 +135,7 @@
 					    <display:column property="name" escapeXml="true" style="width: 20%" titleKey="table.header.factory.name" sortable="true"/>
 					    <display:column property="information" escapeXml="true" style="width: 25%" titleKey="table.header.factory.information" sortable="false"/>
 					    <display:column escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.factory.projects" sortable="true"><%=((Factory)factory).getProjects().size()%></display:column>
+					    <display:column escapeXml="true" style="width: 8%; text-align: center;" titleKey="table.header.factory.subprojects" sortable="true"><%=((Factory)factory).getSubprojects().size()%></display:column>
 	                    <display:column escapeXml="false" style="width: 11%" titleKey="table.header.market.name" sortable="true">
 	                    	<script>
 	                    	var span = getMarketSpan('${factory.mostRepresentativeMarket.color}', '${factory.mostRepresentativeMarket.name}');

@@ -11,10 +11,10 @@
             <Item name="CheckFactories" title="menu.check.factories" page="/listFactories" />
     	</Menu>
     	<Menu name="UserCheckMenu" title="menu.check" description="Check Menu" roles="ROLE_USER">
-            <Item name="CheckCompanies" title="menu.check.companies" page="/listCompanies" />
-            <Item name="CheckFactories" title="menu.check.factories" page="/listFactories" />
-            <Item name="CheckProjects" title="menu.check.projects" page="/listProjects" />
-            <Item name="CheckSubprojects" title="menu.check.subprojects" page="/listSubprojects" />
+            <Item name="ManageCompanies" title="menu.check.companies" page="/listCompanies" />
+            <Item name="ManageFactories" title="menu.check.factories" page="/listFactories" />
+            <Item name="ManageProjects" title="menu.check.projects" page="/listProjects" />
+            <Item name="ManageSubprojects" title="menu.check.subprojects" page="/listSubprojects" />
     	</Menu>
     	<Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN">
             <Item name="ManageCompanies" title="menu.manage.companies" page="/listCompanies" />
