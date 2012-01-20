@@ -58,7 +58,6 @@
                     	<%=((Factory)factory).getSubprojects().size()%>
                     </display:column>
                     <display:column property="mostRepresentativeMarket.name" escapeXml="true" style="width: 11%" titleKey="table.header.market.name" sortable="false"/>
-                    <display:column property="address.city" escapeXml="true" style="width: 15%" titleKey="table.header.address.city" sortable="false"/>
                     <display:column property="address.country" escapeXml="true" style="width: 15%" titleKey="table.header.address.country" sortable="false"/>
                     
                     <display:setProperty name="paging.banner.placement" value="top"/>

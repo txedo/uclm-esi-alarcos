@@ -32,7 +32,7 @@
             } else {
                 var url = urlAction+"?id="+getSelectedRadioButton();
                 if (urlAction.indexOf('delete') != -1) {
-                    if (confirm("<c:out value='${deleteFactoryConfirmation}'/>")) {
+                    if (confirm("<c:out value='${deleteSubprojectConfirmation}'/>")) {
                         $(location).attr('href',url);
                     }
                 } else {

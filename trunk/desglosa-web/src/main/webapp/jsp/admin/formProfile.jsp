@@ -804,7 +804,7 @@
 				},
 				function(data, status) {
 					if (status == "success") {
-						$(location).attr('pathname', '/listProfiles?add=success');
+						$(location).attr('pathname', '/desglosa-web/listProfiles?add=success');
 					} else {
 						$('#errorDialogBody').html("<p class='messageBox error'><c:out value='${criticalError}'/></p>");
 			            $('#errorDialog').dialog('open');

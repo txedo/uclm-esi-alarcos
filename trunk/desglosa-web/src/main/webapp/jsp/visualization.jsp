@@ -165,7 +165,7 @@
 	
 	function configureFactoryById(idFactory) {
 		showLoadingIndicator(true, "<c:out value='${placingLocationMarks}'/>");
-		$.getJSON("/desglosa-web/json_factoryById.action",
+		$.getJSON("/desglosa-web/json_factoryById",
 				{ id: idFactory	},
 				function (data, status) {
 					showLoadingIndicator(false);
@@ -187,7 +187,7 @@
 	
 	function configureFactoriesByCompanyId(idCompany, fillFactorySelect) {
 		showLoadingIndicator(true, "<c:out value='${placingLocationMarks}'/>");
-		$.getJSON("/desglosa-web/json_factoriesByCompanyId.action",
+		$.getJSON("/desglosa-web/json_factoriesByCompanyId",
 				{ id: idCompany },
 				function (data, status) {
 					showLoadingIndicator(false);
@@ -222,7 +222,7 @@
 	}
 	
 	function configureProjectsByCompanyId(idCompany){
-		configureProjectSelect("/desglosa-web/json_projectsByCompanyId.action", idCompany, "#companyProjectSelect");
+		configureProjectSelect("/desglosa-web/json_projectsByCompanyId", idCompany, "#companyProjectSelect");
 	}
 	
 	function configureProjectsByFactoryId(idFactory){
@@ -230,9 +230,9 @@
 		// if the user select all factories, it means all factories of a given company
 		// so we show "company projects" as "all factory projects"
 		if (idFactory == 0) {
-			configureProjectSelect("/desglosa-web/json_projectsByCompanyId.action", $("#companySelect").val(), "#factoryProjectSelect");
+			configureProjectSelect("/desglosa-web/json_projectsByCompanyId", $("#companySelect").val(), "#factoryProjectSelect");
 		} else {
-			configureProjectSelect("/desglosa-web/json_projectsByFactoryId.action", idFactory, "#factoryProjectSelect");
+			configureProjectSelect("/desglosa-web/json_projectsByFactoryId", idFactory, "#factoryProjectSelect");
 		}
 	}
 	
@@ -267,7 +267,7 @@
 	function configureSubprojectsByProjectId(idProject) {
 	      // Configure companyProjectSelect or factoryProjectSelect, whatever is selectElement
         showLoadingIndicator(true, "<c:out value='${fetchingProjectSubprojects}'/>");
-        $.getJSON("/desglosa-web/json_subprojectsByProjectId.action",
+        $.getJSON("/desglosa-web/json_subprojectsByProjectId",
                 { id: idProject },
                 function (data, status) {
                 	showLoadingIndicator(false);
@@ -286,7 +286,7 @@
 	
 	function configureProjectById(idProject) {
 		showLoadingIndicator(true, "<c:out value='${placingLocationMarks}'/>");
-		$.getJSON("/desglosa-web/json_projectById.action",
+		$.getJSON("/desglosa-web/json_projectById",
 				{ id: idProject	},
 				function (data, status) {
 					showLoadingIndicator(false);
@@ -315,7 +315,7 @@
 	
 	function configureSubprojectById(idSubproject) {
         showLoadingIndicator(true, "<c:out value='${placingLocationMarks}'/>");
-        $.getJSON("/desglosa-web/json_subprojectById.action",
+        $.getJSON("/desglosa-web/json_subprojectById",
                 { id: idSubproject },
                 function (data, status) {
                     showLoadingIndicator(false);
@@ -806,6 +806,16 @@ function handleSelectionEvent(id, clickButton, clickCount) {
 	         case 1:     // Click
 	            // Hide infoDiv Panel if visible (it will be shown when new data is loaded)
 	        	$('#infoPanelDiv').css('display','none');
+                fbgTop = $(".fbg").position().top,
+                joglCanvasTop = $("#jogl_canvas").position().top,
+                joglCanvasHeight = $("#jogl_canvas").height(),
+                workingAreaTop = $("#workingArea").position().top;
+                x = (scrollTop + joglCanvasHeight) - fbgTop;
+                if (x > 0) {
+                    foo = scrollTop - $("#workingArea").position().top - x;
+                    $sidebar.stop().animate({'top':foo},500);
+                }
+                
 	        	showLoadingIndicator(true, "<c:out value='${fetchingEntityInformation}'/>");
 	        	var action = getPlainReportGenerationAction(currentEntity);
 	        	if (action != null) {
@@ -865,57 +875,57 @@ function handleSelectionEvent(id, clickButton, clickCount) {
 
 function desglosa_showCompaniesById(id, groupBy, profileFilename){
     currentEntity = "company";
-    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_companyById.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_companyById", id, groupBy, profileFilename);
 }
 
 function desglosa_showFactoriesByCompanyId(id, groupBy, profileFilename) {
     currentEntity = "factory";
-    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_factoriesByCompanyId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_factoriesByCompanyId", id, groupBy, profileFilename);
 }
 
 function desglosa_showFactoriesByProjectId(id, groupBy, profileFilename) {
     currentEntity = "factory";
-    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_factoriesByProjectId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_factoriesByProjectId", id, groupBy, profileFilename);
 }
 
 function desglosa_showFactoriesById(id, groupBy, profileFilename) {
     currentEntity = "factory";
-    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_factoryById.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_factoryById", id, groupBy, profileFilename);
 }
 
 function desglosa_showProjectsByCompanyId(id, groupBy, profileFilename) {
     currentEntity = "project";
-    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_projectsByCompanyId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_projectsByCompanyId", id, groupBy, profileFilename);
 }
 
 function desglosa_showProjectsByFactoryId(id, groupBy, profileFilename) {
     currentEntity = "project";
-    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_projectsByFactoryId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_projectsByFactoryId", id, groupBy, profileFilename);
 }
 
 function desglosa_showProjectsById(id, groupBy, profileFilename) {
     currentEntity = "project";
-    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_projectById.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_projectById", id, groupBy, profileFilename);
 }
 
 function desglosa_showSubprojectsByCompanyId(id, groupBy, profileFilename) {
     currentEntity = "subproject";
-    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectsByCompanyId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectsByCompanyId", id, groupBy, profileFilename);
 }
 
 function desglosa_showSubprojectsByFactoryId(id, groupBy, profileFilename) {
     currentEntity = "subproject";
-    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectsByFactoryId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectsByFactoryId", id, groupBy, profileFilename);
 }
 
 function desglosa_showSubprojectsByProjectId(id, groupBy, profileFilename) {
     currentEntity = "subproject";
-    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectsByProjectId.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectsByProjectId", id, groupBy, profileFilename);
 }
 
 function desglosa_showSubprojectsById(id, groupBy, profileFilename) {
     currentEntity = "subproject";
-    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectById.action", id, groupBy, profileFilename);
+    desglosa_launchDesglosaEngine("/desglosa-web/desglosa_subprojectById", id, groupBy, profileFilename);
 }
 
 function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
@@ -923,6 +933,7 @@ function desglosa_launchDesglosaEngine (action, id, groupBy, filename) {
 	// The next line and if statement are for usability things
 	$("#infoPanelDiv").css('display', 'none');
     if (($("#workingArea").position().top - $window.scrollTop()) < 0) {
+    	$("#jogl_canvas").stop().animate({'top':0},500);
         $window.scrollTop($("#workingArea").position().top);
     }
 	
@@ -1111,7 +1122,7 @@ function desglosa_handleVisualization(model, city) {
 				   <s:text name="error.no_JRE"/>
 			</applet>
 			
-			<a href="javascript:void(0)" onclick="javascript:showGoogleMaps()"><s:text name="label.back_to_map"/></a>
+			<a id="backToMap" href="javascript:void(0)" onclick="javascript:showGoogleMaps()"><s:text name="label.back_to_map"/></a>
 			
 			<div id="feedback" class="form"></div>
 			

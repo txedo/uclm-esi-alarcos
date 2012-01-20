@@ -54,6 +54,9 @@
 		    <display:column property="name" escapeXml="true" style="width: 30%" titleKey="table.header.company.name" sortable="true"/>
 		    <display:column property="information" escapeXml="true" style="width: 55%" titleKey="table.header.company.information" sortable="false"/>
 		    <display:column escapeXml="true" style="width: 15%; text-align: center;" titleKey="table.header.company.factories" sortable="true"><%=((Company)company).getFactories().size()%></display:column>
+		    <display:column property="numberOfLeadedProjects" escapeXml="true" style="width: 15%; text-align: center;" titleKey="label.numberOfLeadedProjects" sortable="true"/>
+		    <display:column property="numberOfSharedProjects" escapeXml="true" style="width: 15%; text-align: center;" titleKey="label.numberOfSharedProjects" sortable="true"/>
+		    <display:column property="numberOfDevelopingSubprojects" escapeXml="true" style="width: 15%; text-align: center;" titleKey="label.numberOfDevelopingSubprojects" sortable="true"/>
 		    
 		    <display:setProperty name="paging.banner.placement" value="top"/>
 		    <display:setProperty name="paging.banner.item_name"><fmt:message key="label.company"/></display:setProperty>
