@@ -58,14 +58,14 @@
 									<label for="j_username">
 										<fmt:message key="label.username" />
 									</label>
-									<s:textfield id="j_username" name="j_username" cssClass="input" value="" tabindex="1" />
+									<s:textfield id="j_username" name="j_username" cvalue="" tabindex="1" />
 									<span id="j_usernameError"></span>
 								</li>
 								<li>
 									<label for="j_password">
 										<fmt:message key="label.password" />
 									</label>
-									<s:password id="j_password" name="j_password" cssClass="input" value="" tabindex="2" />
+									<s:password id="j_password" name="j_password" value="" tabindex="2" />
 									<span id="j_passwordError"></span>
 								</li>
 							</ul>
