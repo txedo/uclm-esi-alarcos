@@ -124,7 +124,7 @@ public class GLProjectViewManager extends GLViewManager {
                 cameraViewDir.normalize();
                 Vector3f normalizedOppositeCameraViewDir = cameraViewDir .mult(-1);
                 Vector3f objectPosition = new Vector3f(glo.getPositionX(), 0.0f, glo.getPositionZ());
-                float offset = ((GLAntennaBall) glo).getParentBallRadius();
+                float offset = ((GLAntennaBall) glo).getScale() * GLAntennaBall.MAX_SIZE;
                 if (offset == 0.0f) {
                     offset = 1.0f;
                 }
