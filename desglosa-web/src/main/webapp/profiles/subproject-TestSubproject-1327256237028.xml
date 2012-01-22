@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile model="model.gl.knowledge.GLAntennaBall" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject">
+    <name>TestSubproject</name>
+    <description>Perfil para visualizar aspectos de pruebas. Las esferas verde y roja representan el número de errores resueltos y detectados, respectivamente. El color es la esfera inferior representa la efectividad de las pruebas (ver leyenda) y su radio el número de casos de prueba ejecutados. La escala del modelo representa si el ratio de esfuerzo de mantenimiento es inferior o superior a 1.0.</description>
+    <mappings>
+        <mapping>
+            <entityAttr name="id" type="int"/>
+            <modelAttr name="id" type="int"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="erroresDetectados" type="int"/>
+            <modelAttr name="leftChildBallValue" type="string"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="erroresResueltos" type="int"/>
+            <modelAttr name="rightChildBallValue" type="string"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="name" type="string"/>
+            <modelAttr name="label" type="string"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="efectividadPruebas" type="float"/>
+            <modelAttr name="color" type="color"/>
+            <rule>
+                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.0</low>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">40.0</high>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ff0000</value>
+            </rule>
+            <rule>
+                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">40.0</low>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">70.0</high>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">e6ff00</value>
+            </rule>
+            <rule>
+                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">70.0</low>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">90.0</high>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">1500ff</value>
+            </rule>
+            <rule>
+                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">90.0</low>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">100.0</high>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">00ff1e</value>
+            </rule>
+        </mapping>
+        <mapping>
+            <entityAttr name="testCasesEjecutados" type="int"/>
+            <modelAttr name="parentBallRadius" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="ratioEsfuerzoMto" type="float"/>
+            <modelAttr name="scale" type="float_range"/>
+            <rule>
+                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.0</low>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">1.0</high>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">0.5</value>
+            </rule>
+            <rule>
+                <low xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">1.0</low>
+                <high xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">1000.0</high>
+                <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">1.20</value>
+            </rule>
+        </mapping>
+    </mappings>
+    <constants>
+        <constant name="progressionMark" type="boolean">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:boolean">false</value>
+        </constant>
+    </constants>
+    <caption>
+        <entry color="1d00fa" label="Test effectiveness 70-90"/>
+        <entry color="ff0000" label="Test effectiveness 0-40"/>
+        <entry color="11ff00" label="Test effectiveness 90-100"/>
+        <entry color="f7ff00" label="Test effectiveness 40-70"/>
+    </caption>
+</profile>

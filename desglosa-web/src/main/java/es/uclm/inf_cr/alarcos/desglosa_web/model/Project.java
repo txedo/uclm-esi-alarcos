@@ -44,6 +44,8 @@ public class Project {
     @Property @Measure
     private Boolean audited;
     @Property @Measure
+    private Boolean finished;
+    @Property @Measure
     private Integer totalIncidences;
     @Property @Measure
     private Integer repairedIncidences;
@@ -124,6 +126,11 @@ public class Project {
     @Column(name = "audited", insertable = false, columnDefinition = "boolean default false")
     public Boolean isAudited() {
         return audited;
+    }
+    
+    @Column(name = "finished", insertable = false, columnDefinition = "boolean default false")
+    public Boolean isFinished() {
+        return finished;
     }
 
     @Column(name = "total_incidences", insertable = false, columnDefinition = "int default 0")
@@ -254,6 +261,10 @@ public class Project {
 
     public void setAudited(Boolean audited) {
         this.audited = audited;
+    }
+    
+    public void setFinished(Boolean finished) {
+        this.finished = finished;
     }
 
     public void setTotalIncidences(Integer totalIncidences) {

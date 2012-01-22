@@ -140,10 +140,10 @@ CREATE TABLE `factories` (
   `employees` int(11) DEFAULT NULL,
   `information` varchar(255) DEFAULT NULL,
   `name` varchar(45) NOT NULL,
-  `location_id` int(11) DEFAULT NULL,
   `director_id` int(11) DEFAULT NULL,
   `address_id` int(11) DEFAULT NULL,
   `company_id` int(11) NOT NULL,
+  `location_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `FKB0E2E728353B48C7` (`company_id`),
@@ -161,18 +161,18 @@ CREATE TABLE `factories` (
 --
 
 /*!40000 ALTER TABLE `factories` DISABLE KEYS */;
-INSERT INTO `factories` (`id`,`contact_email`,`employees`,`information`,`name`,`location_id`,`director_id`,`address_id`,`company_id`) VALUES 
- (1,'factory1@company1.com',10,'Factoría de ejemplo 1.1','Factoría 1.1',4,11,4,3),
- (2,'factory2@company1.com',30,'Factoría de ejemplo 1.2','Factoría 1.2',5,12,5,3),
- (3,'factory3@company1.com',95,'Factoría de ejemplo 1.3','Factoría 1.3',6,13,6,3),
- (4,'factory4@company1.com',63,'Factoría de ejemplo 1.4','Factoría 1.4',7,14,7,3),
- (5,'factory1@company2.com',57,'Factoría de ejemplo 2.1','Factoría 2.1',20,27,20,4),
- (6,'factory2@company2.com',44,'Factoría de ejemplo 2.2','Factoría 2.2',21,28,21,4),
- (7,'factory3@company2.com',32,'Factoría de ejemplo 2.3','Factoría 2.3',10,17,10,4),
- (8,'factory4@company2.com',115,'Factoría de ejemplo 2.4','Factoría 2.4',11,18,11,4),
- (9,'factory1@company3.com',7,'Factoría de ejemplo 3.1','Factoría 3.1',12,19,12,5),
- (10,'factory2@company3.com',21,'Factoría de ejemplo 3.2','Factoría 3.2',13,20,13,5),
- (11,'factory3@company3.com',43,'Factoría de ejemplo 3,3','Factoría 3.3',14,21,14,5);
+INSERT INTO `factories` (`id`,`contact_email`,`employees`,`information`,`name`,`director_id`,`address_id`,`company_id`,`location_id`) VALUES 
+ (1,'factory1@company1.com',10,'Factoría de ejemplo 1.1','Factoría 1.1',11,4,3,4),
+ (2,'factory2@company1.com',30,'Factoría de ejemplo 1.2','Factoría 1.2',12,5,3,5),
+ (3,'factory3@company1.com',95,'Factoría de ejemplo 1.3','Factoría 1.3',13,6,3,6),
+ (4,'factory4@company1.com',63,'Factoría de ejemplo 1.4','Factoría 1.4',14,7,3,7),
+ (5,'factory1@company2.com',57,'Factoría de ejemplo 2.1','Factoría 2.1',27,20,4,20),
+ (6,'factory2@company2.com',44,'Factoría de ejemplo 2.2','Factoría 2.2',28,21,4,21),
+ (7,'factory3@company2.com',32,'Factoría de ejemplo 2.3','Factoría 2.3',17,10,4,10),
+ (8,'factory4@company2.com',115,'Factoría de ejemplo 2.4','Factoría 2.4',18,11,4,11),
+ (9,'factory1@company3.com',7,'Factoría de ejemplo 3.1','Factoría 3.1',19,12,5,12),
+ (10,'factory2@company3.com',21,'Factoría de ejemplo 3.2','Factoría 3.2',20,13,5,13),
+ (11,'factory3@company3.com',43,'Factoría de ejemplo 3,3','Factoría 3.3',21,14,5,14);
 /*!40000 ALTER TABLE `factories` ENABLE KEYS */;
 
 
@@ -308,6 +308,7 @@ CREATE TABLE `projects` (
   `fiabilidad` float DEFAULT '0',
   `fichaje_codigo` float DEFAULT '0',
   `fichaje_total` float DEFAULT '0',
+  `finished` tinyint(1) DEFAULT '0',
   `lineas_de_codigo` int(11) DEFAULT '0',
   `mantenibilidad` float DEFAULT '0',
   `name` varchar(255) DEFAULT NULL,
@@ -332,13 +333,13 @@ CREATE TABLE `projects` (
 --
 
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
-INSERT INTO `projects` (`id`,`actividad`,`audited`,`code`,`comentarios`,`delay`,`eficiencia`,`fiabilidad`,`fichaje_codigo`,`fichaje_total`,`lineas_de_codigo`,`mantenibilidad`,`name`,`plan`,`portabilidad`,`puntos_funcion`,`repaired_incidences`,`size`,`total_incidences`,`usabilidad`,`mainFactory_id`,`market_id`) VALUES 
- (1,95.4,0,'VTRB',1022,1,89.9,78.1,1600,1500,100457,85.6,'Vitrubio','0932',95.8,50.6,400,23,510,87.9,3,1),
- (2,78.8,1,'ALT',150512,0,78.5,67.9,1400,4050,1152230,74.5,'Althea','0132',96.7,78.9,300,31,450,64.5,5,3),
- (3,89.5,0,'ARS',1022445,0,85.32,95.78,20000,30000,14007875,98.33,'Ares','0142',89.4,80.5,100,45,780,89.78,7,2),
- (4,99.9,1,'ASCP',6654,0,99.7,97.8,5000,16400,4592744,96.12,'Asclepios','0421',83.45,30.5,0,60,300,54.9,9,3),
- (5,67.8,1,'EOL',55466,0,81.23,81.45,1000,8790,1214520,85.6,'Eolo','0094',74.1,10.2,150,40,200,36.87,7,4),
- (6,45.6,0,'VDLV',123354,1,67.9,72.36,10000,7000,422133,68.4,'Vandelvira','0541',86.2,15.6,140,80,150,65.98,5,1);
+INSERT INTO `projects` (`id`,`actividad`,`audited`,`code`,`comentarios`,`delay`,`eficiencia`,`fiabilidad`,`fichaje_codigo`,`fichaje_total`,`finished`,`lineas_de_codigo`,`mantenibilidad`,`name`,`plan`,`portabilidad`,`puntos_funcion`,`repaired_incidences`,`size`,`total_incidences`,`usabilidad`,`mainFactory_id`,`market_id`) VALUES 
+ (1,95.4,0,'VTRB',1022,1,89.9,78.1,1600,1500,0,100457,85.6,'Vitrubio','0932',95.8,50.6,400,23,510,87.9,3,1),
+ (2,78.8,1,'ALT',150512,0,78.5,67.9,1400,4050,1,1152230,74.5,'Althea','0132',96.7,78.9,300,31,450,64.5,5,3),
+ (3,89.5,0,'ARS',1022445,0,85.32,95.78,20000,30000,0,14007875,98.33,'Ares','0142',89.4,80.5,100,45,780,89.78,7,2),
+ (4,99.9,1,'ASCP',6654,0,99.7,97.8,5000,16400,1,4592744,96.12,'Asclepios','0421',83.45,30.5,0,60,300,54.9,9,3),
+ (5,67.8,1,'EOL',55466,0,81.23,81.45,1000,8790,0,1214520,85.6,'Eolo','0094',74.1,10.2,150,40,200,36.87,7,4),
+ (6,45.6,0,'VDLV',123354,1,67.9,72.36,10000,7000,0,422133,68.4,'Vandelvira','0541',86.2,15.6,140,80,150,65.98,5,1);
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 
 
@@ -375,19 +376,30 @@ DROP TABLE IF EXISTS `subprojects`;
 CREATE TABLE `subprojects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `actividad` float DEFAULT '0',
+  `test_cobertura` float DEFAULT '0',
   `comentarios` int(11) DEFAULT '0',
+  `test_efectividad` float DEFAULT '0',
   `eficiencia` float DEFAULT '0',
+  `errores_detectados` int(11) DEFAULT '0',
+  `errores_resueltos` int(11) DEFAULT '0',
+  `esfuerzo_mto_estimado` float DEFAULT '0',
+  `esfuerzo_mto_real` float DEFAULT '0',
   `fiabilidad` float DEFAULT '0',
   `fichaje_codigo` float DEFAULT '0',
   `fichaje_total` float DEFAULT '0',
+  `func_implementadas` int(11) DEFAULT '0',
+  `func_totales` int(11) DEFAULT '0',
+  `lcd_modificadas` int(11) DEFAULT '0',
   `lineas_de_codigo` int(11) DEFAULT '0',
   `mantenibilidad` float DEFAULT '0',
   `name` varchar(255) DEFAULT NULL,
+  `commits` int(11) DEFAULT '0',
   `portabilidad` float DEFAULT '0',
   `puntos_funcion` float DEFAULT '0',
+  `testcases_exec` int(11) DEFAULT '0',
   `usabilidad` float DEFAULT '0',
-  `factory_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
+  `factory_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FKEF896BAA73F7347` (`project_id`),
   KEY `FKEF896BA5986E1A7` (`factory_id`),
@@ -400,29 +412,29 @@ CREATE TABLE `subprojects` (
 --
 
 /*!40000 ALTER TABLE `subprojects` DISABLE KEYS */;
-INSERT INTO `subprojects` (`id`,`actividad`,`comentarios`,`eficiencia`,`fiabilidad`,`fichaje_codigo`,`fichaje_total`,`lineas_de_codigo`,`mantenibilidad`,`name`,`portabilidad`,`puntos_funcion`,`usabilidad`,`factory_id`,`project_id`) VALUES 
- (1,78.8,1056,79.8,98,600,500,30000,95.4,'Sub 1 Vitrubio',89.4,35.5,87.34,3,1),
- (2,97.5,4565,73.9,75.5,400,500,50000,85.3,'Sub 2 Vitrubio',23.4,68.2,89.56,4,1),
- (3,67.56,5050,98.6,14.6,500,500,20000,96.4,'Sub 3 Vitrubio',56.3,45.5,84.56,8,1),
- (4,89.78,1064,83.3,68.7,800,1000,100000,75.3,'Sub 1 Althea',45.5,67.8,34.78,5,2),
- (5,78.89,506,93.3,84.6,1000,1000,250000,65.1,'Sub 2 Althea',87.5,82.5,84.8,8,2),
- (6,57.687,4560,81.5,84.6,700,1000,300000,89.45,'Sub 3 Althea',98.8,34.5,74.8,6,2),
- (7,78.9,1204,98.3,81.3,100,1000,350000,74.3,'Sub 4 Althea',78.3,76.5,87.5,7,2),
- (8,98.3,2004,79.36,89.4,4000,5000,250000,92.2,'Sub 1 Ares',98.1,64.2,83.8,8,3),
- (9,75.6,3522,82.5,74.2,5500,5000,400000,84.3,'Sub 2 Ares',91.3,64.5,97.34,7,3),
- (10,67.65,355,62.3,76.3,7000,5000,300000,72.23,'Sub 3 Ares',92.7,56.5,89.3,9,3),
- (11,98.4,6533,98.3,78.5,450,5000,120000,74.6,'Sub 4 Ares',45.5,30.8,58.6,10,3),
- (12,45.65,3522,61.7,82.23,5000,5000,220000,89.14,'Sub 5 Ares',65.8,56.2,78.97,9,3),
- (13,65.6,6462,68.3,67.6,4222,7000,2000000,93.6,'Sub 1 Asclepios',89.5,78.54,98.23,10,4),
- (14,68.6,3421,84.45,67.1,5000,7000,2500000,98.3,'Sub 2 Asclepios',98.5,65.5,99.9,11,4),
- (15,89.8,457,55.5,37.3,1000,4000,300000,68.5,'Sub 1 Eolo',91.6,45.2,65.5,9,5),
- (16,87.9,3312,56.9,76.1,2400,4000,750000,89.3,'Sub 2 Eolo',95.65,61.2,98.5,7,5),
- (17,78.8,5633,46.7,54.6,400,1000,50000,87.5,'Sub 1 Vandelvira ',96.3,12.2,89.7,5,6),
- (18,73.35,4872,98.8,65.3,600,1000,30000,94.4,'Sub 2 Vandelvira',97.35,32.5,69.8,6,6),
- (19,72.6,3124,78.8,71.3,700,1000,70000,97.6,'Sub 3 Vandelvira',67.5,42.24,98.3,7,6),
- (20,98.5,5834,98.8,95.1,900,1000,160000,82.3,'Sub 4 Vandelvira',9.8,25.2,65.5,3,6),
- (21,35.5,345,98.5,75.01,450,1000,25000,98.2,'Sub 5 Vandelvira',98.5,56,68.5,4,6),
- (22,76.6,3425,88.8,42,640,1000,85000,78.5,'Sub 6 Vandelvira',51.2,45,55.5,3,6);
+INSERT INTO `subprojects` (`id`,`actividad`,`test_cobertura`,`comentarios`,`test_efectividad`,`eficiencia`,`errores_detectados`,`errores_resueltos`,`esfuerzo_mto_estimado`,`esfuerzo_mto_real`,`fiabilidad`,`fichaje_codigo`,`fichaje_total`,`func_implementadas`,`func_totales`,`lcd_modificadas`,`lineas_de_codigo`,`mantenibilidad`,`name`,`commits`,`portabilidad`,`puntos_funcion`,`testcases_exec`,`usabilidad`,`project_id`,`factory_id`) VALUES 
+ (1,78.8,89.9,1056,78.65,79.8,14,5,130,80,98,600,500,12,23,1000,30000,95.4,'Sub 1 Vitrubio',89,89.4,900,567,87.34,1,3),
+ (2,97.5,78.5,4565,87.5,73.9,34,3,150,210,75.5,400,500,8,14,250,50000,85.3,'Sub 2 Vitrubio',133,23.4,1908,754,89.56,1,4),
+ (3,67.56,45.76,5050,56.7,98.6,23,5,137.4,140,14.6,500,500,13,25,300,20000,96.4,'Sub 3 Vitrubio',65,56.3,789,756,84.56,1,8),
+ (4,89.78,34.67,1064,76.7,83.3,64,34,320,200,68.7,800,1000,17,20,8000,100000,75.3,'Sub 1 Althea',786,45.5,3980,787,34.78,2,5),
+ (5,78.89,90.04,506,98.8,93.3,10,7,220,200,84.6,1000,1000,5,8,4555,250000,65.1,'Sub 2 Althea',577,87.5,7882.5,7685,84.8,2,8),
+ (6,57.687,76.4,4560,86.7,81.5,21,18,400,350,84.6,700,1000,9,10,6555,300000,89.45,'Sub 3 Althea',325,98.8,8023,6788,74.8,2,6),
+ (7,78.9,74.6,1204,78.9,98.3,18,4,320,290,81.3,100,1000,9,12,700,350000,74.3,'Sub 4 Althea',745,78.3,7856,6756,87.5,2,7),
+ (8,98.3,89.6,2004,83.76,79.36,15,5,330.5,100,89.4,4000,5000,12,14,500,250000,92.2,'Sub 1 Ares',23,98.1,7509,8656,83.8,3,8),
+ (9,75.6,68.5,3522,93.4,82.5,45,34,132.4,200,74.2,5500,5000,13,15,6700,400000,84.3,'Sub 2 Ares',656,91.3,9786,8768,97.34,3,7),
+ (10,67.65,78.6,355,98.7,62.3,30,0,42.3,20,76.3,7000,5000,15,18,345,300000,72.23,'Sub 3 Ares',75,92.7,8366,345,89.3,3,9),
+ (11,98.4,54.2,6533,99.9,98.3,23,2,50.4,10,78.5,450,5000,23,34,5120,120000,74.6,'Sub 4 Ares',57,45.5,3098,567,58.6,3,10),
+ (12,45.65,56.77,3522,87.7,61.7,14,1,1200.5,200,82.23,5000,5000,7,8,3000,220000,89.14,'Sub 5 Ares',574,65.8,6088,656,78.97,3,9),
+ (13,65.6,67.45,6462,67.8,68.3,11,9,1400,150,67.6,4222,7000,30,34,5400,2000000,93.6,'Sub 1 Asclepios',56,89.5,60987,6567,98.23,4,10),
+ (14,68.6,86.76,3421,89.76,84.45,32,10,440,300,67.1,5000,7000,29,43,7000,2500000,98.3,'Sub 2 Asclepios',9767,98.5,70998,7658,99.9,4,11),
+ (15,89.8,96.45,457,98.76,55.5,12,6,300,320,37.3,1000,4000,10,13,700,300000,68.5,'Sub 1 Eolo',677,91.6,6044,987,65.5,5,9),
+ (16,87.9,45.7,3312,67.78,56.9,8,4,240,200,76.1,2400,4000,6,8,560,750000,89.3,'Sub 2 Eolo',865,95.65,15044,235,98.5,5,7),
+ (17,78.8,87.67,5633,87.7,46.7,10,7,220,100,54.6,400,1000,5,9,500,50000,87.5,'Sub 1 Vandelvira ',76,96.3,1543,544,89.7,6,5),
+ (18,73.35,82.67,4872,87.87,98.8,17,4,430,250,65.3,600,1000,4,7,400,30000,94.4,'Sub 2 Vandelvira',345,97.35,967,765,69.8,6,6),
+ (19,72.6,80.432,3124,89.7,78.8,18,6,231,150,71.3,700,1000,4,8,350,70000,97.6,'Sub 3 Vandelvira',65,67.5,2343,765,98.3,6,7),
+ (20,98.5,54.6,5834,76.78,98.8,21,6,123,110,95.1,900,1000,10,12,890,160000,82.3,'Sub 4 Vandelvira',869,9.8,5644,867,65.5,6,3),
+ (21,35.5,87.7,345,73.5,98.5,43,34,423,340,75.01,450,1000,7,13,560,25000,98.2,'Sub 5 Vandelvira',98,98.5,667,656,68.5,6,4),
+ (22,76.6,93.2,3425,71.23,88.8,5,2,234,210,42,640,1000,5,15,750,85000,78.5,'Sub 6 Vandelvira',767,51.2,1212,865,55.5,6,3);
 /*!40000 ALTER TABLE `subprojects` ENABLE KEYS */;
 
 
