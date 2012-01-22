@@ -32,6 +32,34 @@ public class Subproject {
     @Property
     private String name;
     @Property @Measure
+    private Integer numeroDeCommits;
+    @Property @Measure
+    private Integer lcdModificadas;
+    @Property @Measure
+    private Integer funcionalidadesTotales;
+    @Property @Measure
+    private Integer funcionalidadesImplementadas;
+    @Property @Measure(base = false)
+    private Float ratioFuncionalidades;
+    @Property @Measure
+    private Integer testCasesEjecutados;
+    @Property @Measure
+    private Float coberturaPruebas;
+    @Property @Measure
+    private Float efectividadPruebas;
+    @Property @Measure
+    private Integer erroresDetectados;
+    @Property @Measure
+    private Integer erroresResueltos;
+    @Property @Measure(base = false)
+    private Float ratioErroresDetectadosResueltos;
+    @Property @Measure
+    private Float esfuerzoMtoCorrectivoEstimado;
+    @Property @Measure
+    private Float esfuerzoMtoCorrectivoReal;
+    @Property @Measure(base = false)
+    private Float ratioEsfuerzoMto;
+    @Property @Measure
     private Float fiabilidad;
     @Property @Measure
     private Float usabilidad;
@@ -84,6 +112,85 @@ public class Subproject {
         return name;
     }
 
+    @Column(name = "commits", insertable = false, columnDefinition = "int default 0")
+    public Integer getNumeroDeCommits() {
+        return numeroDeCommits;
+    }
+
+    @Column(name = "lcd_modificadas", insertable = false, columnDefinition = "int default 0")
+    public Integer getLcdModificadas() {
+        return lcdModificadas;
+    }
+
+    @Column(name = "func_totales", insertable = false, columnDefinition = "int default 0")
+    public Integer getFuncionalidadesTotales() {
+        return funcionalidadesTotales;
+    }
+
+    @Column(name = "func_implementadas", insertable = false, columnDefinition = "int default 0")
+    public Integer getFuncionalidadesImplementadas() {
+        return funcionalidadesImplementadas;
+    }
+
+    @Formula("func_implementadas / func_totales")
+    public Float getRatioFuncionalidades() {
+        if (ratioFuncionalidades == null) {
+            ratioFuncionalidades = new Float(0);
+        }
+        return ratioFuncionalidades;
+    }
+
+    @Column(name = "testcases_exec", insertable = false, columnDefinition = "int default 0")
+    public Integer getTestCasesEjecutados() {
+        return testCasesEjecutados;
+    }
+
+    @Column(name = "test_cobertura", insertable = false, columnDefinition = "float default 0.0")
+    public Float getCoberturaPruebas() {
+        return coberturaPruebas;
+    }
+
+    @Column(name = "test_efectividad", insertable = false, columnDefinition = "float default 0.0")
+    public Float getEfectividadPruebas() {
+        return efectividadPruebas;
+    }
+
+    @Column(name = "errores_detectados", insertable = false, columnDefinition = "int default 0")
+    public Integer getErroresDetectados() {
+        return erroresDetectados;
+    }
+
+    @Column(name = "errores_resueltos", insertable = false, columnDefinition = "int default 0")
+    public Integer getErroresResueltos() {
+        return erroresResueltos;
+    }
+
+    @Formula("errores_resueltos / errores_detectados")
+    public Float getRatioErroresDetectadosResueltos() {
+        if (ratioErroresDetectadosResueltos == null) {
+            ratioErroresDetectadosResueltos = new Float(0);
+        }
+        return ratioErroresDetectadosResueltos;
+    }
+
+    @Column(name = "esfuerzo_mto_estimado", insertable = false, columnDefinition = "float default 0.0")
+    public Float getEsfuerzoMtoCorrectivoEstimado() {
+        return esfuerzoMtoCorrectivoEstimado;
+    }
+
+    @Column(name = "esfuerzo_mto_real", insertable = false, columnDefinition = "float default 0.0")
+    public Float getEsfuerzoMtoCorrectivoReal() {
+        return esfuerzoMtoCorrectivoReal;
+    }
+
+    @Formula("esfuerzo_mto_estimado / esfuerzo_mto_real")
+    public Float getRatioEsfuerzoMto() {
+        if (ratioEsfuerzoMto == null) {
+            ratioEsfuerzoMto = new Float(0);
+        }
+        return ratioEsfuerzoMto;
+    }
+
     @Column(name = "fiabilidad", insertable = false, columnDefinition = "float default 0.0")
     public Float getFiabilidad() {
         return fiabilidad;
@@ -109,12 +216,12 @@ public class Subproject {
         return portabilidad;
     }
 
-    @Column(name = "lineas_de_codigo", insertable = false, columnDefinition = "int default 0.0")
+    @Column(name = "lineas_de_codigo", insertable = false, columnDefinition = "int default 0")
     public Integer getLineasDeCodigo() {
         return lineasDeCodigo;
     }
 
-    @Column(name = "comentarios", insertable = false, columnDefinition = "int default 0.0")
+    @Column(name = "comentarios", insertable = false, columnDefinition = "int default 0")
     public Integer getComentarios() {
         return comentarios;
     }
@@ -171,6 +278,64 @@ public class Subproject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setNumeroDeCommits(Integer numeroDeCommits) {
+        this.numeroDeCommits = numeroDeCommits;
+    }
+
+    public void setLcdModificadas(Integer lcdModificadas) {
+        this.lcdModificadas = lcdModificadas;
+    }
+
+    public void setFuncionalidadesTotales(Integer funcionalidadesTotales) {
+        this.funcionalidadesTotales = funcionalidadesTotales;
+    }
+
+    public void setFuncionalidadesImplementadas(Integer funcionalidadesImplementadas) {
+        this.funcionalidadesImplementadas = funcionalidadesImplementadas;
+    }
+
+    public void setRatioFuncionalidades(Float ratioFuncionalidades) {
+        this.ratioFuncionalidades = ratioFuncionalidades;
+    }
+
+    public void setTestCasesEjecutados(Integer testCasesEjecutados) {
+        this.testCasesEjecutados = testCasesEjecutados;
+    }
+
+    public void setCoberturaPruebas(Float coberturaPruebas) {
+        this.coberturaPruebas = coberturaPruebas;
+    }
+
+    public void setEfectividadPruebas(Float efectividadPruebas) {
+        this.efectividadPruebas = efectividadPruebas;
+    }
+
+    public void setErroresDetectados(Integer erroresDetectados) {
+        this.erroresDetectados = erroresDetectados;
+    }
+
+    public void setErroresResueltos(Integer erroresResueltos) {
+        this.erroresResueltos = erroresResueltos;
+    }
+
+    public void setRatioErroresDetectadosResueltos(
+            Float ratioErroresDetectadosResueltos) {
+        this.ratioErroresDetectadosResueltos = ratioErroresDetectadosResueltos;
+    }
+
+    public void setEsfuerzoMtoCorrectivoEstimado(
+            Float esfuerzoMtoCorrectivoEstimado) {
+        this.esfuerzoMtoCorrectivoEstimado = esfuerzoMtoCorrectivoEstimado;
+    }
+
+    public void setEsfuerzoMtoCorrectivoReal(Float esfuerzoMtoCorrectivoReal) {
+        this.esfuerzoMtoCorrectivoReal = esfuerzoMtoCorrectivoReal;
+    }
+
+    public void setRatioEsfuerzoMto(Float ratioEsfuerzoMto) {
+        this.ratioEsfuerzoMto = ratioEsfuerzoMto;
     }
 
     public void setFiabilidad(Float fiabilidad) {
