@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <profile model="model.gl.knowledge.GLTower" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Company">
     <name>CompanyTowers</name>
-    <description>Este perfil emplea la metáfora de la ciudad para representar las compañías. El alto del edificio indica el número de proyectos compartidos. El relleno, el número de proyectos liderados. El ancho, el número de subproyectos en desarrollo. La profundidad, el número de empleados. El color, el número de factorías (ver leyenda). La normalización se ha realizado asignando la máxima dimensión al máximo valor.</description>
+    <description>Este perfil emplea la metáfora de la ciudad para representar las compañías. La ALTURA del edificio indica el número de proyectos compartidos. El RELLENO, el número de proyectos liderados. El ANCHO, el número de subproyectos en desarrollo. La PROFUNDIDAD, el número de empleados. El COLOR, el número de factorías (ver leyenda). La normalización se ha realizado asignando la máxima dimensión al máximo valor.</description>
     <mappings>
         <mapping>
             <entityAttr name="id" type="int"/>

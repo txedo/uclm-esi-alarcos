@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <profile model="model.gl.knowledge.GLTower" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Project">
     <name>ProjectStatusTower</name>
-    <description>Metáfora de una ciudad que muestra el estado de los proyectos. El color indica si está retrasado o no. El alto indica el número total de incidencias. El relleno indica el número de incidencias reparadas. El ancho indica la actividad del proyecto.</description>
+    <description>Metáfora de una ciudad que muestra el estado de los proyectos. El COLOR indica si el proyecto está retrasado o no. La ALTURA indica el número total de incidencias. El RELLENO indica el número de incidencias reparadas. El ANCHO indica la actividad del proyecto. La ESCALA y la PROFUNDIDAD toman valores constantes.</description>
     <mappings>
         <mapping>
             <entityAttr name="id" type="int"/>
