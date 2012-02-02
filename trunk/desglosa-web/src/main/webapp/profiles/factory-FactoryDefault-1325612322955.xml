@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <profile model="model.gl.knowledge.GLFactory" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Factory">
     <name>FactoryDefault</name>
-    <description>Este es un perfil predefinido para representar las factorías de software. La altura de la chimenea y el número entero situado en la parte superior del edificio representa el número de subproyectos que está desarollando. El color de la chimenea indica el tipo de mercado en el que dicha factoría se encuentra especializada. El tamaño del edificio indica el número de empleados de la factoría: 0-50 (pequeño), 51-100 (mediano) y más de 101 (grande)</description>
+    <description>Este es un perfil predefinido para representar las factorías de software mediante la metáfora de polígono industrial. La altura de la chimenea y el número entero situado en la parte superior del edificio representa el número de subproyectos que está desarollando. El color de la chimenea indica el tipo de mercado en el que dicha factoría se encuentra especializada. El tamaño del edificio indica el número de empleados de la factoría: 0-50 (pequeño), 51-100 (mediano) y más de 101 (grande)</description>
     <mappings>
         <mapping>
             <entityAttr name="id" type="int"/>

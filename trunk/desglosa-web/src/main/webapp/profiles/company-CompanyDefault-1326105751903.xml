@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <profile model="model.gl.knowledge.GLFactory" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Company">
     <name>CompanyDefault</name>
-    <description>Este perfil se facilita por defecto para la representación de la entidad compañía. La altura de la chimenea y el número entero situado en la parte superior del edificio representa el número de factorías que posee. El color de la chimenea indica el tamaño de la compañía, en cuanto al número de empleados se refiere.</description>
+    <description>Este perfil muestra una metáfora de polígono industrial y se facilita por defecto para la representación de la entidad compañía. La altura de la chimenea y el número entero situado en la parte superior del edificio representa el número de factorías que posee. El color de la chimenea indica el tamaño de la compañía, en cuanto al número de empleados se refiere.</description>
     <mappings>
         <mapping>
             <entityAttr name="id" type="int"/>
