@@ -22,7 +22,7 @@
 		
 		<c:set var="form" value="/editCompany"/>
 		<c:set var="buttonLabel"><s:text name="button.edit_company"></s:text></c:set>
-		<c:if test="${empty param.id and not fn:endsWith(header.referer,'/editCompany') and not fn:contains(header.referer,'id=')}">
+		<c:if test="${empty param.id and not fn:contains(requestScope['javax.servlet.forward.servlet_path'],'/editCompany')}">
 			<c:set var="form" value="/saveCompany"/>
 			<c:set var="buttonLabel"><s:text name="button.add_company"></s:text></c:set>
 		</c:if>
