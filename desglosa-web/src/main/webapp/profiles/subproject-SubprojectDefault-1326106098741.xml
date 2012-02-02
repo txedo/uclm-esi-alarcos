@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <profile model="model.gl.knowledge.GLTower" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject">
     <name>SubprojectDefault</name>
-    <description>Este es un perfil predefinido para representar los subproyectos que conforman un proyecto software. El COLOR de la torre indica el rango de valores en el que se encuentra el ratio de fichaje de código y fichaje total estimado. La ALTURA indica la fiabilidad. El RELLENO indica la portabilidad, El ANCHO indica la usabilidad. La PROFUNDIDAD indica la mantenibilidad.</description>
+    <description>Este es un perfil predefinido para representar los subproyectos que conforman un proyecto software mediante la metáfora de una ciudad. El COLOR de la torre indica el rango de valores en el que se encuentra el ratio de fichaje de código y fichaje total estimado. La ALTURA indica la fiabilidad. El RELLENO indica la portabilidad, El ANCHO indica la usabilidad. La PROFUNDIDAD indica la mantenibilidad.</description>
     <mappings>
         <mapping>
             <entityAttr name="id" type="int"/>
