@@ -54,7 +54,7 @@
 	
 		<c:set var="form" value="/editProject"/>
 		<c:set var="buttonLabel" value="button.edit_project"/>
-		<c:if test="${(empty param.id and not fn:contains(header.referer,'/editProject') and not fn:contains(header.referer,'id=')) or not empty param.factoryId}">
+		<c:if test="${(empty param.id and not fn:contains(requestScope['javax.servlet.forward.servlet_path'],'/editProject')) or not empty param.factoryId}">
 			<c:set var="form" value="/saveProject"/>
 			<c:set var="buttonLabel" value="button.add_project"/>
 		</c:if>

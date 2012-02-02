@@ -247,13 +247,7 @@ public class FactoryAction extends ActionSupport {
             }
             // Check that required fields are filled in
             // Factory data
-            if (Utilities.isEmptyString(factory.getName())) {
-                addFieldError("error.factory.name", getText("error.factory.name"));
-            }
-            if (Utilities.isEmptyString(factory.getEmail())) {
-                addFieldError("error.factory.email", getText("error.factory.email"));
-            }
-            if (!Utilities.validateEmail(factory.getEmail())) {
+            if (Utilities.isEmptyString(factory.getEmail()) || !Utilities.validateEmail(factory.getEmail())) {
                 addFieldError("error.factory.email", getText("error.factory.email"));
             }
             if (factory.getEmployees() == null || factory.getEmployees() < 0) {
