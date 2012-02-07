@@ -1,0 +1,1490 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  <table name="roles">
+    <column>id</column>
+    <column>description</column>
+    <column>name</column>
+    <row>
+      <value description="id">1</value>
+      <value description="description">Administrator</value>
+      <value description="name">ROLE_ADMIN</value>
+    </row>
+    <row>
+      <value description="id">2</value>
+      <value description="description">Project manager</value>
+      <value description="name">ROLE_MANAGER</value>
+    </row>
+    <row>
+      <value description="id">3</value>
+      <value description="description">Traditional user</value>
+      <value description="name">ROLE_USER</value>
+    </row>
+  </table>
+  <table name="groups">
+    <column>id</column>
+    <column>description</column>
+    <column>name</column>
+    <row>
+      <value description="id">1</value>
+      <value description="description">Administrator group</value>
+      <value description="name">Administrators</value>
+    </row>
+    <row>
+      <value description="id">2</value>
+      <value description="description">Project managers staff group</value>
+      <value description="name">Project Managers</value>
+    </row>
+    <row>
+      <value description="id">3</value>
+      <value description="description">Traditional users group</value>
+      <value description="name">Users</value>
+    </row>
+  </table>
+  <table name="users">
+    <column>id</column>
+    <column>account_expired</column>
+    <column>account_locked</column>
+    <column>credentials_expired</column>
+    <column>enabled</column>
+    <column>password</column>
+    <column>username</column>
+    <row>
+      <value description="id">1</value>
+      <value description="account_expired">false</value>
+      <value description="account_locked">false</value>
+      <value description="credentials_expired">false</value>
+      <value description="enabled">true</value>
+      <value description="password">21232f297a57a5a743894a0e4a801fc3</value>
+      <value description="username">admin</value>
+    </row>
+    <row>
+      <value description="id">2</value>
+      <value description="account_expired">false</value>
+      <value description="account_locked">false</value>
+      <value description="credentials_expired">false</value>
+      <value description="enabled">true</value>
+      <value description="password">1d0258c2440a8d19e716292b231e3190</value>
+      <value description="username">manager</value>
+    </row>
+    <row>
+      <value description="id">3</value>
+      <value description="account_expired">false</value>
+      <value description="account_locked">false</value>
+      <value description="credentials_expired">false</value>
+      <value description="enabled">true</value>
+      <value description="password">ee11cbb19052e40b07aac0ca060c23ee</value>
+      <value description="username">user</value>
+    </row>
+    <row>
+      <value description="id">4</value>
+      <value description="account_expired">false</value>
+      <value description="account_locked">false</value>
+      <value description="credentials_expired">false</value>
+      <value description="enabled">false</value>
+      <value description="password">075ae3d2fc31640504f814f60e5ef713</value>
+      <value description="username">disabled</value>
+    </row>
+    <row>
+      <value description="id">5</value>
+      <value description="account_expired">true</value>
+      <value description="account_locked">false</value>
+      <value description="credentials_expired">false</value>
+      <value description="enabled">true</value>
+      <value description="password">c4bfb2a0bab0e91bc7dcfbe3bbec246e</value>
+      <value description="username">expired</value>
+    </row>
+    <row>
+      <value description="id">6</value>
+      <value description="account_expired">false</value>
+      <value description="account_locked">true</value>
+      <value description="credentials_expired">false</value>
+      <value description="enabled">true</value>
+      <value description="password">4cef2f30ac7d33419d00c1d93a090095</value>
+      <value description="username">locked</value>
+    </row>
+    <row>
+      <value description="id">7</value>
+      <value description="account_expired">false</value>
+      <value description="account_locked">false</value>
+      <value description="credentials_expired">true</value>
+      <value description="enabled">true</value>
+      <value description="password">9e9198d2bc527fbb46d417f02ecd6439</value>
+      <value description="username">cexpired</value>
+    </row>
+  </table>
+  <table name="groups_roles">
+    <column>group_id</column>
+    <column>role_id</column>
+    <row>
+      <value description="group_id">1</value>
+      <value description="role_id">1</value>
+    </row>
+    <row>
+      <value description="group_id">2</value>
+      <value description="role_id">2</value>
+    </row>
+    <row>
+      <value description="group_id">3</value>
+      <value description="role_id">3</value>
+    </row>
+  </table>
+  <table name="users_groups">
+    <column>user_id</column>
+    <column>group_id</column>
+    <row>
+      <value description="user_id">1</value>
+      <value description="group_id">1</value>
+    </row>
+    <row>
+      <value description="user_id">2</value>
+      <value description="group_id">2</value>
+    </row>
+    <row>
+      <value description="user_id">3</value>
+      <value description="group_id">3</value>
+    </row>
+  </table>
+  <table name="directors">
+    <column>id</column>
+    <column>image_path</column>
+    <column>last_name</column>
+    <column>name</column>
+    <row>
+      <value description="id">6</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Verdugo Cardona</value>
+      <value description="name">Rivi</value>
+    </row>
+    <row>
+      <value description="id">7</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Cordero Nevarez</value>
+      <value description="name">Restituto</value>
+    </row>
+    <row>
+      <value description="id">8</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Osborne</value>
+      <value description="name">Peter</value>
+    </row>
+    <row>
+      <value description="id">9</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Forster</value>
+      <value description="name">Danielle</value>
+    </row>
+    <row>
+      <value description="id">11</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Schott</value>
+      <value description="name">Jade</value>
+    </row>
+    <row>
+      <value description="id">12</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Abbott</value>
+      <value description="name">Lucas</value>
+    </row>
+    <row>
+      <value description="id">13</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Davidson</value>
+      <value description="name">Lucas</value>
+    </row>
+    <row>
+      <value description="id">14</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Robinson</value>
+      <value description="name">Summer</value>
+    </row>
+    <row>
+      <value description="id">16</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Morton</value>
+      <value description="name">Adam</value>
+    </row>
+    <row>
+      <value description="id">17</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">L&#243;pez L&#243;pez</value>
+      <value description="name">Jose Domingo</value>
+    </row>
+    <row>
+      <value description="id">18</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Hartley</value>
+      <value description="name">Reece</value>
+    </row>
+    <row>
+      <value description="id">19</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Foster</value>
+      <value description="name">Shannon</value>
+    </row>
+    <row>
+      <value description="id">20</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Russell</value>
+      <value description="name">Courtney</value>
+    </row>
+    <row>
+      <value description="id">21</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Hughes</value>
+      <value description="name">Ewan</value>
+    </row>
+    <row>
+      <value description="id">23</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Barlow</value>
+      <value description="name">Madison</value>
+    </row>
+    <row>
+      <value description="id">24</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Henry</value>
+      <value description="name">Ellis</value>
+    </row>
+    <row>
+      <value description="id">26</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Barlow</value>
+      <value description="name">Madison</value>
+    </row>
+    <row>
+      <value description="id">27</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Barlow</value>
+      <value description="name">Madison</value>
+    </row>
+    <row>
+      <value description="id">28</value>
+      <value description="image_path">images/anonymous.gif</value>
+      <value description="last_name">Morton</value>
+      <value description="name">Adam</value>
+    </row>
+  </table>
+  <table name="companies">
+    <column>id</column>
+    <column>information</column>
+    <column>name</column>
+    <column>director_id</column>
+    <row>
+      <value description="id">3</value>
+      <value description="information">Compa&#241;&#237;a de ejemplo n&#250;mero 1.</value>
+      <value description="name">Compa&#241;&#237;a 1</value>
+      <value description="director_id">6</value>
+    </row>
+    <row>
+      <value description="id">4</value>
+      <value description="information">Compa&#241;&#237;a de ejemplo n&#250;mero 2.</value>
+      <value description="name">Compa&#241;&#237;a 2</value>
+      <value description="director_id">7</value>
+    </row>
+    <row>
+      <value description="id">5</value>
+      <value description="information">Compa&#241;&#237;a de ejemplo n&#250;mero 3.</value>
+      <value description="name">Compa&#241;&#237;a 3</value>
+      <value description="director_id">8</value>
+    </row>
+  </table>
+  <table name="addresses">
+    <column>id</column>
+    <column>address</column>
+    <column>city</column>
+    <column>country</column>
+    <column>postal_code</column>
+    <column>province</column>
+    <row>
+      <value description="id">4</value>
+      <value description="address">R. Anhangaba&#250;, 62</value>
+      <value description="city">Sao Paulo</value>
+      <value description="country">Brazil</value>
+      <value description="postal_code">01007-040</value>
+      <value description="province"></value>
+    </row>
+    <row>
+      <value description="id">5</value>
+      <value description="address">R. da Assun&#231;&#227;o, 12</value>
+      <value description="city">Lisbon</value>
+      <value description="country">Portugal</value>
+      <value description="postal_code">1100</value>
+      <value description="province"></value>
+    </row>
+    <row>
+      <value description="id">6</value>
+      <value description="address">Av Juan XXIII, 2502-2600</value>
+      <value description="city">Lomas de Zamora</value>
+      <value description="country">Argentina</value>
+      <value description="postal_code"></value>
+      <value description="province">Lomas de Zamora Partido</value>
+    </row>
+    <row>
+      <value description="id">7</value>
+      <value description="address">Viaducto Presidente Miguel Alem&#225;n, 196</value>
+      <value description="city">Mexico City</value>
+      <value description="country">Mexico</value>
+      <value description="postal_code"></value>
+      <value description="province"></value>
+    </row>
+    <row>
+      <value description="id">9</value>
+      <value description="address">Janpath Ln, undefined</value>
+      <value description="city">New Delhi</value>
+      <value description="country">India</value>
+      <value description="postal_code"></value>
+      <value description="province">Delhi (district)</value>
+    </row>
+    <row>
+      <value description="id">10</value>
+      <value description="address">Paseo de la Universidad, 4</value>
+      <value description="city">Ciudad Real</value>
+      <value description="country">Spain</value>
+      <value description="postal_code">13003</value>
+      <value description="province">Ciudad Real</value>
+    </row>
+    <row>
+      <value description="id">11</value>
+      <value description="address">Sungang East Rd, 2008</value>
+      <value description="city">Shenzhen</value>
+      <value description="country">China</value>
+      <value description="postal_code"></value>
+      <value description="province"></value>
+    </row>
+    <row>
+      <value description="id">12</value>
+      <value description="address">Karl-Marx Allee, 32</value>
+      <value description="city">Berlin</value>
+      <value description="country">Germany</value>
+      <value description="postal_code">10178</value>
+      <value description="province">Berlin</value>
+    </row>
+    <row>
+      <value description="id">13</value>
+      <value description="address">Market St, 1601-1645</value>
+      <value description="city">San Francisco</value>
+      <value description="country">United States</value>
+      <value description="postal_code">94103</value>
+      <value description="province">San Francisco</value>
+    </row>
+    <row>
+      <value description="id">14</value>
+      <value description="address">Via dei Gracchi, 260</value>
+      <value description="city">Rome</value>
+      <value description="country">Italy</value>
+      <value description="postal_code">00192</value>
+      <value description="province">Rome</value>
+    </row>
+    <row>
+      <value description="id">16</value>
+      <value description="address">E 14th St, 120</value>
+      <value description="city">New York</value>
+      <value description="country">United States</value>
+      <value description="postal_code">10003</value>
+      <value description="province">New York</value>
+    </row>
+    <row>
+      <value description="id">17</value>
+      <value description="address">Obeysekarapura Rd, undefined</value>
+      <value description="city">Sri Jayawardenepura Kotte</value>
+      <value description="country">Sri Lanka</value>
+      <value description="postal_code">undefined</value>
+      <value description="province">Colombo</value>
+    </row>
+    <row>
+      <value description="id">19</value>
+      <value description="address">E 14th St, 120</value>
+      <value description="city">New York</value>
+      <value description="country">United States</value>
+      <value description="postal_code">10003</value>
+      <value description="province">New York</value>
+    </row>
+    <row>
+      <value description="id">20</value>
+      <value description="address">E 14th St, 120</value>
+      <value description="city">New York</value>
+      <value description="country">United States</value>
+      <value description="postal_code">10003</value>
+      <value description="province">New York</value>
+    </row>
+    <row>
+      <value description="id">21</value>
+      <value description="address">Janpath Ln, undefined</value>
+      <value description="city">New Delhi</value>
+      <value description="country">India</value>
+      <value description="postal_code"></value>
+      <value description="province">Delhi (district)</value>
+    </row>
+  </table>
+  <table name="locations">
+    <column>id</column>
+    <column>latitude</column>
+    <column>longitude</column>
+    <row>
+      <value description="id">4</value>
+      <value description="latitude">-23.5436916</value>
+      <value description="longitude">-46.63582629999996</value>
+    </row>
+    <row>
+      <value description="id">5</value>
+      <value description="latitude">38.71204305365397</value>
+      <value description="longitude">-9.136768629527978</value>
+    </row>
+    <row>
+      <value description="id">6</value>
+      <value description="latitude">-34.767556157743535</value>
+      <value description="longitude">-58.43207960364907</value>
+    </row>
+    <row>
+      <value description="id">7</value>
+      <value description="latitude">19.403143459944427</value>
+      <value description="longitude">-99.1542780899772</value>
+    </row>
+    <row>
+      <value description="id">9</value>
+      <value description="latitude">28.623412599207477</value>
+      <value description="longitude">77.21783036949546</value>
+    </row>
+    <row>
+      <value description="id">10</value>
+      <value description="latitude">38.9903658</value>
+      <value description="longitude">-3.9208851999999297</value>
+    </row>
+    <row>
+      <value description="id">11</value>
+      <value description="latitude">22.55569206982344</value>
+      <value description="longitude">114.11369676353843</value>
+    </row>
+    <row>
+      <value description="id">12</value>
+      <value description="latitude">52.520194528975345</value>
+      <value description="longitude">13.421396201171888</value>
+    </row>
+    <row>
+      <value description="id">13</value>
+      <value description="latitude">37.7749295</value>
+      <value description="longitude">-122.41941550000001</value>
+    </row>
+    <row>
+      <value description="id">14</value>
+      <value description="latitude">41.90918248875203</value>
+      <value description="longitude">12.466472337268897</value>
+    </row>
+    <row>
+      <value description="id">16</value>
+      <value description="latitude">40.733737015768966</value>
+      <value description="longitude">-73.98872022864907</value>
+    </row>
+    <row>
+      <value description="id">17</value>
+      <value description="latitude">6.9196191407302665</value>
+      <value description="longitude">79.89128465416343</value>
+    </row>
+    <row>
+      <value description="id">19</value>
+      <value description="latitude">40.733737015768966</value>
+      <value description="longitude">-73.98872022864907</value>
+    </row>
+    <row>
+      <value description="id">20</value>
+      <value description="latitude">40.733737015768966</value>
+      <value description="longitude">-73.98872022864907</value>
+    </row>
+    <row>
+      <value description="id">21</value>
+      <value description="latitude">28.623412599207477</value>
+      <value description="longitude">77.21783036949546</value>
+    </row>
+  </table>
+  <table name="factories">
+    <column>id</column>
+    <column>contact_email</column>
+    <column>employees</column>
+    <column>information</column>
+    <column>name</column>
+    <column>director_id</column>
+    <column>address_id</column>
+    <column>company_id</column>
+    <column>location_id</column>
+    <row>
+      <value description="id">1</value>
+      <value description="contact_email">factory1@company1.com</value>
+      <value description="employees">10</value>
+      <value description="information">Factor&#237;a de ejemplo 1.1</value>
+      <value description="name">Factor&#237;a 1.1</value>
+      <value description="director_id">11</value>
+      <value description="address_id">4</value>
+      <value description="company_id">3</value>
+      <value description="location_id">4</value>
+    </row>
+    <row>
+      <value description="id">2</value>
+      <value description="contact_email">factory2@company1.com</value>
+      <value description="employees">30</value>
+      <value description="information">Factor&#237;a de ejemplo 1.2</value>
+      <value description="name">Factor&#237;a 1.2</value>
+      <value description="director_id">12</value>
+      <value description="address_id">5</value>
+      <value description="company_id">3</value>
+      <value description="location_id">5</value>
+    </row>
+    <row>
+      <value description="id">3</value>
+      <value description="contact_email">factory3@company1.com</value>
+      <value description="employees">95</value>
+      <value description="information">Factor&#237;a de ejemplo 1.3</value>
+      <value description="name">Factor&#237;a 1.3</value>
+      <value description="director_id">13</value>
+      <value description="address_id">6</value>
+      <value description="company_id">3</value>
+      <value description="location_id">6</value>
+    </row>
+    <row>
+      <value description="id">4</value>
+      <value description="contact_email">factory4@company1.com</value>
+      <value description="employees">63</value>
+      <value description="information">Factor&#237;a de ejemplo 1.4</value>
+      <value description="name">Factor&#237;a 1.4</value>
+      <value description="director_id">14</value>
+      <value description="address_id">7</value>
+      <value description="company_id">3</value>
+      <value description="location_id">7</value>
+    </row>
+    <row>
+      <value description="id">5</value>
+      <value description="contact_email">factory1@company2.com</value>
+      <value description="employees">57</value>
+      <value description="information">Factor&#237;a de ejemplo 2.1</value>
+      <value description="name">Factor&#237;a 2.1</value>
+      <value description="director_id">27</value>
+      <value description="address_id">20</value>
+      <value description="company_id">4</value>
+      <value description="location_id">20</value>
+    </row>
+    <row>
+      <value description="id">6</value>
+      <value description="contact_email">factory2@company2.com</value>
+      <value description="employees">44</value>
+      <value description="information">Factor&#237;a de ejemplo 2.2</value>
+      <value description="name">Factor&#237;a 2.2</value>
+      <value description="director_id">28</value>
+      <value description="address_id">21</value>
+      <value description="company_id">4</value>
+      <value description="location_id">21</value>
+    </row>
+    <row>
+      <value description="id">7</value>
+      <value description="contact_email">factory3@company2.com</value>
+      <value description="employees">32</value>
+      <value description="information">Factor&#237;a de ejemplo 2.3</value>
+      <value description="name">Factor&#237;a 2.3</value>
+      <value description="director_id">17</value>
+      <value description="address_id">10</value>
+      <value description="company_id">4</value>
+      <value description="location_id">10</value>
+    </row>
+    <row>
+      <value description="id">8</value>
+      <value description="contact_email">factory4@company2.com</value>
+      <value description="employees">115</value>
+      <value description="information">Factor&#237;a de ejemplo 2.4</value>
+      <value description="name">Factor&#237;a 2.4</value>
+      <value description="director_id">18</value>
+      <value description="address_id">11</value>
+      <value description="company_id">4</value>
+      <value description="location_id">11</value>
+    </row>
+    <row>
+      <value description="id">9</value>
+      <value description="contact_email">factory1@company3.com</value>
+      <value description="employees">7</value>
+      <value description="information">Factor&#237;a de ejemplo 3.1</value>
+      <value description="name">Factor&#237;a 3.1</value>
+      <value description="director_id">19</value>
+      <value description="address_id">12</value>
+      <value description="company_id">5</value>
+      <value description="location_id">12</value>
+    </row>
+    <row>
+      <value description="id">10</value>
+      <value description="contact_email">factory2@company3.com</value>
+      <value description="employees">21</value>
+      <value description="information">Factor&#237;a de ejemplo 3.2</value>
+      <value description="name">Factor&#237;a 3.2</value>
+      <value description="director_id">20</value>
+      <value description="address_id">13</value>
+      <value description="company_id">5</value>
+      <value description="location_id">13</value>
+    </row>
+    <row>
+      <value description="id">11</value>
+      <value description="contact_email">factory3@company3.com</value>
+      <value description="employees">43</value>
+      <value description="information">Factor&#237;a de ejemplo 3,3</value>
+      <value description="name">Factor&#237;a 3.3</value>
+      <value description="director_id">21</value>
+      <value description="address_id">14</value>
+      <value description="company_id">5</value>
+      <value description="location_id">14</value>
+    </row>
+  </table>
+  <table name="markets">
+    <column>id</column>
+    <column>color</column>
+    <column>name</column>
+    <row>
+      <value description="id">1</value>
+      <value description="color">00649a</value>
+      <value description="name">Arquitectura</value>
+    </row>
+    <row>
+      <value description="id">2</value>
+      <value description="color">298400</value>
+      <value description="name">Defensa</value>
+    </row>
+    <row>
+      <value description="id">3</value>
+      <value description="color">ff8c00</value>
+      <value description="name">Sanitario</value>
+    </row>
+    <row>
+      <value description="id">4</value>
+      <value description="color">ffda47</value>
+      <value description="name">A&#233;reo</value>
+    </row>
+    <row>
+      <value description="id">5</value>
+      <value description="color">ff47af</value>
+      <value description="name">Transporte</value>
+    </row>
+    <row>
+      <value description="id">6</value>
+      <value description="color">8a47ff</value>
+      <value description="name">Gesti&#243;n documental</value>
+    </row>
+    <row>
+      <value description="id">7</value>
+      <value description="color">7d7676</value>
+      <value description="name">No definido</value>
+    </row>
+  </table>
+  <table name="projects">
+    <column>id</column>
+    <column>actividad</column>
+    <column>audited</column>
+    <column>code</column>
+    <column>comentarios</column>
+    <column>delay</column>
+    <column>eficiencia</column>
+    <column>fiabilidad</column>
+    <column>fichaje_codigo</column>
+    <column>fichaje_total</column>
+    <column>finished</column>
+    <column>lineas_de_codigo</column>
+    <column>mantenibilidad</column>
+    <column>name</column>
+    <column>plan</column>
+    <column>portabilidad</column>
+    <column>puntos_funcion</column>
+    <column>repaired_incidences</column>
+    <column>size</column>
+    <column>total_incidences</column>
+    <column>usabilidad</column>
+    <column>mainFactory_id</column>
+    <column>market_id</column>
+    <row>
+      <value description="id">1</value>
+      <value description="actividad">95.4</value>
+      <value description="audited">false</value>
+      <value description="code">VTRB</value>
+      <value description="comentarios">1022</value>
+      <value description="delay">true</value>
+      <value description="eficiencia">89.9</value>
+      <value description="fiabilidad">78.1</value>
+      <value description="fichaje_codigo">1600.0</value>
+      <value description="fichaje_total">1500.0</value>
+      <value description="finished">false</value>
+      <value description="lineas_de_codigo">100457</value>
+      <value description="mantenibilidad">85.6</value>
+      <value description="name">Vitrubio</value>
+      <value description="plan">0932</value>
+      <value description="portabilidad">95.8</value>
+      <value description="puntos_funcion">50.6</value>
+      <value description="repaired_incidences">400</value>
+      <value description="size">23</value>
+      <value description="total_incidences">510</value>
+      <value description="usabilidad">87.9</value>
+      <value description="mainFactory_id">3</value>
+      <value description="market_id">1</value>
+    </row>
+    <row>
+      <value description="id">2</value>
+      <value description="actividad">78.8</value>
+      <value description="audited">true</value>
+      <value description="code">ALT</value>
+      <value description="comentarios">150512</value>
+      <value description="delay">false</value>
+      <value description="eficiencia">78.5</value>
+      <value description="fiabilidad">67.9</value>
+      <value description="fichaje_codigo">1400.0</value>
+      <value description="fichaje_total">4050.0</value>
+      <value description="finished">true</value>
+      <value description="lineas_de_codigo">1152230</value>
+      <value description="mantenibilidad">74.5</value>
+      <value description="name">Althea</value>
+      <value description="plan">0132</value>
+      <value description="portabilidad">96.7</value>
+      <value description="puntos_funcion">78.9</value>
+      <value description="repaired_incidences">300</value>
+      <value description="size">31</value>
+      <value description="total_incidences">450</value>
+      <value description="usabilidad">64.5</value>
+      <value description="mainFactory_id">5</value>
+      <value description="market_id">3</value>
+    </row>
+    <row>
+      <value description="id">3</value>
+      <value description="actividad">89.5</value>
+      <value description="audited">false</value>
+      <value description="code">ARS</value>
+      <value description="comentarios">1022445</value>
+      <value description="delay">false</value>
+      <value description="eficiencia">85.32</value>
+      <value description="fiabilidad">95.78</value>
+      <value description="fichaje_codigo">20000.0</value>
+      <value description="fichaje_total">30000.0</value>
+      <value description="finished">false</value>
+      <value description="lineas_de_codigo">14007875</value>
+      <value description="mantenibilidad">98.33</value>
+      <value description="name">Ares</value>
+      <value description="plan">0142</value>
+      <value description="portabilidad">89.4</value>
+      <value description="puntos_funcion">80.5</value>
+      <value description="repaired_incidences">100</value>
+      <value description="size">45</value>
+      <value description="total_incidences">780</value>
+      <value description="usabilidad">89.78</value>
+      <value description="mainFactory_id">7</value>
+      <value description="market_id">2</value>
+    </row>
+    <row>
+      <value description="id">4</value>
+      <value description="actividad">99.9</value>
+      <value description="audited">true</value>
+      <value description="code">ASCP</value>
+      <value description="comentarios">6654</value>
+      <value description="delay">false</value>
+      <value description="eficiencia">99.7</value>
+      <value description="fiabilidad">97.8</value>
+      <value description="fichaje_codigo">5000.0</value>
+      <value description="fichaje_total">16400.0</value>
+      <value description="finished">true</value>
+      <value description="lineas_de_codigo">4592744</value>
+      <value description="mantenibilidad">96.12</value>
+      <value description="name">Asclepios</value>
+      <value description="plan">0421</value>
+      <value description="portabilidad">83.45</value>
+      <value description="puntos_funcion">30.5</value>
+      <value description="repaired_incidences">0</value>
+      <value description="size">60</value>
+      <value description="total_incidences">300</value>
+      <value description="usabilidad">54.9</value>
+      <value description="mainFactory_id">9</value>
+      <value description="market_id">3</value>
+    </row>
+    <row>
+      <value description="id">5</value>
+      <value description="actividad">67.8</value>
+      <value description="audited">true</value>
+      <value description="code">EOL</value>
+      <value description="comentarios">55466</value>
+      <value description="delay">false</value>
+      <value description="eficiencia">81.23</value>
+      <value description="fiabilidad">81.45</value>
+      <value description="fichaje_codigo">1000.0</value>
+      <value description="fichaje_total">8790.0</value>
+      <value description="finished">false</value>
+      <value description="lineas_de_codigo">1214520</value>
+      <value description="mantenibilidad">85.6</value>
+      <value description="name">Eolo</value>
+      <value description="plan">0094</value>
+      <value description="portabilidad">74.1</value>
+      <value description="puntos_funcion">10.2</value>
+      <value description="repaired_incidences">150</value>
+      <value description="size">40</value>
+      <value description="total_incidences">200</value>
+      <value description="usabilidad">36.87</value>
+      <value description="mainFactory_id">7</value>
+      <value description="market_id">4</value>
+    </row>
+    <row>
+      <value description="id">6</value>
+      <value description="actividad">45.6</value>
+      <value description="audited">false</value>
+      <value description="code">VDLV</value>
+      <value description="comentarios">123354</value>
+      <value description="delay">true</value>
+      <value description="eficiencia">67.9</value>
+      <value description="fiabilidad">72.36</value>
+      <value description="fichaje_codigo">10000.0</value>
+      <value description="fichaje_total">7000.0</value>
+      <value description="finished">false</value>
+      <value description="lineas_de_codigo">422133</value>
+      <value description="mantenibilidad">68.4</value>
+      <value description="name">Vandelvira</value>
+      <value description="plan">0541</value>
+      <value description="portabilidad">86.2</value>
+      <value description="puntos_funcion">15.6</value>
+      <value description="repaired_incidences">140</value>
+      <value description="size">80</value>
+      <value description="total_incidences">150</value>
+      <value description="usabilidad">65.98</value>
+      <value description="mainFactory_id">5</value>
+      <value description="market_id">1</value>
+    </row>
+  </table>
+  <table name="subprojects">
+    <column>id</column>
+    <column>actividad</column>
+    <column>test_cobertura</column>
+    <column>comentarios</column>
+    <column>test_efectividad</column>
+    <column>eficiencia</column>
+    <column>errores_detectados</column>
+    <column>errores_resueltos</column>
+    <column>esfuerzo_mto_estimado</column>
+    <column>esfuerzo_mto_real</column>
+    <column>fiabilidad</column>
+    <column>fichaje_codigo</column>
+    <column>fichaje_total</column>
+    <column>func_implementadas</column>
+    <column>func_totales</column>
+    <column>lcd_modificadas</column>
+    <column>lineas_de_codigo</column>
+    <column>mantenibilidad</column>
+    <column>name</column>
+    <column>commits</column>
+    <column>portabilidad</column>
+    <column>puntos_funcion</column>
+    <column>testcases_exec</column>
+    <column>usabilidad</column>
+    <column>project_id</column>
+    <column>factory_id</column>
+    <row>
+      <value description="id">1</value>
+      <value description="actividad">78.8</value>
+      <value description="test_cobertura">89.9</value>
+      <value description="comentarios">1056</value>
+      <value description="test_efectividad">78.65</value>
+      <value description="eficiencia">79.8</value>
+      <value description="errores_detectados">14</value>
+      <value description="errores_resueltos">5</value>
+      <value description="esfuerzo_mto_estimado">130.0</value>
+      <value description="esfuerzo_mto_real">80.0</value>
+      <value description="fiabilidad">98.0</value>
+      <value description="fichaje_codigo">600.0</value>
+      <value description="fichaje_total">500.0</value>
+      <value description="func_implementadas">12</value>
+      <value description="func_totales">23</value>
+      <value description="lcd_modificadas">1000</value>
+      <value description="lineas_de_codigo">30000</value>
+      <value description="mantenibilidad">95.4</value>
+      <value description="name">Sub 1 Vitrubio</value>
+      <value description="commits">89</value>
+      <value description="portabilidad">89.4</value>
+      <value description="puntos_funcion">900.0</value>
+      <value description="testcases_exec">567</value>
+      <value description="usabilidad">87.34</value>
+      <value description="project_id">1</value>
+      <value description="factory_id">3</value>
+    </row>
+    <row>
+      <value description="id">2</value>
+      <value description="actividad">97.5</value>
+      <value description="test_cobertura">78.5</value>
+      <value description="comentarios">4565</value>
+      <value description="test_efectividad">87.5</value>
+      <value description="eficiencia">73.9</value>
+      <value description="errores_detectados">34</value>
+      <value description="errores_resueltos">3</value>
+      <value description="esfuerzo_mto_estimado">150.0</value>
+      <value description="esfuerzo_mto_real">210.0</value>
+      <value description="fiabilidad">75.5</value>
+      <value description="fichaje_codigo">400.0</value>
+      <value description="fichaje_total">500.0</value>
+      <value description="func_implementadas">8</value>
+      <value description="func_totales">14</value>
+      <value description="lcd_modificadas">250</value>
+      <value description="lineas_de_codigo">50000</value>
+      <value description="mantenibilidad">85.3</value>
+      <value description="name">Sub 2 Vitrubio</value>
+      <value description="commits">133</value>
+      <value description="portabilidad">23.4</value>
+      <value description="puntos_funcion">1908.0</value>
+      <value description="testcases_exec">754</value>
+      <value description="usabilidad">89.56</value>
+      <value description="project_id">1</value>
+      <value description="factory_id">4</value>
+    </row>
+    <row>
+      <value description="id">3</value>
+      <value description="actividad">67.56</value>
+      <value description="test_cobertura">45.76</value>
+      <value description="comentarios">5050</value>
+      <value description="test_efectividad">56.7</value>
+      <value description="eficiencia">98.6</value>
+      <value description="errores_detectados">23</value>
+      <value description="errores_resueltos">5</value>
+      <value description="esfuerzo_mto_estimado">137.4</value>
+      <value description="esfuerzo_mto_real">140.0</value>
+      <value description="fiabilidad">14.6</value>
+      <value description="fichaje_codigo">500.0</value>
+      <value description="fichaje_total">500.0</value>
+      <value description="func_implementadas">13</value>
+      <value description="func_totales">25</value>
+      <value description="lcd_modificadas">300</value>
+      <value description="lineas_de_codigo">20000</value>
+      <value description="mantenibilidad">96.4</value>
+      <value description="name">Sub 3 Vitrubio</value>
+      <value description="commits">65</value>
+      <value description="portabilidad">56.3</value>
+      <value description="puntos_funcion">789.0</value>
+      <value description="testcases_exec">756</value>
+      <value description="usabilidad">84.56</value>
+      <value description="project_id">1</value>
+      <value description="factory_id">8</value>
+    </row>
+    <row>
+      <value description="id">4</value>
+      <value description="actividad">89.78</value>
+      <value description="test_cobertura">34.67</value>
+      <value description="comentarios">1064</value>
+      <value description="test_efectividad">76.7</value>
+      <value description="eficiencia">83.3</value>
+      <value description="errores_detectados">64</value>
+      <value description="errores_resueltos">34</value>
+      <value description="esfuerzo_mto_estimado">320.0</value>
+      <value description="esfuerzo_mto_real">200.0</value>
+      <value description="fiabilidad">68.7</value>
+      <value description="fichaje_codigo">800.0</value>
+      <value description="fichaje_total">1000.0</value>
+      <value description="func_implementadas">17</value>
+      <value description="func_totales">20</value>
+      <value description="lcd_modificadas">8000</value>
+      <value description="lineas_de_codigo">100000</value>
+      <value description="mantenibilidad">75.3</value>
+      <value description="name">Sub 1 Althea</value>
+      <value description="commits">786</value>
+      <value description="portabilidad">45.5</value>
+      <value description="puntos_funcion">3980.0</value>
+      <value description="testcases_exec">787</value>
+      <value description="usabilidad">34.78</value>
+      <value description="project_id">2</value>
+      <value description="factory_id">5</value>
+    </row>
+    <row>
+      <value description="id">5</value>
+      <value description="actividad">78.89</value>
+      <value description="test_cobertura">90.04</value>
+      <value description="comentarios">506</value>
+      <value description="test_efectividad">98.8</value>
+      <value description="eficiencia">93.3</value>
+      <value description="errores_detectados">10</value>
+      <value description="errores_resueltos">7</value>
+      <value description="esfuerzo_mto_estimado">220.0</value>
+      <value description="esfuerzo_mto_real">200.0</value>
+      <value description="fiabilidad">84.6</value>
+      <value description="fichaje_codigo">1000.0</value>
+      <value description="fichaje_total">1000.0</value>
+      <value description="func_implementadas">5</value>
+      <value description="func_totales">8</value>
+      <value description="lcd_modificadas">4555</value>
+      <value description="lineas_de_codigo">250000</value>
+      <value description="mantenibilidad">65.1</value>
+      <value description="name">Sub 2 Althea</value>
+      <value description="commits">577</value>
+      <value description="portabilidad">87.5</value>
+      <value description="puntos_funcion">7882.5</value>
+      <value description="testcases_exec">7685</value>
+      <value description="usabilidad">84.8</value>
+      <value description="project_id">2</value>
+      <value description="factory_id">8</value>
+    </row>
+    <row>
+      <value description="id">6</value>
+      <value description="actividad">57.687</value>
+      <value description="test_cobertura">76.4</value>
+      <value description="comentarios">4560</value>
+      <value description="test_efectividad">86.7</value>
+      <value description="eficiencia">81.5</value>
+      <value description="errores_detectados">21</value>
+      <value description="errores_resueltos">18</value>
+      <value description="esfuerzo_mto_estimado">400.0</value>
+      <value description="esfuerzo_mto_real">350.0</value>
+      <value description="fiabilidad">84.6</value>
+      <value description="fichaje_codigo">700.0</value>
+      <value description="fichaje_total">1000.0</value>
+      <value description="func_implementadas">9</value>
+      <value description="func_totales">10</value>
+      <value description="lcd_modificadas">6555</value>
+      <value description="lineas_de_codigo">300000</value>
+      <value description="mantenibilidad">89.45</value>
+      <value description="name">Sub 3 Althea</value>
+      <value description="commits">325</value>
+      <value description="portabilidad">98.8</value>
+      <value description="puntos_funcion">8023.0</value>
+      <value description="testcases_exec">6788</value>
+      <value description="usabilidad">74.8</value>
+      <value description="project_id">2</value>
+      <value description="factory_id">6</value>
+    </row>
+    <row>
+      <value description="id">7</value>
+      <value description="actividad">78.9</value>
+      <value description="test_cobertura">74.6</value>
+      <value description="comentarios">1204</value>
+      <value description="test_efectividad">78.9</value>
+      <value description="eficiencia">98.3</value>
+      <value description="errores_detectados">18</value>
+      <value description="errores_resueltos">4</value>
+      <value description="esfuerzo_mto_estimado">320.0</value>
+      <value description="esfuerzo_mto_real">290.0</value>
+      <value description="fiabilidad">81.3</value>
+      <value description="fichaje_codigo">100.0</value>
+      <value description="fichaje_total">1000.0</value>
+      <value description="func_implementadas">9</value>
+      <value description="func_totales">12</value>
+      <value description="lcd_modificadas">700</value>
+      <value description="lineas_de_codigo">350000</value>
+      <value description="mantenibilidad">74.3</value>
+      <value description="name">Sub 4 Althea</value>
+      <value description="commits">745</value>
+      <value description="portabilidad">78.3</value>
+      <value description="puntos_funcion">7856.0</value>
+      <value description="testcases_exec">6756</value>
+      <value description="usabilidad">87.5</value>
+      <value description="project_id">2</value>
+      <value description="factory_id">7</value>
+    </row>
+    <row>
+      <value description="id">8</value>
+      <value description="actividad">98.3</value>
+      <value description="test_cobertura">89.6</value>
+      <value description="comentarios">2004</value>
+      <value description="test_efectividad">83.76</value>
+      <value description="eficiencia">79.36</value>
+      <value description="errores_detectados">15</value>
+      <value description="errores_resueltos">5</value>
+      <value description="esfuerzo_mto_estimado">330.5</value>
+      <value description="esfuerzo_mto_real">100.0</value>
+      <value description="fiabilidad">89.4</value>
+      <value description="fichaje_codigo">4000.0</value>
+      <value description="fichaje_total">5000.0</value>
+      <value description="func_implementadas">12</value>
+      <value description="func_totales">14</value>
+      <value description="lcd_modificadas">500</value>
+      <value description="lineas_de_codigo">250000</value>
+      <value description="mantenibilidad">92.2</value>
+      <value description="name">Sub 1 Ares</value>
+      <value description="commits">23</value>
+      <value description="portabilidad">98.1</value>
+      <value description="puntos_funcion">7509.0</value>
+      <value description="testcases_exec">8656</value>
+      <value description="usabilidad">83.8</value>
+      <value description="project_id">3</value>
+      <value description="factory_id">8</value>
+    </row>
+    <row>
+      <value description="id">9</value>
+      <value description="actividad">75.6</value>
+      <value description="test_cobertura">68.5</value>
+      <value description="comentarios">3522</value>
+      <value description="test_efectividad">93.4</value>
+      <value description="eficiencia">82.5</value>
+      <value description="errores_detectados">45</value>
+      <value description="errores_resueltos">34</value>
+      <value description="esfuerzo_mto_estimado">132.4</value>
+      <value description="esfuerzo_mto_real">200.0</value>
+      <value description="fiabilidad">74.2</value>
+      <value description="fichaje_codigo">5500.0</value>
+      <value description="fichaje_total">5000.0</value>
+      <value description="func_implementadas">13</value>
+      <value description="func_totales">15</value>
+      <value description="lcd_modificadas">6700</value>
+      <value description="lineas_de_codigo">400000</value>
+      <value description="mantenibilidad">84.3</value>
+      <value description="name">Sub 2 Ares</value>
+      <value description="commits">656</value>
+      <value description="portabilidad">91.3</value>
+      <value description="puntos_funcion">9786.0</value>
+      <value description="testcases_exec">8768</value>
+      <value description="usabilidad">97.34</value>
+      <value description="project_id">3</value>
+      <value description="factory_id">7</value>
+    </row>
+    <row>
+      <value description="id">10</value>
+      <value description="actividad">67.65</value>
+      <value description="test_cobertura">78.6</value>
+      <value description="comentarios">355</value>
+      <value description="test_efectividad">98.7</value>
+      <value description="eficiencia">62.3</value>
+      <value description="errores_detectados">30</value>
+      <value description="errores_resueltos">0</value>
+      <value description="esfuerzo_mto_estimado">42.3</value>
+      <value description="esfuerzo_mto_real">20.0</value>
+      <value description="fiabilidad">76.3</value>
+      <value description="fichaje_codigo">7000.0</value>
+      <value description="fichaje_total">5000.0</value>
+      <value description="func_implementadas">15</value>
+      <value description="func_totales">18</value>
+      <value description="lcd_modificadas">345</value>
+      <value description="lineas_de_codigo">300000</value>
+      <value description="mantenibilidad">72.23</value>
+      <value description="name">Sub 3 Ares</value>
+      <value description="commits">75</value>
+      <value description="portabilidad">92.7</value>
+      <value description="puntos_funcion">8366.0</value>
+      <value description="testcases_exec">345</value>
+      <value description="usabilidad">89.3</value>
+      <value description="project_id">3</value>
+      <value description="factory_id">9</value>
+    </row>
+    <row>
+      <value description="id">11</value>
+      <value description="actividad">98.4</value>
+      <value description="test_cobertura">54.2</value>
+      <value description="comentarios">6533</value>
+      <value description="test_efectividad">99.9</value>
+      <value description="eficiencia">98.3</value>
+      <value description="errores_detectados">23</value>
+      <value description="errores_resueltos">2</value>
+      <value description="esfuerzo_mto_estimado">50.4</value>
+      <value description="esfuerzo_mto_real">10.0</value>
+      <value description="fiabilidad">78.5</value>
+      <value description="fichaje_codigo">450.0</value>
+      <value description="fichaje_total">5000.0</value>
+      <value description="func_implementadas">23</value>
+      <value description="func_totales">34</value>
+      <value description="lcd_modificadas">5120</value>
+      <value description="lineas_de_codigo">120000</value>
+      <value description="mantenibilidad">74.6</value>
+      <value description="name">Sub 4 Ares</value>
+      <value description="commits">57</value>
+      <value description="portabilidad">45.5</value>
+      <value description="puntos_funcion">3098.0</value>
+      <value description="testcases_exec">567</value>
+      <value description="usabilidad">58.6</value>
+      <value description="project_id">3</value>
+      <value description="factory_id">10</value>
+    </row>
+    <row>
+      <value description="id">12</value>
+      <value description="actividad">45.65</value>
+      <value description="test_cobertura">56.77</value>
+      <value description="comentarios">3522</value>
+      <value description="test_efectividad">87.7</value>
+      <value description="eficiencia">61.7</value>
+      <value description="errores_detectados">14</value>
+      <value description="errores_resueltos">1</value>
+      <value description="esfuerzo_mto_estimado">1200.5</value>
+      <value description="esfuerzo_mto_real">200.0</value>
+      <value description="fiabilidad">82.23</value>
+      <value description="fichaje_codigo">5000.0</value>
+      <value description="fichaje_total">5000.0</value>
+      <value description="func_implementadas">7</value>
+      <value description="func_totales">8</value>
+      <value description="lcd_modificadas">3000</value>
+      <value description="lineas_de_codigo">220000</value>
+      <value description="mantenibilidad">89.14</value>
+      <value description="name">Sub 5 Ares</value>
+      <value description="commits">574</value>
+      <value description="portabilidad">65.8</value>
+      <value description="puntos_funcion">6088.0</value>
+      <value description="testcases_exec">656</value>
+      <value description="usabilidad">78.97</value>
+      <value description="project_id">3</value>
+      <value description="factory_id">9</value>
+    </row>
+    <row>
+      <value description="id">13</value>
+      <value description="actividad">65.6</value>
+      <value description="test_cobertura">67.45</value>
+      <value description="comentarios">6462</value>
+      <value description="test_efectividad">67.8</value>
+      <value description="eficiencia">68.3</value>
+      <value description="errores_detectados">11</value>
+      <value description="errores_resueltos">9</value>
+      <value description="esfuerzo_mto_estimado">1400.0</value>
+      <value description="esfuerzo_mto_real">150.0</value>
+      <value description="fiabilidad">67.6</value>
+      <value description="fichaje_codigo">4222.0</value>
+      <value description="fichaje_total">7000.0</value>
+      <value description="func_implementadas">30</value>
+      <value description="func_totales">34</value>
+      <value description="lcd_modificadas">5400</value>
+      <value description="lineas_de_codigo">2000000</value>
+      <value description="mantenibilidad">93.6</value>
+      <value description="name">Sub 1 Asclepios</value>
+      <value description="commits">56</value>
+      <value description="portabilidad">89.5</value>
+      <value description="puntos_funcion">60987.0</value>
+      <value description="testcases_exec">6567</value>
+      <value description="usabilidad">98.23</value>
+      <value description="project_id">4</value>
+      <value description="factory_id">10</value>
+    </row>
+    <row>
+      <value description="id">14</value>
+      <value description="actividad">68.6</value>
+      <value description="test_cobertura">86.76</value>
+      <value description="comentarios">3421</value>
+      <value description="test_efectividad">89.76</value>
+      <value description="eficiencia">84.45</value>
+      <value description="errores_detectados">32</value>
+      <value description="errores_resueltos">10</value>
+      <value description="esfuerzo_mto_estimado">440.0</value>
+      <value description="esfuerzo_mto_real">300.0</value>
+      <value description="fiabilidad">67.1</value>
+      <value description="fichaje_codigo">5000.0</value>
+      <value description="fichaje_total">7000.0</value>
+      <value description="func_implementadas">29</value>
+      <value description="func_totales">43</value>
+      <value description="lcd_modificadas">7000</value>
+      <value description="lineas_de_codigo">2500000</value>
+      <value description="mantenibilidad">98.3</value>
+      <value description="name">Sub 2 Asclepios</value>
+      <value description="commits">9767</value>
+      <value description="portabilidad">98.5</value>
+      <value description="puntos_funcion">70998.0</value>
+      <value description="testcases_exec">7658</value>
+      <value description="usabilidad">99.9</value>
+      <value description="project_id">4</value>
+      <value description="factory_id">11</value>
+    </row>
+    <row>
+      <value description="id">15</value>
+      <value description="actividad">89.8</value>
+      <value description="test_cobertura">96.45</value>
+      <value description="comentarios">457</value>
+      <value description="test_efectividad">98.76</value>
+      <value description="eficiencia">55.5</value>
+      <value description="errores_detectados">12</value>
+      <value description="errores_resueltos">6</value>
+      <value description="esfuerzo_mto_estimado">300.0</value>
+      <value description="esfuerzo_mto_real">320.0</value>
+      <value description="fiabilidad">37.3</value>
+      <value description="fichaje_codigo">1000.0</value>
+      <value description="fichaje_total">4000.0</value>
+      <value description="func_implementadas">10</value>
+      <value description="func_totales">13</value>
+      <value description="lcd_modificadas">700</value>
+      <value description="lineas_de_codigo">300000</value>
+      <value description="mantenibilidad">68.5</value>
+      <value description="name">Sub 1 Eolo</value>
+      <value description="commits">677</value>
+      <value description="portabilidad">91.6</value>
+      <value description="puntos_funcion">6044.0</value>
+      <value description="testcases_exec">987</value>
+      <value description="usabilidad">65.5</value>
+      <value description="project_id">5</value>
+      <value description="factory_id">9</value>
+    </row>
+    <row>
+      <value description="id">16</value>
+      <value description="actividad">87.9</value>
+      <value description="test_cobertura">45.7</value>
+      <value description="comentarios">3312</value>
+      <value description="test_efectividad">67.78</value>
+      <value description="eficiencia">56.9</value>
+      <value description="errores_detectados">8</value>
+      <value description="errores_resueltos">4</value>
+      <value description="esfuerzo_mto_estimado">240.0</value>
+      <value description="esfuerzo_mto_real">200.0</value>
+      <value description="fiabilidad">76.1</value>
+      <value description="fichaje_codigo">2400.0</value>
+      <value description="fichaje_total">4000.0</value>
+      <value description="func_implementadas">6</value>
+      <value description="func_totales">8</value>
+      <value description="lcd_modificadas">560</value>
+      <value description="lineas_de_codigo">750000</value>
+      <value description="mantenibilidad">89.3</value>
+      <value description="name">Sub 2 Eolo</value>
+      <value description="commits">865</value>
+      <value description="portabilidad">95.65</value>
+      <value description="puntos_funcion">15044.0</value>
+      <value description="testcases_exec">235</value>
+      <value description="usabilidad">98.5</value>
+      <value description="project_id">5</value>
+      <value description="factory_id">7</value>
+    </row>
+    <row>
+      <value description="id">17</value>
+      <value description="actividad">78.8</value>
+      <value description="test_cobertura">87.67</value>
+      <value description="comentarios">5633</value>
+      <value description="test_efectividad">87.7</value>
+      <value description="eficiencia">46.7</value>
+      <value description="errores_detectados">10</value>
+      <value description="errores_resueltos">7</value>
+      <value description="esfuerzo_mto_estimado">220.0</value>
+      <value description="esfuerzo_mto_real">100.0</value>
+      <value description="fiabilidad">54.6</value>
+      <value description="fichaje_codigo">400.0</value>
+      <value description="fichaje_total">1000.0</value>
+      <value description="func_implementadas">5</value>
+      <value description="func_totales">9</value>
+      <value description="lcd_modificadas">500</value>
+      <value description="lineas_de_codigo">50000</value>
+      <value description="mantenibilidad">87.5</value>
+      <value description="name">Sub 1 Vandelvira </value>
+      <value description="commits">76</value>
+      <value description="portabilidad">96.3</value>
+      <value description="puntos_funcion">1543.0</value>
+      <value description="testcases_exec">544</value>
+      <value description="usabilidad">89.7</value>
+      <value description="project_id">6</value>
+      <value description="factory_id">5</value>
+    </row>
+    <row>
+      <value description="id">18</value>
+      <value description="actividad">73.35</value>
+      <value description="test_cobertura">82.67</value>
+      <value description="comentarios">4872</value>
+      <value description="test_efectividad">87.87</value>
+      <value description="eficiencia">98.8</value>
+      <value description="errores_detectados">17</value>
+      <value description="errores_resueltos">4</value>
+      <value description="esfuerzo_mto_estimado">430.0</value>
+      <value description="esfuerzo_mto_real">250.0</value>
+      <value description="fiabilidad">65.3</value>
+      <value description="fichaje_codigo">600.0</value>
+      <value description="fichaje_total">1000.0</value>
+      <value description="func_implementadas">4</value>
+      <value description="func_totales">7</value>
+      <value description="lcd_modificadas">400</value>
+      <value description="lineas_de_codigo">30000</value>
+      <value description="mantenibilidad">94.4</value>
+      <value description="name">Sub 2 Vandelvira</value>
+      <value description="commits">345</value>
+      <value description="portabilidad">97.35</value>
+      <value description="puntos_funcion">967.0</value>
+      <value description="testcases_exec">765</value>
+      <value description="usabilidad">69.8</value>
+      <value description="project_id">6</value>
+      <value description="factory_id">6</value>
+    </row>
+    <row>
+      <value description="id">19</value>
+      <value description="actividad">72.6</value>
+      <value description="test_cobertura">80.432</value>
+      <value description="comentarios">3124</value>
+      <value description="test_efectividad">89.7</value>
+      <value description="eficiencia">78.8</value>
+      <value description="errores_detectados">18</value>
+      <value description="errores_resueltos">6</value>
+      <value description="esfuerzo_mto_estimado">231.0</value>
+      <value description="esfuerzo_mto_real">150.0</value>
+      <value description="fiabilidad">71.3</value>
+      <value description="fichaje_codigo">700.0</value>
+      <value description="fichaje_total">1000.0</value>
+      <value description="func_implementadas">4</value>
+      <value description="func_totales">8</value>
+      <value description="lcd_modificadas">350</value>
+      <value description="lineas_de_codigo">70000</value>
+      <value description="mantenibilidad">97.6</value>
+      <value description="name">Sub 3 Vandelvira</value>
+      <value description="commits">65</value>
+      <value description="portabilidad">67.5</value>
+      <value description="puntos_funcion">2343.0</value>
+      <value description="testcases_exec">765</value>
+      <value description="usabilidad">98.3</value>
+      <value description="project_id">6</value>
+      <value description="factory_id">7</value>
+    </row>
+    <row>
+      <value description="id">20</value>
+      <value description="actividad">98.5</value>
+      <value description="test_cobertura">54.6</value>
+      <value description="comentarios">5834</value>
+      <value description="test_efectividad">76.78</value>
+      <value description="eficiencia">98.8</value>
+      <value description="errores_detectados">21</value>
+      <value description="errores_resueltos">6</value>
+      <value description="esfuerzo_mto_estimado">123.0</value>
+      <value description="esfuerzo_mto_real">110.0</value>
+      <value description="fiabilidad">95.1</value>
+      <value description="fichaje_codigo">900.0</value>
+      <value description="fichaje_total">1000.0</value>
+      <value description="func_implementadas">10</value>
+      <value description="func_totales">12</value>
+      <value description="lcd_modificadas">890</value>
+      <value description="lineas_de_codigo">160000</value>
+      <value description="mantenibilidad">82.3</value>
+      <value description="name">Sub 4 Vandelvira</value>
+      <value description="commits">869</value>
+      <value description="portabilidad">9.8</value>
+      <value description="puntos_funcion">5644.0</value>
+      <value description="testcases_exec">867</value>
+      <value description="usabilidad">65.5</value>
+      <value description="project_id">6</value>
+      <value description="factory_id">3</value>
+    </row>
+    <row>
+      <value description="id">21</value>
+      <value description="actividad">35.5</value>
+      <value description="test_cobertura">87.7</value>
+      <value description="comentarios">345</value>
+      <value description="test_efectividad">73.5</value>
+      <value description="eficiencia">98.5</value>
+      <value description="errores_detectados">43</value>
+      <value description="errores_resueltos">34</value>
+      <value description="esfuerzo_mto_estimado">423.0</value>
+      <value description="esfuerzo_mto_real">340.0</value>
+      <value description="fiabilidad">75.01</value>
+      <value description="fichaje_codigo">450.0</value>
+      <value description="fichaje_total">1000.0</value>
+      <value description="func_implementadas">7</value>
+      <value description="func_totales">13</value>
+      <value description="lcd_modificadas">560</value>
+      <value description="lineas_de_codigo">25000</value>
+      <value description="mantenibilidad">98.2</value>
+      <value description="name">Sub 5 Vandelvira</value>
+      <value description="commits">98</value>
+      <value description="portabilidad">98.5</value>
+      <value description="puntos_funcion">667.0</value>
+      <value description="testcases_exec">656</value>
+      <value description="usabilidad">68.5</value>
+      <value description="project_id">6</value>
+      <value description="factory_id">4</value>
+    </row>
+    <row>
+      <value description="id">22</value>
+      <value description="actividad">76.6</value>
+      <value description="test_cobertura">93.2</value>
+      <value description="comentarios">3425</value>
+      <value description="test_efectividad">71.23</value>
+      <value description="eficiencia">88.8</value>
+      <value description="errores_detectados">5</value>
+      <value description="errores_resueltos">2</value>
+      <value description="esfuerzo_mto_estimado">234.0</value>
+      <value description="esfuerzo_mto_real">210.0</value>
+      <value description="fiabilidad">42.0</value>
+      <value description="fichaje_codigo">640.0</value>
+      <value description="fichaje_total">1000.0</value>
+      <value description="func_implementadas">5</value>
+      <value description="func_totales">15</value>
+      <value description="lcd_modificadas">750</value>
+      <value description="lineas_de_codigo">85000</value>
+      <value description="mantenibilidad">78.5</value>
+      <value description="name">Sub 6 Vandelvira</value>
+      <value description="commits">767</value>
+      <value description="portabilidad">51.2</value>
+      <value description="puntos_funcion">1212.0</value>
+      <value description="testcases_exec">865</value>
+      <value description="usabilidad">55.5</value>
+      <value description="project_id">6</value>
+      <value description="factory_id">3</value>
+    </row>
+  </table>
+</dataset>

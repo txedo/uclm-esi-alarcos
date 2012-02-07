@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile model="model.gl.knowledge.GLAntennaBall" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Project">
+    <name>ProjectDefault</name>
+    <description>Este es un perfil predefinido para representar los proyectos software. El número sobre la esfuera verde representa el número de incidencias resueltas; el número sobre la esfuera roja indica el número de incidencias sin resolver. En cuanto a la esfuera inferior: su radio indica el tamaño del proyecto; el color indica el tipo de mercado; y el icono indica si el proyecto ha superado la auditoría.</description>
+    <mappings>
+        <mapping>
+            <entityAttr name="id" type="int"/>
+            <modelAttr name="id" type="int"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="name" type="string"/>
+            <modelAttr name="label" type="string"/>
+        </mapping>
+        <mapping>
+			<entityAttr name="nonRepairedIncidences" type="int"/>
+            <modelAttr name="leftChildBallValue" type="string"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="repairedIncidences" type="int"/>
+            <modelAttr name="rightChildBallValue" type="string"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="audited" type="boolean"/>
+            <modelAttr name="progressionMark" type="boolean"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="size" type="int"/>
+            <modelAttr name="parentBallRadius" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="market_color" type="hexcolor"/>
+            <modelAttr name="color" type="color"/>
+        </mapping>
+    </mappings>
+    <constants>
+        <constant name="scale" type="float">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:float">1.0</value>
+        </constant>
+    </constants>
+    <caption>
+        <entry color="00649a" label="Arquitectura"/>
+		<entry color="298400" label="Defensa"/>
+		<entry color="ff8c00" label="Sanitario"/>
+		<entry color="ffda47" label="Aéreo"/>
+		<entry color="ff47af" label="Transporte"/>
+		<entry color="8a47ff" label="Gestión documental"/>
+		<entry color="7d7676" label="No definido"/>
+    </caption>
+</profile>

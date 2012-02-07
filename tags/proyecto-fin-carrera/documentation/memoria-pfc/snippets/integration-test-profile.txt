@@ -1,0 +1,108 @@
+<!-- == Testing Profile === -->
+<!-- Use "mvn clean verify -Pintegration-test" when you want to run this 
+  profile -->
+<!-- ====================== -->
+<profile>
+  <id>integration-test</id>
+  <activation>
+	<property>
+	  <name>!maven.test.skip</name>
+	</property>
+  </activation>
+  <build>
+	<plugins>
+	  <plugin>
+		<groupId>org.codehaus.cargo</groupId>
+		<artifactId>cargo-maven2-plugin</artifactId>
+		<version>0.3</version>
+		<configuration>
+		  <wait>${cargo.wait}</wait>
+		  <container>
+			<containerId>${cargo.container}</containerId>
+			<zipUrlInstaller>
+			  <url>${cargo.container.url}</url>
+			  <installDir>${installDir}</installDir>
+			</zipUrlInstaller>
+		  </container>
+		  <configuration>
+			<home>${project.build.directory}/${cargo.container}/container</home>
+			<properties>
+			  <cargo.hostname>${cargo.host}</cargo.hostname>
+			  <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
+			  <cargo.context>${project.build.finalName}</cargo.context>
+			</properties>
+		  </configuration>
+		</configuration>
+		<executions>
+		  <execution>
+			<id>start-container</id>
+			<phase>pre-integration-test</phase>
+			<goals>
+			  <goal>start</goal>
+			</goals>
+		  </execution>
+		  <execution>
+			<id>stop-container</id>
+			<phase>post-integration-test</phase>
+			<goals>
+			  <goal>stop</goal>
+			</goals>
+		  </execution>
+		</executions>
+	  </plugin>
+	  <plugin>
+		<artifactId>maven-antrun-plugin</artifactId>
+		<version>1.1</version>
+		<configuration>
+		  <tasks>
+			<taskdef resource="webtest_base_relaxed.taskdef">
+			  <classpath refid="maven.test.classpath" />
+			</taskdef>
+			<!-- Delete old results file if it exists -->
+			<delete dir="target/webtest/webtest-results" />
+			<mkdir dir="target/webtest/webtest-results" />
+			<!-- This is so the default will be used if no test case is specified -->
+			<property name="test" value="run-all-tests" />
+			<echo level="info">Testing '${project.build.finalName}' with
+			  locale '${user.language}'</echo>
+			<ant antfile="src/test/resources/web-tests.xml" target="${test}">
+			  <property name="user.language" value="${user.language}" />
+			  <property name="webapp.name" value="${project.build.finalName}" />
+			  <property name="host" value="${cargo.host}" />
+			  <property name="port" value="${cargo.port}" />
+			  <property name="haltonfailure" value="false" />
+			  <property name="haltonerror" value="false" />
+			  <property name="loglevel" value="error" />
+			  <property name="summary" value="true" />
+			  <property name="saveresponse" value="true" />
+			  <property name="resultpath" value="target/webtest/webtest-results" />
+			</ant>
+		  </tasks>
+		</configuration>
+		<executions>
+		  <execution>
+			<phase>integration-test</phase>
+			<goals>
+			  <goal>run</goal>
+			</goals>
+		  </execution>
+		</executions>
+		<dependencies>
+		  <dependency>
+			<groupId>com.canoo.webtest</groupId>
+			<artifactId>webtest</artifactId>
+			<version>${webtest.version}</version>
+			<!-- groovy-all does not have a pom in central repo exclude groovy  -->
+			<!-- to prevent trying to fetch pom -->
+			<exclusions>
+			  <exclusion>
+				<groupId>groovy</groupId>
+				<artifactId>groovy-all</artifactId>
+			  </exclusion>
+			</exclusions>
+		  </dependency>
+		</dependencies>
+	  </plugin>
+	</plugins>
+  </build>
+</profile>

@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <table name="roles">
+        <column>id</column>
+        <column>name</column>
+        <column>description</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">ROLE_ADMIN</value>
+            <value description="description">Administrator</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">ROLE_MANAGER</value>
+            <value description="description">Project manager</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">ROLE_USER</value>
+            <value description="description">Traditional user</value>
+        </row>
+    </table>
+    <table name="groups">
+        <column>id</column>
+        <column>name</column>
+        <column>description</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">Administrators</value>
+            <value description="description">Administrator group</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">Project Managers</value>
+            <value description="description">Project managers staff group</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">Users</value>
+            <value description="description">Traditional users group</value>
+        </row>
+    </table>
+    <table name="users">
+        <column>id</column>
+        <column>username</column>
+        <column>password</column>
+        <column>enabled</column>
+        <column>account_expired</column>
+        <column>account_locked</column>
+        <column>credentials_expired</column>
+        <row>
+            <value description="id">1</value>
+            <value description="username">admin</value>
+            <value description="password">21232f297a57a5a743894a0e4a801fc3</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="username">manager</value>
+            <value description="password">1d0258c2440a8d19e716292b231e3190</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="username">user</value>
+            <value description="password">ee11cbb19052e40b07aac0ca060c23ee</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">4</value>
+            <value description="username">disabled</value>
+            <value description="password">075ae3d2fc31640504f814f60e5ef713</value>
+            <value description="enabled">0</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">5</value>
+            <value description="username">expired</value>
+            <value description="password">c4bfb2a0bab0e91bc7dcfbe3bbec246e</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">1</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">6</value>
+            <value description="username">locked</value>
+            <value description="password">4cef2f30ac7d33419d00c1d93a090095</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">true</value>
+            <value description="credentials_expired">0</value>
+        </row>
+        <row>
+            <value description="id">7</value>
+            <value description="username">cexpired</value>
+            <value description="password">9e9198d2bc527fbb46d417f02ecd6439</value>
+            <value description="enabled">1</value>
+            <value description="account_expired">0</value>
+            <value description="account_locked">0</value>
+            <value description="credentials_expired">1</value>
+        </row>
+    </table>
+    <table name="groups_roles">
+        <column>group_id</column>
+        <column>role_id</column>
+        <row>
+            <value description="group_id">1</value>
+            <value description="role_id">1</value>
+        </row>
+        <row>
+            <value description="group_id">1</value>
+            <value description="role_id">2</value>
+        </row>
+        <row>
+            <value description="group_id">1</value>
+            <value description="role_id">3</value>
+        </row>
+        <row>
+            <value description="group_id">2</value>
+            <value description="role_id">2</value>
+        </row>
+        <row>
+            <value description="group_id">2</value>
+            <value description="role_id">3</value>
+        </row>
+        <row>
+            <value description="group_id">3</value>
+            <value description="role_id">3</value>
+        </row>
+    </table>
+    <table name="users_groups">
+        <column>user_id</column>
+        <column>group_id</column>
+        <row>
+            <value description="user_id">1</value>
+            <value description="group_id">1</value>
+        </row>
+        <row>
+            <value description="user_id">2</value>
+            <value description="group_id">2</value>
+        </row>
+        <row>
+            <value description="user_id">3</value>
+            <value description="group_id">3</value>
+        </row>
+    </table>
+    
+    <table name="directors">
+        <column>id</column>
+        <column>name</column>
+        <column>last_name</column>
+        <column>image_path</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">test director name 1</value>
+            <value description="last_name">test director last name 1</value>
+            <value description="image_path">images/anonymous.gif</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">test director name 2</value>
+            <value description="last_name">test director last name 2</value>
+            <value description="image_path">images/anonymous.gif</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">test director name 3</value>
+            <value description="last_name">test director last name 3</value>
+            <value description="image_path">images/anonymous.gif</value>
+        </row>
+        <row>
+            <value description="id">4</value>
+            <value description="name">test director name 4</value>
+            <value description="last_name">test director last name 4</value>
+            <value description="image_path">images/anonymous.gif</value>
+        </row>
+        <row>
+            <value description="id">5</value>
+            <value description="name">test director name 5</value>
+            <value description="last_name">test director last name 5</value>
+            <value description="image_path">images/anonymous.gif</value>
+        </row>
+    </table>
+    <table name="companies">
+        <column>id</column>
+        <column>name</column>
+        <column>information</column>
+        <column>director_id</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">test company name 1</value>
+            <value description="information">test company information 1</value>
+            <value description="director_id">1</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">test company name 2</value>
+            <value description="information">test company information 2</value>
+            <value description="director_id">4</value>
+        </row>
+    </table>
+    <table name="addresses">
+        <column>id</column>
+        <column>address</column>
+        <column>city</column>
+        <column>province</column>
+        <column>country</column>
+        <column>postal_code</column>
+        <row>
+            <value description="id">1</value>
+            <value description="address">factory address 1</value>
+            <value description="city">factory city 1</value>
+            <value description="province">factory province 1</value>
+            <value description="country">factory country 1</value>
+            <value description="postal_code">factory postal code 1</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="address">factory address 2</value>
+            <value description="city">factory city 2</value>
+            <value description="province">factory province 2</value>
+            <value description="country">factory country 2</value>
+            <value description="postal_code">factory postal code 2</value>
+        </row>
+		<row>
+            <value description="id">3</value>
+            <value description="address">factory address 3</value>
+            <value description="city">factory city 3</value>
+            <value description="province">factory province 3</value>
+            <value description="country">factory country 3</value>
+            <value description="postal_code">factory postal code 3</value>
+        </row>
+    </table>
+    <table name="locations">
+        <column>id</column>
+        <column>latitude</column>
+        <column>longitude</column>
+        <row>
+            <value description="id">1</value>
+            <value description="latitude">38.9931718028834</value>
+            <value description="longitude">-3.92495155334473</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="latitude">40.4503434970018</value>
+            <value description="longitude">-3.69878768920898</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="latitude">38.9583409248377</value>
+            <value description="longitude">-3.88306617736816</value>
+        </row>
+    </table>
+    <table name="factories">
+        <column>id</column>
+        <column>name</column>
+        <column>information</column>
+        <column>contact_email</column>
+        <column>employees</column>
+        <column>company_id</column>
+        <column>address_id</column>
+        <column>director_id</column>
+        <column>location_id</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">test factory name 1</value>
+            <value description="information">test factory information 1</value>
+            <value description="contact_email">factory1@email.es</value>
+            <value description="employees">10</value>
+            <value description="company_id">1</value>
+            <value description="address_id">1</value>
+            <value description="director_id">2</value>
+            <value description="location_id">1</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">test factory name 2</value>
+            <value description="information">test factory information 2</value>
+            <value description="contact_email">factory2@email.es</value>
+            <value description="employees">20</value>
+            <value description="company_id">1</value>
+            <value description="address_id">2</value>
+            <value description="director_id">3</value>
+            <value description="location_id">2</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">test factory name 3</value>
+            <value description="information">without projects</value>
+            <value description="contact_email">factory3@email.es</value>
+            <value description="employees">30</value>
+            <value description="company_id">2</value>
+            <value description="address_id">3</value>
+            <value description="director_id">5</value>
+            <value description="location_id">3</value>
+        </row>
+    </table>
+    <table name="markets">
+        <column>id</column>
+        <column>name</column>
+        <column>color</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">Arquitectura</value>
+            <value description="color">00649a</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">Defensa</value>
+            <value description="color">298400</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">Sanitario</value>
+            <value description="color">ff8c00</value>
+        </row>
+    </table>
+    <table name="projects">
+        <column>id</column>
+        <column>name</column>
+        <column>code</column>
+        <column>plan</column>
+        <column>mainFactory_id</column>
+        <column>market_id</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">desglosa</value>
+            <value description="code">dgs</value>
+            <value description="plan">1112</value>
+            <value description="mainFactory_id">1</value>
+            <value description="market_id">2</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">where to publish</value>
+            <value description="code">w2p</value>
+            <value description="plan">1112</value>
+            <value description="mainFactory_id">2</value>
+            <value description="market_id">1</value>
+        </row>
+    </table>
+    <table name="subprojects">
+        <column>id</column>
+        <column>name</column>
+        <column>project_id</column>
+        <column>factory_id</column>
+        <row>
+            <value description="id">1</value>
+            <value description="name">dgs-graphics-engine</value>
+            <value description="project_id">1</value>
+            <value description="factory_id">1</value>
+        </row>
+        <row>
+            <value description="id">2</value>
+            <value description="name">dgs-webapp</value>
+            <value description="project_id">1</value>
+            <value description="factory_id">2</value>
+        </row>
+        <row>
+            <value description="id">3</value>
+            <value description="name">dgs-final</value>
+            <value description="project_id">1</value>
+            <value description="factory_id">1</value>
+        </row>
+        <row>
+            <value description="id">4</value>
+            <value description="name">w2p-webapp</value>
+            <value description="project_id">2</value>
+            <value description="factory_id">2</value>
+        </row>
+        <row>
+            <value description="id">5</value>
+            <value description="name">w2p-environment</value>
+            <value description="project_id">2</value>
+            <value description="factory_id">1</value>
+        </row>
+    </table>
+</dataset>

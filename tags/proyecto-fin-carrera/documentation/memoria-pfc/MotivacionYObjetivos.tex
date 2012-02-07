@@ -1,0 +1,103 @@
+\chapter{Motivación y Objetivos del Proyecto}
+\label{ch:motivacionyobjetivos}
+
+% Anteproyecto más algún detalle
+
+% Concretar y exponer el problema a resolver describiendo el entorno de trabajo, la situación y detalladamente qué se pretende obtener. Limitaciones y condicionantes a considerar para la resolución del problema (lenguaje de construcción, equipo físico, equipo lógico de base o de apoyo, etc.).
+
+A medida que la industria del software se ha visto afectada por la globalización, las empresas han tenido que modificar sus metodologías y procesos de gestión de productos software para adaptarse a las nuevas tendencias. Inicialmente, estas metodologías estaban adecuadas para gestionar proyectos que se desarrollaban en una única ubicación, pero actualmente estos trabajos se realizan de forma distribuida, en la que los equipos de trabajo no se encuentran co-ubicados. Esta descentralización complica la gestión del software y puede afectar negativamente en aspectos de calidad y productividad.
+
+Bajo este escenario surge el proyecto ORIGIN (ORganizaciones Inteligentes Globales INnovadoras) \cite{homepage-origin}, dentro del cual se enmarca este PFC, cuyo objetivo se centra en aumentar la productividad de las actividades de desarrollo de software en escenarios globales y mejorar la calidad de los productos desarrollados. De esta forma se trata de incrementar el nivel competitivo a nivel internacional de las empresas compuestas por factorías de software.
+
+Para conseguir este objetivo se desarrollará un conjunto de herramientas conceptuales y metodológicas, así como sistemas software que permitan optimizar la fabricación de software en este tipo de escenarios, paliando problemas de comunicación y gestión de conocimiento. Por lo tanto, las tecnologías desarrolladas facilitarán la utilización del conocimiento organizacional en las actividades de desarrollo de software para dar soporte a la toma de decisiones en las actividades de la organización e incrementar su competitividad. Entre ellas destacan el diseño y construcción de métodos de pruebas distribuidos, \textbf{herramientas para visualizar la calidad de los procesos y productos software y tecnologías para mitigar el efecto de la distribución de recursos en el proceso de desarrollo y en la gestión del conocimiento} \cite{indracompany-origin}.
+
+\clearpage
+
+
+\section{Motivación}
+\label{sec:motivacion}
+
+Cuando se desea desarrollar un software de forma globalizada, el personal a cargo de la gestión del mismo se enfrenta a ciertos problemas que condicionan su ciclo de vida. Cuestiones como la determinación de las factorías en la que se puede desarrollar o problemas en el desarrollo de un determinado producto (el cual se puede estar ocasionando en una determinada factoría), entre otros, son de vital importancia en este contexto, ya que afectan directamente a la productividad de las actividades de desarrollo y la calidad del software desarrollado. Sin embargo, estas tareas no son triviales ya que requieren habilidades de gestión organizacional, así como consciencia de la propia estructura organizacional y del conocimiento manejado, cuya complejidad aumenta si participan varias empresas estructuradas en base a factorías. Por tanto, es necesario que el personal a cargo de este tipo de actividades disponga de la información apropiada en el momento que lo requiera. Pero disponer de la información precisa no es suficiente si no se proporciona de un modo adecuado, ya que la gran cantidad de datos que se puede llegar a manejar puede ser muy extensa.
+
+Las herramientas de visualización son sistemas que permiten el análisis de datos complejos por medio de la exploración visual. Se utilizan en multitud de áreas para realizar distintas simulaciones y representaciones, como en medicina y aeronáutica. Estas áreas tienen en común la existencia de modelos, objetos tangibles, reglas o propiedades medibles que facilitan su estudio y posterior representación visual. Por el contrario, en la ingeniería del software se presenta el problema de la intangibilidad del código, entre otros, y la ausencia de alguna entidad real que se le asemeje y que permita compararlo para realizar mediciones o establecer un patrón para su representación gráfica.
+
+La motivación de este PFC viene dada por la necesidad de desarrollo de una herramienta, que se encuentra enmarcada dentro del proyecto ORIGIN, para la gestión organizacional en el paradigma de desarrollo global y para el seguimiento de los proyectos globalizados. Para ello, una característica esencial consiste en la posibilidad de visualizar distintas medidas e indicadores de calidad y productividad utilizados en este contexto.
+
+\clearpage
+
+
+\section{Objetivos}
+\label{sec:objetivos}
+
+A continuación, y bajo el subtítulo de ``objetivo principal'', se describirá la meta final que se persigue en la elaboración de este PFC, que consiste en obtener un producto software. Un producto software no se constituye únicamente de código fuente ejecutable, sino que también se compone de la documentación, diagramas y modelos -entre otros- que se han generado en cada una de las fases que conforman su ciclo de vida. Ello acarrea la adquisición de una serie de competencias y la compleción de un conjunto de tareas que serán expuestas bajo el título de ``objetivos parciales''.
+
+
+\subsection{Objetivo principal}
+\label{sec:objetivo-principal}
+
+El objetivo principal del PFC consiste en:
+
+\vspace{5mm}
+\noindent\fbox{\vbox{\hsize=.984\textwidth \noindent Elaborar una herramienta que facilite las tareas de gestión organizacional en el contexto del \textbf{Desarrollo Global de Software} y de seguimiento de los proyectos globalizados mediante diversas técnicas de visualización.}}
+\vspace{5mm}
+
+Para cumplir este objetivo se dará soporte a los profesionales de este sector permitiéndoles obtener información relevante en función de las actividades que deseen desempeñar y se ofrecerán medios para representar dicha información gráficamente empleando distintas técnicas de visualización. Entre estas técnicas destacan la geolocalización de factorías software, que puede ser de vital importancia cuando se desea alargar la jornada laboral, y la visualización de medidas e indicadores de calidad y productividad empleados en escenarios globales. De este modo, se proveerá un conjunto de medios para asegurar la calidad del software desarrollado, aumentar la productividad de sus actividades, ofrecer soporte en la toma de decisiones de las mismas, y detectar distintos riesgos y anomalías que pueden surgir en un determinado proyecto o factoría, mitigando, así, el efecto de la distribución de recursos en el proceso de desarrollo.
+
+Las medidas e indicadores de calidad y productividad pueden representar diversas características relativas a los distintos elementos que intervienen en este paradigma, tales como la productividad de las factorías de software, las incidencias que han surgido a lo largo del ciclo de vida de un producto o la portabilidad de un determinada funcionalidad de un proyecto, por ejemplo. De este modo, se facilitarán las tareas de gestión y análisis de la calidad del software dando soporte a la toma de decisiones en las actividades de la organización y haciendo posible detectar o predecir anomalías o incidencias con un golpe de vista.
+
+Para abordar el problema, será necesario realizar un estudio previo que permita modelar una abstracción de las entidades que participan en el desarrollo global de software. En la figura \ref{fig:hierarchy} se muestra un esquema de la estructura organizacional que puede darse en este contexto. Así pues, será posible establecer distintos niveles de abstracción que permitan obtener información cada vez más detallada siguiendo un planteamiento \textit{top-down}. A modo de ejemplo, se consideran los siguientes niveles:
+\begin{itemize}
+	\item \textbf{Nivel de compañía}. El DGS puede implicar la colaboración entre varias organizaciones y cada organización puede estar compuesta por una o más factorías de software. Este nivel es muy importante ya que si se representa la estructura organizacional de un escenario global en una pirámide, se corresponde con la cima de la misma. Desde aquí será posible visualizar, por ejemplo, información relativa a las factoría pertenecientes a una compañía o a los proyectos en los que participa.
+	\item \textbf{Nivel de factoría}. Una factoría puede estar desarrollando varios proyectos, o parte de ellos, de forma simultánea. Por tanto, en este nivel se podrá acceder a la información relativa a una factoría determinada o a un conjunto de factorías. Características como el mercado de especialización de una factoría, dónde se encuentra ubicado el centro, la productividad del mismo, o el número de empleados del que dispone, pueden ser de vital importancia cuando se trata de seleccionar dónde se desarrollará un software determinado.
+	\item \textbf{Nivel de proyecto}. Un proyecto puede estar desarrollándose en múltiples factorías pertenecientes a una misma organización o a distintas organizaciones. Desde este nivel se podrá visualizar la información relativa a los proyectos software para realizar un seguimiento del estado y evolución del mismo. Esta característica permitirá detectar, entre otros, problemas en su desarrollo que pueden estar ocasionados en una determinada factoría, proyectos en los que surge un alto grado de incidencias y baja resolución de las mismas, retrasos en los plazos de entrega, diferentes características de calidad del código fuente, etcétera.
+\end{itemize}
+
+\imagenBorde{Cap2//hierarchy}{0.5}{Esquema de la estructura organizacional de las entidades que intervienen en el desarrollo global de software}{fig:hierarchy}
+
+Para permitir que los distintos usuarios del sistema puedan compartir y manejar la información globalizada, la herramienta se diseñará como una \textbf{aplicación web}, que deberá ser accesible por medio de un navegador web convencional. Además, a fin de desarrollar un sistema extensible y que satisfaga los requisitos de visualización más exigentes, se desarrollará un \textbf{motor gráfico} basado en alguna librería de gráficos 3D, que será integrado posteriormente en la aplicación web. El motor gráfico implementará un conjunto de \textbf{metáforas de visualización} sobre las cuales se representarán visualmente la información que se considere relevante. Al tratarse de un entorno en tres dimensiones sobre el que se podrá representar una gran cantidad de información, debe permitir que el usuario navegue a través de él sin perder el sentido de la orientación.
+
+Es importante destacar que este PFC se centra en dar soporte a tareas de gestión, visualización y personalización de la visualización. Por lo tanto, no proporcionará medios para calcular los valores de los datos que maneja, tales como las medidas e indicadores de calidad del software, que deberán ser aportados por un agente externo. Para ello, se facilitará una interfaz gráfica a modo de formulario en la que los usuarios podrán aportar dichos datos.
+
+Para conseguir este objetivo se deben llevar a cabo los objetivos parciales que se abordan en las siguiente subsección.
+
+
+\subsection{Objetivos parciales}
+
+La consecución del objetivo principal acarrea la adquisición y compleción de las siguientes competencias y tareas:
+\begin{itemize}
+	\item Modelar una abstracción del mundo real relativa al contexto del DGS, para lograr un diseño conceptual que abstraiga la información relevante. Acto seguido será posible obtener sus correspondientes diseños lógico y físico.
+	
+	\item Analizar técnicas de visualización para satisfacer los requisitos del sistema.
+	
+	\item Seleccionar la información más relevante utilizada en el contexto empresarial bajo el paradigma del DGS para su posterior representación visual.
+	
+	\item Estudiar la forma de visualizar la información anteriormente seleccionada, entre lo que destaca la definición de metáforas.
+	
+	\item Diseñar un método que permita asociar las dimensiones de los elementos de las metáforas y la información a visualizar.
+	
+	\item Diseñar el modelo de datos y crear una base de datos que permita la gestión de la lógica de negocio utilizada por la herramienta.
+	
+	\item Investigar sobre librerías para la generación de gráficos 3D y técnicas de visualización de datos empleando gráficos 3D.
+	
+	\item Definir una arquitectura estable y extensible de un motor gráfico que permita la representación de modelos para escenificar metáforas de visualización, empleando buenas prácticas de programación así como patrones de diseño.
+	
+	\item Desarrollar un \textbf{motor gráfico} para la visualización de datos empleando modelos en 3D.
+	
+	\item Analizar tecnologías y \textit{frameworks} para el desarrollo de aplicaciones Web y tecnologías para la generación de gráficos y modelos de visualización en la Web.
+	
+	\item Definir una arquitectura estable y extensible de una aplicación web, utilizando patrones de diseño.
+	
+	\item Desarrollar una \textbf{aplicación web} que permita realizar la gestión de la lógica de negocio, así como la ejecución de las distintas tareas de visualización y generación personalizada de gráficos en tres dimensiones. Para ello será necesario integrar el motor gráfico desarrollado en la aplicación web.
+	
+	\item Desarrollar las \textbf{pruebas funcionales y unitarias} del software.
+	
+	\item Elaborar la documentación técnica asociada al proyecto.
+\end{itemize}
+
+
+
+\subsection{Limitaciones}
+
+Dada la naturaleza de este PFC y su encuadre dentro del proyecto ORIGIN, las empresas colaboradoras en este proyecto imponen como requisito que el lenguaje de programación sea Java. Por esta razón, para alojar la aplicación web será necesario disponer de un servidor web que implemente la especificación JSP (Java Server Pages) de Oracle. Además, para mantener el estado de la lógica de negocio y hacerlo persistente es necesario un SGDB (Sistema Gestor de Bases de Datos) que cumpla el estándar SQL (Structured Query Language). Ambos servicios podrán estar instalados y ejecutados en la misma máquina o en máquinas independientes. Cualquiera que sea la solución, es necesario que la máquina que los ejecute disponga de conexión a Internet para que los usuarios puedan acceder a la aplicación por medio de un navegador web convencional.
+
+Por último, destacar que el usuario deberá disponer de un entorno de ejecución Java (JRE, en su acrónimo inglés Java Runtime Environment) en su sistema operativo para poder ejecutar el motor generador de gráficos 3D.

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC 
+	"-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+	
+<beans>    
+    <!-- Struts2 interceptors instantiated by Spring -->
+    <bean id="redirectMessageInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.RedirectMessageInterceptor"/>
+    
+    <bean id="adminInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_ADMIN"/>
+    </bean>
+    
+    <bean id="managerInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_MANAGER"/>
+    </bean>
+    
+    <bean id="userInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_USER"/>
+    </bean>
+    
+    <bean id="adminManagerInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_ADMIN,ROLE_MANAGER"/>
+    </bean>
+    
+    <bean id="allUsersInterceptor" class="es.uclm.inf_cr.alarcos.desglosa_web.interceptor.UserRoleAuthorizationInterceptor">
+        <property name="authorizedRoles" value="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER"/>
+    </bean>
+    
+</beans>

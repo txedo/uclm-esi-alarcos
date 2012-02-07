@@ -1,0 +1,114 @@
+En esta iteración (Tabla \ref{table:ficha-iteracion-4}) se aborda:
+\begin{itemize}
+	\item Análisis y diseño para la configuración de escenas 3D.
+	\item Diseño de una arquitectura extensible de metáforas de visualización.
+	\item Implementación de la configuración y pintado de escenas.
+	\item Pruebas y verificación del correcto funcionamiento de la cámara.
+\end{itemize}
+
+
+
+
+\subsubsection{Disciplina de análisis}
+\label{sec:iteracion-4-analisis}
+
+La configuración de escenas plantea una problemática referente al posicionamiento de los elementos de las metáforas de visualización en el entorno 3D. En esta disciplina se trabaja en un algoritmo de posicionamiento que calcule los emplazamientos de los elementos de la escena para que no se solapen unos con otros.
+
+El emplazamiento de los elementos de la escena se realizará en tres niveles (Fig. \ref{fig:it4-city-schema}):
+\begin{itemize}
+	\item El primer nivel representa la metáfora de una ciudad o un polígono industrial, dependiendo de los elementos empleados en la escena.
+	\item El segundo nivel representa los barrios o agrupaciones de elementos que conforman el primer nivel.
+	\item El tercer nivel se corresponde con los elementos que se encuentran dentro de un barrio del segundo nivel. Estos elementos son los modelos gráficos que se emplean en la escena.
+\end{itemize}
+
+\imagenBorde{Cap5//it4-city-schema}{0.9}{Esquema conceptual para el posicionamiento de los modelos gráficos en CdU1.5}{fig:it4-city-schema}
+
+Con el enfoque planteado, es posible calcular las posiciones relativas de los edificios en su propio barrio y, acto seguido, posicionar los barrios en la ciudad. Así pues, la aplicación contenedora del motor gráfico deberá proporcionar una cadena de texto en formato JSON respetando la estructura de tres niveles que se ha descrito.
+
+
+
+
+\subsubsection{Disciplina de diseño}
+\label{sec:iteracion-4-diseño}
+
+Durante esta disciplina, y a partir del análisis realizado, se elaboran los diagramas de diseño relativos al CdU1.6.
+
+En la figura \ref{fig:it4-city-class-diagram} se muestra el diagrama de clases que representa la estructura de una ciudad tal y como se ha sugerido en la disciplina de análisis. Cabe destacar que los \textit{elementos} de un \textit{barrio} son de tipo \textbf{GLObject}. Esta decisión de diseño se ha llevado a cabo para abstraer la generación de escenas del tipo de modelo gráfico que se vaya a emplear. De este modo, todos los modelos gráficos que se implementen deben ser especializaciones de \textit{GLObject}.
+
+\imagenBorde{Cap5//it4-city-class-diagram}{0.6}{Diagrama de clases para CdU1.5 (1/2)}{fig:it4-city-class-diagram}
+
+En la figura \ref{fig:it4-globject-class-diagram} se puede analizar cómo se han diseñado los modelos gráficos. En primer lugar se modela una clase \textbf{GLObject} con los atributos básicos que debe tener cualquier modelo gráfico, ya sea en dos o tres dimensiones: un identificador, su posición en un plano de dos dimensiones, el color y la escala. En segundo lugar se crea una clase denominada \textbf{GLObject3D} que hereda de \textit{GLObject}. Esta especialización añade conceptos relativos con la altura o tercera dimensión del modelo y es a partir de la cual heredarán todos los modelos que se deseen implementar.
+
+\imagenBorde{Cap5//it4-globject-class-diagram}{0.45}{Diagrama de clases para CdU1.5 (2/2)}{fig:it4-globject-class-diagram}
+
+
+
+
+\subsubsection{Disciplina de implementación}
+\label{sec:iteracion-4-implementacion}
+
+Durante esta disciplina se implementan los casos de uso CdU1.5 y CdU1.6, tal y como se estableció en el plan de iteraciones. 
+
+Cabe destacar que dada la jerarquía establecida para los modelos gráficos (Fig. \ref{fig:it4-globject-class-diagram}), las dimensiones pueden encontrarse presentes en cualquier nivel (padres o hijos). Por lo tanto, el analizador de anotaciones de dimensión se ha implementado de forma que pueda recorrer toda la jerarquía de herencia desde el modelo indicado hasta el nodo raíz de la misma. En el listado \ref{lst:globject-annotation-snippet} se muestra un ejemplo de una clase anotada mediante la anotación \textit{GLDimension}.
+
+\lstinputlisting[language=Java,caption={Ejemplo de clase Java anotada con la anotación GLDimension},label=lst:globject-annotation-snippet]{snippets//globject-annotation-snippet.txt}
+
+Para finalizar, se incluye una captura de pantalla que muestra la evolución del motor gráfico (Fig. \ref{fig:it4-jogl-screenshot}).
+
+\imagenBorde{Cap5//it4-jogl-screenshot}{0.65}{Gráficos generados después de la disciplina de implementación de la cuarta iteración}{fig:it4-jogl-screenshot}
+
+
+
+\subsubsection{Disciplina de pruebas}
+\label{sec:iteracion-4-pruebas}
+
+Las pruebas de los casos de uso correspondientes al movimiento y rotación de la cámara del motor gráfico (CdU1.1 y CdU1.2) se han realizado con la colaboración de un usuario experto.
+
+El proceso que se ha seguido ha sido el siguiente:
+\begin{enumerate}
+	\item Diseño de los casos de prueba utilizando como base la descripción de los CdU1.1 y CdU1.2 (Tabla \ref{table:move-usecase-description}).
+	\item Elaboración de un \textit{checklist} con los casos de prueba diseñados en el punto 1. En cada entrada del checklist se ha incluido una casilla en la que el usuario deberá anotar si el resultado de la operación ha sido correcto o no.
+	\item Planificación de una reunión con el usuario experto, en la cual se le facilitará un ordenador con una instancia del motor gráfico y el checklist elaborado en el punto 2.
+	\item Ejecución de los casos de prueba diseñados y cumplimentado del checklist.
+\end{enumerate}
+
+El informe obtenido como resultado de esta disciplina indica que todas las pruebas han sido ejecutadas correctamente. En este documento sólo se adjunta el informe correspondiente a las pruebas del CdU1.1 (Tabla \ref{table:move-testcase-report}).
+
+\begin{table}[!htbp]%
+	\centering
+	\begin{tabular}{| >{\arraybackslash}m{4cm} | >{\arraybackslash}m{8cm} | >{\arraybackslash}m{2cm} |}
+	\hline
+		\multicolumn{3}{|c|}{\cellcolor[gray]{0.9}\textbf{Identificador de CDU}: CdU1.1} \\
+	\hline
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Caso de prueba}} &
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Descripción}} &
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.9}\textbf{Resultado}} \\
+	\hline
+		Desplazar hacia delante &
+		El usuario percibe la sensación de desplazamiento hacia delante cuando pulsa la tecla W del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia delante. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+		Desplazar hacia atrás &
+		El usuario percibe la sensación de desplazamiento hacia atrás cuando pulsa la tecla S del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia atrás. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+		Desplazar hacia la izquierda &
+		El usuario percibe la sensación de desplazamiento lateral hacia la izquierda cuando pulsa la tecla Q del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia la izquierda. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+		Desplazar hacia la derecha &
+		El usuario percibe la sensación de desplazamiento lateral hacia la derecha cuando pulsa la tecla E del teclado o hace clic izquierdo con el ratón mientras lo arrastra hacia la derecha. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+		Descender &
+		El usuario percibe la sensación de descenso vertical cuando pulsa la tecla C del teclado. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+		Ascender/Elevar &
+		El usuario percibe la sensación de ascenso vertical cuando pulsa la barra espaciadora del teclado. &
+		\ding{'157}\llap{\ding{'065}} Sí \ding{'157} No \\
+	\hline
+	\end{tabular}
+	\caption{Informe de pruebas para CdU1.1}
+	\label{table:move-testcase-report}
+\end{table}

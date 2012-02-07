@@ -1,0 +1,3 @@
+<setinputfield description="set user name" name="j_username" value="#{username}"/>
+<setinputfield description="set password" name="j_password" value="#{password}"/>
+<clickbutton label="${button.login}" description="Click the submit button"/>

@@ -1,0 +1,301 @@
+\chapter{Estado del Arte}
+\label{ch:estadodelarte}
+
+% En esta parte se deben mostrar los conocimientos obtenidos en la búsqueda bibliográfica y no ideas personales del autor; como mucho podrá aportar un comentario de algunas pocas ideas extraídas de las fuentes en que se ha basado.
+
+% Se articulará esta parte en diversas secciones, que permitan la exposición estructurada y didáctica de los conocimientos de la investigación bibliográfica.
+
+% Globalización
+% Calidad y medidas software (nombrar modelos de calidad?)
+% Visualización (de la calidad del software)
+% Librerías de visualización
+% Perspectiva de en qué consiste y qué hay en la literatura ¡CUIDADO REFERENCIAS!
+
+En este capítulo se muestran los conocimientos teóricos obtenidos de manera previa a la elaboración de este PFC. Entre ellos se encuentran los temas de Desarrollo Global de Software (DGS), calidad y medidas software, visualización de medidas software, qué son los gráficos por computador y las librerías más importantes para generar gráficos por computador.
+
+
+\section{Desarrollo Global de Software (DGS)}
+
+La globalización económica ha hecho que la industria y el comercio se adapte a nuevos modelos de negocio. En el capítulo 1 de este documento se ha hecho mención a algunos de los acontecimientos que, según Thomas Friedman \cite{Friedman:2005}, dieron lugar a este fenómeno. Estos acontecimientos también afectaron a la industria del software que a día de hoy ha roto con cualquier frontera física que se le pudiera imponer gracias a su fuerte relación con las innovaciones en tecnología y telecomunicaciones.
+
+Como prueba de ello, hoy en día es posible realizar software en todo momento y en cualquier parte del mundo (Fig. \ref{fig:advantech-gsd}), lo que introduce el concepto de \textit{Desarrollo Global de Software} (DGS o GSD, en su acrónimo inglés Global Software Development). Para llegar a este modelo ha sido necesario evolucionar a través de dos predecesores: el \textit{modelo tradicional}, en el que los equipos de trabajo encargados de desarrollar un software se encontraban co-localizados en un mismo edificio; y el \textit{Desarrollo Distribuido de Software}, en el que esos equipos de trabajo se encontraban dispersos en una misma ciudad o incluso en distintas ciudades de un mismo país \cite{herb-moitra-2001}. A modo de síntesis, en la Tabla \ref{table:sd-scenarios} se muestra una clasificación de los distintos tipos de desarrollo de software en base a la dispersión geográfica.
+
+\imagenBorde{Cap3//advantech-gsd}{0.60}{Mapa del mundo que refleja la dispersión geográfica de factorías involucradas en desarrollo global \cite{advantech-gsd}}{fig:advantech-gsd}
+
+\begin{table}[h]%
+\centering
+\begin{tabular}{| p{3.5cm} | p{8cm} |}
+	\hline
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.7}\textbf{Localización}} &
+		\multicolumn{1}{|c|}{\cellcolor[gray]{0.7}\textbf{Tipo de desarrollo}} \\
+	\hline
+		\cellcolor[gray]{0.9}Mismo lugar &
+		Desarrollo tradicional \\
+	\hline
+		\cellcolor[gray]{0.9}Mismo país &
+		Desarrollo Distribuido de Software (DSD) \\
+	\hline
+		\cellcolor[gray]{0.9}Distintos países &
+		Desarrollo Global de Software (DGS) \\
+	\hline
+\end{tabular}
+\caption{Clasificación de desarrollo de software según dispersión geográfica \cite{dsd-challenges}}
+\label{table:sd-scenarios}
+\end{table}
+
+Otro factor a tener en cuenta en el DGS, a parte de la dispersión geográfica de los \textit{stakeholders}\footnote{Se define el término \textit{stakeholder} como \textit{aquellos que pueden afectar o son afectados por las actividades de una empresa} \cite{freeman2010strategic}.}, es el número de compañías que colaboran en un mismo proyecto. Se puede dar el caso de que el proyecto esté siendo llevado a cabo por una sola compañía o, por el contrario, que exista un conjunto de compañías subcontratadas (compañías subsidiarias) que colaboren entre sí junto con la compañía contratante \cite{gsd:handbook}. De esta característica surgen nuevos modelos y variantes dentro del DGS: outsourcing, inshoring, offshoring y el nearshoring.
+
+El término \textbf{outsourcing} se utiliza cuando una compañía realiza una externalización de uno o varios de los servicios que proporciona. Estos servicios son delegados sobre una compañía subcontratada. En el contexto del DGS, se asume que la compañía contratante y compañía subcontratada se encuentran sitas en distintos países. Si ambas compañías se encuentran localizadas en el mismo país, se habla de \textbf{inshoring}. Las principales ventajas del outsourcing se basan en una reducción de costes debido a que la mano de obra en el país de la compañía subcontratada puede ser más barata que en el país de la compañía contratante, y poder llegar a un mayor grupo de clientes adaptando los productos a sus necesidades. Estas dos características permiten ofrecer productos especializados y precios más competitivos \cite{sahay:globalit}.
+
+De la idea del \textit{outsourcing} surge el \textbf{offshoring}. Este concepto va más allá que su predecesor y no se limita a externalizar servicios, si no que trasladan fábricas enteras a otros países. Si los países implicados en este proceso son relativamente cercanos al país de origen de la compañía, se habla de \textbf{nearshoring} \cite{sahay:globalit}. Estos modelos introducen una serie de ventajas sobre el outsourcing tales como la obtención de mano de obra, en ocasiones escasa, necesaria para el proyecto en países donde se está avanzando notablemente en I+D; disminución de las dificultades para construir los métodos necesarios para gestionar el conocimiento y coordinar los distintos grupos de trabajo, abstrayéndose de la distancia geográfica \cite{kobitzsch01}; y reducción de costes y gastos derivados de los viajes a los países con los que se colabora.
+
+Estos conceptos se muestran sintetizados en la Tabla \ref{table:gsd-types}.
+
+\begin{table}[h]%
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{| p{5cm} | p{3.5cm} | p{3.5cm} |}
+	\hline
+		&
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.9}Mismo país} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.7}Inshoring} \\
+	\hhline{|~|-|-|}
+		\multicolumn{1}{|l|}{\multirow{-2}{*}{Externalización de servicios}} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.9}Distintos países} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.7}Outsourcing} \\
+	\hline
+		&
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.9}Países vecinos} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.7}Nearshoring} \\
+	\hhline{|~|-|-|}
+		\multicolumn{1}{|l|}{\multirow{-2}{*}{Traslación de fábricas}} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.9}Países distantes} &
+		\multicolumn{1}{|l|}{\cellcolor[gray]{0.7}Offshoring} \\
+	\hline
+\end{tabular}
+\caption{Modelos y variantes de Desarrollo Global de Software}
+\label{table:gsd-types}
+\end{table}
+
+Como se puede apreciar, todas estas modalidades de DGS introducen una serie de ventajas o beneficios, así como un conjunto de inconvenientes o desafíos que afectan al desarrollo y gestión de este tipo proyectos.
+
+En las siguientes subsecciones se detallan tanto las ventajas como los inconvenientes que introduce el DGS.
+
+\subsection{Ventajas del Desarrollo Global de Software}
+
+A pesar de los desafíos que introduce el DGS, que serán abordados en la siguiente subsección de este documento, existen varios motivos por los que este concepto de desarrollo de software resulta muy atractivo. Los más destacables según \cite{cho:2007}, \cite{moitra2006}, \cite{herb-moitra-2001} y \cite{richardson2005} son los siguientes:
+
+\begin{itemize}
+	\item \textbf{Reducción de costes en salarios.} Dado que el objetivo de las empresas es optimizar la relación beneficios/costes, esta es una de las principales motivaciones del DGS. La reducción del coste se debe a la posibilidad de contratar la mano de obra necesaria en aquellos países donde los salarios son más bajos. Esta situación se da en muchos países asiáticos e India en comparación con países de Europa o los Estados Unidos.
+	
+	\item \textbf{Acceso a personal y recursos más cualificado.} Existen países en los que el número de ingenieros que se forman cada año es insuficiente para la demanda que se requiere. Por tanto, es posible contratar personal de aquellos países en los que la oferta de ingenieros sea más elevada.
+	
+	\item \textbf{Facilidad para formar equipos de trabajo.} Dado que la compañía dispone de una cantidad de recursos dispersos por todo el mundo, es posible reasignar estos recursos con el objetivo de formar un equipo de trabajo virtual, no siendo necesario que los componentes del equipo se encuentren co-localizados.
+	
+	\item \textbf{Mejoras en la productividad.} Existe la posibilidad de establecer un flujo de trabajo mediante el cual se pueden establecer jornadas de trabajo más largas. Un ejemplo sería el método \textit{follow-the-sun} (en español, \textit{seguir el sol}) que permite que se esté desarrollando durante las 24 horas del día gracias a la disposición de distintos equipos de trabajo en diferentes husos horarios.
+	
+	\item \textbf{Avances tecnológicos y en infraestructura.} Los avances en telecomunicaciones así como en herramientas y entornos que facilitan la gestión del desarrollo global, son un aspecto muy importante que está permitiendo que este paradigma se lleve a cabo.
+	
+	\item \textbf{Proximidad al mercado y al cliente.} Esta característica resulta realmente atractiva ya que se dispone de personal cercano al cliente. Esta situación abre la posibilidad de conocer las necesidades reales del mismo y adaptar el producto a sus necesidades. Además, permite un conocimiento de las leyes y políticas locales, lo cual puede repercutir en cómo se fabrica y distribuye un mismo producto en distintos países.
+	
+	\item \textbf{Innovación.} Disponer de equipos de trabajo formados por personas con diferentes experiencias y culturas permite que se compartan las mejores prácticas y hábitos.
+\end{itemize}
+
+
+\subsection{Desafíos del Desarrollo Global de Software}
+
+A pesar de las ventajas que supone, en este paradigma de desarrollo de software también existen una serie de vulnerabilidades a determinados factores que pueden afectar a un incremento del presupuesto del producto final, así como retrasos en su entrega. Según \cite{krishna:managing}, \cite{layman06} y \cite{herb-moitra-2001} estos problemas se pueden clasificar de la siguiente forma:
+
+\begin{itemize}
+	\item \textbf{Problemas estratégicos.} Este tipo de problemas surgen a la hora de dividir un proyecto en partes (fases, subproyectos, etcétera) y decidir a qué factoría se asigna cada una de éstas. Para hacer esta asignación, es necesario tener en cuenta los recursos disponibles de cada factoría, así como el grado de experiencia en cada tecnología, la infraestructura, y otros factores que pueden ser determinantes. El objetivo es tratar de lograr una situación en la que las factorías puedan trabajar del modo más independiente posible y que dispongan de un mecanismo de comunicación efectivo, fácil y flexible. Otros problemas pueden surgir debido a la actitud del personal si experimenta que no tiene todo el control que debería sobre su trabajo, que puede perder su puesto de trabajo, que lo trasladen a otro destino o incluso que se requiera que viaje a otras ciudades o países.
+	
+	\item \textbf{Diferencias culturales.} Las diferencias culturales se pueden dar en mayor o menor grado en función de la región, la religión, el sexo, la generación y la clase social. Estas diferencias pueden proporcionar beneficios, tales como la compartición de experiencias y buenas prácticas de trabajo. Sin embargo, también plantean un conjunto de problemas -como las malas interpretaciones debido al estilo de comunicación o una actitud inadecuada de un empleado ante su superior- que, según \cite{hofstede2005cultures}, se categorizan en cuatro áreas:
+	\begin{itemize}
+		\item \textbf{Distancia de la autoridad}. Contempla la actitud de las personas ante sus superiores, y su acepción de que el poder no se distribuye de forma equitativa.
+		\item \textbf{Evasión de la incertidumbre}. Contempla el grado en el que una persona se siente amenazada ante una situación desconocida o incómoda, y trata de evitarla. En este área se incluyen características como el modo de resolución de conflictos, el control de la agresividad y la expresión de sentimientos.
+		\item \textbf{Masculinidad y feminidad}. Contempla el modo en el que se valora la figura del hombre y la figura de la mujer, es decir, si existe algún tipo de discriminación hacia una figura u otra o si existe igualdad entre ambos géneros.
+		\item \textbf{Individualismo y colectivismo}. En este área entran en juego la importancia de los retos y aspiraciones individuales en contraposición con la lealtad y el apoyo de las metas grupales.
+	\end{itemize}
+	
+	\item \textbf{Comunicación inadecuada.} Las personas que llevan a cabo un proyecto de desarrollo global trabajan en diferentes partes del producto, pero que son dependientes unas de otras. Esta dependencia hace necesario que se establezca una buena comunicación entre las partes involucradas para que sea posible establecer una buena coordinación y evitar que surjan problemas relacionados con el incumplimiento de plazos y el incremento del presupuesto.
+	
+	En el desarrollo de software suelen darse dos tipos de comunicación. La primera y más formal se rige en base a determinados criterios y métodos impuestos por la organización. Estos métodos suelen realizarse mediante el uso de herramientas de gestión que permitan guardar trazas y registros de las operaciones llevadas a cabo. En esta categoría pueden destacarse tareas como la de actualizar el estado del proyecto o asignar recursos para la resolución de errores. El segundo tipo se da en un contexto más informal. El principal método se basa en la comunicación directa cara a cara, es decir, una conversación espontánea que puede producirse en el área de trabajo o incluso en el tiempo de descanso. Esta situación no se produce cuando las personas se encuentran localizadas en distintas ubicaciones, pero puede darse en forma de videoconferencias y llamadas telefónicas. No obstante, es susceptible a problemas de comunicación debido a las diferencias culturales e idiomáticas, o incluso a diferencias temporales debido a los husos horarios.
+	
+	Este problema adquiere más agravantes si se introducen factores de propiedad intelectual e información de productos, mercados y clientes.
+	
+	\item \textbf{Problemas de gestión del conocimiento.} La gestión del conocimiento y de la información es un factor determinante en cualquier contexto, no sólo en el DGS. Si esta tarea no se aborda de un modo eficiente, pueden darse casos en los que los equipos pierdan oportunidades de reutilizar trabajo que fue completado previamente, dando lugar a pérdidas de tiempo y dinero.	Además, pueden surgir situaciones en las que no se haya determinado de un modo correcto qué tareas se encuentran en el camino crítico de un flujo de trabajo, o que la información de los clientes no se haya distribuido eficientemente a todos los equipos de trabajo afectados.
+	
+	Por otro lado, una documentación vaga puede ocasionar que el desarrollo colaborativo no se lleve a cabo de un modo eficiente. Por tanto, es muy importante que la documentación se encuentre actualizada para prevenir errores y facilitar la mantenibilidad.
+	\item \textbf{Dificultades de gestión del proyecto y de los procesos.} En este aspecto destacan los problemas de sincronización que se da entre los procesos que son llevados a cabo en distintas localizaciones. Para facilitar esta sincronización es crucial establecer un conjunto de hitos así como los entregables de entrada y salida de cada proceso. Pero esta tarea no es fácil si no se dispone de un entorno y herramientas que permitan una comunicación formal y el trabajo colaborativo en tiempo y espacio.
+	
+	\item \textbf{Problemas técnicos.} En esta categoría destacan problemas relacionados con intercambio de datos con formatos incompatibles, incompatibilidad entre las versiones de las herramientas o librerías utilizadas, control de versiones del producto y la importancia de que todos los equipos de desarrollo sean conscientes de los cambios, o infraestructuras de red que en ocasiones son lentas y dificultan el trabajo colaborativo.
+\end{itemize}
+
+
+
+
+\section{Calidad y medidas software}
+\label{sec:calidad}
+
+La calidad es uno de los factores más importantes que hacen que los usuarios y clientes se decanten por un producto u otro. Por tanto, las organizaciones deben asegurar de algún modo la calidad de los productos y servicios que ofrecen, ya que de ello depende su supervivencia y competitividad en el mercado \cite{otros2003calidad}.
+
+Según el Diccionario de la Rea Academia Española de la Lengua (DRAE 2006, 23\textordfeminine{} edición), y en el contexto que interesa tratar en este libro, se define el término \textbf{calidad} como:
+\begin{enumerate}
+	\item Propiedad o conjunto de propiedades inherentes a algo, que permiten juzgar su valor. \textit{Esta tela es de buena calidad.}
+	\item Buena calidad, superioridad o excelencia. \textit{La calidad del vino de Jerez ha conquistado los mercados.}
+	\item Condición o requisito que se pone en un contrato.
+\end{enumerate}
+
+A lo largo de los años, distintos gurús expertos en el tema han tratado de definir el concepto de \textit{calidad}. A continuación se citarán las afirmaciones que se consideran más representativas para este caso de estudio \cite{hoyer:quality}:
+\begin{itemize}
+	\item ``\textit{El primer supuesto erróneo es que calidad significa bueno, lujoso, brillo o peso... Definimos calidad como \flqq conformidad con los requisitos \frqq ... La no conformidad detectada es una ausencia de calidad.}''. Philip B. Crosby, \textit{``Quality is Free''}, Mc Ggraw Hill, New York, 1979.
+	\item ``\textit{La dificultad de definir calidad es traducir las necesidades futuras del usuario en características medibles. Sólo así un producto puede ser diseñado y fabricado para dar satisfacción al cliente al precio que está dispuesto a pagar.}''. W. Edwards Deming, \textit{Fuera de la crisis}, MIT, 1988.
+	\item ``\textit{Debemos enfatizar en la orientación hacia el cliente... Cuando desarrollen un nuevo producto, el fabricante deberá anticipar los requisitos y necesidades del cliente... Cómo uno interprete el término \flqq calidad \frqq es importante... De un modo sencillo, calidad significa calidad del producto. De un modo más amplio, calidad significa calidad de trabajo, calidad del servicio, calidad de información, calidad de proceso, calidad del personal, calidad del sistema, calidad de la empresa, calidad de objetivos, etc.}''. Kaoru Ishikawa, \textit{¿Qué es Control Total de la Calidad? El modelo japonés}, Prentice Hall, 1985.
+	\item ``\textit{La palabra calidad tiene múltiples significados. Dos de ellos son los más representativos: 1. La calidad consiste en aquellas características del producto que satisfacen las necesidades del cliente y que por eso brindan satisfacción con el producto. 2. La calidad consiste en la ausencia de deficiencias.}''. Joseph M. Juran, \textit{Manual de Control de Calidad, 4\textordfeminine edición}, McGraw Hill, 1988.
+\end{itemize}
+
+Tras analizar estas definiciones y la primera acepción de calidad propuesta por la DRAE, y encuadrarlas en el contexto del desarrollo de software, se entiende que es necesario determinar un conjunto de propiedades que permita determinar la calidad de un producto software y que permita conseguir que sea mejor que otro \cite{otros2011calidad}. Pero esto es relativo y depende del punto de vista utilizado, ya que los clientes y las organizaciones no tienen los mismos criterios y no conciben la calidad del mismo modo (Fig. \ref{fig:what-the-customer-wanted}). Para los primeros, un producto de calidad es aquel que satisface sus necesidades en cuanto a uso o consumo. Para los segundos, un producto de calidad es aquel sobre el que se han medido determinadas características que satisfacen un conjunto de especificaciones numéricamente definidas \cite{hoyer:quality}. Esta es la razón por la que surge la necesidad de medir la calidad de un producto software y, por tanto, la creación de normas y estándares que definan un modelo de calidad del software y su proceso de evaluación.
+
+\imagen{Cap3//What-the-customer-wanted-and-what-he-ended-up-with}{0.73}{Tira de cómic que refleja las necesidades de un producto desde el punto de vista de distintos \textit{stakeholders}. De izquierda a derecha y de arriba a abajo representa: cómo lo explicó el cliente, cómo lo entendió el jefe de proyecto, cómo lo diseñó el analista, cómo lo desarrolló el programador, cómo lo describió el consultor, cómo fue documentado el proyecto, lo que fue instalado, por lo que pagó el cliente, cómo fue el soporte, y lo que el cliente realmente necesitaba}{fig:what-the-customer-wanted}
+
+Inicialmente surge una primera generación de estándares de calidad del producto software, entre los que destacan las normas ISO/IEC 9126 e ISO/IEC 14598. Por un lado, la norma ISO/IEC 9126, que se subdivide en cuatro partes, define un modelo de calidad del producto software, métricas externas, métricas internas y métricas de calidad en uso. El modelo de calidad se descompone en un conjunto de seis características que se subdividen en múltiples subcaracterísticas y éstas a su vez en atributos (Fig. \ref{fig:iso-9126-characteristics}) \cite{iso9126}. Las características que define son las siguientes:
+
+\begin{itemize}
+	\item \textbf{Funcionalidad}. Engloba un conjunto de atributos relacionados con la capacidad del software para satisfacer los requisitos funcionales que debe cumplir el sistema.
+	\item \textbf{Fiabilidad}. Se refiere a la capacidad del software de proporcionar servicio durante un tiempo establecido y bajo un conjunto de condiciones definidas.
+	\item \textbf{Usabilidad}. Indica el esfuerzo que invierte el usuario para utilizar el producto debidamente.
+	\item \textbf{Eficiencia}. Establece una relación entre el rendimiento del sistema y los recursos empleados bajo un conjunto de condiciones definidas.
+	\item \textbf{Mantenibilidad}. Indica el esfuerzo necesario para adaptar el producto a nuevos requisitos y especificaciones, así como para corregir errores.
+	\item \textbf{Portabilidad}. Se refiere a la posibilidad de transferir el software a un entorno diferente.
+\end{itemize}
+
+\imagen{Cap3//iso-9126-characteristics}{1.4}{Características y subcaracterísticas del modelo de calidad del software propuesto por el estándar ISO/IEC 9126 \cite{zubrow2004}}{fig:iso-9126-characteristics}
+
+Por otro lado, la norma ISO/IEC 14598, que en gran parte no es específica del producto software, define su relación con el modelo de calidad propuesto en la norma ISO/IEC 9126 (Fig. \ref{fig:iso9126-14598-relationship}). Para ello proporciona un marco de evaluación de la calidad de todo tipo de producto software y establece los métodos necesarios para la medición de la calidad del mismo \cite{iso14598}.
+
+\imagen{Cap3//iso9126-14598-relationship}{1.6}{Relación entre las normas ISO/IEC 9126 (modelo de calidad del producto software) e ISO/IEC 1498 (evaluación del producto software) \cite{zubrow2004}}{fig:iso9126-14598-relationship}
+
+Con el objetivo de crear una única norma que englobe a la ISO/IEC 9126 y a la ISO/IEC 14598, surge la norma ISO/IEC 25000, también conocida como SQuaRE (Software Product Quality Requirements and Evaluation). Esta norma, que consta de cinco divisiones, tiene como objetivo crear un conjunto de estándares específicos de productos y sistemas software, así como establecer un glosario de términos que no contenga conceptos genéricos \cite{iso25010}. Las divisiones de SQuaRE son las siguientes:
+
+\begin{itemize}
+	\item ISO/IEC 2501n: División del modelo de calidad, que reemplaza a la ISO/IEC 9126.
+	\item ISO/IEC 2502n: División de la medición de calidad.
+	\item ISO/IEC 2503n: División de requisitos de calidad.
+	\item ISO/IEC 2504n: División de evaluación de la calidad, que reemplaza a la ISO/IEC 14598.
+	\item ISO/IEC 25050 - 25099: División de extensión de SQuaRE.
+\end{itemize}
+
+Una vez que se dispone de un modelo de calidad del producto software y de métodos de evaluación del mismo, es necesario abordar cuestiones de medición.
+
+La \textbf{medición} es una disciplina fundamental en cualquier ingeniería, y la ingeniería del software no es una excepción \cite{piattini:medicion}. Este aspecto está demostrando ser muy eficaz en grandes proyectos de bases de datos, en el desarrollo y mantenimiento del software y la evaluación y garantía de la calidad de sistemas \cite{otros2010calidad}. Además, la ingeniería del software presenta el problema de que los objetos o entidades que se desean medir no son tangibles, es decir, no se pueden palpar y medir con herramientas convencionales. Esto hace aún más importante la medición del software, ya que es un mecanismo que permite comprobar y asegurar la calidad del mismo.
+
+Cuando se habla de \textit{medidas software}, es frecuente encontrar en la literatura el término \textit{métrica software} en su lugar. Sin embargo, en este PFC se utilizará el concepto de \textit{medida}, ya que de acuerdo a la \textbf{Ontología de la Medición del Software} (\textit{Software Measurement Ontology} o SMO) es más adecuado \cite{garcia:ontology}.
+
+En la SMO se afirma que el objetivo de una medición es \textit{satisfacer ciertas necesidades de información}. Para ello, es necesario identificar las entidades que se quieren medir y sus atributos, siendo un atributo una propiedad, física o abstracta, que se puede medir. Por ejemplo, en el contexto del software orientado a objetos, una \textit{clase} podría ser una entidad y, las \textit{líneas de código}, un atributo de dicha entidad.
+
+Según \cite{pfleeger:measurement} y \cite{fenton:measurement}, el uso de medidas en el software es una buena práctica para conocer qué ocurre durante el proceso de desarrollo y mantenimiento del software. Gracias a ello, es posible predecir lo que puede ocurrir y, por consiguiente, tomar las mejores decisiones cuando se considere oportuno.
+
+
+
+
+
+\section{Visualización de medidas software}
+
+Como se ha explicado en la sección \ref{sec:calidad}, realizar mediciones sobre el software es un desafío. Cuando se completa un proceso de medición, es conveniente generar un informe que muestre los resultados obtenidos para facilitar su posterior análisis. La importancia o el grado de interés de dichos resultados, varía en función de la experiencia y la necesidad del usuario que los estudie. Con el objetivo de filtrar información no relevante en determinadas ocasiones y destacar aquella que proceda, se propone el uso de herramientas de visualización que, además de proporcionar dichas funcionalidades, explotan la capacidad de percepción del sistema visual humano \cite{otros2010calidad}.
+
+Los sistemas de visualización son herramientas que permiten el análisis de datos complejos por medio de la exploración visual. Este tipo de sistemas se han aplicado en multitud de áreas, como medicina y aeronáutica, para realizar representaciones y simulaciones. Estas áreas tienen en común la existencia de modelos, objetos o reglas del mundo real que facilitan su representación visual en un entorno 3D, dado que son objetos tangibles o propiedades medibles mediante algún tipo de utensilio. Por el contrario, cuando tratamos de representar el análisis de datos relativos a un programa software, se presenta el problema de la intangibilidad del código y la ausencia de alguna entidad real que se le asemeje y que nos permita establecer un patrón para su representación gráfica \cite{otros2010calidad}.
+
+En la literatura se encuentran distintas técnicas que permiten representar visualmente determinados tipos de información relacionada con el software. En \cite{fj98} y \cite{hvvw05} utilizan modelos en tres dimensiones y texturas para mostrar información estadística. En \cite{lanza03} se combinan vistas polimétricas con medidas software de las entidades conceptuales que intervienen en programas software orientado a objetos.
+
+Para facilitar la comprensión de este último caso se adjunta la figura \ref{fig:polymetric-view} (a). En ella, la vista polimétrica puede escenificar una clase, un atributo o un método, y representará medidas software relativas a la entidad que escenifica.
+\begin{itemize}
+	\item Si la entidad escenificada es una \textbf{clase}, puede representar la profundidad del árbol de herencia, el número de métodos heredados, el número de métodos totales, el número de atributos, el número de líneas de código en toda la clase, entre otros. La figura \ref{fig:polymetric-view} (b) muestra un ejemplo concreto de este caso.
+	\item Si la entidad escenificada es un \textbf{método}, puede representar el número de líneas de código, el número de parámetros de entrada, el número de acceso a los atributos, etcétera.
+	\item Si la entidad escenificada es un \textbf{atributo}, puede representar el número de veces que se ha accedido desde fuera de la clase o desde la propia clase.
+\end{itemize}
+
+\imagenBorde{Cap3//polymetric-view}{1.5}{(a) Nodo de una vista polimétrica en la que se pueden representar hasta siete medidas. (b) Vista polimétrica aplicada una jerarquía de herencia entre clases. Cada clase es representada por un nodo en el que el ancho muestra el número de atributos de la clase, el alto indica el número de métodos y el color el número de líneas de código. \cite{ducasse10}}{fig:polymetric-view}
+
+En definitiva, la estrategia que se persigue consiste en asociar atributos gráficos (textura, color, ubicación, tamaño, etcétera) con los datos que se quiere representar, pero hay que controlar determinadas características para evitar introducir ruido y exceso de información que dificulte la visualización. Estos dos factores interfieren en la inspección visual haciendo que no sea eficiente. Por ejemplo, en la figura \ref{fig:edge-noise} se muestra el ruido introducido al tratar de representar las asociaciones entre un conjunto de entidades. 
+
+\imagen{Cap3//edge-noise}{0.40}{Ejemplo del nivel de ruido introducido por las asociaciones entre entidades \cite{3djvis}}{fig:edge-noise}
+
+Para facilitar la comprensión de la información, los sistemas de visualización deben proporcionar vistas intuitivas, efectivas y eficaces que hagan del análisis de datos una tarea rápida y precisa. Un método para lograr esta característica consiste en explotar una cualidad del sistema visual humano denominado \textbf{\textit{proceso preatento}} \cite{hea92}. Los procesos preatentos son procesos que ``saltan a la vista'' (Fig. \ref{fig:preattentive}), siendo detectados inmediatamente y evitando que el usuario deba centrar su atención en una determinada región de una imagen para captar la presencia o ausencia de una característica determinada \cite{ducasse10}.
+
+Existen cuatro categorías básicas de características que se procesan de forma preatenta \cite{ware99}: color, forma, movimiento y localización espacial. De cada una de estas características se puede obtener un gran conjunto de subcaracterísticas como curvatura, tamaño, orientación, longitud, etcétera.
+
+\imagenBorde{Cap3//preattentive}{0.50}{Ejemplo que activa un proceso preatento. En la imagen de la izquierda el objetivo se encuentra fácilmente; en la de la derecha, el objetivo se camufla entre el resto de elementos}{fig:preattentive}
+
+Las técnicas de visualización expuestas en este capítulo se están empleando  actualmente en escenarios en los que se desarrollan proyectos software tradicionales basados en programación orientada a objetos. Sin embargo, estos métodos pueden ampliarse y adaptarse al software que está siendo desarrollado de forma global. Por tanto, es necesario incluir información relativa a la estructura organizacional y la información relevante que intervienen en este paradigma, como las empresas y factorías de software involucradas en cada proyecto global, así como distintas medidas de calidad de software y productividad, y dotarla de una representación visual.
+
+Antes de diseñar una representación visual, se requiere estudiar si un modelo 2D satisface las necesidades de la abstracción del mundo que se quiere escenificar, o si es necesario una escena más compleja en 3D. Por un lado, las escenas 2D son sencillas de implementar pero hacen que el usuario tenga la sensación de ver el sistema desde fuera y no se sienta inmerso en el mismo. Por otro lado, las escenas 3D sí producen esta sensación de inmersión pero pueden provocar que el usuario se desoriente. Para evitar este problema, en  \cite{wl07} se propone realizar la visualización 3D en base a la metáfora de una ciudad, que es un entorno conocido por el usuario, para que pueda ser explorada de forma interactiva. En \cite{wl07} los autores emplean la metáfora de una ciudad en tres dimensiones para representar medidas software (Fig. \ref{fig:city-metaphore}).
+
+\imagenBorde{Cap3//city-metaphore}{0.55}{Metáfora de una ciudad para representar sistemas software \cite{wl07}}{fig:city-metaphore}
+
+Para representar una \textbf{medida software} visualmente es necesario identificar qué entidad se quiere escenificar por medio de un modelo gráfico y cuáles son los atributos más relevantes de dicha entidad. De este modo, es posible establecer un conjunto de asociaciones entre los atributos de la entidad y las dimensiones del modelo gráfico. Este concepto recibe el nombre de \textit{vista polimétrica} \cite{lanza03} y permite que los modelos gráficos adopten una determinada forma, orientación o color en función de los resultados de las mediciones. Esta característica se puede combinar con los procesos preatentos, permitiendo que los sistemas de visualización adquieran un gran potencial y flexibilidad. Por ejemplo, un jefe de proyecto podría detectar a \textit{golpe de vista} el cumplimiento de plazos de cada una de las partes de un proyecto (Fig. \ref{fig:preattentive2}). Otro ejemplo podría consistir en asociar el número de líneas de código a la altura de un cubo, y el número de comentarios a la base del mismo. De este modo, si el cubo es muy alto y muy fino, significa que tiene pocos comentarios para demasiadas líneas de código; si por el contrario, el cubo es muy bajo y muy ancho, significa que tiene demasiados comentarios.
+
+\imagen{Cap3//preattentive2}{0.40}{Representación visual de medidas software de un sistema. Cada cubo representa una parte del sistema. El color verde podría significar un \textit{valor aceptable} de una medida definida; el color azul indicaría un \textit{valor marginal} de dicha medida; y el color rojo representaría un \textit{valor inaceptable} \cite{3djvis}}{fig:preattentive2}
+
+
+
+\section{Gráficos por computador y Librerías de gráficos 3D}
+
+% http://www.comphist.org/computing_history/new_page_6.htm
+Los \textbf{gráficos por computador} es un término cuya definición ha evolucionado en las últimas décadas. De un modo sencillo, puede definirse como \textit{imágenes generadas o modificadas mediante el uso de un ordenador}. Estas imágenes pueden ser representaciones visuales de entidades del mundo real o abstracciones de las mismas \cite{govil2004principles}. Pero este concepto ha progresado desde imágenes simples en dos dimensiones hasta entornos complejos tridimensionales de alta calidad. Por tanto, en su definición habría que incorporar el aspecto de la generación de modelos de objetos que varían su geometría y comportamiento a lo largo del tiempo \cite{foley1996computer}.
+
+Cuando se trata de pensar en el uso que se le pueden dar a los gráficos por computador, es fácil pensar en los videojuegos o en películas de animación como Avatar y Shrek, pero su uso va más allá y son una herramienta crucial en numerosas áreas. Por ejemplo, en medicina se utilizan para proporcionar métodos no invasivos que permitan probar e investigar características del cuerpo humano; en educación son una excelente herramienta para representar conceptos; en entornos empresariales se utilizan para crear diagramas y gráficas que permiten el análisis de datos; en aviación sirven para la generación de simuladores de vuelo, etcétera \cite{govil2004principles}.
+
+Todos los usos listados anteriormente y muchos más, son razones más que suficientes para que las empresas y las comunidades de desarrolladores empleen recursos, tiempo y esfuerzo en elaborar soluciones eficientes para la generación y manipulación de gráficos por computador. Por ello, a lo largo de los últimos años han ido surgiendo estándares y librerías de gráficos que satisfagan las necesidades de hoy en día. Sin estos estándares y librerías, los desarrolladores de software debían implementar distintas versiones de sus aplicaciones para soportar las múltiples plataformas hardware en las que fuese a ser ejecutado dicho software.
+
+Una \textbf{librería de gráficos 3D} es una \textit{interfaz} software que proporciona un medio para \textit{renderizar}\footnote{Generar imágenes a partir de un modelo.} gráficos en una pantalla, estableciendo un medio de comunicación entre las aplicaciones y los controladores de la tarjeta gráfica (Fig. \ref{fig:graphics-stack}). Su principal cometido es ofrecer un nivel mayor de abstracción y otorgar independencia tanto a nivel de hardware -de entrada y de salida- como a nivel de aplicación ya que la librería es accedida a través de un interfaz único.
+% http://lemnik.wordpress.com/2007/05/29/what-are-directx-and-opengl/
+
+\imagenBorde{Cap3//graphics-stack}{0.6}{Pila de recursos que intervienen en la generación de gráficos}{fig:graphics-stack}
+
+Existen numerosas librerías destinadas a generar gráficos tanto 2D como 3D. En este PFC se han analizado las dos más conocidas y potentes hoy en día: Direct3D y OpenGL.
+
+
+
+\subsection{Direct3D}
+
+Direct3D es un API (\textit{Application Programming Interface}) que forma parte de la colección de librerías multimedia llamada DirectX (Fig. \ref{fig:directx-api-collection}). Esta colección de librerías, propiedad de Microsoft, está diseñada específicamente para desarrollar aplicaciones interactivas, especialmente videojuegos  \cite{luna2003introduction}. Proporciona al programador un medio de acceso a los dispositivos de entrada y salida, como la pantalla y la tarjeta de sonido, para lograr generar gráficos en tres dimensiones realistas, música y efectos de sonido envolventes. Oficialmente sólo se encuentra disponible para plataformas basadas en Microsoft Windows y Xbox, aunque existe proyectos de código abierto que se han encargado de llevar a cabo proyectos de emulación y compatibilidad, como Wine, y hacer posible la portabilidad a plataformas basadas en Unix.
+
+\imagenBorde{Cap3//directx-api-collection}{0.6}{Colección de API de DirectX}{fig:directx-api-collection}
+
+DirectX contiene, entre otros, librerías para manejar dispositivos de entrada y salida (DirectInput), para comunicaciones en red (DirectPlay), para reproducción y grabación de sonidos (DirectSound), etcétera. \textbf{Direct3D}, en concreto, es la librería que proporciona un interfaz de programación para generar gráficos en tres dimensiones \cite{walnum2003microsoft}.
+
+En las versiones 6 y 7 de DirectX, Direct3D implementaba dos API denominadas \textit{modo retenido} y \textit{modo inmediato}. El \textit{modo inmediato} era un API flexible pero difícil de utilizar ya que estaba diseñada para trabajar a bajo nivel. Este modo daba soporte a todas las primitivas de procesamiento 3D que permiten las tarjetas gráficas: iluminación, materiales, \textit{z-buffering}\footnote{El \textit{z-buffering} es un término utilizado en el contexto de gráficos en tres dimensiones. Este concepto también se conoce como \textit{buffer de profundidad} ya que los gráficos en dos dimensiones se basan en coordenadas \textit{(x, y)} y la coordenada \textit{z} es introducida como una tercera dimensión.}, entre otros. El \textbf{modo retenido} era una capa de abstracción que envolvía al \textit{modo inmediato} y se basaba en una estructura de datos predefinida con pocas posibilidades de personalización, pero su uso y aprendizaje era más sencillo que el modo inmediato. Por tanto, los programadores necesitaban un API con la facilidad de uso del \textit{modo retenido} pero que ofreciese la potencia y flexibilidad del \textit{modo inmediato}. Esto hizo que Microsoft abandonase el mantenimiento del \textit{modo retenido} y se centrase en extender y mejorar el \textit{modo inmediato} \cite{engel2003beginning}.
+
+En las sucesivas versiones, Microsoft ha incorporado numerosas características a Direct3D así como optimizado las existentes para estar a la altura de su competidor más directo: OpenGL.
+
+
+
+\subsection{OpenGL}
+\label{sec:opengl}
+
+OpenGL (\textit{Open Graphics Library}) \cite{site:opengl} es una \textbf{especificación estándar} que define un API (Application Programming Interface) independiente de la plataforma y del sistema operativo, para generar gráficos en dos y tres dimensiones (Fig. \ref{fig:opengl-tex-shadow-reflect-example}) acelerados por el hardware de la máquina. También es independiente del sistema gestor de ventanas y del protocolo de red empleados \cite{shreiner2006opengl}.
+
+\imagenBorde{Cap3//opengl-tex-shadow-reflect-example}{0.7}{Ejemplo renderizado con OpenGL que muestra texturas, sombras y reflejos \cite{opengl:dino-example}}{fig:opengl-tex-shadow-reflect-example}
+
+El API de OpenGL comenzó siendo una iniciativa de SGI (Silicon Graphics, Inc.) para crear un API estándar e independiente de los fabricantes, que permitiese desarrollar aplicaciones con gráficos 2D y 3D. Antes del lanzamiento de OpenGL, las compañías que desarrollaban dispositivos hardware disponían de sus propias librerías de gráficos. Esta situación era frustrante para los desarrolladores de software debido a la necesidad de adaptar sus aplicaciones para soportar múltiples plataformas hardware. Esto requería portar una aplicación de una plataforma a otra, un proceso difícil y costoso. Por tanto, SGI observó la necesidad de un API de gráficos estándar y decidió formar un grupo de desarrollo para crearlo \cite{site:sgi-opengl}.
+
+El resultado de este trabajo sucedió en Enero de 1992 y fue el API de OpenGL, que comenzó como una especificación. Después, SGI publicó un software de ejemplo que podía ser utilizado como guía de referencia por los fabricantes de hardware para crear nuevas implementaciones del API a modo de drivers entre OpenGL y su propio hardware. Además, la publicación se produjo bajo una licencia de código abierto para asegurar que, por medio de los desarrolladores de este tipo de comunidades, existiesen drivers de gran calidad y alto rendimiento disponibles para Linux \cite{site:opengl-sample-implementation}.
+
+Desde entonces, OpenGL 1.x ha evolucionado constatemente, primero bajo la tutela de ARB (OpenGL Architecture Review Board) y después mediante el Grupo Khronos, un consorcio independiente sin ánimo de lucro que vela por crear estándares abiertos relativos a áreas multimedia para distintos dispositivos y plataformas.
+
+En la fecha de la edición de este documento, la versión actual de OpenGL es la 4.2 y es totalmente compatible con la especificación de OpenGL ES 2.0. Cabe destacar que los desarrolladores de software no necesitan adquirir ningún tipo de licencia para utilizar OpenGL en sus aplicaciones. Sin embargo, los fabricantes de hardware sí necesitan una licencia para crear una implementación de OpenGL para su arquitectura.
+
+Por otra parte y cambiando a un contexto más tecnológico, las aplicaciones basadas en OpenGL pueden hacer uso de una gran variedad de librerías que extienden sus funcionalidades. Las más importantes son \textit{OpenGL Utility Library (GLU)} y \textit{OpenGL Utility Toolkit (GLUT)}. La primera de ellas, \textbf{GLU}, proporciona rutinas de más alto nivel que las que proporciona OpenGL inicialmente. Destacan aquellas encargadas de generar texturas, NURBS (en inglés \textit{Non Uniform Rational B-splines})\footnote{Modelo matemático utilizado en computación gráfica para generar y representar curvas y superficies.}, dibujar superficies cuádricas como esferas, conos y cilindros, entre otros \cite{shreiner2006opengl}. Por otra parte, \textbf{GLUT} proporciona métodos sencillos para manejar las ventajas de la interfaz gráfica de usuario y los dispositivos de entrada como el teclado y el ratón \cite{govil2004principles}.
+
+Según él sitio web oficial de OpenGL \cite{site:opengl}, las ventajas de este API son las siguientes:
+\begin{enumerate}
+	\item \textbf{Estándar}. La especificación de OpenGL es mantenida por un grupo independiente sin ánimo de lucro (Khronos Group) con el apoyo de numerosas empresas como IBM, Sun Microsystems y Hewlett-Packard. Se trata de un estándar abierto, independiente de la plataforma y del sistema operativo.
+	\item \textbf{Estable}. Las implementaciones de OpenGL han estado disponibles durante más de siete años para una gran variedad de plataformas. Los cambios que han surgido a lo largo del tiempo han sido controlados y se han anunciado con antelación para que los programadores puedan adaptarse a ellos. No obstante, la \textit{retrocompatibilidad} ha sido un compromiso para asegurar que las aplicaciones existentes no se vuelvan obsoletas.
+	\item \textbf{Fiable} y \textbf{Portable}. Todas las aplicaciones de OpenGL producen contenido visual sin importar el hardware, el sistema operativo o el sistema de ventanas sobre el que se ejecuten.
+	\item \textbf{Evolución}. OpenGL incorpora un mecanismo de extensibilidad para permitir a los programadores y fabricantes de hardware la posibilidad de incorporar nuevas funcionalidades.
+	\item \textbf{Escalable}. Las aplicaciones basada en OpenGL pueden ejecutarse en una gran variedad de dispositivos. Esto incluye dispositivos móviles, ordenadores personales, \textit{workstations} e incluso súper ordenadores.
+	\item \textbf{Facilidad de uso}. La convención de nombres utilizada así como el diseño estructurado del que goza OpenGL, permite escribir aplicaciones empleando menos líneas de código que con otras librerías. Además, OpenGL abstrae al programador de las características específicas del hardware.
+	\item \textbf{Documentación}. Existe una extensa bibliografía publicada que cubre numerosos aspectos de OpenGL, así como una gran variedad de \textit{snippets}\footnote{Un \textit{snippet} es un pequeño ejemplo funcional de código ejecutable.} a modo de ejemplo.
+\end{enumerate}
+
+Por último, destacar que OpenGL inicialmente fue concebido para desarrollar aplicaciones escritas en C y C++. No obstante, existe una gran cantidad de \textit{bindings}\footnote{En este contexto, un \textit{binding} se refiere a una envoltura del API que permite el acceso a la misma desde un lenguaje de programación distinto a C o C++.} que permiten desarrollar este tipo de aplicaciones empleando numerosos lenguajes de programación como Fortran, Java, Perl, Pike, Python, Delphi, Ada y Visual Basic.

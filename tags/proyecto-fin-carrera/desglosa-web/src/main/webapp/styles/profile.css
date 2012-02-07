@@ -1,0 +1,100 @@
+.removeIcon {
+	width: 12px;
+}
+
+div #first_step {
+	display: ;
+}
+
+div #second_step {
+	display: none;
+}
+
+div #third_step {
+	display: none;
+}
+
+div #info {
+	text-align: justify;
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+.pane {
+	float: left;
+	width: 47%;
+	min-height: 220px;
+	-moz-box-shadow: 0 0 5px #888;
+	-webkit-box-shadow: 0 0 5px#888;
+	box-shadow: 0 0 5px #888;
+	padding: 10px;
+}
+
+div #panes {
+	text-align: left;
+	margin-left: auto;
+	margin-right: auto;	
+}
+
+div #panes #leftPane {
+	float: left;
+	width: 47%;
+}
+
+div #panes #rightPane {
+	float: left;
+	margin-left: 15px;
+	width: 45%;
+}
+
+div #mapping {
+	margin-left: 15px;
+	margin-right: auto;
+}
+
+#mapping_added {
+	width: 100%;
+	border-width: 0;
+}
+
+#mapping_added_header .header th {
+	padding: 10px 8px;
+	border-bottom: 1px solid black;
+}
+
+#mapping_added_header .subheader th {
+	padding: 5px;
+	border: 1px solid black;
+}
+
+#mapping_added_header .subheader th.first {
+	padding: 5px;
+	border-left: none;
+}
+
+#mapping_added_header .subheader th.last {
+	padding: 5px;
+	border-right: none;
+}
+
+tfooter #mapping_added_footer {}
+
+div #mapping_messages {
+	margin: 50px;
+}
+
+.cfg_line ul {
+	list-style: none;
+}
+
+#nonMappedPane {
+	margin-right: 15px;
+}
+
+#profilePane {
+	
+}
+
+#profilePane ul {
+	
+}

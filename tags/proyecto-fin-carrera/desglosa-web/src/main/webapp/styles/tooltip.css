@@ -1,0 +1,33 @@
+.tooltip {
+	display: none;
+	background: transparent url(../images/black_arrow_medium.png);
+	height: 163px;
+	padding: 35px 30px 10px 30px;
+	width: 170px;
+	font-size: 11px;
+	color: #fff;
+}
+
+div.tooltipstyle {
+	cursor:pointer;
+}
+
+img.searchIcon {
+	margin-right: 5px;
+	border: 0;
+	background-color: transparent;
+}
+
+.inputtooltip {
+    background-color:#000;
+    border:1px solid #fff;
+    padding:10px 15px;
+    width:300px;
+    display:none;
+    color:#fff;
+    text-align:left;
+    font-size:12px;
+    /* outline radius for mozilla/firefox only */
+    -moz-box-shadow:0 0 10px #000;
+    -webkit-box-shadow:0 0 10px #000;
+}

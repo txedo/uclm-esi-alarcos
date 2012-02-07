@@ -1,0 +1,18 @@
+\chapter{Informes de pruebas y cobertura de código}
+\label{ch:testreports}
+
+En este anexo se muestran pequeños fragmentos de los informes de pruebas y cobertura de código que se han generado en la última iteración del ciclo de desarrollo. La colección completa de todos los informes puede encontrarse en el sitio web generado mediante Maven que se encuentra bajo el directorio \textit{documentacion\textbackslash{}site} (Fig. \ref{fig:generated-reports}).
+
+\imagen{Reports//generated-reports}{1.8}{Informes generados mediante Maven}{fig:generated-reports}
+
+En la figura \ref{fig:test-report} se muestra una parte del informe que muestra los resultados de ejecución de los casos de prueba. En él se aprecia que se han implementado un total de 143 tests y que todos se han ejecutado correctamente.
+
+En las figuras \ref{fig:cobertura-report-action}, \ref{fig:cobertura-report-control} y \ref{fig:cobertura-report-model-util} se muestran algunos ejemplos de los informes de cobertura obtenidos. En concreto se muestran los informes de cobertura de los paquetes \textit{action}, \textit{control} y \textit{model.util}. Como se puede observar se ha cubierto en torno al 80\% de código, lo cual es una cantidad de código importante. Gran parte del código no cubierto se debe a constructores, excepciones y métodos \textit{setters\&getters} no utilizados.
+
+\imagenBorde{Reports//test-report}{2.4}{Fragmento del informe de resultados de la ejecución de pruebas}{fig:test-report}
+
+\imagenBorde{Reports//cobertura-report-action}{2.4}{Informe de cobertura de código del paquete \textit{action}}{fig:cobertura-report-action}
+
+\imagenBorde{Reports//cobertura-report-control}{2.4}{Informe de cobertura de código del paquete \textit{control}}{fig:cobertura-report-control}
+
+\imagenBorde{Reports//cobertura-report-model-util}{2.4}{Informe de cobertura de código del paquete \textit{model.util}}{fig:cobertura-report-model-util}

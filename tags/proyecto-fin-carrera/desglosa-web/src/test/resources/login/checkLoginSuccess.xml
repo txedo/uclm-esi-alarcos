@@ -1,0 +1,2 @@
+<verifytext description="Login is ok" text=".*${message.login.sucess}.*" regex="true"/>
+<verifytitle description="Home Page follows if login ok" text=".*${desglosa.title}.*" regex="true"/>

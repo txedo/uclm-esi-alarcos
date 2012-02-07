@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC 
+	"-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+	
+<beans>    
+    <!-- SAF2 actions instantiated by Spring -->
+    <bean id="profileAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ProfileAction" singleton="false" />
+    <bean id="companyAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.CompanyAction" singleton="false" />
+    <bean id="factoryAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.FactoryAction" singleton="false" />
+    <bean id="projectAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.ProjectAction" singleton="false" />
+    <bean id="subprojectAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.SubprojectAction" singleton="false" />
+    <bean id="marketAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.MarketAction" singleton="false" />
+    <bean id="visualizationAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.VisualizationAction" singleton="false" />
+    
+    <!-- Other objects instantiated by Spring -->
+    <bean id="glObjectManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.GLObjectManager" />
+	
+	<bean id="applicationContextProvider" class="es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider"/>
+	
+	<bean id="companyManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.CompanyManager" singleton="true" >
+    	<property name="companyDao" ref="companyDao"/>
+	</bean>
+    <bean id="factoryManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.FactoryManager" singleton="true" >
+        <property name="factoryDao" ref="factoryDao"/>
+    </bean>
+    <bean id="projectManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.ProjectManager" singleton="true" >
+        <property name="projectDao" ref="projectDao"/>
+    </bean>
+    <bean id="subprojectManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.SubprojectManager" singleton="true" >
+        <property name="subprojectDao" ref="subprojectDao"/>
+    </bean>
+    <bean id="marketManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.MarketManager" singleton="true" >
+        <property name="marketDao" ref="marketDao"/>
+    </bean>
+    <bean id="profileManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.ProfileManager" singleton="true" >
+        <property name="profileDao" ref="profileDao"/>
+    </bean>
+</beans>

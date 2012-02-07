@@ -1,0 +1,75 @@
+\chapter{Conclusiones y Propuestas}
+\label{ch:conclusionesypropuestas}
+
+% Breve resumen de lo más destacable del PFC con la solución propuesta y posibles mejoras, ampliaciones o trabajos relacionados que quedan por hacer y que tienen interés para el tema tratado. Al final, firma del autor.
+
+\section{Aspectos destacables de la solución propuesta}
+
+Tras haber finalizado la elaboración de este PFC se ha obtenido un sistema software compuesto por dos componentes -una aplicación web y un motor de gráficos 3D- cuyos ciclos de vida pueden ser llevados a cabo de forma independiente. Ambos componentes integrados conforman un sistema potente, flexible y extensible que facilita las distintas tareas de gestión \textit{organizacional} en escenarios de desarrollo global, así como el seguimiento de los proyectos globalizados mediante diversas técnicas de visualización.
+
+Algunos de los problemas derivados del desarrollo global surgen a partir de la distribución de recursos e información. Mediante la herramienta elaborada en este PFC se permite centralizar información acerca de compañías y factorías de software dispersas por todo el mundo, que colaboran en el desarrollo de proyectos. La información acerca de estos proyectos y los subproyectos que los conforman también queda centralizada. De este modo, los profesionales del sector pueden disponer de ella cuando la necesiten para llevar a cabo sus actividades. Cuestiones como la ubicación de las factorías de las con las que se puede contar para realizar un desarrollo o el tipo de mercado en el que se encuentran especializadas, son de vital importancia a la hora de decidir dónde se desarrollarán los distintos proyectos que se desean llevar a cabo.
+
+Estos aspectos junto con los datos relativos a la calidad y productividad empleados en este tipo de desarrollos suponen una gran cantidad de información. Pero todas las actividades no requieren el mismo tipo de información, por lo tanto, manejar la información relevante en cada momento y analizarla de forma adecuada es crucial. Esta característica permite, entre otros, detectar anomalías, prevenir situaciones de riesgo, asegurar la calidad del software desarrollado y ofrecer soporte en la toma de decisiones en este tipo de actividades.
+
+Para satisfacer este tipo de necesidades, \textit{Desglosa} goza de un alto grado de personalización que permite filtrar la información que se desea analizar y decidir cuál es el mejor modo para representarla gráficamente mediante metáforas de visualización. Así, \textit{Desglosa} es capaz de generar una serie de gráficos en 3D que facilitan la interpretación de datos complejos por medio de la exploración visual.
+
+Todas estas funcionalidades son fruto de la consecución de un conjunto de tareas que se han ido abordando a lo largo del ciclo de desarrollo. Entre ellas destacan las siguientes:
+\begin{itemize}
+	\item Modelado de una abstracción del mundo real relativo al contexto del DGS.
+	\item Análisis de técnicas de visualización.
+	\item Selección de medidas e indicadores de calidad y productividad utilizados en el contexto empresarial bajo el paradigma del DGS.
+	\item Definición de metáforas de visualización que permitan representar aquella información seleccionada.
+	\item Diseño de un método que permite configurar y personalizar la visualización de la información, con el objetivo de filtrar aquella que sea relevante para cada tipo de actividad.
+	\item Diseño de mecanismos que permiten adaptar la herramienta de un modo sencillo y rápido a nuevos requisitos de visualización o información a visualizar.
+\end{itemize}
+
+De esta forma se puede apreciar que los diferentes objetivos que fueron identificados en la sección \ref{sec:objetivos} han sido alcanzados satisfactoriamente.
+
+Por otro lado, la arquitectura de ambos componentes ha sido diseñada en base a jerarquías de herencia e interfaces. De este modo, se facilita notablemente el mantenimiento del sistema en lo que a futuros requisitos se refiere, tales como la adición de nuevas metáforas de visualización, nuevos modelos gráficos, o una estructura organizacional del desarrollo global más compleja. Además, destacar que se han aplicado patrones de diseño y buenas prácticas de programación en todos aquellos lugares en los que ha sido necesario, tratando siempre de lograr un compromiso entre la complejidad de la arquitectura y los principios de alta cohesión y bajo acoplamiento entre clases.
+
+Otro punto importante es la naturaleza multiplataforma e independiente de la arquitectura de la que goza el motor gráfico. En este aspecto se ha invertido mucho esfuerzo para abstraer, tanto al programador como al usuario final, de la dependencia de librerías nativas para poder generar gráficos en tres dimensiones. Así pues, se han provisto mecanismos que automatizan las labores de descarga e instalación de este tipo de librerías tanto en el proceso de construcción del proyecto como en la puesta en producción y ejecución del mismo, haciendo posible su portabilidad a sistemas basados en Microsoft Windows, GNU/Linux y MacOS, en sus versiones de 32 y 64 bits.
+
+También es conveniente puntualizar que el motor gráfico es completamente independiente de la aplicación que lo contiene. Por esta razón, todo tipo de aplicación, cualquiera que sea su índole -escritorio, web o móvil- y área de aplicación -no sólo desarrollo global-, puede incorporarlo y beneficiarse de todas su cualidades, entre las que destacan la generación de gráficos 3D, la navegación interactiva a través de la escena y la selección de los elementos que se encuentran en la misma.
+
+Finalmente, destacar el sistema de autenticación y control de acceso que se ha incorporado en la aplicación web. Se trata de un sistema basado tecnologías que actualmente se implementa en sistemas gubernamentales, aplicaciones militares y bancos. Por tanto, dado que este sistema será implantado en empresas, la seguridad es un aspecto que se ha tenido muy en cuenta.
+
+
+\section{Trabajo actual y futuras mejoras}
+
+El sistema que se ha obtenido durante la elaboración de este PFC es un desarrollo real para empresa con un alto grado de complejidad. Por lo tanto, se trata de un proyecto que sigue vivo y que actualmente está recibiendo un conjunto de modificaciones y ampliaciones que quedan fuera del objetivo de este PFC. Entre ellas destacan las siguientes características:
+
+\begin{itemize}
+	\item Gestión de usuarios, grupos y roles.
+	\item Incorporación de distintos niveles de topografía en la escena. Esto permite agregar una nueva dimensión a las metáforas, con el objetivo de configurar la superficie del terreno y elevar determinados elementos o barrios.
+	\item Posibilidad de elegir entre distintos métodos de normalización en la generación de gráficos 3D. Esta característica permitirá que no haya elementos excesivamente grandes o excesivamente pequeños en la escena.
+	\item Capacidad de definir nuevas entidades empleadas en el paradigma del desarrollo global mediante ficheros XML. Estos ficheros XML se emplearán para construir clases y objetos en tiempo de ejecución, que serán utilizados en las tareas de visualización y configuración de perfiles.
+\end{itemize}
+
+Por último, destacar que actualmente ya se encuentra publicada la primera versión de la especificación del API de WebGL. Por tanto, se realizará un estudio de viabilidad y eficiencia para comprobar las ventajas e inconvenientes que acarrearía migrar el motor gráfico a dicha tecnología.
+
+
+\section{Conocimientos adquiridos}
+
+Los conocimientos adquiridos son el mejor sabor de boca que se queda después de finalizar el desarrollo de este PFC. Cuestiones como la aplicación y seguimiento de una metodología de desarrollo en un caso real, así como abordar todas las fases del ciclo de vida de un proyecto, han sido experiencias muy importantes. No obstante, destaca el perfil profesional, basado en tecnologías Java que actualmente de utilizan en empresa, que se ha forjado durante todo este proceso.
+
+Las características más importantes más importantes de dicho perfil son las siguientes:
+
+\begin{itemize}
+	\item Gestión del ciclo de vida de proyectos mediante \textbf{Maven}.
+	
+	\item Uso de \textbf{Spring Framework} como capa de comunicación entre múltiples librerías basadas en Java, inyección de dependencias y creación de \textit{beans} mediante el contenedor IoC (Inversion of Control).
+	
+	\item Implementación de un sistema de autenticación y control de acceso mediante \textbf{Spring Security}, antes conocido como Acegi Security.
+	
+	\item Manejo de la persistencia mediante \textbf{Hibernate}, \textbf{JPA} y las facilidades que ofrece Spring.
+	
+	\item Desarrollo de aplicaciones web basadas en \textbf{Struts2} con todo el conocimiento adicional que ello conlleva (interceptores, validadores, acciones, etcétera).
+
+	\item Diseño e implementación de una arquitectura de pruebas extensible y reutilizable mediante \textbf{DBUnit}, \textbf{JUnit}, \textbf{Spring-Test} y \textbf{Canoo WebTest}.
+	
+	\item Experiencia en el diseño y desarrollo de páginas web dinámicas mediante \textbf{AJAX} y \textbf{JavaScript}.
+	
+	\item Generación de gráficos en tres dimensiones mediante \textbf{OpenGL}.
+\end{itemize}
+
+Por último, denotar los conocimientos docentes adquiridos en diferentes disciplinas como informática gráfica, ingeniería del software y bases de datos, entre otras.

@@ -1,0 +1,6 @@
+url=http://localhost:8081/desglosa-web/login
+cookies=1
+cookie.0.name=JSESSIONID
+cookie.0.domain=localhost
+cookie.0.value=A3742B8090499CDBF18D4E80048AE4C7
+cookie.0.path=/desglosa-web

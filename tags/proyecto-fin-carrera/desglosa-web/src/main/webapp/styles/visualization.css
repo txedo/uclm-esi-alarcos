@@ -1,0 +1,93 @@
+#filter {
+	margin-bottom: 15px;
+}
+
+fieldset {
+	padding-bottom: 0px;
+}
+
+#companyFilter {
+	float: left;
+}
+
+#factoryFilter {
+	float: left;
+	margin-left: 15px;
+}
+
+#projectFilter {
+    float: left;
+    margin-left: 15px;
+    border-left: 1px solid #848484;
+}
+
+.filter {
+	width: 30%;
+}
+
+.filter select {
+	width: 215px;
+}
+
+.filter span {
+	display: block;
+}
+
+.disabled {
+	background-color: #f1f1f1;
+}
+
+#legend {
+	clear: left;
+	float: right;
+}
+
+#workingArea {
+	position:relative;
+	height:450px
+}
+
+.canvas {
+ 	position: relative;
+/* 	top: 0; */
+/* 	left:0; */
+	width: 600px;
+	height: 400px;
+	float: left;
+}
+
+#jogl_canvas {
+	height: auto;
+}
+
+#joglCanvasControls {
+	float: right;
+}
+
+#tabs {
+	top: 0;
+	right: 0;
+	width: 350px;
+	float: right;
+}
+
+#profileChooserDialogBody p {
+	margin-bottom: 0;
+	margin-top: 8px;
+	padding-bottom: 0;
+}
+
+#profibleChooserDialogGroupBy p {
+	margin-bottom: 0;
+	padding-top: 8px;
+	padding-bottom: 0;
+}
+
+ul.groupBy {
+	list-style: none;
+}
+
+.last {
+	border-left: 1px solid black;
+	padding-left: 8px;
+}

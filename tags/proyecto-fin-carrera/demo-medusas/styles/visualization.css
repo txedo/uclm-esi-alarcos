@@ -1,0 +1,41 @@
+.canvas {
+	top: 0;
+	left:0;
+	width: 600px;
+	height: 400px;
+}
+
+#joglCanvasControls {
+	
+}
+
+table.default {
+	border-collapse: collapse;
+	margin: 0 auto;
+}
+
+table.default tr.odd {
+	background-color: #dbf1ff;
+}
+
+table.default th {
+	padding: 5px;	
+}
+
+table.default thead tr {
+	border-bottom: 2px solid #1e557a;
+}
+
+table.default thead tr th {
+	padding-bottom: 5px;
+	text-align: center;
+	font-weight: bold;
+}
+
+table.default td {
+	padding: 5px 10px;	
+}
+
+table.default tfoot tr td {
+	text-align: center;
+}

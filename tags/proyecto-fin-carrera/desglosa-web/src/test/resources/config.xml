@@ -1,0 +1,11 @@
+<config host="${host}"
+		port="${port}"
+		protocol="http"
+    	basepath="${webapp.name}"
+    	resultpath="${resultpath}"
+    	saveresponse="${saveresponse}"
+    	summary="${summary}"
+    	haltonerror="${haltonerror}"
+    	haltonfailure="${haltonfailure}">
+    <header name="Accept-Language" value="${user.language}"/>
+</config>

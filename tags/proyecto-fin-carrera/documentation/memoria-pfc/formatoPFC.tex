@@ -1,0 +1,313 @@
+%====================================
+%====================================
+% PAQUETES BÁSICOS
+\usepackage[spanish,english]{babel} % Internacionalización de LaTeX
+\usepackage[ansinew]{inputenx}% Código de caracteres de teclado
+\usepackage[T1]{fontenc}      % Codificación de fundiciones
+\usepackage{times}            % Familia base de fundiciones
+\usepackage{microtype}        % Mejoras para pdflatex
+%====================================
+\usepackage{pifont}						% Acceder a los caracteres de Zapf Dingbats con la orden \ding
+%====================================
+% PAQUETES PARA GENERAR SÍMBOLOS ESPECIALES
+\usepackage{textcomp}
+%\usepackage{eurosym} 
+% Incompatible con el paquete textcomp
+\usepackage{marvosym,pifont}
+\usepackage{url}      % Conveniente para escribir URL
+\usepackage{amssymb} % para simbolos matemáticos
+%====================================
+%====================================
+% PAQUETES PARA AJUSTE DE MÁRGENES, ESPACIOS
+\usepackage[top=2.5cm,bottom=2.5cm,inner=3.5cm,outer=2cm]{geometry}
+%\usepackage{setspace}         % Interlineado
+\usepackage{fancyhdr}         % Cabeceras y pies personalizados
+%\usepackage[% Utiliza el tema requerido eliminando la marca %
+%Sonny%
+%%Lenny%
+%%Glenn%
+%%Conny%
+%%Rejne%
+%%Bjarne%
+%%Bjornstrup%
+%]{fncychap}  % Cabeceras de capítulos tematizados
+\usepackage{titlesec} % Personalización completa de títulos de secciones (incompatible con fncychap)
+\usepackage[margin=10pt,font=small,labelfont=bf,%
+format=hang]{caption} % Personalización de títulos de figuras y tablas
+%\usepackage[bottom]{footmisc}
+%\usepackage{indentfirst} % indent the first paragraph after a section heading
+
+%====================================
+%====================================
+% PAQUETES PARA INCLUIR FIGURAS E IMÁGENES
+\usepackage[final]{graphicx}  % Inclusión de figuras
+\usepackage{subfigure}        % Inclusión de subfiguras
+
+%====================================
+%====================================
+% PAQUETES PARA LISTADOS DE CÓDIGO FUENTE 
+\usepackage{listings} % Inclusión de listados de código
+\usepackage{fancyvrb}
+\usepackage[ruled,vlined,portuguese]{algorithm2e}
+%\usepackage[lined,boxed,commentsnumbered]{algorithm2e}
+%\usepackage[lined,boxed,commentsnumbered,portuguese]{algorithm2e}
+% Paquete específico para la generación de algorithmos en LaTeX. Por su complejidad se requiere consultar la documentación del paquete para su correcto uso. La selección de idioma portugués soluciona algunos de los problemas de internacionalización al español (obviamente, no todos).
+%NOTA: Adviertase la 'e' final de la opción de idioma portugues.
+
+%====================================
+%====================================
+% PAQUETES PARA BIBLIOGRAFÍA, ÍNDICES Y GLOSARIOS
+\usepackage{babelbib} % Paquete para crear bibliografías multilingues.
+\selectlanguage{spanish} % Seleccionamos el idioma por defecto del documento
+
+\usepackage{makeidx} % Paquete para índice alfabético
+\makeindex
+
+%====================================
+%====================================
+% PAQUETES ESPECIALES 
+\usepackage{framed}     % Recuadro en torno a texto 
+%\usepackage{fancybox}  % Recuadro exóticos (incompatible con fancyvrb)
+
+%\usepackage{siunitx}    % Para imprimir núms. y unidades del SI en notación científica
+%
+\usepackage{array}
+\usepackage{hhline}
+\usepackage[table]{xcolor}     % Manejo del color
+\usepackage{longtable}
+\usepackage{multirow}
+%
+\usepackage{pdfpages}   % Inclusión de páginas PDF
+%
+%\usepackage{hyperref}   % Creación de documentos PDF con hiperenlaces
+
+\usepackage{float}		% Para poner un marco alrededor de las figuras
+\usepackage{wrapfig}	% Para escribir texto alrededor de las figuras
+\usepackage{dtklogos}	% Para logos como \BibTeX
+
+
+%====================================
+%====================================
+%====================================
+%====================================
+% COMANDOS DEFINIDOS POR EL USUARIO
+%====================================
+
+% Macro para insertar una imagen
+%       Uso: \imagen{nombreFichero}{Factor escala}{Caption (leyenda)}{Label (identificador para referenciarla)}
+\def\imagen#1#2#3#4{
+ \floatstyle{plain} % plain, boxed,ruled
+ \restylefloat{figure}
+ \begin{figure}[!ht]
+ \begin{center}
+   \includegraphics[keepaspectratio,scale=#2]{#1}
+ \caption {#3}
+ \label{#4}
+ \end{center}
+ \end{figure}
+}
+
+\def\imagenH#1#2#3#4{
+ \floatstyle{plain} % plain, boxed,ruled
+ \restylefloat{figure}
+ \begin{figure}[H]
+ \begin{center}
+   \includegraphics[keepaspectratio,scale=#2]{#1}
+ \caption {#3}
+ \label{#4}
+ \end{center}
+ \end{figure}
+}
+
+% Macro para insertar una imagen con borde en el marco
+%       Uso: \imagenBorde{nombreFichero}{Factor escala}{Caption (leyenda)}{Label (identificador para referenciarla)}
+\def\imagenBorde#1#2#3#4{
+ \floatstyle{boxed} % plain, boxed,ruled
+ \restylefloat{figure}
+ \begin{figure}[!ht]
+ \centering
+ 	\includegraphics[keepaspectratio,scale=#2]{#1}
+ \caption{#3}
+ \label{#4}
+\end{figure}}
+
+\def\imagenBordeH#1#2#3#4{
+ \floatstyle{boxed} % plain, boxed,ruled
+ \restylefloat{figure}
+ \begin{figure}[H]
+ \centering
+ 	\includegraphics[keepaspectratio,scale=#2]{#1}
+ \caption{#3}
+ \label{#4}
+\end{figure}}
+
+% Macro para insertar una imagen y escribir texto alrededor de ella
+%       Uso: \imagenWrapped{nombreFichero}{Factor escala}{Caption (leyenda)}{Label (identificador para referenciarla)}{r (right) ó l (left)}
+\def\imagenWrapped#1#2#3#4#5{
+\begin{wrapfigure}{#5}{0.5\textwidth}
+  \vspace{-20pt}
+  \begin{center}
+    \includegraphics[keepaspectratio,scale=#2]{#1}
+  \end{center}
+  \vspace{-20pt}
+  \caption{#3}
+  \label{#4}
+  \vspace{-10pt}
+\end{wrapfigure}}
+
+% ------------------ Macro para cambiar el interlineado ---------------------
+%       Uso: \interlineado{tamaño en puntos: 1.0 es normal, 2.0 doble...}
+% -----------------------------------------------------------------------------
+\newcommand{\interlineado}[1]{
+    \renewcommand{\baselinestretch}{#1}  % -- Cambiamos interlineado
+	 \large\normalsize % ---------------------- Para que cambie de verdad
+}
+
+% ------- Definimos el interlineado Base para todo el documento ------
+\newcommand{\interlineadoBase}{1.5}
+\interlineado{1.0}
+
+%\newcommand{\BibTeX}{{\sc Bib}\TeX}
+\newcommand{\autor}{Jose Domingo López López} % Aquí tu nombre
+\newcommand{\director}{M\textordfeminine{} Ángeles Moraga de la Rubia}
+%\newcommand{\tutor}{M\textordfeminine{} Ángeles Moraga de la Rubia}
+\newcommand{\titulopfc}{DESGLOSA: Un sistema de visualización 3D para dar soporte al Desarrollo Global de Software}
+
+%====================================
+% Declaración de entorno para resumen (abstract) en clase book
+\newenvironment{abstract}%
+{\cleardoublepage\null \vfill\begin{center}%
+\bfseries \abstractname \end{center}}%
+{\vfill \null}
+
+%====================================
+%====================================
+% Control de espaciado entre párrafos e indentación
+
+%\setlength{\parskip}{1.3ex plus 0.2ex minus 0.2ex}
+%\setlength{\parindent}{8ex}
+%====================================
+%====================================
+% Control de las cabeceras y pies de página
+\fancyhf{}
+\fancyhead[LO]{\leftmark} 
+% En las páginas impares, parte izquierda del encabezado, aparecerá el nombre de capítulo
+\fancyhead[RE]{\rightmark} 
+% En las páginas pares, parte derecha del encabezado, aparecerá el nombre de sección
+\fancyhead[RO,LE]{\thepage} % Números de página en las esquinas de los encabezados
+
+\renewcommand{\chaptermark}[1]{\markboth{\textbf{\thechapter.#1}}{}} % Formato para el capítulo: N. Nombre
+\renewcommand{\sectionmark}[1]{\markright{\textbf{\thesection. #1}}} % Formato para la sección: N.M. Nombre
+\renewcommand{\headrulewidth}{0.6pt} 
+% Ancho de la línea horizontal bajo el encabezado
+%\renewcommand{\footrulewidth}{0.6pt} 
+% Ancho de la línea horizontal sobre el pie (que en este ejemplo está vacío)
+%\setlength{\headheight}{16pt} % Por defecto \headheight 12pt, pero se agranda al emplear fancyhdr
+\setlength{\headheight}{1.5\headheight} % Aumenta la altura del encabezado en una vez y media
+
+% Código para evitar que en clase book la última página de capítulo tenga cabecera y pie si dicha página está en blanco. 
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside
+\ifodd\c@page
+\else\hbox{}\thispagestyle{empty}\newpage
+\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother
+
+% Código de ejemplo (titlesec) para cambiar el aspecto de capítulos
+\newcommand{\bigrule}{\titlerule[0.5mm]}
+\titleformat{\chapter}[display] % cambiamos el formato de los capítulos
+{\bfseries\Huge\sffamily} % por defecto se usarán caracteres de tamaño \Huge en negrita
+{% contenido de la etiqueta
+\titlerule % línea horizontal
+\filleft % texto alineado a la derecha
+\Large\chaptertitlename\ % "Capítulo" o "Apéndice" en tamaño \Large en lugar de \Huge
+\Large\thechapter} % número de capítulo en tamaño \Large
+{0mm} % espacio mínimo entre etiqueta y cuerpo
+{\filleft} % texto del cuerpo alineado a la derecha
+[\vspace{0.5mm} \bigrule] % después del cuerpo, dejar espacio vertical y trazar línea horizontal gruesa
+
+% Código para evitar la división de notas al pie en págs. diferentes
+\interfootnotelinepenalty=10000
+%====================================
+%====================================
+% Declaraciones para paquete graphicx
+\graphicspath{{Figuras//}} % Path de búsqueda de ficheros
+\DeclareGraphicsExtensions{.pdf,.png,.jpg} % Precedencia de extensiones
+
+%====================================
+%====================================
+% Declaraciones para paquete listings
+\lstset{ % Las opciones aquí incluidas deben servir de ejemplo, ya que para una lista exhaustiva se debe consultar la documentación del paquete.
+language=Java,           % Lenguaje de programación del código
+basicstyle=\footnotesize,       
+numbers=left,                   
+numberstyle=\footnotesize,      
+stepnumber=1,                   
+numbersep=6pt,                  
+showspaces=false,        % muestra los espacio en blanco
+showstringspaces=true,   % subraya los espacios en el interior de cadenas
+showtabs=true,           % muestra los tabuladores
+frame=single,	                  
+tabsize=2,	                    
+captionpos=b,            % ajusta la posición de títulos
+breaklines=true,         % ajusta la división automática de líneas
+breakatwhitespace=false,
+xleftmargin=1cm,
+xrightmargin=1cm,
+keywordstyle=,
+ndkeywordstyle=,
+}
+
+\lstset{ %
+  language=XML,
+  morekeywords={encoding,beans:beans,xmlns,xmlns:beans,xmlns:xsi,xmlns:schemaLocation,global-method-security,secured-annotations,http,auto-config,intercept-url,pattern,filters,access,form-login,login-page,default-target-url,always-use-default-target,authetication-failure-url,anonymous,http-basic,logout,logout-url,logout-success-url,invalidate-session,remember-me,authentication-provider,user-service-ref,password-encoder,hash,beans:bean,id,class,beans:property,name,ref,value,beans:props,beans:prop,key}
+}
+
+
+% http://lenaherrmann.net/2010/05/20/javascript-syntax-highlighting-in-the-latex-listings-package
+\usepackage{color}
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=,
+  identifierstyle=,
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\ttfamily,
+  stringstyle=\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+   language=JavaScript,
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+
+%====================================
+%====================================
+% Declaraciones para paquete fancyvbr
+
+% Ejemplo del configuración del entorno Verbatim para el tratamiento de listados de código fuente. Aquí en realidad se define un entorno personal con unas opciones particulares para el entorno Verbatim.
+
+\DefineVerbatimEnvironment % Las opciones aquí incluidas deben servir de ejemplo, ya que para una lista exhaustiva se debe consultar la doucmentación del paquete.
+{listado}{Verbatim}{numbers=left,numbersep=6pt,frame=single,%
+fontsize=\footnotesize,commandchars=\#\[\],%
+xleftmargin=1cm,xrightmargin=1cm}

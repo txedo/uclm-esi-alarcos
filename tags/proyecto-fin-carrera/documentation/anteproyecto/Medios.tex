@@ -1,0 +1,28 @@
+\section{Medios que se pretenden utilizar} \label{sec:medios}
+
+Los medios y recursos necesarios para el desarrollo y despliegue del PFC se categorizan en \textit{medios hardware} y \textit{medios software}.
+
+
+\subsection{Medios hardware}
+
+Tanto para el desarrollo como el despliegue del sistema bastará con un ordenador sobremesa o portátil. Dicho ordenador deberá estar dotado de una conexión a Internet y actuar como servidor web para permitir que los usuarios puedan acceder a la aplicación por medio de un navegador web convencional.
+
+La tarjeta gráfica del sistema requiere especial mención. Ésta no tiene por qué poseer una potencia extraordinaria, pero es de vital importancia que disponga de sus controladores gráficos debidamente instalados para una correcta ejecución del motor gráfico.
+
+
+\subsection{Medios software}
+
+Tanto la aplicación web como el motor gráfico serán desarrollados en tecnologías basadas en Java y, debido a su naturaleza \textit{multiplataforma}, se espera que no existan restricciones en cuanto al sistema operativo que el ordenador debe ejecutar. Sin embargo, éste debe tener debidamente instalado el entorno de ejecución Java (JRE o \textit{Java Runtime Environment})
+
+Por otro lado, son necesarias las siguientes herramientas:
+\begin{myitemize}
+	\item JDK 1.4+ (\textit{Java Development Kit}).
+	\item Un entorno integrado de desarrollo (IDE o \textit{Integrated Development Environment}). Se utilizará \textbf{Eclipse EE Helios}.
+	\item Un navegador web con JavaScript habilitado para que se pueda establecer una comunicación entre la aplicación web y el motor gráfico, que estará incrustado en un applet, y poder beneficiarse de las características de la tecnología AJAX (\textit{Asynchronous JavaScript And XML}).
+	\item Un sistema para la gestión y construcción de proyectos. Se hará uso de \textbf{Maven 2}.
+	\item Un servidor web capaz de desplegar aplicaciones web con estructura WAR (\textit{Web-Archive} ). \textbf{Apache Tomcat 7} es la solución más factible gracias a su licencia, eficiencia y rendimiento.
+	\item Un sistema gestor de bases de datos. Se empleará \textbf{MySQL Community Server 5.x}.
+	\item \textbf{Visual Paradigm} para modelado y diseño de diagramas UML.
+	\item \LaTeX{} para la elaboración de documentación técnica asociada al proyecto.
+	\item GIMP e Inkscape para el diseño y edición de figuras, imágenes y gráficos.
+\end{myitemize}

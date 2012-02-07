@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+    <summary successful="yes" name="incorrect username or password" duration="84131" starttime="Thu Dec 01 13:37:00 CET 2011">
+<topsteps total="37" successful="37" failed="0" notexecuted="0"/>
+<steps total="37" successful="37" failed="0" notexecuted="0"/>
+<timingprofile average="16948" number="4">
+<range from="0" to="1" number="0"/>
+<range from="1" to="3" number="0"/>
+<range from="3" to="5" number="4"/>
+<range from="5" to="10" number="4"/>
+<range from="10" to="30" number="4"/>
+<range from="30" number="0"/>
+</timingprofile>
+</summary>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MenuConfig>
+    <Displayers>
+        <Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer" />
+        <Displayer name="Simple" type="net.sf.navigator.displayer.SimpleMenuDisplayer" />
+    </Displayers>
+    <Menus>
+    	<Menu name="Home" title="menu.home" description="Home Menu" page="/" />
+    	<Menu name="ManagerCheckMenu" title="menu.check" description="Check Menu" roles="ROLE_MANAGER">
+            <Item name="CheckCompanies" title="menu.check.companies" page="/listCompanies" />
+            <Item name="CheckFactories" title="menu.check.factories" page="/listFactories" />
+    	</Menu>
+    	<Menu name="UserCheckMenu" title="menu.check" description="Check Menu" roles="ROLE_USER">
+            <Item name="ManageCompanies" title="menu.check.companies" page="/listCompanies" />
+            <Item name="ManageFactories" title="menu.check.factories" page="/listFactories" />
+            <Item name="ManageProjects" title="menu.check.projects" page="/listProjects" />
+            <Item name="ManageSubprojects" title="menu.check.subprojects" page="/listSubprojects" />
+    	</Menu>
+    	<Menu name="AdminMenu" title="menu.admin" description="Admin Menu" roles="ROLE_ADMIN">
+            <Item name="ManageCompanies" title="menu.manage.companies" page="/listCompanies" />
+            <Item name="ManageFactories" title="menu.manage.factories" page="/listFactories" />
+            <Item name="ManageProfiles" title="menu.manage.profiles" page="/listProfiles" />
+    	</Menu>
+    	<Menu name="ManagerMenu" title="menu.manager" description="Manager Menu" roles="ROLE_ADMIN,ROLE_MANAGER">
+    		<Item name="ManageProjects" title="menu.manage.projects" page="/listProjects" />
+    		<Item name="ManageSubprojects" title="menu.manage.subprojects" page="/listSubprojects" />
+    	</Menu>
+    	<Menu name="Visualization" title="menu.visualization" description="Visualization Menu" page="/visualization" roles="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER" />
+    	<Menu name="Logout" title="menu.logout" description="Logout" page="/logout" roles="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER" />
+    	<Menu name="Login" title="menu.login" page="/login" />
+        <Menu name="Contact" title="menu.contact" description="Contact Menu" page="/contactUs" />
+    </Menus>
+</MenuConfig>
