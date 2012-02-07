@@ -46,8 +46,8 @@
 				</div>
 		    	<div class="clr"></div>
 			    <div class="header_img"><img src="images/logo.png" alt="" width="271" height="234" />
-					<h2><s:text name="desglosa.fullname" /></h2>
-					<p><strong><s:text name="desglosa.tagline" /></strong><br />
+					<h2 style="font-size:40px"><s:text name="desglosa.fullname" /></h2>
+					<p style="font-size:13px"><strong><s:text name="desglosa.tagline" /></strong><br />
 					<s:text name="desglosa.description" />
 					</p>
 					<div class="clr"></div>
@@ -69,26 +69,36 @@
 			<div class="fbg_resize">
 				<div class="col c1">
                     <h2><span><s:text name="label.contact_information"/></span></h2>
-                    <p>Jose Domingo L&oacute;pez L&oacute;pez<br />
-                    Ingeniero Técnico en Informática de Sistemas<br />
-                    <br />
+                    <div><p style="margin-bottom: 0px;">
+                    Mario Gerardo Piattini Velthuis<br />
+                    Mario.Piattini [AT] uclm [DOT] es<br />
+                    </p></div>
+                    <div><p style="margin-top:0px; margin-bottom: 0px;">
 					Grupo de Investigación Alarcos<br />
-					Escuela Superior de Informática. Ciudad Real<br />
-					Teléfono:  (+34) 926 295300 ext.6480<br />
-					lopez.josedomingo [AT] gmail [DOT] com
-					</p>
+					Escuela Superior de Informática<br />
+					Universidad de Castilla-La Mancha<br />
+					</p></div>
 				</div>
 				<div class="col c2">
-                    <h2><span>Escuela Superior de Informática</span></h2>
-                    <p>Paseo de la Universidad, 4<br />
-                    13071, Ciudad Real<br />
-                    Teléfono: 926 29 53 00<br />
-                    Fax: 926 29 53 54<br />
-                    esi [AT] uclm [DOT] es</p>
+                    <h2><span><s:text name="label.coordinating_company"/></span></h2>
+                    <div><p style="margin-bottom: 0px;">Indra Software Labs, S.L.</p></div>
+                    <div><p style="margin-top:0px; margin-bottom: 0px;">
+                    María José Benito Carazo <br />
+                    mjbenito [AT] indra [DOT] es <br />
+                    </p></div>
+                    <div><p style="margin-top:0px; margin-bottom: 0px;">
+                    Yolanda Hernández González <br />
+                    yhernandezg [AT] indra [DOT] es <br />
+                    </p></div>
+                    <div><p style="margin-top:0px; margin-bottom: 0px;">
+                    Ángel Sevilla García <br />
+                   	asevillag [AT] indra [DOT] es <br />
+                    </p></div>
 				</div>
 				<div class="col c3">
 					<h2><span><s:text name="label.highlighted"/></span></h2>
-					<p><a href="http://innovation-labs.com/origin/" target="_blank">Proyecto ORIGIN</a><br />
+					<p><a href="http://www.indracompany.com/" target="_blank">Indra</a><br />
+					<a href="http://innovation-labs.com/origin/" target="_blank">Proyecto ORIGIN</a><br />
 					<a href="http://www.indracompany.com/sostenibilidad-e-innovacion/proyectos-innovacion/origin-organizaciones-inteligentes-globales-innovad" target="_blank">Proyectos de Innovación</a><br />
 					<a href="http://alarcos.uclm.es" target="_blank">Grupo de investigación Alarcos</a><br />
 					<a href="http://www.esi.uclm.es" target="_blank">Escuela Superior de Informática (UCLM)</a><br />
@@ -104,9 +114,9 @@
                     <p class="lf"><fmt:message key="label.loggedin"/>: <security:authentication property="principal.username"></security:authentication></p>
                     <div class="clr"></div>
                 </security:authorize>
-                <p class="lf">&copy; Copyright <s:a href="%{home}">Desglosa</s:a>.</p>
+<%--                 <p class="lf">&copy; Copyright <s:a href="%{home}">Desglosa</s:a>.</p> --%>
 				
-				<p class="rf">Layout by Cool <a href="http://www.coolwebtemplates.net/">Website Templates</a></p>
+<!-- 				<p class="rf">Layout by Cool <a href="http://www.coolwebtemplates.net/">Website Templates</a></p> -->
 				<div class="clr"></div>
 			</div>
 		</div>
