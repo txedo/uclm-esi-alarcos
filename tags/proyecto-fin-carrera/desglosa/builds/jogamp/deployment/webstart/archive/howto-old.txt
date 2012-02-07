@@ -215,7 +215,77 @@ Acto seguido nos vamos al directorio de nuestro repositorio local de Maven y com
 		
 		
 		
+
 		
+		                <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                                <execution>
+                                        <id>unzip</id>
+                                        <phase>compile</phase>
+                                        <goals>
+                                                <goal>run</goal>
+                                        </goals>
+                                        <configuration>                                                                                 
+                                                <target name="libraries.jogl">
+                                                    <condition property="joglostype" value="windows-i586">
+                                                        <and>
+                                                            <os family="windows" />
+                                                            <or>
+                                                                <os arch="i386" />
+                                                                <os arch="x86" />
+                                                            </or>
+                                                        </and>
+                                                    </condition>
+                                                    <condition property="joglostype" value="windows-amd64">
+                                                        <and>
+                                                            <os family="windows" />
+                                                            <os arch="amd64" />
+                                                        </and>
+                                                    </condition>
+                                                    <condition property="joglostype" value="linux-i586">
+                                                        <and>
+                                                            <os name="Linux" />
+                                                            <or>
+                                                                <os arch="i386" />
+                                                                <os arch="x86" />
+                                                            </or>
+                                                        </and>
+                                                    </condition>
+                                                    <condition property="joglostype" value="linux-amd64">
+                                                        <and>
+                                                            <os name="Linux" />
+                                                            <or>
+                                                                <os arch="AMD64" />
+                                                                <os arch="x86_64" />
+                                                            </or>
+                                                        </and>
+                                                    </condition>
+                                                    <echo>Detected operating system: ${joglostype}</echo>
+                                                    <echo>(if invalid OS, update ant build file)</echo>
+                                                
+                                                    <mkdir dir="target/lib" />
+                                                    <get src="http://download.java.net/media/jogl/builds/archive/jsr-231-1.1.1a/jogl-1.1.1a-${joglostype}.zip" dest="target/lib/jogl.zip" usetimestamp="true" />
+                                                        
+                                                    <unzip src="target/lib/jogl.zip" dest="target/lib">
+                                                        <patternset>
+                                                            <include name="**/*.so" />
+                                                            <include name="**/*.jnilib" />
+                                                            <include name="**/*.dll" />
+                                                        </patternset>
+                                                        <mapper type="flatten" />
+                                                    </unzip>
+                                                    
+                                                    <delete file="target/lib/jogl.zip" />
+                                                </target>
+                                        </configuration>
+                                </execution>
+                        </executions>
+                </plugin>
+				
+				
 		
 		
 mvn help:describe -Dplugin=org.apache.maven.plugins:maven-antrun-plugin
