@@ -32,6 +32,10 @@
 		            <c:set var="measureTooltip" value="${measure.description} ${labelFloat}"></c:set>
                     <s:textfield cssClass="floatNumber" id="%{#attr.measureName}" name="%{#attr.measureName}" title="%{#attr.measureTooltip}"/>
                 </c:if>
+                <c:if test="${measure.type== 'String'}">
+                    <c:set var="measureTooltip" value="${measure.description}"></c:set>
+                    <s:textfield cssClass="stringField" id="%{#attr.measureName}" name="%{#attr.measureName}" title="%{#attr.measureTooltip}"/>
+                </c:if>
 		        <s:fielderror><s:param>error.project.${measureName}</s:param></s:fielderror>
 		    </li>
 		</c:forEach>
@@ -47,7 +51,7 @@
 // execute your scripts when the DOM is ready. this is a good habit
 $(function() {
 	// select all desired input fields and attach tooltips to them
-	$("input.floatNumber[type=text],input.intNumber[type=text]").tooltip({
+	$("input.floatNumber[type=text],input.intNumber[type=text],input.stringField[type=text]").tooltip({
 		tipClass: "inputtooltip",
 	    // place tooltip on the right edge
 	    position: "center right",

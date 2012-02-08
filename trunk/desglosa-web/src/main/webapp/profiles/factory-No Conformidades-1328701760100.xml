@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile model="model.gl.knowledge.GLTower" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Factory">
+    <name>NoConformidades</name>
+    <description>Alto = En proceso. Relleno = Cerradas. Ancho = Gestionadas. Profundidad = Planes no gestionados</description>
+    <mappings>
+        <mapping>
+            <entityAttr name="id" type="int"/>
+            <modelAttr name="id" type="int"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="noConformiadadesEnProceso" type="int"/>
+            <modelAttr name="height" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="noConformidadesCerradas" type="int"/>
+            <modelAttr name="innerHeight" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="noConformidadesGestionadas" type="int"/>
+            <modelAttr name="width" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="planesProyectoNoGestionados" type="int"/>
+            <modelAttr name="depth" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="mostRepresentativeMarket_color" type="hexcolor"/>
+            <modelAttr name="color" type="color"/>
+        </mapping>
+    </mappings>
+    <constants>
+        <constant name="scale" type="float"/>
+    </constants>
+    <caption/>
+</profile>

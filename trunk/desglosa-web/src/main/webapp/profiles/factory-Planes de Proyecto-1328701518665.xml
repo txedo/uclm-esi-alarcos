@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile model="model.gl.knowledge.GLAntennaBall" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Factory">
+    <name>PlanesDeProyecto</name>
+    <description>Gestionados = Bola verde. No Gestionados= Bola Roja. En Proceso = Tamaño</description>
+    <mappings>
+        <mapping>
+            <entityAttr name="id" type="int"/>
+            <modelAttr name="id" type="int"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="planesProyectoGestionados" type="int"/>
+            <modelAttr name="rightChildBallValue" type="string"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="planesProyectoNoGestionados" type="int"/>
+            <modelAttr name="leftChildBallValue" type="string"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="planesProyectoEnProceso" type="int"/>
+            <modelAttr name="parentBallRadius" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="name" type="string"/>
+            <modelAttr name="label" type="string"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="mostRepresentativeMarket_color" type="hexcolor"/>
+            <modelAttr name="color" type="color"/>
+        </mapping>
+    </mappings>
+    <constants>
+        <constant name="scale" type="float"/>
+        <constant name="progressionMark" type="boolean">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:boolean">true</value>
+        </constant>
+    </constants>
+    <caption/>
+</profile>

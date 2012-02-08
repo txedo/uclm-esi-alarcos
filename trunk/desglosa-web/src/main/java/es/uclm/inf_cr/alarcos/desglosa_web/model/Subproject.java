@@ -23,9 +23,9 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
         @NamedQuery(name = "findSubprojectsByCompanyId", query = "select sp from Subproject sp, Factory f where sp.factory.id = f.id and f.company.id = :id group by sp.name"),
         @NamedQuery(name = "findSubprojectsByFactoryId", query = "select sp from Subproject sp where sp.factory.id = :id "),
         @NamedQuery(name = "findSubprojectsByProjectId", query = "select sp from Subproject sp where sp.project.id = :id "),
-        @NamedQuery(name = "numberSubprojectsPlanesGestionados", query = "select count(sp) from Subproject sp where sp.plan='Gestionados' and sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsPlanesGestionados", query = "select count(sp) from Subproject sp where sp.plan='Gestionado' and sp.factory.id = :id"),
         @NamedQuery(name = "numberSubprojectsPlanesEnProceso", query = "select count(sp) from Subproject sp where sp.plan='En proceso' and sp.factory.id = :id"),
-        @NamedQuery(name = "numberSubprojectsPlanesNoGestionados", query = "select count(sp) from Subproject sp where sp.plan='No gestionados' and sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsPlanesNoGestionados", query = "select count(sp) from Subproject sp where sp.plan='No gestionado' and sp.factory.id = :id"),
         @NamedQuery(name = "numberSubprojectsAuditoriasPlanificadas", query = "select count(sp) from Subproject sp where sp.audit='Planificada' and sp.factory.id = :id"),
         @NamedQuery(name = "numberSubprojectsAuditoriasRealizadas", query = "select count(sp) from Subproject sp where sp.audit='Realizada' and sp.factory.id = :id"),
         @NamedQuery(name = "numberSubprojectsAuditoriasCanceladas", query = "select count(sp) from Subproject sp where sp.audit='Cancelada' and sp.factory.id = :id"),
@@ -100,7 +100,7 @@ public class Subproject {
     private Float ratioFichaje;
     @Property @Measure
     private Float actividad;
-    @Property(description = "Los valores posibles son Gestionados, En proceso, No gestionados.") @Measure (description = "Los valores posibles son Gestionados, En proceso, No gestionados.")
+    @Property(description = "Los valores posibles son Gestionado, En proceso, No gestionado.") @Measure (description = "Los valores posibles son Gestionados, En proceso, No gestionados.")
     private String plan;
     @Property(description = "Los valores posibles son Planificada, Realizada, Cancelada, Aplazada") @Measure (description = "Los valores posibles son Planificada, Realizada, Cancelada, Aplazada")
     private String audit;
