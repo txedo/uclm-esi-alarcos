@@ -230,15 +230,24 @@ public class IGLFacadeImpl implements IGLFacade {
         for (GLObject glTower : towers) {
             if (normHeight > 0.0) {
                 ((GLTower) glTower).setHeight(((GLTower) glTower).getHeight() * GLTower.MAX_HEIGHT / normHeight);
+                if (((GLTower)glTower).getHeight() == 0.0f) {
+                    ((GLTower) glTower).setHeight(0.1f);
+                }
             }
             if (normInnerHeight > 0.0) {
                 ((GLTower) glTower).setInnerHeight(((GLTower) glTower).getInnerHeight() * GLTower.MAX_HEIGHT / normInnerHeight);
             }
             if (normWidth > 0.0) {
                 ((GLTower) glTower).setWidth(((GLTower) glTower).getWidth() * GLTower.MAX_WIDTH / normWidth);
+                if (((GLTower)glTower).getWidth() == 0.0f) {
+                    ((GLTower) glTower).setWidth(0.1f);
+                }
             }
             if (normDepth > 0.0) {
                 ((GLTower) glTower).setDepth(((GLTower) glTower).getDepth() * GLTower.MAX_DEPTH / normDepth);
+                if (((GLTower)glTower).getDepth() == 0.0f) {
+                    ((GLTower) glTower).setDepth(0.1f);
+                }
             }
         }
 
