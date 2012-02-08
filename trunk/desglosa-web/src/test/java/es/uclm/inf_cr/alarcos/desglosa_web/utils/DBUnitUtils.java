@@ -22,7 +22,8 @@ import org.dbunit.operation.DatabaseOperation;
 
 public class DBUnitUtils extends DBTestCase {
     private final static String DRIVER_CLASS = "com.mysql.jdbc.Driver";
-    private final static String CONNECTION_URL = "jdbc:mysql://localhost:3306/desglosadb";
+    private final static String SCHEMA = "desglosadb";
+    private final static String CONNECTION_URL = "jdbc:mysql://localhost:3306/" + SCHEMA;
     private final static String USERNAME = "desglosaadmin";
     private final static String PASSWORD = "nimdaasolgsed";
     
@@ -40,6 +41,7 @@ public class DBUnitUtils extends DBTestCase {
     private DBUnitUtils() {
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, DRIVER_CLASS);  
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, CONNECTION_URL);  
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA, SCHEMA);
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, USERNAME);  
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, PASSWORD); 
     }

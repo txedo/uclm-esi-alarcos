@@ -81,8 +81,7 @@ public class GenericDAOHibernate<T, PK extends Serializable> extends
     }
 
     @SuppressWarnings("unchecked")
-    public List<T> findByNamedQuery(String queryName,
-            Map<String, Object> queryParams) {
+    public List<T> findByNamedQuery(String queryName, Map<String, Object> queryParams) {
         String[] params = new String[queryParams.size()];
         Object[] values = new Object[queryParams.size()];
         int index = 0;
@@ -92,7 +91,22 @@ public class GenericDAOHibernate<T, PK extends Serializable> extends
             params[index] = key;
             values[index++] = queryParams.get(key);
         }
-        return getHibernateTemplate().findByNamedQueryAndNamedParam(queryName,
-                params, values);
+        return getHibernateTemplate().findByNamedQueryAndNamedParam(queryName, params, values);
     }
+    
+    public int numberByNamedQuery(String queryName, Map<String, Object> queryParams) {
+        String[] params = new String[queryParams.size()];
+        Object[] values = new Object[queryParams.size()];
+        int index = 0;
+        Iterator<String> i = queryParams.keySet().iterator();
+        while (i.hasNext()) {
+            String key = i.next();
+            params[index] = key;
+            values[index++] = queryParams.get(key);
+        }
+        Long number = (Long)getHibernateTemplate().findByNamedQueryAndNamedParam(queryName, params, values).get(0);
+        if (number == null) number = 0l;
+        return number.intValue();
+    }
+    
 }

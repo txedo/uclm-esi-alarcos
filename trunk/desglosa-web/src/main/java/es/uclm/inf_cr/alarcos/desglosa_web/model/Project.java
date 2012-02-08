@@ -27,7 +27,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 @Table(name = "projects")
 @NamedQueries({
         @NamedQuery(name = "findProjectsByCompanyId", query = "select distinct p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = f.id and f.company.id = :id "),
-        @NamedQuery(name = "findProjectsByFactoryId", query = "select distinct p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = :id group by p") })
+        @NamedQuery(name = "findProjectsByFactoryId", query = "select distinct p from Project p, Subproject sp, Factory f where p.id = sp.project.id and sp.factory.id = :id group by p")})
 public class Project {
     @Property
     private int id;
@@ -127,7 +127,7 @@ public class Project {
     public Boolean isAudited() {
         return audited;
     }
-    
+
     @Column(name = "finished", insertable = false, columnDefinition = "boolean default false")
     public Boolean isFinished() {
         return finished;
@@ -230,6 +230,8 @@ public class Project {
     public Float getActividad() {
         return actividad;
     }
+    
+
 
     public void setId(int id) {
         this.id = id;
@@ -262,7 +264,7 @@ public class Project {
     public void setAudited(Boolean audited) {
         this.audited = audited;
     }
-    
+
     public void setFinished(Boolean finished) {
         this.finished = finished;
     }

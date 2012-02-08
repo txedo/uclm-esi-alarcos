@@ -24,6 +24,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MarketDAOHibernate;
+import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.SubprojectDAOHibernate;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Measure;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.TransientAttributesListener;
@@ -59,6 +60,34 @@ public class Factory {
     private Integer numberOfDevelopingSubprojects;
     @Property(embedded = true)
     private Market mostRepresentativeMarket;
+    @Property @Measure(base = false)
+    private Integer planesProyectoGestionados;
+    @Property @Measure(base = false)
+    private Integer planesProyectoEnProceso;
+    @Property @Measure(base = false)
+    private Integer planesProyectoNoGestionados;
+    @Property @Measure(base = false)
+    private Integer auditoriasPlanificadas;
+    @Property @Measure(base = false)
+    private Integer auditoriasRealizadas;
+    @Property @Measure(base = false)
+    private Integer auditoriasCanceladas;
+    @Property @Measure(base = false)
+    private Integer auditoriasAplazadas;
+    @Property @Measure(base = false)
+    private Integer noConformidadesGestionadas;
+    @Property @Measure(base = false)
+    private Integer noConformidadesNoGestionadas;
+    @Property @Measure(base = false)
+    private Integer noConformiadadesEnProceso;
+    @Property @Measure(base = false)
+    private Integer noConformidadesCerradas;
+    @Property @Measure(base = false)
+    private Integer indicadoresReportados;
+    @Property @Measure(base = false)
+    private Integer indicadoresEnPlazo;
+    @Property @Measure(base = false)
+    private Integer indicadoresOk;
 
     public Factory() {
     }
@@ -144,6 +173,76 @@ public class Factory {
         return mostRepresentativeMarket;
     }
 
+    @Transient
+    public Integer getPlanesProyectoGestionados() {
+        return planesProyectoGestionados;
+    }
+
+    @Transient
+    public Integer getPlanesProyectoEnProceso() {
+        return planesProyectoEnProceso;
+    }
+
+    @Transient
+    public Integer getPlanesProyectoNoGestionados() {
+        return planesProyectoNoGestionados;
+    }
+
+    @Transient
+    public Integer getAuditoriasPlanificadas() {
+        return auditoriasPlanificadas;
+    }
+
+    @Transient
+    public Integer getAuditoriasRealizadas() {
+        return auditoriasRealizadas;
+    }
+
+    @Transient
+    public Integer getAuditoriasCanceladas() {
+        return auditoriasCanceladas;
+    }
+
+    @Transient
+    public Integer getAuditoriasAplazadas() {
+        return auditoriasAplazadas;
+    }
+
+    @Transient
+    public Integer getNoConformidadesGestionadas() {
+        return noConformidadesGestionadas;
+    }
+
+    @Transient
+    public Integer getNoConformidadesNoGestionadas() {
+        return noConformidadesNoGestionadas;
+    }
+
+    @Transient
+    public Integer getNoConformiadadesEnProceso() {
+        return noConformiadadesEnProceso;
+    }
+
+    @Transient
+    public Integer getNoConformidadesCerradas() {
+        return noConformidadesCerradas;
+    }
+
+    @Transient
+    public Integer getIndicadoresReportados() {
+        return indicadoresReportados;
+    }
+
+    @Transient
+    public Integer getIndicadoresEnPlazo() {
+        return indicadoresEnPlazo;
+    }
+
+    @Transient
+    public Integer getIndicadoresOk() {
+        return indicadoresOk;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -200,6 +299,52 @@ public class Factory {
         this.mostRepresentativeMarket = mostRepresentativeMarket;
     }
     
+    public void updateTransientFields() {
+        this.updateMostRepresentativeMarket();
+        this.updatePlanesProyecto();
+        this.updateAuditorias();
+        this.updateNoConformidades();
+        this.updateIndicadores();
+    }
+    
+    public void updatePlanesProyecto() {
+        SubprojectDAOHibernate subprojectDao = (SubprojectDAOHibernate) ApplicationContextProvider.getBean("subprojectDao");
+        Map<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("id", id);
+        this.setPlanesProyectoGestionados(subprojectDao.numberByNamedQuery("numberSubprojectsPlanesGestionados", queryParams));
+        this.setPlanesProyectoEnProceso(subprojectDao.numberByNamedQuery("numberSubprojectsPlanesEnProceso", queryParams));
+        this.setPlanesProyectoNoGestionados(subprojectDao.numberByNamedQuery("numberSubprojectsPlanesNoGestionados", queryParams));
+    }
+    
+    public void updateAuditorias() {
+        SubprojectDAOHibernate subprojectDao = (SubprojectDAOHibernate) ApplicationContextProvider.getBean("subprojectDao");
+        Map<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("id", id);
+        this.setAuditoriasPlanificadas(subprojectDao.numberByNamedQuery("numberSubprojectsAuditoriasPlanificadas", queryParams));
+        this.setAuditoriasRealizadas(subprojectDao.numberByNamedQuery("numberSubprojectsAuditoriasRealizadas", queryParams));
+        this.setAuditoriasCanceladas(subprojectDao.numberByNamedQuery("numberSubprojectsAuditoriasCanceladas", queryParams));
+        this.setAuditoriasAplazadas(subprojectDao.numberByNamedQuery("numberSubprojectsAuditoriasAplazadas", queryParams));
+    }
+
+    public void updateNoConformidades() {
+        SubprojectDAOHibernate subprojectDao = (SubprojectDAOHibernate) ApplicationContextProvider.getBean("subprojectDao");
+        Map<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("id", id);
+        this.setNoConformidadesGestionadas(subprojectDao.numberByNamedQuery("numberSubprojectsNCGestionadas", queryParams));
+        this.setNoConformidadesNoGestionadas(subprojectDao.numberByNamedQuery("numberSubprojectsNCNoGestionadas", queryParams));
+        this.setNoConformiadadesEnProceso(subprojectDao.numberByNamedQuery("numberSubprojectsNCEnProceso", queryParams));
+        this.setNoConformidadesCerradas(subprojectDao.numberByNamedQuery("numberSubprojectsNCCerradas", queryParams));
+    }
+    
+    public void updateIndicadores() {
+        SubprojectDAOHibernate subprojectDao = (SubprojectDAOHibernate) ApplicationContextProvider.getBean("subprojectDao");
+        Map<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("id", id);
+        this.setIndicadoresReportados(subprojectDao.numberByNamedQuery("numberSubprojectsIndicadoresReportados", queryParams));
+        this.setIndicadoresEnPlazo(subprojectDao.numberByNamedQuery("numberSubprojectsIndicadoresEnPlazo", queryParams));
+        this.setIndicadoresOk(subprojectDao.numberByNamedQuery("numberSubprojectsIndicadoresReportadosOk", queryParams));
+    }
+    
     public void updateMostRepresentativeMarket() {
         MarketDAOHibernate marketDao = (MarketDAOHibernate) ApplicationContextProvider.getBean("marketDao");
         Map<String, Object> queryParams = new HashMap<String, Object>();
@@ -215,6 +360,67 @@ public class Factory {
                 mostRepresentativeMarket = null;
             }
         }
+    }
+
+    public void setNumberOfDevelopingSubprojects(
+            Integer numberOfDevelopingSubprojects) {
+        this.numberOfDevelopingSubprojects = numberOfDevelopingSubprojects;
+    }
+
+    public void setPlanesProyectoGestionados(Integer planesProyectoGestionados) {
+        this.planesProyectoGestionados = planesProyectoGestionados;
+    }
+
+    public void setPlanesProyectoEnProceso(Integer planesProyectoEnProceso) {
+        this.planesProyectoEnProceso = planesProyectoEnProceso;
+    }
+
+    public void setPlanesProyectoNoGestionados(Integer planesProyectoNoGestionados) {
+        this.planesProyectoNoGestionados = planesProyectoNoGestionados;
+    }
+
+    public void setAuditoriasPlanificadas(Integer auditoriasPlanificadas) {
+        this.auditoriasPlanificadas = auditoriasPlanificadas;
+    }
+
+    public void setAuditoriasRealizadas(Integer auditoriasRealizadas) {
+        this.auditoriasRealizadas = auditoriasRealizadas;
+    }
+
+    public void setAuditoriasCanceladas(Integer auditoriasCanceladas) {
+        this.auditoriasCanceladas = auditoriasCanceladas;
+    }
+
+    public void setAuditoriasAplazadas(Integer auditoriasAplazadas) {
+        this.auditoriasAplazadas = auditoriasAplazadas;
+    }
+
+    public void setNoConformidadesGestionadas(Integer noConformidadesGestionadas) {
+        this.noConformidadesGestionadas = noConformidadesGestionadas;
+    }
+
+    public void setNoConformidadesNoGestionadas(Integer noConformidadesNoGestionadas) {
+        this.noConformidadesNoGestionadas = noConformidadesNoGestionadas;
+    }
+
+    public void setNoConformiadadesEnProceso(Integer noConformiadadesEnProceso) {
+        this.noConformiadadesEnProceso = noConformiadadesEnProceso;
+    }
+
+    public void setNoConformidadesCerradas(Integer noConformidadesCerradas) {
+        this.noConformidadesCerradas = noConformidadesCerradas;
+    }
+
+    public void setIndicadoresReportados(Integer indicadoresReportados) {
+        this.indicadoresReportados = indicadoresReportados;
+    }
+
+    public void setIndicadoresEnPlazo(Integer indicadoresEnPlazo) {
+        this.indicadoresEnPlazo = indicadoresEnPlazo;
+    }
+
+    public void setIndicadoresOk(Integer indicadoresOk) {
+        this.indicadoresOk = indicadoresOk;
     }
 
     @Override
