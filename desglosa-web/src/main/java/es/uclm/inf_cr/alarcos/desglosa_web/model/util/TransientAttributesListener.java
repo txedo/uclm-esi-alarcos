@@ -10,7 +10,7 @@ public class TransientAttributesListener implements PostLoadEventListener {
 
     public void onPostLoad(PostLoadEvent event) {
         if (event.getEntity() instanceof Factory) {
-            ((Factory) event.getEntity()).updateMostRepresentativeMarket();
+            ((Factory) event.getEntity()).updateTransientFields();
         }
     }
 }

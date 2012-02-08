@@ -22,7 +22,22 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 @NamedQueries({
         @NamedQuery(name = "findSubprojectsByCompanyId", query = "select sp from Subproject sp, Factory f where sp.factory.id = f.id and f.company.id = :id group by sp.name"),
         @NamedQuery(name = "findSubprojectsByFactoryId", query = "select sp from Subproject sp where sp.factory.id = :id "),
-        @NamedQuery(name = "findSubprojectsByProjectId", query = "select sp from Subproject sp where sp.project.id = :id ") })
+        @NamedQuery(name = "findSubprojectsByProjectId", query = "select sp from Subproject sp where sp.project.id = :id "),
+        @NamedQuery(name = "numberSubprojectsPlanesGestionados", query = "select count(sp) from Subproject sp where sp.plan='Gestionados' and sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsPlanesEnProceso", query = "select count(sp) from Subproject sp where sp.plan='En proceso' and sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsPlanesNoGestionados", query = "select count(sp) from Subproject sp where sp.plan='No gestionados' and sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsAuditoriasPlanificadas", query = "select count(sp) from Subproject sp where sp.audit='Planificada' and sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsAuditoriasRealizadas", query = "select count(sp) from Subproject sp where sp.audit='Realizada' and sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsAuditoriasCanceladas", query = "select count(sp) from Subproject sp where sp.audit='Cancelada' and sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsAuditoriasAplazadas", query = "select count(sp) from Subproject sp where sp.audit='Aplazada' and sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsNCGestionadas", query = "select sum(sp.noConformidadesGestionadas) from Subproject sp where sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsNCNoGestionadas", query = "select sum(sp.noConformidadesNoGestionadas) from Subproject sp where sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsNCEnProceso", query = "select sum(sp.noConformidadesEnProceso) from Subproject sp where sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsNCCerradas", query = "select sum(sp.noConformidadesCerradas) from Subproject sp where sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsIndicadoresReportados", query = "select sum(sp.indicadoresReportados) from Subproject sp where sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsIndicadoresEnPlazo", query = "select sum(sp.indicadoresEnPlazo) from Subproject sp where sp.factory.id = :id"),
+        @NamedQuery(name = "numberSubprojectsIndicadoresReportadosOk", query = "select sum(sp.indicadoresOk) from Subproject sp where sp.factory.id = :id")
+        })
 public class Subproject {
     @Property
     private int id;
@@ -85,6 +100,24 @@ public class Subproject {
     private Float ratioFichaje;
     @Property @Measure
     private Float actividad;
+    @Property(description = "Los valores posibles son Gestionados, En proceso, No gestionados.") @Measure (description = "Los valores posibles son Gestionados, En proceso, No gestionados.")
+    private String plan;
+    @Property(description = "Los valores posibles son Planificada, Realizada, Cancelada, Aplazada") @Measure (description = "Los valores posibles son Planificada, Realizada, Cancelada, Aplazada")
+    private String audit;
+    @Property @Measure
+    private Integer noConformidadesGestionadas;
+    @Property @Measure
+    private Integer noConformidadesNoGestionadas;
+    @Property @Measure
+    private Integer noConformidadesEnProceso;
+    @Property @Measure
+    private Integer noConformidadesCerradas;
+    @Property @Measure
+    private Integer indicadoresReportados;
+    @Property @Measure
+    private Integer indicadoresEnPlazo;
+    @Property @Measure
+    private Integer indicadoresOk;
 
     public Subproject() {
     }
@@ -263,6 +296,57 @@ public class Subproject {
     public Float getActividad() {
         return actividad;
     }
+    
+    @Column(name = "plan")
+    public String getPlan() {
+        if (plan == null) {
+            plan = "";
+        }
+        return plan;
+    }
+    
+    @Column(name = "audit")
+    public String getAudit() {
+        if (audit == null) {
+            audit = "";
+        }
+        return audit;
+    }
+    
+    @Column(name = "ncGestionadas", insertable = false, columnDefinition = "int default 0")
+    public Integer getNoConformidadesGestionadas() {
+        return noConformidadesGestionadas;
+    }
+
+    @Column(name = "ncNoGestionadas", insertable = false, columnDefinition = "int default 0")
+    public Integer getNoConformidadesNoGestionadas() {
+        return noConformidadesNoGestionadas;
+    }
+
+    @Column(name = "ncEnProceso", insertable = false, columnDefinition = "int default 0")
+    public Integer getNoConformidadesEnProceso() {
+        return noConformidadesEnProceso;
+    }
+
+    @Column(name = "ncCerradas", insertable = false, columnDefinition = "int default 0")
+    public Integer getNoConformidadesCerradas() {
+        return noConformidadesCerradas;
+    }
+    
+    @Column(name = "iReportados", insertable = false, columnDefinition = "int default 0")
+    public Integer getIndicadoresReportados() {
+        return indicadoresReportados;
+    }
+
+    @Column(name = "iReportadosEnPlazo", insertable = false, columnDefinition = "int default 0")
+    public Integer getIndicadoresEnPlazo() {
+        return indicadoresEnPlazo;
+    }
+
+    @Column(name = "iReportadosOk", insertable = false, columnDefinition = "int default 0")
+    public Integer getIndicadoresOk() {
+        return indicadoresOk;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -389,6 +473,42 @@ public class Subproject {
 
     public void setActividad(Float actividad) {
         this.actividad = actividad;
+    }
+    
+    public void setPlan(String plan) {
+        this.plan = plan;
+    }
+    
+    public void setAudit(String audit) {
+        this.audit = audit;
+    }
+    
+    public void setNoConformidadesGestionadas(Integer noConformidadesGestionadas) {
+        this.noConformidadesGestionadas = noConformidadesGestionadas;
+    }
+
+    public void setNoConformidadesNoGestionadas(Integer noConformidadesNoGestionadas) {
+        this.noConformidadesNoGestionadas = noConformidadesNoGestionadas;
+    }
+
+    public void setNoConformidadesEnProceso(Integer noConformidadesEnProceso) {
+        this.noConformidadesEnProceso = noConformidadesEnProceso;
+    }
+
+    public void setNoConformidadesCerradas(Integer noConformidadesCerradas) {
+        this.noConformidadesCerradas = noConformidadesCerradas;
+    }
+
+    public void setIndicadoresReportados(Integer indicadoresReportados) {
+        this.indicadoresReportados = indicadoresReportados;
+    }
+
+    public void setIndicadoresEnPlazo(Integer indicadoresEnPlazo) {
+        this.indicadoresEnPlazo = indicadoresEnPlazo;
+    }
+
+    public void setIndicadoresOk(Integer indicadoresOk) {
+        this.indicadoresOk = indicadoresOk;
     }
     
     @Override

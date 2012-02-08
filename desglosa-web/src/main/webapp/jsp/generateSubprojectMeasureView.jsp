@@ -30,6 +30,9 @@
 		                <c:if test="${measure.type == 'Integer' || measure.type== 'Float'}">
 	                        <s:text name="%{#attr.measureName}"/>
 		                </c:if>
+		                <c:if test="${measure.type == 'String'}">
+	                        <s:text name="%{#attr.measureName}"/>
+		                </c:if>
 	                </label>
 	            </li>
 	        </c:forEach>

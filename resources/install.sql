@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	5.1.56-community
+-- Server version	5.1.32-community
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -140,20 +140,20 @@ CREATE TABLE `factories` (
   `employees` int(11) DEFAULT NULL,
   `information` varchar(255) DEFAULT NULL,
   `name` varchar(45) NOT NULL,
-  `director_id` int(11) DEFAULT NULL,
   `address_id` int(11) DEFAULT NULL,
-  `company_id` int(11) NOT NULL,
   `location_id` int(11) DEFAULT NULL,
+  `company_id` int(11) NOT NULL,
+  `director_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `FKB0E2E728353B48C7` (`company_id`),
   KEY `FKB0E2E72846715B0D` (`location_id`),
-  KEY `FKB0E2E7283AA10167` (`address_id`),
   KEY `FKB0E2E72861F237AD` (`director_id`),
-  CONSTRAINT `FKB0E2E72861F237AD` FOREIGN KEY (`director_id`) REFERENCES `directors` (`id`),
-  CONSTRAINT `FKB0E2E728353B48C7` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
+  KEY `FKB0E2E7283AA10167` (`address_id`),
   CONSTRAINT `FKB0E2E7283AA10167` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`),
-  CONSTRAINT `FKB0E2E72846715B0D` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`)
+  CONSTRAINT `FKB0E2E728353B48C7` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
+  CONSTRAINT `FKB0E2E72846715B0D` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`),
+  CONSTRAINT `FKB0E2E72861F237AD` FOREIGN KEY (`director_id`) REFERENCES `directors` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 --
@@ -161,18 +161,18 @@ CREATE TABLE `factories` (
 --
 
 /*!40000 ALTER TABLE `factories` DISABLE KEYS */;
-INSERT INTO `factories` (`id`,`contact_email`,`employees`,`information`,`name`,`director_id`,`address_id`,`company_id`,`location_id`) VALUES 
- (1,'factory1@company1.com',10,'Factoría de ejemplo 1.1','Factoría 1.1',11,4,3,4),
- (2,'factory2@company1.com',30,'Factoría de ejemplo 1.2','Factoría 1.2',12,5,3,5),
- (3,'factory3@company1.com',95,'Factoría de ejemplo 1.3','Factoría 1.3',13,6,3,6),
- (4,'factory4@company1.com',63,'Factoría de ejemplo 1.4','Factoría 1.4',14,7,3,7),
- (5,'factory1@company2.com',57,'Factoría de ejemplo 2.1','Factoría 2.1',27,20,4,20),
- (6,'factory2@company2.com',44,'Factoría de ejemplo 2.2','Factoría 2.2',28,21,4,21),
- (7,'factory3@company2.com',32,'Factoría de ejemplo 2.3','Factoría 2.3',17,10,4,10),
- (8,'factory4@company2.com',115,'Factoría de ejemplo 2.4','Factoría 2.4',18,11,4,11),
- (9,'factory1@company3.com',7,'Factoría de ejemplo 3.1','Factoría 3.1',19,12,5,12),
- (10,'factory2@company3.com',21,'Factoría de ejemplo 3.2','Factoría 3.2',20,13,5,13),
- (11,'factory3@company3.com',43,'Factoría de ejemplo 3,3','Factoría 3.3',21,14,5,14);
+INSERT INTO `factories` (`id`,`contact_email`,`employees`,`information`,`name`,`address_id`,`location_id`,`company_id`,`director_id`) VALUES 
+ (1,'factory1@company1.com',10,'Factoría de ejemplo 1.1','Factoría 1.1',4,4,3,11),
+ (2,'factory2@company1.com',30,'Factoría de ejemplo 1.2','Factoría 1.2',5,5,3,12),
+ (3,'factory3@company1.com',95,'Factoría de ejemplo 1.3','Factoría 1.3',6,6,3,13),
+ (4,'factory4@company1.com',63,'Factoría de ejemplo 1.4','Factoría 1.4',7,7,3,14),
+ (5,'factory1@company2.com',57,'Factoría de ejemplo 2.1','Factoría 2.1',20,20,4,27),
+ (6,'factory2@company2.com',44,'Factoría de ejemplo 2.2','Factoría 2.2',21,21,4,28),
+ (7,'factory3@company2.com',32,'Factoría de ejemplo 2.3','Factoría 2.3',10,10,4,17),
+ (8,'factory4@company2.com',115,'Factoría de ejemplo 2.4','Factoría 2.4',11,11,4,18),
+ (9,'factory1@company3.com',7,'Factoría de ejemplo 3.1','Factoría 3.1',12,12,5,19),
+ (10,'factory2@company3.com',21,'Factoría de ejemplo 3.2','Factoría 3.2',13,13,5,20),
+ (11,'factory3@company3.com',43,'Factoría de ejemplo 3,3','Factoría 3.3',14,14,5,21);
 /*!40000 ALTER TABLE `factories` ENABLE KEYS */;
 
 
@@ -376,6 +376,7 @@ DROP TABLE IF EXISTS `subprojects`;
 CREATE TABLE `subprojects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `actividad` float DEFAULT '0',
+  `audit` varchar(255) DEFAULT NULL,
   `test_cobertura` float DEFAULT '0',
   `comentarios` int(11) DEFAULT '0',
   `test_efectividad` float DEFAULT '0',
@@ -389,11 +390,19 @@ CREATE TABLE `subprojects` (
   `fichaje_total` float DEFAULT '0',
   `func_implementadas` int(11) DEFAULT '0',
   `func_totales` int(11) DEFAULT '0',
+  `iReportadosEnPlazo` int(11) DEFAULT '0',
+  `iReportadosOk` int(11) DEFAULT '0',
+  `iReportados` int(11) DEFAULT '0',
   `lcd_modificadas` int(11) DEFAULT '0',
   `lineas_de_codigo` int(11) DEFAULT '0',
   `mantenibilidad` float DEFAULT '0',
   `name` varchar(255) DEFAULT NULL,
+  `ncCerradas` int(11) DEFAULT '0',
+  `ncEnProceso` int(11) DEFAULT '0',
+  `ncGestionadas` int(11) DEFAULT '0',
+  `ncNoGestionadas` int(11) DEFAULT '0',
   `commits` int(11) DEFAULT '0',
+  `plan` varchar(255) DEFAULT NULL,
   `portabilidad` float DEFAULT '0',
   `puntos_funcion` float DEFAULT '0',
   `testcases_exec` int(11) DEFAULT '0',
@@ -412,29 +421,29 @@ CREATE TABLE `subprojects` (
 --
 
 /*!40000 ALTER TABLE `subprojects` DISABLE KEYS */;
-INSERT INTO `subprojects` (`id`,`actividad`,`test_cobertura`,`comentarios`,`test_efectividad`,`eficiencia`,`errores_detectados`,`errores_resueltos`,`esfuerzo_mto_estimado`,`esfuerzo_mto_real`,`fiabilidad`,`fichaje_codigo`,`fichaje_total`,`func_implementadas`,`func_totales`,`lcd_modificadas`,`lineas_de_codigo`,`mantenibilidad`,`name`,`commits`,`portabilidad`,`puntos_funcion`,`testcases_exec`,`usabilidad`,`project_id`,`factory_id`) VALUES 
- (1,78.8,89.9,1056,78.65,79.8,14,5,130,80,98,600,500,12,23,1000,30000,95.4,'Sub 1 Vitrubio',89,89.4,900,567,87.34,1,3),
- (2,97.5,78.5,4565,87.5,73.9,34,3,150,210,75.5,400,500,8,14,250,50000,85.3,'Sub 2 Vitrubio',133,23.4,1908,754,89.56,1,4),
- (3,67.56,45.76,5050,56.7,98.6,23,5,137.4,140,14.6,500,500,13,25,300,20000,96.4,'Sub 3 Vitrubio',65,56.3,789,756,84.56,1,8),
- (4,89.78,34.67,1064,76.7,83.3,64,34,320,200,68.7,800,1000,17,20,8000,100000,75.3,'Sub 1 Althea',786,45.5,3980,787,34.78,2,5),
- (5,78.89,90.04,506,98.8,93.3,10,7,220,200,84.6,1000,1000,5,8,4555,250000,65.1,'Sub 2 Althea',577,87.5,7882.5,7685,84.8,2,8),
- (6,57.687,76.4,4560,86.7,81.5,21,18,400,350,84.6,700,1000,9,10,6555,300000,89.45,'Sub 3 Althea',325,98.8,8023,6788,74.8,2,6),
- (7,78.9,74.6,1204,78.9,98.3,18,4,320,290,81.3,100,1000,9,12,700,350000,74.3,'Sub 4 Althea',745,78.3,7856,6756,87.5,2,7),
- (8,98.3,89.6,2004,83.76,79.36,15,5,330.5,100,89.4,4000,5000,12,14,500,250000,92.2,'Sub 1 Ares',23,98.1,7509,8656,83.8,3,8),
- (9,75.6,68.5,3522,93.4,82.5,45,34,132.4,200,74.2,5500,5000,13,15,6700,400000,84.3,'Sub 2 Ares',656,91.3,9786,8768,97.34,3,7),
- (10,67.65,78.6,355,98.7,62.3,30,0,42.3,20,76.3,7000,5000,15,18,345,300000,72.23,'Sub 3 Ares',75,92.7,8366,345,89.3,3,9),
- (11,98.4,54.2,6533,99.9,98.3,23,2,50.4,10,78.5,450,5000,23,34,5120,120000,74.6,'Sub 4 Ares',57,45.5,3098,567,58.6,3,10),
- (12,45.65,56.77,3522,87.7,61.7,14,1,1200.5,200,82.23,5000,5000,7,8,3000,220000,89.14,'Sub 5 Ares',574,65.8,6088,656,78.97,3,9),
- (13,65.6,67.45,6462,67.8,68.3,11,9,1400,150,67.6,4222,7000,30,34,5400,2000000,93.6,'Sub 1 Asclepios',56,89.5,60987,6567,98.23,4,10),
- (14,68.6,86.76,3421,89.76,84.45,32,10,440,300,67.1,5000,7000,29,43,7000,2500000,98.3,'Sub 2 Asclepios',9767,98.5,70998,7658,99.9,4,11),
- (15,89.8,96.45,457,98.76,55.5,12,6,300,320,37.3,1000,4000,10,13,700,300000,68.5,'Sub 1 Eolo',677,91.6,6044,987,65.5,5,9),
- (16,87.9,45.7,3312,67.78,56.9,8,4,240,200,76.1,2400,4000,6,8,560,750000,89.3,'Sub 2 Eolo',865,95.65,15044,235,98.5,5,7),
- (17,78.8,87.67,5633,87.7,46.7,10,7,220,100,54.6,400,1000,5,9,500,50000,87.5,'Sub 1 Vandelvira ',76,96.3,1543,544,89.7,6,5),
- (18,73.35,82.67,4872,87.87,98.8,17,4,430,250,65.3,600,1000,4,7,400,30000,94.4,'Sub 2 Vandelvira',345,97.35,967,765,69.8,6,6),
- (19,72.6,80.432,3124,89.7,78.8,18,6,231,150,71.3,700,1000,4,8,350,70000,97.6,'Sub 3 Vandelvira',65,67.5,2343,765,98.3,6,7),
- (20,98.5,54.6,5834,76.78,98.8,21,6,123,110,95.1,900,1000,10,12,890,160000,82.3,'Sub 4 Vandelvira',869,9.8,5644,867,65.5,6,3),
- (21,35.5,87.7,345,73.5,98.5,43,34,423,340,75.01,450,1000,7,13,560,25000,98.2,'Sub 5 Vandelvira',98,98.5,667,656,68.5,6,4),
- (22,76.6,93.2,3425,71.23,88.8,5,2,234,210,42,640,1000,5,15,750,85000,78.5,'Sub 6 Vandelvira',767,51.2,1212,865,55.5,6,3);
+INSERT INTO `subprojects` (`id`,`actividad`,`audit`,`test_cobertura`,`comentarios`,`test_efectividad`,`eficiencia`,`errores_detectados`,`errores_resueltos`,`esfuerzo_mto_estimado`,`esfuerzo_mto_real`,`fiabilidad`,`fichaje_codigo`,`fichaje_total`,`func_implementadas`,`func_totales`,`iReportadosEnPlazo`,`iReportadosOk`,`iReportados`,`lcd_modificadas`,`lineas_de_codigo`,`mantenibilidad`,`name`,`ncCerradas`,`ncEnProceso`,`ncGestionadas`,`ncNoGestionadas`,`commits`,`plan`,`portabilidad`,`puntos_funcion`,`testcases_exec`,`usabilidad`,`project_id`,`factory_id`) VALUES 
+ (1,78.8,'Planificada',89.9,1056,78.65,79.8,14,5,130,80,98,600,500,12,23,56,1,80,1000,30000,95.4,'Sub 1 Vitrubio',12,6,5,6,89,'Gestionado',89.4,900,567,87.34,1,3),
+ (2,97.5,'Planificada',78.5,4565,87.5,73.9,34,3,150,210,75.5,400,500,8,14,45,6,78,250,50000,85.3,'Sub 2 Vitrubio',14,11,10,7,133,'Gestionado',23.4,1908,754,89.56,1,4),
+ (3,67.56,'Aplazada',45.76,5050,56.7,98.6,23,5,137.4,140,14.6,500,500,13,25,12,8,12,300,20000,96.4,'Sub 3 Vitrubio',5,7,3,12,65,'En proceso ',56.3,789,756,84.56,1,8),
+ (4,89.78,'Planificada',34.67,1064,76.7,83.3,64,34,320,200,68.7,800,1000,17,20,15,12,34,8000,100000,75.3,'Sub 1 Althea',4,7,8,6,786,'Gestionado',45.5,3980,787,34.78,2,5),
+ (5,78.89,'Cancelada',90.04,506,98.8,93.3,10,7,220,200,84.6,1000,1000,5,8,12,45,50,4555,250000,65.1,'Sub 2 Althea',4,12,4,5,577,'Gestionado',87.5,7882.5,7685,84.8,2,8),
+ (6,57.687,'Aplazada',76.4,4560,86.7,81.5,21,18,400,350,84.6,700,1000,9,10,15,19,23,6555,300000,89.45,'Sub 3 Althea',12,5,7,7,325,'En proceso ',98.8,8023,6788,74.8,2,6),
+ (7,78.9,'Planificada',74.6,1204,78.9,98.3,18,4,320,290,81.3,100,1000,9,12,15,12,16,700,350000,74.3,'Sub 4 Althea',4,5,6,7,745,'No gestionado',78.3,7856,6756,87.5,2,7),
+ (8,98.3,'Planificada',89.6,2004,83.76,79.36,15,5,330.5,100,89.4,4000,5000,12,14,90,32,100,500,250000,92.2,'Sub 1 Ares',2,4,6,8,23,'No gestionado',98.1,7509,8656,83.8,3,8),
+ (9,75.6,'Aplazada',68.5,3522,93.4,82.5,45,34,132.4,200,74.2,5500,5000,13,15,56,13,79,6700,400000,84.3,'Sub 2 Ares',6,8,6,4,656,'No gestionado',91.3,9786,8768,97.34,3,7),
+ (10,67.65,'Realizada',78.6,355,98.7,62.3,30,0,42.3,20,76.3,7000,5000,15,18,65,7,122,345,300000,72.23,'Sub 3 Ares',8,9,3,4,75,'No gestionado',92.7,8366,345,89.3,3,9),
+ (11,98.4,'Realizada',54.2,6533,99.9,98.3,23,2,50.4,10,78.5,450,5000,23,34,54,8,12,5120,120000,74.6,'Sub 4 Ares',5,6,6,6,57,'En proceso ',45.5,3098,567,58.6,3,10),
+ (12,45.65,'Realizada',56.77,3522,87.7,61.7,14,1,1200.5,200,82.23,5000,5000,7,8,45,9,56,3000,220000,89.14,'Sub 5 Ares',6,5,7,12,574,'No gestionado',65.8,6088,656,78.97,3,9),
+ (13,65.6,'Realizada',67.45,6462,67.8,68.3,11,9,1400,150,67.6,4222,7000,30,34,12,9,67,5400,2000000,93.6,'Sub 1 Asclepios',3,5,7,17,56,'En proceso ',89.5,60987,6567,98.23,4,10),
+ (14,68.6,'Realizada',86.76,3421,89.76,84.45,32,10,440,300,67.1,5000,7000,29,43,45,15,68,7000,2500000,98.3,'Sub 2 Asclepios',12,13,16,17,9767,'No gestionado',98.5,70998,7658,99.9,4,11),
+ (15,89.8,'Realizada',96.45,457,98.76,55.5,12,6,300,320,37.3,1000,4000,10,13,67,16,98,700,300000,68.5,'Sub 1 Eolo',12,14,15,18,677,'En proceso ',91.6,6044,987,65.5,5,9),
+ (16,87.9,'Realizada',45.7,3312,67.78,56.9,8,4,240,200,76.1,2400,4000,6,8,45,13,100,560,750000,89.3,'Sub 2 Eolo',12,15,16,17,865,'No gestionado',95.65,15044,235,98.5,5,7),
+ (17,78.8,'Realizada',87.67,5633,87.7,46.7,10,7,220,100,54.6,400,1000,5,9,34,45,120,500,50000,87.5,'Sub 1 Vandelvira ',15,18,13,12,76,'No gestionado',96.3,1543,544,89.7,6,5),
+ (18,73.35,'Realizada',82.67,4872,87.87,98.8,17,4,430,250,65.3,600,1000,4,7,23,67,34,400,30000,94.4,'Sub 2 Vandelvira',15,17,18,19,345,'No gestionado',97.35,967,765,69.8,6,6),
+ (19,72.6,'Aplazada',80.432,3124,89.7,78.8,18,6,231,150,71.3,700,1000,4,8,12,12,76,350,70000,97.6,'Sub 3 Vandelvira',12,0,34,56,65,'En proceso ',67.5,2343,765,98.3,6,7),
+ (20,98.5,'Realizada',54.6,5834,76.78,98.8,21,6,123,110,95.1,900,1000,10,12,14,34,52,890,160000,82.3,'Sub 4 Vandelvira',15,23,26,28,869,'No gestionado',9.8,5644,867,65.5,6,3),
+ (21,35.5,'Aplazada',87.7,345,73.5,98.5,43,34,423,340,75.01,450,1000,7,13,13,12,54,560,25000,98.2,'Sub 5 Vandelvira',12,17,17,13,98,'No gestionado',98.5,667,656,68.5,6,4),
+ (22,76.6,'Realizada',93.2,3425,71.23,88.8,5,2,234,210,42,640,1000,5,15,16,12,43,750,85000,78.5,'Sub 6 Vandelvira',14,15,0,12,767,'No gestionado',51.2,1212,865,55.5,6,3);
 /*!40000 ALTER TABLE `subprojects` ENABLE KEYS */;
 
 
