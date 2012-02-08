@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<profile model="model.gl.knowledge.GLAntennaBall" entity="es.uclm.inf_cr.alarcos.desglosa_web.model.Factory">
+    <name>Indicadores</name>
+    <description>Bola Verde = Reportados OK. Bola Roja = Reportados en plazo. Tamaño = Reportados</description>
+    <mappings>
+        <mapping>
+            <entityAttr name="id" type="int"/>
+            <modelAttr name="id" type="int"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="indicadoresReportados" type="int"/>
+            <modelAttr name="parentBallRadius" type="float"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="indicadoresEnPlazo" type="int"/>
+            <modelAttr name="leftChildBallValue" type="string"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="indicadoresOk" type="int"/>
+            <modelAttr name="rightChildBallValue" type="string"/>
+        </mapping>
+        <mapping>
+            <entityAttr name="mostRepresentativeMarket_color" type="hexcolor"/>
+            <modelAttr name="color" type="color"/>
+        </mapping>
+    </mappings>
+    <constants>
+        <constant name="scale" type="float"/>
+        <constant name="progressionMark" type="boolean">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:boolean">true</value>
+        </constant>
+        <constant name="label" type="string">
+            <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string"/>
+        </constant>
+    </constants>
+    <caption/>
+</profile>
