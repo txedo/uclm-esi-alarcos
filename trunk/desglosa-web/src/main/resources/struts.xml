@@ -55,6 +55,37 @@
 			<result name="error">/jsp/visualization.jsp</result>
 		</action>
 		
+		<!-- Measure related actions -->
+		<action name="listMeasures" class="measureAction">
+<!-- 			<interceptor-ref name="AdminInterceptor"/> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/admin/viewMeasures.jsp</result>
+			<result name="input">/jsp/admin/viewMeasures.jsp</result>
+			<result name="success">/jsp/admin/viewMeasures.jsp</result>
+		</action>
+		<action name="showMeasureForm" class="measureAction" method="showForm">
+<!-- 			<interceptor-ref name="AdminInterceptor"/> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/admin/viewMeasures.jsp</result>
+			<result name="input">/jsp/admin/formMeasure.jsp</result>
+			<result name="success">/jsp/admin/formMeasure.jsp</result>
+		</action>
+		<action name="saveMeasure" class="measureAction" method="save">
+<!-- 			<interceptor-ref name="AdminInterceptor"/> -->
+			<interceptor-ref name="redirectMessageAndParams"/>
+			<result name="error">/jsp/admin/formMeasure.jsp</result>
+			<result name="input">/jsp/admin/formMeasure.jsp</result>
+			<result name="success" type="redirectAction">listMeasures</result>
+		</action>
+        <action name="deleteMeasure" class="measureAction" method="delete">
+<!--             <interceptor-ref name="AdminInterceptor"/> -->
+            <interceptor-ref name="redirectMessageAndParams"/>
+            <result name="error">/jsp/admin/viewMeasures.jsp</result>
+            <result name="input">/jsp/admin/viewMeasures.jsp</result>
+            <result name="success" type="redirectAction">listMeasures</result>
+        </action>
+		<!-- End of Measure related actions -->
+		
 		<!-- Profile related actions -->
 		<action name="listProfiles" class="profileAction">
 			<interceptor-ref name="AdminInterceptor"/>

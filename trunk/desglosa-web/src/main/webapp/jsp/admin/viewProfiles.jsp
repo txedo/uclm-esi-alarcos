@@ -95,17 +95,18 @@
     </div>
     
     <div class="buttonPane">
-        <c:url var="view" value="/profiles"/>
-        <button class="minimal" onclick="javascript:viewProfile('<c:out value="${view}"/>')"><fmt:message key="button.view_profile"/></button>
-        <!-- TODO add security tag -->
-<%--         <c:url var="edit" value="/editProfile"/> --%>
-<%--         <button class="minimal" onclick="javascript:call('<c:out value="${edit}"/>',true)"><fmt:message key="button.edit_profile"/></button> --%>
-        <!-- TODO add security tag -->
-        <c:url var="delete" value="/deleteProfile"/>
-        <button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_profile"/></button>
-        <!-- TODO add security tag -->
-        <c:url var="add" value="/showProfileForm"/>
-        <button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_profile"/></button>
+        <security:authorize ifAnyGranted="ROLE_ADMIN">
+	        <c:url var="view" value="/profiles"/>
+	        <button class="minimal" onclick="javascript:viewProfile('<c:out value="${view}"/>')"><fmt:message key="button.view_profile"/></button>
+        </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_ADMIN">
+	        <c:url var="delete" value="/deleteProfile"/>
+	        <button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_profile"/></button>
+        </security:authorize>
+        <security:authorize ifAnyGranted="ROLE_ADMIN">
+	        <c:url var="add" value="/showProfileForm"/>
+	        <button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_profile"/></button>
+	    </security:authorize>
     </div>
 </body>
 </html>

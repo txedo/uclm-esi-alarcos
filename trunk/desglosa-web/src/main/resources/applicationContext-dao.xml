@@ -46,5 +46,9 @@
 	</bean>
 	
     <bean id="profileDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.ProfileDAO" />
-
+    
+	<bean id="measureDao" class="es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MeasureDAOHibernate">
+    	<constructor-arg value="es.uclm.inf_cr.alarcos.desglosa_web.model.Measure"/>
+        <property name="hibernateTemplate" ref="hibernateTemplate" />  
+	</bean>
 </beans>

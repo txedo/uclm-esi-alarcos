@@ -1,5 +1,6 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +24,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.dao.MeasureDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MarketDAOHibernate;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.SubprojectDAOHibernate;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Measure;
@@ -40,6 +42,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
 public class Factory {
     @Property
     private int id;
+    private List<Field> measures = new ArrayList<Field>();
     @Property(embedded = true)
     private Company company;
     @Property
@@ -96,6 +99,11 @@ public class Factory {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
+    }
+    
+    @Transient
+    public List<Field> getMeasures() {
+        return measures;
     }
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -245,6 +253,10 @@ public class Factory {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setMeasures(List<Field> measures) {
+        this.measures = measures;
     }
 
     public void setCompany(Company company) {
@@ -426,6 +438,14 @@ public class Factory {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    public void updateMeasures() {
+        MeasureDAO measureDao = (MeasureDAO) ApplicationContextProvider.getBean("measureDao");
+        List<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure> measureList = measureDao.getMeasuresByEntity(es.uclm.inf_cr.alarcos.desglosa_web.model.Measure.FACTORY_ENTITY);
+        for (es.uclm.inf_cr.alarcos.desglosa_web.model.Measure m : measureList) {
+            
+        }
     }
 
 }
