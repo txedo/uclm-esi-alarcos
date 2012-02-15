@@ -11,6 +11,7 @@ public class TransientAttributesListener implements PostLoadEventListener {
     public void onPostLoad(PostLoadEvent event) {
         if (event.getEntity() instanceof Factory) {
             ((Factory) event.getEntity()).updateTransientFields();
+            ((Factory) event.getEntity()).updateMeasures();
         }
     }
 }

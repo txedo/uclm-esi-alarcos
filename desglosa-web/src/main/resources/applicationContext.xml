@@ -12,6 +12,7 @@
     <bean id="subprojectAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.SubprojectAction" singleton="false" />
     <bean id="marketAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.MarketAction" singleton="false" />
     <bean id="visualizationAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.VisualizationAction" singleton="false" />
+    <bean id="measureAction" class="es.uclm.inf_cr.alarcos.desglosa_web.actions.MeasureAction" singleton="false" />
     
     <!-- Other objects instantiated by Spring -->
     <bean id="glObjectManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.GLObjectManager" />
@@ -35,5 +36,8 @@
     </bean>
     <bean id="profileManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.ProfileManager" singleton="true" >
         <property name="profileDao" ref="profileDao"/>
+    </bean>
+    <bean id="measureManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.MeasureManager" singleton="true" >
+        <property name="measureDao" ref="measureDao"/>
     </bean>
 </beans>
