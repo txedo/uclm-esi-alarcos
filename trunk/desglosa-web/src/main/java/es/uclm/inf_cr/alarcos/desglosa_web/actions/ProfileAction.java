@@ -32,28 +32,22 @@ public class ProfileAction extends ActionSupport implements
     private String jsonCaptionLines;
     private List<PropertyWrapper> entityAttributes;
     private Map<String, String> modelAttributes;
-    private Map<String, String> entities = new HashMap<String, String>() {
+    private final Map<String, String> entities = new HashMap<String, String>() {
         private static final long serialVersionUID = 1443703980383438531L;
         {
-            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Company",
-                    getText("label.Company"));
-            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Factory",
-                    getText("label.Factory"));
-            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Project",
-                    getText("label.Project"));
-            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject",
-                    getText("label.Subproject"));
+            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Company", getText("label.Company"));
+            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Factory", getText("label.Factory"));
+            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Project", getText("label.Project"));
+            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject", getText("label.Subproject"));
+            put("es.uclm.inf_cr.alarcos.desglosa_web.model.Market", getText("label.Market"));
         }
     };
-    private Map<String, String> models = new HashMap<String, String>() {
+    private final Map<String, String> models = new HashMap<String, String>() {
         private static final long serialVersionUID = 6918186658085961722L;
         {
-            put("model.gl.knowledge.GLTower",
-                    getText("label.model.towers"));
-            put("model.gl.knowledge.GLAntennaBall",
-                    getText("label.model.antennaballs"));
-            put("model.gl.knowledge.GLFactory",
-                    getText("label.model.buildings"));
+            put("model.gl.knowledge.GLTower", getText("label.model.towers"));
+            put("model.gl.knowledge.GLAntennaBall", getText("label.model.antennaballs"));
+            put("model.gl.knowledge.GLFactory", getText("label.model.buildings"));
         }
     };
     

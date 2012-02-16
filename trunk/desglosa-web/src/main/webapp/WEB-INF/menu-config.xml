@@ -20,6 +20,7 @@
             <Item name="ManageCompanies" title="menu.manage.companies" page="/listCompanies" />
             <Item name="ManageFactories" title="menu.manage.factories" page="/listFactories" />
             <Item name="ManageProfiles" title="menu.manage.profiles" page="/listProfiles" />
+            <Item name="ManageMeasures" title="menu.manage.measures" page="/listMeasures" />
     	</Menu>
     	<Menu name="ManagerMenu" title="menu.manager" description="Manager Menu" roles="ROLE_ADMIN,ROLE_MANAGER">
     		<Item name="ManageProjects" title="menu.manage.projects" page="/listProjects" />
