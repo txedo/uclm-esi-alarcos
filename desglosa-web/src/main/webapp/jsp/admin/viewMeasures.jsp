@@ -56,9 +56,9 @@
             <display:column style="width: 3%; text-align: center;">
                 <input type="radio" id="measureIdRadio" name="measureId" value='${measure.id}'>
             </display:column>
-            <display:column property="measure.entity" escapeXml="true" style="width: 20%" titleKey="table.header.measure.entity" sortable="true"/>
-            <display:column property="measure.name" escapeXml="true" style="width: 20%" titleKey="table.header.measure.name" sortable="true"/>
-            <display:column property="measure.type" escapeXml="true" style="width: 20%" titleKey="table.header.measure.type" sortable="false"/>
+            <display:column property="entity" escapeXml="true" style="width: 20%" titleKey="table.header.measure.entity" sortable="true"/>
+            <display:column property="name" escapeXml="true" style="width: 20%" titleKey="table.header.measure.name" sortable="true"/>
+            <display:column property="type" escapeXml="true" style="width: 20%" titleKey="table.header.measure.type" sortable="false"/>
             
             <display:setProperty name="paging.banner.placement" value="top"/>
             <display:setProperty name="paging.banner.item_name"><fmt:message key="label.measure"/></display:setProperty>
@@ -77,14 +77,14 @@
     </div>
     
     <div class="buttonPane">
-		<security:authorize ifAnyGranted="ROLE_ADMIN">
+<%-- 		<security:authorize ifAnyGranted="ROLE_ADMIN"> --%>
 	        <c:url var="delete" value="/deleteMeasure"/>
 	        <button class="minimal" onclick="javascript:call('<c:out value="${delete}"/>',true)"><fmt:message key="button.remove_measure"/></button>
-        </security:authorize>
-        <security:authorize ifAnyGranted="ROLE_ADMIN">
+<%--         </security:authorize> --%>
+<%--         <security:authorize ifAnyGranted="ROLE_ADMIN"> --%>
 	        <c:url var="add" value="/showMeasureForm"/>
 	        <button class="minimal" onclick="javascript:call('<c:out value="${add}"/>',false)"><fmt:message key="button.add_measure"/></button>
-	    </security:authorize>
+<%-- 	    </security:authorize> --%>
     </div>
 </body>
 </html>

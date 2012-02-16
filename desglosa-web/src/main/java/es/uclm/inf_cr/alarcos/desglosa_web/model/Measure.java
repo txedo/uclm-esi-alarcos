@@ -11,15 +11,15 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "measures")
 public class Measure {
-    public final static String COMPANY_ENTITY = "Company";
+    public final static String COMPANY_ENTITY = "es.uclm.inf_cr.alarcos.desglosa_web.model.Company";
     public final static String COMPANY_TABLE = "companies";
-    public final static String FACTORY_ENTITY = "Factory";
+    public final static String FACTORY_ENTITY = "es.uclm.inf_cr.alarcos.desglosa_web.model.Factory";
     public final static String FACTORY_TABLE = "factories";
-    public final static String PROJECT_ENTITY = "Project";
+    public final static String PROJECT_ENTITY = "es.uclm.inf_cr.alarcos.desglosa_web.model.Project";
     public final static String PROJECT_TABLE = "projects";
-    public final static String SUBPROJECT_ENTITY = "Subproject";
+    public final static String SUBPROJECT_ENTITY = "es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject";
     public final static String SUBPROJECT_TABLE = "subprojects";
-    public final static String MARKET_ENTITY = "Market";
+    public final static String MARKET_ENTITY = "es.uclm.inf_cr.alarcos.desglosa_web.model.Market";
     public final static String MARKET_TABLE = "markets";
     
     public final static String FLOAT = "float";
@@ -37,6 +37,7 @@ public class Measure {
     private String dbTable;
     private String name;
     private String type;
+    private String description;
     
     public Measure () {
     }
@@ -67,16 +68,35 @@ public class Measure {
         return type;
     }
     
+    @Column
+    public String getDescription() {
+        return this.description ;
+    }
+    
+    public void inferDbTable() {
+        if (this.entity.equals(Measure.COMPANY_ENTITY)) {
+            this.dbTable = Measure.COMPANY_TABLE;
+        } else if (this.entity.equals(Measure.FACTORY_ENTITY)) {
+            this.dbTable = Measure.FACTORY_TABLE;
+        } else if (this.entity.equals(Measure.PROJECT_ENTITY)) {
+            this.dbTable = Measure.PROJECT_TABLE;
+        } else if (this.entity.equals(Measure.SUBPROJECT_ENTITY)) {
+            this.dbTable = Measure.SUBPROJECT_TABLE;
+        } else if (this.entity.equals(Measure.MARKET_ENTITY)) {
+            this.dbTable = Measure.MARKET_TABLE;
+        }
+    }
+    
     @Transient
     public String getColumnType() {
         String columnType = "";
-        if (this.type.equals(Measure.FLOAT)) {
+        if (this.type.equals(Measure.FLOAT) || this.type.equals(Measure.FLOAT_COLUMN)) {
             columnType = FLOAT_COLUMN;
-        } else if (this.type.equals(Measure.INTEGER)) {
+        } else if (this.type.equals(Measure.INTEGER) || this.type.equals(Measure.INTEGER_COLUMN)) {
             columnType = INTEGER_COLUMN;
-        } else if (this.type.equals(Measure.STRING)) {
+        } else if (this.type.equals(Measure.STRING) || this.type.equals(Measure.STRING_COLUMN)) {
             columnType = STRING_COLUMN;
-        } else if (this.type.equals(Measure.BOOLEAN)) {
+        } else if (this.type.equals(Measure.BOOLEAN) || this.type.equals(Measure.BOOLEAN_COLUMN)) {
             columnType = BOOLEAN_COLUMN;
         }
         return columnType;
@@ -115,6 +135,10 @@ public class Measure {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }

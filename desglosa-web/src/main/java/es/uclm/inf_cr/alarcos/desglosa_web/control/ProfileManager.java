@@ -21,6 +21,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.dao.ProfileDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.DeleteProfileException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Field;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Mapping;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.Measure;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Metaclass;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Profile;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Rule;
@@ -36,8 +37,14 @@ public class ProfileManager {
     }
     
     public static List<PropertyWrapper> readEntityAttributes(String entity) throws ClassNotFoundException, Exception {
+        List<PropertyWrapper> attributes;
+        // Primero agregamos los atributos anotados con @Property
         Class<?> c = Class.forName(entity);
-        return PropertyAnnotationParser.parse(c);
+        attributes = PropertyAnnotationParser.parse(c);
+        // Ahora agregamos las medidas configuradas mediante la base de datos
+        List<Measure> mAux = MeasureManager.getMeasuresByEntity(entity);
+        attributes.addAll(MeasureManager.measures2WrappedProperties(mAux));
+        return attributes;
     }
     
     public static Map<String, String> readModelDimensions(String model) throws ClassNotFoundException, Exception {
