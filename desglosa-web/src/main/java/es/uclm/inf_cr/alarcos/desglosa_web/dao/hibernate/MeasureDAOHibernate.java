@@ -48,7 +48,7 @@ public class MeasureDAOHibernate extends GenericDAOHibernate<Measure, Long> impl
         getHibernateTemplate().saveOrUpdate(measure);
         getHibernateTemplate().flush();
         // Alter entity table adding a new column
-        ((DataSourceUtil) ApplicationContextProvider.getBean("dataSourceUtil")).alterTableByAddingColumn(measure.getDbTable(), measure.getName(), measure.getColumnType(), measure.getDefaultValue().toString());
+        ((DataSourceUtil) ApplicationContextProvider.getBean("dataSourceUtil")).alterTableByAddingColumn(measure.getDbTable(), measure.getName(), measure.getColumnType(), measure.getDefaultValue());
     }
 
     public void removeMeasure(int id) {

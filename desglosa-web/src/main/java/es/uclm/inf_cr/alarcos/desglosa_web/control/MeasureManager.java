@@ -8,6 +8,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.exception.MeasureDuplicatedException;
 import es.uclm.inf_cr.alarcos.desglosa_web.exception.MeasureNotFoundException;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.Measure;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MeasureAnnotationParser;
+import es.uclm.inf_cr.alarcos.desglosa_web.model.util.MeasureWrapper;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.PropertyWrapper;
 
 public class MeasureManager {
@@ -33,15 +34,32 @@ public class MeasureManager {
     }
     
     public static List<Measure> getMeasuresByEntity(String entity) {
+        // Get measures configured in runtime
         return measureDao.getMeasuresByEntity(entity);
     }
     
-    public static void getAllBaseMeasuresByEntity(String entity) {
-        MeasureAnnotationParser.parseBaseMeasures(entity);
+    public static List<MeasureWrapper> getAllBaseMeasuresByEntity(String entity) throws SecurityException, ClassNotFoundException {
+        List<MeasureWrapper> mwList;
+        // Get annotated measures -as base- configured in compile time
+        mwList = MeasureAnnotationParser.parseBaseMeasures(entity);
+        // Get measures configured in runtime
+        List<Measure> measures = MeasureManager.getMeasuresByEntity(entity);
+        for (Measure m : measures) {
+            mwList.add(new MeasureWrapper(m.getName(), m.getType(), true, m.getDescription()));
+        }
+        return mwList;
     }
     
-    public static void getAllMeasuresByEntity(String entity) {
-        MeasureAnnotationParser.parseMeasures(entity);
+    public static List<MeasureWrapper> getAllMeasuresByEntity(String entity) throws SecurityException, ClassNotFoundException {
+        List<MeasureWrapper> mwList;
+        // Get annotated measures -base and not base- configured in compile time
+        mwList = MeasureAnnotationParser.parseAllMeasures(entity);
+        // Get measures configured in runtime
+        List<Measure> measures = MeasureManager.getMeasuresByEntity(entity);
+        for (Measure m : measures) {
+            mwList.add(new MeasureWrapper(m.getName(), m.getType(), true, m.getDescription()));
+        }
+        return mwList;
     }
     
     public static List<PropertyWrapper> measures2WrappedProperties(List<Measure> measures) {
@@ -63,9 +81,6 @@ public class MeasureManager {
             }
         } catch (MeasureNotFoundException e) {
             // do nothing
-        }
-        if (measure.getDescription().equals("")) {
-            measure.setDescription("No description has been set.");
         }
         measureDao.saveMeasure(measure);
     }

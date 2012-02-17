@@ -51,12 +51,15 @@
     </c:if>
     
     <div class="displaytagTable">
+   		<s:set name="entities" value="entities" scope="request"/>
         <s:set name="measures" value="measures" scope="request"/>
         <display:table name="measures" uid="measure" defaultsort="2" class="" pagesize="10" requestURI="" >
             <display:column style="width: 3%; text-align: center;">
                 <input type="radio" id="measureIdRadio" name="measureId" value='${measure.id}'>
             </display:column>
-            <display:column property="entity" escapeXml="true" style="width: 20%" titleKey="table.header.measure.entity" sortable="true"/>
+            <display:column escapeXml="false" style="width: 20%" titleKey="table.header.measure.entity" sortable="true">
+            	 <c:out value="${entities[measure.entity]}"></c:out>
+            </display:column>
             <display:column property="name" escapeXml="true" style="width: 20%" titleKey="table.header.measure.name" sortable="true"/>
             <display:column property="type" escapeXml="true" style="width: 20%" titleKey="table.header.measure.type" sortable="false"/>
             

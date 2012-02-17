@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<%@page import="java.util.List"%>
-<%@page import="es.uclm.inf_cr.alarcos.desglosa_web.model.util.MeasureAnnotationParser"%>
-<%@page import="es.uclm.inf_cr.alarcos.desglosa_web.model.Project"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/common/taglibs.jsp"%>
+<%@ page import="java.util.List" %>
+<%@ page import="es.uclm.inf_cr.alarcos.desglosa_web.control.MeasureManager" %>
+<%@ page import="es.uclm.inf_cr.alarcos.desglosa_web.model.Measure" %>
+<%@ page import="es.uclm.inf_cr.alarcos.desglosa_web.model.Project" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="/common/taglibs.jsp" %>
 
 <script type="text/javascript" src="js/jquery.tools-1.2.6.min.js?version=1"></script>
 <link href="<s:url value='/styles/tooltip.css?version=1'/>" rel="stylesheet" type="text/css" />
@@ -13,14 +14,23 @@
 <fmt:message key="label.tooltip.int" var="labelInteger"/>
 <fmt:message key="label.tooltip.float" var="labelFloat"/>
 
-<c:set var="measures" value="<%= MeasureAnnotationParser.parseBaseMeasures(Project.class) %>"></c:set>
+<c:set var="measures" value="<%= MeasureManager.getAllBaseMeasuresByEntity(Measure.PROJECT_ENTITY) %>"></c:set>
 <c:choose>
 	<c:when test="${fn:length(measures) gt 0}">
 	<ul>
 		<c:forEach var="measure" items="${measures}">
 		    <c:set var="measureName" value="project.${measure.name}"></c:set>
+		    <s:set name="project" value="project" scope="request"></s:set>
+		    <s:set name="foo" value="%{#attr.measureName}"></s:set>
+		    <c:if test="${foo eq measureName}">
+		    	<c:forEach var="m" items="${project.measures}">
+		    		<c:if test="${m.name == foo}">
+		    			<c:set var="measureName" value="${project.measures[measure.name]}"/>
+		    		</c:if>
+		    	</c:forEach>
+		    </c:if>
 		    <li>
-		        <label for="${measureName}"><fmt:message key="label.${measure.name}" /></label>
+		    	<label for="${measureName}"><fmt:message key="${measure.name}" /></label>
 		        <c:if test="${measure.type == 'Boolean'}">
 		            <s:checkbox id="%{#attr.measureName}" name="%{#attr.measureName}"></s:checkbox>
 		        </c:if>

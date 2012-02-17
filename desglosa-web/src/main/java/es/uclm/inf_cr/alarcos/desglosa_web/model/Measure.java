@@ -22,10 +22,10 @@ public class Measure {
     public final static String MARKET_ENTITY = "es.uclm.inf_cr.alarcos.desglosa_web.model.Market";
     public final static String MARKET_TABLE = "markets";
     
-    public final static String FLOAT = "float";
-    public final static String INTEGER = "int";
-    public final static String STRING = "string";
-    public final static String BOOLEAN = "boolean";
+    public final static String FLOAT = "Float";
+    public final static String INTEGER = "Integer";
+    public final static String STRING = "String";
+    public final static String BOOLEAN = "Boolean";
     
     private final static String FLOAT_COLUMN = "float";
     private final static String INTEGER_COLUMN = "integer";
@@ -103,16 +103,16 @@ public class Measure {
     }
     
     @Transient
-    public Object getDefaultValue() {
-        Object defaultValue = null;
+    public String getDefaultValue() {
+        String defaultValue = "";
         if (this.type.equals(Measure.FLOAT)) {
-            defaultValue = new Float(0.0f);
+            defaultValue = "0.0";
         } else if (this.type.equals(Measure.INTEGER)) {
-            defaultValue = new Integer(0);
+            defaultValue = "0";
         } else if (this.type.equals(Measure.STRING)) {
-            defaultValue = new String("");
+            defaultValue = "";
         } else if (this.type.equals(Measure.BOOLEAN)) {
-            defaultValue = new Boolean(false);
+            defaultValue = "false";
         }
         return defaultValue;
     }
