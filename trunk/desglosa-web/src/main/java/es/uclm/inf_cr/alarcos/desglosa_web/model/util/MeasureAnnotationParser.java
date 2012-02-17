@@ -11,8 +11,16 @@ public class MeasureAnnotationParser {
         private MeasureAnnotationParser() {
         }
         
+        public static final List<MeasureWrapper> parseBaseMeasures(final String clazz) throws SecurityException, ClassNotFoundException {
+            return MeasureAnnotationParser.parseBaseMeasures(Class.forName(clazz));
+        }
+        
         public static final List<MeasureWrapper> parseBaseMeasures(final Class<?> clazz) throws SecurityException {
             return MeasureAnnotationParser.parse(clazz, true);
+        }
+        
+        public static final List<MeasureWrapper> parseAllMeasures(final String clazz) throws SecurityException, ClassNotFoundException {
+            return MeasureAnnotationParser.parseAllMeasures(Class.forName(clazz));
         }
         
         public static final List<MeasureWrapper> parseAllMeasures(final Class<?> clazz) throws SecurityException {

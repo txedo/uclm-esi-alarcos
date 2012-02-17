@@ -1,5 +1,7 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.persistence;
 
+import java.util.List;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
@@ -20,4 +22,10 @@ public class DataSourceUtil extends JdbcDaoSupport {
     public void alterTableByRemovingColumn(String table, String name) {
         getJdbcTemplate().execute("ALTER TABLE " + table  + " DROP COLUMN " + name);
     }
+    
+    public List<?> query(String sqlQuery) {
+        return getJdbcTemplate().queryForList(sqlQuery);
+    }
+    
+    
 }

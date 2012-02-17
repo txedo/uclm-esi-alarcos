@@ -24,6 +24,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import es.uclm.inf_cr.alarcos.desglosa_web.control.MeasureManager;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.MeasureDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MarketDAOHibernate;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.SubprojectDAOHibernate;
@@ -42,7 +43,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
 public class Factory {
     @Property
     private int id;
-    private List<Field> measures = new ArrayList<Field>();
+    private List<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure> measures = new ArrayList<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure>();
     @Property(embedded = true)
     private Company company;
     @Property
@@ -102,7 +103,7 @@ public class Factory {
     }
     
     @Transient
-    public List<Field> getMeasures() {
+    public List<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure> getMeasures() {
         return measures;
     }
 
@@ -255,7 +256,7 @@ public class Factory {
         this.id = id;
     }
 
-    public void setMeasures(List<Field> measures) {
+    public void setMeasures(List<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure> measures) {
         this.measures = measures;
     }
 
@@ -438,14 +439,6 @@ public class Factory {
     @Override
     public String toString() {
         return this.name;
-    }
-
-    public void updateMeasures() {
-        MeasureDAO measureDao = (MeasureDAO) ApplicationContextProvider.getBean("measureDao");
-        List<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure> measureList = measureDao.getMeasuresByEntity(es.uclm.inf_cr.alarcos.desglosa_web.model.Measure.FACTORY_ENTITY);
-        for (es.uclm.inf_cr.alarcos.desglosa_web.model.Measure m : measureList) {
-            
-        }
     }
 
 }

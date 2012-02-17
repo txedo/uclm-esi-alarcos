@@ -1,6 +1,8 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Formula;
 
@@ -31,6 +34,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 public class Project {
     @Property
     private int id;
+    private List<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure> measures = new ArrayList<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure>();
     @Property
     private String name;
     @Property
@@ -89,6 +93,11 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
+    }
+    
+    @Transient
+    public List<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure> getMeasures() {
+        return measures;
     }
 
     @Column(name = "name")
@@ -230,11 +239,13 @@ public class Project {
     public Float getActividad() {
         return actividad;
     }
-    
-
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void setMeasures(List<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure> measures) {
+        this.measures = measures;
     }
 
     public void setName(String name) {
