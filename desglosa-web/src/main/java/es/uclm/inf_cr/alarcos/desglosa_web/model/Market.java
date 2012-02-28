@@ -1,5 +1,8 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 
@@ -19,6 +23,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 })
 public class Market {
     private int id;
+    private Map<String, Object> measures = new HashMap<String, Object>();
     @Property(type = "string")
     private String name;
     @Property(type = "hexcolor")
@@ -31,6 +36,11 @@ public class Market {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
+    }
+    
+    @Transient
+    public Map<String, Object> getMeasures() {
+        return measures;
     }
 
     @Column(name = "name")
@@ -45,6 +55,10 @@ public class Market {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void setMeasures(Map<String, Object> measures) {
+        this.measures = measures;
     }
 
     public void setName(String name) {

@@ -95,7 +95,7 @@
 						$("#entityAttributesDiv").append("<ul>");
 						$.each(data.entityAttributes, function (key, value) {
 							entityAttributesArray[value.name] = value.type;
-							$("#entityAttributesDiv ul").append("<li id='entityAttr_" + value.name + "' class='selectablelist ui-corner-all' title='" + value.description + "'>" + (value.name).split('_').join(' ') + " (" + value.type + ")</li>");
+							$("#entityAttributesDiv ul").append("<li id='entityAttr_" + value.name + "' class='selectablelist ui-corner-all' title='" + value.description + "'>" + (value.name).split('#').join(' ') + " (" + value.type + ")</li>");
 						});
 						$("#entityAttributesDiv").append("</ul>");
 					}
@@ -793,7 +793,7 @@
 			var jsonMappings = JSON.stringify(mappings);
 			var jsonConstants = JSON.stringify(constants);
 			$("#saveIndicator").toggle();
-			$.post ("/desglosa-web/saveProfile",
+			$.post ("<c:url value='saveProfile'/>",
 				{ profileName: $("#profileName").val(),
 				  profileDescription: $("#profileDescription").val(),
 				  model: $("#modelSelect").val(),
@@ -804,7 +804,7 @@
 				},
 				function(data, status) {
 					if (status == "success") {
-						$(location).attr('pathname', '/desglosa-web/listProfiles?add=success');
+						$(location).attr('pathname', "<c:url value='listProfiles?add=success'/>");
 					} else {
 						$('#errorDialogBody').html("<p class='messageBox error'><c:out value='${criticalError}'/></p>");
 			            $('#errorDialog').dialog('open');

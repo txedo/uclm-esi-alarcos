@@ -1,6 +1,8 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Formula;
 
@@ -25,6 +28,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 public class Company {
     @Property
     private int id;
+    private Map<String, Object> measures = new HashMap<String, Object>();
     @Property
     private String name;
     @Property
@@ -54,6 +58,11 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
+    }
+    
+    @Transient
+    public Map<String, Object> getMeasures() {
+        return measures;
     }
 
     @Column(nullable = false, length = 45, unique = true)
@@ -107,6 +116,10 @@ public class Company {
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public void setMeasures(Map<String, Object> measures) {
+        this.measures = measures;
     }
 
     public void setName(String name) {

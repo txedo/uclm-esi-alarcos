@@ -59,6 +59,7 @@ public class CompanyManager {
     public static void updateMeasures(int companyToUpdateId, Company companyWithUpdatedMeasures) throws CompanyNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, Exception {
         Company companyToUpdate = CompanyManager.getCompany(companyToUpdateId);
         Utilities.updateFieldsByReflection(Company.class, companyToUpdate, companyWithUpdatedMeasures);
+        companyToUpdate.setMeasures(companyWithUpdatedMeasures.getMeasures());
         CompanyManager.saveCompany(companyToUpdate);
     }
     

@@ -22,10 +22,10 @@ public class Measure {
     public final static String MARKET_ENTITY = "es.uclm.inf_cr.alarcos.desglosa_web.model.Market";
     public final static String MARKET_TABLE = "markets";
     
-    public final static String FLOAT = "Float";
-    public final static String INTEGER = "Integer";
-    public final static String STRING = "String";
-    public final static String BOOLEAN = "Boolean";
+    public final static String FLOAT = "float";
+    public final static String INTEGER = "int";
+    public final static String STRING = "string";
+    public final static String BOOLEAN = "boolean";
     
     private final static String FLOAT_COLUMN = "float";
     private final static String INTEGER_COLUMN = "integer";
@@ -38,6 +38,7 @@ public class Measure {
     private String name;
     private String type;
     private String description;
+    private Object value;
     
     public Measure () {
     }
@@ -73,6 +74,11 @@ public class Measure {
         return this.description ;
     }
     
+    @Transient
+    public Object getValue() {
+        return value;
+    }
+
     public void inferDbTable() {
         if (this.entity.equals(Measure.COMPANY_ENTITY)) {
             this.dbTable = Measure.COMPANY_TABLE;
@@ -139,6 +145,10 @@ public class Measure {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setValue(Object value) {
+        this.value = value;
     }
     
 }

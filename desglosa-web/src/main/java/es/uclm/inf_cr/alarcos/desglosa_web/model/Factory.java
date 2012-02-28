@@ -1,6 +1,5 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,13 +23,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import es.uclm.inf_cr.alarcos.desglosa_web.control.MeasureManager;
-import es.uclm.inf_cr.alarcos.desglosa_web.dao.MeasureDAO;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.MarketDAOHibernate;
 import es.uclm.inf_cr.alarcos.desglosa_web.dao.hibernate.SubprojectDAOHibernate;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Measure;
 import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
-import es.uclm.inf_cr.alarcos.desglosa_web.model.util.TransientAttributesListener;
+import es.uclm.inf_cr.alarcos.desglosa_web.persistence.TransientAttributesListener;
 import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
 
 @Entity
@@ -43,7 +40,7 @@ import es.uclm.inf_cr.alarcos.desglosa_web.util.ApplicationContextProvider;
 public class Factory {
     @Property
     private int id;
-    private List<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure> measures = new ArrayList<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure>();
+    private Map<String, Object> measures = new HashMap<String, Object>();
     @Property(embedded = true)
     private Company company;
     @Property
@@ -103,7 +100,7 @@ public class Factory {
     }
     
     @Transient
-    public List<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure> getMeasures() {
+    public Map<String, Object> getMeasures() {
         return measures;
     }
 
@@ -256,7 +253,7 @@ public class Factory {
         this.id = id;
     }
 
-    public void setMeasures(List<es.uclm.inf_cr.alarcos.desglosa_web.model.Measure> measures) {
+    public void setMeasures(Map<String, Object> measures) {
         this.measures = measures;
     }
 

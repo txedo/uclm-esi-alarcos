@@ -50,7 +50,7 @@ public class PropertyAnnotationParser {
                     List<PropertyWrapper> embeddedProperties = parse(c);
                     // concat parent attribute name for later manipulation
                     for (PropertyWrapper pw : embeddedProperties) {
-                        pw.setName(name + "_" + pw.getName());
+                        pw.setName(name + "#" + pw.getName());
                     }
                     // add all returned properties, not the property itself
                     properties.addAll(embeddedProperties);

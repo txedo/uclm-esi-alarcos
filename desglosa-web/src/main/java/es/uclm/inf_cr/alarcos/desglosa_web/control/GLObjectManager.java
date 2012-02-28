@@ -59,8 +59,7 @@ public class GLObjectManager {
         c.setModel(metaclass.getModelName());
 
         if (entities != null && entities.size() > 0) {
-            // Create a map of list in which key is neighborhood name and value
-            // is a list of flats
+            // Create a map of list in which key is neighborhood name and value is a list of flats
             Map<String, List<?>> neighborhoods = groupEntitiesBy(entities.get(0).getClass(), entities, groupBy, groupById);
             // Iterate over each list creating GLObjects while creating
             // GLNeighborhoods and GLCity
@@ -78,21 +77,31 @@ public class GLObjectManager {
                         Class<?> superClass = classModel;
                         Method setterMethod = superClass.getMethod(setterName, mapping.getModelAttr().getParameterType());
 
-                        // Build getter method using Java Reflective API
-                        // oneWord_otherWord_anotherWord must be parsed to
-                        // invoke getOneWord().getOtherWord().getAnotherWord()
-                        String[] chainOfGetters = mapping.getEntityAttr().getName().split("_");
-                        Class<?> subClass = e.getClass();
-                        Object entityAttrValue = e;
-                        for (int i = 0; i < chainOfGetters.length && entityAttrValue != null; i++) {
-                            String getterPrefix = "get";
-                            if (mapping.getEntityAttr().getType().equals("boolean")) {
-                                getterPrefix = "is";
+                        Object entityAttrValue = null;
+                        // Check if attribute exists in measures map
+                        Method measuresGetter = e.getClass().getMethod("getMeasures", null);
+                        Map<String, Object> measures = (Map<String, Object>) measuresGetter.invoke(e, null);
+                        if (measures.size() > 0) {
+                            entityAttrValue = measures.get(mapping.getEntityAttr().getName());
+                        }
+                        
+                        if (entityAttrValue == null) {
+                            // Build getter method using Java Reflective API
+                            // oneWord_otherWord_anotherWord must be parsed to
+                            // invoke getOneWord().getOtherWord().getAnotherWord()
+                            String[] chainOfGetters = mapping.getEntityAttr().getName().split("_");
+                            entityAttrValue = e;
+                            Class<?> subClass = e.getClass();
+                            for (int i = 0; i < chainOfGetters.length && entityAttrValue != null; i++) {
+                                String getterPrefix = "get";
+                                if (mapping.getEntityAttr().getType().equals("boolean")) {
+                                    getterPrefix = "is";
+                                }
+                                String parentGetterName = getterPrefix + WordUtils.capitalize(chainOfGetters[i]);
+                                Method parentGetterMethod = subClass.getMethod(parentGetterName, null);
+                                entityAttrValue = parentGetterMethod.invoke(entityAttrValue, null);
+                                subClass = subClass.getDeclaredField(chainOfGetters[i]).getType();
                             }
-                            String parentGetterName = getterPrefix + WordUtils.capitalize(chainOfGetters[i]);
-                            Method parentGetterMethod = subClass.getMethod(parentGetterName, null);
-                            entityAttrValue = parentGetterMethod.invoke(entityAttrValue, null);
-                            subClass = subClass.getDeclaredField(chainOfGetters[i]).getType();
                         }
                         if (entityAttrValue != null) {
                             // Check model attribute type and handle it in a

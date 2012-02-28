@@ -18,19 +18,14 @@
 <c:choose>
 	<c:when test="${fn:length(measures) gt 0}">
 	<ul>
+	    <s:set name="project" value="project" scope="request"/>
 		<c:forEach var="measure" items="${measures}">
-		    <c:set var="measureName" value="project.${measure.name}"></c:set>
-		    <s:set name="project" value="project" scope="request"></s:set>
-		    <s:set name="foo" value="%{#attr.measureName}"></s:set>
-		    <c:if test="${foo eq measureName}">
-		    	<c:forEach var="m" items="${project.measures}">
-		    		<c:if test="${m.name == foo}">
-		    			<c:set var="measureName" value="${project.measures[measure.name]}"/>
-		    		</c:if>
-		    	</c:forEach>
-		    </c:if>
+            <c:set var="measureName" value="project.measures.${measure.name}"></c:set>
+            <c:if test="${measure.annotated == true}">
+                <c:set var="measureName" value="project.${measure.name}"></c:set>
+            </c:if>
 		    <li>
-		    	<label for="${measureName}"><fmt:message key="${measure.name}" /></label>
+		    	<label for="${measureName}">${measure.name}</label>
 		        <c:if test="${measure.type == 'Boolean'}">
 		            <s:checkbox id="%{#attr.measureName}" name="%{#attr.measureName}"></s:checkbox>
 		        </c:if>

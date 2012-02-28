@@ -45,7 +45,7 @@ public class MeasureManager {
         // Get measures configured in runtime
         List<Measure> measures = MeasureManager.getMeasuresByEntity(entity);
         for (Measure m : measures) {
-            mwList.add(new MeasureWrapper(m.getName(), m.getType(), true, m.getDescription()));
+            mwList.add(new MeasureWrapper(m.getName(), m.getType(), true, false, m.getDescription()));
         }
         return mwList;
     }
@@ -57,7 +57,7 @@ public class MeasureManager {
         // Get measures configured in runtime
         List<Measure> measures = MeasureManager.getMeasuresByEntity(entity);
         for (Measure m : measures) {
-            mwList.add(new MeasureWrapper(m.getName(), m.getType(), true, m.getDescription()));
+            mwList.add(new MeasureWrapper(m.getName(), m.getType(), true, false, m.getDescription()));
         }
         return mwList;
     }
@@ -71,6 +71,8 @@ public class MeasureManager {
     }
 
     public static void saveMeasure(Measure measure) throws MeasureDuplicatedException {
+        // TODO clean blank character and substitute them by underscores
+        // TODO uncapitalize all characters
         measure.inferDbTable();
         // Check the measure does not exist in database for the same entity
         Measure aux;

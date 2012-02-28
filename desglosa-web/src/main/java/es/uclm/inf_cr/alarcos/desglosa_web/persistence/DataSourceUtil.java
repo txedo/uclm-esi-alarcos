@@ -1,6 +1,6 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.persistence;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -23,8 +23,17 @@ public class DataSourceUtil extends JdbcDaoSupport {
         getJdbcTemplate().execute("ALTER TABLE " + table  + " DROP COLUMN " + name);
     }
     
-    public List<?> query(String sqlQuery) {
-        return getJdbcTemplate().queryForList(sqlQuery);
+    public void execute(String sqlQuery) {
+        getJdbcTemplate().execute(sqlQuery);
+    }
+    
+    public int update(String sqlQuery) {
+        return getJdbcTemplate().update(sqlQuery);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> query(String sqlQuery) {
+        return getJdbcTemplate().queryForMap(sqlQuery);
     }
     
     

@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	5.1.32-community
+-- Server version	5.1.61-community
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -142,16 +142,17 @@ CREATE TABLE `factories` (
   `name` varchar(45) NOT NULL,
   `address_id` int(11) DEFAULT NULL,
   `location_id` int(11) DEFAULT NULL,
-  `company_id` int(11) NOT NULL,
   `director_id` int(11) DEFAULT NULL,
+  `company_id` int(11) NOT NULL,
+  `testbool` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `FKB0E2E728353B48C7` (`company_id`),
   KEY `FKB0E2E72846715B0D` (`location_id`),
   KEY `FKB0E2E72861F237AD` (`director_id`),
   KEY `FKB0E2E7283AA10167` (`address_id`),
-  CONSTRAINT `FKB0E2E7283AA10167` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`),
   CONSTRAINT `FKB0E2E728353B48C7` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
+  CONSTRAINT `FKB0E2E7283AA10167` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`),
   CONSTRAINT `FKB0E2E72846715B0D` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`),
   CONSTRAINT `FKB0E2E72861F237AD` FOREIGN KEY (`director_id`) REFERENCES `directors` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
@@ -161,18 +162,18 @@ CREATE TABLE `factories` (
 --
 
 /*!40000 ALTER TABLE `factories` DISABLE KEYS */;
-INSERT INTO `factories` (`id`,`contact_email`,`employees`,`information`,`name`,`address_id`,`location_id`,`company_id`,`director_id`) VALUES 
- (1,'factory1@company1.com',10,'Factoría de ejemplo 1.1','Factoría 1.1',4,4,3,11),
- (2,'factory2@company1.com',30,'Factoría de ejemplo 1.2','Factoría 1.2',5,5,3,12),
- (3,'factory3@company1.com',95,'Factoría de ejemplo 1.3','Factoría 1.3',6,6,3,13),
- (4,'factory4@company1.com',63,'Factoría de ejemplo 1.4','Factoría 1.4',7,7,3,14),
- (5,'factory1@company2.com',57,'Factoría de ejemplo 2.1','Factoría 2.1',20,20,4,27),
- (6,'factory2@company2.com',44,'Factoría de ejemplo 2.2','Factoría 2.2',21,21,4,28),
- (7,'factory3@company2.com',32,'Factoría de ejemplo 2.3','Factoría 2.3',10,10,4,17),
- (8,'factory4@company2.com',115,'Factoría de ejemplo 2.4','Factoría 2.4',11,11,4,18),
- (9,'factory1@company3.com',7,'Factoría de ejemplo 3.1','Factoría 3.1',12,12,5,19),
- (10,'factory2@company3.com',21,'Factoría de ejemplo 3.2','Factoría 3.2',13,13,5,20),
- (11,'factory3@company3.com',43,'Factoría de ejemplo 3,3','Factoría 3.3',14,14,5,21);
+INSERT INTO `factories` (`id`,`contact_email`,`employees`,`information`,`name`,`address_id`,`location_id`,`director_id`,`company_id`,`testbool`) VALUES 
+ (1,'factory1@company1.com',10,'Factoría de ejemplo 1.1','Factoría 1.1',4,4,11,3,0),
+ (2,'factory2@company1.com',30,'Factoría de ejemplo 1.2','Factoría 1.2',5,5,12,3,0),
+ (3,'factory3@company1.com',95,'Factoría de ejemplo 1.3','Factoría 1.3',6,6,13,3,0),
+ (4,'factory4@company1.com',63,'Factoría de ejemplo 1.4','Factoría 1.4',7,7,14,3,0),
+ (5,'factory1@company2.com',57,'Factoría de ejemplo 2.1','Factoría 2.1',20,20,27,4,0),
+ (6,'factory2@company2.com',44,'Factoría de ejemplo 2.2','Factoría 2.2',21,21,28,4,0),
+ (7,'factory3@company2.com',32,'Factoría de ejemplo 2.3','Factoría 2.3',10,10,17,4,0),
+ (8,'factory4@company2.com',115,'Factoría de ejemplo 2.4','Factoría 2.4',11,11,18,4,0),
+ (9,'factory1@company3.com',7,'Factoría de ejemplo 3.1','Factoría 3.1',12,12,19,5,0),
+ (10,'factory2@company3.com',21,'Factoría de ejemplo 3.2','Factoría 3.2',13,13,20,5,0),
+ (11,'factory3@company3.com',43,'Factoría de ejemplo 3,3','Factoría 3.3',14,14,21,5,0);
 /*!40000 ALTER TABLE `factories` ENABLE KEYS */;
 
 
@@ -293,6 +294,52 @@ INSERT INTO `markets` (`id`,`color`,`name`) VALUES
 
 
 --
+-- Definition of table `measures`
+--
+
+DROP TABLE IF EXISTS `measures`;
+CREATE TABLE `measures` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `dbTable` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `entity` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `measures`
+--
+
+/*!40000 ALTER TABLE `measures` DISABLE KEYS */;
+INSERT INTO `measures` (`id`,`dbTable`,`description`,`entity`,`name`,`type`) VALUES 
+ (1,'projects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Project','audited','boolean'),
+ (2,'projects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Project','finished','boolean'),
+ (5,'projects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Project','team_size','int'),
+ (6,'projects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Project','delay','boolean'),
+ (7,'projects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Project','fiabilidad','float'),
+ (8,'projects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Project','usabilidad','float'),
+ (9,'projects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Project','eficiencia','float'),
+ (10,'projects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Project','mantenibilidad','float'),
+ (11,'projects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Project','portabilidad','float'),
+ (14,'projects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Project','puntos_funcion','float'),
+ (17,'projects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Project','actividad','float'),
+ (18,'subprojects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject','fiabilidad','float'),
+ (19,'subprojects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject','usabilidad','float'),
+ (20,'subprojects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject','eficiencia','float'),
+ (21,'subprojects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject','mantenibilidad','float'),
+ (22,'subprojects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject','portabilidad','float'),
+ (23,'subprojects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject','commits','int'),
+ (24,'subprojects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject','lcd_modificadas','int'),
+ (25,'subprojects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject','testcases_exec','int'),
+ (26,'subprojects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject','test_cobertura','float'),
+ (27,'subprojects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject','test_efectividad','float'),
+ (28,'subprojects',NULL,'es.uclm.inf_cr.alarcos.desglosa_web.model.Subproject','puntos_funcion','float');
+/*!40000 ALTER TABLE `measures` ENABLE KEYS */;
+
+
+--
 -- Definition of table `projects`
 --
 
@@ -316,11 +363,11 @@ CREATE TABLE `projects` (
   `portabilidad` float DEFAULT '0',
   `puntos_funcion` float DEFAULT '0',
   `repaired_incidences` int(11) DEFAULT '0',
-  `size` int(11) DEFAULT '0',
+  `team_size` int(11) DEFAULT '0',
   `total_incidences` int(11) DEFAULT '0',
   `usabilidad` float DEFAULT '0',
-  `mainFactory_id` int(11) NOT NULL,
   `market_id` int(11) DEFAULT NULL,
+  `mainFactory_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FKC479187AEC81FA6D` (`market_id`),
   KEY `FKC479187A6BCD420` (`mainFactory_id`),
@@ -333,13 +380,13 @@ CREATE TABLE `projects` (
 --
 
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
-INSERT INTO `projects` (`id`,`actividad`,`audited`,`code`,`comentarios`,`delay`,`eficiencia`,`fiabilidad`,`fichaje_codigo`,`fichaje_total`,`finished`,`lineas_de_codigo`,`mantenibilidad`,`name`,`plan`,`portabilidad`,`puntos_funcion`,`repaired_incidences`,`size`,`total_incidences`,`usabilidad`,`mainFactory_id`,`market_id`) VALUES 
- (1,95.4,0,'VTRB',1022,1,89.9,78.1,1600,1500,0,100457,85.6,'Vitrubio','0932',95.8,50.6,400,23,510,87.9,3,1),
- (2,78.8,1,'ALT',150512,0,78.5,67.9,1400,4050,1,1152230,74.5,'Althea','0132',96.7,78.9,300,31,450,64.5,5,3),
- (3,89.5,0,'ARS',1022445,0,85.32,95.78,20000,30000,0,14007875,98.33,'Ares','0142',89.4,80.5,100,45,780,89.78,7,2),
- (4,99.9,1,'ASCP',6654,0,99.7,97.8,5000,16400,1,4592744,96.12,'Asclepios','0421',83.45,30.5,0,60,300,54.9,9,3),
- (5,67.8,1,'EOL',55466,0,81.23,81.45,1000,8790,0,1214520,85.6,'Eolo','0094',74.1,10.2,150,40,200,36.87,7,4),
- (6,45.6,0,'VDLV',123354,1,67.9,72.36,10000,7000,0,422133,68.4,'Vandelvira','0541',86.2,15.6,140,80,150,65.98,5,1);
+INSERT INTO `projects` (`id`,`actividad`,`audited`,`code`,`comentarios`,`delay`,`eficiencia`,`fiabilidad`,`fichaje_codigo`,`fichaje_total`,`finished`,`lineas_de_codigo`,`mantenibilidad`,`name`,`plan`,`portabilidad`,`puntos_funcion`,`repaired_incidences`,`team_size`,`total_incidences`,`usabilidad`,`market_id`,`mainFactory_id`) VALUES 
+ (1,95.4,0,'VTRB',1022,1,89.9,78.1,1600,1500,0,100457,85.6,'Vitrubio','0932',95.8,50.6,400,23,510,87.9,1,3),
+ (2,78.8,1,'ALT',150512,0,78.5,67.9,1400,4050,1,1152230,74.5,'Althea','0132',96.7,78.9,300,31,450,64.5,3,5),
+ (3,89.5,0,'ARS',1022445,0,85.32,95.78,20000,30000,0,14007875,98.33,'Ares','0142',89.4,80.5,100,45,780,89.78,2,7),
+ (4,99.9,1,'ASCP',6654,0,99.7,97.8,5000,16400,1,4592744,96.12,'Asclepios','0421',83.45,30.5,0,60,300,54.9,3,9),
+ (5,67.8,1,'EOL',55466,0,81.23,81.45,1000,8790,0,1214520,85.6,'Eolo','0094',74.1,10.2,150,40,200,36.87,4,7),
+ (6,45.6,0,'VDLV',123354,1,67.9,72.36,10000,7000,0,422133,68.4,'Vandelvira','0541',86.2,15.6,140,80,150,65.98,1,5);
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 
 

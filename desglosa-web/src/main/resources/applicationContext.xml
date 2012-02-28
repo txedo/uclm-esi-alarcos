@@ -40,4 +40,5 @@
     <bean id="measureManager" class="es.uclm.inf_cr.alarcos.desglosa_web.control.MeasureManager" singleton="true" >
         <property name="measureDao" ref="measureDao"/>
     </bean>
+    
 </beans>

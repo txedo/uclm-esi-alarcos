@@ -1,5 +1,8 @@
 package es.uclm.inf_cr.alarcos.desglosa_web.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Formula;
 
@@ -41,27 +45,18 @@ import es.uclm.inf_cr.alarcos.desglosa_web.model.util.Property;
 public class Subproject {
     @Property
     private int id;
+    private Map<String, Object> measures = new HashMap<String, Object>();
     private Project project;
     @Property(embedded = true)
     private Factory factory;
     @Property
     private String name;
     @Property @Measure
-    private Integer numeroDeCommits;
-    @Property @Measure
-    private Integer lcdModificadas;
-    @Property @Measure
     private Integer funcionalidadesTotales;
     @Property @Measure
     private Integer funcionalidadesImplementadas;
     @Property @Measure(base = false)
     private Float ratioFuncionalidades;
-    @Property @Measure
-    private Integer testCasesEjecutados;
-    @Property @Measure
-    private Float coberturaPruebas;
-    @Property @Measure
-    private Float efectividadPruebas;
     @Property @Measure
     private Integer erroresDetectados;
     @Property @Measure
@@ -75,23 +70,11 @@ public class Subproject {
     @Property @Measure(base = false)
     private Float ratioEsfuerzoMto;
     @Property @Measure
-    private Float fiabilidad;
-    @Property @Measure
-    private Float usabilidad;
-    @Property @Measure
-    private Float eficiencia;
-    @Property @Measure
-    private Float mantenibilidad;
-    @Property @Measure
-    private Float portabilidad;
-    @Property @Measure
     private Integer lineasDeCodigo;
     @Property @Measure
     private Integer comentarios;
     @Property @Measure(base = false)
     private Float ratioComentariosLineasDeCodigo;
-    @Property @Measure
-    private Float puntosFuncion;
     @Property @Measure
     private Float fichajeCodigo;
     @Property @Measure
@@ -127,6 +110,11 @@ public class Subproject {
     public int getId() {
         return id;
     }
+    
+    @Transient
+    public Map<String, Object> getMeasures() {
+        return measures;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "project_id")
@@ -145,16 +133,6 @@ public class Subproject {
         return name;
     }
 
-    @Column(name = "commits", insertable = false, columnDefinition = "int default 0")
-    public Integer getNumeroDeCommits() {
-        return numeroDeCommits;
-    }
-
-    @Column(name = "lcd_modificadas", insertable = false, columnDefinition = "int default 0")
-    public Integer getLcdModificadas() {
-        return lcdModificadas;
-    }
-
     @Column(name = "func_totales", insertable = false, columnDefinition = "int default 0")
     public Integer getFuncionalidadesTotales() {
         return funcionalidadesTotales;
@@ -171,21 +149,6 @@ public class Subproject {
             ratioFuncionalidades = new Float(0);
         }
         return ratioFuncionalidades;
-    }
-
-    @Column(name = "testcases_exec", insertable = false, columnDefinition = "int default 0")
-    public Integer getTestCasesEjecutados() {
-        return testCasesEjecutados;
-    }
-
-    @Column(name = "test_cobertura", insertable = false, columnDefinition = "float default 0.0")
-    public Float getCoberturaPruebas() {
-        return coberturaPruebas;
-    }
-
-    @Column(name = "test_efectividad", insertable = false, columnDefinition = "float default 0.0")
-    public Float getEfectividadPruebas() {
-        return efectividadPruebas;
     }
 
     @Column(name = "errores_detectados", insertable = false, columnDefinition = "int default 0")
@@ -224,31 +187,6 @@ public class Subproject {
         return ratioEsfuerzoMto;
     }
 
-    @Column(name = "fiabilidad", insertable = false, columnDefinition = "float default 0.0")
-    public Float getFiabilidad() {
-        return fiabilidad;
-    }
-
-    @Column(name = "usabilidad", insertable = false, columnDefinition = "float default 0.0")
-    public Float getUsabilidad() {
-        return usabilidad;
-    }
-
-    @Column(name = "eficiencia", insertable = false, columnDefinition = "float default 0.0")
-    public Float getEficiencia() {
-        return eficiencia;
-    }
-
-    @Column(name = "mantenibilidad", insertable = false, columnDefinition = "float default 0.0")
-    public Float getMantenibilidad() {
-        return mantenibilidad;
-    }
-
-    @Column(name = "portabilidad", insertable = false, columnDefinition = "float default 0.0")
-    public Float getPortabilidad() {
-        return portabilidad;
-    }
-
     @Column(name = "lineas_de_codigo", insertable = false, columnDefinition = "int default 0")
     public Integer getLineasDeCodigo() {
         return lineasDeCodigo;
@@ -266,11 +204,6 @@ public class Subproject {
             ratioComentariosLineasDeCodigo = new Float(0);
         }
         return ratioComentariosLineasDeCodigo;
-    }
-
-    @Column(name = "puntos_funcion", insertable = false, columnDefinition = "float default 0.0")
-    public Float getPuntosFuncion() {
-        return puntosFuncion;
     }
 
     @Column(name = "fichaje_codigo", insertable = false, columnDefinition = "float default 0.0")
@@ -351,6 +284,10 @@ public class Subproject {
     public void setId(int id) {
         this.id = id;
     }
+    
+    public void setMeasures(Map<String, Object> measures) {
+        this.measures = measures;
+    }
 
     public void setProject(Project project) {
         this.project = project;
@@ -364,14 +301,6 @@ public class Subproject {
         this.name = name;
     }
 
-    public void setNumeroDeCommits(Integer numeroDeCommits) {
-        this.numeroDeCommits = numeroDeCommits;
-    }
-
-    public void setLcdModificadas(Integer lcdModificadas) {
-        this.lcdModificadas = lcdModificadas;
-    }
-
     public void setFuncionalidadesTotales(Integer funcionalidadesTotales) {
         this.funcionalidadesTotales = funcionalidadesTotales;
     }
@@ -382,18 +311,6 @@ public class Subproject {
 
     public void setRatioFuncionalidades(Float ratioFuncionalidades) {
         this.ratioFuncionalidades = ratioFuncionalidades;
-    }
-
-    public void setTestCasesEjecutados(Integer testCasesEjecutados) {
-        this.testCasesEjecutados = testCasesEjecutados;
-    }
-
-    public void setCoberturaPruebas(Float coberturaPruebas) {
-        this.coberturaPruebas = coberturaPruebas;
-    }
-
-    public void setEfectividadPruebas(Float efectividadPruebas) {
-        this.efectividadPruebas = efectividadPruebas;
     }
 
     public void setErroresDetectados(Integer erroresDetectados) {
@@ -422,26 +339,6 @@ public class Subproject {
         this.ratioEsfuerzoMto = ratioEsfuerzoMto;
     }
 
-    public void setFiabilidad(Float fiabilidad) {
-        this.fiabilidad = fiabilidad;
-    }
-
-    public void setUsabilidad(Float usabilidad) {
-        this.usabilidad = usabilidad;
-    }
-
-    public void setEficiencia(Float eficiencia) {
-        this.eficiencia = eficiencia;
-    }
-
-    public void setMantenibilidad(Float mantenibilidad) {
-        this.mantenibilidad = mantenibilidad;
-    }
-
-    public void setPortabilidad(Float portabilidad) {
-        this.portabilidad = portabilidad;
-    }
-
     public void setLineasDeCodigo(Integer lineasDeCodigo) {
         this.lineasDeCodigo = lineasDeCodigo;
     }
@@ -453,10 +350,6 @@ public class Subproject {
     public void setRatioComentariosLineasDeCodigo(
             Float ratioComentariosLineasDeCodigo) {
         this.ratioComentariosLineasDeCodigo = ratioComentariosLineasDeCodigo;
-    }
-
-    public void setPuntosFuncion(Float puntosFuncion) {
-        this.puntosFuncion = puntosFuncion;
     }
 
     public void setFichajeCodigo(Float fichajeCodigo) {

@@ -18,10 +18,14 @@
 <c:choose>
 	<c:when test="${fn:length(measures) gt 0}">
     <ul>
+        <s:set name="subproject" value="subproject" scope="request"/>
         <c:forEach var="measure" items="${measures}">
-            <c:set var="measureName" value="subproject.${measure.name}"></c:set>
+            <c:set var="measureName" value="subproject.measures.${measure.name}"></c:set>
+            <c:if test="${measure.annotated == true}">
+                <c:set var="measureName" value="subproject.${measure.name}"></c:set>
+            </c:if>
             <li>
-                <label for="${measureName}"><fmt:message key="label.${measure.name}" /></label>
+                <label for="${measureName}">${measure.name}</label>
                 <c:if test="${measure.type == 'Boolean'}">
                     <s:checkbox id="%{#attr.measureName}" name="%{#attr.measureName}"></s:checkbox>
                 </c:if>
