@@ -448,37 +448,37 @@
           <schema>${dbunit.schema}</schema>
           <skip>${maven.test.skip}</skip>
         </configuration>
-        <executions>
-          <execution>
-            <id>dbunit-process-test-resources</id>
-            <phase>process-test-resources</phase>
-            <goals>
-              <goal>operation</goal>
-            </goals>
-            <configuration>
-                <type>CLEAN_INSERT</type>
-            </configuration>
-          </execution>
-          <execution>
-            <!-- This is just for debugging purposes for developers -->
-            <id>dbunit-test-compile</id>
-            <phase>test-compile</phase>
-            <goals>
-              <goal>operation</goal>
-            </goals>
-          </execution>
-          <execution>
-            <!-- Runs before integration tests and jetty:run-war -->
-            <id>test</id>
-            <phase>test</phase>
-            <goals>
-              <goal>operation</goal>
-            </goals>
-            <configuration>
-                <type>CLEAN_INSERT</type>
-            </configuration>
-          </execution>
-        </executions>
+<!--         <executions> -->
+<!--           <execution> -->
+<!--             <id>dbunit-process-test-resources</id> -->
+<!--             <phase>process-test-resources</phase> -->
+<!--             <goals> -->
+<!--               <goal>operation</goal> -->
+<!--             </goals> -->
+<!--             <configuration> -->
+<!--                 <type>CLEAN_INSERT</type> -->
+<!--             </configuration> -->
+<!--           </execution> -->
+<!--           <execution> -->
+<!--             This is just for debugging purposes for developers -->
+<!--             <id>dbunit-test-compile</id> -->
+<!--             <phase>test-compile</phase> -->
+<!--             <goals> -->
+<!--               <goal>operation</goal> -->
+<!--             </goals> -->
+<!--           </execution> -->
+<!--           <execution> -->
+<!--             Runs before integration tests and jetty:run-war -->
+<!--             <id>test</id> -->
+<!--             <phase>test</phase> -->
+<!--             <goals> -->
+<!--               <goal>operation</goal> -->
+<!--             </goals> -->
+<!--             <configuration> -->
+<!--                 <type>CLEAN_INSERT</type> -->
+<!--             </configuration> -->
+<!--           </execution> -->
+<!--         </executions> -->
         <dependencies>
           <dependency>
             <groupId>${jdbc.groupId}</groupId>

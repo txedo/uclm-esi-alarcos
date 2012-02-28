@@ -36,6 +36,7 @@ public class MeasureAction extends ActionSupport implements GenericActionInterfa
             put(Measure.BOOLEAN, getText("label.boolean"));
         }
     };
+    private final String[] reserverWords = {"size", "length", "delayed"};
 
     public int getId() {
         return id;
@@ -115,6 +116,7 @@ public class MeasureAction extends ActionSupport implements GenericActionInterfa
 
     public String delete() throws Exception {
         MeasureManager.removeMeasure(id);
+        addActionMessage(getText("message.measure.added_successfully"));
         return SUCCESS;
     }
 

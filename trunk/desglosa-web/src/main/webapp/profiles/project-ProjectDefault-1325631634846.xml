@@ -24,7 +24,7 @@
             <modelAttr name="progressionMark" type="boolean"/>
         </mapping>
         <mapping>
-            <entityAttr name="size" type="int"/>
+            <entityAttr name="team_size" type="int"/>
             <modelAttr name="parentBallRadius" type="float"/>
         </mapping>
         <mapping>

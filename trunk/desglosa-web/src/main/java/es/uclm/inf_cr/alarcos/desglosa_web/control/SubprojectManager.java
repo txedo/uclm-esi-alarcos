@@ -60,6 +60,7 @@ public class SubprojectManager {
     public static void updateMeasures(int subprojectToUpdateId, Subproject subprojectWithUpdatedMeasures) throws SubprojectNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, Exception {
         Subproject subprojectToUpdate = SubprojectManager.getSubproject(subprojectToUpdateId);
         Utilities.updateFieldsByReflection(Subproject.class, subprojectToUpdate, subprojectWithUpdatedMeasures);
+        subprojectToUpdate.setMeasures(subprojectWithUpdatedMeasures.getMeasures());
         SubprojectManager.saveSubproject(subprojectToUpdate);
     }
 

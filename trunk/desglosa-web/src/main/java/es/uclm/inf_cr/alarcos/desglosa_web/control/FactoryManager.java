@@ -67,6 +67,7 @@ public class FactoryManager {
     public static void updateMeasures(int factoryToUpdateId, Factory factoryWithUpdatedMeasures) throws FactoryNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, Exception {
         Factory factoryToUpdate = FactoryManager.getFactory(factoryToUpdateId);
         Utilities.updateFieldsByReflection(Factory.class, factoryToUpdate, factoryWithUpdatedMeasures);
+        factoryToUpdate.setMeasures(factoryWithUpdatedMeasures.getMeasures());
         FactoryManager.saveFactory(factoryToUpdate);
     }
     

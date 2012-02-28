@@ -37,7 +37,7 @@ public class MeasureAnnotationParser {
                     // Read class attribute name and type, not column data
                     Measure measure = field.getAnnotation(Measure.class);
                     if ((measure.base() && onlyBaseMeasures) || !onlyBaseMeasures) {
-                        measures.add(new MeasureWrapper(field.getName(), field.getType().getSimpleName(), measure.base(), measure.description()));
+                        measures.add(new MeasureWrapper(field.getName(), field.getType().getSimpleName(), measure.base(), true, measure.description()));
                     }
                 }
             }

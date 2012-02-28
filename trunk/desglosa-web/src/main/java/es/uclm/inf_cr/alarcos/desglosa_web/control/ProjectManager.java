@@ -70,6 +70,7 @@ public class ProjectManager {
     public static void updateMeasures(int projectToUpdateId, Project projectWithUpdatedMeasures) throws ProjectNotFoundException, SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, Exception {
         Project projectToUpdate = ProjectManager.getProject(projectToUpdateId);
         Utilities.updateFieldsByReflection(Project.class, projectToUpdate, projectWithUpdatedMeasures);
+        projectToUpdate.setMeasures(projectWithUpdatedMeasures.getMeasures());
         ProjectManager.saveProject(projectToUpdate);
     }
 
