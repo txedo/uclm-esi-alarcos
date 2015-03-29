@@ -1,0 +1,12 @@
+# Introduction #
+
+En esta página se muesra cómo dibujar un rectángulo con primitivas de OpenGL.
+
+
+# Details #
+```
+gl.glLoadIdentity();
+gl.glTranslatef(0.0f, 0.0f, -5.0f);
+gl.glColor4f(0.5f, 0.5f, 0.5f, 0.3f);
+gl.glRectf(-2, -2, 2, 2);
+```

@@ -1,0 +1,55 @@
+# Introducción #
+
+En este how to, escrito el 22 de abril de 2010, se describirá cómo preparar un entorno para el desarrollo de aplicaciones y servicios Web en Eclipse. Nótese que el servidor Web no se instalará como un servicio del sistema operativo, si no que se instalará como un módulo de Eclipse.
+
+El documento se divide en dos secciones dos diferenciadas. En la primera se indica cómo configurar el sistema operativo, Windows XP en este caso, y en la segunda se indica como configurar Eclipse.
+
+# Configurando el sistema operativo #
+
+  * Descargar el servidor Apache Tomcat de http://tomcat.apache.org/. Se recomienda descargar la versión 6.X (en la fecha de edición de este documento la última versión disponible es la 6.0.26).
+
+  * Descomprimir el directorio del apache.
+
+  * Añadir una **variable del sistema** (variable de entorno) llamada CATALINA\_HOME y como valor la ruta al directorio del apache que acabamos de descomprimir (p.e. _E:\Archivos de programa\apache-tomcat-6.0.26_).
+
+  * Añadir una nueva **variable del sistema**. En este caso con el nombre CATALINA\_OPTS y el valor _-Xms1024m -Xmx1024m -Dorg.apache.jaspper.runtime.BodyContentImpl.LIMIT\_BUFFER=true -XX:MaxPermSize=256m_.
+
+  * Descargar Axis2 de http://ws.apache.org/axis2/download.cgi/. En la fecha de edición de este documento la última versión disponible es la 1.5.1. Es necesario descargar dos ficheros:
+    * Standard Binary Distribution
+    * WAR (Web Archive) Distribution
+
+  * Descomprimir el directorio del Axis2.
+
+  * Añadir una **variable del sistema** (variable de entorno) llamada AXIS2\_HOME y como valor la ruta al directorio del axis2 que acabamos de descomprimir (p.e. _E:\Archivos de programa\axis2-1.5.1_).
+
+  * Añadir una **variable del sistema** (variable de entorno) llamada JAVA\_HOME y como valor la ruta al directorio donde esté instalado el JDK de Java (p.e. _C:\Archivos de programa\Java\jdk1.6.0\_18_).
+
+  * Descomprimir el WAR del Axis2 en el directorio _webapps_ del apache. Es decir, en una ruta similar a _E:\Archivos de programa\apache-tomcat-6.0.26\webapps_ debemos tener un fichero llamado _axis2.war_.
+
+  * Abrir un terminal de MSDOS (_Inicio > Ejecutar > cmd_) y lanzar el apache tomcat (_PROMPT/apache-tomcat-6.0.26/bin/startup.bat_)
+
+  * Comprobar que se ha generado un directorio llamado _axis2_ en el directorio donde descomprimimos el fichero _axis2.war_. Es importante que se haya creado ya que los ficheros _aar_ de las aplicaciones Web deben colocarse en el directorio _E:\Archivos de programa\apache-tomcat-6.0.26\webapps\axis2\WEB-INF\services_ para que se desplieguen al reiniciar el servidor Web.
+
+# Configurando Eclipse #
+
+  * Descargar los plug-ins de Eclipse (_Service Archive Wizzard_ y _Code Generador Wizzard_) de http://ws.apache.org/axis2/tools/index.html. En la fecha de edición de este documento los enlaces están rotos, por lo que, puesto que la última versión disponible de estos plug-ins es la 1.4.1, se recomienda utilizar el siguiente enlace: http://apache.rediris.es/ws/axis2/tools/1_4_1/
+
+  * Descomprimir los plug-ins que acabamos de descargar en el directorio _plugins_ de nuestra distribución de Eclipse. Cada plug-in es una carpeta.
+
+  * Abrir el Eclipse y navegar a _Window > Preferences_.
+
+  * En la ventana de preferencias, navegar a _Server > Installed Runtimes_. Añadir un nuevo servidor _Apache > Apache Tomcat 6.0_ indicando la ruta donde está instalado el servidor Apache (p.e. _E:\Archivos de programa\apache-tomcat-6.0.26_).
+
+  * En la misma ventana de preferencias, navegar a _Web Services > Axis2 Preferences_ y en la pestaña _Axis2 Runtime_ indicar donde está instalado Axis2 (p.e. _E:\Archivos de programa\axis2-1.5.1_). Observe que aparece el mensaje _"Axis2 runtime loaded successfully!!!"_.
+
+# Configurando los usuarios de Apache Tomcat #
+
+  * Edite el fichero _E:\Archivos de programa\apache-tomcat-6.0.26\conf\tomcat-users.xml_ y añada las siguientes líneas:
+```
+<tomcat-users>
+  ...
+  <role rolename="manager"/>
+  <user username="usuario" password="mipassword" roles="manager"/>
+  ...
+</tomcat-users>
+```

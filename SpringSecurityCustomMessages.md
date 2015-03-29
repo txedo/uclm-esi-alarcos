@@ -1,0 +1,97 @@
+# Introduction #
+
+Spring Security has some messages that could be replaced. For example, when an user introduces either an incorrect usermane or password, SPRING\_SECURITY\_LAST\_EXCEPTION.message variable has "Bad credentials" value.
+
+Here are the steps to follow if you want to show a "Incorrect username or password" instead the bad credentials one, while using the SPRING\_SECURITY\_LAST\_EXCEPTION.message. Of course, this method can be extended in order to customize more messages.
+
+# Details #
+
+## Create resource files with customized messages ##
+
+First, create required I18N properties resource files under _src/main/resources_. In this example, these files will be named _spring-security-messages`*`.properties_.
+  * spring-security-messages.properties
+```
+AbstractUserDetailsAuthenticationProvider.locked=User account is locked
+AbstractUserDetailsAuthenticationProvider.disabled=User is disabled
+AbstractUserDetailsAuthenticationProvider.expired=User account has expired
+AbstractUserDetailsAuthenticationProvider.credentialsExpired=User credentials have expired
+AbstractUserDetailsAuthenticationProvider.badCredentials=Incorrect username and/or password
+BindAuthenticator.badCredentials=Incorrect username and/or password
+UserDetailsService.locked=User account is locked
+UserDetailsService.disabled=User is disabled
+UserDetailsService.expired=User account has expired
+UserDetailsService.credentialsExpired=User credentials have expired
+```
+
+  * spring-security-messages\_es.properties
+```
+AbstractUserDetailsAuthenticationProvider.locked=La cuenta del usuario está bloqueada
+AbstractUserDetailsAuthenticationProvider.disabled=El usuario está deshabilitado
+AbstractUserDetailsAuthenticationProvider.expired=La cuenta del usuario ha caducado
+AbstractUserDetailsAuthenticationProvider.credentialsExpired=Las credenciales del usuario han caducado
+AbstractUserDetailsAuthenticationProvider.badCredentials=Usuario y/o contraseña incorrectos
+BindAuthenticator.badCredentials=Usuario y/o contraseña incorrectos
+UserDetailsService.locked=La cuenta del usuario está bloqueada
+UserDetailsService.disabled=El usuario está deshabilitado
+UserDetailsService.expired=La cuenta del usuario ha caducado
+UserDetailsService.credentialsExpired=Las credenciales del usuario han caducado
+```
+
+## Add customized resource files to Spring message source ##
+
+Add the next lines in an **applicationContext** file used by Spring when booting the webapp. In my case, I added it into _applicationContext-resources.xml_.
+
+```
+<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">  
+	<property name="basenames">  
+		<list>
+		   <value>spring-security-messages</value>
+		</list>
+	</property>
+</bean>
+```
+
+## Known issues ##
+If you have codification issues when deploying the webapp. You could add the following lines into your pom.xml. This example manages 8859\_1 encoded files, so keep in mind utf-8 encoded files.
+```
+<build>
+  ...
+  <plugins>
+    ...
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>native2ascii-maven-plugin</artifactId>
+      <version>1.0-alpha-1</version>
+      <configuration>
+        <dest>target/classes</dest>
+        <src>src/main/resources</src>
+      </configuration>
+      <executions>
+        <execution>
+          <id>native2ascii-8859_1</id>
+          <goals>
+            <goal>native2ascii</goal>
+          </goals>
+          <configuration>
+            <encoding>8859_1</encoding>
+            <includes>
+              ApplicationResources_es.properties,
+              spring-security-messages_es.properties
+            </includes>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+  <resources>
+    <resource>
+    <directory>src/main/resources</directory>
+    <excludes>
+      <exclude>ApplicationResources_es.properties</exclude>
+      <exclude>spring-security-messages_es.properties</exclude>
+    </excludes>
+    <filtering>true</filtering>
+    </resource>
+  </resources>
+</build>
+```

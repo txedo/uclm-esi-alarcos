@@ -1,0 +1,1 @@
+Repositorio personal de López, J.D. para proyectos del grupo de investigación Alarcos (Escuela Superior de Informática de Ciudad Real -UCLM-)
